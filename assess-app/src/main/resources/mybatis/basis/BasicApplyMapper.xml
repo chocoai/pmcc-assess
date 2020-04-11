@@ -6,11 +6,8 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="batch_detail_id" property="batchDetailId" jdbcType="INTEGER" />
     <result column="structural_info" property="structuralInfo" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER" />
-    <result column="case_building_id" property="caseBuildingId" jdbcType="INTEGER" />
-    <result column="case_unit_id" property="caseUnitId" jdbcType="INTEGER" />
-    <result column="case_house_id" property="caseHouseId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="basic_estate_id" property="basicEstateId" jdbcType="INTEGER" />
     <result column="basic_building_id" property="basicBuildingId" jdbcType="INTEGER" />
@@ -18,22 +15,6 @@
     <result column="basic_house_id" property="basicHouseId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="area" property="area" jdbcType="DECIMAL" />
-    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
-    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
-    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
-    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="draft_flag" property="draftFlag" jdbcType="BIT" />
-    <result column="estate_part_in_mode" property="estatePartInMode" jdbcType="VARCHAR" />
-    <result column="building_part_in_mode" property="buildingPartInMode" jdbcType="VARCHAR" />
-    <result column="unit_part_in_mode" property="unitPartInMode" jdbcType="VARCHAR" />
-    <result column="house_part_in_mode" property="housePartInMode" jdbcType="VARCHAR" />
-    <result column="write_back_block_flag" property="writeBackBlockFlag" jdbcType="BIT" />
-    <result column="copy_id" property="copyId" jdbcType="INTEGER" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -98,12 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, batch_detail_id, structural_info, address, case_estate_id, case_building_id, 
-    case_unit_id, case_house_id, declare_record_id, basic_estate_id, basic_building_id, 
-    basic_unit_id, basic_house_id, plan_details_id, area, process_ins_id, province, city, 
-    type, estate_name, building_number, unit_number, house_number, status, draft_flag, 
-    estate_part_in_mode, building_part_in_mode, unit_part_in_mode, house_part_in_mode, 
-    write_back_block_flag, copy_id, bis_delete, creator, gmt_created, gmt_modified
+    id, name, batch_detail_id, structural_info, type, address, declare_record_id, basic_estate_id, 
+    basic_building_id, basic_unit_id, basic_house_id, plan_details_id, area, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample" >
     select
@@ -140,29 +118,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_apply (name, batch_detail_id, structural_info, 
-      address, case_estate_id, case_building_id, 
-      case_unit_id, case_house_id, declare_record_id, 
+      type, address, declare_record_id, 
       basic_estate_id, basic_building_id, basic_unit_id, 
       basic_house_id, plan_details_id, area, 
-      process_ins_id, province, city, 
-      type, estate_name, building_number, 
-      unit_number, house_number, status, 
-      draft_flag, estate_part_in_mode, building_part_in_mode, 
-      unit_part_in_mode, house_part_in_mode, write_back_block_flag, 
-      copy_id, bis_delete, creator, 
-      gmt_created, gmt_modified)
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{name,jdbcType=VARCHAR}, #{batchDetailId,jdbcType=INTEGER}, #{structuralInfo,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{caseEstateId,jdbcType=INTEGER}, #{caseBuildingId,jdbcType=INTEGER}, 
-      #{caseUnitId,jdbcType=INTEGER}, #{caseHouseId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{declareRecordId,jdbcType=INTEGER}, 
       #{basicEstateId,jdbcType=INTEGER}, #{basicBuildingId,jdbcType=INTEGER}, #{basicUnitId,jdbcType=INTEGER}, 
       #{basicHouseId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, 
-      #{processInsId,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{draftFlag,jdbcType=BIT}, #{estatePartInMode,jdbcType=VARCHAR}, #{buildingPartInMode,jdbcType=VARCHAR}, 
-      #{unitPartInMode,jdbcType=VARCHAR}, #{housePartInMode,jdbcType=VARCHAR}, #{writeBackBlockFlag,jdbcType=BIT}, 
-      #{copyId,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -179,20 +145,11 @@
       <if test="structuralInfo != null" >
         structural_info,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
       <if test="address != null" >
         address,
-      </if>
-      <if test="caseEstateId != null" >
-        case_estate_id,
-      </if>
-      <if test="caseBuildingId != null" >
-        case_building_id,
-      </if>
-      <if test="caseUnitId != null" >
-        case_unit_id,
-      </if>
-      <if test="caseHouseId != null" >
-        case_house_id,
       </if>
       <if test="declareRecordId != null" >
         declare_record_id,
@@ -214,54 +171,6 @@
       </if>
       <if test="area != null" >
         area,
-      </if>
-      <if test="processInsId != null" >
-        process_ins_id,
-      </if>
-      <if test="province != null" >
-        province,
-      </if>
-      <if test="city != null" >
-        city,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="estateName != null" >
-        estate_name,
-      </if>
-      <if test="buildingNumber != null" >
-        building_number,
-      </if>
-      <if test="unitNumber != null" >
-        unit_number,
-      </if>
-      <if test="houseNumber != null" >
-        house_number,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="draftFlag != null" >
-        draft_flag,
-      </if>
-      <if test="estatePartInMode != null" >
-        estate_part_in_mode,
-      </if>
-      <if test="buildingPartInMode != null" >
-        building_part_in_mode,
-      </if>
-      <if test="unitPartInMode != null" >
-        unit_part_in_mode,
-      </if>
-      <if test="housePartInMode != null" >
-        house_part_in_mode,
-      </if>
-      <if test="writeBackBlockFlag != null" >
-        write_back_block_flag,
-      </if>
-      <if test="copyId != null" >
-        copy_id,
       </if>
       <if test="bisDelete != null" >
         bis_delete,
@@ -286,20 +195,11 @@
       <if test="structuralInfo != null" >
         #{structuralInfo,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="caseEstateId != null" >
-        #{caseEstateId,jdbcType=INTEGER},
-      </if>
-      <if test="caseBuildingId != null" >
-        #{caseBuildingId,jdbcType=INTEGER},
-      </if>
-      <if test="caseUnitId != null" >
-        #{caseUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="caseHouseId != null" >
-        #{caseHouseId,jdbcType=INTEGER},
       </if>
       <if test="declareRecordId != null" >
         #{declareRecordId,jdbcType=INTEGER},
@@ -321,54 +221,6 @@
       </if>
       <if test="area != null" >
         #{area,jdbcType=DECIMAL},
-      </if>
-      <if test="processInsId != null" >
-        #{processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="province != null" >
-        #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null" >
-        #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="estateName != null" >
-        #{estateName,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingNumber != null" >
-        #{buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unitNumber != null" >
-        #{unitNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="houseNumber != null" >
-        #{houseNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="draftFlag != null" >
-        #{draftFlag,jdbcType=BIT},
-      </if>
-      <if test="estatePartInMode != null" >
-        #{estatePartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingPartInMode != null" >
-        #{buildingPartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="unitPartInMode != null" >
-        #{unitPartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="housePartInMode != null" >
-        #{housePartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="writeBackBlockFlag != null" >
-        #{writeBackBlockFlag,jdbcType=BIT},
-      </if>
-      <if test="copyId != null" >
-        #{copyId,jdbcType=INTEGER},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -405,20 +257,11 @@
       <if test="record.structuralInfo != null" >
         structural_info = #{record.structuralInfo,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
       <if test="record.address != null" >
         address = #{record.address,jdbcType=VARCHAR},
-      </if>
-      <if test="record.caseEstateId != null" >
-        case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
-      </if>
-      <if test="record.caseBuildingId != null" >
-        case_building_id = #{record.caseBuildingId,jdbcType=INTEGER},
-      </if>
-      <if test="record.caseUnitId != null" >
-        case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="record.caseHouseId != null" >
-        case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
       </if>
       <if test="record.declareRecordId != null" >
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
@@ -440,54 +283,6 @@
       </if>
       <if test="record.area != null" >
         area = #{record.area,jdbcType=DECIMAL},
-      </if>
-      <if test="record.processInsId != null" >
-        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.province != null" >
-        province = #{record.province,jdbcType=VARCHAR},
-      </if>
-      <if test="record.city != null" >
-        city = #{record.city,jdbcType=VARCHAR},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.estateName != null" >
-        estate_name = #{record.estateName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.buildingNumber != null" >
-        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.unitNumber != null" >
-        unit_number = #{record.unitNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.houseNumber != null" >
-        house_number = #{record.houseNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
-      </if>
-      <if test="record.draftFlag != null" >
-        draft_flag = #{record.draftFlag,jdbcType=BIT},
-      </if>
-      <if test="record.estatePartInMode != null" >
-        estate_part_in_mode = #{record.estatePartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.buildingPartInMode != null" >
-        building_part_in_mode = #{record.buildingPartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.unitPartInMode != null" >
-        unit_part_in_mode = #{record.unitPartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.housePartInMode != null" >
-        house_part_in_mode = #{record.housePartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.writeBackBlockFlag != null" >
-        write_back_block_flag = #{record.writeBackBlockFlag,jdbcType=BIT},
-      </if>
-      <if test="record.copyId != null" >
-        copy_id = #{record.copyId,jdbcType=INTEGER},
       </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
@@ -512,11 +307,8 @@
       name = #{record.name,jdbcType=VARCHAR},
       batch_detail_id = #{record.batchDetailId,jdbcType=INTEGER},
       structural_info = #{record.structuralInfo,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
       address = #{record.address,jdbcType=VARCHAR},
-      case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
-      case_building_id = #{record.caseBuildingId,jdbcType=INTEGER},
-      case_unit_id = #{record.caseUnitId,jdbcType=INTEGER},
-      case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       basic_estate_id = #{record.basicEstateId,jdbcType=INTEGER},
       basic_building_id = #{record.basicBuildingId,jdbcType=INTEGER},
@@ -524,22 +316,6 @@
       basic_house_id = #{record.basicHouseId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       area = #{record.area,jdbcType=DECIMAL},
-      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      province = #{record.province,jdbcType=VARCHAR},
-      city = #{record.city,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=INTEGER},
-      estate_name = #{record.estateName,jdbcType=VARCHAR},
-      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      unit_number = #{record.unitNumber,jdbcType=VARCHAR},
-      house_number = #{record.houseNumber,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
-      draft_flag = #{record.draftFlag,jdbcType=BIT},
-      estate_part_in_mode = #{record.estatePartInMode,jdbcType=VARCHAR},
-      building_part_in_mode = #{record.buildingPartInMode,jdbcType=VARCHAR},
-      unit_part_in_mode = #{record.unitPartInMode,jdbcType=VARCHAR},
-      house_part_in_mode = #{record.housePartInMode,jdbcType=VARCHAR},
-      write_back_block_flag = #{record.writeBackBlockFlag,jdbcType=BIT},
-      copy_id = #{record.copyId,jdbcType=INTEGER},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -560,20 +336,11 @@
       <if test="structuralInfo != null" >
         structural_info = #{structuralInfo,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="caseEstateId != null" >
-        case_estate_id = #{caseEstateId,jdbcType=INTEGER},
-      </if>
-      <if test="caseBuildingId != null" >
-        case_building_id = #{caseBuildingId,jdbcType=INTEGER},
-      </if>
-      <if test="caseUnitId != null" >
-        case_unit_id = #{caseUnitId,jdbcType=INTEGER},
-      </if>
-      <if test="caseHouseId != null" >
-        case_house_id = #{caseHouseId,jdbcType=INTEGER},
       </if>
       <if test="declareRecordId != null" >
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
@@ -596,54 +363,6 @@
       <if test="area != null" >
         area = #{area,jdbcType=DECIMAL},
       </if>
-      <if test="processInsId != null" >
-        process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="province != null" >
-        province = #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null" >
-        city = #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="estateName != null" >
-        estate_name = #{estateName,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingNumber != null" >
-        building_number = #{buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unitNumber != null" >
-        unit_number = #{unitNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="houseNumber != null" >
-        house_number = #{houseNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="draftFlag != null" >
-        draft_flag = #{draftFlag,jdbcType=BIT},
-      </if>
-      <if test="estatePartInMode != null" >
-        estate_part_in_mode = #{estatePartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingPartInMode != null" >
-        building_part_in_mode = #{buildingPartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="unitPartInMode != null" >
-        unit_part_in_mode = #{unitPartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="housePartInMode != null" >
-        house_part_in_mode = #{housePartInMode,jdbcType=VARCHAR},
-      </if>
-      <if test="writeBackBlockFlag != null" >
-        write_back_block_flag = #{writeBackBlockFlag,jdbcType=BIT},
-      </if>
-      <if test="copyId != null" >
-        copy_id = #{copyId,jdbcType=INTEGER},
-      </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
@@ -664,11 +383,8 @@
     set name = #{name,jdbcType=VARCHAR},
       batch_detail_id = #{batchDetailId,jdbcType=INTEGER},
       structural_info = #{structuralInfo,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
       address = #{address,jdbcType=VARCHAR},
-      case_estate_id = #{caseEstateId,jdbcType=INTEGER},
-      case_building_id = #{caseBuildingId,jdbcType=INTEGER},
-      case_unit_id = #{caseUnitId,jdbcType=INTEGER},
-      case_house_id = #{caseHouseId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       basic_estate_id = #{basicEstateId,jdbcType=INTEGER},
       basic_building_id = #{basicBuildingId,jdbcType=INTEGER},
@@ -676,22 +392,6 @@
       basic_house_id = #{basicHouseId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       area = #{area,jdbcType=DECIMAL},
-      process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      province = #{province,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
-      estate_name = #{estateName,jdbcType=VARCHAR},
-      building_number = #{buildingNumber,jdbcType=VARCHAR},
-      unit_number = #{unitNumber,jdbcType=VARCHAR},
-      house_number = #{houseNumber,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      draft_flag = #{draftFlag,jdbcType=BIT},
-      estate_part_in_mode = #{estatePartInMode,jdbcType=VARCHAR},
-      building_part_in_mode = #{buildingPartInMode,jdbcType=VARCHAR},
-      unit_part_in_mode = #{unitPartInMode,jdbcType=VARCHAR},
-      house_part_in_mode = #{housePartInMode,jdbcType=VARCHAR},
-      write_back_block_flag = #{writeBackBlockFlag,jdbcType=BIT},
-      copy_id = #{copyId,jdbcType=INTEGER},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
