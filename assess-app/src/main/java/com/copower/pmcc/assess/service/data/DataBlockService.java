@@ -222,8 +222,11 @@ public class DataBlockService {
                             if(StringUtils.isNotBlank(apply.getStructuralInfo()) ){
                                 BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(apply.getPlanDetailsId());
-                                if (projectPlanDetails != null)
+                                if (projectPlanDetails != null){
                                     apply.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+                                    basicApplyBatchDetail.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
+                                }
                                 if(basicApplyBatchDetail!=null){
                                     apply.setBatchDetailId(basicApplyBatchDetail.getId());
                                     List<BasicApplyBatchDetail> list = Lists.newArrayList();
@@ -237,10 +240,8 @@ public class DataBlockService {
                                         keyValueDtos.add(keyValueDto);
                                     }
                                     apply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
-                                    basicApplyBatchDetail.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
-                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
+                                    basicApplyDao.updateBasicApply(apply);
                                 }
-                                basicApplyDao.updateBasicApply(apply);
                             }
                         }
                     }
