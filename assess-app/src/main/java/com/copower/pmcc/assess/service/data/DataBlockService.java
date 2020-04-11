@@ -193,19 +193,15 @@ public class DataBlockService {
 
 
     public void updateOldData(Integer key) throws Exception {
-        BasicHouseRoom whereRoom=new BasicHouseRoom();
-        whereRoom.setHouseId(0);
-        List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.basicHouseRoomList(whereRoom);
-        if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
-            for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
-                BasicHouseRoomDecorate where = new BasicHouseRoomDecorate();
-                where.setRoomId(basicHouseRoom.getId());
-                List<BasicHouseRoomDecorate> houseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(where);
-                if (CollectionUtils.isNotEmpty(houseRoomDecorateList)) {
-                    for (BasicHouseRoomDecorate basicHouseRoomDecorate : houseRoomDecorateList) {
-                        basicHouseRoomDecorate.setHouseId(basicHouseRoom.getHouseId());
-                        basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, false);
-                    }
+        BasicHouseRoomDecorate where = new BasicHouseRoomDecorate();
+        where.setHouseId(0);
+        List<BasicHouseRoomDecorate> houseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(where);
+        if(CollectionUtils.isNotEmpty(houseRoomDecorateList)){
+            for (BasicHouseRoomDecorate basicHouseRoomDecorate : houseRoomDecorateList) {
+                BasicHouseRoom basicHouseRoom = basicHouseRoomService.getBasicHouseRoomById(basicHouseRoomDecorate.getRoomId());
+                if(basicHouseRoom!=null){
+                    basicHouseRoomDecorate.setHouseId(basicHouseRoom.getHouseId());
+                    basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, false);
                 }
             }
         }
