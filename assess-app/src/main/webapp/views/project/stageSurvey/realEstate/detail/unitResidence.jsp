@@ -57,7 +57,7 @@
                                                 <label class="col-sm-1 control-label">户型数</label>
                                                 <div class=" col-sm-3 ">
                                                     <label class="form-control input-full"
-                                                           name="elevatorHouseholdRatio">${basicUnit.huxingNum}</label>
+                                                           name="huxingNum">${basicUnit.huxingNum}</label>
                                                 </div>
                                             </div>
                                         </div>
