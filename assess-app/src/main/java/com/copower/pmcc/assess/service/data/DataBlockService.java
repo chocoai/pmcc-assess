@@ -191,7 +191,7 @@ public class DataBlockService {
         return blockList.size() > 0;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
     public void updateOldData(Integer key) throws Exception {
         if(key==1){
             List<BasicEstate> basicEstateList = basicEstateService.getBasicEstateList(new BasicEstate());
