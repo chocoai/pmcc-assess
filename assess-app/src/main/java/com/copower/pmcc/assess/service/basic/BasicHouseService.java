@@ -600,6 +600,10 @@ public class BasicHouseService extends BasicEntityAbstract {
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出租sql
 
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//装修sql
+
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseWater.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//供水sql
@@ -642,21 +646,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                         room.setGmtCreated(null);
                         room.setGmtModified(null);
                         basicHouseRoomService.saveAndUpdateBasicHouseRoom(room, true);
-                        BasicHouseRoomDecorate oldBasicHouseRoomDecorate = new BasicHouseRoomDecorate();
-                        oldBasicHouseRoomDecorate.setRoomId(oo.getId());
-                        List<BasicHouseRoomDecorate> oldBasicHouseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(oldBasicHouseRoomDecorate);
-                        if (!ObjectUtils.isEmpty(oldBasicHouseRoomDecorateList)) {
-                            for (BasicHouseRoomDecorate po : oldBasicHouseRoomDecorateList) {
-                                BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
-                                BeanUtils.copyProperties(po, basicHouseRoomDecorate);
-                                basicHouseRoomDecorate.setRoomId(room.getId());
-                                basicHouseRoomDecorate.setId(null);
-                                basicHouseRoomDecorate.setCreator(commonService.thisUserAccount());
-                                basicHouseRoomDecorate.setGmtCreated(null);
-                                basicHouseRoomDecorate.setGmtModified(null);
-                                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, true);
-                            }
-                        }
+                        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), oo.getId(), room.getId());
                     }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);

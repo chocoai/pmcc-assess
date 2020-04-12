@@ -143,7 +143,7 @@ var buildingModelView;
                     AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonMaterialGrade, item.materialGrade, function (html, data) {
                         $("#" + buildingModelView.prototype.config().sonFrm).find('select.materialGrade').empty().html(html).trigger('change');
                     });
-                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, data) {
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_building_decoration_part, '', function (html, data) {
                         html = '';
                         html += '<option value="" selected>-请选择-</option>';
                         $.each(data, function (i, item) {

@@ -292,12 +292,11 @@
                 }
                 var select = {tableId:itemB[0].tableId,type:"building"} ;
                 examineCommon.getApplyBatchEstateTaggingsByTableId(select,function (data) {
-                    if (data.length == 0){
-                        notifyInfo("提示","请先标注楼栋");
-                        return false;
+                    var params={};
+                    if (data.length > 0){
+                        var item = data[0] ;
+                        params = {estateName:item.name,lng:item.lng , lat:item.lat} ;
                     }
-                    var item = data[0] ;
-                    var params = {estateName:item.name,lng:item.lng , lat:item.lat} ;
                     var contentUrl = getContextPath() + '/map/mapMarkerEstate?' + examineCommon.parseParam(params);
                     if (readonly != true) {
                         contentUrl += '&click=unitCommon.addMarker';

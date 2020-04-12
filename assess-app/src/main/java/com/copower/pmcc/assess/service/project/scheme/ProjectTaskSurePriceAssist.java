@@ -6,10 +6,14 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePrice;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.event.project.SchemeSurePriceEvent;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +37,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
     @Autowired
     private SchemeSurePriceService schemeSurePriceService;
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
 
@@ -123,8 +127,15 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        SchemeSurePriceApplyDto schemeSurePriceApplyDto = JSON.parseObject(formData, SchemeSurePriceApplyDto.class);
-        schemeSurePriceService.submitSurePrice(schemeSurePriceApplyDto, projectPlanDetails, processInsId);
+        if (StringUtils.isBlank(processInsId)) {
+            schemeSurePriceService.addSurePriceRecord(projectPlanDetails);
+        } else {
+            try {
+                bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName()); //修改监听器
+            } catch (BpmException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
     }
 
     @Override
@@ -134,9 +145,14 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        SchemeSurePriceApplyDto schemeSurePriceApplyDto = JSON.parseObject(formData, SchemeSurePriceApplyDto.class);
-        schemeSurePriceService.submitSurePrice(schemeSurePriceApplyDto, projectPlanDetails, processInsId);
+        if (StringUtils.isBlank(processInsId)) {
+            schemeSurePriceService.addSurePriceRecord(projectPlanDetails);
+        } else {
+            try {
+                bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName()); //修改监听器
+            } catch (BpmException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
     }
-
-
 }

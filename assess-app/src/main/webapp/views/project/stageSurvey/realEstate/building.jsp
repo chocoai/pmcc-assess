@@ -215,8 +215,8 @@
                                                                     层高<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="层高(数字)"
-                                                                           data-rule-number='true' required
+                                                                    <input type="text" placeholder="层高"
+                                                                            required
                                                                            name="floorHeight"
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.floorHeight}">

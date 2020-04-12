@@ -321,15 +321,6 @@ public class SchemeSurePriceService {
                 }
             }
         }
-        if (StringUtils.isBlank(processInsId)) {
-            addSurePriceRecord(projectPlanDetails);
-        } else {
-            try {
-                bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName()); //修改监听器
-            } catch (BpmException e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
     }
 
     /**
