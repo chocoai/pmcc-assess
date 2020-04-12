@@ -867,10 +867,11 @@
         crmCustomer.select({
             multi: false,//是否允许多选
             companyId:${baseViewDto.thisUser.companyId},
-            onSelected: function (node) {
-                if (!node) {
+            onSelected: function (nodes) {
+                if (!nodes) {
                     return false;
                 }
+                var node=nodes[0];
                 $(this_).closest('.input-group').find("input[name='uUseUnit']").val(node.id);
                 $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(node.name);
                 $.ajax({
