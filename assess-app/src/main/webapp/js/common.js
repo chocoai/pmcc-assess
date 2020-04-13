@@ -706,6 +706,35 @@ $(function () {
                 }
             });
         },
+        //阿里云图片识别
+        parseRealtyHouseCertNew: function (id, key, callback) {
+            $.ajax({
+                url: "/aliocr/aliOcr",
+                data: {
+                    fileId: id,
+                    // method: key,
+                    method: "tableExcel",
+                    appKey: "pmcc-assess",
+                    describe: "识别图片表格内容"
+                },
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        if (callback) {
+                            callback(result.data);
+                        }
+                    } else {
+                        console.log(result) ;
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            });
+        },
 
         //关闭流程
         closeProcess: function (processInsId, callback) {
