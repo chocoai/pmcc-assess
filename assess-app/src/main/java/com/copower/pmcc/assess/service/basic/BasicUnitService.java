@@ -216,7 +216,7 @@ public class BasicUnitService extends BasicEntityAbstract {
         String structuralInfo = basicApply.getStructuralInfo();
         List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
         for (KeyValueDto keyValueDto : keyValueDtos) {
-            if (BasicFormClassifyEnum.UNIT.getKey().equals(keyValueDto.getKey())) {
+            if (StringUtils.isNotBlank(keyValueDto.getKey()) && keyValueDto.getKey().contains(BasicFormClassifyEnum.UNIT.getKey())) {
                 return getBasicUnitById(Integer.valueOf(keyValueDto.getValue()));
             }
         }
