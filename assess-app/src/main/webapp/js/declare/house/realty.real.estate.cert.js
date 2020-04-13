@@ -31,7 +31,7 @@ declareRealtyRealEstateCert.init = function (item) {
 
 declareRealtyRealEstateCert.showAddModel = function () {
     $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
-    $('#' + declareRealtyRealEstateCert.config.box).find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
+    $('#' + declareRealtyRealEstateCert.config.box).find(".card-body").append(commonDeclareApplyModel.realEstateCert.getHtml());
     declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.frm), function (area) {
         declareRealtyRealEstateCert.init(area);
         $('#' + declareRealtyRealEstateCert.config.box).modal("show");
@@ -277,6 +277,39 @@ declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter = function (fr
             }
         });
     }
+};
+
+declareRealtyRealEstateCert.distinguish = function (_this) {
+    var frm = $(_this).closest("form");
+    var id = formSerializeArray(frm).id;
+    id = declareCommon.isNotBlank(id) ? id : '0';
+    $.ajax({
+        url: getContextPath() + "/public/getSysAttachmentDtoList",
+        type: "get",
+        dataType: "json",
+        async: false,
+        data: {
+            tableId: id,
+            tableName: AssessDBKey.DeclareRealtyRealEstateCert
+        },
+        success: function (result) {
+            console.log(result) ;
+            if (result.ret && result.data) {
+                if (result.data.length >= 1) {
+                    if (AssessCommon.checkImgFile(result.data[0].fileName)) {//是否是图片检测
+                        AssessCommon.parseRealtyHouseCert(result.data[0].id, AssessDBKey.HouseOcrkey, function (data) {//获取图片解析数据
+                            console.log(data) ;
+                        });
+                    } else {
+                        notifyWarning("警告", "不是图片!");
+                    }
+                } else {
+                    notifyWarning("警告", "无证件图片!");
+
+                }
+            }
+        }
+    });
 };
 
 

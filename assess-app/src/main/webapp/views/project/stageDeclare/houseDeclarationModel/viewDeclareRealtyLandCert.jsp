@@ -219,13 +219,17 @@
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                 上传土地证附件
                                             </label>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                            <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6">
                                                 <input id="declareRealtyLandCertFileId"
                                                        name="declareRealtyLandCertFileId"
                                                        required="required" placeholder="上传土地证附件"
                                                        class="form-control input-full"
                                                        type="file">
                                                 <div id="_declareRealtyLandCertFileId"></div>
+                                            </div>
+
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <button type="button" class="btn-sm btn btn-success" onclick="assessCommonLand.distinguish(this);">证件识别</button>
                                             </div>
                                         </div>
                                     </div>

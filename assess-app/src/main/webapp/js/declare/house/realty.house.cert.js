@@ -164,7 +164,7 @@ assessCommonHouse.showAddModelHouse = function (data) {
     var frm = target.find("form");
     //使校验生效
     target.find("#" + commonDeclareApplyModel.config.house.handleId).remove();
-    target.find(".card-body").prepend(commonDeclareApplyModel.house.getHtml());
+    target.find(".card-body").append(commonDeclareApplyModel.house.getHtml());
     declareCommon.showHtmlMastInit(frm, function (area) {
         if (jQuery.isEmptyObject(data)) {
             assessCommonHouse.init(area);
@@ -402,11 +402,12 @@ assessCommonHouse.saveAndUpdateLand = function () {
 
 /**
  * @author:  zch
- * 描述:房产证 识别
+ * 描述:房产证 证件识别
  * @date:2018-09-19
  **/
-assessCommonHouse.distinguish = function () {
-    var id = formParams(assessCommonHouse.config.son.declareRealtyLandCert.frm).id;
+assessCommonHouse.distinguish = function (_this) {
+    var frm = $(_this).closest("form");
+    var id = formSerializeArray(frm).id;
     id = declareCommon.isNotBlank(id) ? id : '0';
     $.ajax({
         url: getContextPath() + "/public/getSysAttachmentDtoList",
@@ -421,24 +422,37 @@ assessCommonHouse.distinguish = function () {
             if (result.ret && result.data) {
                 if (result.data.length >= 1) {
                     if (AssessCommon.checkImgFile(result.data[0].fileName)) {//是否是图片检测
-                        AssessCommon.parseRealtyHouseCert(result.data[0].id, AssessDBKey.HouseOcrkey, function (data) {//获取图片解析数据
-                            var dataJson = JSON.parse(data.dataJson);
-                            var item = {
-                                floorArea: dataJson.area,
-                                publicSituation: dataJson.commonSituation,
-                                planningUse: dataJson.used,
-                                beLocated: dataJson.located,
-                                ownership: dataJson.obligee,
-                                number: dataJson.number,
-                                registrationDate: dataJson.registration
-                            };
-                            declareCommon.initHouse(item, $("#" + assessCommonHouse.config.frm), [], null);
+
+                        // AssessCommon.parseRealtyHouseCert(result.data[0].id, AssessDBKey.HouseOcrkey, function (data) {//获取图片解析数据
+                        //     console.log(data) ;
+                        //     if (data.dataJson){
+                        //         var dataJson = {};
+                        //         try {
+                        //             dataJson = JSON.parse(data.dataJson);
+                        //         } catch (e) {
+                        //             console.warn(e) ;
+                        //         }
+                        //         var item = {
+                        //             floorArea: dataJson.area,
+                        //             publicSituation: dataJson.commonSituation,
+                        //             planningUse: dataJson.used,
+                        //             beLocated: dataJson.located,
+                        //             ownership: dataJson.obligee,
+                        //             number: dataJson.number,
+                        //             registrationDate: dataJson.registration
+                        //         };
+                        //         declareCommon.initHouse(item, frm, [], null);
+                        //     }
+                        // });
+
+                        AssessCommon.parseRealtyHouseCertNew(result.data[0].id, AssessDBKey.HouseOcrkey, function (data) {//获取图片解析数据
+                            console.log(data) ;
                         });
                     } else {
                         notifyWarning("警告", "不是图片!");
                     }
                 } else {
-                    notifyWarning("警告", "无附件!");
+                    notifyWarning("警告", "无证件图片!");
 
                 }
             }
@@ -602,7 +616,7 @@ assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
  * 房产证列表
  */
 assessCommonHouse.loadList = function () {
-    var table = $("#" + assessCommonHouse.config.table) ;
+    var table = $("#" + assessCommonHouse.config.table);
     var cols = declareCommon.getHouseColumn();
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
