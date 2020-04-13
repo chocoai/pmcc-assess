@@ -147,11 +147,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group" style="display: none;">
+                                        <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 control-label">评估类型(增加封面)</label>
-                                                    <div class="col-sm-3">
+                                                    <label class="col-sm-1 control-label" style="display: none;">评估类型(增加封面)</label>
+                                                    <div class="col-sm-3" style="display: none;">
                                                         <select name="assessCategory"
                                                                 class="form-control input-full search-select select2">
                                                             <option>请选择</option>
@@ -161,23 +161,42 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
+
+                                                    <label class="col-sm-1 control-label">
+                                                        报告类型<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <select name="reportType" required multiple="multiple"
+                                                                onchange="objGenerate.reportTypeChangeEvent(this,'reportType${generationVo.areaGroupId}') ;"
+                                                                class="form-control input-full search-select select2">
+                                                            <option>请选择</option>
+                                                            <c:forEach items="${reportTypeList}" var="reportType"
+                                                                       varStatus="status">
+                                                                <option value="${reportType.id}">${reportType.name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
-                                            <div class="row form-group">
+                                            <div class="row form-group" style="display: none;"
+                                                 id="reportType${generationVo.areaGroupId}${reportType.id}"
+                                                 data-name="reportType${generationVo.areaGroupId}">
                                                 <div class="col-md-12">
                                                     <div class="form-inline x-valid">
                                                         <div class="col-sm-1">
                                                             <button type="button" class="btn-primary btn btn-sm"
-                                                               onclick="reGetDocumentNumber('${generationVo.areaGroupId}','${reportType.id}',this)">重新拿号<i
+                                                                    onclick="reGetDocumentNumber('${generationVo.areaGroupId}','${reportType.id}',this)">
+                                                                重新拿号<i
                                                                     class="fa fa-undo"></i></button>
                                                         </div>
 
                                                         <label class="col-sm-1">
                                                             <!-- 报告附件方法 -->
                                                             <button type="button" class="btn-dark btn btn-sm"
-                                                               onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">生成${reportType.name}
+                                                                    onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">
+                                                                生成${reportType.name}
                                                                 <i class="fa fa-file-word-o"></i></button>
                                                         </label>
 
@@ -188,14 +207,18 @@
 
                                                         <div class="col-sm-1">
                                                             <div class="input-group-append">
-                                                                <button class="btn btn-info btn-sm dropdown-toggle" type="button"
+                                                                <button class="btn btn-info btn-sm dropdown-toggle"
+                                                                        type="button"
                                                                         data-toggle="dropdown" aria-haspopup="true"
                                                                         aria-expanded="false">
                                                                     意见稿
                                                                 </button>
-                                                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                                    <c:forEach var="item" items="${documentTemplateList}">
-                                                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/documentOpinion/applyIndex/${item.id}&${projectInfo.id}&${reportType.fieldName}&${generationVo.areaGroupId}&${reportType.id}&${generationVo.id}"
+                                                                <div class="dropdown-menu" x-placement="bottom-start"
+                                                                     style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                                    <c:forEach var="item"
+                                                                               items="${documentTemplateList}">
+                                                                        <a class="dropdown-item"
+                                                                           href="${pageContext.request.contextPath}/documentOpinion/applyIndex/${item.id}&${projectInfo.id}&${reportType.fieldName}&${generationVo.areaGroupId}&${reportType.id}&${generationVo.id}"
                                                                            target="_blank">${item.templateName}</a>
                                                                     </c:forEach>
                                                                 </div>
@@ -216,7 +239,8 @@
 
                                                         <div class="col-sm-1">
                                                             <button type="button" class="btn-primary btn btn-sm"
-                                                               onclick="getReportNumber('${generationVo.areaGroupId}','${reportType.id}',this)">拿号<i
+                                                                    onclick="getReportNumber('${generationVo.areaGroupId}','${reportType.id}',this)">
+                                                                拿号<i
                                                                     class="fa fa-dot-circle-o"></i></button>
                                                         </div>
                                                     </div>
@@ -291,7 +315,7 @@
                 } else {
                     if (errorCallback) {
                         errorCallback(result.errmsg);
-                    }else {
+                    } else {
                         if (result.errmsg) {
                             AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                         } else {
@@ -304,7 +328,7 @@
                 Loading.progressHide();
                 if (errorCallback) {
                     errorCallback(result.errmsg);
-                }else {
+                } else {
                     if (result.errmsg) {
                         AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                     } else {
@@ -334,13 +358,27 @@
         objGenerate.ajaxServerFun(data, url, type, callback, null, errorCallback);
     };
 
+    objGenerate.reportTypeChangeEvent = function (_this, reportType) {
+        var frm = $(_this).closest('form');
+        frm.find("div[data-name="+reportType+"]").hide() ;
+        var data = formSerializeArray(frm);
+        if (data.reportType) {
+            saveGenerateReportInfo([data],function () {
+                var ids = data.reportType.split(",");
+                $.each(ids, function (i, node) {
+                    $("#" + reportType + node).show();
+                });
+            }) ;
+        }
+    };
+
     /**
      * 获取资质
      * @param data
      * @param callback
      */
     function getAdPersonalIdentityDto(data, callback) {
-        objGenerate.ajaxServerMethod(data,'/public/getAdPersonalIdentityDto',"get",callback,null) ;
+        objGenerate.ajaxServerMethod(data, '/public/getAdPersonalIdentityDto', "get", callback, null);
     }
 
     //上传报告 临时添加zch
@@ -365,7 +403,7 @@
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -459,11 +497,14 @@
             getAdPersonalIdentityDto({qualificationType: info.qualificationType}, function (data) {
                 dataQualificationShow(data, info.realEstateAppraiser, frm);
             });
+            if (info.reportType) {
+                frm.find("select[name=reportType]").val(info.reportType.split(",")).trigger('change');
+            }
         }
     }
 
     function getSchemeReportGeneration(data, callback) {
-        objGenerate.ajaxServerMethod(data,'/generateReport/getGenerateReportGeneration' ,"get",callback,null) ;
+        objGenerate.ajaxServerMethod(data, '/generateReport/getGenerateReportGeneration', "get", callback, null);
     }
 
     //重新拿号 也会替换文号相关的内容
@@ -479,7 +520,7 @@
         }
         AlertConfirm("是否确认", "请注意报告二维码无法自动替换,假如要替换类似于报告二维码这样的数据请在页面上上删除报告二维码,然后用\\${报告二维码}这样的文本放置在删除的位置", function () {
             generateReportHandle(data, reportType, form, areaId, function () {
-                notifySuccess("成功",'重新拿号成功!');
+                notifySuccess("成功", '重新拿号成功!');
             });
         })
 
@@ -497,10 +538,9 @@
             data.assessCategory = null;
         }
         generateReportHandle(data, reportType, form, areaId, function () {
-            notifySuccess("成功",'拿号成功');
+            notifySuccess("成功", '拿号成功');
         });
     }
-
 
 
     //生成报告
@@ -513,7 +553,7 @@
         if (data.realEstateAppraiser) {
 
         } else {
-            notifyInfo('提示','估价师必须选择');
+            notifyInfo('提示', '估价师必须选择');
             return false;
         }
         data.areaGroupId = areaId;
@@ -524,20 +564,23 @@
             data.assessCategory = null;
         }
         generateReportHandle(data, reportType, form, areaId, function () {
-            notifySuccess("成功",'报告生成成功');
+            notifySuccess("成功", '报告生成成功');
         });
     }
 
     //报告替换 method
     function generateReportHandle(data, ids, form, areaId, callback) {
-        objGenerate.ajaxServerMethod({ids: ids, fomData: JSON.stringify(data)} ,'/generateReport/generate' ,"post",function () {
+        objGenerate.ajaxServerMethod({
+            ids: ids,
+            fomData: JSON.stringify(data)
+        }, '/generateReport/generate', "post", function () {
             getSchemeReportGeneration(data, function (info) {
                 initFormSchemeReportGeneration(info, form, areaId);
                 if (callback) {
                     callback();
                 }
             });
-        }) ;
+        });
     }
 
     /**
@@ -546,7 +589,7 @@
      * @param callback
      */
     function saveGenerateReportInfo(data, callback) {
-        objGenerate.ajaxServerFun({fomData: JSON.stringify(data)} , '/generateReport/saveGenerateReportInfo' ,"post",callback) ;
+        objGenerate.ajaxServerFun({fomData: JSON.stringify(data)}, '/generateReport/saveGenerateReportInfo', "post", callback);
     }
 
     //提交
