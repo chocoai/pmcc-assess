@@ -173,15 +173,15 @@ public class BasicBuildingService extends BasicEntityAbstract {
             Boolean isBuilding = BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey());
             Boolean isBuildingBase = BasicFormClassifyEnum.BUILDING_BASE.getKey().equals(keyValueDto.getKey());
             Boolean isBuildingMonolayer = BasicFormClassifyEnum.BUILDING_MONOLAYER.getKey().equals(keyValueDto.getKey());
-            containDifference = containDifference == false ? BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey().equals(keyValueDto.getKey()) : true;
             if (isBuilding || isBuildingBase || isBuildingMonolayer) {
                 vo = getBasicBuildingVo(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue())));
             }
+            containDifference = containDifference == false ? BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey().equals(keyValueDto.getKey()) : true;
         }
         if (containDifference) {
             List<BasicBuilding> buildingDifferenceList = Lists.newArrayList();
             for (KeyValueDto keyValueDto : keyValueDtos) {
-                if (BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey())) {
+                if (BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey().equals(keyValueDto.getKey())) {
                     buildingDifferenceList.add(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue())));
                 }
             }
