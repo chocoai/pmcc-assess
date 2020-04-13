@@ -156,7 +156,7 @@ assessCommonLand.showAddModelLand = function () {
     var target = $('#' + assessCommonLand.config.box);
     var frm = target.find("form");
     target.find("#" + commonDeclareApplyModel.config.land.handleId).remove();
-    target.find(".card-body").prepend(commonDeclareApplyModel.land.getHtml());
+    target.find(".card-body").append(commonDeclareApplyModel.land.getHtml());
     target.modal("show");
     declareCommon.showHtmlMastInit(frm, function (area) {
         assessCommonLand.init(area);
@@ -489,6 +489,39 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
         } else {
             notifyWarning("警告", "请上传pdf或者word一个!");
             return false;
+        }
+    });
+};
+
+assessCommonLand.distinguish = function (_this) {
+    var frm = $(_this).closest("form");
+    var id = formSerializeArray(frm).id;
+    id = declareCommon.isNotBlank(id) ? id : '0';
+    $.ajax({
+        url: getContextPath() + "/public/getSysAttachmentDtoList",
+        type: "get",
+        dataType: "json",
+        async: false,
+        data: {
+            tableId: id,
+            tableName: AssessDBKey.DeclareRealtyLandCert
+        },
+        success: function (result) {
+            console.log(result) ;
+            if (result.ret && result.data) {
+                if (result.data.length >= 1) {
+                    if (AssessCommon.checkImgFile(result.data[0].fileName)) {//是否是图片检测
+                        AssessCommon.parseRealtyHouseCertNew(result.data[0].id, AssessDBKey.HouseOcrkey, function (data) {//获取图片解析数据
+                            console.log(data) ;
+                        });
+                    } else {
+                        notifyWarning("警告", "不是图片!");
+                    }
+                } else {
+                    notifyWarning("警告", "无证件图片!");
+
+                }
+            }
         }
     });
 };
