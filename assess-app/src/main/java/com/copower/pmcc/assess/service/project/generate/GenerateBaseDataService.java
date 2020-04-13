@@ -3691,25 +3691,181 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet(boolean seat) throws Exception {
-       return getjudgeBuildResultSurveySheet(seat,areaId,projectInfo) ;
-    }
-
-    /**
-     * 估价结果一览表
-     *
-     * @throws Exception
-     */
-    public String getjudgeBuildResultSurveySheet(boolean seat , Integer areaId ,ProjectInfo projectInfo) throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-       return getjudgeBuildResultSurveySheet(seat,schemeJudgeObjectList,projectInfo) ;
+        return getjudgeBuildResultSurveySheetBase(seat, schemeJudgeObjectList, projectInfo);
     }
+
+    /**
+     * 估价结果一览表 结果集
+     *
+     * @throws Exception
+     */
+    public String getjudgeBuildResultSurveySheet(Integer areaId, ProjectInfoVo projectInfo) throws Exception {
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
+        //设置具体宽度自动适应
+        PreferredWidth preferredWidth = PreferredWidth.AUTO;
+        documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
+        documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setTopPadding(0);
+        documentBuilder.getCellFormat().setBottomPadding(0);
+        documentBuilder.getCellFormat().setLeftPadding(0);
+        documentBuilder.getCellFormat().setRightPadding(0);
+        documentBuilder.getFont().setSize(10.5);
+        documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("委托人:");
+        if (StringUtils.isNotBlank(projectInfo.getConsignorVo().getCsName())) {
+            stringBuilder.append(projectInfo.getConsignorVo().getCsName());
+        }
+        if (StringUtils.isNotBlank(projectInfo.getConsignorVo().getCsEntrustmentUnit())) {
+            stringBuilder.append(projectInfo.getConsignorVo().getCsEntrustmentUnit());
+        }
+        stringBuilder.append("; ") ;
+        stringBuilder.append("评估基准日:");
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
+        if (schemeAreaGroup != null) {
+            if (schemeAreaGroup.getValueTimePoint() != null) {
+                stringBuilder.append(DateUtils.format(schemeAreaGroup.getValueTimePoint(), DateUtils.DATE_CHINESE_PATTERN));
+            }
+        }
+        stringBuilder.append("") ;
+        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(String.join("", "<div style='text-align:center;;font-size:16.0pt;'>", "估价结果一览表", "</div>")), false);
+        String cssHtml = generateCommonMethod.getWarpCssHtml(String.join("", "<div style='text-align:center;;font-size:16.0pt;'>", stringBuilder.toString(), "</div>"));
+        documentBuilder.insertHtml(cssHtml, false);
+        LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
+        boolean mortgageFlag = Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId());
+        LinkedList<Double> doubleLinkedList = Lists.newLinkedList(Lists.newArrayList(50d, 150d, 30d, 30d, 30d, 30d, 50d, 55d, 60d, 50d, 50d));
+        if (!mortgageFlag) {
+            doubleLinkedList.removeLast();
+            doubleLinkedList.removeLast();
+        }
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
+        if (!mortgageFlag) {
+            strings.removeLast();
+            strings.removeLast();
+        }
+        final Integer colMax = strings.size();
+        Table table = documentBuilder.startTable();
+        AsposeUtils.writeWordTitle(documentBuilder, doubleLinkedList, strings);
+        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList, projectInfo);
+        if (!reimbursementItemVoListMap.isEmpty()) {
+            List<SchemeJudgeObject> listA = Lists.newArrayList();
+            List<SchemeJudgeObject> objectList = Lists.newArrayList();
+            reimbursementItemVoListMap.entrySet().stream().forEach(entry -> listA.addAll(entry.getValue()));
+            if (CollectionUtils.isNotEmpty(listA)) {
+                objectList = Lists.newArrayList(CollectionUtils.subtract(schemeJudgeObjectList, listA.stream().distinct().collect(Collectors.toList())));
+            }
+            Iterator<Map.Entry<SchemeReimbursementItemVo, List<SchemeJudgeObject>>> iterator = reimbursementItemVoListMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<SchemeReimbursementItemVo, List<SchemeJudgeObject>> itemVoListEntry = iterator.next();
+                for (SchemeJudgeObject schemeJudgeObject : itemVoListEntry.getValue()) {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply != null) {
+                        schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
+                    }
+                }
+                if (schemeJudgeObjectLinkedHashMap.isEmpty()) {
+                    continue;
+                }
+                BigDecimal evaluationArea = new BigDecimal(0);
+                BigDecimal price = new BigDecimal(0);
+                BigDecimal total = new BigDecimal(0);
+                Iterator<Map.Entry<BasicApply, SchemeJudgeObject>> entryIterator = schemeJudgeObjectLinkedHashMap.entrySet().iterator();
+                while (entryIterator.hasNext()) {
+                    Map.Entry<BasicApply, SchemeJudgeObject> judgeObjectEntry = entryIterator.next();
+                    writeJudgeObjectResultSurveyInCell2(judgeObjectEntry.getKey(), judgeObjectEntry.getValue(), documentBuilder, doubleLinkedList, true, mortgageFlag, mortgageFlag, generateCommonMethod.checkSchemeJudgeObjectNumberOverloadTwenty2(schemeJudgeObjectList));
+                    if (judgeObjectEntry.getValue().getEvaluationArea() != null) {
+                        evaluationArea = evaluationArea.add(judgeObjectEntry.getValue().getEvaluationArea());
+                    }
+                    if (judgeObjectEntry.getValue().getPrice() != null) {
+                        price = price.add(judgeObjectEntry.getValue().getPrice());
+                    }
+                    if (judgeObjectEntry.getValue().getEvaluationArea() != null && judgeObjectEntry.getValue().getPrice() != null) {
+                        total = total.add(judgeObjectEntry.getValue().getEvaluationArea().multiply(judgeObjectEntry.getValue().getPrice()));
+                    }
+                }
+
+                Cell cellRange0 = null;
+                for (int j = 0; j < colMax; j++) {
+                    Cell cell = documentBuilder.insertCell();
+                    cell.getCellFormat().setWidth(doubleLinkedList.get(j).doubleValue());
+                    if (j == 0) {
+                        cellRange0 = cell;
+                        documentBuilder.write("小计");
+                    }
+                    if (j == colMax - 6) {
+                        mergeCellModelList.add(new MergeCellModel(cellRange0, cell));
+                    }
+                    if (j == colMax - 5) {
+                        documentBuilder.write(evaluationArea.toString());
+                    }
+                    if (j == colMax - 4) {
+                        documentBuilder.write(String.format("%s%s", price.toString(), "元"));
+                    }
+                    if (j == colMax - 3) {
+                        BigDecimal temp = new BigDecimal(total.toString());
+                        temp = temp.divide(new BigDecimal(10000));
+                        temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        documentBuilder.write(temp.toString());
+                    }
+                    BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
+                    if (j == colMax - 2) {
+                        documentBuilder.write(generateCommonMethod.getBigDecimalRound(knowTotalPrice, 2, true));
+                    }
+                    if (j == colMax - 1) {
+                        BigDecimal mortgage = total.subtract(knowTotalPrice);
+                        mortgage = mortgage.divide(new BigDecimal(10000));
+                        mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        documentBuilder.write(mortgage.toString());
+                    }
+                }
+                documentBuilder.endRow();
+                schemeJudgeObjectLinkedHashMap.clear();
+            }
+            //分组剩余的(大部分情况下不可能,但是不能排除意外嘛)
+            if (CollectionUtils.isNotEmpty(objectList)) {
+                for (SchemeJudgeObject schemeJudgeObject : objectList) {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply != null) {
+                        writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, documentBuilder, doubleLinkedList, true, mortgageFlag, generateCommonMethod.checkSchemeJudgeObjectNumberOverloadTwenty2(schemeJudgeObjectList));
+                    }
+                }
+            }
+        }
+
+        //无他项权力的情况
+        if (reimbursementItemVoListMap.isEmpty()) {
+            if (!mortgageFlag) {
+                strings.removeLast();
+            }
+            generateCommonMethod.writeWordTitle(documentBuilder, doubleLinkedList, strings);
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                if (basicApply != null) {
+                    writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, documentBuilder, doubleLinkedList, true, mortgageFlag, generateCommonMethod.checkSchemeJudgeObjectNumberOverloadTwenty2(schemeJudgeObjectList));
+                }
+            }
+        }
+        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
+        documentBuilder.endTable();
+        AsposeUtils.saveWord(localPath, document);
+        return localPath;
+    }
+
 
     /**
      * 估价结果一览表
      *
      * @throws Exception
      */
-    public String getjudgeBuildResultSurveySheet(boolean seat , List<SchemeJudgeObject> schemeJudgeObjectList ,ProjectInfo projectInfo) throws Exception {
+    public String getjudgeBuildResultSurveySheetBase(boolean seat, List<SchemeJudgeObject> schemeJudgeObjectList, ProjectInfo projectInfo) throws Exception {
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
@@ -3727,7 +3883,7 @@ public class GenerateBaseDataService {
         Table table = builder.startTable();
         final Integer colMax = seat ? new Integer(11) : new Integer(10);
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = this.getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList,projectInfo);
+        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = this.getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList, projectInfo);
 
         LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
         //有他项权力的情况
@@ -3747,90 +3903,74 @@ public class GenerateBaseDataService {
             }
             generateCommonMethod.writeWordTitle(builder, doubleLinkedList, strings);
             //组遍历
-            reimbursementItemVoListMap.entrySet().stream().forEach(entry -> {
+            Iterator<Map.Entry<SchemeReimbursementItemVo, List<SchemeJudgeObject>>> iterator = reimbursementItemVoListMap.entrySet().iterator();
+            while (iterator.hasNext()){
+                Map.Entry<SchemeReimbursementItemVo, List<SchemeJudgeObject>> entry = iterator.next();
                 for (SchemeJudgeObject schemeJudgeObject : entry.getValue()) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply != null) {
                         schemeJudgeObjectLinkedHashMap.put(basicApply, schemeJudgeObject);
                     }
                 }
-                if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
-                    try {
-                        BigDecimal evaluationArea = new BigDecimal(0);
-                        BigDecimal price = new BigDecimal(0);
-                        BigDecimal total = new BigDecimal(0);
-                        for (Map.Entry<BasicApply, SchemeJudgeObject> integerEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-                            SchemeJudgeObject schemeJudgeObject = integerEntry.getValue();
-
-//                            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-//                            if (declareRecord != null && declareRecord.getPracticalArea() != null) {
-//                                evaluationArea = evaluationArea.add(declareRecord.getPracticalArea());
-//                            }
-//                            if (declareRecord != null && declareRecord.getPrice() != null) {
-//                                price = price.add(declareRecord.getPrice());
-//                            }
-//                            if (declareRecord != null && declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
-//                                total = total.add(declareRecord.getPracticalArea().multiply(declareRecord.getPrice()));
-//                            }
-
-                            if (schemeJudgeObject.getEvaluationArea() != null) {
-                                evaluationArea = evaluationArea.add(schemeJudgeObject.getEvaluationArea());
-                            }
-                            if (schemeJudgeObject.getPrice() != null) {
-                                price = price.add(schemeJudgeObject.getPrice());
-                            }
-                            if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
-                                total = total.add(schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice()));
-                            }
-                            writeJudgeObjectResultSurveyInCell(integerEntry.getKey(), schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
-                        }
-                        Cell cellRange0 = null;
-                        for (int j = 0; j < colMax; j++) {
-                            Cell cell = builder.insertCell();
-                            cell.getCellFormat().setWidth(doubleLinkedList.get(j).doubleValue());
-                            if (j == 0) {
-                                cellRange0 = cell;
-                                builder.write("小计");
-                            }
-                            if (j == colMax - 6) {
-                                mergeCellModelList.add(new MergeCellModel(cellRange0, cell));
-                            }
-                            if (j == colMax - 5) {
-                                builder.write(evaluationArea.toString());
-                            }
-                            if (j == colMax - 4) {
-                                builder.write(String.format("%s%s", price.toString(), "元"));
-                            }
-                            if (j == colMax - 3) {
-                                BigDecimal temp = new BigDecimal(total.toString());
-                                temp = temp.divide(new BigDecimal(10000));
-                                temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
-                                builder.write(temp.toString());
-                            }
-                            BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
-                            if (j == colMax - 2) {
-                                builder.write(generateCommonMethod.getBigDecimalRound(knowTotalPrice, 2, true));
-                            }
-                            if (j == colMax - 1) {
-                                BigDecimal mortgage = total.subtract(knowTotalPrice);
-                                mortgage = mortgage.divide(new BigDecimal(10000));
-                                mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
-                                builder.write(mortgage.toString());
-                            }
-                        }
-                        builder.endRow();
-                    } catch (Exception e) {
-                        baseService.writeExceptionInfo(e, "估价结果一览表");
+                BigDecimal evaluationArea = new BigDecimal(0);
+                BigDecimal price = new BigDecimal(0);
+                BigDecimal total = new BigDecimal(0);
+                for (Map.Entry<BasicApply, SchemeJudgeObject> integerEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
+                    SchemeJudgeObject schemeJudgeObject = integerEntry.getValue();
+                    if (schemeJudgeObject.getEvaluationArea() != null) {
+                        evaluationArea = evaluationArea.add(schemeJudgeObject.getEvaluationArea());
+                    }
+                    if (schemeJudgeObject.getPrice() != null) {
+                        price = price.add(schemeJudgeObject.getPrice());
+                    }
+                    if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
+                        total = total.add(schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice()));
+                    }
+                    writeJudgeObjectResultSurveyInCell(integerEntry.getKey(), schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
+                }
+                Cell cellRange0 = null;
+                for (int j = 0; j < colMax; j++) {
+                    Cell cell = builder.insertCell();
+                    cell.getCellFormat().setWidth(doubleLinkedList.get(j).doubleValue());
+                    if (j == 0) {
+                        cellRange0 = cell;
+                        builder.write("小计");
+                    }
+                    if (j == colMax - 6) {
+                        mergeCellModelList.add(new MergeCellModel(cellRange0, cell));
+                    }
+                    if (j == colMax - 5) {
+                        builder.write(evaluationArea.toString());
+                    }
+                    if (j == colMax - 4) {
+                        builder.write(String.format("%s%s", price.toString(), "元"));
+                    }
+                    if (j == colMax - 3) {
+                        BigDecimal temp = new BigDecimal(total.toString());
+                        temp = temp.divide(new BigDecimal(10000));
+                        temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        builder.write(temp.toString());
+                    }
+                    BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
+                    if (j == colMax - 2) {
+                        builder.write(generateCommonMethod.getBigDecimalRound(knowTotalPrice, 2, true));
+                    }
+                    if (j == colMax - 1) {
+                        BigDecimal mortgage = total.subtract(knowTotalPrice);
+                        mortgage = mortgage.divide(new BigDecimal(10000));
+                        mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        builder.write(mortgage.toString());
                     }
                 }
+                builder.endRow();
                 schemeJudgeObjectLinkedHashMap.clear();
-            });
+            }
             //分组剩余的(大部分情况下不可能,但是不能排除意外嘛)
             if (CollectionUtils.isNotEmpty(objectList)) {
                 for (SchemeJudgeObject schemeJudgeObject : objectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply != null) {
-                        this.writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
+                       writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, generateCommonMethod.checkSchemeJudgeObjectNumberOverloadTwenty2(schemeJudgeObjectList));
                     }
                 }
             }
@@ -3847,7 +3987,7 @@ public class GenerateBaseDataService {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                 if (basicApply != null) {
-                    this.writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
+                    writeJudgeObjectResultSurveyInCell(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, generateCommonMethod.checkSchemeJudgeObjectNumberOverloadTwenty2(schemeJudgeObjectList));
                 }
             }
         }
@@ -3858,7 +3998,7 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 司法估价结果一览表不含坐落 以及不含法定优先仓库按
+     * 司法估价结果一览表不含坐落 以及不含法定优先偿款按
      *
      * @return
      * @throws Exception
@@ -3892,7 +4032,7 @@ public class GenerateBaseDataService {
         if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
             AsposeUtils.writeWordTitle(builder, doubleLinkedList, strings);
             for (Map.Entry<BasicApply, SchemeJudgeObject> objectEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-                writeJudgeObjectResultSurveyInCell2(objectEntry.getKey(), objectEntry.getValue(), builder, doubleLinkedList, false, false, mortgageFlag, schemeJudgeObjectList.size() <= 20);
+                writeJudgeObjectResultSurveyInCell2(objectEntry.getKey(), objectEntry.getValue(), builder, doubleLinkedList, false, false, mortgageFlag, generateCommonMethod.checkSchemeJudgeObjectNumberOverloadTwenty2(schemeJudgeObjectList));
             }
         }
         generateCommonMethod.mergeCellTable(mergeCellModelList, table);
@@ -3912,7 +4052,7 @@ public class GenerateBaseDataService {
         }
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         if (isLabelJudgeObjectShowName) {
-            linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, getSchemeJudgeObjectList()));
+            linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
         } else {
             linkedLists.add(String.join("", schemeJudgeObject.getNumber(), "号"));
         }
