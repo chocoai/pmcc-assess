@@ -114,18 +114,20 @@
                                             </div>
                                         </div>
                                         <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
-                                            <div class="row form-group">
-                                                <div class="col-md-12">
-                                                    <div class="form-inline x-valid">
-                                                        <label class="col-sm-1 control-label">
-                                                                ${reportType.name}
-                                                        </label>
-                                                        <div class="col-sm-3">
-                                                            <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
+                                            <c:if test="${fn:contains(generationVo.reportType, reportType.id)}">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                    ${reportType.name}
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </c:if>
                                         </c:forEach>
                                     </form>
                                 </div>

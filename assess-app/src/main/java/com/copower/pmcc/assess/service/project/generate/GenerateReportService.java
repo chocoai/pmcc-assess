@@ -144,7 +144,7 @@ public class GenerateReportService {
             }
             String path = this.fullReportHandlePath(baseReportTemplate, generateReportInfo, baseDataDic);
             if (StringUtils.isNotBlank(path)) {
-                this.createSysAttachment(path, generateReportInfo, baseDataDic.getFieldName(), sysAttachmentDtoList);
+                this.createSysAttachment(path, generateReportInfo, baseDataDic, sysAttachmentDtoList);
             }
         }
     }
@@ -155,7 +155,7 @@ public class GenerateReportService {
      * @param path
      * @return
      */
-    private void createSysAttachment(String path, GenerateReportInfo generateReportInfo, String reportType, List<SysAttachmentDto> sysAttachmentDtoList) throws Exception {
+    private void createSysAttachment(String path, GenerateReportInfo generateReportInfo, BaseDataDic reportType, List<SysAttachmentDto> sysAttachmentDtoList) throws Exception {
         if (StringUtils.isEmpty(path)) {
             return;
         }
@@ -167,8 +167,10 @@ public class GenerateReportService {
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        sysAttachmentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
-        sysAttachmentDto.setFileName(baseDataDicService.getCacheDataDicByFieldName(reportType).getName());
+        sysAttachmentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType.getFieldName(), generateReportInfo.getAreaGroupId()));
+        String timeName = String.join("-", DateUtils.format(DateUtils.now(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(DateUtils.now(), DateUtils.HOUR_MINUTE_CHINESE_PATTERN));
+        String fileName = String.join("", reportType.getName(), timeName, ".", FilenameUtils.getExtension(file.getName()));
+        sysAttachmentDto.setFileName(fileName);
         //注意这里因为是linux 路径所以采用/ 或者使用Java自带的判断符号 windows下 WinNTFileSystem linux 下UnixFileSystem
         String ftpBasePath = baseAttachmentService.createFTPBasePath(DateUtils.formatDate(new Date(), "yyyy-MM"), DateUtils.formatNowToYMD(), commonService.thisUserAccount());
         sysAttachmentDto.setFilePath(ftpBasePath);

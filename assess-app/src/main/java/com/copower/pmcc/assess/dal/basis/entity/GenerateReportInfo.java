@@ -31,6 +31,8 @@ public class GenerateReportInfo {
 
     private String recordNo;
 
+    private String reportType;
+
     private Integer assessCategory;
 
     private String symbolOperation;
@@ -153,6 +155,14 @@ public class GenerateReportInfo {
 
     public void setRecordNo(String recordNo) {
         this.recordNo = recordNo == null ? null : recordNo.trim();
+    }
+
+    public String getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(String reportType) {
+        this.reportType = reportType == null ? null : reportType.trim();
     }
 
     public Integer getAssessCategory() {
