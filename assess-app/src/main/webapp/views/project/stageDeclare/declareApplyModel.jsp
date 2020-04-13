@@ -1578,11 +1578,11 @@
                                data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        栋号
+                        栋号<span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="栋号" name="buildingNumber" class="form-control input-full">
+                               placeholder="栋号" required name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
@@ -2079,10 +2079,10 @@
                                data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        栋号
+                        栋号<span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input type="text" placeholder="栋号" name="buildingNumber" class="form-control input-full">
+                        <input type="text" placeholder="栋号" required name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
@@ -2627,10 +2627,10 @@
                                data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        栋号
+                        栋号<span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input type="text" placeholder="栋号" name="buildingNumber" class="form-control input-full">
+                        <input type="text" placeholder="栋号" required name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
@@ -3043,10 +3043,10 @@
                                data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        栋号
+                        栋号<span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input type="text" placeholder="栋号" name="buildingNumber" class="form-control input-full">
+                        <input type="text" placeholder="栋号" required name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
@@ -3392,10 +3392,10 @@
                                data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        栋号
+                        栋号<span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input type="text" placeholder="栋号" name="buildingNumber" class="form-control input-full">
+                        <input type="text" placeholder="栋号" required name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
@@ -3683,10 +3683,10 @@
                                data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        栋号
+                        栋号<span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input type="text" placeholder="栋号" name="buildingNumber" class="form-control input-full">
+                        <input type="text" required placeholder="栋号" name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>

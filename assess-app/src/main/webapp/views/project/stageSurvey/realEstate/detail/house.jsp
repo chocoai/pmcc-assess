@@ -38,7 +38,7 @@
                                                         <label class="form-control input-full"
                                                                name="floor">${basicHouse.floor}</label>
                                                     </div>
-                                                    <label class="col-sm-1 control-label">面积</label>
+                                                    <label class="col-sm-1 control-label">面积(m²)</label>
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full"
                                                                name="area">${basicHouse.area}</label>
@@ -126,7 +126,7 @@
                                                         <label class="form-control input-full"
                                                                name="newHuxingName">${basicHouseHuxing.name}</label>
                                                     </div>
-                                                    <label class="col-sm-1 control-label">面积</label>
+                                                    <label class="col-sm-1 control-label">面积(m²)</label>
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full"
                                                                name="area">${basicHouseHuxing.area}</label>

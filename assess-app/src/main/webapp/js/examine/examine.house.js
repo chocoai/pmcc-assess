@@ -373,7 +373,7 @@
 
     houseCommon.showHouseDecorate = function (data) {
         if (houseCommon.isNotBlank(data.basicHouse.decorateSituation)) {
-            var strArr = ["清水"];//来自于实体描述1(1).docx中的规则
+            var strArr = ["清水","毛坯"];//来自于实体描述1(1).docx中的规则
             var decorateSituationId = data.basicHouse.decorateSituation;
             if (decorateSituationId) {
                 AssessCommon.getDataDicInfo(decorateSituationId, function (decorateSituationData) {
@@ -390,7 +390,7 @@
 
         //绑定变更事件
         houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
-            var strArr = ["清水"];//来自于实体描述1(1).docx中的规则
+            var strArr = ["清水","毛坯"];//来自于实体描述1(1).docx中的规则
             var decorateSituationId = houseCommon.houseForm.find("select.decorateSituation").val();
             if (decorateSituationId) {
                 AssessCommon.getDataDicInfo(decorateSituationId, function (decorateSituationData) {

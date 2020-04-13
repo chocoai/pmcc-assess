@@ -694,83 +694,33 @@ public class BasicApplyBatchService {
      * @throws Exception
      */
     public void deepCopy(Integer sourceBatchDetailId) throws Exception {
-        //被复制数据
         BasicApplyBatchDetail sourceBasicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(sourceBatchDetailId);
-
-        //复制楼栋
-        if (sourceBasicApplyBatchDetail.getTableName().equals(BasicFormClassifyEnum.BUILDING.getTableName())) {
-            BasicBuilding sourceBuilding = basicBuildingDao.getBasicBuildingById(sourceBasicApplyBatchDetail.getTableId());
-            deepCopyBasicBuilding(sourceBuilding, sourceBasicApplyBatchDetail);
-        }
-        //复制单元
-        if (sourceBasicApplyBatchDetail.getTableName().equals(BasicFormClassifyEnum.UNIT.getTableName())) {
-            BasicUnit sourceUnit = basicUnitDao.getBasicUnitById(sourceBasicApplyBatchDetail.getTableId());
-            deepCopyBasicUnit(sourceUnit, sourceBasicApplyBatchDetail, null);
-        }
+        deepCopyRecursion(sourceBasicApplyBatchDetail,sourceBasicApplyBatchDetail.getPid());
     }
 
     /**
-     * 楼栋深复制（basic->basic）
-     *
-     * @return
+     * 递归复制
+     * @param basicApplyBatchDetail
      * @throws Exception
      */
-    private void deepCopyBasicBuilding(BasicBuilding sourceBuilding, BasicApplyBatchDetail source) throws Exception {
-        BasicBuilding targetBuilding = (BasicBuilding) basicBuildingService.copyBasicEntity(sourceBuilding.getId(), null, true);
-        //拷贝完后更新
+    public void deepCopyRecursion(BasicApplyBatchDetail basicApplyBatchDetail,Integer pid) throws Exception {
+        if (basicApplyBatchDetail == null) return;
+        //1.先复制本身 2.检查是否有下级，如果有则继续复制下级
+        BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
+        Object object = entityAbstract.copyBasicEntity(basicApplyBatchDetail.getTableId(), null, true);
         BasicApplyBatchDetail newBatchDetail = new BasicApplyBatchDetail();
-        BeanUtils.copyProperties(source, newBatchDetail, BaseConstant.ASSESS_IGNORE_ARRAY);
-        newBatchDetail.setTableId(targetBuilding.getId());
-        newBatchDetail.setExecutor(commonService.thisUserAccount());
-        newBatchDetail.setCreator(commonService.thisUserAccount());
-        basicApplyBatchDetailDao.addInfo(newBatchDetail);
-
-        //复制单元
-        List<BasicApplyBatchDetail> unitBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(source.getId(), source.getApplyBatchId());
-        if (CollectionUtils.isNotEmpty(unitBatchDetailList)) {
-            for (BasicApplyBatchDetail batchDetail : unitBatchDetailList) {
-                deepCopyBasicUnit(basicUnitDao.getBasicUnitById(batchDetail.getTableId()), batchDetail, newBatchDetail.getId());
-            }
+        if(object!=null){
+            BeanUtils.copyProperties(basicApplyBatchDetail, newBatchDetail, BaseConstant.ASSESS_IGNORE_ARRAY);
+            newBatchDetail.setPid(pid);
+            newBatchDetail.setTableId((Integer) entityAbstract.getProperty(object, "id"));
+            newBatchDetail.setExecutor(commonService.thisUserAccount());
+            newBatchDetail.setCreator(commonService.thisUserAccount());
+            basicApplyBatchDetailDao.addInfo(newBatchDetail);
         }
-    }
-
-
-    /**
-     * 单元深复制(Basic->Basic)
-     *
-     * @param source
-     * @return
-     * @throws Exception
-     */
-    private void deepCopyBasicUnit(BasicUnit sourceUnit, BasicApplyBatchDetail source, Integer buildingApplyBatchDetailId) throws Exception {
-        BasicUnit targetUnit = (BasicUnit) basicUnitService.copyBasicEntity(sourceUnit.getId(), null, true);
-        BasicApplyBatchDetail newBatchDetail = new BasicApplyBatchDetail();
-        BeanUtils.copyProperties(source, newBatchDetail, BaseConstant.ASSESS_IGNORE_ARRAY);
-        if (buildingApplyBatchDetailId != null && buildingApplyBatchDetailId > 0)
-            newBatchDetail.setPid(buildingApplyBatchDetailId);
-        newBatchDetail.setTableId(targetUnit.getId());
-        newBatchDetail.setExecutor(commonService.thisUserAccount());
-        newBatchDetail.setCreator(commonService.thisUserAccount());
-        basicApplyBatchDetailDao.addInfo(newBatchDetail);
-
-        List<BasicHouse> houseList = basicHouseService.getHousesByUnitId(sourceUnit.getId());
-        if (CollectionUtils.isNotEmpty(houseList)) {
-            for (BasicHouse basicHouse : houseList) {
-                BasicHouse copyBasicHouse = (BasicHouse) basicHouseService.copyBasicEntity(basicHouse.getId(), null, true);
-                copyBasicHouse.setUnitId(targetUnit.getId());
-                basicHouseService.saveAndUpdate(copyBasicHouse, false);
-
-                BasicApplyBatchDetail batchDetail = new BasicApplyBatchDetail();
-                batchDetail.setPid(newBatchDetail.getId());
-                batchDetail.setApplyBatchId(source.getApplyBatchId());
-                batchDetail.setName(copyBasicHouse.getHouseNumber());
-                batchDetail.setDisplayName(copyBasicHouse.getHouseNumber());
-                batchDetail.setTableId(copyBasicHouse.getId());
-                batchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-                batchDetail.setExecutor(commonService.thisUserAccount());
-                batchDetail.setCreator(commonService.thisUserAccount());
-                basicApplyBatchDetailDao.addInfo(batchDetail);
-            }
+        List<BasicApplyBatchDetail> applyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(basicApplyBatchDetail.getId(), basicApplyBatchDetail.getApplyBatchId());
+        if(CollectionUtils.isEmpty(applyBatchDetails)) return;
+        for (BasicApplyBatchDetail item : applyBatchDetails) {
+            deepCopyRecursion(item,newBatchDetail.getId());
         }
     }
 
@@ -923,36 +873,6 @@ public class BasicApplyBatchService {
                 }
             }
         }
-    }
-
-    /**
-     * 获取可以引用的楼盘
-     *
-     * @param projectId
-     * @return
-     */
-    public List<BasicApplyBatchDetail> getOriginalBasicApplyBatchListByProjectId(Integer projectId, Integer projectPhaseId, Integer planDetailsId, String name) {
-        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-        projectPlanDetails.setProjectId(projectId);
-        projectPlanDetails.setProjectPhaseId(projectPhaseId);
-        projectPlanDetails.setBisEnable(true);
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(projectPlanDetails);
-        List<Integer> transform = LangUtils.transform(planDetailsList, p -> p.getId());
-        //移出自身
-        transform.remove(planDetailsId);
-        List<BasicApplyBatch> basicApplyBatchList = LangUtils.transform(transform, o -> basicApplyBatchDao.getBasicApplyBatchByPlanDetailsId(o));
-
-        List<BasicApplyBatchDetail> basicApplyBatchDetailList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(basicApplyBatchList)) {
-            for (BasicApplyBatch item : basicApplyBatchList) {
-                BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getBasicApplyBatchDetailList(item.getId(), BasicFormClassifyEnum.ESTATE.getTableName(), item.getEstateId(), name);
-                if (batchDetail != null) {
-                    basicApplyBatchDetailList.add(batchDetail);
-                }
-            }
-
-        }
-        return basicApplyBatchDetailList;
     }
 
     /**

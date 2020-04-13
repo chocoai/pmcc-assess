@@ -68,7 +68,7 @@
                                                                            class="form-control input-full"
                                                                            value="${basicHouse.floor}">
                                                                 </div>
-                                                                <label class="col-sm-1">面积</label>
+                                                                <label class="col-sm-1">面积(m²)</label>
                                                                 <div class="col-sm-3">
                                                                     <input type="text" placeholder="面积" name="area"
                                                                            data-rule-number="true"
@@ -238,7 +238,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <label class="col-sm-1">面积<span
+                                                    <label class="col-sm-1">面积(m²)<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
                                                         <input type="text" placeholder="面积" name="area"

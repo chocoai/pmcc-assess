@@ -135,12 +135,12 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 工作事项<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-5">
                                                 <select required="required" name="projectPhaseId"
                                                         onchange="projectStagePlan.setPhaseNameDefault(this)"
                                                         class="form-control input-full search-select select2">
@@ -150,63 +150,58 @@
                                                     </c:forEach>
                                                 </select>
                                             </div>
+                                            <label class="col-sm-1 col-form-label">
+                                                责任人 <span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="hidden" name="executeUserAccount">
+                                                <input readonly="readonly"
+                                                       onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this)"
+                                                       class="form-control input-full" placeholder="点击选择责任人" type="text"
+                                                       required="required" name="executeUserName"/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 任务名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-9">
                                                 <input type="hidden" name="id"/>
                                                 <input type="text" placeholder="任务名称" required="required"
                                                        maxlength="100"
                                                        name="projectPhaseName"
                                                        class="form-control input-full">
                                             </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" class="btn btn-success btn-sm" onclick=" projectStagePlan.addPhaseName(this);">＋</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 开始时间<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-5">
                                                 <input required type="text" placeholder="开始时间"
                                                        data-date-format='yyyy-mm-dd'
                                                        name="planStartDate"
                                                        class="form-control input-full dbdate">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 结束时间<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-5">
                                                 <input required type="text" placeholder="结束时间"
                                                        data-date-format='yyyy-mm-dd'
                                                        name="planEndDate"
                                                        class="form-control input-full dbdate">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                责任人 <span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <input type="hidden" name="executeUserAccount">
-                                                <input readonly="readonly"
-                                                       onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this)"
-                                                       class="form-control input-full" placeholder="点击选择责任人" type="text"
-                                                       required="required" name="executeUserName"/>
                                             </div>
                                         </div>
                                     </div>
@@ -305,20 +300,22 @@
 </div>
 
 <script type="text/html" id="phaseNameHtml">
-    <div class="form-group append-phase-name">
-        <div class="x-valid">
-            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                任务名称 <span class="symbol required"></span>
-            </label>
-            <div class=" col-xs-8  col-sm-8  col-md-8  col-lg-8 ">
-                <input type="hidden" name="id"/>
-                <input type="text" placeholder="任务名称" required="required" maxlength="100"
-                       name="projectPhaseName"
-                       class="form-control input-full">
-            </div>
-            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                <input type="button" class="btn btn-xs btn-warning" value="－"
-                       onclick="$(this).closest('.form-group').remove();">
+    <div class="row form-group append-phase-name">
+        <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1 col-form-label">
+                    任务名称<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-9">
+                    <input type="hidden" name="id"/>
+                    <input type="text" placeholder="任务名称" required="required"
+                           maxlength="100"
+                           name="projectPhaseName"
+                           class="form-control input-full">
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-warning btn-sm" onclick="$(this).closest('.form-group').remove();">－</button>
+                </div>
             </div>
         </div>
     </div>
