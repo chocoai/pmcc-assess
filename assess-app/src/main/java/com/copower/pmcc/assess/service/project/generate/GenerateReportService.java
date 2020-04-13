@@ -1219,41 +1219,11 @@ public class GenerateReportService {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroups) {
             GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, schemeAreaGroup.getId(), new BaseReportTemplate(), new ProjectPlan());
-            String path = generateBaseDataService.getjudgeBuildResultSurveySheet(true, schemeAreaGroup.getId(), projectInfoVo);
+            String path = generateBaseDataService.getjudgeBuildResultSurveySheet(schemeAreaGroup.getId(), projectInfoVo);
             resultSheetReportCreateSysAttachmentNew(schemeAreaGroup.getAreaName(), path, fieldsName, tableName, projectId, false);
         }
     }
 
-    /**
-     * 仅仅生成结果集一个sheet
-     *
-     * @param generateReportInfo
-     * @throws Exception
-     */
-    public void resultSheetReport(GenerateReportInfo generateReportInfo, String reportType) throws Exception {
-        generateReportInfoService.saveGenerateReportInfo(generateReportInfo);
-        ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
-        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), new BaseReportTemplate(), projectPlan);
-        String path = generateBaseDataService.getjudgeBuildResultSurveySheet(true);
-        resultSheetReportCreateSysAttachment(path, reportType, generateReportInfo);
-    }
-
-    /**
-     * 结果集上传erp的ftp 形成ftp上的文件
-     *
-     * @param path
-     * @param reportType
-     * @param generateReportInfo
-     * @throws Exception
-     */
-    private void resultSheetReportCreateSysAttachment(String path, String reportType, GenerateReportInfo generateReportInfo) throws Exception {
-        if (StringUtils.isEmpty(path)) {
-            return;
-        }
-        String fieldsName = String.join("", reportType, "result_sheet_one", generateReportInfo.getAreaGroupId().toString());
-        resultSheetReportCreateSysAttachmentNew(null, path, fieldsName, FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class), generateReportInfo.getId(), true);
-    }
 
     private void resultSheetReportCreateSysAttachmentNew(String prefix, String path, String fieldsName, String tableName, Integer tableId, boolean delete) throws Exception {
         if (StringUtils.isEmpty(path)) {

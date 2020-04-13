@@ -363,6 +363,15 @@ public class GenerateCommonMethod {
         return flag;
     }
 
+    public boolean checkSchemeJudgeObjectNumberOverloadTwenty2(List<SchemeJudgeObject> schemeJudgeObjectList) {
+        List<Integer> integerList = Lists.newArrayList();
+        for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
+            SchemeJudgeObject object = schemeJudgeObjectList.get(i);
+            integerList.add(parseIntJudgeNumber(object.getNumber()));
+        }
+        return checkSchemeJudgeObjectNumberOverloadTwenty(integerList) ;
+    }
+
     public String getPercentileSystem(BigDecimal bigDecimal) {
         return ArithmeticUtils.getPercentileSystem(bigDecimal, 2, BigDecimal.ROUND_HALF_UP);
     }

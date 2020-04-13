@@ -49,18 +49,6 @@ public class ProjectReportController {
         }
     }
 
-    @PostMapping(value = "/resultSheetReport", name = "生成单一的结果集")
-    public HttpResult resultSheetReport(String fomData, String reportType) {
-        //生成单一的结果集
-        try {
-            GenerateReportInfo generateReportGeneration = JSONObject.parseObject(fomData, GenerateReportInfo.class);
-            generateReportService.resultSheetReport(generateReportGeneration, reportType);
-            return HttpResult.newCorrectResult(200, generateReportGeneration);
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e, "生成单一的结果集");
-            return HttpResult.newErrorResult(500, e.getMessage());
-        }
-    }
 
     @PostMapping(value = "/resultSheetReportNew", name = "生成单一的结果集")
     public HttpResult resultSheetReportNew(String fieldsName, String tableName, Integer projectId) {
