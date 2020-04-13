@@ -175,7 +175,7 @@ public class BasicEstateController {
     public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
             BasicEstate basicEstate = (BasicEstate) basicEstateService.copyBasicEntity(applyBatchDetail.getTableId(), tableId, true);
             return HttpResult.newCorrectResult(basicEstate);
         } catch (Exception e) {

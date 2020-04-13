@@ -144,7 +144,7 @@ public class BasicBuildingController {
     public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
             List<String> ignoreList = Lists.newArrayList("estateId");
             BasicBuilding basicBuilding = (BasicBuilding) basicBuildingService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
             return HttpResult.newCorrectResult(basicBuilding);

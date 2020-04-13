@@ -181,7 +181,7 @@ public class BasicHouseController {
     public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
             List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
             BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true,ignoreList);
             Map<String, Object> objectMap = basicHouseService.getBasicHouseMapById(basicHouse.getId());
