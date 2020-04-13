@@ -128,95 +128,6 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-                                     aria-hidden="true"
-                                     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <div class="modal-title"><h4>添加</h4></div>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close"><span
-                                                        aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <form id="frm_detail" class="form-horizontal">
-                                                <input type="hidden" name="id" value="0">
-                                                <div class="modal-body" style="overflow: auto; ">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="card-body">
-                                                                <input type="hidden" name="pid">
-                                                                <input type="hidden" name="applyBatchId">
-                                                                <input type="hidden" name="tableName">
-                                                                <input type="hidden" name="tableId">
-                                                                <input type="hidden" name="caseTablePid">
-                                                                <div class="row form-group">
-                                                                    <div id="detailContent" class="form-inline">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" data-dismiss="modal"
-                                                            class="btn btn-sm btn-default">
-                                                        取消
-                                                    </button>
-                                                    <button type="button" id="btnSave"
-                                                            class="btn btn-sm btn-primary"
-                                                            onclick="batchTreeTool.saveItemData()">
-                                                        保存
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="detail_modal_b" class="modal fade bs-example-modal-lg"
-                                     data-backdrop="static"
-                                     aria-hidden="true"
-                                     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">编辑</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close"><span
-                                                        aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <form id="frm_detail_b" class="form-horizontal">
-                                                <input type="hidden" name="id" value="0">
-                                                <div class="modal-body" style="overflow: auto; ">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="card-body">
-                                                                <input type="hidden" name="pid">
-                                                                <input type="hidden" name="applyBatchId">
-                                                                <input type="hidden" name="tableName">
-                                                                <input type="hidden" name="tableId">
-                                                                <div class="row form-group">
-                                                                    <div id="detailContent_b" class="form-inline">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" data-dismiss="modal"
-                                                            class="btn btn-default btn-sm">
-                                                        取消
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"
-                                                            onclick="batchTreeTool.saveEditItemData()">
-                                                        保存
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -242,7 +153,110 @@
 </div>
 </body>
 </html>
+<div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
 
+            <div class="modal-body">
+                <form id="frm_detail" class="form-horizontal">
+                    <input type="hidden" name="id" value="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <input type="hidden" name="pid">
+                                <input type="hidden" name="applyBatchId">
+                                <input type="hidden" name="tableName">
+                                <input type="hidden" name="tableId">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoComplete(this)"
+                                                       name="name" class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-1">表单类型<span class="symbol required"></span></label>
+                                            <div class="col-sm-5">
+                                                <select name='type' required onchange="batchTreeTool.typeChange(this)"
+                                                        class='form-control input-full'></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="batchTreeTool.saveItemData()">
+                    确定
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frm_detail_b" class="form-horizontal">
+                    <input type="hidden" name="id" value="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this)"
+                                                       name="name" class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="batchTreeTool.updateItemData()">
+                    确定
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $(function () {
         batchTreeTool.ztreeInit(${applyBatch.id});
@@ -278,7 +292,7 @@
                             window.close();
                         });
                     } else {
-                        AlertError(result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             });
@@ -304,7 +318,7 @@
                         window.close();
                     });
                 } else {
-                    AlertError(result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -341,7 +355,7 @@
                     $("#basicBatchApplyFrm").find('[name=estateId]').val(result.data.estateId);
                     batchTreeTool.ztreeInit(result.data.id);
                 } else {
-                    AlertError(result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -360,7 +374,7 @@
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
                 } else {
-                    AlertError(result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -455,56 +469,37 @@
     }
 
     //添加数据打开modal
-    batchTreeTool.showAddModal = function (node) {
-        if (!node) {
-            node = zTreeObj.getSelectedNodes()[0];
+    batchTreeTool.showAddModal = function () {
+        var node = zTreeObj.getSelectedNodes()[0];
+        if (node == null) {
+            notifyInfo('提示', '还未选择节点');
+            return;
         }
-        var html = "";
-        switch (node.tableName) {
-            case "tb_basic_estate": {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_building");
-                html += "<label class='col-sm-2 control-label'>";
-                html += "楼栋编号";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required value=''>";
-                html += "</div>";
-                break;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/getTableTypeList",
+            data: {type: node.type},
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret && result.data && result.data.length>0) {
+
+                    var typeHtml = "<option value=''>--请选择--</option>";
+                    $.each(result.data, function (i, item) {
+                        typeHtml += "<option value='" + item.key + "'>" + item.value + "</option>";
+                    })
+                    $("#frm_detail").clearAll();
+                    $("#frm_detail").find("[name='type']").empty().html(typeHtml);
+                    $("#frm_detail").find("input[name='applyBatchId']").val(node.applyBatchId);
+                    $("#frm_detail").find("input[name='pid']").val(node.id);
+                    $("#frm_detail").find("input[name='executor']").val(node.creator);
+                    $("#frm_detail").find("input[name='executorName']").val(node.creatorName);
+                    $("#detail_modal").modal();
+                } else {
+                    notifyInfo('提示', '该节点下没有可添加的表单类型');
+                }
             }
-            case "tb_basic_building": {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_unit");
-                html += "<label class='col-sm-2 control-label'>";
-                html += "单元编号";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required value=''>";
-                html += "</div>";
-                break;
-            }
-            case "tb_basic_unit": {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_house");
-                html += "<label class='col-sm-2 control-label'>";
-                html += "房号";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required value=''>";
-                html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
-                break;
-            }
-            case "tb_basic_house": {
-                notifyInfo('提示', "房屋下无法继续添加节点");
-                return false;
-                break;
-            }
-        }
-        $("#detailContent").empty().append(html);
-        $("#frm_detail").find("input[name='applyBatchId']").val($("#basicBatchApplyFrm").find('[name=id]').val());
-        $("#frm_detail").find("input[name='pid']").val(node.id);
-        $("#detail_modal").modal();
+        })
+
     }
 
     //保存明细
@@ -532,13 +527,14 @@
                             pid: result.data.pid,
                             tableId: result.data.tableId,
                             tableName: result.data.tableName,
-                            type: tableType,
+                            type: result.data.type,
+                            applyBatchId: result.data.applyBatchId,
                             displayName: result.data.displayName
                         });
                     }
                     $('#detail_modal').modal('hide');
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -580,14 +576,14 @@
 
     //进入填写信息页面
     batchTreeTool.fillInformation = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
         if (!$("#basicBatchApplyFrm").valid()) {
             return false;
         }
+        var node = zTreeObj.getSelectedNodes()[0];
         var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
         var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
-        var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?';
-        url += 'applyBatchId=' + $("#basicBatchApplyFrm").find('[name=id]').val();
+        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationEdit?';
+        url += 'applyBatchId=' + node.applyBatchId;
         url += '&formClassify=' + classify;
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;

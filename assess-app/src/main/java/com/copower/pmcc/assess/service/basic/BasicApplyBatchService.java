@@ -402,7 +402,13 @@ public class BasicApplyBatchService {
     public BasicApplyBatch initBasicApplyBatchInfo(BasicApplyBatch basicApplyBatch) throws Exception {
         if (basicApplyBatch == null) return null;
         //1.根据不同情况初始化不同的信息结构 2.初始化之前需先将原初始化信息删除
-        deleteBatchAllById(basicApplyBatch.getId());
+        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
+        if (CollectionUtils.isNotEmpty(batchDetailList)) {
+            for (BasicApplyBatchDetail basicApplyBatchDetail : batchDetailList) {
+                basicApplyBatchDetailService.deleteBasicApplyBatchDetail(basicApplyBatchDetail.getId());
+            }
+        }
+
         if (basicApplyBatch.getClassify() == null) return basicApplyBatch;
         BaseDataDic classifyDataDic = baseDataDicService.getCacheDataDicById(basicApplyBatch.getClassify());
         //楼盘
@@ -1024,7 +1030,7 @@ public class BasicApplyBatchService {
                 buildingBatchDetail.setTableId(building.getId());
                 buildingBatchDetail.setType(BasicFormClassifyEnum.BUILDING.getKey());
                 buildingBatchDetail.setName(building.getBuildingNumber());
-                buildingBatchDetail.setDisplayName(building.getBuildingName());
+                buildingBatchDetail.setDisplayName(String.format("%s栋", building.getBuildingNumber()));
                 buildingBatchDetail.setExecutor(building.getCreator());
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingBatchDetail);
                 //单元

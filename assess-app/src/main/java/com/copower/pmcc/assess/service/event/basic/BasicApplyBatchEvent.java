@@ -1,13 +1,13 @@
 package com.copower.pmcc.assess.service.event.basic;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
-import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -43,20 +43,16 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
     private BasicUnitDao basicUnitDao;
     @Autowired
     private BasicHouseDao basicHouseDao;
-
     @Autowired
-    private BasicBuildingService basicBuildingService;
-    @Autowired
-    private BasicUnitService basicUnitService;
-    @Autowired
-    private BasicHouseService basicHouseService;
+    private BasicApplyBatchDao basicApplyBatchDao;
 
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processExecution.getProcessInstanceId());
-        writeToCase(applyBatch);
+        applyBatch.setBisCase(true);
+        basicApplyBatchDao.updateInfo(applyBatch);
     }
 
     /**

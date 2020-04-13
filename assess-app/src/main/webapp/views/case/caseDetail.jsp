@@ -1,89 +1,96 @@
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-            <%@include file="/views/share/form_head.jsp" %>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>楼盘信息</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="basicBatchApplyDetialFrm" class="form-horizontal">
-                        <!-- formClassify 大类 , formType 类型-->
-                        <input type="hidden" name="formClassify" value="${applyBatch.classify}">
-                        <input type="hidden" name="formType" value="${applyBatch.type}">
-                        <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
-                        <input type="hidden" name="applyBatchId" value="${applyBatch.id}">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    大类
-                                </label>
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <c:if test="${not empty formClassifyList}">
-                                        <c:forEach var="item" items="${formClassifyList}">
-                                            <c:if test="${applyBatch.classify == item.id}">
-                                                <label class="form-control">${item.name}</label>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <div class="page-inner">
+                <div class="row">
+                    <!-- 填写表单 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        案例信息
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-sm"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    类型
-                                </label>
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <c:if test="${not empty examineFormTypeList}">
-                                        <c:forEach var="item" items="${examineFormTypeList}">
-                                            <c:if test="${applyBatch.type == item.key}">
-                                                <label class="form-control">${item.value}</label>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
+                            <div class="card-body">
+                                <div class="row col-md-12">
+                                    <div class="col-md-9">
+                                        <ul id="ztree" class="ztree"></ul>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <form id="frmProjectCIP" class="form-horizontal">
+                                            <input type="hidden" name="formClassify" value="${applyBatch.classify}">
+                                            <input type="hidden" name="formType" value="${applyBatch.type}">
+                                            <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        大类
+                                                    </label>
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <c:if test="${not empty formClassifyList}">
+                                                            <c:forEach var="item" items="${formClassifyList}">
+                                                                <c:if test="${applyBatch.classify == item.id}">
+                                                                    <label class="form-control input-full">${item.name}</label>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        类型
+                                                    </label>
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <c:if test="${not empty examineFormTypeList}">
+                                                            <c:forEach var="item" items="${examineFormTypeList}">
+                                                                <c:if test="${applyBatch.type == item.key}">
+                                                                    <label class="form-control input-full">${item.value}</label>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                    </form>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-xs-3  col-sm-3  col-md-3  col-xs-3 col-lg-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-offset-1">
-                                <ul id="ztree" class="ztree"></ul>
-                            </div>
-                            <div class="col-xs-8  col-sm-8  col-md-8  col-lg-8">
-                            </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+                        <div class="card-body">
+                            <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
+                                    onclick="window.close()">关 闭
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div style="text-align: center;">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            关闭
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
 </html>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         if (${!empty applyBatch}) {
@@ -129,20 +136,33 @@
     }
 
     //信息详情页面
-    function informationDetail() {
-        var classify = ${applyBatch.classify};
-        var formType = ${applyBatch.type};
-        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
-        url += 'applyBatchId=' +  ${applyBatch.id};
-        url += '&formClassify=' + classify;
-        url += '&formType=' + formType;
-        url += '&tableId=' + node.tableId;
-        url += '&tbType=' + node.type;
-        url += '&tableName=' + node.tableName;
-        url += '&planDetailsId=${projectPlanDetails.id}';
-        openWin(url, function () {
-        })
+    function informationDetail(data) {
+        var treeNode = zTreeObj.getSelectedNodes()[0];
+        console.log(treeNode+'===')
+        var frm = $("#frmProjectCIP");
+        var data = formSerializeArray(frm);
+        data.tbType = treeNode.type;
+        data.tbId = treeNode.tableId;
+        data.tableName = treeNode.tableName;
+        data.applyBatchId = treeNode.applyBatchId;
+
+        window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?' + parseParam(data));
     }
 
+    //js对象转成路径参数
+    var parseParam = function (param) {
+        var arr = [];
+        var keys = Object.keys(param);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var value = param[key];
+            if (!value) {
+                // continue ;
+            }
+            var paramStr = key + "=" + value;
+            arr.push(paramStr)
+        }
+        return arr.join("&");
+    };
 </script>
 

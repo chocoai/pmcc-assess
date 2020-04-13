@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseCaseSummaryService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -43,6 +44,8 @@ public class BasicController {
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     @RequestMapping(value = "/areaCaseMap", name = "案例地图", method = {RequestMethod.GET})
     public ModelAndView areaEstateCaseMap() {
@@ -134,7 +137,8 @@ public class BasicController {
                 BasicApplyBatch applyBatch = basicApplyBatchService.generateTree(estateId);
                 modelAndView.addObject("applyBatch", applyBatch);
             }
-
+            modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
+            modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

@@ -60,7 +60,7 @@
                                 </table>
                             </div>
 
-                            <div class="card">
+                            <div style="display: none" class="card">
                                 <div class="card-header">
                                     <div class="card-head-row">
                                         <div class="card-title">楼栋信息</div>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
 
-                            <div class="card">
+                            <div style="display: none" class="card">
                                 <div class="card-header">
                                     <div class="card-head-row">
                                         <div class="card-title">单元信息</div>
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
 
-                            <div class="card">
+                            <div style="display: none" class="card">
                                 <div class="card-header">
                                     <div class="card-head-row">
                                         <div class="card-title">房屋信息</div>
@@ -234,10 +234,10 @@
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 },
-                onClickCell: function (field, value, row, element) {
-                    baseFun.caseBuild.loadDataList(row.id);
-                    $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
-                }
+                // onClickCell: function (field, value, row, element) {
+                //     baseFun.caseBuild.loadDataList(row.id);
+                //     $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
+                // }
             });
 
         },
