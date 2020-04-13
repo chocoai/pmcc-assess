@@ -55,7 +55,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
         basicApplyBatchDao.updateInfo(applyBatch);
         BasicEstate basicEstate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
         basicEstate.setBisCase(true);
-        basicEstateDao.updateBasicEstate(basicEstate,false)
+        basicEstateDao.updateBasicEstate(basicEstate,false);
     }
 
     /**
