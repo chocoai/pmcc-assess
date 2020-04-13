@@ -483,8 +483,13 @@
         //初始测算结果
         marketCompare.initResult = function (defaluts) {
             var resultHtml = getTempHtml("resultTemp", defaluts.readonly);
-            var caseAnnualCoefficient, caseVolumeRatioCoefficient, caseSpecificPrice,
-                caseCorrectionDifference, caseCaseDifference, caseWeight, caseWeightDescription;
+            var caseAnnualCoefficient = '';
+            var caseVolumeRatioCoefficient = '';
+            var caseSpecificPrice = '';
+            var caseCorrectionDifference = '';
+            var caseCaseDifference = '';
+            var caseWeight = '';
+            var caseWeightDescription = '';
             for (var j = 0; j < defaluts.cases.length; j++) {
                 caseAnnualCoefficient += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].annualCoefficient) + '</td>';
                 caseVolumeRatioCoefficient += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].volumeRatioCoefficient) + '</td>';
@@ -493,13 +498,15 @@
                 caseCaseDifference += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(defaluts.cases[j].caseDifference) + '</td>';
 
                 var weightHtml = getTempHtml("pWeightTemp", defaluts.readonly);
+                var weight = toString(defaluts.cases[j].weight);
                 weightHtml = weightHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{locationFactorRatio}/g, toString(defaluts.cases[j].locationFactorRatio))
                     .replace(/{equityFactorRatio}/g, toString(defaluts.cases[j].equityFactorRatio)).replace(/{entityFactorRatio}/g, toString(defaluts.cases[j].entityFactorRatio))
-                    .replace(/{value}/g, toString(defaluts.cases[j].weight));
+                    .replace(/{value}/g, weight == '' ? '无' : weight);
                 caseWeight += weightHtml;
 
                 var weightDescHtml = getTempHtml("pWeightDescTemp", defaluts.readonly);
-                weightDescHtml = weightDescHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{value}/g, toString(defaluts.cases[j].weightDescription));
+                var weightDescription = toString(defaluts.cases[j].weightDescription);
+                weightDescHtml = weightDescHtml.replace(/{itemId}/g, toString(defaluts.cases[j].id)).replace(/{value}/g, weightDescription == '' ? '无' : weightDescription);
                 caseWeightDescription += weightDescHtml;
             }
             resultHtml = resultHtml.replace(/{annualCoefficient}/g, toString(defaluts.evaluation.annualCoefficient)).replace(/{volumeRatioCoefficient}/g, toString(defaluts.evaluation.volumeRatioCoefficient));
