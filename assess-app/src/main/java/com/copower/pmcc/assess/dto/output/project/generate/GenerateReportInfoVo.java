@@ -10,6 +10,8 @@ public class GenerateReportInfoVo extends GenerateReportInfo {
     private String qualificationTypeName;
     private String realEstateAppraiserName;
 
+    private String reportTypeName;
+
     public String getAreaGroupName() {
         return areaGroupName;
     }
@@ -32,5 +34,13 @@ public class GenerateReportInfoVo extends GenerateReportInfo {
 
     public void setRealEstateAppraiserName(String realEstateAppraiserName) {
         this.realEstateAppraiserName = realEstateAppraiserName;
+    }
+
+    public String getReportTypeName() {
+        return reportTypeName;
+    }
+
+    public void setReportTypeName(String reportTypeName) {
+        this.reportTypeName = reportTypeName;
     }
 }

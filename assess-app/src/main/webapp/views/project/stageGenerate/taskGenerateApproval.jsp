@@ -113,6 +113,16 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">报告类型</label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full">${generationVo.reportTypeName}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
                                             <c:if test="${fn:contains(generationVo.reportType, reportType.id)}">
                                                 <div class="row form-group">

@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dto.output.project.generate.GenerateReportInfoVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -35,6 +36,8 @@ public class GenerateReportInfoService {
     private PublicService publicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
 
     public GenerateReportInfo getGenerateReportInfoByAreaGroupId(Integer areaGroupId, Integer projectPlanId) {
@@ -147,6 +150,14 @@ public class GenerateReportInfoService {
                 String userName = publicService.getUserNameByAccountList(stringList);
                 vo.setRealEstateAppraiserName(userName);
             }
+        }
+        if (StringUtils.isNotBlank(generateReportGeneration.getReportType())){
+            List<String> stringList = FormatUtils.transformString2List(generateReportGeneration.getReportType()) ;
+            List<String> strings = new ArrayList<>(stringList.size()) ;
+            for (String s:stringList){
+                strings.add(baseDataDicService.getNameById(s)) ;
+            }
+            vo.setReportTypeName(StringUtils.join(strings,","));
         }
         return vo;
     }
