@@ -3705,17 +3705,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
-        //设置具体宽度自动适应
-        PreferredWidth preferredWidth = PreferredWidth.AUTO;
-        documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-        documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
-        documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-        documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
-        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
-        documentBuilder.getCellFormat().setTopPadding(0);
-        documentBuilder.getCellFormat().setBottomPadding(0);
-        documentBuilder.getCellFormat().setLeftPadding(0);
-        documentBuilder.getCellFormat().setRightPadding(0);
+        AsposeUtils.setDefaultTable(documentBuilder) ;
         documentBuilder.getFont().setSize(10.5);
         documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
         StringBuilder stringBuilder = new StringBuilder();
@@ -3883,7 +3873,7 @@ public class GenerateBaseDataService {
         Table table = builder.startTable();
         final Integer colMax = seat ? new Integer(11) : new Integer(10);
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = this.getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList, projectInfo);
+        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList, projectInfo);
 
         LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
         //有他项权力的情况
@@ -4035,7 +4025,7 @@ public class GenerateBaseDataService {
                 writeJudgeObjectResultSurveyInCell2(objectEntry.getKey(), objectEntry.getValue(), builder, doubleLinkedList, false, false, mortgageFlag, generateCommonMethod.checkSchemeJudgeObjectNumberOverloadTwenty2(schemeJudgeObjectList));
             }
         }
-        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
+        AsposeUtils.mergeCellTable(mergeCellModelList, table);
         builder.endTable();
         doc.save(localPath);
         return localPath;

@@ -886,6 +886,20 @@ public class AsposeUtils {
         }
     }
 
+    public static void setDefaultTable(DocumentBuilder documentBuilder){
+        //设置具体宽度自动适应
+        PreferredWidth preferredWidth = PreferredWidth.AUTO;
+        documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
+        documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
+        documentBuilder.getCellFormat().setTopPadding(0);
+        documentBuilder.getCellFormat().setBottomPadding(0);
+        documentBuilder.getCellFormat().setLeftPadding(0);
+        documentBuilder.getCellFormat().setRightPadding(0);
+    }
+
     public static String getWarpCssHtml(String html, String key, String value) {
         List<KeyValueDto> keyValueDtoList = new ArrayList<>(1);
         keyValueDtoList.add(new KeyValueDto(key, value));
