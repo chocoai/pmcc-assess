@@ -6,68 +6,67 @@ package com.copower.pmcc.assess.common.enums.report;
  * @description:报告模板字段 银行 (基础)
  */
 public enum ReportFieldUniversalBankEnum {
-    Seat("银行通用坐落"),
+    BankGeneralSeat("银行通用坐落"),
 
-    AssessArea("银行通用评估面积"),
+    BankGeneralAssessArea("银行通用评估面积"),
 
-    AssessPrice("银行通用评估单价"),
+    BankGeneralAssessPrice("银行通用评估单价"),
 
-    StatutoryOptimumReimbursement("银行通用法定优先受偿款"),
-    StatutoryOptimumReimbursementMortgage("银行通用已抵押担保债权数额"),
+    BankGeneralStatutoryOptimumReimbursement("银行通用法定优先受偿款"),
+    BankGeneralStatutoryOptimumReimbursementMortgage("银行通用已抵押担保债权数额"),
 
-    StatutoryOptimumReimbursementEngineering("银行通用拖欠的建设工程价款"),
+    BankGeneralStatutoryOptimumReimbursementEngineering("银行通用拖欠的建设工程价款"),
 
-    StatutoryOptimumReimbursementOther("银行通用其他法定优先受偿款"),
+    BankGeneralStatutoryOptimumReimbursementOther("银行通用其他法定优先受偿款"),
 
-    ownership("银行通用房屋所有权人"),
-    Co_ownership("银行通用共有权情况"),
-    RegistrationDate("银行通用登记时间"),
-    houseNature("银行通用房屋性质"),
-    BuildArea("银行通用建筑面积"),
-    CoverArea("银行通用套内建筑面积"),
-    AttachmentReark("银行通用附记"),
-    FillingUnit("银行通用填发单位"),
-    CERT_NAME("银行通用权证号"),
-    floor("银行通用楼层"),
-    floorCount("银行通用总层数"),
-    UsageStatus("银行通用使用状况"),
-    estateName("银行通用楼盘名称"),
-    housingStructure("银行通用房屋结构"),
-    BeCompletedTimeGetInteger("银行通用建成年代"),
-    NetAssessmentGroundNum("银行通用丘地号"),
-    ANALYSIS_CATEGORY_LIQUIDITY("银行通用变现能力分析"),
+    BankGeneralOwnership("银行通用房屋所有权人"),
+    BankGeneralCo_ownership("银行通用共有权情况"),
+    BankGeneralRegistrationDate("银行通用登记时间"),
+    BankGeneralhouseNature("银行通用房屋性质"),
+    BankGeneralBuildArea("银行通用建筑面积"),
+    BankGeneralCoverArea("银行通用套内建筑面积"),
+    BankGeneralAttachmentReark("银行通用附记"),
+    BankGeneralFillingUnit("银行通用填发单位"),
+    BankGeneralCERT_NAME("银行通用权证号"),
+    BankGeneralFloor("银行通用楼层"),
+    BankGeneralFloorCount("银行通用总层数"),
+    BankGeneralUsageStatus("银行通用使用状况"),
+    BankGeneralEstateName("银行通用楼盘名称"),
+    BankGeneralHousingStructure("银行通用房屋结构"),
+    BankGeneralBeCompletedTimeGetInteger("银行通用建成年代"),
+    BankGeneralNetAssessmentGroundNum("银行通用丘地号"),
+    BankGeneralANALYSIS_CATEGORY_LIQUIDITY("银行通用变现能力分析"),
 
 
+    BankGeneralLandNumber("银行通用土地证号"),//LandCertificateField1
+    BankGenerallandownership("银行通用土地所有权人"),//LandCertificateField2
+    BankGenerallandcert_use("银行通用土地证载用途"),//LandCertificateField3
+    BankGeneralLand_right_nature("银行通用土地权利性质"),//LandCertificateField4
+    BankGenerallandapportionment_area("银行通用土地分摊面积"),//LandCertificateField5
+    BankGenerallandendTime("银行通用土地终止日期"),//LandCertificateField6
+    BankGenerallandregistration_authority("银行通用土地登记机关"),//LandCertificateField7
+    BankGenerallandregistration_date("银行通用土地登记日期"),//LandCertificateField8
 
-    landNumber("银行通用土地证号"),//LandCertificateField1
-    landownership("银行通用土地所有权人"),//LandCertificateField2
-    landcert_use("银行通用土地证载用途"),//LandCertificateField3
-    land_right_nature("银行通用土地权利性质"),//LandCertificateField4
-    landapportionment_area("银行通用土地分摊面积"),//LandCertificateField5
-    landendTime("银行通用土地终止日期"),//LandCertificateField6
-    landregistration_authority("银行通用土地登记机关"),//LandCertificateField7
-    landregistration_date("银行通用土地登记日期"),//LandCertificateField8
+    BankGeneralLandArea("银行通用土地面积"),
 
-    LandArea("银行通用土地面积"),
+    BankGeneralHuxingLayout("银行通用户型及布局"),
+    BankGeneralAversionFacility("银行通用厌恶设施"),
+    BankGeneralNetAssessmentOther("银行通用其它"),
+    BankGeneralOrientation("银行通用朝向"),
+    BankGeneralexteriorWallDecorate("银行通用外墙装饰"),
+    BankGeneralLobbyDecorate("银行通用大堂装饰"),
+    BankGeneralLayerNumber("银行通用层户数"),
+    BankGeneralStoreyHeight("银行通用层高"),
+    BankGeneralFoundationAndWall("银行通用地基及墙面"),
 
-    HuxingLayout("银行通用户型及布局"),
-    AversionFacility("银行通用厌恶设施"),
-    NetAssessmentOther("银行通用其它"),
-    Orientation("银行通用朝向"),
-    exteriorWallDecorate("银行通用外墙装饰"),
-    LobbyDecorate("银行通用大堂装饰"),
-    LayerNumber("银行通用层户数"),
-    StoreyHeight("银行通用层高"),
-    FoundationAndWall("银行通用地基及墙面"),
-
-    renovation_condition_door("银行通用门装修情况"),//JudgeObjectDamagedDegreeField1
-    renovation_condition_window("银行通用窗装修情况"),//JudgeObjectDamagedDegreeField2
-    renovation_condition_land("银行通用地面装修情况"),//JudgeObjectDamagedDegreeField3
-    renovation_condition_wall("银行通用内墙装修情况"),//JudgeObjectDamagedDegreeField4
-    renovation_condition_Canopy("银行通用天棚装修情况"),//JudgeObjectDamagedDegreeField5
-    renovation_condition_bathroom("银行通用卫生间装修情况"),//JudgeObjectDamagedDegreeField6
-    renovation_condition_kitchen("银行通用厨房装修情况"),//JudgeObjectDamagedDegreeField7
-    renovation_condition_maintenance("银行通用维护保养状况"),//JudgeObjectDamagedDegreeField8
+    BankGeneralrenovation_condition_door("银行通用门装修情况"),//JudgeObjectDamagedDegreeField1
+    BankGeneralrenovation_condition_window("银行通用窗装修情况"),//JudgeObjectDamagedDegreeField2
+    BankGeneralrenovation_condition_land("银行通用地面装修情况"),//JudgeObjectDamagedDegreeField3
+    BankGeneralrenovation_condition_wall("银行通用内墙装修情况"),//JudgeObjectDamagedDegreeField4
+    BankGeneralrenovation_condition_Canopy("银行通用天棚装修情况"),//JudgeObjectDamagedDegreeField5
+    BankGeneralrenovation_condition_bathroom("银行通用卫生间装修情况"),//JudgeObjectDamagedDegreeField6
+    BankGeneralrenovation_condition_kitchen("银行通用厨房装修情况"),//JudgeObjectDamagedDegreeField7
+    BankGeneralrenovation_condition_maintenance("银行通用维护保养状况"),//JudgeObjectDamagedDegreeField8
 
 
     BankGeneralcultural_environment("银行通用人文环境"),//JudgeObjectLoactionField10

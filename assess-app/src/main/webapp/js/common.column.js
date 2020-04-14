@@ -691,7 +691,7 @@ commonColumn.houseRoomResidence = function () {
 
 commonColumn.houseRoomStore = function () {
     var cols = [];
-    cols.push({field: 'adjacentPositionName', title: '相邻位置'});
+    cols.push({field: 'adjacentPositionDescribe', title: '相邻位置描述'});
     cols.push({field: 'orientationName', title: '方位'});
     cols.push({
         field: 'openingDisplay', title: '开间', formatter: function (value, row, index) {
@@ -711,7 +711,6 @@ commonColumn.houseRoomStore = function () {
             return s;
         }
     });
-    cols.push({field: 'distance', title: '距离'});
 
     return cols;
 }
