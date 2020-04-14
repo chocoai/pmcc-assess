@@ -469,7 +469,79 @@ commonColumn.houseHuxingPriceColumn = function () {
     cols.push({field: 'area', title: '面积'});
     cols.push({field: 'floor', title: '楼层'});
     return cols;
-}
+};
+
+//单元-单价调查 其它
+commonColumn.houseHuxingPriceHandleColumn = function (data, tenementType) {
+    var cols = [];
+    $.each(data, function (i, item) {
+        var name = item.name;
+        if (name.indexOf(tenementType) != -1) {
+            var arr = [];
+            try {
+                arr = JSON.parse(item.keyValue);
+            } catch (e) {
+            }
+            $.each(arr, function (j, n) {
+                switch (n.key) {
+                    case 'lengthDisplay': {
+                        cols.push({
+                            field: n.key, title: n.value, formatter: function (value, row, index) {
+                                var s = row.length;
+                                if (row.houseShape == '不规则') {
+                                    s += "(最长)";
+                                }
+                                return s;
+                            }
+                        });
+                        break;
+                    }
+                    case 'widthDisplay': {
+                        cols.push({
+                            field: n.key, title: n.value, formatter: function (value, row, index) {
+                                var s = row.width;
+                                if (row.houseShape == '不规则') {
+                                    s += "(最宽)";
+                                }
+                                return s;
+                            }
+                        });
+                        break;
+                    }
+                    case 'openingDisplay': {
+                        cols.push({
+                            field: n.key, title: n.value, formatter: function (value, row, index) {
+                                var s = row.opening;
+                                if (row.houseShape == '不规则') {
+                                    s += "(最大)";
+                                }
+                                return s;
+                            }
+                        });
+                        break;
+                    }
+                    case 'depthDisplay': {
+                        cols.push({
+                            field: n.key, title: n.value, formatter: function (value, row, index) {
+                                var s = row.depth;
+                                if (row.houseShape == '不规则') {
+                                    s += "(最小)";
+                                }
+                                return s;
+                            }
+                        });
+                        break;
+                    }
+                    default: {
+                        cols.push({field: n.key, title: n.value});
+                        break;
+                    }
+                }
+            });
+        }
+    });
+    return cols;
+};
 
 //单元-楼栋内装
 commonColumn.unitDecorateColumn = function () {
@@ -623,7 +695,7 @@ commonColumn.houseRoomStore = function () {
     cols.push({
         field: 'openingDisplay', title: '开间', formatter: function (value, row, index) {
             var s = row.opening;
-            if (row.houseShape=='不规则') {
+            if (row.houseShape == '不规则') {
                 s += "(最大)";
             }
             return s;
@@ -632,7 +704,7 @@ commonColumn.houseRoomStore = function () {
     cols.push({
         field: 'depthDisplay', title: '进深', formatter: function (value, row, index) {
             var s = row.depth;
-            if (row.houseShape=='不规则') {
+            if (row.houseShape == '不规则') {
                 s += "(最小)";
             }
             return s;
@@ -650,7 +722,7 @@ commonColumn.houseRoomHotel = function () {
     cols.push({
         field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
             var s = row.length;
-            if (row.houseShape=='不规则') {
+            if (row.houseShape == '不规则') {
                 s += "(最长)";
             }
             return s;
@@ -659,7 +731,7 @@ commonColumn.houseRoomHotel = function () {
     cols.push({
         field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
             var s = row.width;
-            if (row.houseShape=='不规则') {
+            if (row.houseShape == '不规则') {
                 s += "(最宽)";
             }
             return s;
