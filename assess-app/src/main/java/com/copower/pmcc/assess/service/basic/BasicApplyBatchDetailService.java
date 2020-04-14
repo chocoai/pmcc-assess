@@ -70,6 +70,7 @@ public class BasicApplyBatchDetailService {
      * @return
      */
     public List<BasicApplyBatchDetail> getBasicApplyBatchDetailByApplyBatchId(Integer applyBatchId) {
+        if (applyBatchId == null) return null;
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setApplyBatchId(applyBatchId);
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
