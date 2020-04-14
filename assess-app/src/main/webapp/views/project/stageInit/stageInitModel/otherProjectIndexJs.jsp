@@ -342,7 +342,7 @@
                 });
                 var data = formSerializeArray($("#" + objProject.config.info.frm));
                 objProject.ajaxServerMethod(data, '/projectInfo/getValueDefinition', "post", function (data) {
-                    if (data){
+                    if (data) {
                         if (data.propertyScope) {
                             $("#" + objProject.config.info.frm).find("select.propertyScope").val(data.propertyScope).trigger('change');
                         }
@@ -383,7 +383,7 @@
                 }
                 var data = formSerializeArray($("#" + objProject.config.info.frm));
                 objProject.ajaxServerMethod(data, '/projectInfo/getValueDefinition', "post", function (data) {
-                    if (data){
+                    if (data) {
                         if (data.propertyScope) {
                             $("#" + objProject.config.info.frm).find("select.propertyScope").val(data.propertyScope).trigger('change');
                         }
@@ -867,11 +867,11 @@
         crmCustomer.select({
             multi: false,//是否允许多选
             companyId:${baseViewDto.thisUser.companyId},
-            onSelected: function (nodes) {
-                if (!nodes) {
+            onSelected: function (data) {
+                if (!data) {
                     return false;
                 }
-                var node=nodes[0];
+                var node = Array.isArray(data) ? data[0] : data;
                 $(this_).closest('.input-group').find("input[name='uUseUnit']").val(node.id);
                 $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(node.name);
                 $.ajax({

@@ -14,6 +14,7 @@ import java.util.List;
 public enum BasicFormClassifyEnum {
     //----房产-----------------------------------
     ESTATE("estate", "楼盘", "tb_basic_estate", "basicEstateService"),
+    ESTATE_LAND("estate.land", "土地", "tb_basic_estate", "basicEstateLandService"),
     BUILDING("building", "楼栋", "tb_basic_building", "basicBuildingService"),
     BUILDING_MONOLAYER("building.monolayer", "楼栋（单层）", "tb_basic_building", "basicBuildingMonolayerService"),
     BUILDING_BASE("building.base", "综合楼（基础部分）", "tb_basic_building", "basicBuildingBaseService"),
