@@ -114,6 +114,8 @@ public class BasicApplyBatchDetailService {
         basicApplyBatchDetail.setTableName(enumByKey.getTableName());
         switch (enumByKey) {
             case ESTATE:
+            case ESTATE_LAND:
+            case ESTATE_LAND_INCLUD:
                 BasicEstate estateData = basicEstateService.getBasicEstateById(basicApplyBatchDetail.getTableId());
                 estateData.setName(basicApplyBatchDetail.getName());
                 basicEstateService.saveAndUpdate(estateData, false);
@@ -122,6 +124,7 @@ public class BasicApplyBatchDetailService {
             case BUILDING_MONOLAYER:
             case BUILDING_BASE:
             case BUILDING_DIFFERENCE:
+            case BUILDING_LAND_INCLUD:
                 BasicBuilding buildingData = basicBuildingService.getBasicBuildingById(basicApplyBatchDetail.getTableId());
                 BasicBuilding building = buildingData == null ? new BasicBuilding() : buildingData;
                 building.setBuildingNumber(basicApplyBatchDetail.getName());
@@ -134,6 +137,7 @@ public class BasicApplyBatchDetailService {
                 break;
             case UNIT:
             case UNIT_RESIDENCE:
+            case UNIT_LAND_INCLUD:
                 BasicUnit unitData = basicUnitService.getBasicUnitById(basicApplyBatchDetail.getTableId());
                 BasicUnit unit = unitData == null ? new BasicUnit() : unitData;
                 BasicBuilding basicBuilding = getBasicBuildingByBatchDetailId(basicApplyBatchDetail.getPid());
@@ -146,6 +150,7 @@ public class BasicApplyBatchDetailService {
                 basicApplyBatchDetail.setTableId(unit.getId());
                 break;
             case HOUSE:
+            case HOUSE_LAND_INCLUD:
                 BasicHouse houseData = basicHouseService.getBasicHouseById(basicApplyBatchDetail.getTableId());
                 BasicHouse house = houseData == null ? new BasicHouse() : houseData;
                 house.setHouseNumber(basicApplyBatchDetail.getName());

@@ -439,7 +439,11 @@ public class BasicApplyBatchService {
         basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, false);
         if (StringUtils.isBlank(basicApplyBatch.getEstateName())) {
             String estateName = "楼盘信息";
-            if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(classifyDataDic.getFieldName()) || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
+            if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(classifyDataDic.getFieldName())) {
+                estateName = "地块信息";
+                formClassifyEnum=BasicFormClassifyEnum.ESTATE_LAND_INCLUD;
+            }
+            if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
                 estateName = "地块信息";
                 formClassifyEnum=BasicFormClassifyEnum.ESTATE_LAND;
             }
