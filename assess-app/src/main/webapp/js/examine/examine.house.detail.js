@@ -102,7 +102,9 @@ var houseRoom;
             var cols = commonColumn.houseRoomColumn();
             var temp = [];
             var tenementType = houseCommon.houseHuxingForm.find('label[name="tenementType"]').text();
-
+            if(houseCommon.houseHuxingForm.find('label[name="spatialDistributionName"]').text()=="多层"){
+                cols.push({field: 'currentFloor', title: '所在楼层'});
+            }
             // if (tenementType == '住宅' || tenementType == '办公') {
             //     temp = commonColumn.houseRoomResidence();
             // } else if (tenementType == '商铺' || tenementType == '商场') {

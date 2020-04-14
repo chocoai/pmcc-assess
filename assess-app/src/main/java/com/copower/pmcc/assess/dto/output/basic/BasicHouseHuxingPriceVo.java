@@ -14,6 +14,15 @@ public class BasicHouseHuxingPriceVo extends BasicHouseHuxingPrice {
     private String standardMeasureName;
     private String storageRequestName;
     private String adjacentPositionName;
+    private String adjacentPositionDescribe;
+
+    public String getAdjacentPositionDescribe() {
+        return adjacentPositionDescribe;
+    }
+
+    public void setAdjacentPositionDescribe(String adjacentPositionDescribe) {
+        this.adjacentPositionDescribe = adjacentPositionDescribe;
+    }
 
     public String getOrientationName() {
         return orientationName;

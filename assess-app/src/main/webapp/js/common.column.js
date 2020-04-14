@@ -656,7 +656,7 @@ commonColumn.houseRoomColumn = function () {
     cols.push({field: 'area', title: '面积(m²)'});
     cols.push({field: 'layerHeight', title: '层高(m)'});
     cols.push({field: 'clearHeight', title: '净高(m)'});
-    cols.push({field: 'currentFloor', title: '所在楼层'});
+
     return cols;
 }
 

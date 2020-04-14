@@ -156,6 +156,15 @@ public class BasicHouseHuxingPriceService {
         vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStorageRequest()));
         vo.setAdjacentPositionName(baseDataDicService.getNameById(basicHouseHuxingPrice.getAdjacentPosition()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouseHuxingPrice.getCreator()));
+        String[] adjacentPositions = basicHouseHuxingPrice.getAdjacentPosition().split(",");
+        String[] distances = basicHouseHuxingPrice.getDistance().split(",");
+        StringBuilder s = new StringBuilder();
+        if(adjacentPositions.length>0){
+            for (int i = 0; i < adjacentPositions.length; i++) {
+                s.append("距离").append(baseDataDicService.getNameById(adjacentPositions[i])).append(":").append(distances[i]).append("m").append(";");
+            }
+        }
+        vo.setAdjacentPositionDescribe(s.toString());
         return vo;
     }
 
