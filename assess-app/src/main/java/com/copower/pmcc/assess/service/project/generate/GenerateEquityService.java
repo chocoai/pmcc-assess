@@ -168,7 +168,7 @@ public class GenerateEquityService {
                         } else {
                             utilizeBuilder.append(estateLandState.getDevelopmentDegreeRemark());
                         }
-                        value = generateCommonMethod.getIndentHtml(String.format("土地开发程度:%s", generateCommonMethod.trim(utilizeBuilder.toString())));
+                        value = generateCommonMethod.trim(utilizeBuilder.toString());
                     }
                     break;
                 }
@@ -176,7 +176,7 @@ public class GenerateEquityService {
                     break;
             }
         }
-        return value;
+        return StringUtils.isNotBlank(value) ? value : "无";
     }
 
     /**
@@ -370,7 +370,7 @@ public class GenerateEquityService {
                 continue;
             }
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
-            if (declareRecord == null){
+            if (declareRecord == null) {
                 continue;
             }
             natureMap.put(number, declareRecord.getNature());
@@ -378,24 +378,24 @@ public class GenerateEquityService {
             publicSituationMap.put(number, declareRecord.getPublicSituation());
             ownershipMap.put(number, declareRecord.getOwnership());
 
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(judgeObject.getDeclareRecordId()) ;
-            if (basicApplyBatch == null || basicApplyBatch.getId() == 0){
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(judgeObject.getDeclareRecordId());
+            if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
-            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch) ;
-            if (basicExamineHandle == null){
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
+            if (basicExamineHandle == null) {
                 continue;
             }
             List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingAll();
-            if (CollectionUtils.isEmpty(basicBuildingList)){
+            if (CollectionUtils.isEmpty(basicBuildingList)) {
                 continue;
             }
             Iterator<BasicBuilding> iterator = basicBuildingList.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 BasicBuilding basicBuilding = iterator.next();
                 if (basicBuilding.getProperty() != null) {//物业信誉与管理
                     DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
-                    if (dataProperty == null){
+                    if (dataProperty == null) {
                         continue;
                     }
                     propertyMap.put(number, getProperty(dataProperty));
@@ -406,46 +406,73 @@ public class GenerateEquityService {
         switch (key) {
             case "房屋性质": {
                 if (!natureMap.isEmpty()) {
-                    value = generateCommonMethod.judgeEachDesc(natureMap, "", ",", false);
+                    String value2 = generateCommonMethod.judgeEachDesc(natureMap, "", ",", false);
+                    if (StringUtils.isNotBlank(value2)) {
+                        value = value2;
+                    }
                 }
                 break;
             }
             case "规划用途": {
                 if (!certUseMap.isEmpty()) {
-                    value = generateCommonMethod.judgeEachDesc(certUseMap, "", ",", false);
+                    String value2 = generateCommonMethod.judgeEachDesc(certUseMap, "", ",", false);
+                    if (StringUtils.isNotBlank(value2)) {
+                        value = value2;
+                    }
                 }
                 break;
             }
             case "共有情况": {
                 if (!publicSituationMap.isEmpty()) {
-                    value = generateCommonMethod.judgeEachDesc(publicSituationMap, "", ",", false);
+                    String value2 = generateCommonMethod.judgeEachDesc(publicSituationMap, "", ",", false);
+                    if (StringUtils.isNotBlank(value2)) {
+                        value = value2;
+                    }
                 }
                 break;
             }
             case "权益人": {
                 if (!ownershipMap.isEmpty()) {
-                    value = generateCommonMethod.judgeEachDesc(ownershipMap, "", ",", false);
+                    String value2 = generateCommonMethod.judgeEachDesc(ownershipMap, "", ",", false);
+                    if (StringUtils.isNotBlank(value2)) {
+                        value = value2;
+                    }
                 }
                 break;
             }
             case "他项权利": {
-                value = this.getRightCategory(projectId, judgeObjects);
+                String value2 = this.getRightCategory(projectId, judgeObjects);
+                if (StringUtils.isNotBlank(value2)) {
+                    value = value2;
+                }
                 break;
             }
             case "转让限制": {
-                value = this.getTransferLimit(judgeObjects, getSchemeJudgeObjectSimpleDto(judgeObjects));
+                String value2 = this.getTransferLimit(judgeObjects, getSchemeJudgeObjectSimpleDto(judgeObjects));
+                if (StringUtils.isNotBlank(value2)) {
+                    value = value2;
+                }
                 break;
             }
             case "他权综述": {
-                value = this.getRightComprehensiveDesc(projectId, judgeObjects);
+                String value2 = this.getRightComprehensiveDesc(projectId, judgeObjects);
+                if (StringUtils.isNotBlank(value2)) {
+                    value = value2;
+                }
                 break;
             }
             case "物业": {
-                value = generateCommonMethod.judgeEachDesc(propertyMap, "", ",", false);
+                String value2 = generateCommonMethod.judgeEachDesc(propertyMap, "", ",", false);
+                if (StringUtils.isNotBlank(value2)) {
+                    value = value2;
+                }
                 break;
             }
             case "综合评价": {
-                value = getOverallMerit(projectId, getSchemeJudgeObjectSimpleDto(judgeObjects));
+                String value2 = getOverallMerit(projectId, getSchemeJudgeObjectSimpleDto(judgeObjects));
+                if (StringUtils.isNotBlank(value2)) {
+                    value = value2;
+                }
                 break;
             }
         }
@@ -498,33 +525,37 @@ public class GenerateEquityService {
                 }
             }
         }
-        return generateCommonMethod.judgeEachDesc(resultMap, "", "。", false);
+        String value = generateCommonMethod.judgeEachDesc(resultMap, "", "。", false);
+        if (StringUtils.isBlank(value)) {
+            value = "无";
+        }
+        return value;
     }
 
     private Map<Integer, SchemeJudgeObjectSimpleDto> getSchemeJudgeObjectSimpleDto(List<SchemeJudgeObject> judgeObjects) {
         Map<Integer, SchemeJudgeObjectSimpleDto> judgeObjectSimpleDtoMap = Maps.newHashMap();//用于综合评价生成
         for (SchemeJudgeObject schemeJudgeObject : judgeObjects) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0){
+            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
                 continue;
             }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId()) ;
-            if (basicApplyBatch == null || basicApplyBatch.getId() == 0){
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
-            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch) ;
-            if (basicExamineHandle == null){
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
+            if (basicExamineHandle == null) {
                 continue;
             }
             List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingAll();
-            if (CollectionUtils.isEmpty(basicBuildingList)){
+            if (CollectionUtils.isEmpty(basicBuildingList)) {
                 continue;
             }
             SchemeJudgeObjectSimpleDto simpleDto = new SchemeJudgeObjectSimpleDto();
             Integer number = generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber());
-            for (BasicBuilding basicBuilding :basicBuildingList){
+            for (BasicBuilding basicBuilding : basicBuildingList) {
                 if (basicBuilding.getProperty() != null) {//物业信誉与管理
                     DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
-                    if (dataProperty == null){
+                    if (dataProperty == null) {
                         continue;
                     }
                     BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
@@ -596,11 +627,11 @@ public class GenerateEquityService {
         if (CollectionUtils.isNotEmpty(rights)) {
             for (SurveyAssetRightItem right : rights) {
                 List<SurveyAssetRightDeclare> declareList = surveyAssetRightGroupService.getSurveyAssetRightDeclareListByGroupId(right.getGroupId());
-                if (CollectionUtils.isEmpty(declareList)){
+                if (CollectionUtils.isEmpty(declareList)) {
                     continue;
                 }
                 List<Integer> integerList = LangUtils.transform(declareList, oo -> oo.getDeclareId());
-                if (CollectionUtils.isEmpty(integerList)){
+                if (CollectionUtils.isEmpty(integerList)) {
                     continue;
                 }
                 for (Integer integer : integerList) {
