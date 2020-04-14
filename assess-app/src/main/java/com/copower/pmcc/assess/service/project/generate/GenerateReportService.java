@@ -321,17 +321,21 @@ public class GenerateReportService {
             count++;
             Iterator<String> iterator = compareHashSet.iterator();
             while (iterator.hasNext()) {
-                String next = iterator.next();
-                if (StringUtils.isBlank(next)) {
+                String name = iterator.next();
+                if (StringUtils.isBlank(name)) {
                     continue;
                 }
                 try {
-                    GenerateReportAssembleHelp.assembleSifaMap(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleGongshangMap(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleJiansheMap(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleCommonMap(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleBaseMap(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleUniversalBankMap(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                    GenerateReportAssembleHelp.assembleSifaMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                    GenerateReportAssembleHelp.assembleGongshangMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                    GenerateReportAssembleHelp.assembleJiansheMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                    GenerateReportAssembleHelp.assembleCommonMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                    GenerateReportAssembleHelp.assembleBaseMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                    GenerateReportAssembleHelp.assembleUniversalBankMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                    //收益法租赁限制说明
+                    if (Objects.equal(ReportFieldMdIncomeEnum.TenancyrestrictionRemark.getName(), name)) {
+                        GenerateReportAssembleHelp.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTenancyrestrictionRemark());
+                    }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                 }

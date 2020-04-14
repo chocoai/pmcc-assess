@@ -9,8 +9,6 @@ import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,7 +20,6 @@ import java.util.Map;
  */
 public final class GenerateReportAssembleHelp {
 
-    private static Logger logger = LoggerFactory.getLogger(GenerateReportAssembleHelp.class);
 
     /**
      * 司法 报告字段
@@ -426,11 +423,7 @@ public final class GenerateReportAssembleHelp {
         }
         //估价对象实况照片
         if (Objects.equal(ReportFieldEnum.Valuation_Target_Live_Photos.getName(), name)) {
-            try {
-                putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuation_Target_Live_Photos());
-            } catch (Exception e) {
-                logger.error("估价对象实况照片", e);
-            }
+            putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuation_Target_Live_Photos());
         }
         //估价对象权属证明复印件
         if (Objects.equal(ReportFieldEnum.Copies_the_Ownership_Certificate_the_Valuation_Object.getName(), name)) {
