@@ -70,6 +70,7 @@ public class BasicExamineHandle implements Serializable {
     private BasicUnitHuxingService basicUnitHuxingService;
     private BasicHouseTradingLeaseAndSellDtoService basicHouseTradingLeaseAndSellDtoService;
     private BasicBuildingPropertyServiceItemService basicBuildingPropertyServiceItemService;
+    private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
 
     private BasicApplyBatch basicApplyBatch;
     private List<BasicApplyBatchDetail> basicApplyBatchDetailList;
@@ -362,6 +363,34 @@ public class BasicExamineHandle implements Serializable {
         return intelligentVoList;
     }
 
+    public List<BasicHouseHuxingPrice> getBasicHouseHuxingPriceList(Integer houseId){
+        List<BasicHouseHuxingPrice> houseHuxingPriceList = getBasicHouseHuxingPriceAll() ;
+        Iterator<BasicHouseHuxingPrice> iterator = houseHuxingPriceList.iterator();
+        while (iterator.hasNext()){
+            BasicHouseHuxingPrice next = iterator.next();
+            if (! Objects.equal(next.getHouseId(),houseId)){
+                iterator.remove();
+            }
+        }
+        return houseHuxingPriceList;
+    }
+
+    public List<BasicHouseHuxingPrice> getBasicHouseHuxingPriceAll(){
+        List<BasicHouseHuxingPrice> houseHuxingPriceList = new ArrayList<>() ;
+        List<BasicHouse> basicHouseList = getBasicHouseAll();
+        if (CollectionUtils.isNotEmpty(basicHouseList)) {
+            for (BasicHouse target : basicHouseList) {
+                List<BasicHouseHuxingPrice> houseHuxingPrices = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(target.getId());
+                if (CollectionUtils.isEmpty(houseHuxingPrices)){
+                    continue;
+                }
+                houseHuxingPriceList.addAll(houseHuxingPrices) ;
+            }
+        }
+        return houseHuxingPriceList ;
+    }
+
+
     public List<BasicHouseEquipment> getBasicHouseEquipmentAll() {
         List<BasicHouseEquipment> basicHouseEquipmentList = new ArrayList<>();
         List<BasicHouse> basicHouseList = getBasicHouseAll();
@@ -629,6 +658,7 @@ public class BasicExamineHandle implements Serializable {
         this.basicHouseTradingLeaseAndSellDtoService = SpringContextUtils.getBean(BasicHouseTradingLeaseAndSellDtoService.class);
         this.basicEstateInvestigationService = SpringContextUtils.getBean(BasicEstateInvestigationService.class);
         this.basicBuildingPropertyServiceItemService = SpringContextUtils.getBean(BasicBuildingPropertyServiceItemService.class);
+        this.basicHouseHuxingPriceService = SpringContextUtils.getBean(BasicHouseHuxingPriceService.class);
     }
 
     private List<BasicApplyBatchDetail> getBasicApplyBatchDetailList() {

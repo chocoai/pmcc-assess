@@ -862,14 +862,14 @@ public class GenerateReportService {
         }
         //估价结果一览表
         if (Objects.equal(ReportFieldEnum.JudgeBuildResultSurveySheet.getName(), name)) {
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet(true));
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildResultSurveySheet(true));
         }
         //估价结果一览表不含坐落
         if (Objects.equal(ReportFieldEnum.JudgeBuildResultSurveySheetNotBeLocated.getName(), name)) {
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet(false));
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildResultSurveySheet(false));
         }
         if (Objects.equal(ReportFieldSifaEnum.JudgeBuildResultSurveySheet.getName(), name)) {
-            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet2());
+            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildResultSurveySheet2());
         }
         //相关参数选取与应用
         if (Objects.equal(ReportFieldEnum.SelectionApplicationParameters.getName(), name)) {
