@@ -2265,6 +2265,76 @@ public class BasicHouseRoomExample {
             addCriterion("current_floor not between", value1, value2, "currentFloor");
             return (Criteria) this;
         }
+
+        public Criteria andShapeRemarkIsNull() {
+            addCriterion("shape_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkIsNotNull() {
+            addCriterion("shape_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkEqualTo(String value) {
+            addCriterion("shape_remark =", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkNotEqualTo(String value) {
+            addCriterion("shape_remark <>", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkGreaterThan(String value) {
+            addCriterion("shape_remark >", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("shape_remark >=", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkLessThan(String value) {
+            addCriterion("shape_remark <", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkLessThanOrEqualTo(String value) {
+            addCriterion("shape_remark <=", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkLike(String value) {
+            addCriterion("shape_remark like", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkNotLike(String value) {
+            addCriterion("shape_remark not like", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkIn(List<String> values) {
+            addCriterion("shape_remark in", values, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkNotIn(List<String> values) {
+            addCriterion("shape_remark not in", values, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkBetween(String value1, String value2) {
+            addCriterion("shape_remark between", value1, value2, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkNotBetween(String value1, String value2) {
+            addCriterion("shape_remark not between", value1, value2, "shapeRemark");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

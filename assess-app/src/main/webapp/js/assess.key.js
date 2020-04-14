@@ -307,6 +307,7 @@ AssessDicKey.examine_house_heating_method = "examine.house.heating.method";//供
 AssessDicKey.examine_house_heating_equipment_price_range = "examine.house.heating.equipment_price_range";//供暖设备价格区间
 AssessDicKey.examine_house_corollary_equipment_type = "examine.house.corollary.equipment.type";//配套设备设施 类型
 AssessDicKey.examine_house_corollary_equipment_use = "examine.house.corollary.equipment.use";//配套设备设施 用途
+AssessDicKey.examine_house_room_price_export_columns = "examine.house.room.price.export.columns";//房屋户型单价列名
 
 AssessDicKey.examineCommonOrientation = "examine.common.orientation";//朝向(板块)
 AssessDicKey.examineCommonHouseOrientation = "examine.common.house.orientation";//朝向(房屋)

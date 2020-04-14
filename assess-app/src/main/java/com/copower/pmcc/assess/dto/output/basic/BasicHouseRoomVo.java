@@ -16,6 +16,15 @@ public class BasicHouseRoomVo extends BasicHouseRoom {
     private String standardMeasureName;
     private String storageRequestName;
     private String adjacentPositionName;
+    private String adjacentPositionDescribe;
+
+    public String getAdjacentPositionDescribe() {
+        return adjacentPositionDescribe;
+    }
+
+    public void setAdjacentPositionDescribe(String adjacentPositionDescribe) {
+        this.adjacentPositionDescribe = adjacentPositionDescribe;
+    }
 
     public String getStandardMeasureName() {
         return standardMeasureName;

@@ -214,28 +214,6 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                相邻位置
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <select class="form-control input-full adjacentPosition2"
-                                                        name="adjacentPosition">
-                                                </select>
-                                            </div>
-                                            <label class="col-sm-2 control-label">
-                                                方位
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <select class="form-control input-full orientation2"
-                                                        name="orientation">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none" class="row form-group store">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
                                                 开间
                                             </label>
                                             <div class="col-sm-4">
@@ -256,11 +234,42 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                距离
+                                                相邻位置
                                             </label>
                                             <div class="col-sm-4">
+                                                <select class="form-control input-full adjacentPosition"
+                                                        name="adjacentPosition">
+                                                </select>
+                                            </div>
+
+                                            <label class="col-sm-2 control-label">
+                                                距离(m)
+                                            </label>
+                                            <div class="col-sm-3">
                                                 <input type="text" placeholder="距离" name="distance"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full">
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <button class="btn btn-sm btn-success" type="button"
+                                                        onclick="houseHuxingPrice.prototype.appendHTML()"><i
+                                                        class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="streetNumbers store">
+
+                                </div>
+                                <div style="display: none" class="row form-group store">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                方位
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control input-full search-select select2 orientation2"
+                                                        name="orientation">
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

@@ -98,18 +98,18 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
+                                                形状说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="形状说明" required
+                                                       name="shapeRemark" class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
                                                 使用面积(m²)<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" data-rule-number="true" placeholder="使用面积" required
                                                        name="area" class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-2 control-label">
-                                                层高(m)
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <input type="text" data-rule-number="true" placeholder="层高"
-                                                       name="layerHeight" class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>
@@ -118,16 +118,29 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
+                                                层高(m)
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" data-rule-number="true" placeholder="层高"
+                                                       name="layerHeight" class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
                                                 净高(m)
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="净高" name="clearHeight"
                                                        class="form-control input-full">
                                             </div>
-                                            <label class="col-sm-2 control-label currentFloor" style="display: none">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group currentFloor">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
                                                 所在楼层
                                             </label>
-                                            <div class="col-sm-4 currentFloor" style="display: none">
+                                            <div class="col-sm-4  common">
                                                 <input type="text" placeholder="所在楼层" name="currentFloor"
                                                        class="form-control input-full">
                                             </div>
@@ -277,28 +290,6 @@
                                     </div>
                                 </div>
                                 <%-- 商铺、商场--%>
-                                <div style="display: none" class="row form-group store base">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                相邻位置
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 adjacentPosition"
-                                                        name="adjacentPosition">
-                                                </select>
-                                            </div>
-                                            <label class="col-sm-2 control-label">
-                                                方位
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 orientation"
-                                                        name="orientation">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div style="display: none" class="row form-group store rule">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -343,11 +334,42 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                距离
+                                                相邻位置
                                             </label>
                                             <div class="col-sm-4">
+                                                <select class="form-control input-full adjacentPosition"
+                                                        name="adjacentPosition">
+                                                </select>
+                                            </div>
+
+                                            <label class="col-sm-2 control-label">
+                                                距离(m)
+                                            </label>
+                                            <div class="col-sm-3">
                                                 <input type="text" placeholder="距离" name="distance"
-                                                       class="form-control input-full" >
+                                                       class="form-control input-full">
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <button class="btn btn-sm btn-success" type="button"
+                                                        onclick="houseRoom.prototype.appendHTML()"><i
+                                                        class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="streetNumbers store base">
+
+                                </div>
+                                <div style="display: none" class="row form-group store base">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                方位
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control input-full search-select select2 orientation"
+                                                        name="orientation">
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
