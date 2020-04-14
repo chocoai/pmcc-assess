@@ -7,8 +7,8 @@ package com.copower.pmcc.assess.common.enums.report;
  */
 public enum ReportFieldGongshangBankEnum {
 
-    District_Analysis("工行区位分析"),
-    ICBCValuationCaseInformationSheet("工行估价案例情况表"),
+    GongshangDistrict_Analysis("工行区位分析"),
+    GongshangICBCValuationCaseInformationSheet("工行估价案例情况表"),
 
     ;
     private String name;

@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
@@ -73,8 +72,6 @@ import java.util.*;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -992,7 +989,7 @@ public class GenerateBaseDataService {
                 declareRealtyHouseCert = new DeclareRealtyHouseCert();
             }
             switch (baseReportEnum) {
-                case landNumber: {
+                case BankGeneralLandNumber: {
                     String value = declareRealtyLandCert.getLandCertName();
                     if (StringUtils.isEmpty(value)) {
                         value = declareRealtyRealEstateCert.getCertName();
@@ -1005,7 +1002,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case landownership: {
+                case BankGenerallandownership: {
                     String value = declareRealtyLandCert.getOwnership();
                     if (StringUtils.isEmpty(value)) {
                         value = declareRealtyRealEstateCert.getOwnership();
@@ -1018,7 +1015,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case landcert_use: {
+                case BankGenerallandcert_use: {
                     String value = null;
                     if (declareRealtyLandCert.getCertUseCategory() != null) {
                         value = baseDataDicService.getNameById(declareRealtyLandCert.getCertUseCategory());
@@ -1038,7 +1035,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case land_right_nature: {
+                case BankGeneralLand_right_nature: {
                     String value = null;
                     if (declareRealtyLandCert.getLandRightNature() != null) {
                         value = baseDataDicService.getNameById(declareRealtyLandCert.getLandRightNature());
@@ -1053,7 +1050,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case landapportionment_area: {
+                case BankGenerallandapportionment_area: {
                     BigDecimal apportionmentArea = null;
                     if (apportionmentArea == null) {
                         if (declareRealtyLandCert.getApportionmentArea() != null) {
@@ -1075,7 +1072,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case landendTime: {
+                case BankGenerallandendTime: {
                     Date useEndDate = null;
                     if (declareRealtyLandCert.getTerminationDate() != null) {
                         useEndDate = declareRealtyLandCert.getTerminationDate();
@@ -1100,7 +1097,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case landregistration_authority: {
+                case BankGenerallandregistration_authority: {
                     String value = null;
                     if (StringUtils.isEmpty(value)) {
                         if (StringUtils.isNotEmpty(declareRealtyLandCert.getRegistrationAuthority())) {
@@ -1122,7 +1119,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case landregistration_date: {
+                case BankGenerallandregistration_date: {
                     Date registrationDate = null;
                     if (registrationDate == null) {
                         if (declareRealtyLandCert.getRegistrationDate() != null) {
@@ -1139,7 +1136,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case LandArea: {
+                case BankGeneralLandArea: {
                     BigDecimal apportionmentArea = null;
                     if (apportionmentArea == null) {
                         if (declareRealtyLandCert.getApportionmentArea() != null) {
@@ -4017,7 +4014,7 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getJudgeBuildResultSurveySheet2() throws Exception {
+    public String getJudicialSchemeJudgeObjectSheet() throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -4574,11 +4571,11 @@ public class GenerateBaseDataService {
         ReportFieldUniversalBankEnum reportFieldEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         String name = null;
         switch (reportFieldEnum) {
-            case renovation_condition_bathroom: {
+            case BankGeneralrenovation_condition_bathroom: {
                 name = "卫生间";
             }
             break;
-            case renovation_condition_kitchen: {
+            case BankGeneralrenovation_condition_kitchen: {
                 name = "厨房";
             }
             break;
@@ -4624,23 +4621,23 @@ public class GenerateBaseDataService {
         ReportFieldUniversalBankEnum reportFieldEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         String name = null;
         switch (reportFieldEnum) {
-            case renovation_condition_door: {
+            case BankGeneralrenovation_condition_door: {
                 name = "门";
             }
             break;
-            case renovation_condition_window: {
+            case BankGeneralrenovation_condition_window: {
                 name = "窗";
             }
             break;
-            case renovation_condition_land: {
+            case BankGeneralrenovation_condition_land: {
                 name = "地面";
             }
             break;
-            case renovation_condition_wall: {
+            case BankGeneralrenovation_condition_wall: {
                 name = "墙";
             }
             break;
-            case renovation_condition_Canopy: {
+            case BankGeneralrenovation_condition_Canopy: {
                 name = "天棚";
             }
             break;
@@ -5560,7 +5557,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(ReportFieldJiansheBankEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
+                    val = getNetAssessmentNumber2(ReportFieldJiansheBankEnum.JiansheNetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值1(元)", val);
@@ -5568,7 +5565,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(ReportFieldJiansheBankEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
+                    val = getNetAssessmentNumber2(ReportFieldJiansheBankEnum.JiansheNetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值2(元)", val);
@@ -5639,10 +5636,10 @@ public class GenerateBaseDataService {
         final String tradingParties = "双方";
         final String buyerPayment = "买方";
         List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-            if (Objects.equal(reportFieldEnum.name(), ReportFieldJiansheBankEnum.NetAssessmentTwo.name())) {
+            if (Objects.equal(reportFieldEnum.name(), ReportFieldJiansheBankEnum.JiansheNetAssessmentTwo.name())) {
                 return StringUtils.contains(oo.getTaxesBurden(), sellerPayment);
             }
-            if (Objects.equal(reportFieldEnum.name(), ReportFieldJiansheBankEnum.NetAssessmentOne.name())) {
+            if (Objects.equal(reportFieldEnum.name(), ReportFieldJiansheBankEnum.JiansheNetAssessmentOne.name())) {
                 return StringUtils.contains(oo.getTaxesBurden(), buyerPayment);
             }
             return StringUtils.contains(oo.getTaxesBurden(), tradingParties);

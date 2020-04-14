@@ -6,8 +6,8 @@ package com.copower.pmcc.assess.common.enums.report;
  * @description:报告模板字段 司法
  */
 public enum ReportFieldSifaEnum {
-    ValuationProjectName("司法估价项目名称"),
-    JudgeBuildResultSurveySheet("司法估价结果一览表"),
+    SifaValuationProjectName("司法估价项目名称"),
+    SifaJudgeBuildResultSurveySheet("司法估价结果一览表"),
     ;
     private String name;
     private ReportFieldSifaEnum(String name) {
