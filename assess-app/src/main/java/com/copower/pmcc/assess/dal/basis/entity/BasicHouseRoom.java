@@ -68,6 +68,8 @@ public class BasicHouseRoom {
 
     private String currentFloor;
 
+    private String shapeRemark;
+
     public Integer getId() {
         return id;
     }
@@ -322,5 +324,13 @@ public class BasicHouseRoom {
 
     public void setCurrentFloor(String currentFloor) {
         this.currentFloor = currentFloor == null ? null : currentFloor.trim();
+    }
+
+    public String getShapeRemark() {
+        return shapeRemark;
+    }
+
+    public void setShapeRemark(String shapeRemark) {
+        this.shapeRemark = shapeRemark == null ? null : shapeRemark.trim();
     }
 }

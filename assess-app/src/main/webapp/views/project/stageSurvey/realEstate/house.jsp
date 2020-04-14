@@ -290,6 +290,13 @@
                                                                 required>
                                                         </select>
                                                     </div>
+                                                    <label class="col-sm-1">数量<span
+                                                            class="symbol required"></span></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" placeholder="数量" name="quantity"
+                                                               class="form-control input-full"
+                                                               value="${basicHouseHuxing.quantity}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

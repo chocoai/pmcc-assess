@@ -236,7 +236,7 @@ var houseHuxingPrice;
             html += "</select>";
             html += "</div>";
 
-            html += "<label class='col-sm-2 control-label'>距离<span class='symbol required'></span></label>";
+            html += "<label class='col-sm-2 control-label'>距离(m)<span class='symbol required'></span></label>";
             html += "<div class='col-sm-3'>";
             html += '<input type="text" placeholder="距离" name="distance' + houseHuxingPrice.num + '" class="form-control input-full" required>';
             html += "</div>";
@@ -280,7 +280,7 @@ var houseHuxingPrice;
                     html += "</select>";
                     html += "</div>";
 
-                    html += "<label class='col-sm-2 control-label'>距离<span class='symbol required'></span></label>";
+                    html += "<label class='col-sm-2 control-label'>距离(m)<span class='symbol required'></span></label>";
                     html += "<div class='col-sm-3'>";
                     html += '<input type="text" placeholder="距离" name="distance' + j + '" class="form-control input-full" required value="' + strs2[j] + '">';
                     html += "</div>";
@@ -1968,7 +1968,7 @@ var houseRoom;
         },
         loadDataDicList: function () {
             var cols = commonColumn.houseRoomColumn();
-            if(houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text()=="多层"){
+            if(houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text()=="错层"){
                 cols.push({field: 'currentFloor', title: '所在楼层'});
             }
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
@@ -2304,7 +2304,7 @@ var houseRoom;
             //所在楼层
             var spatialDistributionId = houseCommon.houseHuxingForm.find("select.spatialDistribution").val();
             if (spatialDistributionId) {
-                var strArr = ["多层"];
+                var strArr = ["错层"];
                 AssessCommon.getDataDicInfo(spatialDistributionId, function (spatialDistributionData) {
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
@@ -2468,7 +2468,7 @@ var houseRoom;
             html += "</select>";
             html += "</div>";
 
-            html += "<label class='col-sm-2 control-label'>距离<span class='symbol required'></span></label>";
+            html += "<label class='col-sm-2 control-label'>距离(m)<span class='symbol required'></span></label>";
             html += "<div class='col-sm-3'>";
             html += '<input type="text" placeholder="距离" name="distance' + houseRoom.num + '" class="form-control input-full" required>';
             html += "</div>";
@@ -2512,7 +2512,7 @@ var houseRoom;
                     html += "</select>";
                     html += "</div>";
 
-                    html += "<label class='col-sm-2 control-label'>距离<span class='symbol required'></span></label>";
+                    html += "<label class='col-sm-2 control-label'>距离(m)<span class='symbol required'></span></label>";
                     html += "<div class='col-sm-3'>";
                     html += '<input type="text" placeholder="距离" name="distance' + j + '" class="form-control input-full" required value="' + strs2[j] + '">';
                     html += "</div>";

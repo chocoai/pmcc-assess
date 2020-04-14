@@ -34,6 +34,7 @@
     <result column="storage_request" property="storageRequest" jdbcType="VARCHAR" />
     <result column="span_num" property="spanNum" jdbcType="VARCHAR" />
     <result column="current_floor" property="currentFloor" jdbcType="VARCHAR" />
+    <result column="shape_remark" property="shapeRemark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -98,7 +99,7 @@
     sunshine, lighting, opening, depth, layer_height, clear_height, bis_delete, creator, 
     gmt_created, gmt_modified, house_shape, length, width, adjacent_position, distance, 
     span_length, standard_span, max_span, min_span, standard_measure, storage_request, 
-    span_num, current_floor
+    span_num, current_floor, shape_remark
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomExample" >
     select
@@ -144,7 +145,7 @@
       adjacent_position, distance, span_length, 
       standard_span, max_span, min_span, 
       standard_measure, storage_request, span_num, 
-      current_floor)
+      current_floor, shape_remark)
     values (#{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, 
       #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, 
@@ -155,7 +156,7 @@
       #{adjacentPosition,jdbcType=VARCHAR}, #{distance,jdbcType=VARCHAR}, #{spanLength,jdbcType=VARCHAR}, 
       #{standardSpan,jdbcType=VARCHAR}, #{maxSpan,jdbcType=VARCHAR}, #{minSpan,jdbcType=VARCHAR}, 
       #{standardMeasure,jdbcType=VARCHAR}, #{storageRequest,jdbcType=VARCHAR}, #{spanNum,jdbcType=VARCHAR}, 
-      #{currentFloor,jdbcType=VARCHAR})
+      #{currentFloor,jdbcType=VARCHAR}, #{shapeRemark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -256,6 +257,9 @@
       <if test="currentFloor != null" >
         current_floor,
       </if>
+      <if test="shapeRemark != null" >
+        shape_remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
@@ -350,6 +354,9 @@
       </if>
       <if test="currentFloor != null" >
         #{currentFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="shapeRemark != null" >
+        #{shapeRemark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -458,6 +465,9 @@
       <if test="record.currentFloor != null" >
         current_floor = #{record.currentFloor,jdbcType=VARCHAR},
       </if>
+      <if test="record.shapeRemark != null" >
+        shape_remark = #{record.shapeRemark,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -496,7 +506,8 @@
       standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
       storage_request = #{record.storageRequest,jdbcType=VARCHAR},
       span_num = #{record.spanNum,jdbcType=VARCHAR},
-      current_floor = #{record.currentFloor,jdbcType=VARCHAR}
+      current_floor = #{record.currentFloor,jdbcType=VARCHAR},
+      shape_remark = #{record.shapeRemark,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -597,6 +608,9 @@
       <if test="currentFloor != null" >
         current_floor = #{currentFloor,jdbcType=VARCHAR},
       </if>
+      <if test="shapeRemark != null" >
+        shape_remark = #{shapeRemark,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -632,7 +646,8 @@
       standard_measure = #{standardMeasure,jdbcType=VARCHAR},
       storage_request = #{storageRequest,jdbcType=VARCHAR},
       span_num = #{spanNum,jdbcType=VARCHAR},
-      current_floor = #{currentFloor,jdbcType=VARCHAR}
+      current_floor = #{currentFloor,jdbcType=VARCHAR},
+      shape_remark = #{shapeRemark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

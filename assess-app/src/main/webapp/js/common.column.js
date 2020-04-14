@@ -653,6 +653,7 @@ commonColumn.houseRoomColumn = function () {
         }
     });
     cols.push({field: 'houseShape', title: '房间形状'});
+    cols.push({field: 'shapeRemark', title: '形状说明'});
     cols.push({field: 'area', title: '面积(m²)'});
     cols.push({field: 'layerHeight', title: '层高(m)'});
     cols.push({field: 'clearHeight', title: '净高(m)'});

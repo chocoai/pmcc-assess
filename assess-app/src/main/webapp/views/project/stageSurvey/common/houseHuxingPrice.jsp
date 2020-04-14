@@ -243,7 +243,7 @@
                                             </div>
 
                                             <label class="col-sm-2 control-label">
-                                                距离
+                                                距离(m)
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="距离" name="distance"

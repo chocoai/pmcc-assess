@@ -56,6 +56,8 @@ public class BasicUnitHuxing {
 
     private Integer utilitiesType;
 
+    private String quantity;
+
     public Integer getId() {
         return id;
     }
@@ -262,5 +264,13 @@ public class BasicUnitHuxing {
 
     public void setUtilitiesType(Integer utilitiesType) {
         this.utilitiesType = utilitiesType;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity == null ? null : quantity.trim();
     }
 }
