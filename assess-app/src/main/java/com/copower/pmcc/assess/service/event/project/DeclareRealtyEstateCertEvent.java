@@ -21,14 +21,6 @@ import org.springframework.stereotype.Component;
 public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
     @Autowired
     private DeclareApplyService declareApplyService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private ProjectPlanService projectPlanService;
-    @Autowired
-    private ProjectPlanSurveyService projectPlanSurveyService;
-    @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
@@ -36,14 +28,7 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
         if (declareApply != null) {
             declareApplyService.writeToDeclareRecord(declareApply);
         }
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(declareApply.getPlanDetailsId());
-        if (projectPlanDetails != null && projectPlanDetails.getBisRestart() == Boolean.TRUE) {
-            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-            if (projectPlan != null)
-                projectPlanSurveyService.appendSurveyPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
-        }
         super.processFinishExecute(processExecution);//数据写入record记录表中后再执行进入下阶段
-
         if (StringUtils.isNotEmpty(processExecution.getProcessInstanceId())){
 //            chksAssessmentProjectPerformanceService.checkTaskChksActivity(processExecution.getProcessInstanceId());
         }

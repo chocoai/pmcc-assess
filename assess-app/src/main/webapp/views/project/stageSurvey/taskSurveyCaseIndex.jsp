@@ -580,6 +580,7 @@
 
     //引用备选案例
     batchTreeTool.referenceAlternativeCase = function (id) {
+        notifyInfo('提示','请耐心等待....');
         Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/deleteBatchAllById',

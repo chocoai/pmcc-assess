@@ -904,10 +904,6 @@ public class DeclarePublicService {
         declareApplyService.saveDeclareApply(declareApply);
         if (StringUtils.isBlank(processInsId)) {
             declareApplyService.writeToDeclareRecord(declareApply);
-            if (projectPlanDetails.getBisRestart() == Boolean.TRUE) {
-                ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-                projectPlanSurveyService.appendSurveyPlanDetails(projectPlan.getProjectId(), projectPlan.getStageSort());
-            }
         } else {
             //修改监听器
             publicService.updateProcessEventExecutor(processInsId, DeclareRealtyEstateCertEvent.class.getSimpleName());

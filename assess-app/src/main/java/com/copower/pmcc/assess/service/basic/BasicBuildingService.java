@@ -38,6 +38,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +46,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -168,7 +167,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
         List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
         BasicBuildingVo vo = new BasicBuildingVo();
         //检查是否存在差异的楼栋数据，有则需将基础部分与差异部分写入vo中
-        Boolean containDifference = false;
+        BasicBuilding currBuildingDifference = null;
         for (KeyValueDto keyValueDto : keyValueDtos) {
             Boolean isBuilding = BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey());
             Boolean isBuildingBase = BasicFormClassifyEnum.BUILDING_BASE.getKey().equals(keyValueDto.getKey());
@@ -176,16 +175,19 @@ public class BasicBuildingService extends BasicEntityAbstract {
             if (isBuilding || isBuildingBase || isBuildingMonolayer) {
                 vo = getBasicBuildingVo(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue())));
             }
-            containDifference = containDifference == false ? BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey().equals(keyValueDto.getKey()) : true;
-        }
-        if (containDifference) {
-            List<BasicBuilding> buildingDifferenceList = Lists.newArrayList();
-            for (KeyValueDto keyValueDto : keyValueDtos) {
-                if (BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey().equals(keyValueDto.getKey())) {
-                    buildingDifferenceList.add(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue())));
+            if (BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey().equals(keyValueDto.getKey())) {
+                vo.setCurrBuildingDifference(getBasicBuildingVo(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue()))));
+                List<BasicApplyBatchDetail> list=Lists.newArrayList();
+                basicApplyBatchDetailService.collectionParentBatchDetails(basicApply.getBatchDetailId(),list);
+                List<BasicApplyBatchDetail> filter = LangUtils.filter(list, o -> o.getType().equals(keyValueDto.getKey()));
+                if(CollectionUtils.isNotEmpty(filter)){
+                    List<BasicBuildingVo> basicBuildingVos=Lists.newArrayList();
+                    for (BasicApplyBatchDetail basicApplyBatchDetail : filter) {
+                        basicBuildingVos.add(getBasicBuildingVo(getBasicBuildingById(basicApplyBatchDetail.getTableId())));
+                    }
+                    vo.setBasicBuildingDifferences(basicBuildingVos);
                 }
             }
-            vo.setBasicBuildingDifferences(buildingDifferenceList);
         }
         return vo;
     }

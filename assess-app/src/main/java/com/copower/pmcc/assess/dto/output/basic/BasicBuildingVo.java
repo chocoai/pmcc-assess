@@ -22,22 +22,18 @@ public class BasicBuildingVo extends BasicBuilding {
     private String propertyTypeName;
     private String completedTimeTypeName;
     private String betweenDistanceName;
-
     private String residenceUseYearName;
-
     private String industryUseYearName;
     private DataBuilderVo dataBuilder;
     private DataPropertyVo dataProperty;
-
     private String constructionQualityName;
-
     private String appearanceStyleName;
-
     private String appearanceNewAndOldName;
     private String propertySocialPrestigeName;
     private String propertyCompanyNatureName;
     private String creatorName;
-    private List<BasicBuilding> basicBuildingDifferences;
+    private BasicBuildingVo currBuildingDifference;//当前房屋对应的楼栋差异部分
+    private List<BasicBuildingVo> basicBuildingDifferences;//楼栋下所有差异部分
 
     public String getCreatorName() {
         return creatorName;
@@ -192,11 +188,19 @@ public class BasicBuildingVo extends BasicBuilding {
         this.propertyCompanyNatureName = propertyCompanyNatureName;
     }
 
-    public List<BasicBuilding> getBasicBuildingDifferences() {
+    public BasicBuildingVo getCurrBuildingDifference() {
+        return currBuildingDifference;
+    }
+
+    public void setCurrBuildingDifference(BasicBuildingVo currBuildingDifference) {
+        this.currBuildingDifference = currBuildingDifference;
+    }
+
+    public List<BasicBuildingVo> getBasicBuildingDifferences() {
         return basicBuildingDifferences;
     }
 
-    public void setBasicBuildingDifferences(List<BasicBuilding> basicBuildingDifferences) {
+    public void setBasicBuildingDifferences(List<BasicBuildingVo> basicBuildingDifferences) {
         this.basicBuildingDifferences = basicBuildingDifferences;
     }
 }

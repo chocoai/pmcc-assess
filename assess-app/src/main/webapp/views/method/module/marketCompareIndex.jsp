@@ -653,7 +653,7 @@
             var averagePrice = 0;//平均价
             $.each(caseItemIdArray, function (i, item) {
                 var weightText = table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').find('a').text()
-                if (!weightText || weightText == '空') {
+                if (!weightText || weightText == '无') {
                     isWeightFinish = false;
                     return false;
                 }
@@ -663,7 +663,7 @@
                     currSpecificPrice = table.find('tr[data-name="specificPrice"]').find('td[data-item-id=' + item + ']').text();
                     currSpecificPrice = parseFloat(currSpecificPrice);
                     var weight = table.find('tr[data-name="weight"]').find('td[data-item-id=' + item + ']').find('a').text();
-                    weight = parseFloat(weight);
+                    weight = AssessCommon.isNumber(weight) ? parseFloat(weight) : 1;
                     averagePrice += currSpecificPrice * weight;
                 })
                 averagePrice = iTofixed(averagePrice, 0);

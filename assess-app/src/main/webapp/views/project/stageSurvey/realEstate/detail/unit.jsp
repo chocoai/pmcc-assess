@@ -49,10 +49,10 @@
                         </span>
                                                     </div>
                                                 </div>
-                                                <label class="col-sm-1 control-label">梯户比</label>
+                                                <label class="col-sm-1 control-label">户型数</label>
                                                 <div class=" col-sm-3 ">
                                                     <label class="form-control input-full"
-                                                           name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
+                                                           name="huxingNum">${basicUnit.huxingNum}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -77,9 +77,9 @@
                     </div>
 
                     <c:if test="${empty isHistory}">
-                        <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitCommonPart.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
                     </c:if>
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
