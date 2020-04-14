@@ -25,37 +25,31 @@ var houseHuxingPrice;
             var cols = commonColumn.houseHuxingPriceColumn();
             var temp = [];
             var tenementType = houseCommon.houseHuxingForm.find('label[name="tenementType"]').text();
-
-            // if (tenementType == '住宅' || tenementType == '办公') {
-            //     temp = commonColumn.houseRoomResidence();
-            // } else if (tenementType == '商铺' || tenementType == '商场') {
-            //     temp = commonColumn.houseRoomStore();
-            // } else if (tenementType == '餐饮酒店') {
-            //     temp = commonColumn.houseRoomHotel();
-            // } else if (tenementType == '生产') {
-            //     temp = commonColumn.houseRoomProduction();
-            // } else if (tenementType == '仓储') {
-            //     temp = commonColumn.houseRoomStorage();
-            // }
-
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_price_export_columns, null, function (html, dataBase) {
-                var temp = commonColumn.houseHuxingPriceHandleColumn(dataBase, tenementType);
-                $.each(temp, function (i, item) {
-                    cols.push(item);
-                });
-
-                $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-                TableInit(houseHuxingPrice.prototype.config().table, getContextPath()+"/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
-                    houseId: houseCommon.getHouseId(),
-                    approval: true
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
+            if (tenementType == '住宅' || tenementType == '办公') {
+                temp = commonColumn.houseRoomResidence();
+            } else if (tenementType == '商铺' || tenementType == '商场') {
+                temp = commonColumn.houseRoomStore();
+            } else if (tenementType == '餐饮酒店') {
+                temp = commonColumn.houseRoomHotel();
+            } else if (tenementType == '生产') {
+                temp = commonColumn.houseRoomProduction();
+            } else if (tenementType == '仓储') {
+                temp = commonColumn.houseRoomStorage();
+            }
+            $.each(temp, function (i, item) {
+                cols.push(item);
+            })
+            $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath()+"/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
+                houseId: houseCommon.getHouseId(),
+                approval: true
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
             });
         }
     };
@@ -105,36 +99,32 @@ var houseRoom;
             if(houseCommon.houseHuxingForm.find('label[name="spatialDistributionName"]').text()=="错层"){
                 cols.push({field: 'currentFloor', title: '所在楼层'});
             }
-            // if (tenementType == '住宅' || tenementType == '办公') {
-            //     temp = commonColumn.houseRoomResidence();
-            // } else if (tenementType == '商铺' || tenementType == '商场') {
-            //     temp = commonColumn.houseRoomStore();
-            // } else if (tenementType == '餐饮酒店') {
-            //     temp = commonColumn.houseRoomHotel();
-            // } else if (tenementType == '生产') {
-            //     temp = commonColumn.houseRoomProduction();
-            // } else if (tenementType == '仓储') {
-            //     temp = commonColumn.houseRoomStorage();
-            // }
-
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_price_export_columns, null, function (html, dataBase) {
-                var temp = commonColumn.houseHuxingPriceHandleColumn(dataBase, tenementType);
-                $.each(temp, function (i, item) {
-                    cols.push(item);
-                });
-                cols.push({field: 'fileViewName', title: '附件'});
-                $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
-                TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-                    houseId: houseCommon.getHouseId(),
-                    approval: true
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
+            if (tenementType == '住宅' || tenementType == '办公') {
+                temp = commonColumn.houseRoomResidence();
+            } else if (tenementType == '商铺' || tenementType == '商场') {
+                temp = commonColumn.houseRoomStore();
+            } else if (tenementType == '餐饮酒店') {
+                temp = commonColumn.houseRoomHotel();
+            } else if (tenementType == '生产') {
+                temp = commonColumn.houseRoomProduction();
+            } else if (tenementType == '仓储') {
+                temp = commonColumn.houseRoomStorage();
+            }
+            $.each(temp, function (i, item) {
+                cols.push(item);
+            })
+            cols.push({field: 'fileViewName', title: '附件'});
+            $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseRoom.prototype.config().table, getContextPath()+"/basicHouseRoom/getBootstrapTableVo", cols, {
+                houseId: houseCommon.getHouseId(),
+                approval: true
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
             });
         },
         getAndInit: function (id) {

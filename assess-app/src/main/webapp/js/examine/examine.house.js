@@ -465,14 +465,14 @@
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
                     if (str.indexOf(utilitiesMeasureData.name) > -1) {
-                        $("#utilitiesType").parent().parent().parent().parent().show();
+                        $(".utilitiesTypeContent").show();
                     } else {
-                        $("#utilitiesType").parent().parent().parent().parent().hide();
+                        $(".utilitiesTypeContent").hide();
                     }
                 });
             }
         } else {
-            $("#utilitiesType").parent().parent().parent().parent().hide();
+            $("#utilitiesTypeContent").hide();
         }
 
         //绑定变更事件
@@ -484,9 +484,9 @@
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
                     if (str.indexOf(utilitiesMeasureData.name) > -1) {
-                        $("#utilitiesType").parent().parent().parent().parent().show();
+                        $(".utilitiesTypeContent").show();
                     } else {
-                        $("#utilitiesType").parent().parent().parent().parent().hide();
+                        $(".utilitiesTypeContent").hide();
                     }
                 });
             }

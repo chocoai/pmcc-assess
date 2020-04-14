@@ -147,28 +147,30 @@
                                                         <label class="form-control input-full"
                                                                name="spatialDistributionName">${basicHouseHuxing.spatialDistributionName}</label>
                                                     </div>
-                                                    <label class="col-sm-1 control-label">水电费标准</label>
+                                                    <label class="col-sm-1">数量</label>
                                                     <div class="col-sm-3">
-                                                        <label class="form-control input-full"
-                                                               name="utilitiesMeasureName">${basicHouseHuxing.utilitiesMeasureName}</label>
+                                                        <label class="form-control input-full" id="quantity"
+                                                               name="quantity">${basicHouseHuxing.quantity}</label>
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">水电费类型<span
-                                                            class="symbol required"></span></label>
+                                                    <label class="col-sm-1 control-label">水电费标准</label>
                                                     <div class="col-sm-3">
+                                                        <label class="form-control input-full"
+                                                               name="utilitiesMeasureName">${basicHouseHuxing.utilitiesMeasureName}</label>
+                                                    </div>
+                                                    <label class="col-sm-1 utilitiesTypeContent">水电费类型<span
+                                                            class="symbol required"></span></label>
+                                                    <div class="col-sm-3 utilitiesTypeContent">
                                                         <label class="form-control input-full" id="utilitiesType"
                                                                name="utilitiesTypeName">${basicHouseHuxing.utilitiesTypeName}</label>
                                                     </div>
-                                                    <label class="col-sm-1">数量</label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full" id="quantity"
-                                                               name="quantity">${basicHouseHuxing.quantity}</label>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
