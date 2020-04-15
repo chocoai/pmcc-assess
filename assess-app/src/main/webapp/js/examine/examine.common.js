@@ -126,11 +126,13 @@ examineCommon.referenceValue = function ($source, $target) {
 //土地级别选择
 examineCommon.landLevelSelect = function (this_) {
     var $form = $(this_).closest('form');
-    var formGroup = $(this_).closest('.form-group');
+    var formGroup = $(this_).closest('.input-group');
     assessLandLevelTool.select({
         province: $form.find('[name=province]').val(),
         city: $form.find('[name=city]').val(),
         success: function (data) {
+            formGroup.find("input[data-name='landLevelName']").val(data.name);
+            formGroup.find("input[data-name='landLevel']").val(data.id).trigger('onblur');
             formGroup.find("input[name='landLevel']").val(data.id);
             formGroup.find("input[name='landLevelName']").val(data.name);
         }
