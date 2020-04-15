@@ -293,27 +293,15 @@ public class SurveyAssetInfoService {
             }
             writeBackDeclareRecord(recordEntry.getValue(), inventoryContentList);
         }
-
-
     }
 
     private void writeBackDeclareRecord(DeclareRecord declareRecord, List<SurveyAssetInventoryContent> contentList) {
         BaseDataDic areaDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA);
-        BaseDataDic addressDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
-
         for (SurveyAssetInventoryContent content : contentList) {
             //反写实际面积
             if (areaDic != null) {
                 if (content.getInventoryContent().equals(areaDic.getId()) && StringUtils.isNotBlank(content.getActual()) && NumberUtils.isNumber(content.getActual())) {
                     declareRecord.setPracticalArea(new BigDecimal(content.getActual()));
-                }
-            }
-            //反写实际地址
-            if (addressDic != null) {
-                if (content.getInventoryContent().equals(addressDic.getId()) && StringUtils.isNotBlank(content.getActual())) {
-                    String seat = declareRecord.getSeat();
-                    if (StringUtils.isNotBlank(seat))
-                        declareRecord.setSeat(seat.replace(content.getRegistration(),content.getActual()));
                 }
             }
         }
