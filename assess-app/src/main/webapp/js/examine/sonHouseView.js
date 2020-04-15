@@ -2150,13 +2150,13 @@ var houseRoom;
             data.houseId = houseCommon.getHouseId();
             var adjacentPosition = '';
             $("#" + houseRoom.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
-                adjacentPosition += $(this).val()==null?"":$(this).val();
+                adjacentPosition += $(this).val()=="null"?"":$(this).val();
                 adjacentPosition +=  ',';
             })
             data.adjacentPosition = adjacentPosition;
             var distance = '';
             $("#" + houseRoom.prototype.config().frm).find('[name^=distance]').each(function () {
-                distance += $(this).val()==null?"":$(this).val();
+                distance += $(this).val()=="null"?"":$(this).val();
                 distance += ',';
             })
             data.distance = distance;
