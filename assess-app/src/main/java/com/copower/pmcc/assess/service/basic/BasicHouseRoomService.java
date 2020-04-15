@@ -165,16 +165,17 @@ public class BasicHouseRoomService {
         vo.setStandardMeasureName(baseDataDicService.getNameById(basicHouseRoom.getStandardMeasure()));
         vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseRoom.getStorageRequest()));
         vo.setAdjacentPositionName(baseDataDicService.getNameById(basicHouseRoom.getAdjacentPosition()));
-
-        String[] adjacentPositions = basicHouseRoom.getAdjacentPosition().split(",");
-        String[] distances = basicHouseRoom.getDistance().split(",");
-        StringBuilder s = new StringBuilder();
-        if(adjacentPositions.length>0){
-            for (int i = 0; i < adjacentPositions.length; i++) {
-                s.append("距离").append(baseDataDicService.getNameById(adjacentPositions[i])).append(":").append(distances[i]).append("m").append(";");
+        if(!StringUtils.isEmpty(basicHouseRoom.getAdjacentPosition())){
+            String[] adjacentPositions = basicHouseRoom.getAdjacentPosition().split(",");
+            String[] distances = basicHouseRoom.getDistance().split(",");
+            StringBuilder s = new StringBuilder();
+            if(adjacentPositions.length>0){
+                for (int i = 0; i < adjacentPositions.length; i++) {
+                    s.append("距离").append(baseDataDicService.getNameById(adjacentPositions[i])).append(":").append(distances[i]).append("m").append(";");
+                }
             }
+            vo.setAdjacentPositionDescribe(s.toString());
         }
-        vo.setAdjacentPositionDescribe(s.toString());
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseRoom.getId(), "house_room_file", "tb_basic_house_room");
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {

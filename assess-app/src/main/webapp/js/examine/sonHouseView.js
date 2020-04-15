@@ -1963,6 +1963,7 @@ var houseRoom;
         },
         loadDataDicList: function () {
             var cols = commonColumn.houseRoomColumn();
+            var temp = [];
             if(houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text()=="错层"){
                 cols.push({field: 'currentFloor', title: '所在楼层'});
             }
