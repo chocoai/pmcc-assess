@@ -94,17 +94,22 @@ var houseHuxingPrice;
                 return false;
             }
             var data = formParams(houseHuxingPrice.prototype.config().frm);
+            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
             data.houseId = houseCommon.getHouseId();
-            var adjacentPosition = '';
-            $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
-                adjacentPosition += $(this).val() + ',';
-            })
-            data.adjacentPosition = adjacentPosition;
-            var distance = '';
-            $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=distance]').each(function () {
-                distance += $(this).val() + ',';
-            })
-            data.distance = distance;
+            if (tenementType == '商铺' || tenementType == '商场') {
+                var adjacentPosition = '';
+                $("#" + houseRoom.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
+                    adjacentPosition += $(this).val()=="null"?"":$(this).val();
+                    adjacentPosition +=  ',';
+                })
+                data.adjacentPosition = adjacentPosition;
+                var distance = '';
+                $("#" + houseRoom.prototype.config().frm).find('[name^=distance]').each(function () {
+                    distance += $(this).val()=="null"?"":$(this).val();
+                    distance += ',';
+                })
+                data.distance = distance;
+            }
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
                 type: "post",
@@ -2153,19 +2158,22 @@ var houseRoom;
                 return false;
             }
             var data = formParams(houseRoom.prototype.config().frm);
+            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
             data.houseId = houseCommon.getHouseId();
-            var adjacentPosition = '';
-            $("#" + houseRoom.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
-                adjacentPosition += $(this).val()=="null"?"":$(this).val();
-                adjacentPosition +=  ',';
-            })
-            data.adjacentPosition = adjacentPosition;
-            var distance = '';
-            $("#" + houseRoom.prototype.config().frm).find('[name^=distance]').each(function () {
-                distance += $(this).val()=="null"?"":$(this).val();
-                distance += ',';
-            })
-            data.distance = distance;
+            if (tenementType == '商铺' || tenementType == '商场') {
+                var adjacentPosition = '';
+                $("#" + houseRoom.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
+                    adjacentPosition += $(this).val()=="null"?"":$(this).val();
+                    adjacentPosition +=  ',';
+                })
+                data.adjacentPosition = adjacentPosition;
+                var distance = '';
+                $("#" + houseRoom.prototype.config().frm).find('[name^=distance]').each(function () {
+                    distance += $(this).val()=="null"?"":$(this).val();
+                    distance += ',';
+                })
+                data.distance = distance;
+            }
             $.ajax({
                 url: getContextPath() + "/basicHouseRoom/saveAndUpdateBasicHouseRoom",
                 type: "post",
