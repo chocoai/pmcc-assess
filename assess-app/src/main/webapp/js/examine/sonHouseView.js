@@ -1973,7 +1973,7 @@ var houseRoom;
         loadDataDicList: function () {
             var cols = commonColumn.houseRoomColumn();
             var temp = [];
-            if(houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text()=="错层"){
+            if(houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text()=="多层"){
                 cols.push({field: 'currentFloor', title: '所在楼层'});
             }
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
@@ -2326,7 +2326,7 @@ var houseRoom;
             //所在楼层
             var spatialDistributionId = houseCommon.houseHuxingForm.find("select.spatialDistribution").val();
             if (spatialDistributionId) {
-                var strArr = ["错层"];
+                var strArr = ["多层"];
                 AssessCommon.getDataDicInfo(spatialDistributionId, function (spatialDistributionData) {
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
@@ -2456,7 +2456,7 @@ var houseRoom;
             fileDiv.empty();
             var houseFileHtml = '';
             AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
-                houseFileHtml += '<div class="row form-group">';
+                houseFileHtml += '<div class="row form-group common">';
                 houseFileHtml += '<div class="col-md-12">';
                 houseFileHtml += '<div class="form-inline x-valid">';
                 for (var i = 0; i < resultData.length; i++) {

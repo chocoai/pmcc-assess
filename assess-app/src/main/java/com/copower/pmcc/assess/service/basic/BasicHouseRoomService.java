@@ -165,7 +165,7 @@ public class BasicHouseRoomService {
         vo.setStandardMeasureName(baseDataDicService.getNameById(basicHouseRoom.getStandardMeasure()));
         vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseRoom.getStorageRequest()));
         vo.setAdjacentPositionName(baseDataDicService.getNameById(basicHouseRoom.getAdjacentPosition()));
-        if(!StringUtils.isEmpty(basicHouseRoom.getAdjacentPosition())){
+        if(!StringUtils.isEmpty(basicHouseRoom.getAdjacentPosition())&&!StringUtils.isEmpty(basicHouseRoom.getDistance())){
             String[] adjacentPositions = basicHouseRoom.getAdjacentPosition().split(",");
             String[] distances = basicHouseRoom.getDistance().split(",");
             StringBuilder s = new StringBuilder();

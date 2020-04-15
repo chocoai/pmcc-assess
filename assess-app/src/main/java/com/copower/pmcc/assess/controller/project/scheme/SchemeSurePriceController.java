@@ -201,7 +201,7 @@ public class SchemeSurePriceController {
         try {
             SchemeJudgeObject parent = schemeJudgeObjectService.getSchemeJudgeObject(pid);
             List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getVoListByPid(pid);
-            List<SchemeJudgeObjectVo> filter = LangUtils.filter(vos, o -> o.getId().equals( parent.getStandardJudgeId()));
+            List<SchemeJudgeObjectVo> filter = LangUtils.filter(vos, o -> o.getDeclareRecordId().equals( parent.getDeclareRecordId()));
             if(CollectionUtils.isNotEmpty(filter)){
                 return HttpResult.newCorrectResult(200, schemeJudgeObjectService.getSchemeJudgeObjectVo(filter.get(0)));
             }

@@ -158,7 +158,7 @@ public class BasicHouseHuxingPriceService {
         vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStorageRequest()));
         vo.setAdjacentPositionName(baseDataDicService.getNameById(basicHouseHuxingPrice.getAdjacentPosition()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouseHuxingPrice.getCreator()));
-        if (StringUtils.isNotEmpty(basicHouseHuxingPrice.getAdjacentPosition())) {
+        if(!StringUtils.isEmpty(basicHouseHuxingPrice.getAdjacentPosition())&&!StringUtils.isEmpty(basicHouseHuxingPrice.getDistance())){
             String[] adjacentPositions = basicHouseHuxingPrice.getAdjacentPosition().split(",");
             String[] distances = basicHouseHuxingPrice.getDistance().split(",");
             StringBuilder s = new StringBuilder();

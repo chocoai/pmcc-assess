@@ -147,6 +147,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="houseRoomFilePart"></div>
                                 <%--住宅，办公--%>
                                 <div style="display: none" class="row form-group residence base">
                                     <div class="col-md-12">
