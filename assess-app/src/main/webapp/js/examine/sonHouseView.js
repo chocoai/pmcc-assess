@@ -94,21 +94,19 @@ var houseHuxingPrice;
                 return false;
             }
             var data = formParams(houseHuxingPrice.prototype.config().frm);
+            data.houseId = houseCommon.getHouseId();
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
             data.houseId = houseCommon.getHouseId();
             if (tenementType == '商铺' || tenementType == '商场') {
                 var adjacentPosition = '';
-                $("#" + houseRoom.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
-                    adjacentPosition += $(this).val()=="null"?"":$(this).val();
-                    adjacentPosition +=  ',';
+                $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
+                    adjacentPosition += $(this).val() + ',';
                 })
                 data.adjacentPosition = adjacentPosition;
                 var distance = '';
-                $("#" + houseRoom.prototype.config().frm).find('[name^=distance]').each(function () {
-                    distance += $(this).val()=="null"?"":$(this).val();
-                    distance += ',';
+                $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=distance]').each(function () {
+                    distance += $(this).val() + ',';
                 })
-                data.distance = distance;
             }
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
