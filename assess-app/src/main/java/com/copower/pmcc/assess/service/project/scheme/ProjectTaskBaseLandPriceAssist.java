@@ -147,42 +147,46 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         modelAndView.addObject("judgeObject", schemeJudgeObject);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        if (basicEstate == null) {
-            return;
+        if(basicApply!=null){
+            BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if (basicEstate == null) {
+                return;
+            }
+            BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+            modelAndView.addObject("landFactorTotalScore", landStateByEstateId.getLandFactorTotalScore());
+            modelAndView.addObject("landLevelContent", landStateByEstateId.getLandLevelContent());
+            modelAndView.addObject("levelDetailId", landStateByEstateId.getLandLevel());
+            DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
+            if (levelDetail != null){
+                modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+            }
+
+            //容积率
+            String plotRatio = landStateByEstateId.getPlotRatio();
+            modelAndView.addObject("volumetricRate", plotRatio);
+
+
+            //基准地价、法定年限、容积率修正根据对应的土地级别明细表取值,只能在最上级取值
+            Integer landLevelDetailId = landStateByEstateId.getLandLevel();
+            modelAndView.addObject("landLevelDetailId", landLevelDetailId);
+            DataLandLevelDetail data = dataLandLevelDetailService.getPidByDataLandLevelDetail(landLevelDetailId);
+            if (data != null) {
+                modelAndView.addObject("standardPremium", data.getPrice());
+                modelAndView.addObject("legalAge", data.getLegalAge());
+                BigDecimal amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(levelDetail.getVolumeRate(), landLevelDetailId);
+                String volumeFractionAmend = "未配置";
+                if (amendValue != null) {
+                    volumeFractionAmend = String.format("%.2f", amendValue);
+                }
+                modelAndView.addObject("volumeFractionAmend", volumeFractionAmend);
+            }
         }
 
-        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
-        modelAndView.addObject("landFactorTotalScore", landStateByEstateId.getLandFactorTotalScore());
-        modelAndView.addObject("landLevelContent", landStateByEstateId.getLandLevelContent());
-        modelAndView.addObject("levelDetailId", landStateByEstateId.getLandLevel());
-        DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
-        if (levelDetail != null){
-            modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
-        }
         //期日修正系数
         BigDecimal dateAmend = mdBaseLandPriceService.getBaseLandPriceDateAmend(schemeJudgeObject.getId());
         modelAndView.addObject("dateAmend", dateAmend);
 
-        //容积率
-        String plotRatio = landStateByEstateId.getPlotRatio();
-        modelAndView.addObject("volumetricRate", plotRatio);
 
-
-        //基准地价、法定年限、容积率修正根据对应的土地级别明细表取值,只能在最上级取值
-        Integer landLevelDetailId = landStateByEstateId.getLandLevel();
-        modelAndView.addObject("landLevelDetailId", landLevelDetailId);
-        DataLandLevelDetail data = dataLandLevelDetailService.getPidByDataLandLevelDetail(landLevelDetailId);
-        if (data != null) {
-            modelAndView.addObject("standardPremium", data.getPrice());
-            modelAndView.addObject("legalAge", data.getLegalAge());
-            BigDecimal amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(levelDetail.getVolumeRate(), landLevelDetailId);
-            String volumeFractionAmend = "未配置";
-            if (amendValue != null) {
-                volumeFractionAmend = String.format("%.2f", amendValue);
-            }
-            modelAndView.addObject("volumeFractionAmend", volumeFractionAmend);
-        }
 
     }
 
