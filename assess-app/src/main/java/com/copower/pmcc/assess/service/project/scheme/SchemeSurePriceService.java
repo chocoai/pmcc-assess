@@ -454,7 +454,7 @@ public class SchemeSurePriceService {
         //工作表的第一行
         row = sheet.getRow(0);
         //读取数据的起始行
-        int startRowNumber = 1;
+        int startRowNumber = 2;
         //导入成功数据条数
         int successCount = 0;
         //总列数
