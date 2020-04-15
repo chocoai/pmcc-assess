@@ -1,8 +1,9 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseHuxingPriceDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
@@ -17,13 +18,14 @@ import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.*;
-import com.copower.pmcc.assess.service.event.project.SchemeSurePriceEvent;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicHouseHuxingPriceService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -48,6 +50,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -328,36 +331,70 @@ public class SchemeSurePriceService {
      *
      * @param response
      */
-    public void generateAndExport(HttpServletResponse response, Integer pid) throws BusinessException, IOException {
-        List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getAdjustObjectListByPid(pid);
+    public void generateAndExport(HttpServletResponse response, Integer pid, List<ExamineHousePriceDto> dynamicList) throws BusinessException, IOException {
+        List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getVoListByPid(pid);
         if (CollectionUtils.isEmpty(vos)) {
             throw new BusinessException("没有获取到有效的数据");
         }
+
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
-        Row row = sheet.createRow(0);
-        //创建Excel标题 估价对象名称、评估面积、楼层、房号、评估价格、因素
-        String[] title = {"估价对象名称", "评估面积", "楼层", "房号", "评估价格", "因素"};
-
-        for (int i = 0; i < title.length; i++) {
-            Cell cell = row.createCell(i);
-            cell.setCellValue(title[i]);
+        Row row1 = sheet.createRow(0);
+        Row row2 = sheet.createRow(1);
+        //创建Excel标题 估价对象名称、评估面积、楼层、房号、评估价格
+        ArrayList<ExamineHousePriceDto> columnsList = Lists.newArrayList();
+        LinkedHashMap<String, String> base = new LinkedHashMap<>();
+        base.put("name", "估价对象名称");
+        base.put("floorArea", "评估面积");
+        base.put("floorArea_factor", "评估面积因素");
+        base.put("floor", "楼层");
+        base.put("floor_factor", "楼层因素");
+        base.put("roomNumber", "房号");
+        //动态标题
+        for (Map.Entry<String, String> stringObjectEntry : base.entrySet()) {
+            ExamineHousePriceDto dto = new ExamineHousePriceDto();
+            dto.setKey(stringObjectEntry.getKey());
+            dto.setValue(stringObjectEntry.getValue());
+            columnsList.add(dto);
+        }
+        columnsList.addAll(dynamicList);
+        //价格放在最后
+        ExamineHousePriceDto dto = new ExamineHousePriceDto();
+        dto.setKey("price");
+        dto.setValue("评估价格");
+        columnsList.add(dto);
+        for (int i = 0; i < columnsList.size(); i++) {
+            Cell cell = row1.createCell(i);
+            cell.setCellValue(columnsList.get(i).getKey());
+            Cell cell2 = row2.createCell(i);
+            cell2.setCellValue(columnsList.get(i).getValue());
             sheet.setColumnWidth(i, 4000);
         }
+        row1.setZeroHeight(true);
+
+        //总列数
+        int columnLength = row1.getPhysicalNumberOfCells();
+        //数据字典字段
         for (int i = 0; i < vos.size(); i++) {
-            row = sheet.createRow(i + 1);
+            Row row = sheet.createRow(i + 2);
             SchemeJudgeObjectVo schemeJudgeObjectVo = vos.get(i);
-            row.createCell(0).setCellValue(schemeJudgeObjectVo.getName()); // 估价对象名称
-            row.createCell(1).setCellValue(String.valueOf(schemeJudgeObjectVo.getFloorArea() == null ? "" : schemeJudgeObjectVo.getFloorArea())); // 评估面积
-            row.createCell(2).setCellValue(schemeJudgeObjectVo.getFloor()); // 楼层
-            row.createCell(3).setCellValue(schemeJudgeObjectVo.getRoomNumber()); // 房号
-            row.createCell(4).setCellValue(String.valueOf(schemeJudgeObjectVo.getPrice() == null ? "" : schemeJudgeObjectVo.getPrice())); // 评估价格
-            row.createCell(5).setCellValue(schemeJudgeObjectVo.getFactor()); // 因素
+
+            for (int j = 0; j < columnLength; j++) {
+                String column = PoiUtils.getCellValue(row1.getCell(j));
+                //反射取值
+                String value = String.valueOf(getFieldValueByName(column, schemeJudgeObjectVo));
+                if (StringUtils.isEmpty(value) || "null".equals(value)) {
+                    row.createCell(j).setCellValue("");
+                } else {
+                    row.createCell(j).setCellValue(value);
+                }
+            }
         }
+
 
         OutputStream os = response.getOutputStream();
         try {
-            this.setResponseHeader(response, "确定单价.XLS");
+            this.setResponseHeader(response, "调整单价.XLS");
             wb.write(os);
 
         } catch (Exception e) {
@@ -425,6 +462,13 @@ public class SchemeSurePriceService {
         //总行数
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
+
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(SchemeJudgeObject.class, row);
+
+        //key行
+        Row keyRow = sheet.getRow(0);
+        //标题行
+        Row titleRow = sheet.getRow(1);
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
@@ -438,10 +482,11 @@ public class SchemeSurePriceService {
                     continue;
                 }
                 schemeJudgeObject = new SchemeJudgeObject();
-                if (!this.updateData(pid, schemeJudgeObject, builder, row, colLength, i)) {
+
+                if (!this.importSchemeJudgeObject(pid, classArrayListMultimap, schemeJudgeObject, builder, row, colLength, keyRow, titleRow, i)) {
                     continue;
                 }
-
+                schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);
                 successCount++;
             } catch (Exception e) {
                 builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
@@ -450,6 +495,73 @@ public class SchemeSurePriceService {
         }
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
+
+    public boolean importSchemeJudgeObject(Integer pid, Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, SchemeJudgeObject schemeJudgeObject, StringBuilder builder, Row row, Integer colLength, Row keyRow, Row titleRow, int i) throws Exception {
+        SchemeJudgeObject oldSchemeJudgeObject = new SchemeJudgeObject();
+        //通过委估对象名称找到对应的委估对象
+        String name = PoiUtils.getCellValue(row.getCell(0));
+        if (StringUtils.isEmpty(name)) {
+            builder.append(String.format("\n第%s行异常：委估对象名称不能为空", i));
+            return false;
+        }
+        List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getVoListByPid(pid);
+        if (CollectionUtils.isNotEmpty(vos)) {
+            List<String> names = LangUtils.transform(vos, o -> o.getName());
+            if (!names.contains(name)) {
+                builder.append(String.format("\n第%s行异常：委估对象名称没有匹配", i));
+                return false;
+            }
+            for (SchemeJudgeObjectVo item : vos) {
+                if (item.getName().equals(name)) {
+                    oldSchemeJudgeObject = item;
+                }
+            }
+        }
+
+        //必填项
+        List<String> requiredList = new ArrayList<>();
+        requiredList.addAll(Arrays.asList("name", "price"));
+        //数据字典 map
+        Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
+
+        boolean check = declarePublicService.excelImportHelp(classArrayListMultimap, schemeJudgeObject, builder, row, baseMap, requiredList);
+        BeanUtils.copyProperties(oldSchemeJudgeObject, schemeJudgeObject, "price");
+
+        //因素单独处理
+        //先删除
+        schemeSurePriceFactorDao.deleteSurePriceFactorByJudgeObjectId(schemeJudgeObject.getId());
+
+        StringBuilder s = new StringBuilder();
+        for (int j = 0; j < colLength; j++) {
+            String key = PoiUtils.getCellValue(keyRow.getCell(j));
+            String factorName = PoiUtils.getCellValue(titleRow.getCell(j));
+            if (key.contains("factor")) {
+                String value = PoiUtils.getCellValue(row.getCell(j));
+                if (StringUtils.isNotEmpty(value)) {
+                    s.append(factorName).append(":").append(value).append(";");
+                    //因素子表处理
+                    SchemeSurePriceFactor factor = new SchemeSurePriceFactor();
+                    factor.setJudgeObjectId(schemeJudgeObject.getId());
+                    if (value.contains("%")) {
+                        factor.setType(ComputeDataTypeEnum.RELATIVE.getId());
+                        String result = ArithmeticUtils.parseFormatString(value);
+                        factor.setCoefficient(new BigDecimal(result));
+                    } else {
+                        factor.setType(ComputeDataTypeEnum.ABSOLUTE.getId());
+                        if (isNumeric(value)) {
+                            factor.setCoefficient(new BigDecimal(value));
+                        }
+                    }
+                    factor.setFactor(factorName);
+                    factor.setCreator(commonService.thisUserAccount());
+                    schemeSurePriceFactorDao.addSurePriceFactor(factor);
+                }
+            }
+        }
+        schemeJudgeObject.setFactor(s.toString());
+        return check;
+    }
+
 
     public boolean updateData(Integer pid, SchemeJudgeObject schemeJudgeObject, StringBuilder builder, Row row, int colLength, int i) throws Exception {
         //通过委估对象名称找到对应的委估对象
@@ -580,24 +692,84 @@ public class SchemeSurePriceService {
      *
      * @param response
      */
-    public void generateHuxingPrice(HttpServletResponse response) throws BusinessException, IOException {
+    public void generateHuxingPrice(HttpServletResponse response, List<ExamineHousePriceDto> dynamicList, Integer houseId, Integer judgeObjectId) throws BusinessException, IOException, Exception {
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        BasicHouseHuxingPrice basicHouseHuxingPrice = new BasicHouseHuxingPrice();
+        basicHouseHuxingPrice.setHouseId(houseId);
+        List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
+
+        if (CollectionUtils.isEmpty(list)) {
+            throw new BusinessException("没有获取到有效的数据");
+        }
+
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
-        Row row = sheet.createRow(0);
+        Row row1 = sheet.createRow(0);
+        Row row2 = sheet.createRow(1);
         //创建Excel标题 估价对象名称、评估面积、楼层、房号、评估价格、因素
-        String[] title = {"房号", "面积", "价格", "因素"};
-
-        for (int i = 0; i < title.length; i++) {
-            Cell cell = row.createCell(i);
-            cell.setCellValue(title[i]);
+        ArrayList<ExamineHousePriceDto> columnsList = Lists.newArrayList();
+        LinkedHashMap<String, String> base = new LinkedHashMap<>();
+        base.put("houseNumber", "房号");
+        base.put("standardPrice", "标准价格");
+        base.put("area", "面积");
+        base.put("area_factor", "面积因素");
+        base.put("floor", "楼层");
+        base.put("floor_factor", "楼层因素");
+        //动态标题
+        for (Map.Entry<String, String> stringObjectEntry : base.entrySet()) {
+            ExamineHousePriceDto dto = new ExamineHousePriceDto();
+            dto.setKey(stringObjectEntry.getKey());
+            dto.setValue(stringObjectEntry.getValue());
+            columnsList.add(dto);
+        }
+        columnsList.addAll(dynamicList);
+        //价格放在最后
+        ExamineHousePriceDto dto = new ExamineHousePriceDto();
+        dto.setKey("price");
+        dto.setValue("价格");
+        columnsList.add(dto);
+        for (int i = 0; i < columnsList.size(); i++) {
+            Cell cell = row1.createCell(i);
+            cell.setCellValue(columnsList.get(i).getKey());
+            Cell cell2 = row2.createCell(i);
+            cell2.setCellValue(columnsList.get(i).getValue());
             sheet.setColumnWidth(i, 4000);
+        }
+        row1.setZeroHeight(true);
+        //总列数
+        int columnLength = row1.getPhysicalNumberOfCells();
+        //数据字典字段
+        String[] titles = {"standardMeasure", "standardMeasure", "orientation"};
+        for (int i = 0; i < list.size(); i++) {
+            Row row = sheet.createRow(i + 2);
+            BasicHouseHuxingPrice houseHuxingPrice = list.get(i);
+
+            for (int j = 0; j < columnLength; j++) {
+                String column = PoiUtils.getCellValue(row1.getCell(j));
+
+                if ("standardPrice".equals(column)) {
+                    row.createCell(j).setCellValue(String.valueOf(schemeJudgeObject.getPrice()));
+                } else {
+                    //反射取值
+                    String value = String.valueOf(getFieldValueByName(column, houseHuxingPrice));
+                    if (StringUtils.isEmpty(value) || "null".equals(value) || ",".equals(value)) {
+                        row.createCell(j).setCellValue("");
+                    } else if (Arrays.asList(titles).contains(column)) {
+                        row.createCell(j).setCellValue(baseDataDicService.getNameById(value));
+                    } else if ("adjacentPosition".equals(column)) {
+                        List<BaseDataDic> dataDics = baseDataDicService.getCacheDataDicList("examine.house.room.adjacent.position");
+                        row.createCell(j).setCellValue(baseDataDicService.getDataDicName(dataDics, value));
+                    } else {
+                        row.createCell(j).setCellValue(value);
+                    }
+                }
+            }
         }
 
         OutputStream os = response.getOutputStream();
         try {
-            this.setResponseHeader(response, "单价调整模板.XLS");
+            this.setResponseHeader(response, "单价调查模板.XLS");
             wb.write(os);
-
         } catch (Exception e) {
             throw new BusinessException("导出Excel出错:" + e);
         } finally {
@@ -615,9 +787,10 @@ public class SchemeSurePriceService {
      * @auther: zch
      * @date: 2018/9/25 18:31
      */
-    public String importData(MultipartFile multipartFile, Integer houseId, Integer projectId) throws Exception {
+    public String importDataPrice(MultipartFile multipartFile, Integer houseId, Integer projectId) throws Exception {
         Workbook workbook = null;
         Row row = null;
+
         StringBuilder builder = new StringBuilder();
         //1.保存文件
         String filePath = baseAttachmentService.saveUploadFile(multipartFile);
@@ -648,6 +821,10 @@ public class SchemeSurePriceService {
             builder.append("没有数据!");
             return builder.toString();
         }
+        //key行
+        Row keyRow = sheet.getRow(0);
+        //标题行
+        Row titleRow = sheet.getRow(1);
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
             BasicHouseHuxingPrice basicHouseHuxingPrice = null;
             try {
@@ -658,7 +835,7 @@ public class SchemeSurePriceService {
                 }
                 basicHouseHuxingPrice = new BasicHouseHuxingPrice();
                 basicHouseHuxingPrice.setHouseId(houseId);
-                if (!this.importBasicHouseHuxingPrice(classArrayListMultimap, basicHouseHuxingPrice, builder, row, projectId)) {
+                if (!this.importBasicHouseHuxingPrice(classArrayListMultimap, basicHouseHuxingPrice, builder, row, colLength, keyRow, titleRow)) {
                     continue;
                 }
                 basicHouseHuxingPriceService.saveAndUpdateBasicHouseHuxingPrice(basicHouseHuxingPrice, false);
@@ -672,7 +849,7 @@ public class SchemeSurePriceService {
     }
 
 
-    public boolean importBasicHouseHuxingPrice(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, BasicHouseHuxingPrice basicHouseHuxingPrice, StringBuilder builder, Row row, Integer projectId) throws Exception {
+    public boolean importBasicHouseHuxingPrice(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, BasicHouseHuxingPrice basicHouseHuxingPrice, StringBuilder builder, Row row, Integer colLength, Row keyRow, Row titleRow) throws Exception {
         BasicHouseHuxingPrice oldBasicHouseHuxingPrice = new BasicHouseHuxingPrice();
         //房号存在则修改数据
         if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(0)))) {
@@ -696,93 +873,41 @@ public class SchemeSurePriceService {
         baseMap.put("adjacentPosition", baseDataDicService.getCacheDataDicList("examine.house.room.adjacent.position"));
         baseMap.put("orientation", baseDataDicService.getCacheDataDicList("examine.house.room.orientation"));
 
-        //权证号
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(1)))) {
-            String value = PoiUtils.getCellValue(row.getCell(1));
-            basicHouseHuxingPrice.setDeclareName(value);
-            List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
-            if (CollectionUtils.isNotEmpty(declareRecordList)) {
-                for (DeclareRecord item : declareRecordList) {
-                    if (value.equals(item.getName())) {
-                        basicHouseHuxingPrice.setDeclareId(item.getId());
-                    }
-                }
-            }
-        }
 
         boolean check = declarePublicService.excelImportHelp(classArrayListMultimap, basicHouseHuxingPrice, builder, row, baseMap, requiredList);
 
         if (oldBasicHouseHuxingPrice.getId() != null) {
-            BeanUtils.copyProperties(oldBasicHouseHuxingPrice, basicHouseHuxingPrice, "price", "adjustFactor");
+            BeanUtils.copyProperties(oldBasicHouseHuxingPrice, basicHouseHuxingPrice, "price");
         }
+        //因素单独处理
+        List<ExamineHousePriceDto> factors = Lists.newArrayList();
+        for (int i = 0; i < colLength; i++) {
+            String key = PoiUtils.getCellValue(keyRow.getCell(i));
+            if (key.contains("factor")) {
+                String value = PoiUtils.getCellValue(row.getCell(i));
+                if (StringUtils.isNotEmpty(value)) {
+                    ExamineHousePriceDto dto = new ExamineHousePriceDto();
+                    dto.setKey(key);
+                    dto.setValue(value);
+                    dto.setName(PoiUtils.getCellValue(titleRow.getCell(i)));
+                    factors.add(dto);
+                }
+            }
+        }
+        basicHouseHuxingPrice.setJsonData(JSON.toJSONString(factors));
         return check;
     }
 
 
-    /**
-     * 导出
-     *
-     * @param response
-     */
-    public void export(HttpServletResponse response, Integer houseId) throws BusinessException, IOException {
-        BasicHouseHuxingPrice basicHouseHuxingPrice = new BasicHouseHuxingPrice();
-        basicHouseHuxingPrice.setHouseId(houseId);
-        List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
-
-        if (CollectionUtils.isEmpty(list)) {
-            throw new BusinessException("没有获取到有效的数据");
-        }
-
-        Workbook wb = new HSSFWorkbook();
-        Sheet sheet = wb.createSheet();
-        Row row1 = sheet.createRow(0);
-        Row row2 = sheet.createRow(1);
-        ArrayList<ExamineHousePriceDto> columnsList = Lists.newArrayList();
-        LinkedHashMap<String, String> base = new LinkedHashMap<>();
-        base.put("houseNumber", "房号");
-        base.put("declareName", "权证名称");
-        base.put("area", "面积");
-        base.put("floor", "楼层");
-        base.put("price", "价格");
-        base.put("adjustFactor", "因素");
-        //创建标题及key
-        for (Map.Entry<String, String> stringObjectEntry : base.entrySet()) {
-            ExamineHousePriceDto dto = new ExamineHousePriceDto();
-            dto.setKey(stringObjectEntry.getKey());
-            dto.setValue(stringObjectEntry.getValue());
-            columnsList.add(dto);
-        }
-        for (int i = 0; i < columnsList.size(); i++) {
-            Cell cell = row1.createCell(i);
-            cell.setCellValue(columnsList.get(i).getKey());
-            Cell cell2 = row2.createCell(i);
-            cell2.setCellValue(columnsList.get(i).getValue());
-            sheet.setColumnWidth(i, 4000);
-        }
-        row1.setZeroHeight(true);
-        //写入数据
-        for (int i = 0; i < list.size(); i++) {
-            Row row = sheet.createRow(i + 2);
-            BasicHouseHuxingPrice houseHuxingPrice = list.get(i);
-            row.createCell(0).setCellValue(houseHuxingPrice.getHouseNumber());
-            row.createCell(1).setCellValue(houseHuxingPrice.getDeclareName());
-            row.createCell(2).setCellValue(houseHuxingPrice.getArea() == null ? "" : houseHuxingPrice.getArea().toString());
-            row.createCell(3).setCellValue(houseHuxingPrice.getFloor());
-            row.createCell(4).setCellValue(houseHuxingPrice.getPrice() == null ? "" : houseHuxingPrice.getPrice().toString());
-            row.createCell(5).setCellValue(houseHuxingPrice.getAdjustFactor());
-
-        }
-
-        OutputStream os = response.getOutputStream();
+    protected Object getFieldValueByName(String fieldName, Object o) {
         try {
-            this.setResponseHeader(response, "单价调查.XLS");
-            wb.write(os);
-
+            String firstLetter = fieldName.substring(0, 1).toUpperCase();
+            String getter = "get" + firstLetter + fieldName.substring(1);
+            Method method = o.getClass().getMethod(getter, new Class[]{});
+            Object value = method.invoke(o, new Object[]{});
+            return value;
         } catch (Exception e) {
-            throw new BusinessException("导出Excel出错:" + e);
-        } finally {
-            os.flush();
-            os.close();
+            return null;
         }
     }
 }

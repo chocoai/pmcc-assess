@@ -14,6 +14,7 @@ import java.util.Date;
 public class ExamineHousePriceDto implements Serializable {
     private String key;
     private String value;
+    private String name;
 
     public String getKey() {
         return key;
@@ -29,5 +30,13 @@ public class ExamineHousePriceDto implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

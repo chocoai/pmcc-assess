@@ -15,6 +15,15 @@ public class BasicHouseHuxingPriceVo extends BasicHouseHuxingPrice {
     private String storageRequestName;
     private String adjacentPositionName;
     private String adjacentPositionDescribe;
+    private String factorDescribe;
+
+    public String getFactorDescribe() {
+        return factorDescribe;
+    }
+
+    public void setFactorDescribe(String factorDescribe) {
+        this.factorDescribe = factorDescribe;
+    }
 
     public String getAdjacentPositionDescribe() {
         return adjacentPositionDescribe;

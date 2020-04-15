@@ -10,6 +10,24 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
     private String bestUseName;
     private String floor;
     private String roomNumber;
+    private String tenementType;//物业类型
+    private boolean hasPriceAdjust;//是否可以单价调查
+
+    public String getTenementType() {
+        return tenementType;
+    }
+
+    public void setTenementType(String tenementType) {
+        this.tenementType = tenementType;
+    }
+
+    public boolean isHasPriceAdjust() {
+        return hasPriceAdjust;
+    }
+
+    public void setHasPriceAdjust(boolean hasPriceAdjust) {
+        this.hasPriceAdjust = hasPriceAdjust;
+    }
 
     public String getSetUseName() {
         return setUseName;

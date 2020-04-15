@@ -25,6 +25,7 @@ var houseHuxingPrice;
         },
         loadDataDicList: function () {
             var cols = commonColumn.houseHuxingPriceColumn();
+            var temp = [];
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
             if (tenementType == '住宅' || tenementType == '办公') {
                 temp = commonColumn.houseRoomResidence();
@@ -96,7 +97,6 @@ var houseHuxingPrice;
             var data = formParams(houseHuxingPrice.prototype.config().frm);
             data.houseId = houseCommon.getHouseId();
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
-            data.houseId = houseCommon.getHouseId();
             if (tenementType == '商铺' || tenementType == '商场') {
                 var adjacentPosition = '';
                 $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {

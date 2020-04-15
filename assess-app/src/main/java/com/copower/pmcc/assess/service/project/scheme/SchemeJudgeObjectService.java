@@ -23,7 +23,9 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicHouseHuxingPriceService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.event.project.ProgrammeProcessEvent;
@@ -134,6 +136,10 @@ public class SchemeJudgeObjectService {
     private BasicApplyService basicApplyService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private BasicUnitHuxingService basicUnitHuxingService;
+    @Autowired
+    private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -273,6 +279,16 @@ public class SchemeJudgeObjectService {
                     if (basicHouse != null) {
                         schemeJudgeObjectVo.setFloor(basicHouse.getFloor());
                         schemeJudgeObjectVo.setRoomNumber(basicHouse.getHouseNumber());
+                        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
+                        if(unitHuxing!=null){
+                            schemeJudgeObjectVo.setTenementType(unitHuxing.getTenementType());
+                        }
+                        List<BasicHouseHuxingPrice> huxingPrices = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(basicHouse.getId());
+                        if(CollectionUtils.isNotEmpty(huxingPrices)){
+                            schemeJudgeObjectVo.setHasPriceAdjust(true);
+                        }else {
+                            schemeJudgeObjectVo.setHasPriceAdjust(false);
+                        }
                     }
                 }
             }

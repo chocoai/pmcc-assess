@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
+import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -12,7 +13,9 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceFactorServi
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,9 +129,10 @@ public class SchemeSurePriceController {
     }
 
     @RequestMapping(value = "/generateAndExport", name = "生成并导出模板")
-    public void generateAndExport(HttpServletResponse response, Integer pid) throws Exception {
+    public void generateAndExport(HttpServletResponse response, Integer pid, String factorColumns) throws Exception {
         try {
-            schemeSurePriceService.generateAndExport(response, pid);
+            List<ExamineHousePriceDto> dtoList = JSON.parseArray(factorColumns, ExamineHousePriceDto.class);
+            schemeSurePriceService.generateAndExport(response, pid,dtoList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -165,9 +169,10 @@ public class SchemeSurePriceController {
     }
 
     @RequestMapping(value = "/generateHuxingPrice", name = "生成并导出单价调查模板")
-    public void generateHuxingPrice(HttpServletResponse response) throws Exception {
+    public void generateHuxingPrice(HttpServletResponse response, String columns, Integer houseId,Integer judgeObjectId) throws Exception {
         try {
-            schemeSurePriceService.generateHuxingPrice(response);
+            List<ExamineHousePriceDto> dtoList = JSON.parseArray(columns, ExamineHousePriceDto.class);
+            schemeSurePriceService.generateHuxingPrice(response, dtoList, houseId,judgeObjectId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,7 +188,7 @@ public class SchemeSurePriceController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = schemeSurePriceService.importData(multipartFile, houseId,projectId);
+            String str = schemeSurePriceService.importDataPrice(multipartFile, houseId,projectId);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -191,12 +196,20 @@ public class SchemeSurePriceController {
 
     }
 
-    @RequestMapping(value = "/export", name = "导出")
-    public void export(HttpServletResponse response,Integer houseId) throws Exception {
+    @GetMapping(value = "/getTenementTypeData", name = "获取含有物业类型的schemeJudgeObject")
+    public HttpResult getTenementTypeData(Integer pid) {
         try {
-            schemeSurePriceService.export(response, houseId);
+            SchemeJudgeObject parent = schemeJudgeObjectService.getSchemeJudgeObject(pid);
+            List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getVoListByPid(pid);
+            List<SchemeJudgeObjectVo> filter = LangUtils.filter(vos, o -> o.getDeclareRecordId().equals( parent.getDeclareRecordId()));
+            if(CollectionUtils.isNotEmpty(filter)){
+                return HttpResult.newCorrectResult(200, schemeJudgeObjectService.getSchemeJudgeObjectVo(filter.get(0)));
+            }
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            e.printStackTrace();
+            baseService.writeExceptionInfo(e, errorInfo);
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
 }

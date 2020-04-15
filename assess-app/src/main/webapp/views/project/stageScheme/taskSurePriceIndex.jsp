@@ -202,7 +202,7 @@
         <td data-name="coefficient">{coefficient}</td>
         <td>
             <div class="btn btn-xs btn-primary"
-                 onclick="surePrice.adjustFactor('{id}','{declareRecordId}')">调整
+                 onclick="surePrice.adjustFactor('{id}','{tenementType}')">调整
             </div>
             <div class="btn btn-xs btn-primary copy"
                  onclick="surePrice.copy(this);">复制
@@ -213,7 +213,7 @@
             <div class="btn btn-xs btn-warning paste" style="display:none;"
                  onclick="surePrice.paste(this)">粘贴
             </div>
-            <div class="btn btn-xs btn-primary"
+            <div class="btn btn-xs btn-primary priceAdjust" style="display:{bisShow};"
                  onclick="surePrice.getHouseId('{id}')">单价调整
             </div>
         </td>
@@ -252,8 +252,12 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" name="judgeObjectId">
+                <input type="hidden" name="tenementType">
                 <button type="button" class="btn btn-sm btn-success tooltips" data-placement="top"
                         onclick="surePrice.addAdjustFactor();"><i class="fa fa-plus fa-white"></i>添加
+                </button>
+                <button type="button" class="btn btn-sm btn-primary tooltips" data-placement="top"
+                        onclick="surePrice.autoGenerateFactor();">自动生成
                 </button>
                 <table class="table">
                     <thead>
@@ -442,6 +446,8 @@
                         html = html.replace(/{price}/g, item.price);
                         html = html.replace(/{coefficient}/g, item.factor);
                         html = html.replace(/{declareRecordId}/g, item.declareRecordId);
+                        html = html.replace(/{bisShow}/g, item.hasPriceAdjust ? "block" : "none");
+                        html = html.replace(/{tenementType}/g, item.tenementType);
                         ele.append(html);
                     });
                 } else {
@@ -530,7 +536,7 @@
     }
 
     //调整因素
-    surePrice.adjustFactor = function (judgeObjectId) {
+    surePrice.adjustFactor = function (judgeObjectId, tenementType) {
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeSurePrice/getSurePriceFactors",
             data: {
@@ -564,7 +570,46 @@
             }
         });
         $("#modal_factor").find('[name=judgeObjectId]').val(judgeObjectId);
+        $("#modal_factor").find('[name=tenementType]').val(tenementType);
         $("#modal_factor").modal();
+    }
+
+    //自动生成调整因素
+    surePrice.autoGenerateFactor = function () {
+        var tenementType = $("#modal_factor").find('[name=tenementType]').val();
+        var temp;
+        if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
+            if (tenementType == '住宅' || tenementType == '办公') {
+                temp = "residence";
+            }
+            if (tenementType == '商铺' || tenementType == '商场') {
+                temp = "store";
+            }
+            if (tenementType == '餐饮酒店') {
+                temp = "hotel";
+            }
+            if (tenementType == '生产') {
+                temp = "production";
+            }
+            if (tenementType == '仓储') {
+                temp = "storage";
+            }
+            $("#tbody_factor").empty();
+            var html = '';
+            $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
+                var item = $("#adjustFatorTemp").html();
+                var factor = $.trim($(this).text()) + "因素";
+                item = item.replace(/{factor}/g, factor);
+                item = item.replace(/{remark}/g, '');
+                item = item.replace(/{coefficient}/g, '');
+                html += item;
+            });
+            $("#tbody_factor").append(html);
+        } else {
+            notifyInfo("提示", "没有物业类型无法生成")
+        }
+
+
     }
 
     //类型调整
@@ -751,11 +796,62 @@
 
     //生成并下载模板
     surePrice.exportData = function () {
-        var pid = ${projectPlanDetails.judgeObjectId};
-        var href = "${pageContext.request.contextPath}/schemeSurePrice/generateAndExport";
-        href += "?pid=" + pid;
+        //获取tenementType
+        $.ajax({
+            url: getContextPath() + "/schemeSurePrice/getTenementTypeData",
+            type: "get",
+            dataType: "json",
+            data: {pid: '${projectPlanDetails.judgeObjectId}'},
+            success: function (result) {
+                if (result.ret) {
+                    var factorColumns = [];
+                    if (result.data) {
+                        var tenementType = result.data.tenementType;
+                        var temp;
+                        if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
+                            if (tenementType == '住宅' || tenementType == '办公') {
+                                temp = "residence";
+                            }
+                            if (tenementType == '商铺' || tenementType == '商场') {
+                                temp = "store";
+                            }
+                            if (tenementType == '餐饮酒店') {
+                                temp = "hotel";
+                            }
+                            if (tenementType == '生产') {
+                                temp = "production";
+                            }
+                            if (tenementType == '仓储') {
+                                temp = "storage";
+                            }
 
-        window.open(href, "");
+                            $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
+                                var factorColumn = {};
+                                factorColumn.value = $.trim($(this).text()) + "因素";
+                                if (houseHuxingPrice.prototype.isNotBlank($(this).next().find("input").attr("name"))) {
+                                    factorColumn.key = $(this).next().find("input").attr("name") + "_factor";
+                                } else {
+                                    factorColumn.key = $(this).next().find("select").attr("name") + "_factor";
+                                }
+                                factorColumns.push(factorColumn);
+
+                            });
+
+                        }
+                    }
+                    var pid = ${projectPlanDetails.judgeObjectId};
+                    var href = "${pageContext.request.contextPath}/schemeSurePrice/generateAndExport";
+                    href += "?pid=" + pid + "&factorColumns=" + encodeURIComponent(JSON.stringify(factorColumns));
+
+                    window.open(href, "");
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+
+
     }
     //导入
     surePrice.importData = function () {
@@ -793,7 +889,7 @@
             success: function (result) {
                 if (result.ret) {
                     if (houseHuxingPrice.prototype.isNotNull(result.data)) {
-                        surePrice.getHuxingId(result.data.id);
+                        surePrice.getHuxingId(result.data.id, judgeObjectId);
                     } else {
                         notifyInfo("提示", "标准房号未关联单价表")
                     }
@@ -805,7 +901,7 @@
         })
     }
 
-    surePrice.getHuxingId = function (houseId) {
+    surePrice.getHuxingId = function (houseId, judgeObjectId) {
         $.ajax({
             url: getContextPath() + "/basicUnitHuxing/getHuxingByHouseId",
             type: "get",
@@ -815,6 +911,7 @@
                 if (result.ret) {
                     if (houseHuxingPrice.prototype.isNotNull(result.data)) {
                         $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val(houseId);
+                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='judgeObjectId']").val(judgeObjectId);
                         $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='tenementType']").val(result.data.tenementType);
                         houseHuxingPrice.prototype.getPriceExportColumns(result.data.tenementType);
                         houseHuxingPrice.prototype.showTableModel();
@@ -844,6 +941,7 @@
             <div class="modal-body">
                 <form id="frmHouseHuxingPriceTable" class="form-horizontal">
                     <input type="hidden" name="houseId">
+                    <input type="hidden" name="judgeObjectId">
                     <input type="hidden" name="tenementType">
                     <input type="hidden" name="priceExportColumns">
                     <div class="row">
@@ -852,14 +950,14 @@
                                 <div class="row row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline form-inline x-valid">
-                                            <button type="button" style="margin-left: 5px"
-                                                    class="btn btn-success btn-sm"
-                                                    onclick="houseHuxingPrice.prototype.showModel()"
-                                                    data-toggle="modal" href="#divBoxHouseHuxingPrice">
-                                                <span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>新增
-                                            </button>
+                                            <%--<button type="button" style="margin-left: 5px"--%>
+                                            <%--class="btn btn-success btn-sm"--%>
+                                            <%--onclick="houseHuxingPrice.prototype.showModel()"--%>
+                                            <%--data-toggle="modal" href="#divBoxHouseHuxingPrice">--%>
+                                            <%--<span class="btn-label">--%>
+                                            <%--<i class="fa fa-plus"></i>--%>
+                                            <%--</span>新增--%>
+                                            <%--</button>--%>
                                             <div class="btn-group">
                                                 <button type="button" style="margin-left: 5px"
                                                         class="btn btn-info btn-sm dropdown-toggle"
@@ -870,10 +968,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
                                                     <li><a class="btn"
-                                                           onclick="houseHuxingPrice.prototype.generateHuxingPrice()">下载模板</a>
-                                                    </li>
-                                                    <li><a class="btn"
-                                                           onclick="houseHuxingPrice.prototype.exportData()">导出数据</a>
+                                                           onclick="houseHuxingPrice.prototype.generateHuxingPrice()">导出</a>
                                                     </li>
                                                     <li>
                                                         <a class="btn"
@@ -1293,16 +1388,16 @@
                 cols.push(item);
             })
             cols.push({field: 'price', title: '价格'});
-            cols.push({field: 'adjustFactor', title: '因素'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + houseId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'' + houseId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                    str += '</div>';
-                    return str;
-                }
-            });
+            cols.push({field: 'factorDescribe', title: '因素'});
+            // cols.push({
+            //     field: 'id', title: '操作', formatter: function (value, row, index) {
+            //         var str = '<div class="btn-margin">';
+            //         str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + houseId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+            //         str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'' + houseId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+            //         str += '</div>';
+            //         return str;
+            //     }
+            // });
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
                 houseId: houseId
@@ -1478,16 +1573,11 @@
         },
         //生成并下载模板
         generateHuxingPrice: function () {
-            var columns = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='priceExportColumns']").val();
-            var href = "${pageContext.request.contextPath}/basicHouseHuxingPrice/generateAndExport";
-            href += "?columns=" + encodeURIComponent(columns)+ "&source=taskSurePrice";
-            window.open(href, "");
-        },
-        //导出数据
-        exportData: function () {
             var houseId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val();
-            var href = "${pageContext.request.contextPath}/schemeSurePrice/export";
-            href += "?houseId=" + houseId
+            var judgeObjectId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='judgeObjectId']").val();
+            var columns = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='priceExportColumns']").val();
+            var href = "${pageContext.request.contextPath}/schemeSurePrice/generateHuxingPrice";
+            href += "?columns=" + encodeURIComponent(columns) + "&houseId=" + houseId + "&judgeObjectId=" + judgeObjectId;
             window.open(href, "");
         },
         getPriceExportColumns: function (tenementType) {
@@ -1512,13 +1602,19 @@
 
                 $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
                     var column = {};
+                    var factorColumn = {};
                     column.value = $.trim($(this).text());
+                    factorColumn.value = $.trim($(this).text()) + "因素";
                     if (houseHuxingPrice.prototype.isNotBlank($(this).next().find("input").attr("name"))) {
                         column.key = $(this).next().find("input").attr("name");
+                        factorColumn.key = $(this).next().find("input").attr("name") + "_factor";
                     } else {
                         column.key = $(this).next().find("select").attr("name");
+                        factorColumn.key = $(this).next().find("select").attr("name") + "_factor";
                     }
                     columns.push(column);
+                    columns.push(factorColumn);
+
                 });
                 $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='priceExportColumns']").val(JSON.stringify(columns));
             }
