@@ -196,12 +196,12 @@ public class SchemeSurePriceController {
 
     }
 
-    @GetMapping(value = "/getTenementTypeData", name = "获取含有物业类型的schemeJudgeObject")
+    @GetMapping(value = "/getTenementTypeData", name = "获取标准schemeJudgeObject")
     public HttpResult getTenementTypeData(Integer pid) {
         try {
             SchemeJudgeObject parent = schemeJudgeObjectService.getSchemeJudgeObject(pid);
             List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getVoListByPid(pid);
-            List<SchemeJudgeObjectVo> filter = LangUtils.filter(vos, o -> o.getDeclareRecordId().equals( parent.getDeclareRecordId()));
+            List<SchemeJudgeObjectVo> filter = LangUtils.filter(vos, o -> o.getId().equals( parent.getStandardJudgeId()));
             if(CollectionUtils.isNotEmpty(filter)){
                 return HttpResult.newCorrectResult(200, schemeJudgeObjectService.getSchemeJudgeObjectVo(filter.get(0)));
             }
