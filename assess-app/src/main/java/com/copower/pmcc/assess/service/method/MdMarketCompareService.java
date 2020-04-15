@@ -291,6 +291,8 @@ public class MdMarketCompareService {
     public MdCompareInitParamVo selectJudge(Integer judgeObjectId, Integer applyId, Integer mcId, boolean isLand) throws Exception {
         MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        if (schemeJudgeObject.getBisMerge() == Boolean.TRUE)
+            schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
         BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;

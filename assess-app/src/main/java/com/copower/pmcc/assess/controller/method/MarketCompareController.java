@@ -46,6 +46,10 @@ public class MarketCompareController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/marketCompareIndex");
         isLand = isLand == null ? false : isLand;
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        if (judgeObject.getBisMerge() == Boolean.TRUE) {
+            SchemeJudgeObject standardJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObject.getStandardJudgeId());
+            modelAndView.addObject("standardJudgeObject", standardJudgeObject);
+        }
         MdMarketCompare marketCompare = null;
         if (mcId != null) {
             marketCompare = mdMarketCompareService.getMdMarketCompare(mcId);
@@ -95,7 +99,7 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
-    public HttpResult selectCase(Integer mcId, String planDetailsIdList, Integer judgeObjectId, Boolean isLand,String jsonData) {
+    public HttpResult selectCase(Integer mcId, String planDetailsIdList, Integer judgeObjectId, Boolean isLand, String jsonData) {
         try {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectCase(mcId, planDetailsIdList, judgeObjectId, isLand, jsonData);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);

@@ -1194,5 +1194,4 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
         return judgeObjectList.get(0);
     }
-
 }
