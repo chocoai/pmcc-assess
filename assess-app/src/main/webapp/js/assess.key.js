@@ -41,6 +41,7 @@ AssessDBKey.BasicEstateParking = "tb_basic_estate_parking";
 AssessDBKey.BasicHouseCorollaryEquipment = "tb_basic_house_corollary_equipment";
 AssessDBKey.BasicHouseRoom = "tb_basic_house_room";
 AssessDBKey.BasicEstateStreetInfo = "tb_basic_estate_street_info";
+AssessDBKey.BasicEstateLandCategoryInfo = "tb_basic_estate_land_category_info";
 
 AssessDBKey.SurveyExaminePurenessLand = "tb_survey_examine_pureness_land";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
@@ -229,6 +230,7 @@ AssessDicKey.examineUnitCommonPart = "unit.common.part";//公共部位
 AssessDicKey.examineUnitLocation = "unit.location";//所在位置
 AssessDicKey.examineUnitMonad = "unit.monad";//单位
 AssessDicKey.examineUnitQuantity = "unit.quantity";//数量
+AssessDicKey.unit_commonPart_description = "unit.commonPart.description";//公共部位 描述
 
 //房屋
 AssessDicKey.examineBasicHouse = "basicHouse";//房屋附件

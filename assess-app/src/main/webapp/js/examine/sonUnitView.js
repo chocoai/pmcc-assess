@@ -1,3 +1,5 @@
+
+
 var unitDecorate;
 (function () {
     unitDecorate = function () {
@@ -197,7 +199,7 @@ var unitDecorate;
                     resultHtml += "</div>";
                     resultHtml += "</div>";
                 }
-                console.log(resultHtml) ;
+                console.log(resultHtml);
                 target.append(resultHtml);
             });
             // AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
@@ -326,7 +328,8 @@ unitCommonPart.prototype.saveData = function () {
         var index = group.find("[data-name=index]").val();
         var name = group.find("[data-name=name]").val();
         var unitLocation = group.find("[data-name=unitLocation]").val();
-        var obj = {index: index, name: name, unitLocation: unitLocation};
+        var description = group.find("[data-name=description]").val();
+        var obj = {index: index, name: name, unitLocation: unitLocation, description: description};
         resultData.push(obj);
     });
     data.unitLocation = JSON.stringify(resultData);
@@ -430,14 +433,22 @@ unitCommonPart.prototype.init = function (item) {
             });
             $("#" + unitCommonPart.prototype.config().frm).find('#unitQuantity_datalist').empty().html(html).trigger('change');
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.unit_commonPart_description, null, function (html, data) {
+            html = '';
+            html += '<option value="" selected>-请选择-</option>';
+            $.each(data, function (i, item) {
+                html += "<option value='" + item.name + "'>" + item.name + "</option>";
+            });
+            $("#" + unitCommonPart.prototype.config().frm).find('#unitDescriptionList').empty().html(html).trigger('change');
+        });
+        var target = $(".unitLocationTextModel");
+        target.empty();
         if (item.unitLocation) {
             var resultData = JSON.parse(item.unitLocation);
             try {
                 resultData.sort(unitCommonPart.prototype.compare);
             } catch (e) {
             }
-            var target = $(".unitLocationTextModel");
-            target.empty();
             for (var i = 0; i < resultData.length; i++) {
                 var obj = resultData[i];
                 var html = unitCommonPart.prototype.replaceHtml(obj);
@@ -508,7 +519,7 @@ unitCommonPart.prototype.appendRecording = function (_this) {
     var start = target.find(".form-group").size();
     var len = Number(data.unitQuantity) + start;
     for (var i = 1 + start; i <= len; i++) {
-        var html = unitCommonPart.prototype.replaceHtml({index: i, name: data.unitCommonPart+i});
+        var html = unitCommonPart.prototype.replaceHtml({index: i, name: data.unitCommonPart + i});
         target.append(html);
     }
 
@@ -526,6 +537,11 @@ unitCommonPart.prototype.replaceHtml = function (data) {
         html = html.replace(/{name}/g, data.name);
     } else {
         html = html.replace(/{name}/g, '');
+    }
+    if (data.description) {
+        html = html.replace(/{description}/g, data.description);
+    } else {
+        html = html.replace(/{description}/g, '');
     }
     return html;
 };

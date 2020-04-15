@@ -97,7 +97,12 @@
             <!--<columnOverride column="content" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_basic_unit_common_part" domainObjectName="BasicUnitCommonPart">
+        <table tableName="tb_basic_estate_land_category_info" domainObjectName="BasicEstateLandCategoryInfo">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="land_level_content_result" jdbcType="VARCHAR"></columnOverride>
+        </table>
+
+        <table tableName="tb_basic_unit_stairs" domainObjectName="BasicUnitStairs">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

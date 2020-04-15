@@ -8,8 +8,9 @@
                 <label class="col-sm-1 col-form-label">
                     名称 <span class="symbol required"></span>
                 </label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control input-full" name="name{index}" required data-name="name" value="{name}">
+                <div class="col-sm-2">
+                    <input type="text" class="form-control input-full" name="name{index}" required data-name="name"
+                           value="{name}">
                 </div>
                 <label class="col-sm-1 col-form-label">
                     所在位置 <span class="symbol required"></span>
@@ -17,7 +18,7 @@
                 </label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" required="required"  name="unitLocation{index}" data-name="unitLocation"
+                        <input type="text" required="required" name="unitLocation{index}" data-name="unitLocation"
                                class="form-control" list="unitLocationList" value="{unitLocation}">
                         <div class="input-group-prepend">
                             <button class="btn btn-warning btn-sm "
@@ -29,15 +30,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2"><input class="btn btn-warning" type="button" value="X"
-                                             onclick="UnitCommonPartFun.clearHtml(this)"></div>
+                <label class="col-sm-1 col-form-label">
+                    描述 <span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" required="required" name="description{index}" data-name="description"
+                               class="form-control" list="unitDescriptionList" value="{description}">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-warning btn-sm "
+                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                    type="button"
+                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                清空
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button  class="btn btn-warning btn-sm" onclick="UnitCommonPartFun.clearHtml(this)" type="button">
+                       X
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </script>
 
 <script>
-
 
 
 </script>
@@ -181,7 +201,11 @@
                                 </div>
 
                                 <datalist id="unitLocationList">
+                                    <option value="" selected="">-请选择-</option>
+                                </datalist>
 
+                                <datalist id="unitDescriptionList">
+                                    <option value="" selected="">-请选择-</option>
                                 </datalist>
 
                                 <div class="row form-group">
@@ -189,7 +213,8 @@
                                         <div class="form-inline x-valid">
 
                                             <div class="col-sm-10">
-                                                <button onclick="UnitCommonPartFun.appendRecording(this);" class="btn btn-sm btn-success" type="button">
+                                                <button onclick="UnitCommonPartFun.appendRecording(this);"
+                                                        class="btn btn-sm btn-success" type="button">
                                                     生成记录<i
                                                         class="fa fa-plus"></i>
                                                 </button>
@@ -197,7 +222,6 @@
                                         </div>
                                     </div>
                                 </div>
-
 
 
                                 <div class="unitLocationTextModel">
