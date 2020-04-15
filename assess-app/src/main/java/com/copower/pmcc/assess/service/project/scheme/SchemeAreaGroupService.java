@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
@@ -71,6 +72,8 @@ public class SchemeAreaGroupService {
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private BasicHouseService basicHouseService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -295,6 +298,12 @@ public class SchemeAreaGroupService {
         if (basicApply != null) {
             schemeJudgeObject.setBasicApplyId(basicApply.getId());
             schemeJudgeObject.setEvaluationArea(basicApply.getArea());
+
+            BasicHouse basicHouse = basicHouseService.getHouseByBasicApply(basicApply);
+            if (basicHouse != null) {
+                schemeJudgeObject.setCertUse(basicHouse.getCertUse());
+                schemeJudgeObject.setPracticalUse(basicHouse.getPracticalUse());
+            }
         }
         schemeJudgeObject.setNumber(String.valueOf(declareRecord.getNumber()));
         schemeJudgeObject.setCreator(commonService.thisUserAccount());
@@ -305,8 +314,6 @@ public class SchemeAreaGroupService {
         schemeJudgeObject.setCertName(declareRecord.getName());
         schemeJudgeObject.setOwnership(declareRecord.getOwnership());
         schemeJudgeObject.setSeat(declareRecord.getSeat());
-        schemeJudgeObject.setCertUse(declareRecord.getCertUse());
-        schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
         if (declareRecord.getLandUseEndDate() != null) {
             schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());//计算出土地剩余年限
             if (areaGroup.getValueTimePoint() != null)
@@ -478,7 +485,7 @@ public class SchemeAreaGroupService {
         if (CollectionUtils.isEmpty(ids) || ids.size() <= 1)
             throw new BusinessException("参与合并的区域至少为两个");
         List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupByIds(ids);
-        SchemeAreaGroup standardArea=schemeAreaGroupList.get(0);
+        SchemeAreaGroup standardArea = schemeAreaGroupList.get(0);
         String province = standardArea.getProvince();
         String city = standardArea.getCity();
         for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroupList) {
@@ -487,7 +494,7 @@ public class SchemeAreaGroupService {
         }
 
         SchemeAreaGroup newAreaGroup = new SchemeAreaGroup();
-        BeanUtils.copyProperties(standardArea,newAreaGroup);
+        BeanUtils.copyProperties(standardArea, newAreaGroup);
         newAreaGroup.setPid(0);
         newAreaGroup.setProjectId(projectId);
         newAreaGroup.setProvince(province);

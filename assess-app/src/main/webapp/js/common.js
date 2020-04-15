@@ -713,9 +713,9 @@ $(function () {
                 data: {
                     fileId: id,
                     // method: key,
-                    method: "tableExcel",
+                    method: "houseCert",
                     appKey: "pmcc-assess",
-                    describe: "识别图片表格内容"
+                    describe: "识别房产证"
                 },
                 type: "get",
                 dataType: "json",

@@ -1081,9 +1081,6 @@ public class SchemeJudgeObjectService {
             schemeJudgeObject.setCertName(declareRecord.getName());
             schemeJudgeObject.setOwnership(declareRecord.getOwnership());
             schemeJudgeObject.setSeat(declareRecord.getSeat());
-            schemeJudgeObject.setCertUse(declareRecord.getCertUse());
-            schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
-            schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
             schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
         }
     }
@@ -1176,12 +1173,26 @@ public class SchemeJudgeObjectService {
         where.setJudgeObjectId(judgeObject.getId());
         List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(where);
         if (CollectionUtils.isNotEmpty(planDetailsList)) {
-            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(judgeObject.getAreaGroupId());
             for (ProjectPlanDetails item : planDetailsList) {
-                item.setPlanRemarks(String.format("%s/%s", schemeAreaGroup.getAreaName(), judgeObject.getName()));
+                item.setPlanRemarks(judgeObject.getName());
                 projectPlanDetailsService.updateProjectPlanDetails(item);
             }
         }
+    }
+
+    /**
+     * 根据applyId获取对应的估价对象
+     *
+     * @param applyId
+     * @return
+     */
+    public SchemeJudgeObject getJudgeObjectByApplyId(Integer applyId) {
+        if (applyId == null) return null;
+        SchemeJudgeObject where = new SchemeJudgeObject();
+        where.setBasicApplyId(applyId);
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(where);
+        if (CollectionUtils.isEmpty(judgeObjectList)) return null;
+        return judgeObjectList.get(0);
     }
 
 }

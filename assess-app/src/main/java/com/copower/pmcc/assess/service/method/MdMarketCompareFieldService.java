@@ -193,7 +193,11 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case LOCATION://房地产坐落
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(basicApply.getName());
+                            if(isCase){
+                                stringBuilder.append(basicApply.getName());
+                            }else{
+                                stringBuilder.append(declareRecord.getSeat());
+                            }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LOCATION.getKey(), stringBuilder.toString()));
                             break;
                         case POSITION://房地产方位
