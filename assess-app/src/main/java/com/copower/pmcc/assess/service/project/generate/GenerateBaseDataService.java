@@ -3733,13 +3733,17 @@ public class GenerateBaseDataService {
             Iterator<BasicHouse> houseIterator = basicHouseList.iterator();
             while (houseIterator.hasNext()) {
                 BasicHouse basicHouse = houseIterator.next();
-                if (basicHouse.getHuxingId() == null) {
+                BasicUnitHuxing query = new BasicUnitHuxing();
+                query.setHouseId(basicHouse.getId());
+                List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);
+                if (CollectionUtils.isEmpty(basicUnitHuxingList)){
                     continue;
                 }
-                BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
-                if (basicUnitHuxing == null) {
+                List<BasicUnitHuxing> basicUnitHuxings = basicUnitHuxingList.stream().filter(obj -> StringUtils.isNotBlank(obj.getTenementType())).collect(Collectors.toList());
+                if (CollectionUtils.isEmpty(basicUnitHuxings)){
                     continue;
                 }
+                BasicUnitHuxing basicUnitHuxing = basicUnitHuxings.get(0) ;
                 List<BasicHouseHuxingPrice> houseHuxingPriceList = basicExamineHandle.getBasicHouseHuxingPriceList(basicHouse.getId());
                 if (CollectionUtils.isEmpty(houseHuxingPriceList)) {
                     continue;
@@ -4312,6 +4316,7 @@ public class GenerateBaseDataService {
         }
         generateCommonMethod.mergeCellTable(mergeCellModelList, table);
         documentBuilder.endTable();
+        handleBasicHouseHuxingPriceSheet(schemeJudgeObjectList, documentBuilder);
         AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
