@@ -13,8 +13,7 @@
     estateCommon.tableId = undefined;
     estateCommon.tableName = AssessDBKey.BasicEstate;
     //附件上传控件id数组
-    estateCommon.estateFileControlIdArray = [
-    ];
+    estateCommon.estateFileControlIdArray = [];
 
     /**
      * 空字符串检测
@@ -62,24 +61,24 @@
         }
     };
 
-    estateCommon.getUploadKey = function(bisDetail){
-        estateCommon.getFilePartHtml(AssessDicKey.estateIndustrialFile,bisDetail);
-        estateCommon.getFilePartHtml(AssessDicKey.estateNonIndustrialFile,bisDetail);
+    estateCommon.getUploadKey = function (bisDetail) {
+        estateCommon.getFilePartHtml(AssessDicKey.estateIndustrialFile, bisDetail);
+        estateCommon.getFilePartHtml(AssessDicKey.estateNonIndustrialFile, bisDetail);
     };
 
-    estateCommon.getFilePartHtml = function(fieldName,bisDetail){
-        var fileDiv = estateCommon.estateForm.find('#'+fieldName);
+    estateCommon.getFilePartHtml = function (fieldName, bisDetail) {
+        var fileDiv = estateCommon.estateForm.find('#' + fieldName);
         fileDiv.empty();
         var estateFileHtml = '';
         AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
-            var divLength = Math.ceil(resultData.length/3);
+            var divLength = Math.ceil(resultData.length / 3);
             for (var j = 0; j < divLength; j++) {
                 estateFileHtml += '<div class="row form-group">';
                 estateFileHtml += '<div class="col-md-12">';
                 estateFileHtml += '<div class="form-inline x-valid">';
-                var length = (j+1)*3>resultData.length?resultData.length:(j+1)*3;
-                for (var i = j*3; i < length; i++) {
-                    estateFileHtml += '<label class="col-sm-1">'+resultData[i].name+'</label>';
+                var length = (j + 1) * 3 > resultData.length ? resultData.length : (j + 1) * 3;
+                for (var i = j * 3; i < length; i++) {
+                    estateFileHtml += '<label class="col-sm-1">' + resultData[i].name + '</label>';
                     estateFileHtml += '<div class="col-sm-3">';
                     if (bisDetail != false) {
                         estateFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
@@ -96,7 +95,7 @@
         }, false);
         fileDiv.append(estateFileHtml);
     };
-    
+
 
     //附件上传
     estateCommon.fileUpload = function (fieldsName, tableName, id) {
@@ -287,9 +286,7 @@
             estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id, bisDetail);
         });
 
-        AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, data.land.landUseType, function (html, data) {
-            estateCommon.estateLandStateForm.find("#landUseTypeList").empty().html(html).trigger('change');
-        }, true);
+
         AssessCommon.loadDataDicByKey(AssessDicKey.estatePlaneness, data.land.planeness, function (html, data) {
             estateCommon.estateLandStateForm.find('select.planeness').empty().html(html).trigger('change');
         });
@@ -318,18 +315,17 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estateLandBearingHoldOn, data.land.holdOn, function (html, data) {
             estateCommon.estateLandStateForm.find("select[name='holdOn']").empty().html(html).trigger('change');
         });
-        if (estateCommon.isNotBlank(data.land.landLevelContent)) {
-            if (estateCommon.isNotBlank(data.land.landLevelContent)) {
-                estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val(data.land.landLevelContent);
-                estateCommon.estateLandStateForm.find("input[name='landFactorTotalScoreResult']").val(data.land.landFactorTotalScore);
-            }
-        }
-        //绑定变更事件
-        estateCommon.estateLandStateForm.find("input[name='landUseType']").off('change').on('change', function () {
-            AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), data.land.landUseCategory, function (html, data) {
-                estateCommon.estateLandStateForm.find("#landUseCategoryList").empty().html(html).trigger('change');
-            });
-        });
+
+
+        // AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, data.land.landUseType, function (html, data) {
+        //     estateCommon.estateLandStateForm.find("#landUseTypeList").empty().html(html).trigger('change');
+        // }, true);
+        // //绑定变更事件
+        // estateCommon.estateLandStateForm.find("input[name='landUseType']").off('change').on('change', function () {
+        //     AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), data.land.landUseCategory, function (html, data) {
+        //         estateCommon.estateLandStateForm.find("#landUseCategoryList").empty().html(html).trigger('change');
+        //     });
+        // });
 
 
         //土地开发程度为熟地时选择几通几平
@@ -372,20 +368,22 @@
         });
 
         try {
-            estateStreetInfoObj.init(data.estate.id) ;
+            estateStreetInfoObj.init(data.estate.id);
         } catch (e) {
 
+        }
+        try {
+            estateLandCategoryInfo.init(data.land.id);
+        } catch (e) {
+            console.log(e) ;
         }
 
     };
 
 
-
-
     estateCommon.cleanHTMLData = function (item) {
         $(item).closest('.form-group').remove();
     };
-
 
 
     //2019-08-23对这个方法进行重构
@@ -627,308 +625,7 @@
         })
     };
 
-    //js数组去重复 ,直接重载在原生js上
-    Array.prototype.deleteEle = function () {
-        var newArr = this;
-        for (var i = newArr.length - 1; i >= 0; i--) {
-            var targetNode = newArr[i];
-            for (var j = 0; j < i; j++) {
-                if (targetNode == newArr[j]) {
-                    newArr.splice(i, 1);
-                    break;
-                }
-            }
-        }
-        return newArr;
-    };
 
-    /**
-     * 获取数组中随机的一个对象或者数组中曾经被选中的那个对象,原则是在收集数据的时候对选中元素进行添加元素属性
-     * @param obj
-     * @returns {*}
-     */
-    estateCommon.getLandLevelFilter = function (obj) {
-        var random = Math.random() * (obj.length - 1);
-        random = Math.round(random);
-        random = 0;
-        var objArray = [];
-        obj.forEach(function (data, index) {
-            //这里主要是获取对象长度
-            var arr = Object.keys(data);
-            objArray.push(arr.length);
-        });
-        if (objArray.deleteEle().length >= 2) {
-            //说明修改过一次
-            objArray.sort(function (a, b) {
-                return a - b;
-            });
-            //获取有最大属性值的那个对象
-            var max = objArray[objArray.length - 1];
-            obj.forEach(function (data, index) {
-                //这里主要是获取对象长度
-                var arr = Object.keys(data);
-                if (max == arr.length) {
-                    return data;
-                }
-            });
-        }
-        var item = obj[random];
-        return item;
-    };
-
-    //删除
-    estateCommon.landLevelEmpty = function (that) {
-        $(that).parent().parent().remove();
-    };
-
-    /**
-     * 土地级别详情分类
-     * @param list
-     * @returns {Array}
-     */
-    estateCommon.landLevelFilter = function (list) {
-        var flag = 0, data = [];
-        for (var i = 0; i < list.length; i++) {
-            var az = '';
-            for (var j = 0; j < data.length; j++) {
-                if (data[j][0].type == list[i].type) {
-                    flag = 1;
-                    az = j;
-                    break;
-                }
-            }
-            if (flag == 1) {
-                data[az].push(list[i]);
-                flag = 0;
-            } else if (flag == 0) {
-                var wdy = [];
-                wdy.push(list[i]);
-                data.push(wdy);
-            }
-        }
-        return data;
-    };
-
-
-    //change 事件 随着等级变化页面展示不同内容
-    estateCommon.landLevelHandle = function (that) {
-        var group = $(that).closest('.group');
-        var landLevelContent = group.find("input[name='landLevelContent']").val();
-        var obj = {};
-        try {
-            obj = JSON.parse(landLevelContent);
-        } catch (e) {
-        }
-        if (estateCommon.isNotBlankObject(obj)) {
-            AssessCommon.getDataDicInfo($(that).val(), function (item) {
-                obj.forEach(function (data, index) {
-                    if (data.gradeName == item.name) {
-                        group.find("input[name='landFactorTotalScore']").val(AssessCommon.pointToPercent(data.achievement));
-                        group.find("input[name='dataLandLevelAchievement']").val(data.id);
-                    }
-                });
-            });
-        }
-    };
-
-    estateCommon.constructionInstallationEngineeringFeeEvent = {
-        loadHtml: function () {
-            developmentCommon.getMdArchitecturalObjList2({
-                databaseName: AssessDBKey.BasicEstate,
-                pid: estateCommon.getEstateId()
-            }, function (objArray) {
-                if (objArray.length >= 1) {
-                    developmentCommon.getMdArchitecturalObjById(objArray[0].id, function (item) {
-                        var target = $("#boxLandEngineering_Install");
-                        var table = target.find("table");
-                        var data = [];
-                        try {
-                            data = JSON.parse(item.jsonContent);
-                        } catch (e) {
-                            console.log("解析异常!");
-                        }
-                        estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML(data, item.id);
-                    });
-                } else {
-                    estateCommon.constructionInstallationEngineeringFeeEvent.appendHTML([], 0, '');
-                }
-            });
-        },
-        appendHTML: function (data, id) {
-            var target = $("#boxLandEngineering_Install");
-            var html = target.html();
-            html = html.replace(/'{method}'/g, 'estateCommon.constructionInstallationEngineeringFeeEvent.save()');
-            target.empty().append(html);
-            target.modal("show");
-            target.find(".card-body").empty();
-            developmentCommon.architecturalB.appendHtml(target.find(".card-body"), data, null, '', function (tr) {
-                var obj = {disable: 'disable', readonly: "readonly", 'class': 'form-control input-full'};
-                $(tr).find("input[name='price']").attr(obj);
-                $(tr).find("input[name='remark']").attr(obj);
-                $(tr).find("input[name='area']").attr(obj);
-            });
-            target.find("input[name='constructionInstallationEngineeringFeeId']").val(id);
-        },
-        save: function () {
-            var pid = estateCommon.getEstateId();
-            var target = $("#boxLandEngineering_Install");
-            var table = target.find("table");
-            var obj = {};
-            obj.databaseName = AssessDBKey.BasicEstate;
-            obj.pid = pid;
-            obj.id = target.find("input[name='constructionInstallationEngineeringFeeId']").val();
-            developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table), obj, function (item) {
-                notifySuccess('成功', '保存成功!');
-            });
-            target.modal("hide");
-        }
-    };
-
-    //土地因素
-    estateCommon.openLevelDetailModal = function (this_) {
-        var landLevelId = $(this_).closest('.input-group').find('input[name="landLevel"]').val();
-        if (!landLevelId) {
-            alert('请选择土地级别');
-        }
-        var landLevelContentResult = estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val();
-        if (estateCommon.isNotBlank(landLevelContentResult)) {
-            estateCommon.landLevelLoadEditHtml();
-        } else {
-            $.ajax({
-                url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
-                type: "get",
-                data: {levelDetailId: landLevelId},
-                success: function (result) {
-                    estateCommon.landLevelLoadHtml(result.data, false);
-                }
-            })
-        }
-    };
-
-    estateCommon.landLevelLoadHtml = function (data, beEcho) {
-        if (jQuery.isEmptyObject(data)) {
-            return false;
-        }
-        $("#detailAchievementModal").modal();
-        var target = $("#landLevelTabContent");
-        target.empty();
-
-        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
-        data.forEach(function (dataA, indexM) {
-            $.each(dataA, function (i, obj) {
-                //默认选中最优
-                var item;
-                if (beEcho) {
-                    obj.forEach(function (value, index) {
-                        if (value.modelStr == "update") {
-                            item = value;
-                        }
-                    })
-                } else {
-                    item = estateCommon.getLandLevelFilter(obj);
-                }
-
-                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.categoryName);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
-                    var text = "";
-                    $.each(obj, function (i, n) {
-                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
-                    });
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
-                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                        target.append(landLevelBodyHtml);
-                    }, false);
-                }
-            });
-
-        });
-    };
-
-    estateCommon.landLevelLoadEditHtml = function () {
-        var landLevelContentResult = estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val();
-        var jsonContent = JSON.parse(landLevelContentResult);
-        var data = estateCommon.landLevelFilter(jsonContent);
-        estateCommon.landLevelLoadHtml(data, true);
-    };
-
-    estateCommon.saveLandLevelTabContent = function () {
-        var landLevelContent = [];
-        var landFactorTotalScoreResult = 0;
-
-        $("#landLevelContentFrm").find("input[name='landLevelContent']").each(function (i, n) {
-            var group = $(n).closest(".group");
-            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
-            var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
-            landFactorTotalScoreResult += Number(landFactorTotalScore);
-            var obj = JSON.parse($(n).val());
-            var dataObject = [];
-            obj.forEach(function (value, index) {
-                if (value.id == dataLandLevelAchievement) {
-                    value.modelStr = "update";
-                    value.achievement = landFactorTotalScore;
-                } else {
-                    delete value.modelStr;
-                }
-                dataObject.push(value);
-            });
-            landLevelContent.push(dataObject);
-        });
-        if (landLevelContent.length >= 1) {
-            estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val(JSON.stringify(landLevelContent));
-            estateCommon.estateLandStateForm.find("input[name='landFactorTotalScoreResult']").val(landFactorTotalScoreResult);
-        } else {
-            estateCommon.estateLandStateForm.find("input[name='landFactorTotalScoreResult']").val('');
-            estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val('');
-        }
-        $("#detailAchievementModal").modal('hide');
-    }
-
-    //土地因素
-    estateCommon.landLevelLoadHtmlApproval = function () {
-        var landLevelContent = estateCommon.estateLandStateForm.find("input[name='landLevelContent']").val();
-
-        var jsonContent = JSON.parse(landLevelContent);
-        var data = estateCommon.landLevelFilter(jsonContent);
-        if (jQuery.isEmptyObject(data)) {
-            return false;
-        }
-
-        $("#detailAchievementModal").modal();
-        var target = $("#landLevelTabContent");
-        target.empty();
-
-        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
-        data.forEach(function (dataA, indexM) {
-            $.each(dataA, function (i, obj) {
-                var item;
-                obj.forEach(function (value, index) {
-                    if (value.modelStr == "update") {
-                        item = value;
-                    }
-                });
-                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
-                    var text = "";
-                    $.each(obj, function (i, n) {
-                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
-                    });
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
-                    target.append(landLevelBodyHtml);
-                }
-            });
-
-        });
-    };
 
     //板块选择
     estateCommon.blockSelect = function (this_) {

@@ -234,49 +234,38 @@
                                                     <label class="form-control input-full"
                                                            name="name">${basicEstateLandState.name}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">土地用途类型</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="landUseType">${basicEstateLandState.landUseType}</label>
-                                                </div>
-                                                <label class="col-sm-1 control-label">土地用途类别</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="landUseCategory">${basicEstateLandState.landUseCategory}</label>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-
-                                                <label class="col-sm-1">取得时间</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full dbdate x-percent"
-                                                           name="acquisitionTime"><fmt:formatDate
-                                                            value='${basicEstateLandState.acquisitionTime}'
-                                                            pattern='yyyy-MM-dd'/></label>
-                                                </div>
-                                                <label class="col-sm-1">土地使用年限</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="landUseYear">${basicEstateLandState.landUseYear}</label>
-                                                </div>
-                                                <label class="col-sm-1 control-label">土地级别</label>
-                                                <div class="col-sm-3">
-                                                    <input type="hidden" name="landLevelContent"
-                                                           value='${basicEstateLandState.landLevelContent}'>
-                                                    <div class="input-group">
-                                                        <label class="form-control input-full"
-                                                               name="landLevelName">${basicEstateLandState.landLevelName}</label>
-                                                    </div>
+                                                <div class="col-sm-12">
+                                                    <table class="table basicEstateLandCategoryInfo">
+                                                        <thead>
+                                                        <tr>
+                                                            <th style="width: 10%">土地用途类型</th>
+                                                            <th style="width: 10%">土地用途类别</th>
+                                                            <th style="width: 10%">土地取得时间</th>
+                                                            <th style="width: 10%">土地使用年限</th>
+                                                            <th style="width: 30%">土地级别</th>
+                                                            <th style="width: 10%"></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+
                                     <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
                                         color="#6f5499" size="10">
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -481,68 +470,7 @@
                                             </div>
                                         </c:if>
                                     </div>
-                                    <div id="detailAchievementModal" class="modal fade bs-example-modal-lg"
-                                         data-backdrop="static"
-                                         tabindex="-1"
-                                         role="dialog"
-                                         aria-hidden="true" data-height="500">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close"><span
-                                                            aria-hidden="true">&times;</span></button>
-                                                    <h3 class="modal-title">土地因素</h3>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form class="form-horizontal" id="landLevelContentFrm">
-                                                        <div class="row form-group">
-                                                            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                                <table class="table table-striped table-bordered">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th width="10%">土地级别类别</th>
-                                                                        <th width="10%">土地级别类型</th>
-                                                                        <th width="10%">土地级别等级</th>
-                                                                        <th width="20%">说明</th>
-                                                                        <th width="10%">分值</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody id="landLevelTabContent">
 
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                                                        关闭
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script type="text/html" id="landLevelTabContentBody">
-                                        <tr class="group">
-                                            <td class="table-cell">
-                                                {landLevelTypeName}
-                                            </td>
-                                            <td>
-                                                {landLevelCategoryName}
-                                            </td>
-                                            <td>
-                                                {gradeName}
-                                            </td>
-                                            <td>
-                                                <label name="reamark" class="form-control input-full">{reamark}</label>
-                                            </td>
-                                            <td>
-                                                <label name="landFactorTotalScore" class="form-control input-full">{landFactorTotalScore}</label>
-                                            </td>
-                                        </tr>
-                                    </script>
                                 </form>
                             </div>
                         </div>
@@ -601,6 +529,8 @@
 </body>
 
 <%@include file="/views/project/stageSurvey/commonDetail/estateStreetInfo.jsp" %>
+<%@include file="/views/project/stageSurvey/commonDetail/estateLandCategoryInfo.jsp" %>
+
 <%@include file="/views/share/chksCommon.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
@@ -615,4 +545,5 @@
         estateCommon.initDetailById('${basicEstate.id}', '', false);
     })
 </script>
+
 </html>

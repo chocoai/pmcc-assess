@@ -137,8 +137,6 @@
                                     </div>
 
 
-
-
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -269,8 +267,6 @@
                                     </div>
                                     <form id="frm_estateLandState" class="form-horizontal">
                                         <input type="hidden" name="id" value="${basicEstateLandState.id}">
-                                        <input type="hidden" name="landFactorTotalScoreResult">
-                                        <input type="hidden" name="landLevelContentResult">
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
@@ -282,107 +278,36 @@
                                                                onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=name]'),$(this));"
                                                                placeholder="名称" value="${basicEstateLandState.name}">
                                                     </div>
-                                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                        土地用途类型<span class="symbol required"></span>
-                                                    </label>
-                                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                        <div class="input-group">
-                                                            <input type="text" required name="landUseType"
-                                                                   class="form-control" list="landUseTypeList"
-                                                                   value="${basicEstateLandState.landUseType}">
-                                                            <datalist id="landUseTypeList">
 
-                                                            </datalist>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-warning btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                    清空
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <label class="col-sm-1">
-                                                        土地用途类别<span class="symbol required"></span>
-                                                    </label>
-                                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                        <div class="input-group">
-                                                            <input type="text" name="landUseCategory"
-                                                                   list="landUseCategoryList"
-                                                                   value="${basicEstateLandState.landUseCategory}"
-                                                                   class="form-control" required>
-                                                            <datalist id="landUseCategoryList"></datalist>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-warning btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                    清空
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">土地取得时间<span class="symbol required"></span></label>
-                                                    <div class="col-sm-3">
-                                                        <input placeholder="土地取得时间"
-                                                               name="acquisitionTime" required
-                                                               data-date-format="yyyy-mm-dd"
-                                                               class="form-control input-full date-picker dbdate acquisitionTime">
-                                                    </div>
-                                                    <label class="col-sm-1">土地使用年限<span class="symbol required"></span></label>
-                                                    <div class="col-sm-3">
-                                                        <input placeholder="土地使用年限" data-rule-number="true"
-                                                               name="landUseYear" required
-                                                               class="form-control input-full">
-                                                    </div>
-                                                    <label class="col-sm-1">土地级别<span
-                                                            class="symbol required"></span></label>
-                                                    <div class="col-sm-3">
-                                                        <div class="input-group">
-                                                            <input type="hidden" name="landLevel"
-                                                                   value='${basicEstateLandState.landLevel}'>
-                                                            <input type="text" readonly="readonly"
-                                                                   onclick="examineCommon.landLevelSelect(this);"
-                                                                   placeholder="土地级别" class="form-control"
-                                                                   name="landLevelName" required
-                                                                   value="${basicEstateLandState.landLevelName}">
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-warning btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                    清空
-                                                                </button>
-                                                            </div>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-primary btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="examineCommon.landLevelSelect(this);">
-                                                                    选择
-                                                                </button>
-                                                            </div>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-info btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="estateCommon.openLevelDetailModal(this);">
-                                                                    因素
-                                                                </button>
-                                                            </div>
+                                                    <div class="col-sm-12">
 
-                                                        </div>
+                                                        <table class="table basicEstateLandCategoryInfo">
+                                                            <thead>
+                                                            <tr>
+                                                                <th style="width: 10%">土地用途类型</th>
+                                                                <th style="width: 10%">土地用途类别</th>
+                                                                <th style="width: 10%">土地取得时间</th>
+                                                                <th style="width: 10%">土地使用年限</th>
+                                                                <th style="width: 30%">土地级别</th>
+                                                                <th style="width: 10%"></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
                                         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
                                             color="#6f5499" size="10">
                                         <div class="row form-group">
@@ -698,87 +623,11 @@
 </div>
 </body>
 </html>
-<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 90%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">土地因素</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
 
-            <div class="modal-body">
-                <form class="form-horizontal" id="landLevelContentFrm">
-                    <input type="hidden" id="id" name="id">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th width="10%">土地级别类别</th>
-                                        <th width="10%">土地级别类型</th>
-                                        <th width="10%">土地级别等级</th>
-                                        <th width="30%">说明</th>
-                                        <th width="10%">分值</th>
-                                        <th width="5%"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="landLevelTabContent"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="estateCommon.saveLandLevelTabContent()">
-                    保存
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
 <%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
 <%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
 <%@include file="/views/project/stageSurvey/common/estateStreetInfo.jsp" %>
-<script type="text/html" id="landLevelTabContentBody">
-    <tr class="group">
-        <td class="table-cell">
-            {landLevelTypeName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td>
-            {landLevelCategoryName}
-        </td>
-        <td>
-            <select class="form-control input-full" name="landLevelGrade"
-                    onchange="estateCommon.landLevelHandle(this);">
-                {landLevelGradeHTML}
-            </select>
-        </td>
-        <td>
-            {reamark}
-            <%--<label name="reamark" class="form-control input-full">{reamark}</label>--%>
-        </td>
-        <td>
-            <input type="hidden" class="form-control input-full" name="dataLandLevelAchievement"
-                   value="{dataLandLevelAchievement}">
-            <input type="text" class="form-control input-full x-percent" name="landFactorTotalScore"
-                   value="{landFactorTotalScore}">
-            <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
-        </td>
-        <td>
-            <input class="btn btn-warning" type="button" value="X"
-                   onclick="estateCommon.landLevelEmpty(this)">
-        </td>
-    </tr>
-</script>
+<%@include file="/views/project/stageSurvey/common/estateLandCategoryInfo.jsp" %>
 
 
 <script type="text/javascript"
@@ -792,7 +641,7 @@
         src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/sonEstateView.js?v=${assessVersion}"></script>
-<script src="${pageContext.request.contextPath}/js/select/land.level.select.js?v=${assessVersion}"></script>
+
 <script src="${pageContext.request.contextPath}/js/select/block.select.js?v=${assessVersion}"></script>
 
 
@@ -824,8 +673,6 @@
         item.basicEstate.name = estateCommon.estateForm.find("input[name='name']").val();
 
         var data = formSerializeArray(estateCommon.estateLandStateForm);
-        data.landLevelContent = estateCommon.estateLandStateForm.find("input[name=landLevelContentResult]").val();
-        data.landFactorTotalScore = estateCommon.estateLandStateForm.find("input[name=landFactorTotalScoreResult]").val();
         item.basicEstateLandState = data;
         var formData = JSON.stringify(examineCommon.getFormData());
         $.ajax({
