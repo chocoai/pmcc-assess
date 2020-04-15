@@ -235,13 +235,24 @@
                 estateId = data.id ;
             }
             estateStreetInfoObj.getBasicEstateStreetInfoList({estateId: estateId}, function (data) {
-                setTimeout(function () {
+                if (data.length >= 1){
                     $.each(data, function (i, item) {
                         table.find("tbody").append(estateStreetInfoObj.replaceHtml(item));
                         estateStreetInfoObj.showFile(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
                         estateStreetInfoObj.fileUpload(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
                     });
-                }, 100);
+                    setTimeout(function () {
+                        var html = "" ;
+                        html += "<button class='btn btn-sm btn-success' type='button' onclick='estateStreetInfoObj.appendHTML(this);'>" ;
+                        html += "<i class='fa fa-plus'></i>" ;
+                        html += "</button>" ;
+                        table.find("tbody").find("tr").first().find("td").last().empty().append(html) ;
+                    }, 100);
+                }else {
+                    estateStreetInfoObj.saveData({estateId: estateId},function (id) {
+                        estateStreetInfoObj.init(estateId) ;
+                    });
+                }
             });
         }($(".estateStreetInfos")));
     } ;

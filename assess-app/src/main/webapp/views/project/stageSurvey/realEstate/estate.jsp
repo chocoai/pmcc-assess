@@ -146,13 +146,6 @@
                                                     <table class="table estateStreetInfos">
                                                         <thead>
                                                         <tr>
-                                                            <td colspan="4">
-                                                                <button class="btn btn-sm btn-success" type="button"
-                                                                        onclick="estateStreetInfoObj.appendHTML(this) ;"><i
-                                                                        class="fa fa-plus"></i></button>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
                                                             <th style="width: 10%">街道号</th>
                                                             <th style="width: 10%">大门名称</th>
                                                             <th style="width: 10%">附号</th>
@@ -168,7 +161,6 @@
                                             </div>
                                         </div>
                                     </div>
-
 
                                     <div class="row form-group">
                                         <div class="col-md-12">
