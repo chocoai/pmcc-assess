@@ -138,7 +138,13 @@ var houseHuxingPrice;
                         if (houseHuxingPrice.prototype.isNotBlank(result.data)) {
                             houseHuxingPrice.prototype.init(result.data,tenementType);
                             if (tenementType == '商铺' || tenementType == '商场') {
-                                houseHuxingPrice.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
+                                if(houseHuxingPrice.prototype.isNotBlank(result.data.adjacentPosition)){
+                                    houseHuxingPrice.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
+                                }else{
+                                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
+                                        $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
+                                    },false);
+                                }
                             }
                         } else {
                             houseHuxingPrice.prototype.init({},tenementType);
@@ -2193,7 +2199,13 @@ var houseRoom;
                         houseRoom.prototype.init(result.data,tenementType);
                         var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
                         if (tenementType == '商铺' || tenementType == '商场') {
-                            houseRoom.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
+                            if(houseRoom.prototype.isNotBlank(result.data.adjacentPosition)){
+                                houseRoom.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
+                            }else{
+                                AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
+                                    $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
+                                },false);
+                            }
                         }
                         $('#' + houseRoom.prototype.config().box).modal("show");
                     }
