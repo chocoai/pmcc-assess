@@ -113,6 +113,7 @@
                                     <%@include file="/views/project/stageSurvey/common/unitCommonPart.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/unitElevator.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/unitDecorate.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/common/unitStairs.jsp" %>
                                 </div>
                             </div>
                         </div>

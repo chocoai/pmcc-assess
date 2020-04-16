@@ -196,6 +196,7 @@ public class BasicUnitService extends BasicEntityAbstract {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unitId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unitId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unitId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitStairs.class), unitId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -372,6 +373,10 @@ public class BasicUnitService extends BasicEntityAbstract {
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//配备电梯sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitStairs.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitStairs.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//单元 单元楼梯信息 sql
 
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }

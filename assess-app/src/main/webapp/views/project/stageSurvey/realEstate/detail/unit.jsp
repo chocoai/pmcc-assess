@@ -80,6 +80,7 @@
                         <%@include file="/views/project/stageSurvey/commonDetail/unitCommonPart.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitStairs.jsp" %>
                     </c:if>
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">

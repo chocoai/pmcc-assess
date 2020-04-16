@@ -231,6 +231,8 @@ AssessDicKey.examineUnitLocation = "unit.location";//所在位置
 AssessDicKey.examineUnitMonad = "unit.monad";//单位
 AssessDicKey.examineUnitQuantity = "unit.quantity";//数量
 AssessDicKey.unit_commonPart_description = "unit.commonPart.description";//公共部位 描述
+AssessDicKey.examineUnitStairs_type = "unit.unitStairs.type";//楼梯类型
+AssessDicKey.examineUnitStairs_use = "unit.unitStairs.use";//楼梯用途
 
 //房屋
 AssessDicKey.examineBasicHouse = "basicHouse";//房屋附件

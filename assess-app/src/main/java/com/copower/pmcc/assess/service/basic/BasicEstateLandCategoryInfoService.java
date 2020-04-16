@@ -15,14 +15,17 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -44,6 +47,33 @@ public class BasicEstateLandCategoryInfoService {
     @Autowired
     private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    public void copy(Integer oldId, Integer newId)throws Exception {
+        if (oldId == null) {
+            return;
+        }
+        if (newId == null) {
+            return;
+        }
+        BasicEstateLandCategoryInfo query = new BasicEstateLandCategoryInfo();
+        query.setLandId(oldId);
+        List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfoList = basicEstateLandCategoryInfoList(query);
+        if (CollectionUtils.isEmpty(basicEstateLandCategoryInfoList)){
+            return;
+        }
+        Iterator<BasicEstateLandCategoryInfo> iterator = basicEstateLandCategoryInfoList.iterator();
+        while (iterator.hasNext()){
+            BasicEstateLandCategoryInfo categoryInfo = iterator.next();
+            BasicEstateLandCategoryInfo obj = new BasicEstateLandCategoryInfo();
+            BeanUtils.copyProperties(categoryInfo,obj);
+            obj.setId(null);
+            obj.setCreator(commonService.thisUserAccount());
+            obj.setGmtCreated(null);
+            obj.setGmtModified(null);
+            obj.setLandId(newId);
+            saveAndUpdateBasicEstateLandCategoryInfo(obj,true) ;
+        }
+    }
 
     /**
      * 获取数据
@@ -73,7 +103,7 @@ public class BasicEstateLandCategoryInfoService {
 
             //json串不允许修改,因为有时会爆出  json串过长的错误  ,所以json串只能第一次保存后要么新增要么删除,直到这个异常排除
             BasicEstateLandCategoryInfo landCategoryInfo = getBasicEstateLandCategoryInfoById(basicEstateLandCategoryInfo.getId());
-            if (StringUtils.isNotBlank(landCategoryInfo.getLandLevelContentResult())){
+            if (StringUtils.isNotBlank(landCategoryInfo.getLandLevelContentResult())) {
                 basicEstateLandCategoryInfo.setLandLevelContentResult(landCategoryInfo.getLandLevelContentResult());
                 updateNull = true;
             }

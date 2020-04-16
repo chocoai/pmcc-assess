@@ -1,5 +1,3 @@
-
-
 var unitDecorate;
 (function () {
     unitDecorate = function () {
@@ -994,5 +992,156 @@ var unitElevator;
     //绑定事件
     $('#' + unitElevator.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         unitElevator.prototype.loadDataDicList();
+    })
+})();
+
+
+var unitStairs;
+
+(function () {
+    unitStairs = function () {
+
+    };
+    unitStairs.prototype = {
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        config: function () {
+            var data = {};
+            data.table = "BasicUnitStairsList";
+            data.box = "divBoxBasicUnitStairs";
+            return data;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.unitStairsColumn();
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="unitStairs.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitStairs.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + unitStairs.prototype.config().table).bootstrapTable('destroy');
+            TableInit(unitStairs.prototype.config().table, getContextPath() + "/basicUnitStairs/getBootstrapTableVo", cols, {
+                unitId: unitCommon.getUnitId()
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitStairs/deleteBasicUnitStairs",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除成功");
+                        unitStairs.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showModel: function () {
+            unitStairs.prototype.init({});
+            $('#' + unitStairs.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            var frm = $('#' + unitStairs.prototype.config().box).find("form");
+            if (!frm.valid()) {
+                return false;
+            }
+            var data = formSerializeArray(frm);
+            data.unitId = unitCommon.getUnitId();
+            $.ajax({
+                url: getContextPath() + "/basicUnitStairs/saveAndUpdateBasicUnitStairs",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "保存成功");
+                        $('#' + unitStairs.prototype.config().box).modal('hide');
+                        unitStairs.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        getAndInit: function (id) {
+            var data = $("#" + unitStairs.prototype.config().table).bootstrapTable('getRowByUniqueId', id);
+            unitStairs.prototype.init(data);
+            $('#' + unitStairs.prototype.config().box).modal("show");
+        },
+        init: function (item) {
+            var frm = $('#' + unitStairs.prototype.config().box).find("form");
+            frm.find("form").clearAll().initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitStairs_type, null, function (html, data) {
+                html = '';
+                html += '<option value="" selected>-请选择-</option>';
+                $.each(data, function (i, item) {
+                    html += "<option value='" + item.name + "'>" + item.name + "</option>";
+                });
+                frm.find('#UnitStairs_TYPE_List').empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitStairs_use, null, function (html, data) {
+                html = '';
+                html += '<option value="" selected>-请选择-</option>';
+                $.each(data, function (i, item) {
+                    html += "<option value='" + item.name + "'>" + item.name + "</option>";
+                });
+                frm.find('#UnitStairs_purpose_List').empty().html(html).trigger('change');
+            });
+            UnitCommonPartFun.getBasicUnitCommonPartList({unitId: unitCommon.getUnitId()}, function (dataAll) {
+                var unitCommonParts = [];
+                $.each(dataAll, function (i, data) {
+                    var resultData = null;
+                    if (data.unitLocation) {
+                        try {
+                            resultData = JSON.parse(data.unitLocation);
+                        } catch (e) {
+                        }
+                    }
+                    if (resultData) {
+                        $.each(resultData, function (j, item) {
+                            var name = item.name + item.index;
+                            unitCommonParts.push(name);
+                        })
+                    }
+                });
+                var html = '';
+                html += '<option value="" selected>-请选择-</option>';
+                $.each(unitCommonParts, function (i, name) {
+                    html += "<option value='" + name + "'>" + name + "</option>";
+                });
+                frm.find('#UnitStairs_staircase_List').empty().html(html).trigger('change');
+            });
+        }
+    };
+
+    //绑定事件
+    $('#' + unitStairs.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
+        unitStairs.prototype.loadDataDicList();
     })
 })();

@@ -295,73 +295,73 @@ public class BasicUnitStairsExample {
             return (Criteria) this;
         }
 
-        public Criteria andUseIsNull() {
-            addCriterion("use is null");
+        public Criteria andPurposeIsNull() {
+            addCriterion("purpose is null");
             return (Criteria) this;
         }
 
-        public Criteria andUseIsNotNull() {
-            addCriterion("use is not null");
+        public Criteria andPurposeIsNotNull() {
+            addCriterion("purpose is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUseEqualTo(String value) {
-            addCriterion("use =", value, "use");
+        public Criteria andPurposeEqualTo(String value) {
+            addCriterion("purpose =", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseNotEqualTo(String value) {
-            addCriterion("use <>", value, "use");
+        public Criteria andPurposeNotEqualTo(String value) {
+            addCriterion("purpose <>", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseGreaterThan(String value) {
-            addCriterion("use >", value, "use");
+        public Criteria andPurposeGreaterThan(String value) {
+            addCriterion("purpose >", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseGreaterThanOrEqualTo(String value) {
-            addCriterion("use >=", value, "use");
+        public Criteria andPurposeGreaterThanOrEqualTo(String value) {
+            addCriterion("purpose >=", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseLessThan(String value) {
-            addCriterion("use <", value, "use");
+        public Criteria andPurposeLessThan(String value) {
+            addCriterion("purpose <", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseLessThanOrEqualTo(String value) {
-            addCriterion("use <=", value, "use");
+        public Criteria andPurposeLessThanOrEqualTo(String value) {
+            addCriterion("purpose <=", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseLike(String value) {
-            addCriterion("use like", value, "use");
+        public Criteria andPurposeLike(String value) {
+            addCriterion("purpose like", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseNotLike(String value) {
-            addCriterion("use not like", value, "use");
+        public Criteria andPurposeNotLike(String value) {
+            addCriterion("purpose not like", value, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseIn(List<String> values) {
-            addCriterion("use in", values, "use");
+        public Criteria andPurposeIn(List<String> values) {
+            addCriterion("purpose in", values, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseNotIn(List<String> values) {
-            addCriterion("use not in", values, "use");
+        public Criteria andPurposeNotIn(List<String> values) {
+            addCriterion("purpose not in", values, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseBetween(String value1, String value2) {
-            addCriterion("use between", value1, value2, "use");
+        public Criteria andPurposeBetween(String value1, String value2) {
+            addCriterion("purpose between", value1, value2, "purpose");
             return (Criteria) this;
         }
 
-        public Criteria andUseNotBetween(String value1, String value2) {
-            addCriterion("use not between", value1, value2, "use");
+        public Criteria andPurposeNotBetween(String value1, String value2) {
+            addCriterion("purpose not between", value1, value2, "purpose");
             return (Criteria) this;
         }
 
