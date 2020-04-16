@@ -326,15 +326,37 @@ public class GenerateReportService {
                     continue;
                 }
                 try {
-                    GenerateReportAssembleHelp.assembleSifaMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleGongshangMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleJiansheMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleCommonMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleBaseMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    GenerateReportAssembleHelp.assembleUniversalBankMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                    //收益法租赁限制说明
-                    if (Objects.equal(ReportFieldMdIncomeEnum.TenancyrestrictionRemark.getName(), name)) {
-                        GenerateReportAssembleHelp.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTenancyrestrictionRemark());
+                    //分组来获取值,约定一个名称只属于一个组 如公共文号属于公共组,那么在公共组装方法中找到了要组装的数据,那么就没有必要继续循环下去了
+
+                    //像 公共和 基础字段的组尽量放前面 , 因为大部分数据都是这两个组中,因此在这两个组中找到了那么就没必要在下面继续去循环查找了
+
+                    //以后有时间可以把组里面的if 判断全部改为switch
+                    if (GenerateReportAssembleHelp.assembleCommonMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                        continue;
+                    }
+
+                    if (GenerateReportAssembleHelp.assembleBaseMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                        continue;
+                    }
+
+                    if (GenerateReportAssembleHelp.assembleSifaMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                        continue;
+                    }
+
+                    if (GenerateReportAssembleHelp.assembleGongshangMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                        continue;
+                    }
+
+                    if (GenerateReportAssembleHelp.assembleJiansheMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                        continue;
+                    }
+
+                    if (GenerateReportAssembleHelp.assembleUniversalBankMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                        continue;
+                    }
+
+                    if (GenerateReportAssembleHelp.assembleOtherMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                        continue;
                     }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
@@ -350,9 +372,6 @@ public class GenerateReportService {
             return tempDir;
         }
     }
-
-
-
 
 
     private void replaceWord(String localPath, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap) throws Exception {
