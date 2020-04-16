@@ -322,7 +322,7 @@ public class SurveyAssetInfoService {
                 if (assetInfoItem.getInventoryId() != null && assetInfoItem.getInventoryId() != 0) {
                     SurveyAssetInventory assetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoItem.getInventoryId());
                     if (assetInventory != null){
-                        inventoryList.add(assetInventory) ;
+                        inventoryList.add(assetInventory);
                     }
                 }
                 if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0){
@@ -336,7 +336,6 @@ public class SurveyAssetInfoService {
                 }
             }
         }
-
         return inventoryList;
     }
 
