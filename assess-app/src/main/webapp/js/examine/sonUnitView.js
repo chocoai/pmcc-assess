@@ -1096,7 +1096,7 @@ var unitStairs;
         },
         init: function (item) {
             var frm = $('#' + unitStairs.prototype.config().box).find("form");
-            frm.find("form").clearAll().initForm(item);
+            frm.clearAll().initForm(item);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitStairs_type, null, function (html, data) {
                 html = '';
                 html += '<option value="" selected>-请选择-</option>';
