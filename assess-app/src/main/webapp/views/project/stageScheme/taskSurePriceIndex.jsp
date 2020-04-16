@@ -596,9 +596,21 @@
             }
             $("#tbody_factor").empty();
             var html = '';
+            //楼层因素
+            var buildFactor = $("#adjustFatorTemp").html();
+            buildFactor = buildFactor.replace(/{factor}/g, '楼层');
+            buildFactor = buildFactor.replace(/{remark}/g, '');
+            buildFactor = buildFactor.replace(/{coefficient}/g, '');
+            html += buildFactor;
+            //面积因素
+            var areaFactor = $("#adjustFatorTemp").html();
+            areaFactor = areaFactor.replace(/{factor}/g, '评估面积');
+            areaFactor = areaFactor.replace(/{remark}/g, '');
+            areaFactor = areaFactor.replace(/{coefficient}/g, '');
+            html += areaFactor;
             $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
                 var item = $("#adjustFatorTemp").html();
-                var factor = $.trim($(this).text()) + "因素";
+                var factor = $.trim($(this).text());
                 item = item.replace(/{factor}/g, factor);
                 item = item.replace(/{remark}/g, '');
                 item = item.replace(/{coefficient}/g, '');

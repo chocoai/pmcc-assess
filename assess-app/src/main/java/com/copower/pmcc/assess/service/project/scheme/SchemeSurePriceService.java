@@ -345,11 +345,11 @@ public class SchemeSurePriceService {
         ArrayList<ExamineHousePriceDto> columnsList = Lists.newArrayList();
         LinkedHashMap<String, String> base = new LinkedHashMap<>();
         base.put("name", "估价对象名称");
+        base.put("roomNumber", "房号");
         base.put("floorArea", "评估面积");
         base.put("floorArea_factor", "评估面积因素");
         base.put("floor", "楼层");
         base.put("floor_factor", "楼层因素");
-        base.put("roomNumber", "房号");
         //动态标题
         for (Map.Entry<String, String> stringObjectEntry : base.entrySet()) {
             ExamineHousePriceDto dto = new ExamineHousePriceDto();
@@ -534,23 +534,24 @@ public class SchemeSurePriceService {
         StringBuilder s = new StringBuilder();
         for (int j = 0; j < colLength; j++) {
             String key = PoiUtils.getCellValue(keyRow.getCell(j));
-            String factorName = PoiUtils.getCellValue(titleRow.getCell(j));
+            String factorName = PoiUtils.getCellValue(titleRow.getCell(j)).replace("因素","");
             if (key.contains("factor")) {
                 String value = PoiUtils.getCellValue(row.getCell(j));
-                if (StringUtils.isNotEmpty(value)) {
-                    s.append(factorName).append(":").append(value).append(";");
+                Integer type = ComputeDataTypeEnum.ABSOLUTE.getId();
+                if (StringUtils.isNotEmpty(value)&&isNumeric(value)) {
+                    if(ArithmeticUtils.compare("10",value)){
+                        type = ComputeDataTypeEnum.RELATIVE.getId();
+                        String percent = ArithmeticUtils.getPercentileSystem(new BigDecimal(value), 4, BigDecimal.ROUND_HALF_UP);
+                        s.append(factorName).append(":").append(percent).append(";");
+                    }else{
+                        s.append(factorName).append(":").append(value).append(";");
+                    }
                     //因素子表处理
                     SchemeSurePriceFactor factor = new SchemeSurePriceFactor();
                     factor.setJudgeObjectId(schemeJudgeObject.getId());
-                    if (value.contains("%")) {
-                        factor.setType(ComputeDataTypeEnum.RELATIVE.getId());
-                        String result = ArithmeticUtils.parseFormatString(value);
-                        factor.setCoefficient(new BigDecimal(result));
-                    } else {
-                        factor.setType(ComputeDataTypeEnum.ABSOLUTE.getId());
-                        if (isNumeric(value)) {
-                            factor.setCoefficient(new BigDecimal(value));
-                        }
+                    factor.setType(type);
+                    if (isNumeric(value)) {
+                        factor.setCoefficient(new BigDecimal(value));
                     }
                     factor.setFactor(factorName);
                     factor.setCreator(commonService.thisUserAccount());

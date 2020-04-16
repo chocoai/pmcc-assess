@@ -679,8 +679,8 @@ commonColumn.houseRoomResidence = function () {
     cols.push({
         field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
             var s = row.length;
-            if (row.houseShape == '不规则') {
-                s += "(最长)";
+            if (row.houseShape == '不规则'&&row.length) {
+                s = "最长"+s;
             }
             return s;
         }
@@ -688,8 +688,8 @@ commonColumn.houseRoomResidence = function () {
     cols.push({
         field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
             var s = row.width;
-            if (row.houseShape == '不规则') {
-                s += "(最宽)";
+            if (row.houseShape == '不规则'&&row.width) {
+                s = "最宽"+s;
             }
             return s;
         }
@@ -705,8 +705,8 @@ commonColumn.houseRoomStore = function () {
     cols.push({
         field: 'openingDisplay', title: '开间', formatter: function (value, row, index) {
             var s = row.opening;
-            if (row.houseShape == '不规则') {
-                s += "(最大)";
+            if (row.houseShape == '不规则'&&row.opening) {
+                s = "最大"+s;
             }
             return s;
         }
@@ -714,8 +714,8 @@ commonColumn.houseRoomStore = function () {
     cols.push({
         field: 'depthDisplay', title: '进深', formatter: function (value, row, index) {
             var s = row.depth;
-            if (row.houseShape == '不规则') {
-                s += "(最小)";
+            if (row.houseShape == '不规则'&&row.depth) {
+                s = "最小"+s;
             }
             return s;
         }
@@ -731,8 +731,8 @@ commonColumn.houseRoomHotel = function () {
     cols.push({
         field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
             var s = row.length;
-            if (row.houseShape == '不规则') {
-                s += "(最长)";
+            if (row.houseShape == '不规则'&&row.length) {
+                s = "最长"+s;
             }
             return s;
         }
@@ -740,8 +740,8 @@ commonColumn.houseRoomHotel = function () {
     cols.push({
         field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
             var s = row.width;
-            if (row.houseShape == '不规则') {
-                s += "(最宽)";
+            if (row.houseShape == '不规则'&&row.width) {
+                s = "最宽"+s;
             }
             return s;
         }

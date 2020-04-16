@@ -164,7 +164,9 @@ public class BasicHouseHuxingPriceService {
             StringBuilder s = new StringBuilder();
             if (adjacentPositions.length > 0) {
                 for (int i = 0; i < adjacentPositions.length; i++) {
-                    s.append("距离").append(baseDataDicService.getNameById(adjacentPositions[i])).append(":").append(distances[i]).append("m").append(";");
+                    if(!StringUtils.isEmpty(adjacentPositions[i])) {
+                        s.append("距离").append(baseDataDicService.getNameById(adjacentPositions[i])).append(distances[i]).append("m").append(";");
+                    }
                 }
             }
             vo.setAdjacentPositionDescribe(s.toString());

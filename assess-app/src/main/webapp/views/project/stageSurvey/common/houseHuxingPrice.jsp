@@ -107,6 +107,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                    color="#6f5499" size="10">
                                 <%--住宅，办公--%>
                                 <div style="display: none" class="row form-group residence">
                                     <div class="col-md-12">
