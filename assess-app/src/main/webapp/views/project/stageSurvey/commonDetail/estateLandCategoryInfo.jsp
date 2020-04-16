@@ -91,17 +91,17 @@
         <td>
             <input type="hidden" data-name="id" value="{id}">
 
-            <label class="form-control" >{landUseType}</label>
+            <label class="form-control input-full" >{landUseType}</label>
 
         </td>
         <td>
-            <label class="form-control" >{landUseCategory}</label>
+            <label class="form-control input-full" >{landUseCategory}</label>
         </td>
         <td>
-            <label class="form-control" >{acquisitionTime}</label>
+            <label class="form-control input-full" >{acquisitionTime}</label>
         </td>
         <td>
-            <label class="form-control" >{landUseYear}</label>
+            <label class="form-control input-full" >{landUseYear}</label>
         </td>
         <td>
             <div class="input-group">
