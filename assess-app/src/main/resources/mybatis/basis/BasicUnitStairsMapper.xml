@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="use" property="use" jdbcType="VARCHAR" />
+    <result column="purpose" property="purpose" jdbcType="VARCHAR" />
     <result column="staircase" property="staircase" jdbcType="VARCHAR" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, type, use, staircase, bis_delete, creator, gmt_created, gmt_modified
+    id, unit_id, type, purpose, staircase, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitStairsExample" >
     select
@@ -107,10 +107,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit_stairs (unit_id, type, use, 
+    insert into tb_basic_unit_stairs (unit_id, type, purpose, 
       staircase, bis_delete, creator, 
       gmt_created, gmt_modified)
-    values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{use,jdbcType=VARCHAR}, 
+    values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, 
       #{staircase,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -126,8 +126,8 @@
       <if test="type != null" >
         type,
       </if>
-      <if test="use != null" >
-        use,
+      <if test="purpose != null" >
+        purpose,
       </if>
       <if test="staircase != null" >
         staircase,
@@ -152,8 +152,8 @@
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
       </if>
-      <if test="use != null" >
-        #{use,jdbcType=VARCHAR},
+      <if test="purpose != null" >
+        #{purpose,jdbcType=VARCHAR},
       </if>
       <if test="staircase != null" >
         #{staircase,jdbcType=VARCHAR},
@@ -190,8 +190,8 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.use != null" >
-        use = #{record.use,jdbcType=VARCHAR},
+      <if test="record.purpose != null" >
+        purpose = #{record.purpose,jdbcType=VARCHAR},
       </if>
       <if test="record.staircase != null" >
         staircase = #{record.staircase,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
-      use = #{record.use,jdbcType=VARCHAR},
+      purpose = #{record.purpose,jdbcType=VARCHAR},
       staircase = #{record.staircase,jdbcType=VARCHAR},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -237,8 +237,8 @@
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="use != null" >
-        use = #{use,jdbcType=VARCHAR},
+      <if test="purpose != null" >
+        purpose = #{purpose,jdbcType=VARCHAR},
       </if>
       <if test="staircase != null" >
         staircase = #{staircase,jdbcType=VARCHAR},
@@ -262,7 +262,7 @@
     update tb_basic_unit_stairs
     set unit_id = #{unitId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
-      use = #{use,jdbcType=VARCHAR},
+      purpose = #{purpose,jdbcType=VARCHAR},
       staircase = #{staircase,jdbcType=VARCHAR},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

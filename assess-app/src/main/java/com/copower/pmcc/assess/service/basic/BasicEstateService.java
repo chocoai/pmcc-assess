@@ -104,6 +104,8 @@ public class BasicEstateService extends BasicEntityAbstract {
     private ProjectInfoService projectInfoService;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -255,8 +257,13 @@ public class BasicEstateService extends BasicEntityAbstract {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void clearInvalidChildData(Integer estateId) throws Exception {
+        BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(estateId);
+
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where estate_id=%s;";
+
+        String baseLandSql = "update %s set bis_delete=1 where estate_id=%s;";
+
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estateId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), estateId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSupply.class), estateId));
@@ -267,6 +274,10 @@ public class BasicEstateService extends BasicEntityAbstract {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMaterial.class), estateId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class), estateId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), estateId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateStreetInfo.class), estateId));
+        if (estateLandState != null) {
+            sqlBulder.append(String.format(baseLandSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class), estateLandState.getId()));
+        }
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -488,6 +499,7 @@ public class BasicEstateService extends BasicEntityAbstract {
                 targeEstateLandState.setEstateId(targetBasicEstate.getId());
             }
             basicEstateLandStateService.saveAndUpdateBasicEstateLandState(targeEstateLandState, true);
+            basicEstateLandCategoryInfoService.copy(sourceEstateLandState.getId(),targeEstateLandState.getId());
         }
         if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetId);
@@ -567,6 +579,10 @@ public class BasicEstateService extends BasicEntityAbstract {
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicMatchingEducation.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//教育信息sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateStreetInfo.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateStreetInfo.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼盘 街道号sql
 
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }

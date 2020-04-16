@@ -637,6 +637,15 @@ commonColumn.unitElevatorColumn = function () {
     return cols;
 }
 
+commonColumn.unitStairsColumn = function () {
+    var cols = [];
+    cols.push({field: 'type', title: '楼梯类型'});
+    cols.push({field: 'purpose', title: '用途'});
+    cols.push({field: 'staircase', title: '楼梯间'});
+    return cols;
+};
+
+
 //房屋-房间
 commonColumn.houseRoomColumn = function () {
     var cols = [];

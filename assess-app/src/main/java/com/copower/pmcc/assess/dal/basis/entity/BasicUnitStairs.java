@@ -9,7 +9,7 @@ public class BasicUnitStairs {
 
     private String type;
 
-    private String use;
+    private String purpose;
 
     private String staircase;
 
@@ -45,12 +45,12 @@ public class BasicUnitStairs {
         this.type = type == null ? null : type.trim();
     }
 
-    public String getUse() {
-        return use;
+    public String getPurpose() {
+        return purpose;
     }
 
-    public void setUse(String use) {
-        this.use = use == null ? null : use.trim();
+    public void setPurpose(String purpose) {
+        this.purpose = purpose == null ? null : purpose.trim();
     }
 
     public String getStaircase() {
