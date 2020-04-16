@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
@@ -18,6 +19,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.basic.*;
@@ -3736,19 +3738,19 @@ public class GenerateBaseDataService {
                 BasicUnitHuxing query = new BasicUnitHuxing();
                 query.setHouseId(basicHouse.getId());
                 List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);
-                if (CollectionUtils.isEmpty(basicUnitHuxingList)){
+                if (CollectionUtils.isEmpty(basicUnitHuxingList)) {
                     continue;
                 }
                 List<BasicUnitHuxing> basicUnitHuxings = basicUnitHuxingList.stream().filter(obj -> StringUtils.isNotBlank(obj.getTenementType())).collect(Collectors.toList());
-                if (CollectionUtils.isEmpty(basicUnitHuxings)){
+                if (CollectionUtils.isEmpty(basicUnitHuxings)) {
                     continue;
                 }
-                BasicUnitHuxing basicUnitHuxing = basicUnitHuxings.get(0) ;
+                BasicUnitHuxing basicUnitHuxing = basicUnitHuxings.get(0);
                 List<BasicHouseHuxingPrice> houseHuxingPriceList = basicExamineHandle.getBasicHouseHuxingPriceList(basicHouse.getId());
                 if (CollectionUtils.isEmpty(houseHuxingPriceList)) {
                     continue;
                 }
-                if (StringUtils.isBlank(basicUnitHuxing.getTenementType())){
+                if (StringUtils.isBlank(basicUnitHuxing.getTenementType())) {
                     continue;
                 }
                 handleBasicHouseHuxingPrice(houseHuxingPriceList, basicHouse, basicUnitHuxing, documentBuilder);
@@ -3770,11 +3772,52 @@ public class GenerateBaseDataService {
         if (!StringUtils.contains(title, "号")) {
             title += "号";
         }
-        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(String.join("", "<div style='text-align:center;;font-size:16.0pt;'>", title, "</div>")), false);
+        documentBuilder.writeln();
+//        documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(String.join("", "<div style='text-align:center;;font-size:16.0pt;'>", title, "</div>")), false);
         String noneString = "";
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        BiFunction<List<ExamineHousePriceDto>, MyEntry<String, String>, String> biFunction = (((examineHousePriceDtos, stringStringMyEntry) -> {
+            if (StringUtils.isBlank(stringStringMyEntry.getValue())) {
+                return noneString;
+            }
+            if (CollectionUtils.isEmpty(examineHousePriceDtos)) {
+                return stringStringMyEntry.getValue();
+            }
+            for (ExamineHousePriceDto priceDto : examineHousePriceDtos) {
+                if (StringUtils.isBlank(priceDto.getKey())) {
+                    continue;
+                }
+                if (StringUtils.isBlank(priceDto.getValue())) {
+                    continue;
+                }
+                if (!StringUtils.contains(priceDto.getKey(), stringStringMyEntry.getKey())) {
+                    continue;
+                }
+                return String.join("", stringStringMyEntry.getValue(), " ", "(","因素:", priceDto.getValue(), ")");
+            }
+            return stringStringMyEntry.getValue();
+        }));
         BiConsumer<BasicHouseHuxingPrice, LinkedList<String>> biConsumer = (((basicHouseHuxingPrice, linkedList) -> {
-            if (StringUtils.equals("住宅", basicUnitHuxing.getTenementType()) || StringUtils.equals("办公", basicUnitHuxing.getTenementType())) {
+            List<ExamineHousePriceDto> examineHousePriceDtoList = Lists.newArrayList();
+            if (basicHouseHuxingPrice != null && StringUtils.isNotBlank(basicHouseHuxingPrice.getJsonData())) {
+                try {
+                    List<ExamineHousePriceDto> housePriceDtos = JSONObject.parseArray(basicHouseHuxingPrice.getJsonData(), ExamineHousePriceDto.class);
+                    if (CollectionUtils.isNotEmpty(housePriceDtos)) {
+                        examineHousePriceDtoList.addAll(housePriceDtos);
+                    }
+                } catch (Exception e) {
+                }
+            }
+
+            if (basicHouseHuxingPrice == null) {
+                linkedList.addAll(Lists.newLinkedList(Lists.newArrayList("房号", "面积(㎡)", "楼层")));
+            } else {
+                linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("houseNumber", basicHouseHuxingPrice.getHouseNumber())));
+                linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("area", basicHouseHuxingPrice.getArea() != null ? ArithmeticUtils.round(basicHouseHuxingPrice.getArea(), 2) : noneString)));
+                linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("floor", basicHouseHuxingPrice.getFloor())));
+            }
+
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "住宅") || StringUtils.contains(basicUnitHuxing.getTenementType(), "办公")) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("通风");
                     linkedList.add("采光");
@@ -3784,16 +3827,16 @@ public class GenerateBaseDataService {
                     linkedList.add("宽度");
                 }
                 if (basicHouseHuxingPrice != null && basicHouseHuxingPrice.getId() != null) {
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getAeration()) ? basicHouseHuxingPrice.getAeration() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getLighting()) ? basicHouseHuxingPrice.getLighting() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getSunshine()) ? basicHouseHuxingPrice.getSunshine() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getSoundInsulation()) ? basicHouseHuxingPrice.getSoundInsulation() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getLength()) ? basicHouseHuxingPrice.getLength() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getWidth()) ? basicHouseHuxingPrice.getWidth() : noneString);
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("aeration", basicHouseHuxingPrice.getAeration())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("lighting", basicHouseHuxingPrice.getLighting())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("sunshine", basicHouseHuxingPrice.getSunshine())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("soundInsulation", basicHouseHuxingPrice.getSoundInsulation())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("length", basicHouseHuxingPrice.getLength())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("width", basicHouseHuxingPrice.getWidth())));
                 }
             }
 
-            if (StringUtils.equals("商铺", basicUnitHuxing.getTenementType()) || StringUtils.equals("商场", basicUnitHuxing.getTenementType())) {
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "商铺") || StringUtils.contains(basicUnitHuxing.getTenementType(), "商场")) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("相邻位置");
                     linkedList.add("方位");
@@ -3802,14 +3845,15 @@ public class GenerateBaseDataService {
                     linkedList.add("距离");
                 }
                 if (basicHouseHuxingPrice != null && basicHouseHuxingPrice.getId() != null) {
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getAdjacentPosition()) ? basicHouseHuxingPrice.getAdjacentPosition() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getOrientation()) ? basicHouseHuxingPrice.getOrientation() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getOpening()) ? basicHouseHuxingPrice.getOpening() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getDepth()) ? basicHouseHuxingPrice.getDepth() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getDistance()) ? basicHouseHuxingPrice.getDistance() : noneString);
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("adjacentPosition", basicHouseHuxingPrice.getAdjacentPosition())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("orientation", basicHouseHuxingPrice.getOrientation())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("opening", basicHouseHuxingPrice.getOpening())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("depth", basicHouseHuxingPrice.getDepth())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("distance", basicHouseHuxingPrice.getDistance())));
+
                 }
             }
-            if (StringUtils.equals("生产", basicUnitHuxing.getTenementType())) {
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "生产")) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("跨长");
                     linkedList.add("跨数");
@@ -3820,57 +3864,66 @@ public class GenerateBaseDataService {
                     linkedList.add("标准跨距");
                 }
                 if (basicHouseHuxingPrice != null && basicHouseHuxingPrice.getId() != null) {
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getSpanLength()) ? basicHouseHuxingPrice.getSpanLength() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getSpanNum()) ? basicHouseHuxingPrice.getSpanNum() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getAeration()) ? basicHouseHuxingPrice.getAeration() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getLighting()) ? basicHouseHuxingPrice.getLighting() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getMaxSpan()) ? basicHouseHuxingPrice.getMaxSpan() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getMinSpan()) ? basicHouseHuxingPrice.getMinSpan() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getStandardSpan()) ? basicHouseHuxingPrice.getStandardSpan() : noneString);
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("spanLength", basicHouseHuxingPrice.getSpanLength())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("spanNum", basicHouseHuxingPrice.getSpanNum())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("aeration", basicHouseHuxingPrice.getAeration())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("lighting", basicHouseHuxingPrice.getLighting())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("maxSpan", basicHouseHuxingPrice.getMaxSpan())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("minSpan", basicHouseHuxingPrice.getMinSpan())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("standardSpan", basicHouseHuxingPrice.getStandardSpan())));
+
                 }
             }
-            if (StringUtils.equals("仓储", basicUnitHuxing.getTenementType())) {
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "仓储")) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("计量标准");
                     linkedList.add("仓储要求");
                 }
                 if (basicHouseHuxingPrice != null && basicHouseHuxingPrice.getId() != null) {
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getStandardMeasure()) ? basicHouseHuxingPrice.getStandardMeasure() : noneString);
-                    linkedList.add(StringUtils.isNotBlank(basicHouseHuxingPrice.getStorageRequest()) ? basicHouseHuxingPrice.getStorageRequest() : noneString);
+
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("standardMeasure", basicHouseHuxingPrice.getStandardMeasure())));
+                    linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("storageRequest", basicHouseHuxingPrice.getStorageRequest())));
                 }
             }
+
+
+            if (basicHouseHuxingPrice == null) {
+                linkedList.add("单价");
+            } else {
+                linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("price", basicHouseHuxingPrice.getPrice() != null ? ArithmeticUtils.round(basicHouseHuxingPrice.getPrice(), 2) : noneString)));
+            }
+
         }));
         Table table = documentBuilder.startTable();
-        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("房号/权证名称", "面积(㎡)", "楼层"));
+        LinkedList<String> strings = Lists.newLinkedList();
         biConsumer.accept(null, strings);
-        final int len = strings.size();
-        AsposeUtils.writeWordTitle(documentBuilder, strings);
-        strings.clear();
         if (CollectionUtils.isNotEmpty(houseHuxingPriceList)) {
+            final int len = strings.size();
+            LinkedList<String> strings2 = Lists.newLinkedList();
             //权证名称
             String declareName = "无";
-            for (BasicHouseHuxingPrice obj:houseHuxingPriceList){
-                if (StringUtils.isNotBlank(obj.getDeclareName())){
-                    declareName = obj.getDeclareName() ;
+            for (BasicHouseHuxingPrice obj : houseHuxingPriceList) {
+                if (StringUtils.isNotBlank(obj.getDeclareName())) {
+                    declareName = obj.getDeclareName();
                 }
             }
             for (int i = 0; i < len; i++) {
                 if (i == 0) {
-                    strings.add(declareName);
+                    strings2.add(declareName);
                 } else {
-                    strings.add("");
+                    strings2.add("");
                 }
             }
-            AsposeUtils.writeWordTitle(documentBuilder, strings);
-            strings.clear();
-            mergeCellModelList.add(new MergeCellModel(1, 0, 1, len - 1));
-
+            AsposeUtils.writeWordTitle(documentBuilder, strings2);
+            mergeCellModelList.add(new MergeCellModel(0, 0, 0, len - 1));
+        }
+        //write title
+        AsposeUtils.writeWordTitle(documentBuilder, strings);
+        strings.clear();
+        if (CollectionUtils.isNotEmpty(houseHuxingPriceList)) {
             Iterator<BasicHouseHuxingPrice> iterator = houseHuxingPriceList.iterator();
             while (iterator.hasNext()) {
                 BasicHouseHuxingPrice huxingPrice = iterator.next();
-                strings.add(StringUtils.isNotBlank(huxingPrice.getHouseNumber()) ? huxingPrice.getHouseNumber() : noneString);
-                strings.add(huxingPrice.getArea() != null ? ArithmeticUtils.round(huxingPrice.getArea(), 2) : noneString);
-                strings.add(StringUtils.isNotBlank(huxingPrice.getFloor()) ? huxingPrice.getFloor() : noneString);
                 biConsumer.accept(huxingPrice, strings);
                 AsposeUtils.writeWordTitle(documentBuilder, strings);
                 strings.clear();

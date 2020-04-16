@@ -1013,6 +1013,7 @@ var unitStairs;
             var data = {};
             data.table = "BasicUnitStairsList";
             data.box = "divBoxBasicUnitStairs";
+            data.boxItem = "divBoxBasicUnitStairsItem";
             return data;
         },
         loadDataDicList: function () {
@@ -1113,30 +1114,74 @@ var unitStairs;
                 });
                 frm.find('#UnitStairs_purpose_List').empty().html(html).trigger('change');
             });
-            UnitCommonPartFun.getBasicUnitCommonPartList({unitId: unitCommon.getUnitId()}, function (dataAll) {
-                var unitCommonParts = [];
-                $.each(dataAll, function (i, data) {
-                    var resultData = null;
-                    if (data.unitLocation) {
-                        try {
-                            resultData = JSON.parse(data.unitLocation);
-                        } catch (e) {
+        },
+        openPartItemModal:function () {
+            var box = $("#" + unitStairs.prototype.config().boxItem) ;
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitCommonPart, null, function (html, data) {
+                var unitCommonPart = "" ;
+                $.each(data,function (i,item) {
+                    if (item.fieldName == AssessDicKey.examineUnitCommonPart_stairs){
+                        unitCommonPart = item.name ;
+                    }
+                }) ;
+                var json = {unitId: unitCommon.getUnitId()};
+                if (unitCommonPart){
+                    json.unitCommonPart = unitCommonPart;
+                }
+                UnitCommonPartFun.getBasicUnitCommonPartList(json, function (dataAll) {
+                    var unitCommonParts = [];
+                    $.each(dataAll, function (i, data) {
+                        var resultData = null;
+                        if (data.unitLocation) {
+                            try {
+                                resultData = JSON.parse(data.unitLocation);
+                            } catch (e) {
+                            }
                         }
+                        if (resultData) {
+                            $.each(resultData, function (j, item) {
+                                var name = item.name;
+                                unitCommonParts.push(name);
+                            })
+                        }
+                    });
+                    if (unitCommonParts.length == 0){
+                        notifyWarning("提示", "请在公共部分选择部位楼梯间添加部位记录!");
+                        return false ;
                     }
-                    if (resultData) {
-                        $.each(resultData, function (j, item) {
-                            var name = item.name + item.index;
-                            unitCommonParts.push(name);
-                        })
+                    var target = box.find(".card-body");
+                    target.empty();
+                    var resultHtml = '<div>';
+                    var divLength = Math.ceil(unitCommonParts.length / 6);
+                    for (var j = 0; j < divLength; j++) {
+                        resultHtml += '<div class="row form-group">';
+                        resultHtml += '<div class="col-md-12">';
+                        resultHtml += "<div class='form-check' style='justify-content:left'>";
+                        var length = (j + 1) * 6 > unitCommonParts.length ? unitCommonParts.length : (j + 1) * 6;
+                        for (var i = j * 6; i < length; i++) {
+                            resultHtml += "<label class='form-check-label'>";
+                            resultHtml += "<input class='form-check-input' type='checkbox' name='partItemCheckBox' ";
+                            resultHtml += 'value="' + unitCommonParts[i] + '">';
+                            resultHtml += "<span class='form-check-sign'>" + unitCommonParts[i] + "</span></label>";
+                        }
+                        resultHtml += "</div>";
+                        resultHtml += "</div>";
+                        resultHtml += "</div>";
                     }
+                    target.append(resultHtml);
+                    box.modal("show");
                 });
-                var html = '';
-                html += '<option value="" selected>-请选择-</option>';
-                $.each(unitCommonParts, function (i, name) {
-                    html += "<option value='" + name + "'>" + name + "</option>";
-                });
-                frm.find('#UnitStairs_staircase_List').empty().html(html).trigger('change');
             });
+        },
+        splicePartItem:function () {
+            var box = $("#" + unitStairs.prototype.config().boxItem) ;
+            var frm = $('#' + unitStairs.prototype.config().box).find("form");
+            var value = [];
+            box.find("input[name='partItemCheckBox']:checked").each(function (i) {
+                value.push($(this).val());
+            }) ;
+            frm.find("input[name='staircase']").val(value);
+            box.modal("hide");
         }
     };
 
