@@ -197,15 +197,16 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
-                                            <div class="col-sm-5">
-                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoComplete(this)"
-                                                       name="name" class="form-control input-full" required>
-                                            </div>
                                             <label class="col-sm-1">表单类型<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
                                                 <select name='type' required onchange="batchTreeTool.typeChange(this)"
                                                         class='form-control input-full'></select>
+                                            </div>
+                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
+                                            <div class="col-sm-5">
+                                                <input id="txtBatchDetailName" type="text" data-rule-maxlength="100"
+                                                       placeholder="名称"
+                                                       name="name" class="form-control input-full" required>
                                             </div>
                                         </div>
                                     </div>
@@ -217,9 +218,14 @@
                                             <div class="col-sm-5">
                                                 <div class='input-group'>
                                                     <input name='declareRecordId' id='declareRecordId' type='hidden'>
-                                                    <input name='declareRecordName' id='declareRecordName' class='form-control' readonly onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
+                                                    <input name='declareRecordName' id='declareRecordName'
+                                                           class='form-control' readonly
+                                                           onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
                                                     <div class="input-group-prepend">
-                                                        <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                        <button class="btn btn-warning btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
                                                             清空
                                                         </button>
                                                     </div>
@@ -228,10 +234,7 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
-
                         </div>
                     </div>
                 </form>
@@ -244,7 +247,6 @@
                     确定
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -254,7 +256,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">添加</h4>
+                <h4 class="modal-title">编辑</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -270,16 +272,21 @@
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1">名称<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
-                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this)"
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称"
+                                                       onfocus="batchTreeTool.staticLocalAutoCompleteEdit(this)"
                                                        name="name" class="form-control input-full" required>
                                             </div>
                                             <label class="col-sm-1">权证</label>
                                             <div class="col-sm-5">
                                                 <div class='input-group'>
                                                     <input name='declareRecordId' type='hidden'>
-                                                    <input name='declareRecordName' class='form-control' readonly onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
+                                                    <input name='declareRecordName' class='form-control' readonly
+                                                           onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
                                                     <div class="input-group-prepend">
-                                                        <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                        <button class="btn btn-warning btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
                                                             清空
                                                         </button>
                                                     </div>
@@ -289,8 +296,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </form>
@@ -343,6 +348,12 @@
                 batchTreeTool.ztreeInit(${applyBatch.id});
             }
         }
+        $('#txtBatchDetailName').autocomplete({
+            source: function (request, response) {
+                response(batchTreeTool.getAutoCompleteData($('#txtBatchDetailName').closest('form').find('[name=type]').val(), $('#txtBatchDetailName').val())) ;
+            },
+            minLength: 1
+        });
     });
 
     //任务提交
@@ -538,7 +549,7 @@
             type: "get",
             dataType: "json",
             success: function (result) {
-                if (result.ret && result.data && result.data.length>0) {
+                if (result.ret && result.data && result.data.length > 0) {
 
                     var typeHtml = "<option value=''>--请选择--</option>";
                     $.each(result.data, function (i, item) {
@@ -568,76 +579,19 @@
      */
     batchTreeTool.getAutoCompleteData = function (type, name) {
         var availableTags = [];
-        switch (type) {
-            case 'building': {
-                var a = "栋", b = "幢", c = "楼";
-                availableTags.push(name + a);
-                availableTags.push(name + b);
-                availableTags.push(name + c);
-                break;
-            }
-            case 'unit': {
-                var d = "单元", e = "区";
-                availableTags.push(name + d);
-                availableTags.push(name + e);
-                break;
-            }
-            default:
-                break;
+        if (type && type.indexOf('building') >= 0) {
+            var a = "栋", b = "幢", c = "楼";
+            availableTags.push(name + a);
+            availableTags.push(name + b);
+            availableTags.push(name + c);
+        }
+        if (type && type.indexOf('unit') >= 0) {
+            var d = "单元", e = "区";
+            availableTags.push(name + d);
+            availableTags.push(name + e);
         }
         return availableTags;
     };
-    /**
-     * 新增节点填充
-     * @param _this
-     * @param type
-     */
-    batchTreeTool.staticLocalAutoComplete = function (_this) {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var type = node.type;
-        var value = $(_this).val();
-        if (!value) {
-            return false;
-        }
-        if (type.indexOf('estate') != -1) {
-            $(_this).autocomplete({
-                source: batchTreeTool.getAutoCompleteData('building', value),
-                minLength: 1
-            });
-        }
-        if (type.indexOf('building') != -1) {
-            $(_this).autocomplete({
-                source: batchTreeTool.getAutoCompleteData('unit', value),
-                minLength: 1
-            });
-        }
-    };
-    /**
-     * 编辑节点填充
-     * @param _this
-     * @param type
-     */
-    batchTreeTool.staticLocalAutoCompleteEdit = function (_this, type) {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var type = node.type;
-        var value = $(_this).val();
-        if (!value) {
-            return false;
-        }
-        if (type.indexOf('building') != -1) {
-            $(_this).autocomplete({
-                source: batchTreeTool.getAutoCompleteData(type, value),
-                minLength: 1
-            });
-        }
-        if (type.indexOf('unit') != -1) {
-            $(_this).autocomplete({
-                source: batchTreeTool.getAutoCompleteData(type, value),
-                minLength: 1
-            });
-        }
-    };
-
 
     //保存明细
     batchTreeTool.saveItemData = function () {
@@ -980,7 +934,6 @@
     }
 
 
-
     //信息详情页面
     batchTreeTool.checkInfo = function () {
         var node = zTreeObj.getSelectedNodes()[0];
@@ -1100,7 +1053,7 @@
         });
     }
 
-    batchTreeTool.typeChange = function(_that){
+    batchTreeTool.typeChange = function (_that) {
         if ($(_that).val() == "house") {
             $("#frm_detail").find("input[name='declareRecordName']").attr("required", true);
         } else {

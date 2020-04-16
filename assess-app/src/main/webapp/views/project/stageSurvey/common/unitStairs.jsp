@@ -9,7 +9,7 @@
         <div class="card-header collapse-link">
             <div class="card-head-row">
                 <div class="card-title">
-                    楼梯
+                    楼梯信息
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span
