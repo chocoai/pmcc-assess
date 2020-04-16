@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by zch on 2019-12-16.
@@ -47,14 +48,18 @@ public class SurveyAssetRightService {
 
     public Map<SchemeJudgeObject, DeclareRecord> getDeclareRecordJudgeObjectMap(List<DeclareRecord> declareRecordList, List<SchemeJudgeObject> schemeJudgeObjectList) {
         Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord != null) {
-                long count = declareRecordList.stream().filter(declareRecord1 -> Objects.equal(declareRecord1.getId(), declareRecord.getId())).count();
-                if (count >= 1) {
-                    schemeJudgeObjectDeclareRecordMap.put(schemeJudgeObject, declareRecord);
-                }
+        if (CollectionUtils.isEmpty(declareRecordList)) {
+            return schemeJudgeObjectDeclareRecordMap;
+        }
+        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
+            return schemeJudgeObjectDeclareRecordMap;
+        }
+        for (DeclareRecord declareRecord:declareRecordList){
+            List<SchemeJudgeObject> collect = schemeJudgeObjectList.stream().filter(schemeJudgeObject -> Objects.equal(schemeJudgeObject.getDeclareRecordId(), declareRecord.getId())).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(collect)){
+                continue;
             }
+            schemeJudgeObjectDeclareRecordMap.put(collect.get(0), declareRecord);
         }
         return schemeJudgeObjectDeclareRecordMap;
     }

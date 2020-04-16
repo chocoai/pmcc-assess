@@ -14,12 +14,14 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -189,7 +191,36 @@ public class SchemeReimbursementService {
             }
             itemVos = findQueryBySchemeReimbursementItem2(schemeReimbursementItem);
         }
+        Ordering<SchemeReimbursementItemVo> ordering = Ordering.from(new Comparator<SchemeReimbursementItemVo>() {
+            @Override
+            public int compare(SchemeReimbursementItemVo o1, SchemeReimbursementItemVo o2) {
+                if (StringUtils.isBlank(o1.getName())) {
+                    return 0;
+                }
+                if (StringUtils.isBlank(o2.getName())) {
+                    return 0;
+                }
+                String nameA = StringUtils.remove(o1.getName(), "号");
+                String nameB = StringUtils.remove(o2.getName(), "号");
+                Integer a = getNumberOrderingByString(nameA);
+                Integer b = getNumberOrderingByString(nameB);
+                if (a != null && b != null) {
+                    return a.compareTo(b);
+                }
+                return 0;
+            }
+        });
+        itemVos.sort(ordering);
         return itemVos;
+    }
+
+    private Integer getNumberOrderingByString(String number) {
+        List<Integer> integerList = splitIntegerListJudgeNumber(number);
+        if (CollectionUtils.isNotEmpty(integerList)) {
+            Collections.sort(integerList);
+            return integerList.get(0);
+        }
+        return null;
     }
 
     public void saveAndUpdateSchemeReimbursementItem(SchemeReimbursementItem schemeReimbursementItem) {
@@ -215,6 +246,41 @@ public class SchemeReimbursementService {
         return vos;
     }
 
+    private List<Integer> splitIntegerListJudgeNumber(String number) {
+        List<Integer> integerList = new ArrayList<>();
+        if (StringUtils.isEmpty(number)) {
+            return integerList;
+        }
+        List<String> string2List = FormatUtils.transformString2List(number, ",");
+        if (CollectionUtils.isEmpty(string2List)) {
+            string2List = FormatUtils.transformString2List(number, "-");
+        }
+        if (CollectionUtils.isEmpty(string2List)) {
+            string2List = FormatUtils.transformString2List(number, "_");
+        }
+        if (CollectionUtils.isNotEmpty(string2List)) {
+            for (String num : string2List) {
+                if (NumberUtils.isNumber(num)) {
+                    integerList.add(NumberUtils.createInteger(num));
+                }
+            }
+        }
+        return integerList;
+    }
+
+    private String getNameBySchemeJudgeObjectList(List<SchemeJudgeObject> judgeObjectList) {
+        List<Integer> integerList = new ArrayList<>(judgeObjectList.size());
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+                integerList.addAll(splitIntegerListJudgeNumber(schemeJudgeObject.getNumber()));
+            }
+        }
+        Collections.sort(integerList);
+        return String.join("", StringUtils.join(integerList, ","), "号");
+    }
+
+
+
     /**
      * 初始化数据
      *
@@ -237,57 +303,40 @@ public class SchemeReimbursementService {
         if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
             return;
         }
-        SurveyAssetRight surveyAssetRight = surveyAssetRightService.getSurveyAssetRightOnly(projectPlanDetailsList.get(0),null) ;
-        if (surveyAssetRight == null){
+        SurveyAssetRight surveyAssetRight = surveyAssetRightService.getSurveyAssetRightOnly(projectPlanDetailsList.get(0), null);
+        if (surveyAssetRight == null) {
             return;
         }
-
-        List<SurveyAssetRightGroup> rightGroupList = surveyAssetRightGroupService.getSurveyAssetRightGroupListByMasterId(surveyAssetRight.getId()) ;
+        List<SurveyAssetRightGroup> rightGroupList = surveyAssetRightGroupService.getSurveyAssetRightGroupListByMasterId(surveyAssetRight.getId());
         List<DeclareRecord> declareRecordLists = declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId());
-        Iterator<DeclareRecord> iterator = declareRecordLists.iterator();
+        List<Integer> declares = new ArrayList<>() ;
         //他项权利组(多对) 每组有一个或者多个他项权力   他项权利组对应一个SchemeReimbursementItem
-        if (CollectionUtils.isNotEmpty(rightGroupList)){
-            for (SurveyAssetRightGroup rightGroup:rightGroupList){
-                List<SurveyAssetRightDeclare> declareList = surveyAssetRightGroupService.getSurveyAssetRightDeclareListByGroupId(rightGroup.getId()) ;
-                if (CollectionUtils.isEmpty(declareList)){
+        if (CollectionUtils.isNotEmpty(rightGroupList)) {
+            for (SurveyAssetRightGroup rightGroup : rightGroupList) {
+                List<SurveyAssetRightDeclare> declareList = surveyAssetRightGroupService.getSurveyAssetRightDeclareListByGroupId(rightGroup.getId());
+                if (CollectionUtils.isEmpty(declareList)) {
                     continue;
-                }
-                while (iterator.hasNext()) {
-                    DeclareRecord declareRecord = iterator.next();
-                    declareList.forEach(surveyAssetRightDeclare -> {
-                        if (com.google.common.base.Objects.equal(declareRecord.getId(), surveyAssetRightDeclare.getDeclareId())) {
-                            iterator.remove();
-                        }
-                    });
                 }
                 List<Integer> ids = declareList.stream().map(surveyAssetRightDeclare -> surveyAssetRightDeclare.getDeclareId()).collect(Collectors.toList());
-                if (CollectionUtils.isEmpty(ids)){
+                if (CollectionUtils.isEmpty(ids)) {
                     continue;
                 }
-                Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = surveyAssetRightService.getDeclareRecordJudgeObjectMap(declareRecordService.getDeclareRecordListByIds(ids),schemeJudgeObjectList) ;
-                if (schemeJudgeObjectDeclareRecordMap.isEmpty()){
+                declares.addAll(ids) ;
+                Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = surveyAssetRightService.getDeclareRecordJudgeObjectMap(declareRecordService.getDeclareRecordListByIds(ids), schemeJudgeObjectList);
+                if (schemeJudgeObjectDeclareRecordMap.isEmpty()) {
                     continue;
                 }
                 List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
                 for (Map.Entry<SchemeJudgeObject, DeclareRecord> recordEntry : schemeJudgeObjectDeclareRecordMap.entrySet()) {
                     judgeObjectList.add(recordEntry.getKey());
                 }
-                //生成name
-                List<String> stringList = Lists.newArrayList();
-                judgeObjectList.stream().forEach(schemeJudgeObject -> stringList.add(schemeJudgeObject.getNumber()));
-                //排一次序
-                Ordering<String> ordering = Ordering.from((o1, o2) -> {
-                    int x = Integer.parseInt(o1.substring(0, 1));
-                    int y = Integer.parseInt(o2.substring(0, 1));
-                    return (x > y) ? -1 : ((x == y) ? 0 : 1);
-                });
-                stringList.sort(ordering.reverse());
                 SchemeReimbursementItem itemVo = getSchemeReimbursementItemVoByInventoryRightRecordId(rightGroup.getId());
                 //当查询不到则生成
                 if (itemVo == null) {
                     itemVo = new SchemeReimbursementItem();
                     itemVo.setCreator(processControllerComponent.getThisUser());
-                    itemVo.setName(String.format("%s%s", StringUtils.join(stringList, ","), "号"));
+                    //生成name
+                    itemVo.setName(getNameBySchemeJudgeObjectList(judgeObjectList));
                 }
                 itemVo.setMasterId(schemeReimbursement.getId());
                 itemVo.setInventoryRightRecordId(rightGroup.getId());
@@ -295,7 +344,17 @@ public class SchemeReimbursementService {
                 itemVo.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
                 //注意这写入的估价对象id实际是随便写的一个实际上应当是 申报id -> 他项权力组 <==> 法定优先受偿款(子即Item)
                 itemVo.setJudgeObjectId(judgeObjectList.get(0).getId());
-                saveAndUpdateSchemeReimbursementItem(itemVo) ;
+                saveAndUpdateSchemeReimbursementItem(itemVo);
+            }
+        }
+        //remove
+        if (CollectionUtils.isNotEmpty(declares) && CollectionUtils.isNotEmpty(declareRecordLists)){
+            Iterator<DeclareRecord> iterator = declareRecordLists.iterator();
+            while (iterator.hasNext()){
+                DeclareRecord declareRecord = iterator.next();
+                if (declares.contains(declareRecord.getId())){
+                    iterator.remove();
+                }
             }
         }
         //对多余的申报id 同样生成 法定优先款
@@ -316,7 +375,6 @@ public class SchemeReimbursementService {
                     if (CollectionUtils.isEmpty(schemeReimbursementItemList)) {
                         schemeReimbursementItemDao.addObject(itemVo);
                     }
-
                 }
             }
         }
@@ -382,7 +440,7 @@ public class SchemeReimbursementService {
             Iterator<Map.Entry<Integer, List<SchemeReimbursementItemVo>>> entryIterator = entries.iterator();
             while (entryIterator.hasNext()) {
                 Map.Entry<Integer, List<SchemeReimbursementItemVo>> entry = entryIterator.next();
-                if (ids.contains(entry.getKey())){
+                if (ids.contains(entry.getKey())) {
                     SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.stream().filter(obj -> Objects.equal(obj.getId(), entry.getKey())).findFirst().get();
                     schemeJudgeObjectListMap.put(schemeJudgeObject, entry.getValue());
                 }
