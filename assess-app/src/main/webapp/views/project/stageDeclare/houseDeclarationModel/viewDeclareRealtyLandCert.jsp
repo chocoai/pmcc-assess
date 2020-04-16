@@ -229,7 +229,7 @@
                                             </div>
 
                                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                                <button type="button" class="btn-sm btn btn-success" onclick="assessCommonLand.distinguish(this);">证件识别</button>
+<%--                                                <button type="button" class="btn-sm btn btn-success" onclick="assessCommonLand.distinguish(this);">证件识别</button>--%>
                                             </div>
                                         </div>
                                     </div>
