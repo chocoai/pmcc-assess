@@ -158,8 +158,8 @@ public class BasicUnitCommonPartService {
                     if (jsonObject == null) {
                         continue;
                     }
-                    int index = jsonObject.getIntValue("index");
                     String name = jsonObject.getString("name");
+                    String description = jsonObject.getString("description");
                     String unitLocation = jsonObject.getString("unitLocation");
                     if (org.apache.commons.lang3.StringUtils.isBlank(name)) {
                         continue;
@@ -167,12 +167,12 @@ public class BasicUnitCommonPartService {
                     if (org.apache.commons.lang3.StringUtils.isBlank(unitLocation)) {
                         continue;
                     }
-                    stringList.add(String.join("", name,":", unitLocation));
+                    stringList.add(String.join("/", name, unitLocation, org.apache.commons.lang3.StringUtils.isNotBlank(description) ? description : "无描述"));
                 }
             }
         }
         if (CollectionUtils.isNotEmpty(stringList)) {
-            vo.setUnitLocation(org.apache.commons.lang3.StringUtils.join(stringList, ","));
+            vo.setUnitLocation(org.apache.commons.lang3.StringUtils.join(stringList, " , "));
         }
         return vo;
     }
