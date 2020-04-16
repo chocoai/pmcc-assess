@@ -246,11 +246,11 @@
                                                     <table class="table basicEstateLandCategoryInfo">
                                                         <thead>
                                                         <tr>
-                                                            <th style="width: 10%">土地用途类型</th>
-                                                            <th style="width: 10%">土地用途类别</th>
+                                                            <th style="width: 15%">土地用途类型</th>
+                                                            <th style="width: 15%">土地用途类别</th>
                                                             <th style="width: 10%">土地取得时间</th>
                                                             <th style="width: 10%">土地使用年限</th>
-                                                            <th style="width: 30%">土地级别</th>
+                                                            <th style="width: 10%">土地级别</th>
                                                             <th style="width: 10%"></th>
                                                         </tr>
                                                         </thead>

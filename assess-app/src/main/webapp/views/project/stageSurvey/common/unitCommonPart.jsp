@@ -31,11 +31,11 @@
                     </div>
                 </div>
                 <label class="col-sm-1 col-form-label">
-                    描述 <span class="symbol required"></span>
+                    描述
                 </label>
                 <div class="col-sm-3">
                     <div class="input-group">
-                        <input type="text" required="required" name="description{index}" data-name="description"
+                        <input type="text"  name="description{index}" data-name="description"
                                class="form-control" list="unitDescriptionList" value="{description}">
                         <div class="input-group-prepend">
                             <button class="btn btn-warning btn-sm "
