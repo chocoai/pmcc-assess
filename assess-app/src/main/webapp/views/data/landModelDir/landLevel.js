@@ -262,14 +262,12 @@ landLevel.loadLandLevelList = function (select) {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            // var editHtml = '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editData(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-            var editHtml = '<button onclick="landLevel.editData(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+            var editHtml = '<button type="button" onclick="landLevel.editData(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
             editHtml += '<i class="fa fa-pen"></i>';
             editHtml += '</button>';
             if (elShow) {
                 str += editHtml;
-                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<button onclick="landLevel.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button type="button" onclick="landLevel.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
             }
@@ -280,8 +278,7 @@ landLevel.loadLandLevelList = function (select) {
                     }
                 }
             }
-            //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="基准地价" onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')"><i class="fa  fa-tree fa-white"></i></a>';
-            str += '<button onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="基准地价">';
+            str += '<button type="button" onclick="landLevel.treeLandLevelDetailListModal(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="基准地价">';
             str += '<i class="fa fa-search"></i>';
             str += '</button>';
             return str;
@@ -957,9 +954,9 @@ landLevel.initFormLandDetailAchievement = function (row) {
         landLevel.config.achievementFrm.find("select[name='type']").empty().html(html).trigger('change');
     });
     landLevel.config.achievementFrm.find("select[name='type']").off('change').on('change', function () {
-        AssessCommon.loadSonDataListHtml($(this).val(), row.category, function (html, data) {
-            landLevel.config.achievementFrm.find("#categoryList").empty().html(html).trigger('change');
-        });
+        // AssessCommon.loadSonDataListHtml($(this).val(), row.category, function (html, data) {
+        //     landLevel.config.achievementFrm.find("#categoryList").empty().html(html).trigger('change');
+        // });
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, row.grade, function (html, data) {
         landLevel.config.achievementFrm.find("select[name='grade']").empty().html(html).trigger('change');
@@ -1031,7 +1028,8 @@ landLevel.editDataLandDetailAchievement = function (index) {
 landLevel.showLandDetailAchievementList = function (levelDetailId) {
     var cols = [];
     cols.push({field: 'typeName', title: '类型'});
-    cols.push({field: 'category', title: '类别'});
+    cols.push({field: 'classification', title: '一级类别'});
+    cols.push({field: 'category', title: '二级类别'});
     cols.push({field: 'gradeName', title: '等级'});
     cols.push({field: 'reamark', title: '说明'});
     cols.push({

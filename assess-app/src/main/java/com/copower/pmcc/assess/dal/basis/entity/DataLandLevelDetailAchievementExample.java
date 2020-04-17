@@ -286,6 +286,76 @@ public class DataLandLevelDetailAchievementExample {
             return (Criteria) this;
         }
 
+        public Criteria andClassificationIsNull() {
+            addCriterion("classification is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationIsNotNull() {
+            addCriterion("classification is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationEqualTo(String value) {
+            addCriterion("classification =", value, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationNotEqualTo(String value) {
+            addCriterion("classification <>", value, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationGreaterThan(String value) {
+            addCriterion("classification >", value, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationGreaterThanOrEqualTo(String value) {
+            addCriterion("classification >=", value, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationLessThan(String value) {
+            addCriterion("classification <", value, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationLessThanOrEqualTo(String value) {
+            addCriterion("classification <=", value, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationLike(String value) {
+            addCriterion("classification like", value, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationNotLike(String value) {
+            addCriterion("classification not like", value, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationIn(List<String> values) {
+            addCriterion("classification in", values, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationNotIn(List<String> values) {
+            addCriterion("classification not in", values, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationBetween(String value1, String value2) {
+            addCriterion("classification between", value1, value2, "classification");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassificationNotBetween(String value1, String value2) {
+            addCriterion("classification not between", value1, value2, "classification");
+            return (Criteria) this;
+        }
+
         public Criteria andCategoryIsNull() {
             addCriterion("category is null");
             return (Criteria) this;

@@ -71,11 +71,15 @@
                                                             class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
+                                                <div class="col-sm-1">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <button type="button" class="btn btn-success btn-sm"
+                                                            onclick="findQuery();">
+                                                        查询
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <button type="button" class="btn btn-primary"
-                                                    onclick="findQuery();">
-                                                查询
-                                            </button>
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -139,17 +143,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess("成功", "提交数据成功",function(){
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
                 }
                 else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

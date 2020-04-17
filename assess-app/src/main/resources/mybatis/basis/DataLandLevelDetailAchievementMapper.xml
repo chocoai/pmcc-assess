@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="level_detail_id" property="levelDetailId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="classification" property="classification" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="grade" property="grade" jdbcType="INTEGER" />
     <result column="achievement" property="achievement" jdbcType="DECIMAL" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, level_detail_id, type, category, grade, achievement, reamark, creator, gmt_created, 
-    gmt_modified
+    id, level_detail_id, type, classification, category, grade, achievement, reamark, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievementExample" >
     select
@@ -109,14 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_level_detail_achievement (level_detail_id, type, category, 
-      grade, achievement, reamark, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{levelDetailId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, 
-      #{grade,jdbcType=INTEGER}, #{achievement,jdbcType=DECIMAL}, #{reamark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_data_land_level_detail_achievement (level_detail_id, type, classification, 
+      category, grade, achievement, 
+      reamark, creator, gmt_created, 
+      gmt_modified)
+    values (#{levelDetailId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{classification,jdbcType=VARCHAR}, 
+      #{category,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, #{achievement,jdbcType=DECIMAL}, 
+      #{reamark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievement" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -129,6 +130,9 @@
       </if>
       <if test="type != null" >
         type,
+      </if>
+      <if test="classification != null" >
+        classification,
       </if>
       <if test="category != null" >
         category,
@@ -158,6 +162,9 @@
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
+      </if>
+      <if test="classification != null" >
+        #{classification,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         #{category,jdbcType=VARCHAR},
@@ -200,6 +207,9 @@
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
+      <if test="record.classification != null" >
+        classification = #{record.classification,jdbcType=VARCHAR},
+      </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=VARCHAR},
       </if>
@@ -231,6 +241,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       level_detail_id = #{record.levelDetailId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
+      classification = #{record.classification,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=VARCHAR},
       grade = #{record.grade,jdbcType=INTEGER},
       achievement = #{record.achievement,jdbcType=DECIMAL},
@@ -250,6 +261,9 @@
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="classification != null" >
+        classification = #{classification,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=VARCHAR},
@@ -279,6 +293,7 @@
     update tb_data_land_level_detail_achievement
     set level_detail_id = #{levelDetailId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
+      classification = #{classification,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=INTEGER},
       achievement = #{achievement,jdbcType=DECIMAL},

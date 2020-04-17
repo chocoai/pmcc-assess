@@ -10,6 +10,8 @@ public class DataLandLevelDetailAchievement {
 
     private Integer type;
 
+    private String classification;
+
     private String category;
 
     private Integer grade;
@@ -46,6 +48,14 @@ public class DataLandLevelDetailAchievement {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getClassification() {
+        return classification;
+    }
+
+    public void setClassification(String classification) {
+        this.classification = classification == null ? null : classification.trim();
     }
 
     public String getCategory() {
