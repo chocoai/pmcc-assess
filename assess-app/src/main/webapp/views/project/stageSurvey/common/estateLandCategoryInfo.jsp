@@ -97,9 +97,9 @@
             <input type="hidden" data-name="id" value="{id}">
             <div class="input-group">
                 <input type="text" required="required" name="landUseType{id}" data-name="landUseType"
-                       onblur="estateLandCategoryInfo.onblur(this);"
+                       onblur="estateLandCategoryInfo.onblur(this);estateLandCategoryInfo.landUseTypeChange(this);"
                        class="form-control" list="landUseTypeList{id}" value="{landUseType}">
-                <datalist id="landUseTypeList{id}">
+                <datalist id="landUseTypeList{id}" >
 
                 </datalist>
                 <div class="input-group-prepend">
@@ -457,6 +457,15 @@
         estateLandCategoryInfo.saveData(data);
     };
 
+    estateLandCategoryInfo.landUseTypeChange = function (this_) {
+        var value = $(this_).val() ;
+        var tr = $(this_).closest("tr");
+        var id = tr.find("input[data-name=id]").val();
+        AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
+            $("#landUseCategoryList" + id).empty().html(html).trigger('change');
+        });
+    };
+
     estateLandCategoryInfo.init = function (landId) {
         (function (table) {
             var frm = table.closest("form");
@@ -473,12 +482,6 @@
                         AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
                             var landUseTypeList = $("#landUseTypeList" + item.id);
                             landUseTypeList.empty().html(html).trigger('change');
-                            //绑定变更事件
-                            landUseTypeList.off('change').on('change', function () {
-                                AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), null, function (html, data) {
-                                    $("#landUseCategoryList" + item.id).empty().html(html).trigger('change');
-                                });
-                            });
                         }, true);
                     });
                     setTimeout(function () {

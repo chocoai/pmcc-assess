@@ -310,6 +310,11 @@ public class SchemeSurePriceService {
         schemeSurePrice.setPrice(schemeSurePriceApplyDto.getPrice());
         schemeSurePriceDao.updateSurePrice(schemeSurePrice);
 
+        List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceApplyDto.getSurePriceItemList();
+        if (CollectionUtils.isNotEmpty(surePriceItemList)) {
+            surePriceItemList.forEach(o -> schemeSurePriceItemDao.updateSurePriceItem(o));
+        }
+
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(schemeSurePriceApplyDto.getJudgeObjectId());
         if (schemeJudgeObject != null) {
             schemeJudgeObject.setPrice(schemeSurePriceApplyDto.getPrice());

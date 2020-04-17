@@ -576,7 +576,7 @@ commonColumn.unitCommonPartColumn = function () {
             return s;
         }
     });
-    cols.push({field: 'unitLocation', title: '所在位置'});
+
     cols.push({
         field: 'unitMonadName', title: '单位', formatter: function (value, row, index) {
             if (value) {
@@ -593,6 +593,7 @@ commonColumn.unitCommonPartColumn = function () {
             return row.unitQuantity;
         }
     });
+    cols.push({field: 'unitLocation', title: '描述'});
     return cols;
 }
 

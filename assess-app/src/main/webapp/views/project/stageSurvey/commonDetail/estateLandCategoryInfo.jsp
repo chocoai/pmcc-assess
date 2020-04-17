@@ -90,23 +90,18 @@
     <tr>
         <td>
             <input type="hidden" data-name="id" value="{id}">
-            <input type="text"  name="landUseType{id}" data-name="landUseType"
-                   class="form-control"  value="{landUseType}" readonly>
+
+            <label class="form-control input-full" >{landUseType}</label>
+
         </td>
         <td>
-            <input type="text"  name="landUseCategory{id}" data-name="landUseCategory"
-                   class="form-control" readonly  value="{landUseCategory}">
+            <label class="form-control input-full" >{landUseCategory}</label>
         </td>
         <td>
-            <input placeholder="土地取得时间"
-                   name="acquisitionTime{id}" readonly data-name="acquisitionTime"
-                   data-date-format="yyyy-mm-dd"
-                   class="form-control   " value="{acquisitionTime}">
+            <label class="form-control input-full" >{acquisitionTime}</label>
         </td>
         <td>
-            <input placeholder="土地使用年限" data-rule-number="true"
-                   name="landUseYear{id}" readonly data-name="landUseYear"
-                   class="form-control " value="{landUseYear}" >
+            <label class="form-control input-full" >{landUseYear}</label>
         </td>
         <td>
             <div class="input-group">
@@ -118,9 +113,7 @@
                 <input type="hidden" name="landLevelContentResult{id}" data-name="landLevelContentResult"
                        value="{landLevelContentResult}" >
 
-                <input type="text" readonly="readonly"
-                       placeholder="土地级别" class="form-control"
-                       name="landLevelName{id}" data-name="landLevelName" required value="{landLevelName}">
+                <label class="form-control" >{landLevelName}</label>
                 <div class="input-group-prepend">
                     <button class="btn btn-info btn-sm "
                             style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"

@@ -79,31 +79,9 @@
                                                                            required="required"
                                                                            value="${basicUnit.huxingNum}">
                                                                 </div>
-                                                                <c:if test="${formType eq 'industry'}">
-                                                                    <label class="col-sm-1">户型说明</label>
-                                                                    <div class="col-sm-3">
-                                                                        <input type="text" name="huxingExplain"
-                                                                               class="form-control input-full"
-                                                                               value="${basicUnit.huxingExplain}">
-                                                                    </div>
-                                                                </c:if>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <c:if test="${formType eq 'industry'}">
-                                                        <div class="row form-group">
-                                                            <div class="col-md-12">
-                                                                <div class="form-inline x-valid">
-                                                                    <label class="col-sm-1">户型说明</label>
-                                                                    <div class="col-sm-3">
-                                                                        <input type="text" name="huxingExplain"
-                                                                               class="form-control input-full"
-                                                                               value="${basicUnit.huxingExplain}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </c:if>
                                                     <div id="basicUnit"></div>
                                                 </div>
                                             </div>
@@ -112,9 +90,9 @@
                                 </div>
                                 <div class="x_content">
                                     <%@include file="/views/project/stageSurvey/common/unitCommonPart.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/common/unitStairs.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/unitElevator.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/unitDecorate.jsp" %>
-                                    <%@include file="/views/project/stageSurvey/common/unitStairs.jsp" %>
                                 </div>
                             </div>
                         </div>
