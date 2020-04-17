@@ -2368,7 +2368,7 @@ public class GenerateBaseDataService {
                         s.append(dicBuyer.getName()).append(ArithmeticUtils.getPercentileSystem(item.getBuyerScale(), 4, BigDecimal.ROUND_HALF_UP));
                         linkedList.add(s.toString());
                     }else {
-                        linkedList.add(String.format("%s%s",item.getTaxesBurden(),"100%"));
+                        linkedList.add(String.format("%s","100%"));
                     }
                 } else {
                     linkedList.add("空");
@@ -2388,11 +2388,21 @@ public class GenerateBaseDataService {
 
         if (groupItem != null && groupItem.getTotal() != null) {
             linkedList.addAll(Arrays.asList("合计费用", groupItem.getTotal().toString(), "", "", "", "",""));
-            linkedList.addAll(Arrays.asList("买方费用", groupItem.getBuyerTotal().toString(), "", "", "", "",""));
-            linkedList.addAll(Arrays.asList("卖方费用", groupItem.getSellerTotal().toString(), "", "", "", "",""));
             AsposeUtils.writeWordTitle(builder, linkedList);
             linkedList.clear();
-            mergeCellModelList.add(new MergeCellModel(j, 1, j, 5));
+            mergeCellModelList.add(new MergeCellModel(j, 1, j, 6));
+        }
+        if (groupItem != null && groupItem.getBuyerTotal() != null) {
+            linkedList.addAll(Arrays.asList("买方费用", groupItem.getBuyerTotal()==null?"":groupItem.getBuyerTotal().toString(), "", "", "", "",""));
+            AsposeUtils.writeWordTitle(builder, linkedList);
+            linkedList.clear();
+            mergeCellModelList.add(new MergeCellModel(j, 1, j, 6));
+        }
+        if (groupItem != null && groupItem.getBuyerTotal() != null) {
+            linkedList.addAll(Arrays.asList("卖方费用", groupItem.getBuyerTotal()==null?"":groupItem.getSellerTotal().toString(), "", "", "", "",""));
+            AsposeUtils.writeWordTitle(builder, linkedList);
+            linkedList.clear();
+            mergeCellModelList.add(new MergeCellModel(j, 1, j, 6));
         }
         if (CollectionUtils.isNotEmpty(mergeCellModelList)) {
             generateCommonMethod.mergeCellTable(mergeCellModelList, table);
