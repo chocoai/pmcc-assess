@@ -54,7 +54,7 @@ public class BasicEstateLandStateService {
      * @return
      * @throws Exception
      */
-    public BasicEstateLandState getBasicEstateLandStateById(Integer id) throws Exception {
+    public BasicEstateLandState getBasicEstateLandStateById(Integer id)  {
         return basicEstateLandStateDao.getBasicEstateLandStateById(id);
     }
 
