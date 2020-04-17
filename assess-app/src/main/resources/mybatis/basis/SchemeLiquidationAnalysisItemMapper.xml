@@ -20,6 +20,8 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="seller_scale" property="sellerScale" jdbcType="DECIMAL" />
+    <result column="buyer_scale" property="buyerScale" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -82,7 +84,7 @@
   <sql id="Base_Column_List" >
     id, area_id, judge_object_id, plan_details_id, group_id, type_key, tax_rate_id, tax_rate_value, 
     calculation_method, tax_rate_name, calculate_base, calculation_formula, taxes_burden, 
-    price, remark, creator, gmt_created, gmt_modified
+    price, remark, creator, gmt_created, gmt_modified, seller_scale, buyer_scale
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItemExample" >
     select
@@ -123,13 +125,15 @@
       tax_rate_value, calculation_method, tax_rate_name, 
       calculate_base, calculation_formula, taxes_burden, 
       price, remark, creator, 
-      gmt_created, gmt_modified)
+      gmt_created, gmt_modified, seller_scale, 
+      buyer_scale)
     values (#{areaId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{groupId,jdbcType=INTEGER}, #{typeKey,jdbcType=VARCHAR}, #{taxRateId,jdbcType=INTEGER}, 
       #{taxRateValue,jdbcType=VARCHAR}, #{calculationMethod,jdbcType=INTEGER}, #{taxRateName,jdbcType=VARCHAR}, 
       #{calculateBase,jdbcType=VARCHAR}, #{calculationFormula,jdbcType=VARCHAR}, #{taxesBurden,jdbcType=VARCHAR}, 
       #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{sellerScale,jdbcType=DECIMAL}, 
+      #{buyerScale,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -188,6 +192,12 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="sellerScale != null" >
+        seller_scale,
+      </if>
+      <if test="buyerScale != null" >
+        buyer_scale,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="areaId != null" >
@@ -240,6 +250,12 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sellerScale != null" >
+        #{sellerScale,jdbcType=DECIMAL},
+      </if>
+      <if test="buyerScale != null" >
+        #{buyerScale,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -306,6 +322,12 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.sellerScale != null" >
+        seller_scale = #{record.sellerScale,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buyerScale != null" >
+        buyer_scale = #{record.buyerScale,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -330,7 +352,9 @@
       remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      seller_scale = #{record.sellerScale,jdbcType=DECIMAL},
+      buyer_scale = #{record.buyerScale,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -389,6 +413,12 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="sellerScale != null" >
+        seller_scale = #{sellerScale,jdbcType=DECIMAL},
+      </if>
+      <if test="buyerScale != null" >
+        buyer_scale = #{buyerScale,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -410,7 +440,9 @@
       remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      seller_scale = #{sellerScale,jdbcType=DECIMAL},
+      buyer_scale = #{buyerScale,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

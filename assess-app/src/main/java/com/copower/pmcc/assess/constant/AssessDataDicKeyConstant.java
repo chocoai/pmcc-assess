@@ -24,6 +24,9 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_INDEX_LAND_TYPE = "data.index.land.type";//土地指数
     public static final String DATA_LOAN_TYPE = "data.loan.type";//贷款类型
     public static final String DATA_TAXES_BURDEN = "data.taxes.burden";//税费承担方
+    public static final String DATA_TAXES_BURDEN_SELLER = "data.taxes.burden.seller";//卖方承担
+    public static final String DATA_TAXES_BURDEN_BUYER = "data.taxes.burden.buyer";//买方承担
+    public static final String DATA_TAXES_BURDEN_BOTH = "data.taxes.burden.both";//双方承担
     public static final String DATA_LOCALE_SURVEY_PICTURE_TEMPLATE = "data.locale.survey.picture.template";//现场查勘图片模板
     public static final String DATA_TEMPLATE_TYPE = "data.template.type";//模板类型
     public static final String DATA_TEMPLATE_TYPE_DISPATCH = "data.template.type.dispatch";//公司发文模板
@@ -78,8 +81,8 @@ public class AssessDataDicKeyConstant {
     public static final String VALUE_TYPE = "value.type";  //价值类型
 
     /*
-    * 项目申报
-    */
+     * 项目申报
+     */
     public static final String PROJECT_DECLARE_ECONOMIC_INDICATORS = "project.declare.economic.indicators";  //紧急程度
     public static final String PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE = "project.declare.house.certificate.type";//房产证类型
     public static final String PROJECT_DECLARE_COMMON_SITUATION = "project.declare.common.situation";//共有情况

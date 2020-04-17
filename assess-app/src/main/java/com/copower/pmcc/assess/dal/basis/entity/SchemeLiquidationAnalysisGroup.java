@@ -22,6 +22,12 @@ public class SchemeLiquidationAnalysisGroup {
 
     private Date gmtModified;
 
+    private BigDecimal area;
+
+    private BigDecimal buyerTotal;
+
+    private BigDecimal sellerTotal;
+
     public Integer getId() {
         return id;
     }
@@ -92,5 +98,29 @@ public class SchemeLiquidationAnalysisGroup {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
+    }
+
+    public BigDecimal getBuyerTotal() {
+        return buyerTotal;
+    }
+
+    public void setBuyerTotal(BigDecimal buyerTotal) {
+        this.buyerTotal = buyerTotal;
+    }
+
+    public BigDecimal getSellerTotal() {
+        return sellerTotal;
+    }
+
+    public void setSellerTotal(BigDecimal sellerTotal) {
+        this.sellerTotal = sellerTotal;
     }
 }

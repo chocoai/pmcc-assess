@@ -82,6 +82,7 @@
                                     <th class="hidden-xs">计算基数</th>
                                     <th class="hidden-xs">计算公式</th>
                                     <th class="hidden-xs">税费负担方</th>
+                                    <th class="hidden-xs">比例</th>
 
                                     <th class="hidden-xs">备注</th>
                                     <th class="hidden-xs">单位（面积/m² 金额/元）</th>
@@ -90,6 +91,7 @@
                                 <tbody>
                                 <tr>
                                     <td class="hidden-xs">面积(平方米)</td>
+                                    <td class="hidden-xs">/</td>
                                     <td class="hidden-xs">/</td>
                                     <td class="hidden-xs">/</td>
                                     <td class="hidden-xs">/</td>
@@ -105,6 +107,7 @@
                                     <td class="hidden-xs">/</td>
                                     <td class="hidden-xs">/</td>
                                     <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
                                     <td class="hidden-xs" name="evaluationPrice">0
                                     </td>
                                 </tr>
@@ -114,9 +117,16 @@
                                 </tbody>
                                 <tbody>
                                 <tr>
-                                    <td class='hidden-xs' colspan='6' style='text-align:center;'>合计费用</td>
-                                    <td class='hidden-xs' name="total">
-                                    </td>
+                                    <td class='hidden-xs' colspan='7' style='text-align:center;'>合计费用</td>
+                                    <td class='hidden-xs' name="total"></td>
+                                </tr>
+                                <tr>
+                                    <td class='hidden-xs' colspan='7' style='text-align:center;'>买方费用</td>
+                                    <td class='hidden-xs' name="buyerTotal"></td>
+                                </tr>
+                                <tr>
+                                    <td class='hidden-xs' colspan='7' style='text-align:center;'>卖方费用</td>
+                                    <td class='hidden-xs' name="sellerTotal"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -167,6 +177,10 @@
                                                 <label class="col-sm-1 control-label">变现时间</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full">${master.liquidTime}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">变现说明</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${master.remark}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -240,6 +254,8 @@
                                 setTimeout(function () {
                                     if (item.total) {
                                         $("#" + commonFieldApproval.taskLiquidationAnalysisFrm + number).find('[name=total]').text(fmoney(Number(item.total).toFixed(2), 2));
+                                        $("#" + commonFieldApproval.taskLiquidationAnalysisFrm + number).find('[name=buyerTotal]').text(fmoney(Number(item.buyerTotal).toFixed(2), 2));
+                                        $("#" + commonFieldApproval.taskLiquidationAnalysisFrm + number).find('[name=sellerTotal]').text(fmoney(Number(item.sellerTotal).toFixed(2), 2));
                                     }
                                     ;
                                 }, 500);
@@ -313,6 +329,23 @@
                         html += "<td class='hidden-xs'>";
                         html += AssessCommon.toString(item.taxesBurden);
                         html += "</td>";
+
+                        if (item.taxesBurden == '双方承担') {
+                            var s = '';
+                            if (item.buyerScale) {
+                                s += '买方承担' + AssessCommon.pointToPercent(item.buyerScale) + ";";
+                            }
+                            if (item.sellerScale) {
+                                s += '卖方承担' + AssessCommon.pointToPercent(item.sellerScale);
+                            }
+                            html += "<td class='hidden-xs'>";
+                            html += s;
+                            html += "</td>";
+                        } else {
+                            html += "<td class='hidden-xs'>";
+                            html += "100%";
+                            html += "</td>";
+                        }
                         html += "<td class='hidden-xs'>";
                         html += AssessCommon.toString(item.remark);
                         html += "</td>";

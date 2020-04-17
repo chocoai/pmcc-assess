@@ -1265,6 +1265,126 @@ public class SchemeLiquidationAnalysisItemExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andSellerScaleIsNull() {
+            addCriterion("seller_scale is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleIsNotNull() {
+            addCriterion("seller_scale is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleEqualTo(BigDecimal value) {
+            addCriterion("seller_scale =", value, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleNotEqualTo(BigDecimal value) {
+            addCriterion("seller_scale <>", value, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleGreaterThan(BigDecimal value) {
+            addCriterion("seller_scale >", value, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("seller_scale >=", value, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleLessThan(BigDecimal value) {
+            addCriterion("seller_scale <", value, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("seller_scale <=", value, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleIn(List<BigDecimal> values) {
+            addCriterion("seller_scale in", values, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleNotIn(List<BigDecimal> values) {
+            addCriterion("seller_scale not in", values, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("seller_scale between", value1, value2, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerScaleNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("seller_scale not between", value1, value2, "sellerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleIsNull() {
+            addCriterion("buyer_scale is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleIsNotNull() {
+            addCriterion("buyer_scale is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleEqualTo(BigDecimal value) {
+            addCriterion("buyer_scale =", value, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleNotEqualTo(BigDecimal value) {
+            addCriterion("buyer_scale <>", value, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleGreaterThan(BigDecimal value) {
+            addCriterion("buyer_scale >", value, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("buyer_scale >=", value, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleLessThan(BigDecimal value) {
+            addCriterion("buyer_scale <", value, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("buyer_scale <=", value, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleIn(List<BigDecimal> values) {
+            addCriterion("buyer_scale in", values, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleNotIn(List<BigDecimal> values) {
+            addCriterion("buyer_scale not in", values, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("buyer_scale between", value1, value2, "buyerScale");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerScaleNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("buyer_scale not between", value1, value2, "buyerScale");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

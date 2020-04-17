@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAna
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisJudgeDao;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisItem;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisJudge;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisGroupDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeLiquidationAnalysisGroupVo;
@@ -13,6 +14,7 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -21,13 +23,16 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.swing.StringUIClientPropertyKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +51,7 @@ public class SchemeLiquidationAnalysisController {
     @Autowired
     private BaseService baseService;
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
+    private CommonService commonService;
     @Autowired
     private SchemeLiquidationAnalysisJudgeDao schemeLiquidationAnalysisJudgeDao;
     @Autowired
@@ -69,6 +74,53 @@ public class SchemeLiquidationAnalysisController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/copyItem", name = "复制一条明细", method = RequestMethod.POST)
+    public HttpResult copyItem(Integer id) {
+        try {
+            SchemeLiquidationAnalysisItem source = schemeLiquidationAnalysisItemDao.getSchemeLiquidationAnalysisItem(id);
+            SchemeLiquidationAnalysisItem target = new SchemeLiquidationAnalysisItem();
+            BeanUtils.copyProperties(source,target,"id");
+            target.setCreator(commonService.thisUserAccount());
+            schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(target);
+            return HttpResult.newCorrectResult(target);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAnalysisItem", name = "获取一条税费明细", method = RequestMethod.GET)
+    public HttpResult getAnalysisItem(Integer id) {
+        try {
+            SchemeLiquidationAnalysisItem analysisItem = schemeLiquidationAnalysisItemDao.getSchemeLiquidationAnalysisItem(id);
+            return HttpResult.newCorrectResult(analysisItem);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveBurdenScale", name = "保存承担方比例", method = RequestMethod.POST)
+    public HttpResult saveBurdenScale(SchemeLiquidationAnalysisItem analysisItem) {
+        try {
+            SchemeLiquidationAnalysisItem oldData = schemeLiquidationAnalysisItemDao.getSchemeLiquidationAnalysisItem(analysisItem.getId());
+            oldData.setSellerScale(analysisItem.getSellerScale());
+            oldData.setBuyerScale(analysisItem.getBuyerScale());
+            if(StringUtils.isNotEmpty(analysisItem.getTaxesBurden())){
+                oldData.setTaxesBurden(analysisItem.getTaxesBurden());
+            }
+            schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(oldData);
+            return HttpResult.newCorrectResult(oldData);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 
     @ResponseBody
@@ -205,4 +257,5 @@ public class SchemeLiquidationAnalysisController {
         }
         return HttpResult.newCorrectResult();
     }
+
 }

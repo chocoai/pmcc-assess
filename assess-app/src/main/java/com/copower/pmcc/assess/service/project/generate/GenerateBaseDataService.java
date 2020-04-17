@@ -2286,6 +2286,10 @@ public class GenerateBaseDataService {
     }
 
     private String createLiquidationAnalysisTable(SchemeLiquidationAnalysisGroup groupItem) throws Exception {
+        BaseDataDic dicSeller = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TAXES_BURDEN_SELLER);
+        BaseDataDic dicBuyer = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TAXES_BURDEN_BUYER);
+        BaseDataDic dicBoth = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TAXES_BURDEN_BOTH);
+
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
@@ -2312,18 +2316,18 @@ public class GenerateBaseDataService {
         int j = 0;
 
         Table table = builder.startTable();
-        linkedList.addAll(Arrays.asList("物业类型", "税率", "计算基数", "计算公式", "税费负担方", "单位(面积/㎡ 金额/元)"));
+        linkedList.addAll(Arrays.asList("物业类型", "税率", "计算基数", "计算公式", "税费负担方","比例", "单位(面积/㎡ 金额/元)"));
         AsposeUtils.writeWordTitle(builder, linkedList);
         linkedList.clear();
         j++;
 
 
-        linkedList.addAll(Arrays.asList("面积", "/", "/", "/", "/", schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString()));
+        linkedList.addAll(Arrays.asList("面积", "/", "/", "/", "/","/", schemeAreaGroupService.getAreaEvaluateArea(schemeJudgeObjectFullList).toString()));
         AsposeUtils.writeWordTitle(builder, linkedList);
         linkedList.clear();
         j++;
 
-        linkedList.addAll(Arrays.asList("评估价", "/", "/", "/", "/", schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString()));
+        linkedList.addAll(Arrays.asList("评估价", "/", "/", "/", "/","/", schemeAreaGroupService.getAreaEvaluatePrice(schemeJudgeObjectFullList).toString()));
         AsposeUtils.writeWordTitle(builder, linkedList);
         linkedList.clear();
         j++;
@@ -2357,6 +2361,19 @@ public class GenerateBaseDataService {
                     linkedList.add("空");
                 }
 
+                if (StringUtils.isNotBlank(item.getTaxesBurden())) {
+                    if(dicBoth.getName().equals(item.getTaxesBurden())){
+                        StringBuilder s = new StringBuilder();
+                        s.append(dicSeller.getName()).append(ArithmeticUtils.getPercentileSystem(item.getSellerScale(), 4, BigDecimal.ROUND_HALF_UP)).append(";");
+                        s.append(dicBuyer.getName()).append(ArithmeticUtils.getPercentileSystem(item.getBuyerScale(), 4, BigDecimal.ROUND_HALF_UP));
+                        linkedList.add(s.toString());
+                    }else {
+                        linkedList.add(String.format("%s%s",item.getTaxesBurden(),"100%"));
+                    }
+                } else {
+                    linkedList.add("空");
+                }
+
                 if (item.getPrice() != null) {
                     linkedList.add(item.getPrice().toString());
                 } else {
@@ -2370,7 +2387,9 @@ public class GenerateBaseDataService {
         }
 
         if (groupItem != null && groupItem.getTotal() != null) {
-            linkedList.addAll(Arrays.asList("合计费用", groupItem.getTotal().toString(), "", "", "", ""));
+            linkedList.addAll(Arrays.asList("合计费用", groupItem.getTotal().toString(), "", "", "", "",""));
+            linkedList.addAll(Arrays.asList("买方费用", groupItem.getBuyerTotal().toString(), "", "", "", "",""));
+            linkedList.addAll(Arrays.asList("卖方费用", groupItem.getSellerTotal().toString(), "", "", "", "",""));
             AsposeUtils.writeWordTitle(builder, linkedList);
             linkedList.clear();
             mergeCellModelList.add(new MergeCellModel(j, 1, j, 5));

@@ -40,6 +40,10 @@ public class SchemeLiquidationAnalysisItem {
 
     private Date gmtModified;
 
+    private BigDecimal sellerScale;
+
+    private BigDecimal buyerScale;
+
     public Integer getId() {
         return id;
     }
@@ -182,5 +186,21 @@ public class SchemeLiquidationAnalysisItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getSellerScale() {
+        return sellerScale;
+    }
+
+    public void setSellerScale(BigDecimal sellerScale) {
+        this.sellerScale = sellerScale;
+    }
+
+    public BigDecimal getBuyerScale() {
+        return buyerScale;
+    }
+
+    public void setBuyerScale(BigDecimal buyerScale) {
+        this.buyerScale = buyerScale;
     }
 }

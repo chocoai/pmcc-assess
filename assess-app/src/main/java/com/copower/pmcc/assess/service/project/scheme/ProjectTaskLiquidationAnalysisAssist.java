@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisJudgeDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
@@ -42,6 +43,8 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     private DeclareRecordService declareRecordService;
     @Autowired
     private SchemeLiquidationAnalysisJudgeDao schemeLiquidationAnalysisJudgeDao;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -166,5 +169,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId());
         modelAndView.addObject("declareRecordList", declareRecordList);
         modelAndView.addObject("areaGroup", schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()));
+        List<BaseDataDic> taxesBurdenList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_TAXES_BURDEN);
+        modelAndView.addObject("taxesBurdenList", taxesBurdenList);
     }
 }

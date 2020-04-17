@@ -12,7 +12,25 @@ public class SchemeLiquidationAnalysisGroupDto {
     private Integer id;
     private String recordIds;
     private BigDecimal total;
+    private BigDecimal sellerTotal;
+    private BigDecimal buyerTotal;
     private List<SchemeLiquidationAnalysisItem> analysisItemList;
+
+    public BigDecimal getSellerTotal() {
+        return sellerTotal;
+    }
+
+    public void setSellerTotal(BigDecimal sellerTotal) {
+        this.sellerTotal = sellerTotal;
+    }
+
+    public BigDecimal getBuyerTotal() {
+        return buyerTotal;
+    }
+
+    public void setBuyerTotal(BigDecimal buyerTotal) {
+        this.buyerTotal = buyerTotal;
+    }
 
     public Integer getId() {
         return id;

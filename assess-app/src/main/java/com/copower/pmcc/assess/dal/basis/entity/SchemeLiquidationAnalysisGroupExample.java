@@ -665,6 +665,186 @@ public class SchemeLiquidationAnalysisGroupExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andAreaIsNull() {
+            addCriterion("area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaIsNotNull() {
+            addCriterion("area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaEqualTo(BigDecimal value) {
+            addCriterion("area =", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotEqualTo(BigDecimal value) {
+            addCriterion("area <>", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGreaterThan(BigDecimal value) {
+            addCriterion("area >", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("area >=", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaLessThan(BigDecimal value) {
+            addCriterion("area <", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("area <=", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaIn(List<BigDecimal> values) {
+            addCriterion("area in", values, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotIn(List<BigDecimal> values) {
+            addCriterion("area not in", values, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("area between", value1, value2, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("area not between", value1, value2, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalIsNull() {
+            addCriterion("buyer_total is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalIsNotNull() {
+            addCriterion("buyer_total is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalEqualTo(BigDecimal value) {
+            addCriterion("buyer_total =", value, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalNotEqualTo(BigDecimal value) {
+            addCriterion("buyer_total <>", value, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalGreaterThan(BigDecimal value) {
+            addCriterion("buyer_total >", value, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("buyer_total >=", value, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalLessThan(BigDecimal value) {
+            addCriterion("buyer_total <", value, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("buyer_total <=", value, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalIn(List<BigDecimal> values) {
+            addCriterion("buyer_total in", values, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalNotIn(List<BigDecimal> values) {
+            addCriterion("buyer_total not in", values, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("buyer_total between", value1, value2, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuyerTotalNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("buyer_total not between", value1, value2, "buyerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalIsNull() {
+            addCriterion("seller_total is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalIsNotNull() {
+            addCriterion("seller_total is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalEqualTo(BigDecimal value) {
+            addCriterion("seller_total =", value, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalNotEqualTo(BigDecimal value) {
+            addCriterion("seller_total <>", value, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalGreaterThan(BigDecimal value) {
+            addCriterion("seller_total >", value, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("seller_total >=", value, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalLessThan(BigDecimal value) {
+            addCriterion("seller_total <", value, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("seller_total <=", value, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalIn(List<BigDecimal> values) {
+            addCriterion("seller_total in", values, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalNotIn(List<BigDecimal> values) {
+            addCriterion("seller_total not in", values, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("seller_total between", value1, value2, "sellerTotal");
+            return (Criteria) this;
+        }
+
+        public Criteria andSellerTotalNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("seller_total not between", value1, value2, "sellerTotal");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
