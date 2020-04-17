@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
@@ -52,10 +53,12 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -106,6 +109,8 @@ public class BasicEstateService extends BasicEntityAbstract {
     private PublicBasicService publicBasicService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private BasicCommonQuoteFieldInfoService basicCommonQuoteFieldInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -449,6 +454,21 @@ public class BasicEstateService extends BasicEntityAbstract {
                     basicApplyBatch.setEstateName(basicEstate.getName());
                     basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
                 }
+                //添加公共引用
+                BasicCommonQuoteFieldInfo commonQuoteFieldInfo = new BasicCommonQuoteFieldInfo();
+                commonQuoteFieldInfo.setTableId(basicEstate.getId());
+                commonQuoteFieldInfo.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                commonQuoteFieldInfo.setType(estateDetail.getType());
+                commonQuoteFieldInfo.setApplyBatchId(estateDetail.getApplyBatchId());
+                commonQuoteFieldInfo.setOpenTime(basicEstate.getOpenTime());
+                List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfos = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
+                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(basicEstateLandCategoryInfos)) {
+                    List<BigDecimal> bigDecimals = basicEstateLandCategoryInfos.stream().map(basicEstateLandCategoryInfo -> basicEstateLandCategoryInfo.getLandUseYear()).collect(Collectors.toList());
+                    if (org.apache.commons.collections.CollectionUtils.isNotEmpty(bigDecimals)) {
+                        commonQuoteFieldInfo.setLandUseYear(ArithmeticUtils.add(bigDecimals));
+                    }
+                }
+                basicCommonQuoteFieldInfoService.addBasicCommonQuoteFieldInfo(commonQuoteFieldInfo);
             }
         }
         return basicEstate.getId();
@@ -499,7 +519,7 @@ public class BasicEstateService extends BasicEntityAbstract {
                 targeEstateLandState.setEstateId(targetBasicEstate.getId());
             }
             basicEstateLandStateService.saveAndUpdateBasicEstateLandState(targeEstateLandState, true);
-            basicEstateLandCategoryInfoService.copy(sourceEstateLandState.getId(),targeEstateLandState.getId());
+            basicEstateLandCategoryInfoService.copy(sourceEstateLandState.getId(), targeEstateLandState.getId());
         }
         if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetId);

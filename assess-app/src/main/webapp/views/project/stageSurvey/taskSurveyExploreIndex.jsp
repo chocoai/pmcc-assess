@@ -273,7 +273,6 @@
                                             <label class="col-sm-1">名称<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
                                                 <input type="text" data-rule-maxlength="100" placeholder="名称"
-                                                       onfocus="batchTreeTool.staticLocalAutoCompleteEdit(this)"
                                                        name="name" class="form-control input-full" required>
                                             </div>
                                             <label class="col-sm-1">权证</label>

@@ -62,6 +62,8 @@ public class BasicApplyBatchDetailService {
     private PublicBasicService publicBasicService;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicCommonQuoteFieldInfoService basicCommonQuoteFieldInfoService;
 
     /**
      * 通过applyBatchId获取
@@ -132,6 +134,9 @@ public class BasicApplyBatchDetailService {
                 if (basicEstate != null)
                     building.setEstateId(basicEstate.getId());
                 building.setBuildingName(basicApplyBatchDetail.getDisplayName());
+                //引用楼盘中的公共数据字段 目前添加2个
+                basicCommonQuoteFieldInfoService.settingBuildingObjValue(basicApplyBatchDetail.getApplyBatchId(),BasicFormClassifyEnum.ESTATE.getTableName(),building);
+
                 basicBuildingService.saveAndUpdate(building, false);
                 basicApplyBatchDetail.setTableId(building.getId());
                 break;

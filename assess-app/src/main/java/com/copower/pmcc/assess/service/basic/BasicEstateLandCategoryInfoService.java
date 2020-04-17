@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -35,7 +36,8 @@ import java.util.List;
  */
 @Service
 public class BasicEstateLandCategoryInfoService {
-
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
@@ -73,6 +75,17 @@ public class BasicEstateLandCategoryInfoService {
             obj.setLandId(newId);
             saveAndUpdateBasicEstateLandCategoryInfo(obj,true) ;
         }
+    }
+
+    public List<BasicEstateLandCategoryInfo> getListByEstateId(Integer estateId){
+        BasicEstateLandState basicEstateLandStateById = basicEstateLandStateService.getLandStateByEstateId(estateId);
+        if (basicEstateLandStateById != null){
+            BasicEstateLandCategoryInfo query = new BasicEstateLandCategoryInfo();
+            query.setLandId(basicEstateLandStateById.getId());
+            List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfoList = basicEstateLandCategoryInfoList(query);
+            return basicEstateLandCategoryInfoList ;
+        }
+        return new ArrayList<>();
     }
 
     /**

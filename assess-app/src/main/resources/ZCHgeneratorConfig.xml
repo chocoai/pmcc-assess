@@ -97,12 +97,12 @@
             <!--<columnOverride column="content" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_basic_estate_land_category_info" domainObjectName="BasicEstateLandCategoryInfo">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="land_level_content_result" jdbcType="VARCHAR"></columnOverride>
-        </table>
+        <!--<table tableName="tb_basic_estate_land_category_info" domainObjectName="BasicEstateLandCategoryInfo">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnOverride column="land_level_content_result" jdbcType="VARCHAR"></columnOverride>-->
+        <!--</table>-->
 
-        <table tableName="tb_basic_unit_stairs" domainObjectName="BasicUnitStairs">
+        <table tableName="tb_basic_common_quote_field_info" domainObjectName="BasicCommonQuoteFieldInfo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
