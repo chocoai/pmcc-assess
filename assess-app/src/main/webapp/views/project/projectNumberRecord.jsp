@@ -109,7 +109,7 @@
             }});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<button onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                    var str = '<button onclick="checkDetail(' + row.projectId + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                     return str;
