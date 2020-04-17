@@ -139,7 +139,7 @@
 
                                         <button style="margin-left: 5px" class="btn btn-info btn-sm" type="button"
                                                 data-permission="permission"
-                                                onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseTemplate);">
+                                                onclick="landLevel.importLandLevelDetail(true);">
 											<span class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
 											</span>

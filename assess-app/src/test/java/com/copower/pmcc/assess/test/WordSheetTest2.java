@@ -16,8 +16,10 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.*;
 
@@ -606,6 +611,35 @@ public class WordSheetTest2 {
         grades.addAll(cmsBaseDataDicDao.getEnableList("programme.market.costApproach.grade"));
         types.addAll(cmsBaseDataDicDao.getEnableList("programme.market.costApproach.factor"));
     }
+
+    @Test
+    public void createExcel()throws Exception{
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = wb.createSheet("new sheet");
+        Row headerRow = sheet.createRow(0); // 创建表头行
+        headerRow.createCell(0).setCellValue("姓名");
+        headerRow.createCell(1).setCellValue("性别");
+        headerRow.createCell(2).setCellValue("年龄");
+        Row row = null;
+        for (int i = 1; i < 10; i++) {
+            row = sheet.createRow(i);
+            row.createCell(0).setCellValue("张三");
+            row.createCell(1).setCellValue("男");
+            row.createCell(2).setCellValue(20);
+        }
+        OutputStream fileOut = null;
+        File file = new File("D:/poitest/workbook.xls");
+        File fileParent = file.getParentFile();
+        if (!fileParent.exists()) {
+            fileParent.mkdirs();
+        }
+        fileOut = new FileOutputStream(file);
+        wb.write(fileOut);
+        fileOut.close();
+    }
+
+
+
 
 
 }
