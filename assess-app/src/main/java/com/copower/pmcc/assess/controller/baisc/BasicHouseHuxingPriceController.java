@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseHuxingPriceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
@@ -38,8 +37,6 @@ public class BasicHouseHuxingPriceController {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
-    @Autowired
-    private BasicHouseHuxingPriceDao basicHouseHuxingPriceDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -88,9 +85,9 @@ public class BasicHouseHuxingPriceController {
 
     @ResponseBody
     @RequestMapping(value = "/getListByQuery", method = {RequestMethod.GET})
-    public BootstrapTableVo getListByQuery(Integer houseId, String houseNumber) {
+    public BootstrapTableVo getListByQuery(String judgeIds, String houseNumber) {
         try {
-            return basicHouseHuxingPriceService.getListByQuery(houseId, houseNumber);
+            return basicHouseHuxingPriceService.getListByQuery(judgeIds, houseNumber);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;

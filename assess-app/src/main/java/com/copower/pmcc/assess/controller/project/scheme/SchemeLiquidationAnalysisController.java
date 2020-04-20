@@ -18,6 +18,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -242,29 +243,30 @@ public class SchemeLiquidationAnalysisController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteJudgeItem", name = "删除一条明细", method = RequestMethod.POST)
-    public HttpResult deleteJudgeItem(Integer id) {
+    public HttpResult deleteJudgeItem(Integer id, Integer groupId) {
         try {
             schemeLiquidationAnalysisJudgeDao.deleteInfo(id);
+            return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByString(groupId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteJudgeItemByIds", name = "删除多条明细", method = RequestMethod.POST)
-    public HttpResult deleteJudgeItemByIds(String ids) {
+    public HttpResult deleteJudgeItemByIds(String ids, Integer groupId) {
         try {
             List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
             if (CollectionUtils.isNotEmpty(integers)) {
                 integers.forEach(integer -> schemeLiquidationAnalysisJudgeDao.deleteInfo(integer));
             }
+            return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByString(groupId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
         }
-        return HttpResult.newCorrectResult();
+
     }
 
     @ResponseBody
@@ -287,6 +289,22 @@ public class SchemeLiquidationAnalysisController {
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
+        }
+    }
+
+    @RequestMapping(value = "/getJudgeIdsByGroupId", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpResult getJudgeIdsByGroupId(Integer groupId) {
+        try {
+            SchemeLiquidationAnalysisJudge data = new SchemeLiquidationAnalysisJudge();
+            data.setGroupId(groupId);
+            List<SchemeLiquidationAnalysisJudge> judgeList = schemeLiquidationAnalysisJudgeDao.getSchemeLiquidationAnalysisJudgeList(data);
+            List<Integer> ids = LangUtils.transform(judgeList, p -> p.getJudgeObjectId());
+            String idsStr = projectTaskLiquidationAnalysisService.idsListToString(ids);
+            return HttpResult.newCorrectResult(idsStr);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 }

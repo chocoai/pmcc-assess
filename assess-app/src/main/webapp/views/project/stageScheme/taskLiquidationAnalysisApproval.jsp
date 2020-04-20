@@ -72,6 +72,29 @@
                         </div>
                     </div>
                     <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">房号</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control input-full" type="text" name="houseNumber"
+                                           placeholder="房号">
+                                </div>
+                                <button class="btn btn-info btn-sm" style="margin-left: 10px" type="button"
+                                        onclick="houseHuxingPrice.prototype.queryHuxingPriceList(this);"><span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>搜索
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" id="houseHuxingPriceList_number">
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row form-group">
                         <div class="col-sm-12">
                             <table class="table">
                                 <thead>
@@ -251,6 +274,7 @@
                                 loadSchemeLiquidationJudgeTable(item.id, {groupId: item.id});
                                 getGroupAndPrice(item.id, commonFieldApproval.taskLiquidationAnalysisFrm + number);
                                 getAnalysisItemList(number);
+                                houseHuxingPrice.prototype.loadListByGroupId(item.id, "");
                                 setTimeout(function () {
                                     if (item.total) {
                                         $("#" + commonFieldApproval.taskLiquidationAnalysisFrm + number).find('[name=total]').text(fmoney(Number(item.total).toFixed(2), 2));
@@ -423,6 +447,56 @@
 
         loadSchemeLiquidationJudgeTable(groupId, data);
     };
+</script>
+<script type="application/javascript">
+    houseHuxingPrice = function () {
+    };
+    houseHuxingPrice.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "HouseHuxingPriceList";
+            data.tableBox = "divBoxHouseHuxingPriceTable";
+            data.tableFrm = "frmHouseHuxingPriceTable";
+            return data;
+        },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadListByGroupId: function (groupId, houseNumber) {
+            var houseId = $("#master").find("input[name='houseId']").val();
+            var cols = [];
+            cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'price', title: '价格'});
+            $("#houseHuxingPriceList" + groupId).bootstrapTable('destroy');
+            TableInit("houseHuxingPriceList" + groupId, getContextPath() + "/schemeLiquidationAnalysis/getHuxingPricesByGroupId", cols, {
+                groupId: groupId,
+                houseNumber: houseNumber
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            }, true);
+        },
+        queryHuxingPriceList:function(_this){
+            var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
+            var houseNumber = $("#" + commonFieldApproval.taskLiquidationAnalysisFrm + groupId).find('[name=houseNumber]').val();
+            houseHuxingPrice.prototype.loadListByGroupId(groupId, houseNumber);
+
+        },
+    }
 </script>
 </body>
 </html>

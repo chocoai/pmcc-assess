@@ -107,7 +107,7 @@
                                         class="symbol required"></span></label>
                                 <div class="col-sm-5">
 
-                                    <input type="hidden" name="judgeObjectIds">
+                                    <input type="hidden" name="judgeIds">
                                     <button class="btn-primary btn btn-sm" type="button"
                                             onclick="houseHuxingPrice.prototype.showTableModel(this)">
                                         选择单价
@@ -125,7 +125,8 @@
                                            placeholder="房号">
                                 </div>
                                 <button class="btn btn-info btn-sm" style="margin-left: 10px" type="button"
-                                        onclick="houseHuxingPrice.prototype.queryHuxingPriceList(this);"><span class="btn-label">
+                                        onclick="houseHuxingPrice.prototype.queryHuxingPriceList(this);"><span
+                                        class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>搜索
                                 </button>
@@ -506,17 +507,15 @@
 
     };
 
-    function getHouseId() {
+    function getJudgeIdsByGroupId(groupId) {
         $.ajax({
-            url: getContextPath() + "/schemeSurePrice/getBasicHouse",
+            url: getContextPath() + "/schemeLiquidationAnalysis/getJudgeIdsByGroupId",
             type: "get",
             dataType: "json",
-            data: {judgeObjectId: '${master.judgeObjectId}'},
+            data: {groupId: groupId},
             success: function (result) {
                 if (result.ret) {
-                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
-                        $("#master").find("input[name='houseId']").val(result.data.id);
-                    }
+                    $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find("input[name='judgeIds']").val(result.data)
                 }
             },
             error: function (result) {
@@ -561,6 +560,7 @@
                                 loadSchemeLiquidationJudgeTable(item.id, {groupId: item.id});
                                 getAnalysisItemList(number);
                                 houseHuxingPrice.prototype.loadListByGroupId(item.id, "");
+                                getJudgeIdsByGroupId(item.id);
                                 setTimeout(function () {
                                     if (item.total) {
                                         $("#" + commonField.taskLiquidationAnalysisFrm + number).find('[name=total]').text(fmoney(Number(item.total).toFixed(2), 2));
@@ -599,11 +599,11 @@
                         var number = result.data.id;
                         html = html.replace(/_number/g, number).replace(/{index}/g, index + 1);
                         $("#" + commonField.taskLiquidationAnalysisAppend).append(html);
-                        // $("#" + commonField.taskLiquidationAnalysisFrm + number).find("select[name='judgeObjectIds']").select2();
                         $("#" + commonField.taskLiquidationAnalysisFrm + number).initForm(result.data);
                         loadSchemeLiquidationJudgeTable(result.data.id, {groupId: result.data.id});
                         getAnalysisItemList(number);
                         houseHuxingPrice.prototype.loadListByGroupId(result.data.id, "");
+                        getJudgeIdsByGroupId(result.data.id);
                     }
                 },
                 error: function (result) {
@@ -674,6 +674,7 @@
                             $("#" + frmId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
                             $("#" + frmId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
                             loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
+                            getJudgeIdsByGroupId(groupId);
                         }
                     }
                 },
@@ -1372,6 +1373,7 @@
         data.buyerTotal = $('#' + frmId).find('[name=buyerTotal]').text().replace(/,/g, '');
         data.sellerTotal = $('#' + frmId).find('[name=sellerTotal]').text().replace(/,/g, '');
         data.analysisItemList = [];
+        var flag = false;
         $('#' + frmId).find("tbody[name='tbody_data_section']").find('tr').each(function () {
             var analysisItem = {};
             analysisItem.id = $(this).find('[name=id]').val();
@@ -1382,10 +1384,13 @@
             analysisItem.calculationFormula = $(this).find('[name^=calculationFormula]').val();
             analysisItem.taxesBurden = $(this).find('[name^=taxesBurden]').val();
             data.analysisItemList.push(analysisItem);
-            if($(this).find('[name^=price]').val()==0){
-                notifyInfo("提示","点击每行数据税率，确保单价不为0");
+            if ($(this).find('[name^=price]').val() == 0) {
+                flag = true;
             }
         })
+        if (flag == true) {
+            notifyInfo("提示", "点击每行数据税率，确保单价不为0");
+        }
         return data;
     }
 
@@ -1512,31 +1517,20 @@
                 url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/deleteJudgeItem",
                 type: "post",
                 dataType: "json",
-                data: {id: id},
+                data: {id: id, groupId: groupId},
                 success: function (result) {
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getGroupAndPrice",
-                            type: "post",
-                            dataType: "json",
-                            data: {groupId: groupId},
-                            success: function (result) {
-                                if (result.ret) {
-                                    if (result.data) {
-                                        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
-                                        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
-                                        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
-                                        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
-                                        loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
-                                        initResult(commonField.taskLiquidationAnalysisFrm + groupId, result.data.groupArea, result.data.groupPrice);
-                                    }
-                                }
-                            },
-                            error: function (result) {
-                                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
-                            }
-                        });
+                        if (result.data) {
+                            $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
+                            $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
+                            $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
+                            $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
+                            loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
+                            initResult(commonField.taskLiquidationAnalysisFrm + groupId, result.data.groupArea, result.data.groupPrice);
+                            getJudgeIdsByGroupId(groupId);
+                        }
+
                     }
                     else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
@@ -1563,7 +1557,7 @@
                     url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/deleteJudgeItemByIds",
                     type: "post",
                     dataType: "json",
-                    data: {ids: ids},
+                    data: {ids: ids, groupId: groupId},
                     success: function (result) {
                         if (result.ret) {
                             notifySuccess("成功", "删除数据成功");
@@ -1573,6 +1567,7 @@
                             $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
                             loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
                             initResult(commonField.taskLiquidationAnalysisFrm + groupId, result.data.groupArea, result.data.groupPrice);
+                            getJudgeIdsByGroupId(groupId);
                         }
                         else {
                             AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
@@ -1695,10 +1690,11 @@
         },
         queryDataInBox: function (_this) {
             var houseNumber = $(_this).closest(".form-horizontal").find("input[name='queryHouseNumber']").val();
-            houseHuxingPrice.prototype.loadDataDicList(houseNumber);
+            var groupId = $('#' + houseHuxingPrice.prototype.config().tableFrm).find("input[name='groupId']").val();
+            houseHuxingPrice.prototype.loadDataDicList(groupId, houseNumber);
         },
-        loadDataDicList: function (houseNumber) {
-            var houseId = $("#master").find("input[name='houseId']").val();
+        loadDataDicList: function (groupId, houseNumber) {
+            var judgeIds = $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find("input[name='judgeIds']").val()
             var cols = [];
             cols.push({field: 'houseNumber', title: '房号'});
             cols.push({field: 'area', title: '面积'});
@@ -1706,7 +1702,7 @@
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getListByQuery", cols, {
                 houseNumber: houseNumber,
-                houseId: houseId
+                judgeIds: judgeIds
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1719,7 +1715,7 @@
         showTableModel: function (_this) {
             var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
             $('#' + houseHuxingPrice.prototype.config().tableFrm).find("input[name='groupId']").val(groupId);
-            houseHuxingPrice.prototype.loadDataDicList();
+            houseHuxingPrice.prototype.loadDataDicList(groupId, "");
             $('#' + houseHuxingPrice.prototype.config().tableBox).modal("show");
         },
         isNotNull: function (item) {
@@ -1838,13 +1834,13 @@
                 })
             });
         },
-        queryHuxingPriceList:function(_this){
+        queryHuxingPriceList: function (_this) {
             var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
             var houseNumber = $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=houseNumber]').val();
             houseHuxingPrice.prototype.loadListByGroupId(groupId, houseNumber);
 
         },
-        batchCutHuxingPrice:function(_this){
+        batchCutHuxingPrice: function (_this) {
             var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
             var rows = $("#houseHuxingPriceList" + groupId).bootstrapTable('getSelections');
             if (rows && rows.length > 0) {
@@ -1853,8 +1849,8 @@
                     idArray.push(item.id);
                 })
                 var huxingPriceIds = idArray.join(",");
-                houseHuxingPrice.prototype.cutHuxingPrice(huxingPriceIds,groupId);
-            }else {
+                houseHuxingPrice.prototype.cutHuxingPrice(huxingPriceIds, groupId);
+            } else {
                 notifyInfo('提示', '至少选择一个');
             }
         }

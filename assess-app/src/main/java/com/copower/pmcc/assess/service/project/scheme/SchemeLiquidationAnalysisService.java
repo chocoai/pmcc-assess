@@ -493,14 +493,18 @@ public class SchemeLiquidationAnalysisService {
     }
 
     public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoBySchemeList(List<Integer> schemeJudgeObjList, Integer groupId) {
-        if (CollectionUtils.isEmpty(schemeJudgeObjList)) return null;
+        ProjectTaskLiquidationAnalysisGroupAndPriceVo groupAndPriceVo = new ProjectTaskLiquidationAnalysisGroupAndPriceVo();
+        BigDecimal groupArea = new BigDecimal("0");
+        BigDecimal groupPrice = new BigDecimal("0");
+        if (CollectionUtils.isEmpty(schemeJudgeObjList)) {
+            groupAndPriceVo.setGroupArea(groupArea);
+            groupAndPriceVo.setGroupPrice(groupPrice);
+            return groupAndPriceVo;
+        }
         List<SchemeJudgeObject> listByDeclareIds = schemeJudgeObjectService.getListByIds(schemeJudgeObjList);
         List<SchemeLiquidationAnalysisJudge> judgeList = schemeLiquidationAnalysisJudgeDao.getListByAreaId(listByDeclareIds.get(0).getAreaGroupId());
         List<Integer> transform = LangUtils.transform(judgeList, o -> o.getJudgeObjectId());
         List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getListByIds(transform);
-        ProjectTaskLiquidationAnalysisGroupAndPriceVo groupAndPriceVo = new ProjectTaskLiquidationAnalysisGroupAndPriceVo();
-        BigDecimal groupArea = new BigDecimal("0");
-        BigDecimal groupPrice = new BigDecimal("0");
         //应该获取最终测算好的价格与面积
         if (CollectionUtils.isNotEmpty(judgeObjects)) {
             for (SchemeJudgeObject judgeObject : judgeObjects) {
@@ -528,27 +532,28 @@ public class SchemeLiquidationAnalysisService {
         }
         //单价调查
         SchemeLiquidationAnalysisGroup analysisGroup = schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(groupId);
-        List<String> idsStr = Arrays.asList(analysisGroup.getHuxingPriceIds().split(","));
-        ArrayList<Integer> completeIds = Lists.newArrayList();
-        for (String id : idsStr) {
-            if (NumberUtils.isNumber(id)) {
-                completeIds.add(Integer.valueOf(id));
+        if (StringUtils.isNotEmpty(analysisGroup.getHuxingPriceIds())) {
+            List<String> idsStr = Arrays.asList(analysisGroup.getHuxingPriceIds().split(","));
+            ArrayList<Integer> completeIds = Lists.newArrayList();
+            for (String id : idsStr) {
+                if (NumberUtils.isNumber(id)) {
+                    completeIds.add(Integer.valueOf(id));
+                }
             }
-        }
-        if (CollectionUtils.isNotEmpty(completeIds)) {
-            List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceDao.getListByIds(completeIds, "");
-            if (CollectionUtils.isNotEmpty(huxingPriceList)) {
-                for (BasicHouseHuxingPrice item : huxingPriceList) {
-                    if (item.getArea() != null) {
-                        groupArea = groupArea.add(item.getArea());
-                    }
-                    if (item.getPrice() != null) {
-                        groupPrice = groupPrice.add(item.getPrice());
+            if (CollectionUtils.isNotEmpty(completeIds)) {
+                List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceDao.getListByIds(completeIds, "");
+                if (CollectionUtils.isNotEmpty(huxingPriceList)) {
+                    for (BasicHouseHuxingPrice item : huxingPriceList) {
+                        if (item.getArea() != null) {
+                            groupArea = groupArea.add(item.getArea());
+                        }
+                        if (item.getPrice() != null) {
+                            groupPrice = groupPrice.add(item.getPrice());
+                        }
                     }
                 }
             }
         }
-
 
         groupAndPriceVo.setGroupArea(groupArea);
         groupAndPriceVo.setGroupPrice(groupPrice);
@@ -646,14 +651,18 @@ public class SchemeLiquidationAnalysisService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         SchemeLiquidationAnalysisGroup analysisGroup = schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(groupId);
-        List<String> idsStr = Arrays.asList(analysisGroup.getHuxingPriceIds().split(","));
-        ArrayList<Integer> completeIds = Lists.newArrayList();
-        for (String id : idsStr) {
-            if (NumberUtils.isNumber(id)) {
-                completeIds.add(Integer.valueOf(id));
+        List<BasicHouseHuxingPrice> huxingPriceList = Lists.newArrayList();
+        if (StringUtils.isNotEmpty(analysisGroup.getHuxingPriceIds())) {
+            ArrayList<Integer> completeIds = Lists.newArrayList();
+            List<String> idsStr = Arrays.asList(analysisGroup.getHuxingPriceIds().split(","));
+            for (String id : idsStr) {
+                if (NumberUtils.isNumber(id)) {
+                    completeIds.add(Integer.valueOf(id));
+                }
             }
+            huxingPriceList = basicHouseHuxingPriceDao.getListByIds(completeIds, houseNumber);
         }
-        List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceDao.getListByIds(completeIds, houseNumber);
+
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(huxingPriceList) ? new ArrayList<BasicHouseHuxingPrice>() : huxingPriceList);
         return vo;

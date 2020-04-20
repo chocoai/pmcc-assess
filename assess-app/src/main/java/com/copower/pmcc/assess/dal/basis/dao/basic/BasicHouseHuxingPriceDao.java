@@ -44,10 +44,10 @@ public class BasicHouseHuxingPriceDao {
         return basicHouseHuxingPriceMapper.selectByExample(example);
     }
 
-    public List<BasicHouseHuxingPrice> getListByQuery(Integer houseId, String houseNum) {
+    public List<BasicHouseHuxingPrice> getListByQuery(List<Integer> houseIds, String houseNum) {
         BasicHouseHuxingPriceExample example = new BasicHouseHuxingPriceExample();
         BasicHouseHuxingPriceExample.Criteria criteria = example.createCriteria();
-        criteria.andHouseIdEqualTo(houseId);
+        criteria.andHouseIdIn(houseIds);
         if (StringUtils.isNotBlank(houseNum))
             criteria.andHouseNumberLike(String.format("%%%s%%", houseNum));
         return basicHouseHuxingPriceMapper.selectByExample(example);

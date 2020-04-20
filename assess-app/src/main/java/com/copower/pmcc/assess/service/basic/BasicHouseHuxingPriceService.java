@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -29,6 +30,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
@@ -68,6 +70,8 @@ public class BasicHouseHuxingPriceService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private SchemeSurePriceService schemeSurePriceService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -159,13 +163,24 @@ public class BasicHouseHuxingPriceService {
         return vo;
     }
 
-    public BootstrapTableVo getListByQuery(Integer houseId, String houseNum) throws Exception {
+    public BootstrapTableVo getListByQuery(String judgeIds, String houseNum) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicHouseHuxingPrice> huxingPriceList = Lists.newArrayList();
+        if(StringUtils.isNotEmpty(judgeIds)){
+            List<String> idsStr = Arrays.asList(judgeIds.split(","));
+            ArrayList<Integer> completeIds = Lists.newArrayList();
+            for (String id : idsStr) {
+                if (NumberUtils.isNumber(id)) {
+                    BasicHouse basicHouse = schemeSurePriceService.getBasicHouse(Integer.valueOf(id));
+                    completeIds.add(basicHouse.getId());
+                }
+            }
+            huxingPriceList = basicHouseHuxingPriceDao.getListByQuery(completeIds, houseNum);
+        }
 
-        List<BasicHouseHuxingPrice> basicHouseHuxingPriceList = basicHouseHuxingPriceDao.getListByQuery(houseId, houseNum);
-        List<BasicHouseHuxingPriceVo> voList = LangUtils.transform(basicHouseHuxingPriceList, o -> getBasicHouseHuxingPriceVo(o));
+        List<BasicHouseHuxingPriceVo> voList = LangUtils.transform(huxingPriceList, o -> getBasicHouseHuxingPriceVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(voList) ? new ArrayList<BasicHouseHuxingPriceVo>(10) : voList);
         return vo;
