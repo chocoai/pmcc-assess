@@ -14,6 +14,7 @@
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="buyer_total" property="buyerTotal" jdbcType="DECIMAL" />
     <result column="seller_total" property="sellerTotal" jdbcType="DECIMAL" />
+    <result column="huxing_price_ids" property="huxingPriceIds" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, area_id, record_ids, plan_details_id, total, creator, gmt_created, 
-    gmt_modified, area, buyer_total, seller_total
+    gmt_modified, area, buyer_total, seller_total, huxing_price_ids
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisGroupExample" >
     select
@@ -114,11 +115,13 @@
     insert into tb_scheme_liquidation_analysis_group (project_id, area_id, record_ids, 
       plan_details_id, total, creator, 
       gmt_created, gmt_modified, area, 
-      buyer_total, seller_total)
+      buyer_total, seller_total, huxing_price_ids
+      )
     values (#{projectId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, #{recordIds,jdbcType=VARCHAR}, 
       #{planDetailsId,jdbcType=INTEGER}, #{total,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{area,jdbcType=DECIMAL}, 
-      #{buyerTotal,jdbcType=DECIMAL}, #{sellerTotal,jdbcType=DECIMAL})
+      #{buyerTotal,jdbcType=DECIMAL}, #{sellerTotal,jdbcType=DECIMAL}, #{huxingPriceIds,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisGroup" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -159,6 +162,9 @@
       <if test="sellerTotal != null" >
         seller_total,
       </if>
+      <if test="huxingPriceIds != null" >
+        huxing_price_ids,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
@@ -193,6 +199,9 @@
       </if>
       <if test="sellerTotal != null" >
         #{sellerTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="huxingPriceIds != null" >
+        #{huxingPriceIds,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -241,6 +250,9 @@
       <if test="record.sellerTotal != null" >
         seller_total = #{record.sellerTotal,jdbcType=DECIMAL},
       </if>
+      <if test="record.huxingPriceIds != null" >
+        huxing_price_ids = #{record.huxingPriceIds,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -259,7 +271,8 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       area = #{record.area,jdbcType=DECIMAL},
       buyer_total = #{record.buyerTotal,jdbcType=DECIMAL},
-      seller_total = #{record.sellerTotal,jdbcType=DECIMAL}
+      seller_total = #{record.sellerTotal,jdbcType=DECIMAL},
+      huxing_price_ids = #{record.huxingPriceIds,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -300,6 +313,9 @@
       <if test="sellerTotal != null" >
         seller_total = #{sellerTotal,jdbcType=DECIMAL},
       </if>
+      <if test="huxingPriceIds != null" >
+        huxing_price_ids = #{huxingPriceIds,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -315,7 +331,8 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       area = #{area,jdbcType=DECIMAL},
       buyer_total = #{buyerTotal,jdbcType=DECIMAL},
-      seller_total = #{sellerTotal,jdbcType=DECIMAL}
+      seller_total = #{sellerTotal,jdbcType=DECIMAL},
+      huxing_price_ids = #{huxingPriceIds,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

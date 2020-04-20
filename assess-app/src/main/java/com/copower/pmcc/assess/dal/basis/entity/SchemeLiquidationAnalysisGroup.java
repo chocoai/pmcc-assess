@@ -28,6 +28,8 @@ public class SchemeLiquidationAnalysisGroup {
 
     private BigDecimal sellerTotal;
 
+    private String huxingPriceIds;
+
     public Integer getId() {
         return id;
     }
@@ -122,5 +124,13 @@ public class SchemeLiquidationAnalysisGroup {
 
     public void setSellerTotal(BigDecimal sellerTotal) {
         this.sellerTotal = sellerTotal;
+    }
+
+    public String getHuxingPriceIds() {
+        return huxingPriceIds;
+    }
+
+    public void setHuxingPriceIds(String huxingPriceIds) {
+        this.huxingPriceIds = huxingPriceIds == null ? null : huxingPriceIds.trim();
     }
 }

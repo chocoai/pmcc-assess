@@ -99,6 +99,55 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">单价调查信息<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-5">
+
+                                    <input type="hidden" name="judgeObjectIds">
+                                    <button class="btn-primary btn btn-sm" type="button"
+                                            onclick="houseHuxingPrice.prototype.showTableModel(this)">
+                                        选择单价
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">房号</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control input-full" type="text" name="houseNumber"
+                                           placeholder="房号">
+                                </div>
+                                <button class="btn btn-info btn-sm" style="margin-left: 10px" type="button"
+                                        onclick="houseHuxingPrice.prototype.queryHuxingPriceList(this);"><span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>搜索
+                                </button>
+                                <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
+                                        onclick="houseHuxingPrice.prototype.batchCutHuxingPrice(this)">
+											<span class="btn-label">
+												<i class="fa fa-minus"></i>
+											</span>
+                                    批量删除
+                                </button>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" id="houseHuxingPriceList_number">
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="row form-group">
                         <div class="col-sm-12">
                             <table class="table">
@@ -214,6 +263,7 @@
                             <div class="card-body">
                                 <form id="master" class="form-horizontal">
                                     <input type="hidden" name="id" value="${master.id}">
+                                    <input type="hidden" name="houseId" value="3315">
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -386,6 +436,67 @@
         </div>
     </div>
 </div>
+<div id="divBoxHouseHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">调查信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmHouseHuxingPriceTable" class="form-horizontal">
+                    <input type="hidden" name="groupId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-inline">
+                                            <div class="col-md-3">
+                                                <input type="text" data-rule-maxlength="50"
+                                                       placeholder="房号" id="queryHouseNumber" name="queryHouseNumber"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                    onclick="houseHuxingPrice.prototype.queryDataInBox(this)">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                查询
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row  form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="HouseHuxingPriceList">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="houseHuxingPrice.prototype.select()">
+                    确定
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
 <script type="application/javascript">
     var commonField = {
@@ -394,6 +505,26 @@
         taskLiquidationAnalysisDiv: "taskLiquidationAnalysisDiv",
 
     };
+
+    function getHouseId() {
+        $.ajax({
+            url: getContextPath() + "/schemeSurePrice/getBasicHouse",
+            type: "get",
+            dataType: "json",
+            data: {judgeObjectId: '${master.judgeObjectId}'},
+            success: function (result) {
+                if (result.ret) {
+                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
+                        $("#master").find("input[name='houseId']").val(result.data.id);
+                    }
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
 
     function selectRecord(_this, id) {
         var group = $(_this).closest(".form-horizontal");
@@ -429,6 +560,7 @@
                                 getGroupAndPrice(item.id, commonField.taskLiquidationAnalysisFrm + number);
                                 loadSchemeLiquidationJudgeTable(item.id, {groupId: item.id});
                                 getAnalysisItemList(number);
+                                houseHuxingPrice.prototype.loadListByGroupId(item.id, "");
                                 setTimeout(function () {
                                     if (item.total) {
                                         $("#" + commonField.taskLiquidationAnalysisFrm + number).find('[name=total]').text(fmoney(Number(item.total).toFixed(2), 2));
@@ -471,6 +603,7 @@
                         $("#" + commonField.taskLiquidationAnalysisFrm + number).initForm(result.data);
                         loadSchemeLiquidationJudgeTable(result.data.id, {groupId: result.data.id});
                         getAnalysisItemList(number);
+                        houseHuxingPrice.prototype.loadListByGroupId(result.data.id, "");
                     }
                 },
                 error: function (result) {
@@ -483,6 +616,7 @@
 
     $(function () {
         appendHtml(true);
+        //getHouseId();
     });
 
     /**
@@ -573,6 +707,7 @@
 
     }
 
+
     //初始化计算结果
     function initResult(frmId, evaluationArea, evaluationPrice) {
         var salesTax = "${salesTax}";
@@ -600,8 +735,8 @@
                         if (rate && evaluationPrice) {
                             var temp = evaluationPrice / 1.05;
                             price = Number(temp * rate).toFixed(2);
-                            buyerPrice = Number(temp * rate*buyerScale).toFixed(2);
-                            sellerPrice = Number(temp * rate*sellerScale).toFixed(2);
+                            buyerPrice = Number(temp * rate * buyerScale).toFixed(2);
+                            sellerPrice = Number(temp * rate * sellerScale).toFixed(2);
                         }
                         break;
                     }
@@ -610,8 +745,8 @@
                         if (rate && evaluationPrice) {
                             var temp = evaluationPrice / 1.05;
                             price = Number(temp * salesTax * rate).toFixed(2);
-                            buyerPrice = Number(temp * salesTax * rate*buyerScale).toFixed(2);
-                            sellerPrice = Number(temp * salesTax * rate*sellerScale).toFixed(2);
+                            buyerPrice = Number(temp * salesTax * rate * buyerScale).toFixed(2);
+                            sellerPrice = Number(temp * salesTax * rate * sellerScale).toFixed(2);
                         }
                         break;
                     }
@@ -620,8 +755,8 @@
                         if (rate && evaluationPrice) {
                             var temp = evaluationPrice / 1.05;
                             price = Number(temp * salesTax * rate).toFixed(2);
-                            buyerPrice = Number(temp * salesTax * rate*buyerScale).toFixed(2);
-                            sellerPrice = Number(temp * salesTax * rate*sellerScale).toFixed(2);
+                            buyerPrice = Number(temp * salesTax * rate * buyerScale).toFixed(2);
+                            sellerPrice = Number(temp * salesTax * rate * sellerScale).toFixed(2);
                         }
                         break;
                     }
@@ -630,59 +765,59 @@
                         if (rate && evaluationPrice) {
                             var temp = evaluationPrice / 1.05;
                             price = Number(temp * salesTax * rate).toFixed(2);
-                            buyerPrice = Number(temp * salesTax * rate*buyerScale).toFixed(2);
-                            sellerPrice = Number(temp * salesTax * rate*sellerScale).toFixed(2);
+                            buyerPrice = Number(temp * salesTax * rate * buyerScale).toFixed(2);
+                            sellerPrice = Number(temp * salesTax * rate * sellerScale).toFixed(2);
                         }
                         break;
                     }
                     //印花税
                     case "data.tax.rate.allocation.stamp.duty": {
                         price = Number(evaluationPrice * rate).toFixed(2);
-                        buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                        sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                        buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                         break;
                     }
                     //土地增值税
                     case "data.tax.rate.allocation.land.increment.tax": {
                         price = Number(evaluationPrice * rate).toFixed(2);
-                        buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                        sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                        buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                         break;
                     }
                     //其它税费
                     case "data.tax.rate.allocation.other.taxes.fee": {
                         price = Number(evaluationPrice * rate).toFixed(2);
-                        buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                        sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                        buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                         break;
                     }
                     //企业所得税
                     case "data.tax.rate.allocation.corporate.income.tax": {
                         price = Number(evaluationPrice * rate).toFixed(2);
-                        buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                        sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                        buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                         break;
                     }
                     //契税
                     case "data.tax.rate.allocation.deed.tax": {
                         price = Number(evaluationPrice * rate).toFixed(2);
-                        buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                        sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                        buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                         break;
                     }
                     //预计处置费用
                     case "data.tax.rate.allocation.disposal.fee": {
                         price = Number(evaluationPrice * rate).toFixed(2);
-                        buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                        sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                        buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                         break;
                     }
                 }
             } else {
                 if (rate && evaluationArea) {
                     price = Number(evaluationArea * rate).toFixed(2);
-                    buyerPrice = Number(evaluationArea * rate*buyerScale).toFixed(2);
-                    sellerPrice = Number(evaluationArea * rate*sellerScale).toFixed(2);
+                    buyerPrice = Number(evaluationArea * rate * buyerScale).toFixed(2);
+                    sellerPrice = Number(evaluationArea * rate * sellerScale).toFixed(2);
                 }
             }
             total += Number(price);
@@ -736,7 +871,7 @@
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
 
-                        html += "<select name='taxesBurden_" + item.id + "' class='form-control input-full' onchange='burdenTypeChange(this ,\""+item.taxesBurden+"\","+groupId+")'>";
+                        html += "<select name='taxesBurden_" + item.id + "' class='form-control input-full' onchange='burdenTypeChange(this ,\"" + item.taxesBurden + "\"," + groupId + ")'>";
                         html += "<option value=''>--请选择--</option>"
                         html += '<c:forEach var="burdenItem" items="${taxesBurdenList}">';
                         html += '<option value="${burdenItem.name}">${burdenItem.name}</option>';
@@ -744,7 +879,7 @@
                         html += '</select>';
                         html += "</td>";
 
-                        html += "<td class='hidden-xs burdenScale"+item.id+"'>";
+                        html += "<td class='hidden-xs burdenScale" + item.id + "'>";
                         if (item.taxesBurden == '双方承担') {
                             var s = '';
                             if (item.buyerScale) {
@@ -779,7 +914,7 @@
                         html += "<td class='hidden-xs'>";
                         html += "<span class='input-group-btn'>";
                         html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanItemData(this)'>";
-                        html += "<input class='btn btn-sm btn-info copy' type='button' value='复制' style='margin-left: 5px;' onclick='copyItem(this,"+ groupId+")'>";
+                        html += "<input class='btn btn-sm btn-info copy' type='button' value='复制' style='margin-left: 5px;' onclick='copyItem(this," + groupId + ")'>";
                         html += "</span>";
                         html += "</td>";
                         html += "</tr>";
@@ -795,7 +930,7 @@
         });
     }
 
-    function copyItem(_this,groupId) {
+    function copyItem(_this, groupId) {
         var id = $(_this).closest('tr').find("input[name='id']").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/copyItem",
@@ -804,9 +939,9 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    if(result.data){
-                        reloadAnalysisItem(groupId,result.data);
-                        notifyInfo("提示","复制完成");
+                    if (result.data) {
+                        reloadAnalysisItem(groupId, result.data);
+                        notifyInfo("提示", "复制完成");
                     }
                 }
             },
@@ -816,7 +951,7 @@
         })
     }
 
-    function reloadAnalysisItem(groupId,item) {
+    function reloadAnalysisItem(groupId, item) {
         var html = "";
 
         var textPrice = fmoney(item.price, 2);
@@ -843,7 +978,7 @@
         html += "</td>";
         html += "<td class='hidden-xs'>";
 
-        html += "<select name='taxesBurden_" + item.id + "' class='form-control input-full' onchange='burdenTypeChange(this ,\""+item.taxesBurden+"\","+groupId+")'>";
+        html += "<select name='taxesBurden_" + item.id + "' class='form-control input-full' onchange='burdenTypeChange(this ,\"" + item.taxesBurden + "\"," + groupId + ")'>";
         html += "<option value=''>--请选择--</option>"
         html += '<c:forEach var="burdenItem" items="${taxesBurdenList}">';
         html += '<option value="${burdenItem.name}">${burdenItem.name}</option>';
@@ -851,7 +986,7 @@
         html += '</select>';
         html += "</td>";
 
-        html += "<td class='hidden-xs burdenScale"+item.id+"'>";
+        html += "<td class='hidden-xs burdenScale" + item.id + "'>";
         if (item.taxesBurden == '双方承担') {
             var s = '';
             if (item.buyerScale) {
@@ -886,7 +1021,7 @@
         html += "<td class='hidden-xs'>";
         html += "<span class='input-group-btn'>";
         html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanItemData(this,\" + item.id + \")'>";
-        html += "<input class='btn btn-sm btn-info copy' type='button' value='复制' style='margin-left: 5px;' onclick='copyItem(this,"+ groupId+"," + item.id + ")'>";
+        html += "<input class='btn btn-sm btn-info copy' type='button' value='复制' style='margin-left: 5px;' onclick='copyItem(this," + groupId + "," + item.id + ")'>";
         html += "</span>";
         html += "</td>";
         html += "</tr>";
@@ -894,20 +1029,21 @@
         $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find("select[name='taxesBurden_" + item.id + "']").val(item.taxesBurden);
         getThisPrice($("#" + commonField.taskLiquidationAnalysisFrm + groupId).find("input[name='taxRateValue_" + item.id + "']"))
     }
+
     //承担方改变
-    function burdenTypeChange(_this,oldValue,groupId) {
+    function burdenTypeChange(_this, oldValue, groupId) {
         var id = $(_this).closest('tr').find("input[name='id']").val();
         var type = $(_this).val();
         var sellerScale = 0;
         var buyerScale = 0;
-        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find(".burdenScale"+id).empty();
+        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find(".burdenScale" + id).empty();
         var html = '';
-        if(type=='双方承担'){
+        if (type == '双方承担') {
             sellerScale = 0.5;
             buyerScale = 0.5;
             var s = "买方承担50%;卖方承担50%";
             html += '<div class="input-group">';
-            html += '<input type="text" name="burdenScale_' + id + '" class="form-control" value="'+s+'">';
+            html += '<input type="text" name="burdenScale_' + id + '" class="form-control" value="' + s + '">';
             html += '<div class="input-group-prepend">';
             html += '<button class="btn btn-primary btn-sm" style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="editBurdenScale(this,' + groupId + ');">';
             html += '编辑 </button>';
@@ -916,14 +1052,14 @@
             $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find("[name='buyerScale_" + id + "']").val(0.5);
             $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find("[name='sellerScale_" + id + "']").val(0.5);
         }
-        if(type=='买方承担'){
+        if (type == '买方承担') {
             sellerScale = 0;
             buyerScale = 1;
             html += '<input type="text" class="form-control" value="100%" readonly>';
             $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find("[name='buyerScale_" + id + "']").val(1);
             $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find("[name='sellerScale_" + id + "']").val(0);
         }
-        if(type=='卖方承担'){
+        if (type == '卖方承担') {
             sellerScale = 1;
             buyerScale = 0;
             html += '<input type="text" class="form-control" value="100%" readonly>';
@@ -952,7 +1088,7 @@
                 AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
-        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find(".burdenScale"+id).append(html);
+        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find(".burdenScale" + id).append(html);
     }
 
     //编辑承担方比例
@@ -1061,8 +1197,8 @@
                     if (rate && evaluationPrice) {
                         var temp = evaluationPrice / 1.05;
                         price = Number(temp * rate).toFixed(2);
-                        buyerPrice = Number(temp * rate*buyerScale).toFixed(2);
-                        sellerPrice = Number(temp * rate*sellerScale).toFixed(2);
+                        buyerPrice = Number(temp * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(temp * rate * sellerScale).toFixed(2);
                     }
                     $("#" + frmId).find('input[data-key="' + constructionPrice + '"]').attr("data-value", (price * constructionTax).toFixed(2));
                     $("#" + frmId).find('input[data-key="' + educationPrice + '"]').attr("data-value", (price * educationTax).toFixed(2));
@@ -1077,8 +1213,8 @@
                     if (rate && evaluationPrice) {
                         var temp = evaluationPrice / 1.05;
                         price = Number(temp * salesTax * rate).toFixed(2);
-                        buyerPrice = Number(temp * salesTax *rate* buyerScale).toFixed(2);
-                        sellerPrice = Number(temp * salesTax *rate* sellerScale).toFixed(2);
+                        buyerPrice = Number(temp * salesTax * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(temp * salesTax * rate * sellerScale).toFixed(2);
                     }
                     break;
                 }
@@ -1087,8 +1223,8 @@
                     if (rate && evaluationPrice) {
                         var temp = evaluationPrice / 1.05;
                         price = Number(temp * salesTax * rate).toFixed(2);
-                        buyerPrice = Number(temp * salesTax *rate* buyerScale).toFixed(2);
-                        sellerPrice = Number(temp * salesTax *rate* sellerScale).toFixed(2);
+                        buyerPrice = Number(temp * salesTax * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(temp * salesTax * rate * sellerScale).toFixed(2);
                     }
                     break;
                 }
@@ -1097,59 +1233,59 @@
                     if (rate && evaluationPrice) {
                         var temp = evaluationPrice / 1.05;
                         price = Number(temp * salesTax * rate).toFixed(2);
-                        buyerPrice = Number(temp * salesTax * rate*buyerScale).toFixed(2);
-                        sellerPrice = Number(temp * salesTax * rate*sellerScale).toFixed(2);
+                        buyerPrice = Number(temp * salesTax * rate * buyerScale).toFixed(2);
+                        sellerPrice = Number(temp * salesTax * rate * sellerScale).toFixed(2);
                     }
                     break;
                 }
                 //印花税
                 case "data.tax.rate.allocation.stamp.duty": {
                     price = Number(evaluationPrice * rate).toFixed(2);
-                    buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                    sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                    buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                    sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                     break;
                 }
                 //土地增值税
                 case "data.tax.rate.allocation.land.increment.tax": {
                     price = Number(evaluationPrice * rate).toFixed(2);
-                    buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                    sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                    buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                    sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                     break;
                 }
                 //其它税费
                 case "data.tax.rate.allocation.other.taxes.fee": {
                     price = Number(evaluationPrice * rate).toFixed(2);
-                    buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                    sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                    buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                    sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                     break;
                 }
                 //企业所得税
                 case "data.tax.rate.allocation.corporate.income.tax": {
                     price = Number(evaluationPrice * rate).toFixed(2);
-                    buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                    sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                    buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                    sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                     break;
                 }
                 //契税
                 case "data.tax.rate.allocation.deed.tax": {
                     price = Number(evaluationPrice * rate).toFixed(2);
-                    buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                    sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                    buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                    sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                     break;
                 }
                 //预计处置费用
                 case "data.tax.rate.allocation.disposal.fee": {
                     price = Number(evaluationPrice * rate).toFixed(2);
-                    buyerPrice = Number(evaluationPrice * rate*buyerScale).toFixed(2);
-                    sellerPrice = Number(evaluationPrice * rate*sellerScale).toFixed(2);
+                    buyerPrice = Number(evaluationPrice * rate * buyerScale).toFixed(2);
+                    sellerPrice = Number(evaluationPrice * rate * sellerScale).toFixed(2);
                     break;
                 }
             }
         } else {
             if (rate && evaluationArea) {
                 price = Number(evaluationArea * rate).toFixed(2);
-                buyerPrice = Number(evaluationArea * rate*buyerScale).toFixed(2);
-                sellerPrice = Number(evaluationArea * rate*sellerScale).toFixed(2);
+                buyerPrice = Number(evaluationArea * rate * buyerScale).toFixed(2);
+                sellerPrice = Number(evaluationArea * rate * sellerScale).toFixed(2);
             }
         }
         $(_this).parent().parent().find('[name^=price]').attr("data-value", price);
@@ -1246,6 +1382,9 @@
             analysisItem.calculationFormula = $(this).find('[name^=calculationFormula]').val();
             analysisItem.taxesBurden = $(this).find('[name^=taxesBurden]').val();
             data.analysisItemList.push(analysisItem);
+            if($(this).find('[name^=price]').val()==0){
+                notifyInfo("提示","点击每行数据税率，确保单价不为0");
+            }
         })
         return data;
     }
@@ -1377,7 +1516,27 @@
                 success: function (result) {
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
-                        loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getGroupAndPrice",
+                            type: "post",
+                            dataType: "json",
+                            data: {groupId: groupId},
+                            success: function (result) {
+                                if (result.ret) {
+                                    if (result.data) {
+                                        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
+                                        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
+                                        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
+                                        $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
+                                        loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
+                                        initResult(commonField.taskLiquidationAnalysisFrm + groupId, result.data.groupArea, result.data.groupPrice);
+                                    }
+                                }
+                            },
+                            error: function (result) {
+                                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                            }
+                        });
                     }
                     else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
@@ -1408,7 +1567,12 @@
                     success: function (result) {
                         if (result.ret) {
                             notifySuccess("成功", "删除数据成功");
+                            $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
+                            $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
+                            $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
+                            $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
                             loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
+                            initResult(commonField.taskLiquidationAnalysisFrm + groupId, result.data.groupArea, result.data.groupPrice);
                         }
                         else {
                             AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
@@ -1512,6 +1676,189 @@
 
 
 </script>
+<script type="application/javascript">
+    houseHuxingPrice = function () {
+    };
+    houseHuxingPrice.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "HouseHuxingPriceList";
+            data.tableBox = "divBoxHouseHuxingPriceTable";
+            data.tableFrm = "frmHouseHuxingPriceTable";
+            return data;
+        },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        queryDataInBox: function (_this) {
+            var houseNumber = $(_this).closest(".form-horizontal").find("input[name='queryHouseNumber']").val();
+            houseHuxingPrice.prototype.loadDataDicList(houseNumber);
+        },
+        loadDataDicList: function (houseNumber) {
+            var houseId = $("#master").find("input[name='houseId']").val();
+            var cols = [];
+            cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'price', title: '价格'});
+            $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getListByQuery", cols, {
+                houseNumber: houseNumber,
+                houseId: houseId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            }, true);
+        },
+        showTableModel: function (_this) {
+            var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
+            $('#' + houseHuxingPrice.prototype.config().tableFrm).find("input[name='groupId']").val(groupId);
+            houseHuxingPrice.prototype.loadDataDicList();
+            $('#' + houseHuxingPrice.prototype.config().tableBox).modal("show");
+        },
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        select: function () {
+            var rows = $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('getSelections');
+            if (rows && rows.length > 0) {
+                var idArray = [];
+                $.each(rows, function (i, item) {
+                    idArray.push(item.id);
+                })
+                var huxingPriceIds = idArray.join(",");
+                var groupId = $('#' + houseHuxingPrice.prototype.config().tableFrm).find("input[name='groupId']").val();
+                var oldGroupArea = $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').val();
+                var oldGroupPrice = $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val();
 
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/augmentHuxingAreaAndPrice",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        huxingPriceIds: huxingPriceIds,
+                        groupId: groupId,
+                        oldGroupArea: oldGroupArea,
+                        oldGroupPrice: oldGroupPrice
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            if (result.data) {
+                                notifySuccess("成功", "添加单价查询成功");
+                                $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
+                                $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
+                                $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
+                                $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
+                                houseHuxingPrice.prototype.loadListByGroupId(groupId, "");
+                                initResult(commonField.taskLiquidationAnalysisFrm + groupId, result.data.groupArea, result.data.groupPrice);
+                                $('#' + houseHuxingPrice.prototype.config().tableBox).modal("hide");
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                    }
+                });
+
+            } else {
+                notifyInfo('提示', '至少选择一个');
+            }
+        },
+        loadListByGroupId: function (groupId, houseNumber) {
+            var houseId = $("#master").find("input[name='houseId']").val();
+            var cols = [];
+            cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'price', title: '价格'});
+            cols.push({
+                field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.cutHuxingPrice(' + row.id + ',\'' + groupId + '\')"><i class="fa fa-minus fa-white"></i></button>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#houseHuxingPriceList" + groupId).bootstrapTable('destroy');
+            TableInit("houseHuxingPriceList" + groupId, getContextPath() + "/schemeLiquidationAnalysis/getHuxingPricesByGroupId", cols, {
+                groupId: groupId,
+                houseNumber: houseNumber
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            }, true);
+        },
+        cutHuxingPrice: function (id, groupId) {
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+                var oldGroupArea = $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').val();
+                var oldGroupPrice = $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/schemeLiquidationAnalysis/cutHuxingPrice",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        huxingPriceId: id,
+                        groupId: groupId,
+                        oldGroupArea: oldGroupArea,
+                        oldGroupPrice: oldGroupPrice
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            notifySuccess("成功", "删除成功");
+                            if (result.ret) {
+                                if (result.data) {
+                                    $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
+                                    $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
+                                    $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
+                                    $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
+                                    houseHuxingPrice.prototype.loadListByGroupId(groupId, "");
+                                    initResult(commonField.taskLiquidationAnalysisFrm + groupId, result.data.groupArea, result.data.groupPrice);
+                                }
+                            }
+                        }
+                        else {
+                            AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            });
+        },
+        queryHuxingPriceList:function(_this){
+            var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
+            var houseNumber = $("#" + commonField.taskLiquidationAnalysisFrm + groupId).find('[name=houseNumber]').val();
+            houseHuxingPrice.prototype.loadListByGroupId(groupId, houseNumber);
+
+        },
+        batchCutHuxingPrice:function(_this){
+            var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
+            var rows = $("#houseHuxingPriceList" + groupId).bootstrapTable('getSelections');
+            if (rows && rows.length > 0) {
+                var idArray = [];
+                $.each(rows, function (i, item) {
+                    idArray.push(item.id);
+                })
+                var huxingPriceIds = idArray.join(",");
+                houseHuxingPrice.prototype.cutHuxingPrice(huxingPriceIds,groupId);
+            }else {
+                notifyInfo('提示', '至少选择一个');
+            }
+        }
+    }
+</script>
 </html>
 

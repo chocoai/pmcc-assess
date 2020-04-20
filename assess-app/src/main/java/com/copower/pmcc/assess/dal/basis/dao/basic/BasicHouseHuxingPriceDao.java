@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicHouseHuxingPriceMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -43,4 +44,22 @@ public class BasicHouseHuxingPriceDao {
         return basicHouseHuxingPriceMapper.selectByExample(example);
     }
 
+    public List<BasicHouseHuxingPrice> getListByQuery(Integer houseId, String houseNum) {
+        BasicHouseHuxingPriceExample example = new BasicHouseHuxingPriceExample();
+        BasicHouseHuxingPriceExample.Criteria criteria = example.createCriteria();
+        criteria.andHouseIdEqualTo(houseId);
+        if (StringUtils.isNotBlank(houseNum))
+            criteria.andHouseNumberLike(String.format("%%%s%%", houseNum));
+        return basicHouseHuxingPriceMapper.selectByExample(example);
+    }
+
+    public List<BasicHouseHuxingPrice> getListByIds(List<Integer> ids, String houseNum) {
+        BasicHouseHuxingPriceExample example = new BasicHouseHuxingPriceExample();
+        BasicHouseHuxingPriceExample.Criteria criteria =example.createCriteria();
+        criteria.andIdIn(ids);
+        if (StringUtils.isNotBlank(houseNum))
+            criteria.andHouseNumberLike(String.format("%%%s%%", houseNum));
+        return basicHouseHuxingPriceMapper.selectByExample(example);
+    }
+    
 }

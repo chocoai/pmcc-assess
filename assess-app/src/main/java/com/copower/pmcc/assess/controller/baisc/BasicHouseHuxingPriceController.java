@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseHuxingPriceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
@@ -8,6 +9,7 @@ import com.copower.pmcc.assess.service.basic.BasicHouseHuxingPriceService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class BasicHouseHuxingPriceController {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
+    @Autowired
+    private BasicHouseHuxingPriceDao basicHouseHuxingPriceDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -76,6 +80,29 @@ public class BasicHouseHuxingPriceController {
     public BootstrapTableVo getBootstrapTableVo(BasicHouseHuxingPrice basicHouseHuxingPrice, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
         try {
             return basicHouseHuxingPriceService.getBootstrapTableVo(basicHouseHuxingPrice);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return null;
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getListByQuery", method = {RequestMethod.GET})
+    public BootstrapTableVo getListByQuery(Integer houseId, String houseNumber) {
+        try {
+            return basicHouseHuxingPriceService.getListByQuery(houseId, houseNumber);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return null;
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/loadListByIds", method = {RequestMethod.GET})
+    public BootstrapTableVo loadListByIds(String huxingPriceIds, String houseNumber) {
+        try {
+            List<Integer> idsList = FormatUtils.transformString2Integer(huxingPriceIds);
+            return basicHouseHuxingPriceService.loadListByIds(idsList, houseNumber);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;

@@ -147,6 +147,30 @@ public class BasicHouseHuxingPriceService {
         return vo;
     }
 
+    public BootstrapTableVo loadListByIds(List<Integer> ids, String houseNum) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+
+        List<BasicHouseHuxingPrice> basicHouseHuxingPriceList = basicHouseHuxingPriceDao.getListByIds(ids, houseNum);
+        List<BasicHouseHuxingPriceVo> voList = LangUtils.transform(basicHouseHuxingPriceList, o -> getBasicHouseHuxingPriceVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(voList) ? new ArrayList<BasicHouseHuxingPriceVo>(10) : voList);
+        return vo;
+    }
+
+    public BootstrapTableVo getListByQuery(Integer houseId, String houseNum) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+
+        List<BasicHouseHuxingPrice> basicHouseHuxingPriceList = basicHouseHuxingPriceDao.getListByQuery(houseId, houseNum);
+        List<BasicHouseHuxingPriceVo> voList = LangUtils.transform(basicHouseHuxingPriceList, o -> getBasicHouseHuxingPriceVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(ObjectUtils.isEmpty(voList) ? new ArrayList<BasicHouseHuxingPriceVo>(10) : voList);
+        return vo;
+    }
+
     public BasicHouseHuxingPriceVo getBasicHouseHuxingPriceVo(BasicHouseHuxingPrice basicHouseHuxingPrice) {
         if (basicHouseHuxingPrice == null) {
             return null;
@@ -158,7 +182,7 @@ public class BasicHouseHuxingPriceService {
         vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStorageRequest()));
         vo.setAdjacentPositionName(baseDataDicService.getNameById(basicHouseHuxingPrice.getAdjacentPosition()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouseHuxingPrice.getCreator()));
-        if(!StringUtils.isEmpty(basicHouseHuxingPrice.getAdjacentPosition())&&!StringUtils.isEmpty(basicHouseHuxingPrice.getDistance())){
+        if (!StringUtils.isEmpty(basicHouseHuxingPrice.getAdjacentPosition()) && !StringUtils.isEmpty(basicHouseHuxingPrice.getDistance())) {
             String[] adjacentPositions = basicHouseHuxingPrice.getAdjacentPosition().split(",");
             String[] distances = basicHouseHuxingPrice.getDistance().split(",");
             StringBuilder s = new StringBuilder();

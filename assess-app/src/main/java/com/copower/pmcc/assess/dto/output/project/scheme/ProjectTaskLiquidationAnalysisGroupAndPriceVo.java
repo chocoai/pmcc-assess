@@ -8,6 +8,15 @@ import java.math.BigDecimal;
 public class ProjectTaskLiquidationAnalysisGroupAndPriceVo {
     private BigDecimal groupArea;
     private BigDecimal groupPrice;
+    private String huxingPriceIds;
+
+    public String getHuxingPriceIds() {
+        return huxingPriceIds;
+    }
+
+    public void setHuxingPriceIds(String huxingPriceIds) {
+        this.huxingPriceIds = huxingPriceIds;
+    }
 
     public BigDecimal getGroupArea() {
         return groupArea;

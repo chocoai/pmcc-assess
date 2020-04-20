@@ -3,29 +3,42 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.project.scheme.*;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseHuxingPriceDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisGroupDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisItemDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisJudgeDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisApplyDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisGroupDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.ProjectTaskLiquidationAnalysisGroupAndPriceVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.ProjectTaskLiquidationAnalysisVo;
-import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeLiquidationAnalysisGroupVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -60,7 +73,7 @@ public class SchemeLiquidationAnalysisService {
     @Autowired
     private SchemeLiquidationAnalysisJudgeDao schemeLiquidationAnalysisJudgeDao;
     @Autowired
-    private SchemeJudgeObjectDao schemeJudgeObjectDao;
+    private BasicHouseHuxingPriceDao basicHouseHuxingPriceDao;
 
     public List<SchemeLiquidationAnalysisItem> getAnalysisItemList(Integer planDetailsId) {
         SchemeLiquidationAnalysisItem item = new SchemeLiquidationAnalysisItem();
@@ -296,34 +309,34 @@ public class SchemeLiquidationAnalysisService {
     }
 
     //设置承担方比例
-    public void setBurdenScale(SchemeLiquidationAnalysisItem analysisItem){
+    public void setBurdenScale(SchemeLiquidationAnalysisItem analysisItem) {
         BaseDataDic dicSeller = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TAXES_BURDEN_SELLER);
         BaseDataDic dicBuyer = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TAXES_BURDEN_BUYER);
         BaseDataDic dicBoth = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TAXES_BURDEN_BOTH);
         //承担方为空的话默认设置承担方为卖方承担
-        if(StringUtils.isEmpty(analysisItem.getTaxesBurden())){
+        if (StringUtils.isEmpty(analysisItem.getTaxesBurden())) {
             analysisItem.setTaxesBurden(dicSeller.getName());
         }
         //默认设置比例
-        if(dicSeller.getName().equals(analysisItem.getTaxesBurden())){
+        if (dicSeller.getName().equals(analysisItem.getTaxesBurden())) {
             analysisItem.setSellerScale(new BigDecimal("1"));
             analysisItem.setBuyerScale(new BigDecimal("0"));
         }
-        if(dicBuyer.getName().equals(analysisItem.getTaxesBurden())){
+        if (dicBuyer.getName().equals(analysisItem.getTaxesBurden())) {
             analysisItem.setBuyerScale(new BigDecimal("1"));
             analysisItem.setSellerScale(new BigDecimal("0"));
         }
-        if(dicBoth.getName().equals(analysisItem.getTaxesBurden())){
+        if (dicBoth.getName().equals(analysisItem.getTaxesBurden())) {
             analysisItem.setSellerScale(new BigDecimal("0.5"));
             analysisItem.setBuyerScale(new BigDecimal("0.5"));
         }
     }
 
-    public void fixAnalysisOldData(){
+    public void fixAnalysisOldData() {
         SchemeLiquidationAnalysisItem analysisItem = new SchemeLiquidationAnalysisItem();
         List<SchemeLiquidationAnalysisItem> itemList = schemeLiquidationAnalysisItemDao.getObjectList(analysisItem);
-        if(CollectionUtils.isNotEmpty(itemList)){
-            for (SchemeLiquidationAnalysisItem item: itemList) {
+        if (CollectionUtils.isNotEmpty(itemList)) {
+            for (SchemeLiquidationAnalysisItem item : itemList) {
                 setBurdenScale(item);
                 schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(item);
             }
@@ -430,29 +443,70 @@ public class SchemeLiquidationAnalysisService {
         }
     }
 
+    public ProjectTaskLiquidationAnalysisGroupAndPriceVo augmentHuxingAreaAndPrice(String huxingPriceIds, Integer groupId, String oldGroupArea, String oldGroupPrice) {
+        List<Integer> huxingIdsList = FormatUtils.transformString2Integer(huxingPriceIds);
+        if (CollectionUtils.isEmpty(huxingIdsList)) return null;
+        //不存在则添加
+        SchemeLiquidationAnalysisGroup analysisGroup = schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(groupId);
+        String groupHuxingPriceIds = analysisGroup.getHuxingPriceIds();
+        StringBuilder builder = new StringBuilder();
+        if (!StringUtils.isEmpty(groupHuxingPriceIds)) {
+            builder.append(groupHuxingPriceIds);
+        }
+        for (Integer huxingPriceId : huxingIdsList) {
+            if (StringUtils.isNotEmpty(groupHuxingPriceIds)) {
+                if (!groupHuxingPriceIds.contains(String.valueOf(huxingPriceId))) {
+                    builder.append(",").append(huxingPriceId);
+                }
+            } else {
+                builder.append(huxingPriceId).append(",");
+            }
+
+        }
+        analysisGroup.setHuxingPriceIds(builder.toString());
+        schemeLiquidationAnalysisGroupDao.editSchemeLiquidationAnalysisGroup(analysisGroup);
+
+        return getGroupAndPriceVoByString(groupId);
+    }
+
+
+    public String idsListToString(List<Integer> ids) {
+        if (CollectionUtils.isNotEmpty(ids)) {
+            StringBuilder s = new StringBuilder();
+            for (Integer id : ids) {
+                s.append(id).append(",");
+            }
+            return s.deleteCharAt(s.length() - 1).toString();
+        }
+        return "";
+    }
+
     public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoByJsonStr(String judgeObjectIds, Integer areaId, Integer groupId) {
         List<Integer> schemeJudgeObjList = FormatUtils.transformString2Integer(judgeObjectIds);
         addSchemeLiquidationAnalysisJudges(schemeJudgeObjList, areaId, groupId);
-        return this.getGroupAndPriceVoBySchemeList(schemeJudgeObjList);
+        return this.getGroupAndPriceVoBySchemeList(schemeJudgeObjList, groupId);
     }
 
     public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoByString(Integer groupId) {
         List<Integer> schemeJudgeObjList = getSchemeJudgeObjIds(groupId);
-        return this.getGroupAndPriceVoBySchemeList(schemeJudgeObjList);
+        return this.getGroupAndPriceVoBySchemeList(schemeJudgeObjList, groupId);
     }
 
-    public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoBySchemeList(List<Integer> schemeJudgeObjList) {
+    public ProjectTaskLiquidationAnalysisGroupAndPriceVo getGroupAndPriceVoBySchemeList(List<Integer> schemeJudgeObjList, Integer groupId) {
         if (CollectionUtils.isEmpty(schemeJudgeObjList)) return null;
         List<SchemeJudgeObject> listByDeclareIds = schemeJudgeObjectService.getListByIds(schemeJudgeObjList);
+        List<SchemeLiquidationAnalysisJudge> judgeList = schemeLiquidationAnalysisJudgeDao.getListByAreaId(listByDeclareIds.get(0).getAreaGroupId());
+        List<Integer> transform = LangUtils.transform(judgeList, o -> o.getJudgeObjectId());
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getListByIds(transform);
         ProjectTaskLiquidationAnalysisGroupAndPriceVo groupAndPriceVo = new ProjectTaskLiquidationAnalysisGroupAndPriceVo();
         BigDecimal groupArea = new BigDecimal("0");
         BigDecimal groupPrice = new BigDecimal("0");
         //应该获取最终测算好的价格与面积
-        if (CollectionUtils.isNotEmpty(listByDeclareIds)) {
-            for (SchemeJudgeObject judgeObject : listByDeclareIds) {
+        if (CollectionUtils.isNotEmpty(judgeObjects)) {
+            for (SchemeJudgeObject judgeObject : judgeObjects) {
                 if (judgeObject.getBisMerge() == Boolean.TRUE) {
                     List<SchemeJudgeObject> listByPid = schemeJudgeObjectService.getListByPid(judgeObject.getId());
-                    if(CollectionUtils.isNotEmpty(listByPid)){
+                    if (CollectionUtils.isNotEmpty(listByPid)) {
                         for (SchemeJudgeObject schemeJudgeObjectVo : listByPid) {
                             if (schemeJudgeObjectVo.getEvaluationArea() != null) {
                                 groupArea = groupArea.add(schemeJudgeObjectVo.getEvaluationArea());
@@ -472,6 +526,30 @@ public class SchemeLiquidationAnalysisService {
                 }
             }
         }
+        //单价调查
+        SchemeLiquidationAnalysisGroup analysisGroup = schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(groupId);
+        List<String> idsStr = Arrays.asList(analysisGroup.getHuxingPriceIds().split(","));
+        ArrayList<Integer> completeIds = Lists.newArrayList();
+        for (String id : idsStr) {
+            if (NumberUtils.isNumber(id)) {
+                completeIds.add(Integer.valueOf(id));
+            }
+        }
+        if (CollectionUtils.isNotEmpty(completeIds)) {
+            List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceDao.getListByIds(completeIds, "");
+            if (CollectionUtils.isNotEmpty(huxingPriceList)) {
+                for (BasicHouseHuxingPrice item : huxingPriceList) {
+                    if (item.getArea() != null) {
+                        groupArea = groupArea.add(item.getArea());
+                    }
+                    if (item.getPrice() != null) {
+                        groupPrice = groupPrice.add(item.getPrice());
+                    }
+                }
+            }
+        }
+
+
         groupAndPriceVo.setGroupArea(groupArea);
         groupAndPriceVo.setGroupPrice(groupPrice);
         return groupAndPriceVo;
@@ -544,4 +622,41 @@ public class SchemeLiquidationAnalysisService {
         return LangUtils.transform(dataList, o -> o.getJudgeObjectId());
     }
 
+
+    public ProjectTaskLiquidationAnalysisGroupAndPriceVo cutHuxingPrice(String huxingPriceId, Integer groupId, String oldGroupArea, String oldGroupPrice) {
+        SchemeLiquidationAnalysisGroup analysisGroup = schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(groupId);
+        String replace = analysisGroup.getHuxingPriceIds().replace(huxingPriceId, "");
+        List<String> idsStr = Arrays.asList(replace.split(","));
+
+        ArrayList<Integer> completeIds = Lists.newArrayList();
+        for (String id : idsStr) {
+            if (NumberUtils.isNumber(id)) {
+                completeIds.add(Integer.valueOf(id));
+            }
+        }
+        String s = idsListToString(completeIds);
+        analysisGroup.setHuxingPriceIds(s);
+        schemeLiquidationAnalysisGroupDao.editSchemeLiquidationAnalysisGroup(analysisGroup);
+
+        return getGroupAndPriceVoByString(groupId);
+    }
+
+    public BootstrapTableVo getHuxingPricesByGroupId(Integer groupId, String houseNumber) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        SchemeLiquidationAnalysisGroup analysisGroup = schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(groupId);
+        List<String> idsStr = Arrays.asList(analysisGroup.getHuxingPriceIds().split(","));
+        ArrayList<Integer> completeIds = Lists.newArrayList();
+        for (String id : idsStr) {
+            if (NumberUtils.isNumber(id)) {
+                completeIds.add(Integer.valueOf(id));
+            }
+        }
+        List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceDao.getListByIds(completeIds, houseNumber);
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(huxingPriceList) ? new ArrayList<BasicHouseHuxingPrice>() : huxingPriceList);
+        return vo;
+
+    }
 }

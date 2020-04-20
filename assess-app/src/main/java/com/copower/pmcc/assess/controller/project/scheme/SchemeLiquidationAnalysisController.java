@@ -11,7 +11,6 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeLiquidationAnalysisJudge;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisGroupDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeLiquidationAnalysisGroupVo;
 import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -32,7 +31,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.swing.StringUIClientPropertyKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +80,7 @@ public class SchemeLiquidationAnalysisController {
         try {
             SchemeLiquidationAnalysisItem source = schemeLiquidationAnalysisItemDao.getSchemeLiquidationAnalysisItem(id);
             SchemeLiquidationAnalysisItem target = new SchemeLiquidationAnalysisItem();
-            BeanUtils.copyProperties(source,target,"id");
+            BeanUtils.copyProperties(source, target, "id");
             target.setCreator(commonService.thisUserAccount());
             schemeLiquidationAnalysisItemDao.addSchemeLiquidationAnalysisItem(target);
             return HttpResult.newCorrectResult(target);
@@ -112,7 +110,7 @@ public class SchemeLiquidationAnalysisController {
             SchemeLiquidationAnalysisItem oldData = schemeLiquidationAnalysisItemDao.getSchemeLiquidationAnalysisItem(analysisItem.getId());
             oldData.setSellerScale(analysisItem.getSellerScale());
             oldData.setBuyerScale(analysisItem.getBuyerScale());
-            if(StringUtils.isNotEmpty(analysisItem.getTaxesBurden())){
+            if (StringUtils.isNotEmpty(analysisItem.getTaxesBurden())) {
                 oldData.setTaxesBurden(analysisItem.getTaxesBurden());
             }
             schemeLiquidationAnalysisItemDao.editSchemeLiquidationAnalysisItem(oldData);
@@ -163,6 +161,17 @@ public class SchemeLiquidationAnalysisController {
     public HttpResult getGroupAndPriceVoByJsonStr(String judgeObjectIds, Integer areaGroupId, Integer groupId) {
         try {
             return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.getGroupAndPriceVoByJsonStr(judgeObjectIds, areaGroupId, groupId));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/augmentHuxingAreaAndPrice", name = "获取面积及单价", method = RequestMethod.POST)
+    public HttpResult augmentHuxingAreaAndPrice(String huxingPriceIds, Integer groupId, String oldGroupArea, String oldGroupPrice) {
+        try {
+            return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.augmentHuxingAreaAndPrice(huxingPriceIds, groupId, oldGroupArea, oldGroupPrice));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -258,4 +267,26 @@ public class SchemeLiquidationAnalysisController {
         return HttpResult.newCorrectResult();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/cutHuxingPrice", method = RequestMethod.POST)
+    public HttpResult cutHuxingPrice(String huxingPriceId, Integer groupId, String oldGroupArea, String oldGroupPrice) {
+        try {
+            return HttpResult.newCorrectResult(projectTaskLiquidationAnalysisService.cutHuxingPrice(huxingPriceId, groupId, oldGroupArea, oldGroupPrice));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getHuxingPricesByGroupId", method = {RequestMethod.GET})
+    public BootstrapTableVo getHuxingPricesByGroupId(Integer groupId, String houseNumber) {
+        try {
+            BootstrapTableVo vo = projectTaskLiquidationAnalysisService.getHuxingPricesByGroupId(groupId, houseNumber);
+            return vo;
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return null;
+        }
+    }
 }

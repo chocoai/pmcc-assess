@@ -845,6 +845,76 @@ public class SchemeLiquidationAnalysisGroupExample {
             addCriterion("seller_total not between", value1, value2, "sellerTotal");
             return (Criteria) this;
         }
+
+        public Criteria andHuxingPriceIdsIsNull() {
+            addCriterion("huxing_price_ids is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsIsNotNull() {
+            addCriterion("huxing_price_ids is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsEqualTo(String value) {
+            addCriterion("huxing_price_ids =", value, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsNotEqualTo(String value) {
+            addCriterion("huxing_price_ids <>", value, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsGreaterThan(String value) {
+            addCriterion("huxing_price_ids >", value, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsGreaterThanOrEqualTo(String value) {
+            addCriterion("huxing_price_ids >=", value, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsLessThan(String value) {
+            addCriterion("huxing_price_ids <", value, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsLessThanOrEqualTo(String value) {
+            addCriterion("huxing_price_ids <=", value, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsLike(String value) {
+            addCriterion("huxing_price_ids like", value, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsNotLike(String value) {
+            addCriterion("huxing_price_ids not like", value, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsIn(List<String> values) {
+            addCriterion("huxing_price_ids in", values, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsNotIn(List<String> values) {
+            addCriterion("huxing_price_ids not in", values, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsBetween(String value1, String value2) {
+            addCriterion("huxing_price_ids between", value1, value2, "huxingPriceIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdsNotBetween(String value1, String value2) {
+            addCriterion("huxing_price_ids not between", value1, value2, "huxingPriceIds");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
