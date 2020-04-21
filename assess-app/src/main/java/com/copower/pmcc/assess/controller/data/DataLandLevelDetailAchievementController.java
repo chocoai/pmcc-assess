@@ -104,9 +104,9 @@ public class DataLandLevelDetailAchievementController {
     }
 
     @PostMapping(value = "/downloadDataLandDetailAchievementFile")
-    public HttpResult downloadDataLandDetailAchievementFile(Integer classify,String type){
+    public HttpResult downloadDataLandDetailAchievementFile(Integer classify,String type,String factorType){
         try {
-            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.downloadDataLandDetailAchievementFile(classify, type));
+            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.downloadDataLandDetailAchievementFile(classify, type,factorType));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);

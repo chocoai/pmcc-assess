@@ -25,6 +25,7 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -50,6 +51,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -81,8 +83,20 @@ public class DataLandLevelDetailAchievementService {
     private final String Alias = "个别因素";//这个是数据字典里面的请注意
 
 
+    /**
+     * 土地级别详情导入的树结构处理
+     *
+     * @param multipartFile
+     * @param landLevelId
+     * @return
+     * @throws Exception
+     */
     public String importDataLandLevelDetailAchievementNew(MultipartFile multipartFile, Integer landLevelId) throws Exception {
         StringBuilder builder = new StringBuilder(10);
+        //自定义的收集导入数量处理
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        final AtomicInteger relatedAtomicInteger = new AtomicInteger(0);
+        final AtomicInteger treeAtomicInteger = new AtomicInteger(0);
         final List<BaseDataDic> grades = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.programmeMarketCostapproachGrade);
         final List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.programmeMarketCostapproachFactor);
         final List<BaseDataDic> numbers = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_LEVEL_ROMAN);
@@ -90,7 +104,7 @@ public class DataLandLevelDetailAchievementService {
         //1.保存文件
         String filePath = baseAttachmentService.saveUploadFile(multipartFile);
         String name = FilenameUtils.getBaseName(multipartFile.getOriginalFilename());
-        Integer classify = classList.stream().filter(baseDataDic -> com.google.common.base.Objects.equal(name, baseDataDic.getName())).findFirst().get().getId();//这里报错就是数据字典没配
+        Integer classify = classList.stream().filter(baseDataDic -> StringUtils.contains(name ,baseDataDic.getName())).findFirst().get().getId();//这里报错就是数据字典没配
         DataLandLevelDetail landLevelDetail = new DataLandLevelDetail();
         landLevelDetail.setClassify(classify);
         landLevelDetail.setPid(0);
@@ -99,8 +113,8 @@ public class DataLandLevelDetailAchievementService {
         if (CollectionUtils.isEmpty(landLevelDetailList)) {
             dataLandLevelDetailService.saveAndUpdateDataLandLevelDetail(landLevelDetail);
             landLevelDetailList.add(landLevelDetail);
+            treeAtomicInteger.incrementAndGet();
         }
-        final AtomicInteger atomicInteger = new AtomicInteger(0);
         List<Sheet> sheetList = PoiUtils.getSheet(filePath);
         List<DataAchievementDto> dataAchievementDtoList = getFilterList(sheetList, numbers);
         if (CollectionUtils.isNotEmpty(dataAchievementDtoList)) {
@@ -114,23 +128,68 @@ public class DataLandLevelDetailAchievementService {
                 List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailList(query);
                 if (CollectionUtils.isEmpty(dataLandLevelDetailList)) {
                     dataLandLevelDetailService.saveAndUpdateDataLandLevelDetail(query);
+                    treeAtomicInteger.incrementAndGet();
                     dataLandLevelDetailList.add(query);
                 }
                 DataLandLevelDetailAchievement dataLandLevelDetailAchievement = new DataLandLevelDetailAchievement();
                 dataLandLevelDetailAchievement.setLevelDetailId(dataLandLevelDetailList.get(0).getId());
-                handleSheet(achievementDto, dataLandLevelDetailAchievement, grades, types, atomicInteger);
+                List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementList = getDataLandLevelDetailAchievementList(dataLandLevelDetailAchievement);
+                handleSheet(achievementDto, dataLandLevelDetailAchievement, grades, types, dataLandLevelDetailAchievementList, atomicInteger, relatedAtomicInteger);
             }
         }
-        builder.append("共导入").append(atomicInteger.get());
+        if (atomicInteger.get() != 0) {
+            builder.append("\r\n").append("共导入").append(atomicInteger.get()).append("条数据");
+        }
+        if (relatedAtomicInteger.get() != 0) {
+            builder.append("\r\n").append("共关联").append(relatedAtomicInteger.get()).append("条数据");
+        }
+        if (treeAtomicInteger.get() != 0) {
+            builder.append("\r\n").append("共生成").append(treeAtomicInteger.get()).append("个").append("树节点");
+        }
         return builder.toString();
     }
 
-    private void handleSheet(DataAchievementDto achievementDto, DataLandLevelDetailAchievement input, List<BaseDataDic> grades, List<BaseDataDic> types, AtomicInteger atomicInteger) {
+    /**
+     * 土地因素 具体导入设置值
+     *
+     * @param achievementDto
+     * @param input
+     * @param grades
+     * @param types
+     * @param atomicInteger
+     */
+    private void handleSheet(DataAchievementDto achievementDto, DataLandLevelDetailAchievement input, List<BaseDataDic> grades, List<BaseDataDic> types, List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementList, AtomicInteger atomicInteger, AtomicInteger relatedAtomicInteger) {
         Sheet sheetA = achievementDto.getA();
         Sheet sheetB = achievementDto.getB();
         final int cellLength = 8;//固定列数
+        BiFunction<DataLandLevelDetailAchievement, List<DataLandLevelDetailAchievement>, DataLandLevelDetailAchievement> biFunction = (((dataLandLevelDetailAchievement, dataLandLevelDetailAchievements) -> {
+            Iterator<DataLandLevelDetailAchievement> iterator = dataLandLevelDetailAchievements.iterator();
+            while (iterator.hasNext()) {
+                DataLandLevelDetailAchievement achievement = iterator.next();
+                int num = 0;
+                if (com.google.common.base.Objects.equal(dataLandLevelDetailAchievement.getType(), achievement.getType())) {
+                    num++;
+                }
+                if (com.google.common.base.Objects.equal(dataLandLevelDetailAchievement.getGrade(), achievement.getGrade())) {
+                    num++;
+                }
+                if (com.google.common.base.Objects.equal(dataLandLevelDetailAchievement.getLevelDetailId(), achievement.getLevelDetailId())) {
+                    num++;
+                }
+                if (num == 3) {
+                    return achievement;
+                }
+            }
+            return null;
+        }));
         for (int k = achievementDto.getStartRow(); k < achievementDto.getEndRow(); k++) {
-            Row aRow = sheetA.getRow(k), bRow = sheetB.getRow(k);
+            Row aRow = null, bRow = null;
+            if (sheetA != null) {
+                aRow = sheetA.getRow(k);
+            }
+            if (sheetB != null) {
+                bRow = sheetB.getRow(k);
+            }
             for (int i = 0; i < cellLength; i++) {
                 DataLandLevelDetailAchievement landAchievement = new DataLandLevelDetailAchievement();
                 BeanUtils.copyProperties(input, landAchievement);
@@ -163,6 +222,19 @@ public class DataLandLevelDetailAchievementService {
                 } else {
                     landAchievement.setType(types.stream().filter(baseDataDic -> !Alias.equals(baseDataDic.getName())).findFirst().get().getId());
                 }
+                if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievementList)) {
+                    DataLandLevelDetailAchievement target = biFunction.apply(landAchievement, dataLandLevelDetailAchievementList);
+                    if (target != null) {
+                        landAchievement.setId(target.getId());
+                    }
+                }
+                if (landAchievement.getGrade() == null){
+                    continue;
+                }
+                if (landAchievement.getId() != null && landAchievement.getId() != 0) {
+                    relatedAtomicInteger.incrementAndGet();
+                }
+                saveDataLandLevelDetailAchievement(landAchievement);
                 atomicInteger.incrementAndGet();
             }
         }
@@ -211,8 +283,17 @@ public class DataLandLevelDetailAchievementService {
             }
         }
         landAchievement.setGrade(grades.stream().filter(baseDataDic -> name.equals(baseDataDic.getName())).findFirst().get().getId());
+        //处理只导入了 系数和因素的一种情况
+        //当只导入一种情况需要考虑是否曾经导入过数据,如果导入过数据那么 则需要关联更新的情况
     }
 
+    /**
+     * 过滤 并且分组
+     *
+     * @param sheetList
+     * @param baseDataDicList
+     * @return
+     */
     private List<DataAchievementDto> getFilterList(List<Sheet> sheetList, List<BaseDataDic> baseDataDicList) {
         List<Sheet> list = new ArrayList<>(sheetList.size());
         List<DataAchievementDto> dataAchievementDtoList = new ArrayList<>();
@@ -224,36 +305,52 @@ public class DataLandLevelDetailAchievementService {
             Sheet sheet = iterator.next();
             String sheetName = sheet.getSheetName();
             String typeName = null;
+            String filterName = null;
             if (StringUtils.contains(sheetName, FACTOR)) {
                 typeName = StringUtils.remove(sheetName, FACTOR);
+                filterName = COEFFICIENT ;
             }
             if (StringUtils.contains(sheetName, COEFFICIENT)) {
                 typeName = StringUtils.remove(sheetName, COEFFICIENT);
+                filterName = FACTOR ;
             }
             if (StringUtils.isBlank(typeName)) {
                 continue;
             }
             Sheet sheetV = null;
             for (Sheet sheet2 : list) {
-                if (StringUtils.contains(sheet2.getSheetName(), typeName)) {
+                String name = String.format("%s%s",typeName,filterName) ;
+                if (StringUtils.equals(sheet2.getSheetName(), name)) {
                     sheetV = sheet2;
                 }
             }
-            if (sheetV == null) {
-                continue;
-            }
             DataAchievementDto dataAchievementDto = getDataAchievementDto(sheet);
+            if (CollectionUtils.isNotEmpty(baseDataDicList)) {
+                for (BaseDataDic baseDataDic : baseDataDicList) {
+                    if (StringUtils.equals(baseDataDic.getName(), typeName)) {
+                        dataAchievementDto.setType(baseDataDic.getId());
+                    }
+                }
+            }
             if (StringUtils.contains(sheetName, FACTOR)) {
                 dataAchievementDto.setA(sheet);
                 dataAchievementDto.setaName(sheet.getSheetName());
-                dataAchievementDto.setB(sheetV);
-                dataAchievementDto.setBName(sheetV.getSheetName());
+                if (sheetV != null) {
+                    dataAchievementDto.setB(sheetV);
+                    dataAchievementDto.setBName(sheetV.getSheetName());
+                }
             }
             if (StringUtils.contains(sheetName, COEFFICIENT)) {
-                dataAchievementDto.setA(sheetV);
-                dataAchievementDto.setaName(sheetV.getSheetName());
+                if (sheetV != null) {
+                    dataAchievementDto.setA(sheetV);
+                    dataAchievementDto.setaName(sheetV.getSheetName());
+                }
                 dataAchievementDto.setB(sheet);
                 dataAchievementDto.setBName(sheet.getSheetName());
+            }
+            if (sheetV == null) {
+                dataAchievementDtoList.add(dataAchievementDto);
+                continue;
             }
             List<String> collect = dataAchievementDtoList.stream().map(oo -> oo.getA().getSheetName()).collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(collect)) {
@@ -261,13 +358,6 @@ public class DataLandLevelDetailAchievementService {
                 boolean anyMatch = collect.stream().anyMatch(s -> StringUtils.contains(s, v));
                 if (anyMatch) {
                     continue;
-                }
-            }
-            if (CollectionUtils.isNotEmpty(baseDataDicList)) {
-                for (BaseDataDic baseDataDic : baseDataDicList) {
-                    if (StringUtils.equals(baseDataDic.getName(), typeName)) {
-                        dataAchievementDto.setType(baseDataDic.getId());
-                    }
                 }
             }
             dataAchievementDtoList.add(dataAchievementDto);
@@ -426,7 +516,7 @@ public class DataLandLevelDetailAchievementService {
         return null;
     }
 
-    public Integer downloadDataLandDetailAchievementFile(Integer classify, String type) throws Exception {
+    public Integer downloadDataLandDetailAchievementFile(Integer classify, String type, String factorType) throws Exception {
         BaseDataDic baseDataDic = baseDataDicService.getDataDicById(classify);
         List<String> stringList = FormatUtils.transformString2List(type, ",");
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -445,12 +535,7 @@ public class DataLandLevelDetailAchievementService {
                         cell.setCellValue("影响因素           标准");
                     }
                     if (i == 1 && j == 0) {
-                        if (com.google.common.base.Objects.equal(integer, Integer.valueOf(1))) {
-                            cell.setCellValue(FACTOR);
-                        }
-                        if (com.google.common.base.Objects.equal(integer, Integer.valueOf(2))) {
-                            cell.setCellValue(COEFFICIENT);
-                        }
+
                     }
                     if (i == 2 && j == 0) {
                         cell.setCellValue("影响因素");
@@ -498,11 +583,18 @@ public class DataLandLevelDetailAchievementService {
             if (dataDic == null) {
                 continue;
             }
-            HSSFSheet wbSheet = wb.createSheet(String.format("%s%s", dataDic.getName(), FACTOR));
-            baseDataDicBiConsumer.accept(wbSheet, 1);
-
-            wbSheet = wb.createSheet(String.format("%s%s", dataDic.getName(), COEFFICIENT));
-            baseDataDicBiConsumer.accept(wbSheet, 2);
+            if (StringUtils.isBlank(factorType)) {
+                HSSFSheet wbSheet = wb.createSheet(String.format("%s%s", dataDic.getName(), FACTOR));
+                baseDataDicBiConsumer.accept(wbSheet, null);
+                wbSheet = wb.createSheet(String.format("%s%s", dataDic.getName(), COEFFICIENT));
+                baseDataDicBiConsumer.accept(wbSheet, null);
+            } else {
+                List<String> transformString2List = FormatUtils.transformString2List(factorType, ",");
+                for (String name : transformString2List) {
+                    HSSFSheet wbSheet = wb.createSheet(String.format("%s%s", dataDic.getName(), name));
+                    baseDataDicBiConsumer.accept(wbSheet, null);
+                }
+            }
 
         }
         OutputStream fileOut = null;

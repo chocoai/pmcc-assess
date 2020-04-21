@@ -946,8 +946,10 @@ landLevel.importDataLandDetailAchievement = function (flag) {
         return flag;
     }
     levelDetailId = target.attr("levelDetailId");
-    landLevel.ajaxFileUploadCommon({levelDetailId: levelDetailId ,landLevelId:currentLandLevelId} ,target.prop("id") ,"/dataLandLevelDetailAchievement/importDataLandDetailAchievement" ,function () {
-        landLevel.showLandDetailAchievementList(levelDetailId);
+    landLevel.ajaxFileUploadCommon({landLevelId:currentLandLevelId} ,target.prop("id") ,"/dataLandLevelDetailAchievement/importDataLandDetailAchievement" ,function () {
+        // landLevel.showLandDetailAchievementList(levelDetailId);
+        landLevel.loadTree() ;
+
     },false) ;
 };
 
@@ -961,9 +963,9 @@ landLevel.editDataLandDetailAchievement = function (index) {
 //土地级别详情从表 土地因素
 landLevel.showLandDetailAchievementList = function (levelDetailId) {
     var cols = [];
-    cols.push({field: 'typeName', title: '类型'});
-    cols.push({field: 'classification', title: '一级类别'});
-    cols.push({field: 'category', title: '二级类别'});
+    cols.push({field: 'typeName', title: '因素类型'});
+    cols.push({field: 'classification', title: '因素一级'});
+    cols.push({field: 'category', title: '因素二级'});
     cols.push({field: 'gradeName', title: '等级'});
     cols.push({field: 'reamark', title: '说明'});
     cols.push({
