@@ -179,6 +179,10 @@ public class AssessDataDicKeyConstant {
      */
     public static final String PROGRAMME_VALUE_CONNOTATION = "programme.value.connotation"; //价值内涵
     public static final String WORK_PROGRAMME_SET_USE = "work.programme.set.use"; //设定用途
+    public static final String programmeMarketCostapproachGrade = "programme.market.costApproach.grade"; //土地级别 等级
+    public static final String programmeMarketCostapproachFactor = "programme.market.costApproach.factor"; //土地级别 类型
+    public static final String DATA_LAND_LEVEL_ROMAN = "data.land.level.roman"; //土地级别(罗马数字)
+    public static final String DATA_LAND_LEVEL_CLASSIFY = "data.land.level.classify"; //土地级别 大类
 
 
 }
