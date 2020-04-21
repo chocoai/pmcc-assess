@@ -24,6 +24,21 @@
                                     <div class="card-title">${baseViewDto.currentMenu.name}</div>
                                 </div>
                             </div>
+
+                            <input type="file" id="ajaxFileUploadDataLand" name="file"
+                                   style="display: none;" onchange="landLevel.importDataLand();">
+                            <input type="file" id="ajaxFileUploadLandLevelDetail" name="file"
+                                   style="display: none;"
+                                   onchange="landLevel.importLandLevelDetail(false);">
+                            <input type="file" id="ajaxFileUploadLandLevelDetailAchievement"
+                                   name="file"
+                                   style="display: none;"
+                                   onchange="landLevel.importDataLandDetailAchievement(false);">
+                            <input type="file"
+                                   id="ajaxFileUploadLandLevelDetailCoefficientVolumeRatio"
+                                   name="file" style="display: none;"
+                                   onchange="landLevel.importDataAllocationCorrectionCoefficientVolumeRatio(false);">
+
                             <div class="card-body">
                                 <form id="frmQuery" class="form-horizontal">
                                     <input type="hidden" name="readOnly" value="${readOnly}">
@@ -96,7 +111,6 @@
 
 </body>
 
-<%--<%@include file="/views/data/landModelDir/landModelApproval.jsp" %>--%>
 <%@include file="/views/data/landModelDir/landModel.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 <script type="text/javascript">
