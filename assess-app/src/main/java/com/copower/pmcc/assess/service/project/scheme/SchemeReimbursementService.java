@@ -58,6 +58,8 @@ public class SchemeReimbursementService {
     private SurveyAssetRightGroupService surveyAssetRightGroupService;
     @Autowired
     private SurveyAssetRightService surveyAssetRightService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
 
     public List<SchemeReimbursement> getObjectList(SchemeReimbursement schemeReimbursement) {
         return schemeReimbursementDao.getObjectList(schemeReimbursement);
@@ -279,6 +281,12 @@ public class SchemeReimbursementService {
         return String.join("", StringUtils.join(integerList, ","), "号");
     }
 
+    public void repeatInit(Integer id) {
+        SchemeReimbursement schemeReimbursement = schemeReimbursementDao.getSchemeReimbursement(id);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(schemeReimbursement.getPlanDetailsId());
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeReimbursement.getAreaId());
+        init(schemeReimbursement, projectPlanDetails, schemeAreaGroup, true);
+    }
 
 
     /**
@@ -288,7 +296,7 @@ public class SchemeReimbursementService {
      * @param projectPlanDetails
      * @param schemeAreaGroup
      */
-    public void init(SchemeReimbursement schemeReimbursement, ProjectPlanDetails projectPlanDetails, SchemeAreaGroup schemeAreaGroup) {
+    public void init(SchemeReimbursement schemeReimbursement, ProjectPlanDetails projectPlanDetails, SchemeAreaGroup schemeAreaGroup, boolean repeat) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(schemeAreaGroup.getId());
@@ -309,19 +317,23 @@ public class SchemeReimbursementService {
         }
         List<SurveyAssetRightGroup> rightGroupList = surveyAssetRightGroupService.getSurveyAssetRightGroupListByMasterId(surveyAssetRight.getId());
         List<DeclareRecord> declareRecordLists = declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId());
-        List<Integer> declares = new ArrayList<>() ;
+        List<Integer> declares = new ArrayList<>();
         //他项权利组(多对) 每组有一个或者多个他项权力   他项权利组对应一个SchemeReimbursementItem
         if (CollectionUtils.isNotEmpty(rightGroupList)) {
             for (SurveyAssetRightGroup rightGroup : rightGroupList) {
+                SchemeReimbursementItem itemVo = getSchemeReimbursementItemVoByInventoryRightRecordId(rightGroup.getId());
                 List<SurveyAssetRightDeclare> declareList = surveyAssetRightGroupService.getSurveyAssetRightDeclareListByGroupId(rightGroup.getId());
                 if (CollectionUtils.isEmpty(declareList)) {
+                    if (repeat && itemVo != null) {
+                        schemeReimbursementItemDao.deleteObject(itemVo.getId());
+                    }
                     continue;
                 }
                 List<Integer> ids = declareList.stream().map(surveyAssetRightDeclare -> surveyAssetRightDeclare.getDeclareId()).collect(Collectors.toList());
                 if (CollectionUtils.isEmpty(ids)) {
                     continue;
                 }
-                declares.addAll(ids) ;
+                declares.addAll(ids);
                 Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = surveyAssetRightService.getDeclareRecordJudgeObjectMap(declareRecordService.getDeclareRecordListByIds(ids), schemeJudgeObjectList);
                 if (schemeJudgeObjectDeclareRecordMap.isEmpty()) {
                     continue;
@@ -330,13 +342,16 @@ public class SchemeReimbursementService {
                 for (Map.Entry<SchemeJudgeObject, DeclareRecord> recordEntry : schemeJudgeObjectDeclareRecordMap.entrySet()) {
                     judgeObjectList.add(recordEntry.getKey());
                 }
-                SchemeReimbursementItem itemVo = getSchemeReimbursementItemVoByInventoryRightRecordId(rightGroup.getId());
                 //当查询不到则生成
                 if (itemVo == null) {
                     itemVo = new SchemeReimbursementItem();
                     itemVo.setCreator(processControllerComponent.getThisUser());
                     //生成name
                     itemVo.setName(getNameBySchemeJudgeObjectList(judgeObjectList));
+                }
+                if (repeat) {
+                    itemVo.setName(getNameBySchemeJudgeObjectList(judgeObjectList));
+
                 }
                 itemVo.setMasterId(schemeReimbursement.getId());
                 itemVo.setInventoryRightRecordId(rightGroup.getId());
@@ -348,12 +363,29 @@ public class SchemeReimbursementService {
             }
         }
         //remove
-        if (CollectionUtils.isNotEmpty(declares) && CollectionUtils.isNotEmpty(declareRecordLists)){
+        if (CollectionUtils.isNotEmpty(declares) && CollectionUtils.isNotEmpty(declareRecordLists)) {
             Iterator<DeclareRecord> iterator = declareRecordLists.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 DeclareRecord declareRecord = iterator.next();
-                if (declares.contains(declareRecord.getId())){
+                if (declares.contains(declareRecord.getId())) {
                     iterator.remove();
+                    Map<SchemeJudgeObject, DeclareRecord> schemeJudgeObjectDeclareRecordMap = surveyAssetRightService.getDeclareRecordJudgeObjectMap(Lists.newArrayList(declareRecord), schemeJudgeObjectList);
+                    if (!schemeJudgeObjectDeclareRecordMap.isEmpty()) {
+                        for (Map.Entry<SchemeJudgeObject, DeclareRecord> recordEntry : schemeJudgeObjectDeclareRecordMap.entrySet()) {
+                            SchemeReimbursementItem itemVo = new SchemeReimbursementItem();
+                            itemVo.setCreator(processControllerComponent.getThisUser());
+                            itemVo.setProjectId(schemeReimbursement.getProjectId());
+                            itemVo.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                            itemVo.setName(String.join("", recordEntry.getKey().getNumber(), "号"));
+                            itemVo.setMasterId(schemeReimbursement.getId());
+                            itemVo.setInventoryRightRecordId(null);
+                            itemVo.setJudgeObjectId(recordEntry.getKey().getId());
+                            List<SchemeReimbursementItem> schemeReimbursementItemList = schemeReimbursementItemDao.getListObject2(itemVo);
+                            if (CollectionUtils.isNotEmpty(schemeReimbursementItemList)) {
+                                schemeReimbursementItemList.forEach(schemeReimbursementItem -> schemeReimbursementItemDao.deleteObject(schemeReimbursementItem.getId()));
+                            }
+                        }
+                    }
                 }
             }
         }

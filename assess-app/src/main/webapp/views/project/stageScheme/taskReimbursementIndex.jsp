@@ -22,8 +22,11 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        ${projectPlanDetails.projectPhaseName}
-                                        <small>${areaGroup.areaName}</small>
+                                        ${areaGroup.areaName}
+
+                                        <button onclick="repeatSchemeReimbursementInit(this);"
+                                                class="btn btn-success btn-sm" type="button">重新初始化
+                                        </button>
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -175,6 +178,35 @@
             $("#master").find('[name="' + knowTotalPriceEle + '"]').val(Number(knowTotalPrice).toFixed(2));
         }
 
+    }
+
+    function repeatSchemeReimbursementInit() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeReimbursement/repeatSchemeReimbursementInit",
+            data: {
+                id: "${master.id}"
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    getItemHtml() ;
+                    notifySuccess("提示", "重新初始化成功!");
+                }else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
     }
 
     function getItemHtml() {

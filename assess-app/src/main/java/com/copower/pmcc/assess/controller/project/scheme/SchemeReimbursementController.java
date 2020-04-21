@@ -27,13 +27,25 @@ public class SchemeReimbursementController {
     @ResponseBody
     @RequestMapping(value = "/getSchemeReimbursementList", name = "委估对象list", method = RequestMethod.POST)
     public HttpResult getSchemeReimbursementList(Integer masterId) {
-        try{
+        try {
             List<SchemeReimbursementItemVo> list = schemeReimbursementService.getItemByMasterId(masterId);
             return HttpResult.newCorrectResult(list);
-    } catch (Exception e) {
-            logger.error("SchemeReimbursementController.getSchemeReimbursementList 获取数据异常",e);
-        return HttpResult.newErrorResult("获取数据异常");
+        } catch (Exception e) {
+            logger.error("SchemeReimbursementController.getSchemeReimbursementList 获取数据异常", e);
+            return HttpResult.newErrorResult("获取数据异常");
+        }
     }
-   }
+
+    @ResponseBody
+    @RequestMapping(value = "/repeatSchemeReimbursementInit", name = "重新初始化", method = RequestMethod.POST)
+    public HttpResult repeatSchemeReimbursementInit(Integer id) {
+        try {
+            schemeReimbursementService.repeatInit(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("重新初始化异常", e);
+            return HttpResult.newErrorResult("重新初始化异常");
+        }
+    }
 
 }

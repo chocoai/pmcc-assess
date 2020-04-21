@@ -41,7 +41,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReimbursementIndex", "", 0, "0", "");
         try {
-            writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()),modelAndView);
+            writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()),modelAndView,false);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"生成法定优先受偿款初始数据失败!");
         }
@@ -79,7 +79,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskReimbursementIndex", processInsId, boxId, taskId, agentUserAccount);
         try {
-            writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()),modelAndView);
+            writeSchemeReimbursement(projectPlanDetails, schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()),modelAndView,false);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"生成法定优先受偿款初始数据失败!");
         }
@@ -131,7 +131,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
      * @param schemeAreaGroup
      * @throws Exception
      */
-    private void writeSchemeReimbursement(ProjectPlanDetails projectPlanDetails, SchemeAreaGroup schemeAreaGroup,ModelAndView modelAndView) throws Exception {
+    private void writeSchemeReimbursement(ProjectPlanDetails projectPlanDetails, SchemeAreaGroup schemeAreaGroup,ModelAndView modelAndView ,boolean repeat) throws Exception {
         SchemeReimbursement select = new SchemeReimbursement();
         select.setPlanDetailsId(projectPlanDetails.getId());
         select.setProjectId(projectPlanDetails.getProjectId());
@@ -147,7 +147,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
         modelAndView.addObject("master", schemeReimbursementList.get(0));
         modelAndView.addObject("areaGroup", schemeAreaGroup);
         //初始化数据
-        schemeReimbursementService.init(schemeReimbursementList.get(0),projectPlanDetails,schemeAreaGroup);
+        schemeReimbursementService.init(schemeReimbursementList.get(0),projectPlanDetails,schemeAreaGroup,repeat);
 
     }
 }
