@@ -804,6 +804,66 @@ public class DataHousePriceIndexExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andBasePeriodIsNull() {
+            addCriterion("base_period is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodIsNotNull() {
+            addCriterion("base_period is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodEqualTo(Date value) {
+            addCriterion("base_period =", value, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodNotEqualTo(Date value) {
+            addCriterion("base_period <>", value, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodGreaterThan(Date value) {
+            addCriterion("base_period >", value, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodGreaterThanOrEqualTo(Date value) {
+            addCriterion("base_period >=", value, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodLessThan(Date value) {
+            addCriterion("base_period <", value, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodLessThanOrEqualTo(Date value) {
+            addCriterion("base_period <=", value, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodIn(List<Date> values) {
+            addCriterion("base_period in", values, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodNotIn(List<Date> values) {
+            addCriterion("base_period not in", values, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodBetween(Date value1, Date value2) {
+            addCriterion("base_period between", value1, value2, "basePeriod");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodNotBetween(Date value1, Date value2) {
+            addCriterion("base_period not between", value1, value2, "basePeriod");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

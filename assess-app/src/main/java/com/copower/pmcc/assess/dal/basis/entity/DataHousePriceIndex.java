@@ -25,6 +25,8 @@ public class DataHousePriceIndex {
 
     private Date gmtModified;
 
+    private Date basePeriod;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class DataHousePriceIndex {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Date getBasePeriod() {
+        return basePeriod;
+    }
+
+    public void setBasePeriod(Date basePeriod) {
+        this.basePeriod = basePeriod;
     }
 }

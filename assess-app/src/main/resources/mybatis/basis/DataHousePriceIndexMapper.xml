@@ -13,6 +13,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="base_period" property="basePeriod" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, purpose, type, evaluation_date, release_date, province, city, district, creator, 
-    gmt_created, gmt_modified
+    gmt_created, gmt_modified, base_period
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexExample" >
     select
@@ -113,11 +114,11 @@
     insert into tb_data_house_price_index (purpose, type, evaluation_date, 
       release_date, province, city, 
       district, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, base_period)
     values (#{purpose,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{evaluationDate,jdbcType=TIMESTAMP}, 
       #{releaseDate,jdbcType=TIMESTAMP}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
       #{district,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{basePeriod,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndex" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -155,6 +156,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="basePeriod != null" >
+        base_period,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="purpose != null" >
@@ -186,6 +190,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="basePeriod != null" >
+        #{basePeriod,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -231,6 +238,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.basePeriod != null" >
+        base_period = #{record.basePeriod,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -248,7 +258,8 @@
       district = #{record.district,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      base_period = #{record.basePeriod,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -286,6 +297,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="basePeriod != null" >
+        base_period = #{basePeriod,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -300,7 +314,8 @@
       district = #{district,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      base_period = #{basePeriod,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

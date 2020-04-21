@@ -595,6 +595,126 @@ public class DataHousePriceIndexDetailExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andUnitPremiumIsNull() {
+            addCriterion("unit_premium is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumIsNotNull() {
+            addCriterion("unit_premium is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumEqualTo(BigDecimal value) {
+            addCriterion("unit_premium =", value, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumNotEqualTo(BigDecimal value) {
+            addCriterion("unit_premium <>", value, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumGreaterThan(BigDecimal value) {
+            addCriterion("unit_premium >", value, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("unit_premium >=", value, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumLessThan(BigDecimal value) {
+            addCriterion("unit_premium <", value, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("unit_premium <=", value, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumIn(List<BigDecimal> values) {
+            addCriterion("unit_premium in", values, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumNotIn(List<BigDecimal> values) {
+            addCriterion("unit_premium not in", values, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("unit_premium between", value1, value2, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPremiumNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("unit_premium not between", value1, value2, "unitPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumIsNull() {
+            addCriterion("floor_premium is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumIsNotNull() {
+            addCriterion("floor_premium is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumEqualTo(BigDecimal value) {
+            addCriterion("floor_premium =", value, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumNotEqualTo(BigDecimal value) {
+            addCriterion("floor_premium <>", value, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumGreaterThan(BigDecimal value) {
+            addCriterion("floor_premium >", value, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_premium >=", value, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumLessThan(BigDecimal value) {
+            addCriterion("floor_premium <", value, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_premium <=", value, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumIn(List<BigDecimal> values) {
+            addCriterion("floor_premium in", values, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumNotIn(List<BigDecimal> values) {
+            addCriterion("floor_premium not in", values, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_premium between", value1, value2, "floorPremium");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPremiumNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_premium not between", value1, value2, "floorPremium");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

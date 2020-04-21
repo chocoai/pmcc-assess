@@ -20,6 +20,10 @@ public class DataHousePriceIndexDetail {
 
     private Date gmtModified;
 
+    private BigDecimal unitPremium;
+
+    private BigDecimal floorPremium;
+
     public Integer getId() {
         return id;
     }
@@ -82,5 +86,21 @@ public class DataHousePriceIndexDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getUnitPremium() {
+        return unitPremium;
+    }
+
+    public void setUnitPremium(BigDecimal unitPremium) {
+        this.unitPremium = unitPremium;
+    }
+
+    public BigDecimal getFloorPremium() {
+        return floorPremium;
+    }
+
+    public void setFloorPremium(BigDecimal floorPremium) {
+        this.floorPremium = floorPremium;
     }
 }

@@ -34,7 +34,7 @@ public class HousePriceIndexController {
         return vo;
     }
 
-    @GetMapping(value = "/get/{id}",name = "restful get")
+    @GetMapping(value = "/get/{id}", name = "restful get")
     public HttpResult get(@PathVariable Integer id) {
         DataHousePriceIndexVo dataHousePriceIndexVo = null;
         try {
@@ -46,22 +46,11 @@ public class HousePriceIndexController {
         return HttpResult.newCorrectResult(dataHousePriceIndexVo);
     }
 
-    @PutMapping(value = "/edit/{formData}",name = "restful put")
-    public HttpResult edit(@PathVariable(name = "formData") String formData) {
+    @ResponseBody
+    @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
+    public HttpResult save(String formData) {
         try {
-            DataHousePriceIndex dataHousePriceIndex = JSON.parseObject(formData,DataHousePriceIndex.class);
-            housePriceIndexService.saveAndUpdateDataHousePriceIndex(dataHousePriceIndex);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @PostMapping(value = "/save/{formData}",name = "restful post")
-    public HttpResult save(@PathVariable(name = "formData") String formData){
-        try {
-            DataHousePriceIndex dataHousePriceIndex = JSON.parseObject(formData,DataHousePriceIndex.class);
+            DataHousePriceIndex dataHousePriceIndex = JSON.parseObject(formData, DataHousePriceIndex.class);
             housePriceIndexService.saveAndUpdateDataHousePriceIndex(dataHousePriceIndex);
         } catch (Exception e) {
             logger.error(e.getMessage());

@@ -30,7 +30,8 @@
                                         <label for="queryType" class="col-md-1 col-form-label">类别</label>
                                         <div class="col-md-3 p-0">
                                             <select name="type"
-                                                    class="form-control search-select select2 input-full" id="queryType">
+                                                    class="form-control search-select select2 input-full"
+                                                    id="queryType">
                                             </select>
                                         </div>
 
@@ -42,7 +43,8 @@
                                             查询
                                         </button>
                                         <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-toggle="modal" onclick="dataObjFun.initFormMaster({})" href="#divBoxFather">
+                                                data-toggle="modal" onclick="dataObjFun.initFormMaster({})"
+                                                href="#divBoxFather">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
@@ -69,7 +71,11 @@
 </div>
 
 </body>
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;"
+       onchange="dataObjFun.importData();">
 
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     var dataObjFun = {};
 
@@ -87,6 +93,9 @@
         var frm = $(dataObjFun.config.frm);
         frm.clearAll();
         frm.initForm(data);
+        frm.find('[name=evaluationDate]').val(dataObjFun.formatDateMonth(data.evaluationDate));
+        frm.find('[name=basePeriod]').val(dataObjFun.formatDateMonth(data.basePeriod));
+        frm.find('[name=releaseDate]').val(dataObjFun.formatDateMonth(data.releaseDate));
         AssessCommon.initAreaInfo({
             provinceTarget: frm.find("select[name='province']"),
             cityTarget: frm.find("select[name='city']"),
@@ -99,18 +108,18 @@
             frm.find("select[name='type']").empty().html(html).trigger('change');
         });
         frm.find("select[name='type']").change(function () {
-            AssessCommon.getDataDicInfo( frm.find("select[name='type']").val() ,function (item) {
-                var name = item.name ;
+            AssessCommon.getDataDicInfo(frm.find("select[name='type']").val(), function (item) {
+                var name = item.name;
                 var key = null;
-                if (name){
-                    if (name.indexOf('土地') != -1){
-                        key = AssessDicKey.estate_total_land_use ;
+                if (name) {
+                    if (name.indexOf('土地') != -1) {
+                        key = AssessDicKey.estate_total_land_use;
                     }
-                    if (name.indexOf('房价') != -1){
-                        key = AssessDicKey.examineHouseLoadUtility ;
+                    if (name.indexOf('房价') != -1) {
+                        key = AssessDicKey.examineHouseLoadUtility;
                     }
                 }
-                if (key){
+                if (key) {
                     AssessCommon.loadDataDicByKey(key, data.purpose, function (html, data) {
                         frm.find("select[name='purpose']").empty().html(html).trigger('change');
                     });
@@ -132,7 +141,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -147,7 +156,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess("成功","删除数据成功");
+                        notifySuccess("成功", "删除数据成功");
                         dataObjFun.listMaster();
                     } else {
                         AlertError("删除数据失败", result.errmsg);
@@ -164,12 +173,12 @@
         cols.push({field: 'purposeName', title: '用途'});
         cols.push({
             field: 'releaseDate', title: '发布时间', formatter: function (value, row, index) {
-                return formatDate(value);
+                return dataObjFun.formatDateMonth(value);
             }
         });
         cols.push({
-            field: 'evaluationDate', title: '估价期日', formatter: function (value, row, index) {
-                return formatDate(value);
+            field: 'evaluationDate', title: '报告期', formatter: function (value, row, index) {
+                return dataObjFun.formatDateMonth(value);
             }
         });
         cols.push({
@@ -205,18 +214,12 @@
         if (!frm.valid()) {
             return false;
         }
-        var url = '${pageContext.request.contextPath}/housePriceIndex';
-        var _method = null;
-        if (data.id) {
-            url += "/edit/" + JSON.stringify(data);
-            _method = "PUT";
-        } else {
-            _method = "POST";
-            url += "/save/" + JSON.stringify(data);
-        }
+        data.releaseDate = data.releaseDate + "-01 00:00:00";
+        data.basePeriod = data.basePeriod + "-01 00:00:00";
+        data.evaluationDate = data.evaluationDate + "-01 00:00:00";
         $.ajax({
-            url: url,
-            data: {_method: _method},
+            url: "${pageContext.request.contextPath}/housePriceIndex/save",
+            data: {formData: JSON.stringify(data)},
             type: "post",
             success: function (result) {
                 if (result.ret) {
@@ -253,7 +256,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess("成功","删除数据成功");
+                        notifySuccess("成功", "删除数据成功");
                         dataObjFun.showDataHousePriceIndexDetailList(row.housePriceId);
                     } else {
                         AlertError("删除数据失败", result.errmsg);
@@ -268,6 +271,8 @@
         var frm = $(dataObjFun.config.indexDetailFrm);
         frm.clearAll();
         frm.initForm(row);
+        frm.find('[name=startDate]').val(dataObjFun.formatDateMonth(row.startDate));
+        frm.find('[name=endDate]').val(dataObjFun.formatDateMonth(row.endDate));
         $(dataObjFun.config.indexDetailBox).modal("show");
     };
 
@@ -277,6 +282,8 @@
         if (!frm.valid()) {
             return false;
         }
+        data.startDate = data.startDate + "-01 00:00:00";
+        data.endDate = data.endDate + "-01 00:00:00";
         $.ajax({
             url: '${pageContext.request.contextPath}/dataHousePriceIndexDetail/save',
             data: {formData: JSON.stringify(data)},
@@ -297,12 +304,12 @@
         var cols = [];
         cols.push({
             field: 'startDate', title: '开始月份', formatter: function (value, row, index) {
-                return formatDate(value);
+                return dataObjFun.formatDateMonth(value);
             }
         });
         cols.push({
             field: 'endDate', title: '结束月份', formatter: function (value, row, index) {
-                return formatDate(value);
+                return dataObjFun.formatDateMonth(value);
             }
         });
         cols.push({field: 'indexNumber', title: '指数'});
@@ -330,12 +337,61 @@
         });
     };
 
-    $(document).ready(function () {
+    dataObjFun.formatDateMonth = function (v) {
+        if (!v) {
+            return "";
+        }
+        if (/^(-)?\d{1,10}$/.test(v)) {
+            v = v * 1000;
+        } else if (/^(-)?\d{1,13}$/.test(v)) {
+            v = v * 1;
+        }
+        var dateObj = new Date(v);
+        var month = dateObj.getMonth() + 1;
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var UnixTimeToDate = dateObj.getFullYear() + '-' + month;
+
+        return UnixTimeToDate;
+    };
+
+    //生成并下载模板
+    dataObjFun.generateTemplate = function () {
+        var href = "${pageContext.request.contextPath}/dataHousePriceIndexDetail/generateTemplate";
+        window.open(href, "");
+    };
+
+    dataObjFun.importData = function () {
+        var housePriceId = $(dataObjFun.config.indexDetailTableBox).find("input[name='housePriceId']").val();
+        $.ajaxFileUpload({
+            type: "POST",
+            url: getContextPath() + "/dataHousePriceIndexDetail/importData",
+            data: {
+                housePriceId: housePriceId
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: 'ajaxFileUpload',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    dataObjFun.showDataHousePriceIndexDetailList(housePriceId);
+                    notifySuccess("成功", result.data);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    };
+    $(function () {
         dataObjFun.listMaster();
         AssessCommon.loadDataDicByKey(AssessDicKey.dataTypeIndex, null, function (html, data) {
             $("#frmQuery").find("select[name='type']").empty().html(html).trigger('change');
         });
-        DatepickerUtils.initDate($('.date-month'), {
+        DatepickerUtils.initDate($('.dbdate-month'), {
             autoclose: true,
             todayBtn: "linked",
             language: "zh-CN",
@@ -344,8 +400,7 @@
             startView: 4,
             minView: 3
         });
-    });
-
+    })
 </script>
 
 
@@ -385,7 +440,8 @@
                                                 市<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
-                                                <select name="city" class="form-control search-select select2 input-full"
+                                                <select name="city"
+                                                        class="form-control search-select select2 input-full"
                                                         required="required">
                                                 </select>
                                             </div>
@@ -440,7 +496,8 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly="readonly"
-                                                       class="form-control input-full date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate-month"
+                                                       data-date-format="yyyy-mm-dd"
                                                        name="releaseDate" placeholder="发布日期">
                                             </div>
                                         </div>
@@ -450,12 +507,26 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                估价期
+                                                报告期
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly="readonly"
-                                                       class="form-control input-full date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                       name="evaluationDate" placeholder="估价期">
+                                                       class="form-control input-full date-picker dbdate-month"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       name="evaluationDate" placeholder="报告期">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                基期
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly="readonly"
+                                                       class="form-control input-full date-picker dbdate-month"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       name="basePeriod" placeholder="基期">
                                             </div>
                                         </div>
                                     </div>
@@ -493,17 +564,40 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card-body">
-                            <p>
+                            <div class="form-inline form-inline x-valid">
                                 <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                        data-toggle="modal" onclick="dataObjFun.showDataHousePriceIndexDetailBox({})" href="#indexDetailBox">
+                                        data-toggle="modal" onclick="dataObjFun.showDataHousePriceIndexDetailBox({})"
+                                        href="#indexDetailBox">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
                                     新增
                                 </button>
-                            </p>
-                            <table class="table table-bordered" id="indexDetailTable">
-                            </table>
+                                <div class="btn-group">
+                                    <button type="button" style="margin-left: 5px"
+                                            class="btn btn-info btn-sm dropdown-toggle"
+                                            data-toggle="dropdown">
+                                                     <span class="btn-label">
+												<i class="fa fa-cloud-upload-alt"></i>
+                                                         </span>导入数据
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a class="btn"
+                                               onclick="dataObjFun.generateTemplate()">下载模板</a>
+                                        </li>
+                                        <li>
+                                            <a class="btn"
+                                               onclick="$('#ajaxFileUpload').val('').trigger('click')"><span>导入</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row row form-group">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered" id="indexDetailTable">
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -543,7 +637,8 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly="readonly" required
-                                                       class="form-control input-full date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate-month"
+                                                       data-date-format="yyyy-mm-dd"
                                                        name="startDate" placeholder="开始月份">
                                             </div>
                                         </div>
@@ -555,8 +650,35 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly="readonly" required
-                                                       class="form-control input-full date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate-month"
+                                                       data-date-format="yyyy-mm"
                                                        name="endDate" placeholder="结束月份">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                单位地价
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                       class="form-control input-full" name="unitPremium"
+                                                       placeholder="单位地价">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                楼面地价
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                       class="form-control input-full" name="floorPremium"
+                                                       placeholder="楼面地价">
                                             </div>
                                         </div>
                                     </div>
@@ -584,7 +706,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="dataObjFun.saveDataHousePriceIndexDetail()">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="dataObjFun.saveDataHousePriceIndexDetail()">
                     保存
                 </button>
             </div>
