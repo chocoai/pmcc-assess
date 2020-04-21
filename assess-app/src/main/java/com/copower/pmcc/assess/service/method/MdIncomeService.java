@@ -2032,29 +2032,14 @@ public class MdIncomeService {
     }
 
     //复制收益法
-    public void pasteMdIncome(Integer sourcePlanDetailsId, Integer targetPlanDetailsId) throws Exception {
-        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(targetPlanDetailsId);
-        String processInsId = "";
-        if (schemeInfo != null) {
-            processInsId = schemeInfo.getProcessInsId();
-            //先删除再添加
-            this.deleteMdIncomeByPlanDetailsId(targetPlanDetailsId);
-        }
-
-        SchemeInfo sourceSchemeInfo = schemeInfoService.getSchemeInfo(sourcePlanDetailsId);
+    public void pasteMdIncome(Integer sourceId, Integer targetId) throws Exception {
         //复制MdIncome数据
-        MdIncome sourceIncome = getIncomeById(sourceSchemeInfo.getMethodDataId());
-        MdIncome targetIncome = new MdIncome();
-        BeanUtils.copyProperties(sourceIncome, targetIncome, "id");
+        MdIncome sourceIncome = getIncomeById(sourceId);
+        MdIncome targetIncome = getIncomeById(targetId);
+        BeanUtils.copyProperties(sourceIncome, targetIncome, "id", "name", "area");
         this.saveIncome(targetIncome);
-
-        //主表复制
-        SchemeInfo targetSchemeInfo = new SchemeInfo();
-        BeanUtils.copyProperties(sourceSchemeInfo, targetSchemeInfo, "id");
-        targetSchemeInfo.setMethodDataId(targetIncome.getId());
-        targetSchemeInfo.setProcessInsId(processInsId);
-        targetSchemeInfo.setPlanDetailsId(targetPlanDetailsId);
-        schemeInfoService.saveSchemeInfo(targetSchemeInfo);
+        //先删除子表再添加
+        this.deleteMdIncomeDetail(targetId);
 
         //复制MdIncomeDateSection数据
         MdIncomeDateSection section = new MdIncomeDateSection();
@@ -2221,23 +2206,17 @@ public class MdIncomeService {
     }
 
 
-    //删除收益法
-    public void deleteMdIncomeByPlanDetailsId(Integer targetPlanDetailsId) throws Exception {
-        //主表删除
-        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(targetPlanDetailsId);
-
-        //删除MdIncome
-        MdIncome income = getIncomeById(schemeInfo.getMethodDataId());
-
+    //删除收益法子表
+    public void deleteMdIncomeDetail(Integer id) throws Exception {
         //删除MdIncomeDateSection
         MdIncomeDateSection section = new MdIncomeDateSection();
-        section.setIncomeId(schemeInfo.getMethodDataId());
+        section.setIncomeId(id);
         List<MdIncomeDateSection> sourceSectionList = mdIncomeDateSectionDao.getDateSectionList(section);
         if (CollectionUtils.isNotEmpty(sourceSectionList)) {
             for (MdIncomeDateSection sourceIncomeDateSection : sourceSectionList) {
                 //删除MdIncomeForecast
                 MdIncomeForecast mdIncomeForecast = new MdIncomeForecast();
-                mdIncomeForecast.setIncomeId(schemeInfo.getMethodDataId());
+                mdIncomeForecast.setIncomeId(id);
                 mdIncomeForecast.setSectionId(sourceIncomeDateSection.getId());
                 List<MdIncomeForecast> sourceForecastList = mdIncomeForecastDao.getForecastList(mdIncomeForecast);
                 if (CollectionUtils.isNotEmpty(sourceForecastList)) {
@@ -2273,7 +2252,7 @@ public class MdIncomeService {
 
                 //删除mdIncomeLease
                 MdIncomeLease where = new MdIncomeLease();
-                where.setIncomeId(schemeInfo.getMethodDataId());
+                where.setIncomeId(id);
                 where.setSectionId(sourceIncomeDateSection.getId());
                 List<MdIncomeLease> sourceLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(where);
                 if (CollectionUtils.isNotEmpty(sourceLeaseList)) {
@@ -2284,7 +2263,7 @@ public class MdIncomeService {
 
                 //删除mdIncomeLeaseCost
                 MdIncomeLeaseCost inComeLeaseCost = new MdIncomeLeaseCost();
-                inComeLeaseCost.setIncomeId(schemeInfo.getMethodDataId());
+                inComeLeaseCost.setIncomeId(id);
                 inComeLeaseCost.setSectionId(sourceIncomeDateSection.getId());
                 List<MdIncomeLeaseCost> sourceLeaseCostList = mdIncomeLeaseCostDao.getLeaseCostList(inComeLeaseCost);
                 if (CollectionUtils.isNotEmpty(sourceLeaseCostList)) {
@@ -2298,7 +2277,7 @@ public class MdIncomeService {
 
         //删除MdIncomeForecastAnalyse
         MdIncomeForecastAnalyse forecastAnalyse = new MdIncomeForecastAnalyse();
-        forecastAnalyse.setIncomeId(schemeInfo.getMethodDataId());
+        forecastAnalyse.setIncomeId(id);
         List<MdIncomeForecastAnalyse> sourceForecastAnalyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(forecastAnalyse);
         if (CollectionUtils.isNotEmpty(sourceForecastAnalyseList)) {
             for (MdIncomeForecastAnalyse sourceForecastAnalyse : sourceForecastAnalyseList) {
@@ -2311,7 +2290,7 @@ public class MdIncomeService {
                 }
                 //删除MdIncomeHistory
                 MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
-                mdIncomeHistory.setIncomeId(schemeInfo.getMethodDataId());
+                mdIncomeHistory.setIncomeId(id);
                 mdIncomeHistory.setForecastAnalyseId(sourceForecastAnalyse.getId());
                 List<MdIncomeHistory> sourceHistoryList = mdIncomeHistoryDao.getHistoryList(mdIncomeHistory);
                 if (CollectionUtils.isNotEmpty(sourceHistoryList)) {
@@ -2326,15 +2305,12 @@ public class MdIncomeService {
 
         //删除MdIncomePriceInvestigation
         MdIncomePriceInvestigation mdIncomePriceInvestigation = new MdIncomePriceInvestigation();
-        mdIncomePriceInvestigation.setIncomeId(schemeInfo.getMethodDataId());
+        mdIncomePriceInvestigation.setIncomeId(id);
         List<MdIncomePriceInvestigation> sourcePriceInvestigationList = mdIncomePriceInvestigationDao.getIncomePriceInvestigationList(mdIncomePriceInvestigation);
         if (CollectionUtils.isNotEmpty(sourcePriceInvestigationList)) {
             for (MdIncomePriceInvestigation sourcePriceInvestigation : sourcePriceInvestigationList) {
                 mdIncomePriceInvestigationDao.deleteIncomePriceInvestigation(sourcePriceInvestigation.getId());
             }
         }
-
-        mdIncomeDao.deleteIncome(income.getId());
-        schemeInfoDao.deleteInfo(schemeInfo.getId());
     }
 }

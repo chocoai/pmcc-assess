@@ -344,7 +344,7 @@
     }
 </script>
 <script type="text/javascript">
-    var mdIncomeSourcePlanDetailsId = undefined;
+
     var projectStagePlan = {
         stageTable: $("#tb_project_stage"),
         loadProjectTaskList: function () {
@@ -418,10 +418,6 @@
                     }
                     if (row.displayUrl) {
                         str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' title='查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
-                    }
-                    if (row.projectPhaseName=="收益法") {
-                        str += " <button type='button' href='javascript://' style='margin-left: 5px;' onclick='projectStagePlan.copyMdIncome(" + row.id + ");' title='复制' class='btn btn-xs btn-info btn-copy' ><i class='fa fa-copy fa-white'></i></button>";
-                        str += " <button type='button' href='javascript://' style='margin-left: 5px;' onclick='projectStagePlan.pasteMdIncome(" + row.id + ");' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i></button>";
                     }
                     return str;
                 }
@@ -512,41 +508,6 @@
                 editFlag: true,
                 deleteFlag: true
             });
-        },
-        //复制
-        copyMdIncome : function (planDetailsId) {
-            mdIncomeSourcePlanDetailsId = planDetailsId
-            notifySuccess("成功", "复制成功");
-        },
-        //粘贴
-        pasteMdIncome : function (planDetailsId) {
-            if(mdIncomeSourcePlanDetailsId){
-                if(mdIncomeSourcePlanDetailsId==planDetailsId){
-                    notifyInfo("提示","不能复制粘贴自身");
-                    return false;
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/income/pasteMdIncome",
-                    data: {
-                        sourcePlanDetailsId: mdIncomeSourcePlanDetailsId,
-                        targetPlanDetailsId: planDetailsId,
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            notifyInfo("提示","粘贴成功");
-                        } else {
-                            AlertError("复制失败:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                    }
-                });
-            }else{
-                notifyInfo("提示", "选择被复制的对象");
-            }
         }
     };
 

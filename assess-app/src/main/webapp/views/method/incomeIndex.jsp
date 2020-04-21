@@ -2,16 +2,18 @@
 
 <div class="col-md-12">
     <div class="card full-height">
-        <div class="card-header collapse-link">
+        <div class="card-header">
             <div class="card-head-row">
                 <div class="card-title">
                     ${judgeObject.name}
                     <small>(${judgeObject.evaluationArea}㎡)</small>
-                </div>
-                <div class="card-tools">
-                    <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
-                    </button>
+                        <small>
+                            <button class="btn btn-sm btn-primary" data-toggle="modal" type="button"
+                                    href="#boxSchemeInfoModel"
+                                    onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdIncome.id}',methodType:'${methodTypeObj.id}'},'incomeIndex.selectFun');">
+                                引用
+                            </button>
+                        </small>
                 </div>
             </div>
         </div>
@@ -219,7 +221,8 @@
         </div>
     </div>
 </div>
-
+<script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
+<%@include file="/views/method/module/developmentCommon.jsp" %>
 <script type="text/javascript">
     $(function () {
         DatepickerUtils.sectionChoose($("#frm_data_section").find('[name=beginDate]'), $("#frm_data_section").find('[name=endDate]'));
@@ -510,6 +513,48 @@
         return formData;
     }
 
+
+    incomeIndex.selectFun = function (copyId, box) {
+        var target = $("#" + box);
+        AlertConfirm("是否确认引用", "引用后可继续根据实际情况来编辑", function () {
+            incomeIndex.ajaxServerMethod({
+                sourceId: copyId,
+                targetId: '${mdIncome.id}'
+            }, "/income/pasteMdIncome", "post", function () {
+                notifySuccess("成功", "引用数据成功!");
+                window.location.reload(true); //强制从服务器重新加载当前页面
+                target.modal("hide");
+            });
+        });
+    };
+
+    incomeIndex.ajaxServerMethod = function (data, url, type, callback) {
+        $.ajax({
+            type: type,
+            url: '${pageContext.request.contextPath}' + url,
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    if (result.errmsg) {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                }
+            },
+            error: function (result) {
+                if (result.errmsg) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            }
+        });
+    };
 </script>
 
 

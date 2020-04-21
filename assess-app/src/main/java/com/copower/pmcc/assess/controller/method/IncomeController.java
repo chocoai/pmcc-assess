@@ -465,9 +465,9 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/pasteMdIncome", method = {RequestMethod.POST}, name = "复制收益法")
-    public HttpResult pasteMdIncome(Integer sourcePlanDetailsId, Integer targetPlanDetailsId) {
+    public HttpResult pasteMdIncome(Integer sourceId, Integer targetId) {
         try {
-            mdIncomeService.pasteMdIncome(sourcePlanDetailsId, targetPlanDetailsId);
+            mdIncomeService.pasteMdIncome(sourceId, targetId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());

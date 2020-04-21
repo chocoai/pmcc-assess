@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
@@ -28,7 +29,7 @@ import java.math.BigDecimal;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/1/30
  * @time: 14:15
  */
@@ -62,12 +63,12 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskIncomeIndex", 0);
-        applyInit(projectPlanDetails,modelAndView);
+        applyInit(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    private void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView){
+    private void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         if (info == null) {
             MdIncome mdIncome = new MdIncome();
@@ -149,7 +150,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
             if (basicApply != null) {
                 BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-                if(basicBuilding!=null){
+                if (basicBuilding != null) {
                     BigDecimal houseSurplusYear = mdIncomeService.getHouseSurplusYear(basicBuilding.getBeCompletedTime(), areaGroup.getValueTimePoint(), surveyCommonService.getBuildingUsableYear(basicApply, basicBuilding));
                     modelAndView.addObject("houseSurplusYear", houseSurplusYear); //房产使用剩余年限
                 }
@@ -190,6 +191,8 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         modelAndView.addObject("rentalGrowthRateExplainReadonly", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_RENTAL_GROWTH_RATE_EXPLAIN_READONLY).getRemark());
         modelAndView.addObject("transactionTaxeFeeRatioEditable", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_TRANSACTION_TAXE_FEE_RATIO_EDITABLE).getRemark());
         modelAndView.addObject("transactionTaxeFeeRatioReadonly", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_TRANSACTION_TAXE_FEE_RATIO_READONLY).getRemark());
+        BaseDataDic INCOME = baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.INCOME);
+        modelAndView.addObject("methodTypeObj", INCOME);
     }
 
     /**
