@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.enums.method.MethodDataTypeEnum;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeFormTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.*;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdIncomeResultDto;
 import com.copower.pmcc.assess.dto.output.method.*;
@@ -13,6 +14,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -84,6 +86,10 @@ public class MdIncomeService {
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private MdIncomePriceInvestigationDao mdIncomePriceInvestigationDao;
+    @Autowired
+    private SchemeInfoService schemeInfoService;
+    @Autowired
+    private SchemeInfoDao schemeInfoDao;
 
     /**
      * 保存数据
@@ -540,11 +546,13 @@ public class MdIncomeService {
                     if (analyseItems.get(i).getAccountingSubject() != null && analyseItems.get(i).getAccountingSubject() > 0) {
                         String accountingSubjectName = baseDataDicService.getNameById(analyseItems.get(i).getAccountingSubject());
                         StringBuilder name = new StringBuilder();
-                        if(StringUtils.isNotEmpty(accountingSubjectName)){
+                        if (StringUtils.isNotEmpty(accountingSubjectName)) {
                             name.append(accountingSubjectName);
-                        }if(StringUtils.isNotEmpty(analyseItems.get(i).getFirstLevelNumber())){
+                        }
+                        if (StringUtils.isNotEmpty(analyseItems.get(i).getFirstLevelNumber())) {
                             name.append("/").append(analyseItems.get(i).getFirstLevelNumber());
-                        }if(StringUtils.isNotEmpty(analyseItems.get(i).getSecondLevelNumber())){
+                        }
+                        if (StringUtils.isNotEmpty(analyseItems.get(i).getSecondLevelNumber())) {
                             name.append("/").append(analyseItems.get(i).getSecondLevelNumber());
                         }
                         mdIncomeForecastAnalyseItemVo.setName(name.toString());
@@ -1605,6 +1613,14 @@ public class MdIncomeService {
         return mdIncomeLeaseCostVo;
     }
 
+    //成本粘贴
+    public void pasteLeaseCost(Integer sourceId, Integer targetId) {
+        MdIncomeLeaseCost sourceLeaseCost = mdIncomeLeaseCostDao.getLeaseCostById(sourceId);
+        MdIncomeLeaseCost targetLeaseCost = mdIncomeLeaseCostDao.getLeaseCostById(targetId);
+        BeanUtils.copyProperties(sourceLeaseCost, targetLeaseCost, "id", "sectionId", "incomeId", "sorting");
+        mdIncomeLeaseCostDao.updateLeaseCost(targetLeaseCost);
+    }
+
     /**
      * 获取数量
      *
@@ -1808,14 +1824,14 @@ public class MdIncomeService {
         //当前时间段开始年份
         int nowYear = 0;
         for (int i = 0; i < vos.size(); i++) {
-            if(vos.get(i).getId().equals(incomeForecastId)){
+            if (vos.get(i).getId().equals(incomeForecastId)) {
                 index = i;
                 nowYear = DateUtils.getYear(vos.get(i).getBeginDate());
                 break;
             }
         }
 
-        if(index<0) return;
+        if (index < 0) return;
         if (index == 0) {
             MdIncomeForecastAnalyse forecastAnalyse = new MdIncomeForecastAnalyse();
             forecastAnalyse.setIncomeId(incomeId);
@@ -1833,12 +1849,12 @@ public class MdIncomeService {
                     mdIncomeForecastItemDao.addIncomeForecastItem(incomeForecastItem);
                 }
             }
-        }else{
+        } else {
             //获取次方值：当前时间段开始年份-上一个时间段开始年份
-            int initialYear = DateUtils.getYear(vos.get(index-1).getBeginDate());
+            int initialYear = DateUtils.getYear(vos.get(index - 1).getBeginDate());
             int yearCount = nowYear - initialYear;
             //获取到上一个时间段收入预测的物品
-            MdIncomeForecast forecast = forecastList.get(index-1);
+            MdIncomeForecast forecast = forecastList.get(index - 1);
             List<MdIncomeForecastItem> frontData = getIncomeForecastItemListByMasterId(forecast.getId());
             if (CollectionUtils.isNotEmpty(frontData)) {
                 for (MdIncomeForecastItem item : frontData) {
@@ -2013,5 +2029,312 @@ public class MdIncomeService {
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
+    }
+
+    //复制收益法
+    public void pasteMdIncome(Integer sourcePlanDetailsId, Integer targetPlanDetailsId) throws Exception {
+        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(targetPlanDetailsId);
+        String processInsId = "";
+        if (schemeInfo != null) {
+            processInsId = schemeInfo.getProcessInsId();
+            //先删除再添加
+            this.deleteMdIncomeByPlanDetailsId(targetPlanDetailsId);
+        }
+
+        SchemeInfo sourceSchemeInfo = schemeInfoService.getSchemeInfo(sourcePlanDetailsId);
+        //复制MdIncome数据
+        MdIncome sourceIncome = getIncomeById(sourceSchemeInfo.getMethodDataId());
+        MdIncome targetIncome = new MdIncome();
+        BeanUtils.copyProperties(sourceIncome, targetIncome, "id");
+        this.saveIncome(targetIncome);
+
+        //主表复制
+        SchemeInfo targetSchemeInfo = new SchemeInfo();
+        BeanUtils.copyProperties(sourceSchemeInfo, targetSchemeInfo, "id");
+        targetSchemeInfo.setMethodDataId(targetIncome.getId());
+        targetSchemeInfo.setProcessInsId(processInsId);
+        targetSchemeInfo.setPlanDetailsId(targetPlanDetailsId);
+        schemeInfoService.saveSchemeInfo(targetSchemeInfo);
+
+        //复制MdIncomeDateSection数据
+        MdIncomeDateSection section = new MdIncomeDateSection();
+        section.setIncomeId(sourceIncome.getId());
+        List<MdIncomeDateSection> sourceSectionList = mdIncomeDateSectionDao.getDateSectionList(section);
+        if (CollectionUtils.isNotEmpty(sourceSectionList)) {
+            for (MdIncomeDateSection sourceIncomeDateSection : sourceSectionList) {
+                MdIncomeDateSection targetIncomeDateSection = new MdIncomeDateSection();
+                BeanUtils.copyProperties(sourceIncomeDateSection, targetIncomeDateSection, "id");
+                targetIncomeDateSection.setIncomeId(targetIncome.getId());
+                targetIncomeDateSection.setCreator(commonService.thisUserAccount());
+                mdIncomeDateSectionDao.addDateSection(targetIncomeDateSection);
+
+                //复制MdIncomeForecast
+                MdIncomeForecast mdIncomeForecast = new MdIncomeForecast();
+                mdIncomeForecast.setIncomeId(sourceIncome.getId());
+                mdIncomeForecast.setSectionId(sourceIncomeDateSection.getId());
+                List<MdIncomeForecast> sourceForecastList = mdIncomeForecastDao.getForecastList(mdIncomeForecast);
+                if (CollectionUtils.isNotEmpty(sourceForecastList)) {
+                    for (MdIncomeForecast sourceForecast : sourceForecastList) {
+                        MdIncomeForecast targetForecast = new MdIncomeForecast();
+                        BeanUtils.copyProperties(sourceForecast, targetForecast, "id");
+                        targetForecast.setIncomeId(targetIncome.getId());
+                        targetForecast.setSectionId(targetIncomeDateSection.getId());
+                        targetForecast.setCreator(commonService.thisUserAccount());
+                        mdIncomeForecastDao.addForecast(targetForecast);
+
+                        //复制mdIncomeForecastItem
+                        List<MdIncomeForecastItem> sourceForecastItemList = getIncomeForecastItemListByMasterId(sourceForecast.getId());
+                        if (CollectionUtils.isNotEmpty(sourceForecastItemList)) {
+                            for (MdIncomeForecastItem sourceForecastItem : sourceForecastItemList) {
+                                MdIncomeForecastItem targetForecastItem = new MdIncomeForecastItem();
+                                BeanUtils.copyProperties(sourceForecastItem, targetForecastItem, "");
+                                targetForecastItem.setIncomeForecastId(targetForecast.getId());
+                                targetForecastItem.setCreator(commonService.thisUserAccount());
+                                mdIncomeForecastItemDao.addIncomeForecastItem(targetForecastItem);
+                            }
+                        }
+
+                        //复制MdIncomeForecastYear
+                        List<MdIncomeForecastYear> sourceForecastYearList = getIncomeForecastYearListByMasterId(sourceForecast.getId());
+                        if (CollectionUtils.isNotEmpty(sourceForecastYearList)) {
+                            for (MdIncomeForecastYear sourceForecastYear : sourceForecastYearList) {
+                                MdIncomeForecastYear targetForecastYear = new MdIncomeForecastYear();
+                                BeanUtils.copyProperties(sourceForecastYear, targetForecastYear, "id");
+                                targetForecastYear.setIncomeId(targetIncome.getId());
+                                targetForecastYear.setForecastId(targetForecast.getId());
+                                targetForecastYear.setCreator(commonService.thisUserAccount());
+                                mdIncomeForecastYearDao.addForecastYear(targetForecastYear);
+
+                                //复制MdIncomeForecastMonth
+                                MdIncomeForecastMonth forecastMonth = new MdIncomeForecastMonth();
+                                forecastMonth.setYearId(sourceForecastYear.getId());
+                                List<MdIncomeForecastMonth> sourceForecastMonthList = mdIncomeForecastMonthDao.getForecastMonthList(forecastMonth);
+                                if (CollectionUtils.isNotEmpty(sourceForecastMonthList)) {
+                                    for (MdIncomeForecastMonth sourceForecastMonth : sourceForecastMonthList) {
+                                        MdIncomeForecastMonth targetForecastMonth = new MdIncomeForecastMonth();
+                                        BeanUtils.copyProperties(sourceForecastMonth, targetForecastMonth, "id");
+                                        targetForecastMonth.setYearId(targetForecastYear.getId());
+                                        targetForecastMonth.setCreator(commonService.thisUserAccount());
+                                        mdIncomeForecastMonthDao.addForecastMonth(targetForecastMonth);
+                                    }
+                                }
+
+                            }
+                        }
+
+                    }
+                }
+
+                //复制mdIncomeLease
+                MdIncomeLease where = new MdIncomeLease();
+                where.setIncomeId(sourceIncome.getId());
+                where.setSectionId(sourceIncomeDateSection.getId());
+                List<MdIncomeLease> sourceLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(where);
+                if (CollectionUtils.isNotEmpty(sourceLeaseList)) {
+                    for (MdIncomeLease sourceLease : sourceLeaseList) {
+                        MdIncomeLease targetLease = new MdIncomeLease();
+                        BeanUtils.copyProperties(sourceLease, targetLease, "id");
+                        targetLease.setIncomeId(targetIncome.getId());
+                        targetLease.setSectionId(targetIncomeDateSection.getId());
+                        targetLease.setCreator(commonService.thisUserAccount());
+                        mdIncomeLeaseDao.addIncomeLease(targetLease);
+                    }
+                }
+
+                //复制mdIncomeLeaseCost
+                MdIncomeLeaseCost inComeLeaseCost = new MdIncomeLeaseCost();
+                inComeLeaseCost.setIncomeId(sourceIncome.getId());
+                inComeLeaseCost.setSectionId(sourceIncomeDateSection.getId());
+                List<MdIncomeLeaseCost> sourceLeaseCostList = mdIncomeLeaseCostDao.getLeaseCostList(inComeLeaseCost);
+                if (CollectionUtils.isNotEmpty(sourceLeaseCostList)) {
+                    for (MdIncomeLeaseCost sourceLeaseCost : sourceLeaseCostList) {
+                        MdIncomeLeaseCost targetLeaseCost = new MdIncomeLeaseCost();
+                        BeanUtils.copyProperties(sourceLeaseCost, targetLeaseCost, "id");
+                        targetLeaseCost.setIncomeId(targetIncome.getId());
+                        targetLeaseCost.setSectionId(targetIncomeDateSection.getId());
+                        targetLeaseCost.setCreator(commonService.thisUserAccount());
+                        mdIncomeLeaseCostDao.addLeaseCost(targetLeaseCost);
+                    }
+                }
+            }
+        }
+
+        //复制MdIncomeForecastAnalyse
+        MdIncomeForecastAnalyse forecastAnalyse = new MdIncomeForecastAnalyse();
+        forecastAnalyse.setIncomeId(sourceIncome.getId());
+        List<MdIncomeForecastAnalyse> sourceForecastAnalyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(forecastAnalyse);
+        if (CollectionUtils.isNotEmpty(sourceForecastAnalyseList)) {
+            for (MdIncomeForecastAnalyse sourceForecastAnalyse : sourceForecastAnalyseList) {
+                MdIncomeForecastAnalyse targetForecastAnalyse = new MdIncomeForecastAnalyse();
+                BeanUtils.copyProperties(sourceForecastAnalyse, targetForecastAnalyse, "id");
+                targetForecastAnalyse.setIncomeId(targetIncome.getId());
+                targetForecastAnalyse.setCreator(commonService.thisUserAccount());
+                mdIncomeForecastAnalyseDao.addForecastAnalyse(targetForecastAnalyse);
+
+                //复制MdIncomeForecastAnalyseItem
+                List<MdIncomeForecastAnalyseItem> sourceForecastAnalyseItemList = getForecastAnalyseItemListByMasterId(sourceForecastAnalyse.getId());
+                if (CollectionUtils.isNotEmpty(sourceForecastAnalyseItemList)) {
+                    for (MdIncomeForecastAnalyseItem sourceForecastAnalyseItem : sourceForecastAnalyseItemList) {
+                        MdIncomeForecastAnalyseItem targetForecastAnalyseItem = new MdIncomeForecastAnalyseItem();
+                        BeanUtils.copyProperties(sourceForecastAnalyseItem, targetForecastAnalyseItem, "id");
+                        targetForecastAnalyseItem.setIncomeId(targetIncome.getId());
+                        targetForecastAnalyseItem.setForecastAnalyseId(targetForecastAnalyse.getId());
+                        targetForecastAnalyseItem.setCreator(commonService.thisUserAccount());
+                        mdIncomeForecastAnalyseItemDao.addForecastAnalyseItem(targetForecastAnalyseItem);
+                    }
+                }
+
+                //复制MdIncomeHistory
+                MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
+                mdIncomeHistory.setIncomeId(sourceIncome.getId());
+                mdIncomeHistory.setForecastAnalyseId(sourceForecastAnalyse.getId());
+                List<MdIncomeHistory> sourceHistoryList = mdIncomeHistoryDao.getHistoryList(mdIncomeHistory);
+                if (CollectionUtils.isNotEmpty(sourceHistoryList)) {
+                    for (MdIncomeHistory sourceHistory : sourceHistoryList) {
+                        MdIncomeHistory targetHistory = new MdIncomeHistory();
+                        BeanUtils.copyProperties(sourceHistory, targetHistory, "id");
+                        targetHistory.setIncomeId(targetIncome.getId());
+                        targetHistory.setForecastAnalyseId(targetForecastAnalyse.getId());
+                        targetHistory.setCreator(commonService.thisUserAccount());
+                        mdIncomeHistoryDao.addHistory(targetHistory);
+                    }
+                }
+            }
+        }
+
+
+        //复制MdIncomePriceInvestigation
+        MdIncomePriceInvestigation mdIncomePriceInvestigation = new MdIncomePriceInvestigation();
+        mdIncomePriceInvestigation.setIncomeId(sourceIncome.getId());
+        List<MdIncomePriceInvestigation> sourcePriceInvestigationList = mdIncomePriceInvestigationDao.getIncomePriceInvestigationList(mdIncomePriceInvestigation);
+        if (CollectionUtils.isNotEmpty(sourcePriceInvestigationList)) {
+            for (MdIncomePriceInvestigation sourcePriceInvestigation : sourcePriceInvestigationList) {
+                MdIncomePriceInvestigation targetPriceInvestigation = new MdIncomePriceInvestigation();
+                BeanUtils.copyProperties(sourcePriceInvestigation, targetPriceInvestigation, "id");
+                targetPriceInvestigation.setIncomeId(targetIncome.getId());
+                targetPriceInvestigation.setCreator(commonService.thisUserAccount());
+                mdIncomePriceInvestigationDao.addIncomePriceInvestigation(targetPriceInvestigation);
+            }
+        }
+
+
+    }
+
+
+    //删除收益法
+    public void deleteMdIncomeByPlanDetailsId(Integer targetPlanDetailsId) throws Exception {
+        //主表删除
+        SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(targetPlanDetailsId);
+
+        //删除MdIncome
+        MdIncome income = getIncomeById(schemeInfo.getMethodDataId());
+
+        //删除MdIncomeDateSection
+        MdIncomeDateSection section = new MdIncomeDateSection();
+        section.setIncomeId(schemeInfo.getMethodDataId());
+        List<MdIncomeDateSection> sourceSectionList = mdIncomeDateSectionDao.getDateSectionList(section);
+        if (CollectionUtils.isNotEmpty(sourceSectionList)) {
+            for (MdIncomeDateSection sourceIncomeDateSection : sourceSectionList) {
+                //删除MdIncomeForecast
+                MdIncomeForecast mdIncomeForecast = new MdIncomeForecast();
+                mdIncomeForecast.setIncomeId(schemeInfo.getMethodDataId());
+                mdIncomeForecast.setSectionId(sourceIncomeDateSection.getId());
+                List<MdIncomeForecast> sourceForecastList = mdIncomeForecastDao.getForecastList(mdIncomeForecast);
+                if (CollectionUtils.isNotEmpty(sourceForecastList)) {
+                    for (MdIncomeForecast sourceForecast : sourceForecastList) {
+                        //删除mdIncomeForecastItem
+                        List<MdIncomeForecastItem> sourceForecastItemList = getIncomeForecastItemListByMasterId(sourceForecast.getId());
+                        if (CollectionUtils.isNotEmpty(sourceForecastItemList)) {
+                            for (MdIncomeForecastItem sourceForecastItem : sourceForecastItemList) {
+                                mdIncomeForecastItemDao.deleteIncomeForecastItem(sourceForecastItem.getId());
+                            }
+                        }
+
+                        //删除MdIncomeForecastYear
+                        List<MdIncomeForecastYear> sourceForecastYearList = getIncomeForecastYearListByMasterId(sourceForecast.getId());
+                        if (CollectionUtils.isNotEmpty(sourceForecastYearList)) {
+                            for (MdIncomeForecastYear sourceForecastYear : sourceForecastYearList) {
+                                //删除MdIncomeForecastMonth
+                                MdIncomeForecastMonth forecastMonth = new MdIncomeForecastMonth();
+                                forecastMonth.setYearId(sourceForecastYear.getId());
+                                List<MdIncomeForecastMonth> sourceForecastMonthList = mdIncomeForecastMonthDao.getForecastMonthList(forecastMonth);
+                                if (CollectionUtils.isNotEmpty(sourceForecastMonthList)) {
+                                    for (MdIncomeForecastMonth sourceForecastMonth : sourceForecastMonthList) {
+                                        mdIncomeForecastMonthDao.deleteForecastMonth(sourceForecastMonth.getId());
+                                    }
+                                }
+                                mdIncomeForecastYearDao.deleteByForecastId(sourceForecastYear.getId());
+                            }
+
+                        }
+                        mdIncomeForecastDao.deleteForecast(sourceForecast.getId());
+                    }
+                }
+
+                //删除mdIncomeLease
+                MdIncomeLease where = new MdIncomeLease();
+                where.setIncomeId(schemeInfo.getMethodDataId());
+                where.setSectionId(sourceIncomeDateSection.getId());
+                List<MdIncomeLease> sourceLeaseList = mdIncomeLeaseDao.getIncomeLeaseList(where);
+                if (CollectionUtils.isNotEmpty(sourceLeaseList)) {
+                    for (MdIncomeLease sourceLease : sourceLeaseList) {
+                        mdIncomeLeaseDao.deleteLease(sourceLease.getId());
+                    }
+                }
+
+                //删除mdIncomeLeaseCost
+                MdIncomeLeaseCost inComeLeaseCost = new MdIncomeLeaseCost();
+                inComeLeaseCost.setIncomeId(schemeInfo.getMethodDataId());
+                inComeLeaseCost.setSectionId(sourceIncomeDateSection.getId());
+                List<MdIncomeLeaseCost> sourceLeaseCostList = mdIncomeLeaseCostDao.getLeaseCostList(inComeLeaseCost);
+                if (CollectionUtils.isNotEmpty(sourceLeaseCostList)) {
+                    for (MdIncomeLeaseCost sourceLeaseCost : sourceLeaseCostList) {
+                        mdIncomeLeaseCostDao.deleteLeaseCost(sourceLeaseCost.getId());
+                    }
+                }
+                mdIncomeDateSectionDao.deleteDateSection(sourceIncomeDateSection.getId());
+            }
+        }
+
+        //删除MdIncomeForecastAnalyse
+        MdIncomeForecastAnalyse forecastAnalyse = new MdIncomeForecastAnalyse();
+        forecastAnalyse.setIncomeId(schemeInfo.getMethodDataId());
+        List<MdIncomeForecastAnalyse> sourceForecastAnalyseList = mdIncomeForecastAnalyseDao.getForecastAnalyseList(forecastAnalyse);
+        if (CollectionUtils.isNotEmpty(sourceForecastAnalyseList)) {
+            for (MdIncomeForecastAnalyse sourceForecastAnalyse : sourceForecastAnalyseList) {
+                //删除MdIncomeForecastAnalyseItem
+                List<MdIncomeForecastAnalyseItem> sourceForecastAnalyseItemList = getForecastAnalyseItemListByMasterId(sourceForecastAnalyse.getId());
+                if (CollectionUtils.isNotEmpty(sourceForecastAnalyseItemList)) {
+                    for (MdIncomeForecastAnalyseItem sourceForecastAnalyseItem : sourceForecastAnalyseItemList) {
+                        mdIncomeForecastAnalyseItemDao.deleteForecastAnalyseItem(sourceForecastAnalyseItem.getId());
+                    }
+                }
+                //删除MdIncomeHistory
+                MdIncomeHistory mdIncomeHistory = new MdIncomeHistory();
+                mdIncomeHistory.setIncomeId(schemeInfo.getMethodDataId());
+                mdIncomeHistory.setForecastAnalyseId(sourceForecastAnalyse.getId());
+                List<MdIncomeHistory> sourceHistoryList = mdIncomeHistoryDao.getHistoryList(mdIncomeHistory);
+                if (CollectionUtils.isNotEmpty(sourceHistoryList)) {
+                    for (MdIncomeHistory sourceHistory : sourceHistoryList) {
+                        mdIncomeHistoryDao.deleteHistory(sourceHistory.getId());
+                    }
+                }
+                mdIncomeForecastAnalyseDao.deleteForecastAnalyse(sourceForecastAnalyse.getId());
+            }
+        }
+
+
+        //删除MdIncomePriceInvestigation
+        MdIncomePriceInvestigation mdIncomePriceInvestigation = new MdIncomePriceInvestigation();
+        mdIncomePriceInvestigation.setIncomeId(schemeInfo.getMethodDataId());
+        List<MdIncomePriceInvestigation> sourcePriceInvestigationList = mdIncomePriceInvestigationDao.getIncomePriceInvestigationList(mdIncomePriceInvestigation);
+        if (CollectionUtils.isNotEmpty(sourcePriceInvestigationList)) {
+            for (MdIncomePriceInvestigation sourcePriceInvestigation : sourcePriceInvestigationList) {
+                mdIncomePriceInvestigationDao.deleteIncomePriceInvestigation(sourcePriceInvestigation.getId());
+            }
+        }
+
+        mdIncomeDao.deleteIncome(income.getId());
+        schemeInfoDao.deleteInfo(schemeInfo.getId());
     }
 }

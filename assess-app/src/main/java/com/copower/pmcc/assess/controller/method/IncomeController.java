@@ -39,6 +39,7 @@ public class IncomeController {
     @Autowired
     private MdIncomeForecastDao mdIncomeForecastDao;
 
+
     @ResponseBody
     @GetMapping(value = "/getDateSectionList", name = "获取日期分段列表")
     public BootstrapTableVo getDateSectionList(Integer incomeId, Integer operationMode) {
@@ -420,16 +421,16 @@ public class IncomeController {
 
     @ResponseBody
     @RequestMapping(value = "/getSameNameHistoryList", name = "同类物品历史数据列表", method = RequestMethod.GET)
-    public BootstrapTableVo getSameNameHistoryList(Integer historyId,Integer formType,Integer incomeId) {
-        return mdIncomeService.getSameNameHistoryList(historyId,formType,incomeId);
+    public BootstrapTableVo getSameNameHistoryList(Integer historyId, Integer formType, Integer incomeId) {
+        return mdIncomeService.getSameNameHistoryList(historyId, formType, incomeId);
     }
 
     @ResponseBody
     @RequestMapping(value = "/affirmQuoteMoney", method = {RequestMethod.POST}, name = "计算引用的历史金额")
-    public HttpResult affirmQuoteMoney(@RequestParam(value = "ids")String ids,Integer historyId) {
+    public HttpResult affirmQuoteMoney(@RequestParam(value = "ids") String ids, Integer historyId) {
         try {
             if (StringUtils.isNotBlank(ids))
-                mdIncomeService.affirmQuoteMoney(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)),historyId);
+                mdIncomeService.affirmQuoteMoney(FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids)), historyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -460,5 +461,29 @@ public class IncomeController {
         } catch (Exception e) {
             return HttpResult.newErrorResult("获取失败");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/pasteMdIncome", method = {RequestMethod.POST}, name = "复制收益法")
+    public HttpResult pasteMdIncome(Integer sourcePlanDetailsId, Integer targetPlanDetailsId) {
+        try {
+            mdIncomeService.pasteMdIncome(sourcePlanDetailsId, targetPlanDetailsId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/pasteLeaseCost", method = {RequestMethod.POST}, name = "复制成本")
+    public HttpResult pasteLeaseCost(Integer sourceId, Integer targetId) {
+        try {
+            mdIncomeService.pasteLeaseCost(sourceId, targetId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
     }
 }

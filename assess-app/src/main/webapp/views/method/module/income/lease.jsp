@@ -173,153 +173,156 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            月租金收入(元/m²)<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <div class="input-group">
-                                                <input type="text" name="rentalIncome" placeholder="月租金收入(元/m²)"
-                                                       data-rule-number="true"
-                                                       class="form-control" required="required">
-                                                <span class="input-group-btn">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                月租金收入(元/m²)<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="text" name="rentalIncome" placeholder="月租金收入(元/m²)"
+                                                           data-rule-number="true"
+                                                           class="form-control" required="required">
+                                                    <span class="input-group-btn">
                                         <input type="button" class="btn btn-primary" value="市场比较法"
                                                onclick="lease.callCompareMethod(this);"/>
                                     </span>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                全年月份数<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="monthNumber" placeholder="全年月份数"
+                                                       class="form-control input-full"
+                                                       required="required">
                                             </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            全年月份数<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="monthNumber" placeholder="全年月份数"
-                                                   class="form-control input-full"
-                                                   required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            月租金收入说明
-                                        </label>
-                                        <div class="col-sm-10">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                月租金收入说明
+                                            </label>
+                                            <div class="col-sm-10">
                                 <textarea name="rentalIncomeRemark" placeholder="月租金收入说明"
                                           class="form-control input-full"></textarea>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            出租率<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="rentals" placeholder="出租率"
-                                                   class="form-control input-full x-percent"
-                                                   required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                出租率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="rentals" placeholder="出租率"
+                                                       class="form-control input-full x-percent"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                出租率说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="rentalsRemark" placeholder="出租率说明"
+                                                       class="form-control input-full"
+                                                       required="required">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            出租率说明<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="rentalsRemark" placeholder="出租率说明"
-                                                   class="form-control input-full"
-                                                   required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            年押金(元/m²)<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="deposit" data-rule-number="true" placeholder="年押金(元/m²)"
-                                                   onblur="lease.computeOtherIncome(this);" class="form-control input-full"
-                                                   required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                年押金(元/m²)<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="deposit" data-rule-number="true"
+                                                       placeholder="年押金(元/m²)"
+                                                       onblur="lease.computeOtherIncome(this);"
+                                                       class="form-control input-full"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                押金说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="depositRemark" placeholder="押金说明"
+                                                       class="form-control input-full"
+                                                       required="required">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            押金说明<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="depositRemark" placeholder="押金说明"
-                                                   class="form-control input-full"
-                                                   required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            押金利率(一年期定期存款利率)<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="depositRate" placeholder="押金利率(一年期定期存款利率)"
-                                                   onblur="lease.computeOtherIncome(this);"
-                                                   class="form-control input-full x-percent"
-                                                   required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                押金利率(一年期定期存款利率)<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="depositRate" placeholder="押金利率(一年期定期存款利率)"
+                                                       onblur="lease.computeOtherIncome(this);"
+                                                       class="form-control input-full x-percent"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                利率说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="depositRateRemark" placeholder="利率说明"
+                                                       class="form-control input-full"
+                                                       required="required">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            利率说明<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="depositRateRemark" placeholder="利率说明"
-                                                   class="form-control input-full"
-                                                   required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            年其他收入<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="otherIncome" placeholder="年其他收入" readonly="readonly"
-                                                   class="form-control input-full" required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                年其他收入<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="otherIncome" placeholder="年其他收入"
+                                                       readonly="readonly"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                其它收入说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="otherIncomeRemark" placeholder="其它收入说明"
+                                                       class="form-control input-full"
+                                                       required="required">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            其它收入说明<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="otherIncomeRemark" placeholder="其它收入说明"
-                                                   class="form-control input-full"
-                                                   required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            有效收缴率<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="additionalCapture" placeholder="有效收缴率"
-                                                   class="form-control input-full x-percent"
-                                                   required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                有效收缴率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="additionalCapture" placeholder="有效收缴率"
+                                                       class="form-control input-full x-percent"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                有效收缴率说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="additionalCaptureRemark" placeholder="有效收缴率说明"
+                                                       class="form-control input-full"
+                                                       required="required">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            有效收缴率说明<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="additionalCaptureRemark" placeholder="有效收缴率说明"
-                                                   class="form-control input-full"
-                                                   required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
 
@@ -360,165 +363,167 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            管理费率<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="managementCostRatio" placeholder="管理费率"
-                                                   class="form-control input-full x-percent" required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                管理费率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="managementCostRatio" placeholder="管理费率"
+                                                       class="form-control input-full x-percent" required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                重置价格(元/m²)<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="replacementValue" placeholder="重置价格(元/m²)"
+                                                       data-rule-number="true"
+                                                       class="form-control input-full " required="required">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            重置价格(元/m²)<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="replacementValue" placeholder="重置价格(元/m²)"
-                                                   data-rule-number="true"
-                                                   class="form-control input-full " required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            维护保养费率<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="maintenanceCostRatio" placeholder="维护保养费率"
-                                                   class="form-control input-full x-percent" required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                维护保养费率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="maintenanceCostRatio" placeholder="维护保养费率"
+                                                       class="form-control input-full x-percent" required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                保险费率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="insurancePremiumRatio" placeholder="保险费率"
+                                                       class="form-control input-full x-percent" required="required">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            保险费率<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="insurancePremiumRatio" placeholder="保险费率"
-                                                   class="form-control input-full x-percent" required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            土地使用税<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="landUseTax" placeholder="土地使用税" class="form-control input-full"
-                                                   data-rule-number="true"
-                                                   required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                土地使用税<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="landUseTax" placeholder="土地使用税"
+                                                       class="form-control input-full"
+                                                       data-rule-number="true"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                其它相关税费率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="transactionTaxeFeeRatio" placeholder="其它相关税费率"
+                                                       onblur="lease.replaceTransactionTaxeFeeRatio();"
+                                                       class="form-control input-full x-percent"
+                                                       required="required">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            其它相关税费率<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="transactionTaxeFeeRatio" placeholder="其它相关税费率"
-                                                   onblur="lease.replaceTransactionTaxeFeeRatio();"
-                                                   class="form-control input-full x-percent"
-                                                   required="required">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            其它相关税费率说明<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                其它相关税费率说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
                                 <textarea name="transactionTaxeFeeExplain" placeholder="其它相关税费率说明"
                                           data-template="${transactionTaxeFeeRatioEditable}"
                                           class="form-control input-full"
                                           required="required"></textarea>
-                                            <span id="transactionTaxeFeeRatioReadonly"
-                                                  data-template="${transactionTaxeFeeRatioReadonly}"></span>
+                                                <span id="transactionTaxeFeeRatioReadonly"
+                                                      data-template="${transactionTaxeFeeRatioReadonly}"></span>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
                                     color="#6f5499" size="10"/>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            房产税率
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="propertyTaxRatio" placeholder="房产税率"
-                                                   onblur="lease.computeAdditionalRatio(this);"
-                                                   class="form-control input-full x-percent">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                房产税率
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="propertyTaxRatio" placeholder="房产税率"
+                                                       onblur="lease.computeAdditionalRatio(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                印花税率
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="stampDutyRatio" placeholder="印花税率"
+                                                       onblur="lease.computeAdditionalRatio(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            印花税率
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="stampDutyRatio" placeholder="印花税率"
-                                                   onblur="lease.computeAdditionalRatio(this);"
-                                                   class="form-control input-full x-percent">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            增值税率
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="salesTaxRatio" placeholder="增值税率"
-                                                   onblur="lease.computeAdditionalRatio(this);"
-                                                   class="form-control input-full x-percent">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                增值税率
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="salesTaxRatio" placeholder="增值税率"
+                                                       onblur="lease.computeAdditionalRatio(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                城建税率
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="constructionTaxRatio" placeholder="城建税率"
+                                                       onblur="lease.computeAdditionalRatio(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            城建税率
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="constructionTaxRatio" placeholder="城建税率"
-                                                   onblur="lease.computeAdditionalRatio(this);"
-                                                   class="form-control input-full x-percent">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            地方教育费附加税率
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="localEducationRatio" placeholder="地方教育费附加税率"
-                                                   onblur="lease.computeAdditionalRatio(this);"
-                                                   class="form-control input-full x-percent">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                地方教育费附加税率
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="localEducationRatio" placeholder="地方教育费附加税率"
+                                                       onblur="lease.computeAdditionalRatio(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                教育费附加税率
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="educationRatio" placeholder="教育费附加税率"
+                                                       onblur="lease.computeAdditionalRatio(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            教育费附加税率
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="educationRatio" placeholder="教育费附加税率"
-                                                   onblur="lease.computeAdditionalRatio(this);"
-                                                   class="form-control input-full x-percent">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
 
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            租赁税费率
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="additionalRatio" readonly="readonly" placeholder="租赁税费率"
-                                                   class="form-control input-full x-percent">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                租赁税费率
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="additionalRatio" readonly="readonly"
+                                                       placeholder="租赁税费率"
+                                                       class="form-control input-full x-percent">
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
 
@@ -540,7 +545,8 @@
     </div>
 </div>
 
-<div id="modal_lease_parameter" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="modal_lease_parameter" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -559,33 +565,33 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            租金增长率<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="rentalGrowthRate" placeholder="租金增长率"
-                                                   onblur="lease.replaceRentalGrowthRate();"
-                                                   class="form-control input-full x-percent"
-                                                   required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                租金增长率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="rentalGrowthRate" placeholder="租金增长率"
+                                                       onblur="lease.replaceRentalGrowthRate();"
+                                                       class="form-control input-full x-percent"
+                                                       required="required">
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            增长率说明<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                增长率说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
                                 <textarea name="rentalGrowthRateExplain" placeholder="租金增长率说明"
                                           class="form-control input-full"
                                           data-template="${rentalGrowthRateExplainEditable}" required></textarea>
-                                            <span id="rentalGrowthRateExplainReadonly"
-                                                  data-template="${rentalGrowthRateExplainReadonly}"></span>
+                                                <span id="rentalGrowthRateExplainReadonly"
+                                                      data-template="${rentalGrowthRateExplainReadonly}"></span>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
 
@@ -626,7 +632,7 @@
 
 <script type="text/javascript">
     var lease = {};
-
+    var leaseCostSourceId = undefined;
     //调用市场比较法
     lease.callCompareMethod = function (_this) {
         var mcId = $("#frm_lease_income").find('[name=mcId]').val();
@@ -703,7 +709,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('成功','保存成功');
+                    notifySuccess('成功', '保存成功');
                     lease.loadLeaseList();
                     lease.loadCalculationResult();
                     $('#modal_lease_income').modal('hide');
@@ -834,7 +840,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('成功','保存成功');
+                    notifySuccess('成功', '保存成功');
                     lease.loadLeaseCostList();
                     lease.loadCalculationResult();
                     $('#modal_lease_cost').modal('hide');
@@ -889,6 +895,8 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<button type="button" class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="编辑" onclick="lease.editLeaseCost(' + index + ');" ><i class="fa fa-pen fa-white"></i></button>';
+                str += " <button type='button' style='margin-left: 5px;' onclick='lease.copyLeaseCostItem(" + row.id + ");' data-placement='top' data-original-title='复制' class='btn btn-xs btn-info btn-copy tooltips' ><i class='fa fa-copy fa-white'></i></button>";
+                str += " <button type='button' style='margin-left: 5px;' onclick='lease.pasteLeaseCostItem(" + row.id + ");' data-placement='top' data-original-title='粘贴' class='btn btn-xs btn-warning tooltips tooltips' ><i class='fa fa-paste fa-white'></i></button>";
                 str += '</div>';
                 return str;
             }
@@ -906,6 +914,44 @@
                 lease.computeNetProfit();
             }
         });
+    }
+
+    //复制
+    lease.copyLeaseCostItem = function (sourceId) {
+        leaseCostSourceId = sourceId
+        notifySuccess("成功", "复制成功");
+    }
+
+    //粘贴
+    lease.pasteLeaseCostItem = function (targetId) {
+        if (leaseCostSourceId) {
+            if (leaseCostSourceId == targetId) {
+                notifyInfo("提示", "不能复制粘贴自身");
+                return false;
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/income/pasteLeaseCost",
+                data: {
+                    sourceId: leaseCostSourceId,
+                    targetId: targetId,
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        lease.loadLeaseCostList();
+                        notifyInfo("提示", "粘贴成功");
+                    } else {
+                        AlertError("复制失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            });
+        } else {
+            notifyInfo("提示", "选择被复制的对象");
+        }
     }
 
     //编辑参数信息
@@ -941,7 +987,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('成功','保存成功');
+                    notifySuccess('成功', '保存成功');
                     lease.loadLeaseParameterList();
                     lease.loadCalculationResult();
                     $('#modal_lease_parameter').modal('hide');
