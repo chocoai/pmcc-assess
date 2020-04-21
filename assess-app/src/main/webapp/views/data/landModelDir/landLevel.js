@@ -21,10 +21,123 @@ if ($("#landDefinition").size() != 0) {
 
 var landLevel = {};
 
+landLevel.run = function (data, url, type, callback, funParams, errorCallback) {
+    Loading.progressShow();
+    $.ajax({
+        type: type,
+        url: getContextPath() + url,
+        data: data,
+        success: function (result) {
+            Loading.progressHide();
+            if (result.ret) {
+                if (funParams) {
+                    if (funParams == 'save') {
+                        notifySuccess("成功", "保存数据成功!");
+                    }
+                    if (funParams == 'add') {
+                        notifySuccess("成功", "添加数据成功!");
+                    }
+                    if (funParams == 'update') {
+                        notifySuccess("成功", "修改数据成功!");
+                    }
+                    if (funParams == 'query') {
+                        notifySuccess("成功", "查询数据成功!");
+                    }
+                    if (funParams == 'delete') {
+                        notifySuccess("成功", "删除数据成功!");
+                    }
+                }
+                if (callback) {
+                    callback(result.data);
+                }
+            } else {
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+                if (errorCallback) {
+                    errorCallback();
+                }
+            }
+        },
+        error: function (result) {
+            Loading.progressHide();
+            if (result.errmsg) {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+            } else {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+            }
+        }
+    });
+};
+landLevel.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
+    var deleteParams = false;
+    if (funParams) {
+        if (funParams == 'delete') {
+            deleteParams = true;
+        }
+    }
+    if (deleteParams) {
+        AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
+            landLevel.run(data, url, type, callback, funParams, errorCallback);
+        });
+    } else {
+        landLevel.run(data, url, type, callback, funParams, errorCallback);
+    }
+};
+
+landLevel.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
+    landLevel.ajaxServerFun(data, url, type, callback, null, errorCallback);
+};
+
+landLevel.ajaxFileUploadCommon = function (data, fileElementId, url, callback, flag) {
+    Loading.progressShow();
+    $.ajaxFileUpload({
+        type: "POST",
+        url: getContextPath() + url,
+        data: data,//要传到后台的参数，没有可以不写
+        secureuri: false,//是否启用安全提交，默认为false
+        fileElementId: fileElementId,//文件选择框的id属性
+        dataType: 'json',//服务器返回的格式
+        async: false,
+        success: function (result) {
+            Loading.progressHide();
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+                if (flag) {
+
+                } else {
+                    AlertSuccess("导入情况", result.data);
+                }
+            } else {
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        },
+        error: function (result, status, e) {
+            Loading.progressHide();
+            if (result.errmsg) {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+            } else {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+            }
+        }
+    });
+};
+
+landLevel.ajaxFileUploadCommonFun = function (data, fileElementId, url, callback) {
+    landLevel.ajaxFileUploadCommon(data, fileElementId, url, callback, true);
+};
+
 landLevel.admin = "admin";
 
 var currentLandLevelId = 0;
-var currentLandLevelDetailId = 0;
 
 landLevel.showFile = function (target, tableName, id, deleteFlag, editFlag, signatureFlag, fieldsName) {
     FileUtils.getFileShows({
@@ -102,44 +215,14 @@ landLevel.config = {
 
 //--------------------------------------------土地 base start-----------------------------------//
 landLevel.importDataLand = function () {
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/dataLandLevel/importData",
-        data: {},//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: 'ajaxFileUploadDataLand',//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                landLevel.config.table.bootstrapTable('refresh');
-                notifyInfo('提示',result.data);
-            }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    });
+    landLevel.ajaxFileUploadCommon({},'ajaxFileUploadDataLand' ,"/dataLandLevel/importData" ,function (data) {
+        landLevel.config.table.bootstrapTable('refresh');
+    },false) ;
 };
 landLevel.removeData = function (id) {
-    AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-        $.ajax({
-            url: getContextPath() + "/dataLandLevel/deleteDataLandLevelById",
-            type: "post",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    notifySuccess("成功", "删除数据成功");
-                    landLevel.config.table.bootstrapTable('refresh');
-                }
-                else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            }
-        })
-    });
+    landLevel.ajaxServerFun({id: id} ,"/dataLandLevel/deleteDataLandLevelById" ,"post",function () {
+        landLevel.config.table.bootstrapTable('refresh');
+    },"delete") ;
 };
 landLevel.initDataForm = function (data) {
     var target = landLevel.config.box;
@@ -177,24 +260,11 @@ landLevel.saveData = function () {
     var data = formSerializeArray(frm);
     data.status = 'draft';
     data.landDefinition = ue.getContent();
-    $.ajax({
-        url: getContextPath() + "/dataLandLevel/saveAndUpdateDataLandLevel",
-        type: "post",
-        dataType: "json",
-        data: {formData: JSON.stringify(data)},
-        success: function (result) {
-            if (result.ret) {
-                AlertSuccess("成功", "数据已成功保存到数据库");
-                target.modal('hide');
-                landLevel.config.table.bootstrapTable('refresh');
-            } else {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    })
+    landLevel.ajaxServerMethod({formData: JSON.stringify(data)} ,"/dataLandLevel/saveAndUpdateDataLandLevel" ,"post",function () {
+        AlertSuccess("成功", "数据已成功保存到数据库");
+        target.modal('hide');
+        landLevel.config.table.bootstrapTable('refresh');
+    });
 };
 landLevel.editData = function (id) {
     var target = landLevel.config.box;
@@ -317,14 +387,16 @@ landLevel.treeLandLevelDetailListModal = function (id) {
     box.modal();
     var form = box.find("form").first();
     if (form.size() != 0) {
-        form.initForm({
+        var data =  {
             price: '',
             muPrice: '',
             volumeRate: '',
             legalAge: '',
             landAcquisitionProportion: '',
             mainStreet: ''
-        });
+        };
+        form.initForm(data);
+        landLevel.initLandLevelDetailBaseForm(form, data);
     }
     var elShow = landLevel.getElShow();
     if (!elShow) {
@@ -334,6 +406,7 @@ landLevel.treeLandLevelDetailListModal = function (id) {
             }
         });
     }
+
 };
 
 //土地级别赋值
@@ -434,41 +507,11 @@ landLevel.addLandLevelDetail = function () {
 
 
 landLevel.getDataLandLevelDetailById = function (id, callback) {
-    $.ajax({
-        url: getContextPath() + '/dataLandLevel/getDataLandLevelDetailById',
-        data: {id: id},
-        method: "get",
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        }
-    })
+    landLevel.ajaxServerMethod({id: id} ,'/dataLandLevel/getDataLandLevelDetailById' ,"get",callback) ;
 };
 
 landLevel.deleteLandLevelDetail = function (id, callback) {
-    AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-        Loading.progressShow();
-        $.ajax({
-            url: getContextPath() + '/dataLandLevel/removeDataLandLevelDetail',
-            data: {id: id},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    notifySuccess("成功", "删除数据成功");
-                    if (callback) {
-                        callback();
-                    }
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            }
-        })
-    })
+    landLevel.ajaxServerFun({id: id} ,'/dataLandLevel/removeDataLandLevelDetail' ,"post",callback,"delete") ;
 };
 
 
@@ -480,37 +523,9 @@ landLevel.saveLandLevelDetail = function () {
     }
     var data = formSerializeArray(frm);
     data.landLevelId = currentLandLevelId;
-    Loading.progressShow();
-    $.ajax({
-        url: getContextPath() + '/dataLandLevel/saveAndUpdateDataLandLevelDetail',
-        data: data,
-        method: "post",
-        success: function (result) {
-            Loading.progressHide();
-            if (result.ret) {
-                AlertSuccess("成功", "数据已成功保存到数据库");
-                // var item = result.data;
-                // var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
-                // var parentNode = null;
-                // if (data.tId) {
-                //     parentNode = zTree.getNodeByTId(data.tId);
-                // }
-                // if (data.id) {
-                //     //修改 ==>第一种方式是修改完数据然后直接刷新树,第二种是修改完成后拿到node然后在拿到父级接着删除这个节点然后利用最新节点添加节点,最后最好一种是直接更新节点
-                //     parentNode.name = item.name;
-                //     zTree.updateNode(parentNode);
-                // } else {
-                //     //新增
-                //     zTree.addNodes(parentNode, item);//当parentNode id为null一般是添加到第一级(参考zTree api 那上面是这样说的)
-                // }
-                landLevel.loadTree(data.landLevelId);
-                // Alert(result.data) ;
-                box.modal('hide');
-            } else {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        }
-    })
+    landLevel.ajaxServerMethod(data ,'/dataLandLevel/saveAndUpdateDataLandLevelDetail' ,"post",function () {
+        landLevel.loadTree(data.landLevelId);
+    }) ;
 };
 
 landLevel.importLandLevelDetail = function (flag) {
@@ -522,25 +537,9 @@ landLevel.importLandLevelDetail = function (flag) {
         target.val('').trigger('click');
         return flag;
     }
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/dataLandLevel/importLandLevelDetail",
-        data: {landLevelId: landLevelDetail.landLevelId},//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: target.prop("id"),//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                landLevel.loadTree(landLevelDetail.landLevelId);
-                notifyInfo('提示',result.data);
-            }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    });
+    landLevel.ajaxFileUploadCommon({landLevelId: landLevelDetail.landLevelId} ,target.prop("id") ,"/dataLandLevel/importLandLevelDetail" ,function () {
+        landLevel.loadTree(landLevelDetail.landLevelId);
+    },false) ;
 };
 
 
@@ -569,7 +568,7 @@ function zTreeOnRemove() {
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
     if (nodes.length > 1) {
-        notifySuccess('成功','只能选择一个作为层级');
+        notifySuccess('成功', '只能选择一个作为层级');
         return false;
     }
     if (nodes.length == 1) {
@@ -578,7 +577,7 @@ function zTreeOnRemove() {
             zTree.removeNode(node);
         });
     } else {
-        notifySuccess('成功','选择删除层级');
+        notifySuccess('成功', '选择删除层级');
     }
 }
 
@@ -588,7 +587,7 @@ function zTreeOnEdit() {
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
     if (nodes.length > 1) {
-        notifySuccess('成功','只能选择一个作为层级');
+        notifySuccess('成功', '只能选择一个作为层级');
         return false;
     }
     if (nodes.length == 1) {
@@ -608,7 +607,7 @@ function zTreeOnEdit() {
             box.modal();
         });
     } else {
-        notifySuccess('成功','选择编辑层级');
+        notifySuccess('成功', '选择编辑层级');
     }
 }
 
@@ -655,7 +654,7 @@ function addHoverDom(treeId, treeNode) {
                 break
             }
             default: {
-                notifySuccess('成功','不能在此层级添加子级!');
+                notifySuccess('成功', '不能在此层级添加子级!');
                 break;
             }
         }
@@ -724,24 +723,11 @@ landLevel.loadTree = function () {
             }
         }
     };
-    $.ajax({
-        url: getContextPath() + "/dataLandLevel/getDataLandLevelDetailTree",
-        type: "get",
-        dataType: "json",
-        data: {landLevelId: currentLandLevelId},
-        success: function (result) {
-            if (result.ret) {
-                $.fn.zTree.destroy();
-                zTreeObj = $.fn.zTree.init(landLevel.config.tree, setting, result.data);
-                zTreeObj.expandAll(true);
-            } else {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    });
+    landLevel.ajaxServerMethod({landLevelId: currentLandLevelId} , "/dataLandLevel/getDataLandLevelDetailTree" ,"get",function (data) {
+        $.fn.zTree.destroy();
+        zTreeObj = $.fn.zTree.init(landLevel.config.tree, setting, data);
+        zTreeObj.expandAll(true);
+    }) ;
 };
 
 /**
@@ -770,7 +756,7 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
     if (nodes.length > 1) {
-        notifySuccess('成功','只能选择一个作为层级');
+        notifySuccess('成功', '只能选择一个作为层级');
         return false;
     }
     if (nodes.length == 1) {
@@ -780,10 +766,10 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
             landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
             landLevel.showDataHousePriceIndexDetailList(treeNode.id);
         } else {
-            notifySuccess('成功','第一层级关联容积率系数配置');
+            notifySuccess('成功', '第一层级关联容积率系数配置');
         }
     } else {
-        notifySuccess('成功','选择层级');
+        notifySuccess('成功', '选择层级');
     }
 };
 
@@ -795,23 +781,9 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetailBox = function
 
 landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function (index) {
     var row = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('getData')[index];
-    AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-        Loading.progressShow();
-        $.ajax({
-            url: getContextPath() + '/dataLandLevelDetailVolume/delete/' + row.id,
-            type: "post",
-            data: {_method: "DELETE"},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    notifySuccess("成功", "删除数据成功");
-                    landLevel.showDataHousePriceIndexDetailList(row.levelDetailId);
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            }
-        })
-    })
+    landLevel.ajaxServerFun({_method: "DELETE"} ,'/dataLandLevelDetailVolume/delete/' + row.id ,"post",function () {
+        landLevel.showDataHousePriceIndexDetailList(row.levelDetailId);
+    },"delete") ;
 };
 
 landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag) {
@@ -824,26 +796,9 @@ landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag)
         return flag;
     }
     levelDetailId = target.attr("levelDetailId");
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/dataLandLevelDetailVolume/importDataAllocationCorrectionCoefficientVolumeRatio",
-        data: {levelDetailId: levelDetailId},//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: target.prop("id"),//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                landLevel.showDataHousePriceIndexDetailList(levelDetailId);
-                notifyInfo('提示',result.data);
-            }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    });
-
+    landLevel.ajaxFileUploadCommon({levelDetailId: levelDetailId} ,target.prop("id") ,"/dataLandLevelDetailVolume/importDataAllocationCorrectionCoefficientVolumeRatio" ,function () {
+        landLevel.showDataHousePriceIndexDetailList(levelDetailId);
+    },false) ;
 };
 
 landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail = function (index) {
@@ -860,20 +815,10 @@ landLevel.saveDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
     if (!frm.valid()) {
         return false;
     }
-    $.ajax({
-        url: getContextPath() + '/dataLandLevelDetailVolume' + "/save",
-        data: data,
-        type: "post",
-        success: function (result) {
-            if (result.ret) {
-                AlertSuccess("成功", "数据已成功保存到数据库");
-                landLevel.showDataHousePriceIndexDetailList(data.levelDetailId);
-                landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox.modal("hide");
-            } else {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        }
-    })
+    landLevel.ajaxServerFun(data ,'/dataLandLevelDetailVolume' + "/save" ,"post",function () {
+        landLevel.showDataHousePriceIndexDetailList(data.levelDetailId);
+        landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox.modal("hide");
+    }) ;
 };
 
 landLevel.showDataHousePriceIndexDetailList = function (levelDetailId) {
@@ -885,14 +830,12 @@ landLevel.showDataHousePriceIndexDetailList = function (levelDetailId) {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            //var editHtml = '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-            var editHtml = '<button onclick="landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+            var editHtml = '<button type="button" onclick="landLevel.editDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
             editHtml += '<i class="fa fa-pen"></i>';
             editHtml += '</button>';
             if (elShow) {
                 str += editHtml;
-                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<button onclick="landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail('+index+')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button type="button" onclick="landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
             }
@@ -928,7 +871,7 @@ landLevel.showDataLandDetailAchievementDetail = function () {
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
     if (nodes.length > 1) {
-        notifySuccess('成功','只能选择一个作为层级');
+        notifySuccess('成功', '只能选择一个作为层级');
         return false;
     }
     if (nodes.length == 1) {
@@ -937,7 +880,7 @@ landLevel.showDataLandDetailAchievementDetail = function () {
         landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val(treeNode.id);
         landLevel.config.achievementBoxDetail.modal("show");
     } else {
-        notifySuccess('成功','选择层级');
+        notifySuccess('成功', '选择层级');
     }
 };
 landLevel.showDataLandDetailAchievement = function () {
@@ -967,23 +910,30 @@ landLevel.initFormLandDetailAchievement = function (row) {
 //土地级别详情从表 土地因素 删除
 landLevel.deleteDataLandDetailAchievement = function (index) {
     var row = landLevel.config.achievementTable.bootstrapTable('getData')[index];
-    AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-        Loading.progressShow();
-        $.ajax({
-            url: getContextPath() + '/dataLandLevelDetailAchievement/delete/' + row.id,
-            type: "post",
-            data: {_method: "DELETE"},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    notifySuccess("成功", "删除数据成功");
-                    landLevel.showLandDetailAchievementList(row.levelDetailId);
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            }
-        })
-    })
+    landLevel.ajaxServerFun({_method: "DELETE"} ,'/dataLandLevelDetailAchievement/delete/' + row.id,"post",function () {
+        landLevel.showLandDetailAchievementList(row.levelDetailId);
+    },"delete") ;
+};
+
+landLevel.downloadDataLandDetailAchievementFile = function (this_) {
+    //AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseAchievementTemplate)
+
+    var frm = $(this_).closest("form");
+    var data = formSerializeArray(frm);
+    if (!data.classify) {
+        notifyInfo('提示', "大类没有选择");
+        return false;
+    }
+    if (!data.type) {
+        notifyInfo('提示', "级别没有选择");
+        return false;
+    }
+
+    landLevel.ajaxServerFun(data,"/dataLandLevelDetailAchievement/downloadDataLandDetailAchievementFile" ,"post",function (fileId) {
+        FileUtils.downAttachments(fileId) ;
+        FileUtils.deleteFile({attachmentId:fileId}) ;
+    }) ;
+
 };
 
 landLevel.importDataLandDetailAchievement = function (flag) {
@@ -996,25 +946,9 @@ landLevel.importDataLandDetailAchievement = function (flag) {
         return flag;
     }
     levelDetailId = target.attr("levelDetailId");
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/dataLandLevelDetailAchievement/importDataLandDetailAchievement",
-        data: {levelDetailId: levelDetailId},//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: target.prop("id"),//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                landLevel.showLandDetailAchievementList(levelDetailId);
-                notifyInfo('提示',result.data);
-            }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    });
+    landLevel.ajaxFileUploadCommon({levelDetailId: levelDetailId ,landLevelId:currentLandLevelId} ,target.prop("id") ,"/dataLandLevelDetailAchievement/importDataLandDetailAchievement" ,function () {
+        landLevel.showLandDetailAchievementList(levelDetailId);
+    },false) ;
 };
 
 landLevel.editDataLandDetailAchievement = function (index) {
@@ -1044,14 +978,12 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            //var editHtml = '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="landLevel.editDataLandDetailAchievement(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-            var editHtml = '<button onclick="landLevel.editDataLandDetailAchievement(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+            var editHtml = '<button type="button" onclick="landLevel.editDataLandDetailAchievement(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
             editHtml += '<i class="fa fa-pen"></i>';
             editHtml += '</button>';
             if (elShow) {
                 str += editHtml;
-                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="landLevel.deleteDataLandDetailAchievement(' + index + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<button onclick="landLevel.deleteDataLandDetailAchievement(' + index +')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button type="button" onclick="landLevel.deleteDataLandDetailAchievement(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
             }
@@ -1087,20 +1019,10 @@ landLevel.saveDataLandDetailAchievement = function () {
     if (!landLevel.config.achievementFrm.valid()) {
         return false;
     }
-    $.ajax({
-        url: getContextPath() + '/dataLandLevelDetailAchievement/save',
-        data: {formData: JSON.stringify(data)},
-        type: "post",
-        success: function (result) {
-            if (result.ret) {
-                AlertSuccess("成功", "数据已成功保存到数据库");
-                landLevel.showLandDetailAchievementList(data.levelDetailId);
-                landLevel.config.achievementBox.modal("hide");
-            } else {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        }
-    })
+    landLevel.ajaxServerFun({formData: JSON.stringify(data)},'/dataLandLevelDetailAchievement/save' ,"post",function () {
+        landLevel.showLandDetailAchievementList(data.levelDetailId);
+        landLevel.config.achievementBox.modal("hide");
+    },"save") ;
 };
 //------ 土地因素 method end--------//
 
