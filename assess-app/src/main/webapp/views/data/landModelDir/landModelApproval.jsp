@@ -65,19 +65,19 @@
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <button type="button" class="btn btn-xs btn-primary" onclick="landLevel.treeExpandAll(true);">
+                                        <button  style="margin-left: 5px" type="button" class="btn btn-sm btn-primary" onclick="landLevel.treeExpandAll(true);">
                                             全部展开
                                         </button>
-                                        <button type="button" class="btn btn-xs btn-primary" onclick="landLevel.treeExpandAll(false);">
+                                        <button  style="margin-left: 5px" type="button" class="btn btn-sm btn-primary" onclick="landLevel.treeExpandAll(false);">
                                             全部收起
                                         </button>
-                                        <button type="button" class="btn btn-xs btn-primary " onclick="landLevel.treeRefresh();">
+                                        <button  style="margin-left: 5px" type="button" class="btn btn-sm btn-primary " onclick="landLevel.treeRefresh();">
                                             刷新
                                         </button>
-                                        <button type="button" class="btn btn-xs btn-primary " onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
+                                        <button  style="margin-left: 5px" type="button" class="btn btn-sm btn-primary " onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
                                             容积率系数
                                         </button>
-                                        <button type="button" class="btn btn-xs btn-primary " onclick="landLevel.showDataLandDetailAchievementDetail();">
+                                        <button  style="margin-left: 5px" type="button" class="btn btn-sm btn-primary " onclick="landLevel.showDataLandDetailAchievementDetail();">
                                             土地因素
                                         </button>
                                     </div>

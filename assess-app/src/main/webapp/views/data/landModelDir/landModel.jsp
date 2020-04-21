@@ -124,10 +124,10 @@
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
-                                                    因素类型
+                                                    导入类型
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <select name="excelType" multiple="multiple"
+                                                    <select name="factorType" multiple="multiple"
                                                             class="form-control input-full search-select select2">
                                                         <option value="">请选择</option>
                                                         <option value="因素">因素</option>
@@ -181,6 +181,9 @@
                                         <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
                                                 onclick="landLevel.showDataLandDetailAchievementDetail();">
                                             土地因素
+                                        </button>
+                                        <button type="button" style="margin-left: 5px"  class="btn btn-sm btn-primary " onclick="landLevel.treeRefresh();">
+                                            刷新
                                         </button>
                                     </div>
                                     <div class="row form-group">
@@ -441,7 +444,7 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                类型<span class="symbol required"></span>
+                                                因素类型<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
                                                 <select name="type" required
@@ -455,7 +458,7 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                一级类别<span class="symbol required"></span>
+                                                因素一级<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" required class="form-control input-full  "
@@ -466,7 +469,7 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                二级类别<span class="symbol required"></span>
+                                                因素二级<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" required name="category"
