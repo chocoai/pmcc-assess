@@ -32,11 +32,11 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm"
+                            <button type="button" class="btn btn-primary btn-sm"
                                     onclick="forecastRestaurant.loadHistoryList(0,this);">
                                 查询
                             </button>
-                            <button class="btn btn-success btn-sm" data-toggle="modal"
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
                                     onclick="forecastRestaurant.addHistory(0);">
                                 新增
                             </button>
@@ -67,13 +67,13 @@
                             <ul class="dropdown-menu" role="menu" id="ulForecastRestaurantAnalyseIncome"></ul>
                         </div>
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" type="button"
                                     onclick="forecastRestaurant.forecastToHistory(0);">
                                 取消预测
                             </button>
                         </div>
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" type="button"
                                     onclick="forecastRestaurant.startAnalyse(0);">
                                 开始分析
                             </button>
@@ -304,7 +304,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="forecastRestaurant.saveHistory()()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="forecastRestaurant.saveHistory()">
                     保存
                 </button>
             </div>
@@ -313,7 +313,7 @@
     </div>
 </div>
 
-<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxAnalyseItemData_b" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="0" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -329,7 +329,7 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="col-md-12">
-                                    <table class="table table-bordered" id="analyseItemList">
+                                    <table class="table table-bordered" id="analyseItemList_b">
                                         <!-- cerare document add ajax data-->
                                     </table>
                                 </div>
@@ -466,10 +466,10 @@
                 var str = '<div class="btn-margin">';
                 //str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="forecastRestaurant.editHistory(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
                 //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="forecastRestaurant.delHistory(' + row.id + ',' + type + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<button onclick="forecastRestaurant.editHistory(' + index + ',' + type + ');"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<button type="button" onclick="forecastRestaurant.editHistory(' + index + ',' + type + ');"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                str += '<button onclick="forecastRestaurant.delHistory(' + row.id + ',' + type + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button type="button" onclick="forecastRestaurant.delHistory(' + row.id + ',' + type + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
                 str += '</div>';
@@ -691,8 +691,8 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 if (row.amountMoney != null) {
                     var str = '<div class="btn-margin">';
-                   // str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id + ')">查看明细</a>';
-                    str += '<button onclick="forecastRestaurant.showItemData(' + row.id  + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看明细">';
+                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id + ')">查看明细</a>';
+                    str += '<button type="button" onclick="forecastRestaurant.showItemData(' + row.id  + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看明细">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                     str += '</div>';
@@ -719,7 +719,7 @@
 
     forecastRestaurant.showItemData = function (id) {
         forecastRestaurant.loadForecastAnalyseItemList(id);
-        $('#divBoxAnalyseItemData').modal("show");
+        $('#divBoxAnalyseItemData_b').modal("show");
     }
 
     //加载预测分析明细
@@ -730,8 +730,8 @@
         cols.push({field: 'number', title: '数量'});
         cols.push({field: 'moneyTrend', title: '金额趋势'});
         cols.push({field: 'quantitativeTrend', title: '数量趋势'});
-        $("#analyseItemList").bootstrapTable('destroy');
-        TableInit("analyseItemList", "${pageContext.request.contextPath}/income/getForecastAnalyseItemList", cols, {
+        $("#analyseItemList_b").bootstrapTable('destroy');
+        TableInit("analyseItemList_b", "${pageContext.request.contextPath}/income/getForecastAnalyseItemList", cols, {
             forecastAnalyseId: id,
         }, {
             showColumns: false,
