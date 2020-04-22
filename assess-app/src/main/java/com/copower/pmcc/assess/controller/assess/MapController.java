@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -80,7 +81,7 @@ public class MapController {
                     modelAndView.addObject("attachmentId", attachmentId);
                 }
             } catch (Exception e) {
-                baseService.writeExceptionInfo(e,"房屋标注 附件可能被删除了");
+                baseService.writeExceptionInfo(e, "房屋标注 附件可能被删除了");
             }
         }
         modelAndView.addObject("lng", StringUtils.isEmpty(lng) ? "" : lng);
@@ -96,6 +97,21 @@ public class MapController {
         modelAndView.addObject("estateName", estateName);
         modelAndView.addObject("click", click);
         modelAndView.addObject("center", JSONObject.toJSONString(new KeyValueDto(lng, lat)));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/drawPolygonMap", name = "地图多边形标注")
+    public ModelAndView drawPolygonMap(@RequestParam(defaultValue = "false") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String formData) {
+        ModelAndView modelAndView = new ModelAndView("base/drawPolygon");
+        if (apply) {
+            modelAndView.addObject("apply", "apply");
+        }
+        if (detail) {
+            modelAndView.addObject("detail", "detail");
+        }
+        if (StringUtils.isNotBlank(formData)){
+            modelAndView.addObject("formData", "formData");
+        }
         return modelAndView;
     }
 

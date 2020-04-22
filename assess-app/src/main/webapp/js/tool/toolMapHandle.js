@@ -60,7 +60,7 @@ toolMapHandleFun.searchByName = function (placeSearch, name, map) {
 toolMapHandleFun.loadMap = function (options) {
     //默认设置
     var defaultObj = {
-        drawState: toolMapHandleFun.config.draw.rectangle.key,
+        drawState: toolMapHandleFun.config.draw.polygon.key,
         viewState: toolMapHandleFun.config.view.ordinary.key,
         storageState: toolMapHandleFun.config.storage.select.key,
         readonly: false,
@@ -281,11 +281,18 @@ toolMapHandleFun.completeEvent = function () {
         $.each(overlays, function (i, overlay) {
             if (overlay._amap_id == e.obj._amap_id) {
                 overlay.on('mouseover', function (e) {
-                    toolMapHandleFun.showOverlayInfo({
-                        amap_id: e.target._amap_id,
-                        title: e.target.B.extData.title,
-                        remark: e.target.B.extData.remark
+                    console.log(e) ;
+                    // toolMapHandleFun.showOverlayInfo({
+                    //     amap_id: e.target._amap_id,
+                    //     title: e.target.B.extData.title,
+                    //     remark: e.target.B.extData.remark
+                    // });
+                    var infoWindow = new AMap.InfoWindow({
+                        content: '信息窗体',
+                        anchor: 'bottom-center'
                     });
+                    // 在地图上打开信息窗体
+                    infoWindow.open(toolMapHandleFun.map, [e.lnglat.lng,e.lnglat.lat]);
                 });
             }
         });
