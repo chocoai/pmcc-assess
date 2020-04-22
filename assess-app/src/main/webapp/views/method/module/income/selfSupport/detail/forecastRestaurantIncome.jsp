@@ -40,7 +40,7 @@
     </table>
 </div>
 
-<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="divBoxAnalyseItemData_b" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -53,7 +53,7 @@
 
             <div class="modal-body">
                 <form class="form-horizontal">
-                    <table class="table table-bordered" id="analyseItemList">
+                    <table class="table table-bordered" id="analyseItemList_b">
                         <!-- cerare document add ajax data-->
                     </table>
                 </form>
@@ -178,7 +178,7 @@
 
     forecastRestaurant.showItemData = function (id) {
         forecastRestaurant.loadForecastAnalyseItemList(id);
-        $('#divBoxAnalyseItemData').modal("show");
+        $('#divBoxAnalyseItemData_b').modal("show");
     }
     //加载预测分析明细
     forecastRestaurant.loadForecastAnalyseItemList = function (id) {
@@ -188,8 +188,8 @@
         cols.push({field: 'number', title: '数量'});
         cols.push({field: 'moneyTrend', title: '金额趋势'});
         cols.push({field: 'quantitativeTrend', title: '数量趋势'});
-        $("#analyseItemList").bootstrapTable('destroy');
-        TableInit("analyseItemList", "${pageContext.request.contextPath}/income/getForecastAnalyseItemList", cols, {
+        $("#analyseItemList_b").bootstrapTable('destroy');
+        TableInit("analyseItemList_b", "${pageContext.request.contextPath}/income/getForecastAnalyseItemList", cols, {
             forecastAnalyseId: id,
         }, {
             showColumns: false,

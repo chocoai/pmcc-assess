@@ -908,13 +908,13 @@ public class MdIncomeService {
         //如果只填主营业务收入，则只以主营业务分析，如果细填到二级编号则以二级编号分析，则不显示一级编号与主营业务收入的分析
         //以第一条数据为例
         MdIncomeForecastAnalyseItem example = list.get(0);
-//        if (StringUtils.isNotEmpty(example.getFirstLevelNumber()) && StringUtils.isNotEmpty(example.getSecondLevelNumber())) {
-//            vos = getSecondLevelTrend(forecastAnalyseId);
-//        } else if (StringUtils.isNotEmpty(example.getFirstLevelNumber()) && StringUtils.isEmpty(example.getSecondLevelNumber())) {
-//            vos = getStairTrend(forecastAnalyseId);
-//        } else {
-//            vos = getAccountingSubjectTrend(forecastAnalyseId);
-//        }
+        if (StringUtils.isNotEmpty(example.getFirstLevelNumber()) && StringUtils.isNotEmpty(example.getSecondLevelNumber())) {
+            vos = getSecondLevelTrend(forecastAnalyseId);
+        } else if (StringUtils.isNotEmpty(example.getFirstLevelNumber()) && StringUtils.isEmpty(example.getSecondLevelNumber())) {
+            vos = getStairTrend(forecastAnalyseId);
+        } else {
+            vos = getAccountingSubjectTrend(forecastAnalyseId);
+        }
         vos = getSecondLevelTrend(forecastAnalyseId);
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<MdIncomeForecastAnalyseItemVo>() : vos);
         vo.setTotal((long) list.size());
