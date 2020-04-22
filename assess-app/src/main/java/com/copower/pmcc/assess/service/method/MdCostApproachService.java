@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachDao;
@@ -79,14 +80,25 @@ public class MdCostApproachService {
     }
 
     public void applyCommit(String formData, String processInsId) {
-        MdCostApproach mdCostApproach = JSON.parseObject(formData, MdCostApproach.class);
+        //税费明细
+        JSONObject jsonObject = JSON.parseObject(formData);
+        List<MdCostApproachTaxes> costApproachTaxes = JSON.parseArray(jsonObject.getString("costApproachTaxes"), MdCostApproachTaxes.class);
+        if (CollectionUtils.isNotEmpty(costApproachTaxes)) {
+            for (MdCostApproachTaxes taxes : costApproachTaxes) {
+                MdCostApproachTaxes approachTaxes = costApproachTaxesDao.getCostApproachTaxesById(taxes.getId());
+                BeanUtils.copyProperties(taxes,approachTaxes,"creator");
+                costApproachTaxesDao.updateCostApproachTaxes(approachTaxes);
+            }
+        }
+
+        MdCostApproach mdCostApproach = JSON.parseObject(jsonObject.getString("master"), MdCostApproach.class);
         mdCostApproach.setProcessInsId(processInsId);
         this.saveMdCostApproach(mdCostApproach);
     }
 
 
     public void saveMdCostApproach(MdCostApproach mdCostApproach) {
-        mdCostApproach.setLandLevelContent(StringUtils.isNotEmpty(mdCostApproach.getLandLevelContent())?mdCostApproach.getLandLevelContent():null);
+        mdCostApproach.setLandLevelContent(StringUtils.isNotEmpty(mdCostApproach.getLandLevelContent()) ? mdCostApproach.getLandLevelContent() : null);
 
         //不含代征地每平税费 = 土地取得费及相关税费 - 代征地每平税费
         BigDecimal landAcquisitionBhou = getLandAcquisitionBhou(mdCostApproach.getId());
@@ -147,7 +159,7 @@ public class MdCostApproachService {
         if (StringUtils.isNotEmpty(mdCostApproachTaxes.getTypeKey())) {
             BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(mdCostApproachTaxes.getTypeKey());
             mdCostApproachTaxesVo.setTypeName(dataDic.getName());
-        }else {
+        } else {
             mdCostApproachTaxesVo.setTypeName(mdCostApproachTaxes.getTypeName());
         }
         StringBuilder s = new StringBuilder();
@@ -186,205 +198,205 @@ public class MdCostApproachService {
      */
     public MdCostApproachTaxes calculatePrice(String formData, String farmlandArea, String ploughArea, String populationNumber) {
         MdCostApproachTaxes mdCostApproachTaxes = JSON.parseObject(formData, MdCostApproachTaxes.class);
-        if(StringUtils.equals("null",mdCostApproachTaxes.getTypeKey())){
+        if (StringUtils.equals("null", mdCostApproachTaxes.getTypeKey())) {
             mdCostApproachTaxes.setTypeKey(null);
         }
 
         if (StringUtils.isNotEmpty(mdCostApproachTaxes.getTypeKey())) {
-        //年平均产值
-        BigDecimal yearProductionAverage = new BigDecimal("0");
-        List<MdCostApproachItem> mdCostApproachItemList = getMdCostApproachItemListByMasterId(mdCostApproachTaxes.getMasterId());
-        if (CollectionUtils.isNotEmpty(mdCostApproachItemList)) {
-            for (MdCostApproachItem item : mdCostApproachItemList) {
-                yearProductionAverage = yearProductionAverage.add(item.getAverageProduction());
+            //年平均产值
+            BigDecimal yearProductionAverage = new BigDecimal("0");
+            List<MdCostApproachItem> mdCostApproachItemList = getMdCostApproachItemListByMasterId(mdCostApproachTaxes.getMasterId());
+            if (CollectionUtils.isNotEmpty(mdCostApproachItemList)) {
+                for (MdCostApproachItem item : mdCostApproachItemList) {
+                    yearProductionAverage = yearProductionAverage.add(item.getAverageProduction());
+                }
+                yearProductionAverage = yearProductionAverage.divide(new BigDecimal(mdCostApproachItemList.size()), 2, BigDecimal.ROUND_HALF_UP);
             }
-            yearProductionAverage = yearProductionAverage.divide(new BigDecimal(mdCostApproachItemList.size()), 2, BigDecimal.ROUND_HALF_UP);
-        }
-        //每亩土地人口 = 人口数/农用地总面积
-        BigDecimal landPersonNumPerMu = new BigDecimal(populationNumber).divide(new BigDecimal(farmlandArea), 2, BigDecimal.ROUND_HALF_UP);
-        //每亩耕地人口 = 人口数/耕地面积
-        BigDecimal ploughPersonNumPerMu = new BigDecimal(populationNumber).divide(new BigDecimal(ploughArea), 2, BigDecimal.ROUND_HALF_UP);
-        //耕地比例 = 耕地面积/农用地总面积
-        BigDecimal ploughRatio = new BigDecimal(ploughArea).divide(new BigDecimal(farmlandArea), 4, BigDecimal.ROUND_HALF_UP);
-        //非耕地比例 = 1-耕地比例
-        BigDecimal cannotPloughRatio = new BigDecimal("1.00").subtract(ploughRatio);
-        //人均耕地 = 耕地面积/人口数
-        BigDecimal ploughRerCapita = new BigDecimal(ploughArea).divide(new BigDecimal(populationNumber), 4, BigDecimal.ROUND_HALF_UP);
+            //每亩土地人口 = 人口数/农用地总面积
+            BigDecimal landPersonNumPerMu = new BigDecimal(populationNumber).divide(new BigDecimal(farmlandArea), 2, BigDecimal.ROUND_HALF_UP);
+            //每亩耕地人口 = 人口数/耕地面积
+            BigDecimal ploughPersonNumPerMu = new BigDecimal(populationNumber).divide(new BigDecimal(ploughArea), 2, BigDecimal.ROUND_HALF_UP);
+            //耕地比例 = 耕地面积/农用地总面积
+            BigDecimal ploughRatio = new BigDecimal(ploughArea).divide(new BigDecimal(farmlandArea), 4, BigDecimal.ROUND_HALF_UP);
+            //非耕地比例 = 1-耕地比例
+            BigDecimal cannotPloughRatio = new BigDecimal("1.00").subtract(ploughRatio);
+            //人均耕地 = 耕地面积/人口数
+            BigDecimal ploughRerCapita = new BigDecimal(ploughArea).divide(new BigDecimal(populationNumber), 4, BigDecimal.ROUND_HALF_UP);
 
 
-        switch (mdCostApproachTaxes.getTypeKey()) {
-            //土地补偿费
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE:
-                BigDecimal landCompensate = new BigDecimal("0");
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
+            switch (mdCostApproachTaxes.getTypeKey()) {
+                //土地补偿费
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE:
+                    BigDecimal landCompensate = new BigDecimal("0");
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        //年平均产值*标准1*耕地比例
+                        landCompensate = landCompensate.add(yearProductionAverage.multiply(mdCostApproachTaxes.getStandardFirst()).multiply(ploughRatio));
+                    }
+                    if (mdCostApproachTaxes.getStandardSecond() != null) {
+                        //年平均产值*标准2*非耕地比例
+                        landCompensate = landCompensate.add(yearProductionAverage.multiply(mdCostApproachTaxes.getStandardSecond()).multiply(cannotPloughRatio));
+                    }
+                    mdCostApproachTaxes.setPrice(landCompensate.setScale(2, BigDecimal.ROUND_HALF_UP));
+                    break;
+                //安置补助费
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE:
+
+                    BigDecimal placementCompensate = new BigDecimal("0");
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        //年平均产值*标准1*耕地比例*每亩土地人口
+                        placementCompensate = placementCompensate.add(yearProductionAverage.
+                                multiply(mdCostApproachTaxes.getStandardFirst()).multiply(ploughRatio).multiply(landPersonNumPerMu));
+                    }
+                    if (mdCostApproachTaxes.getStandardSecond() != null) {
+                        //年平均产值*标准2*非耕地比例*每亩土地人口
+                        placementCompensate = placementCompensate.add(yearProductionAverage.
+                                multiply(mdCostApproachTaxes.getStandardSecond()).multiply(cannotPloughRatio).multiply(landPersonNumPerMu));
+                    }
+                    mdCostApproachTaxes.setPrice(placementCompensate.setScale(2, BigDecimal.ROUND_HALF_UP));
+                    break;
+                //青苗补偿费
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE:
                     //年平均产值*标准1*耕地比例
-                    landCompensate = landCompensate.add(yearProductionAverage.multiply(mdCostApproachTaxes.getStandardFirst()).multiply(ploughRatio));
-                }
-                if (mdCostApproachTaxes.getStandardSecond() != null) {
-                    //年平均产值*标准2*非耕地比例
-                    landCompensate = landCompensate.add(yearProductionAverage.multiply(mdCostApproachTaxes.getStandardSecond()).multiply(cannotPloughRatio));
-                }
-                mdCostApproachTaxes.setPrice(landCompensate.setScale(2, BigDecimal.ROUND_HALF_UP));
-                break;
-            //安置补助费
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE:
-
-                BigDecimal placementCompensate = new BigDecimal("0");
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
-                    //年平均产值*标准1*耕地比例*每亩土地人口
-                    placementCompensate = placementCompensate.add(yearProductionAverage.
-                            multiply(mdCostApproachTaxes.getStandardFirst()).multiply(ploughRatio).multiply(landPersonNumPerMu));
-                }
-                if (mdCostApproachTaxes.getStandardSecond() != null) {
-                    //年平均产值*标准2*非耕地比例*每亩土地人口
-                    placementCompensate = placementCompensate.add(yearProductionAverage.
-                            multiply(mdCostApproachTaxes.getStandardSecond()).multiply(cannotPloughRatio).multiply(landPersonNumPerMu));
-                }
-                mdCostApproachTaxes.setPrice(placementCompensate.setScale(2, BigDecimal.ROUND_HALF_UP));
-                break;
-            //青苗补偿费
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE:
-                //年平均产值*标准1*耕地比例
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
-                    mdCostApproachTaxes.setPrice(yearProductionAverage.multiply(mdCostApproachTaxes.getStandardFirst()).multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP));
-                }
-                break;
-            //住房安置费
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE:
-                //每亩土地人口*标准1*标准2
-                if (mdCostApproachTaxes.getStandardFirst() != null && mdCostApproachTaxes.getStandardSecond() != null) {
-                    BigDecimal houseCompensate = landPersonNumPerMu.multiply(mdCostApproachTaxes.getStandardFirst()).multiply(mdCostApproachTaxes.getStandardSecond());
-                    mdCostApproachTaxes.setPrice(houseCompensate.setScale(2, BigDecimal.ROUND_HALF_UP));
-                }
-                break;
-            //菜田建设金
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD:
-                //耕地比例*标准1
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
-                    mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP));
-                }
-                break;
-            //耕地占用税
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND:
-                //耕地比例*标准1*666.67
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
-                    mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP)
-                            .multiply(Bhou).setScale(2, BigDecimal.ROUND_HALF_UP));
-                }
-                break;
-            //耕地开垦费
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM:
-                //耕地比例*标准1
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
-                    mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP));
-                }
-                break;
-            //土地管理费
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER:
-                //(土地补偿费+安置补助费+青苗补偿费+住房安置费+农房搬迁奖励基金+菜田建设金+耕地占用税+耕地开垦费)*标准1
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
-                    BigDecimal landManager = new BigDecimal("0");
-                    String[] keys = {AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM};
-                    List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
-                    List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
-                    list.addAll(custom);
-                    if (CollectionUtils.isNotEmpty(list)) {
-                        for (MdCostApproachTaxes item : list) {
-                            if (item.getPrice() != null) {
-                                landManager = landManager.add(item.getPrice());
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        mdCostApproachTaxes.setPrice(yearProductionAverage.multiply(mdCostApproachTaxes.getStandardFirst()).multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    }
+                    break;
+                //住房安置费
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE:
+                    //每亩土地人口*标准1*标准2
+                    if (mdCostApproachTaxes.getStandardFirst() != null && mdCostApproachTaxes.getStandardSecond() != null) {
+                        BigDecimal houseCompensate = landPersonNumPerMu.multiply(mdCostApproachTaxes.getStandardFirst()).multiply(mdCostApproachTaxes.getStandardSecond());
+                        mdCostApproachTaxes.setPrice(houseCompensate.setScale(2, BigDecimal.ROUND_HALF_UP));
+                    }
+                    break;
+                //菜田建设金
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD:
+                    //耕地比例*标准1
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    }
+                    break;
+                //耕地占用税
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND:
+                    //耕地比例*标准1*666.67
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP)
+                                .multiply(Bhou).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    }
+                    break;
+                //耕地开垦费
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM:
+                    //耕地比例*标准1
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    }
+                    break;
+                //土地管理费
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER:
+                    //(土地补偿费+安置补助费+青苗补偿费+住房安置费+农房搬迁奖励基金+菜田建设金+耕地占用税+耕地开垦费)*标准1
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        BigDecimal landManager = new BigDecimal("0");
+                        String[] keys = {AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM};
+                        List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
+                        List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
+                        list.addAll(custom);
+                        if (CollectionUtils.isNotEmpty(list)) {
+                            for (MdCostApproachTaxes item : list) {
+                                if (item.getPrice() != null) {
+                                    landManager = landManager.add(item.getPrice());
+                                }
                             }
                         }
-                    }
 
-                    mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(landManager).setScale(2, BigDecimal.ROUND_HALF_UP));
-                }
-                break;
-            //不可预见费
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CANNOT_FORESEE:
-                //(土地补偿费+安置补助费+青苗补偿费+住房安置费+农房搬迁奖励基金+菜田建设金+耕地占用税+耕地开垦费+土地管理费)*标准1
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
-                    BigDecimal cannotForesee = new BigDecimal("0");
-                    String[] keys = {AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER};
-                    List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
-                    List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
-                    list.addAll(custom);
-                    if (CollectionUtils.isNotEmpty(list)) {
-                        for (MdCostApproachTaxes item : list) {
-                            if (item.getPrice() != null) {
-                                cannotForesee = cannotForesee.add(item.getPrice());
+                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(landManager).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    }
+                    break;
+                //不可预见费
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CANNOT_FORESEE:
+                    //(土地补偿费+安置补助费+青苗补偿费+住房安置费+农房搬迁奖励基金+菜田建设金+耕地占用税+耕地开垦费+土地管理费)*标准1
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        BigDecimal cannotForesee = new BigDecimal("0");
+                        String[] keys = {AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER};
+                        List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
+                        List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
+                        list.addAll(custom);
+                        if (CollectionUtils.isNotEmpty(list)) {
+                            for (MdCostApproachTaxes item : list) {
+                                if (item.getPrice() != null) {
+                                    cannotForesee = cannotForesee.add(item.getPrice());
+                                }
                             }
                         }
-                    }
 
-                    mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(cannotForesee).setScale(2, BigDecimal.ROUND_HALF_UP));
-                }
-                break;
-            //代征地比例
-            case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION:
-                //(土地补偿费+安置补助费+青苗补偿费+住房安置费+农房搬迁奖励基金+菜田建设金+耕地占用税+耕地开垦费+土地管理费+不可预见费)/(1-标准1)*标准1
-                if (mdCostApproachTaxes.getStandardFirst() != null) {
-                    BigDecimal cannotForesee = new BigDecimal("0");
-                    String[] keys = {AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER,
-                            AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CANNOT_FORESEE};
-                    List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
-                    List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
-                    list.addAll(custom);
-                    if (CollectionUtils.isNotEmpty(list)) {
-                        for (MdCostApproachTaxes item : list) {
-                            if (item.getPrice() != null) {
-                                cannotForesee = cannotForesee.add(item.getPrice());
+                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(cannotForesee).setScale(2, BigDecimal.ROUND_HALF_UP));
+                    }
+                    break;
+                //代征地比例
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION:
+                    //(土地补偿费+安置补助费+青苗补偿费+住房安置费+农房搬迁奖励基金+菜田建设金+耕地占用税+耕地开垦费+土地管理费+不可预见费)/(1-标准1)*标准1
+                    if (mdCostApproachTaxes.getStandardFirst() != null) {
+                        BigDecimal cannotForesee = new BigDecimal("0");
+                        String[] keys = {AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_HOUSE_COMPENSATE,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_VEGETABLE_BUILD,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_OCCUPATION_LAND,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLOUGH_RECLAIM,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER,
+                                AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CANNOT_FORESEE};
+                        List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
+                        List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
+                        list.addAll(custom);
+                        if (CollectionUtils.isNotEmpty(list)) {
+                            for (MdCostApproachTaxes item : list) {
+                                if (item.getPrice() != null) {
+                                    cannotForesee = cannotForesee.add(item.getPrice());
+                                }
                             }
                         }
+                        BigDecimal temp = new BigDecimal("1").subtract(mdCostApproachTaxes.getStandardFirst());
+                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(cannotForesee).divide(temp, 2, BigDecimal.ROUND_HALF_UP));
                     }
-                    BigDecimal temp = new BigDecimal("1").subtract(mdCostApproachTaxes.getStandardFirst());
-                    mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(cannotForesee).divide(temp, 2, BigDecimal.ROUND_HALF_UP));
-                }
-                break;
+                    break;
+            }
         }
-    }
 
 
-    costApproachTaxesDao.updateCostApproachTaxes(mdCostApproachTaxes);
+        costApproachTaxesDao.updateCostApproachTaxes(mdCostApproachTaxes);
 
         return mdCostApproachTaxes;
     }
 
 
-    public MdCostApproachTaxes saveCostApproachTaxes(String formData) throws Exception{
+    public MdCostApproachTaxes saveCostApproachTaxes(String formData) throws Exception {
         MdCostApproachTaxes mdCostApproachTaxes = JSON.parseObject(formData, MdCostApproachTaxes.class);
         //已经存在该类型
         List<MdCostApproachTaxes> costApproachTaxesList = costApproachTaxesDao.getCostApproachTaxesList(mdCostApproachTaxes);
-        if(CollectionUtils.isNotEmpty(costApproachTaxesList)){
+        if (CollectionUtils.isNotEmpty(costApproachTaxesList)) {
             throw new BusinessException("该类型已存在");
         }
 
         List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
-        if(CollectionUtils.isNotEmpty(dataDicList)){
-            for (BaseDataDic item: dataDicList) {
-                if(StringUtils.equals(item.getName(),mdCostApproachTaxes.getTypeName())){
+        if (CollectionUtils.isNotEmpty(dataDicList)) {
+            for (BaseDataDic item : dataDicList) {
+                if (StringUtils.equals(item.getName(), mdCostApproachTaxes.getTypeName())) {
                     mdCostApproachTaxes.setTypeKey(item.getFieldName());
                 }
             }

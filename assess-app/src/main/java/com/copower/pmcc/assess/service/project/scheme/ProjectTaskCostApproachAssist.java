@@ -72,6 +72,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
             schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
             schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST_APPROACH).getId());
             schemeInfo.setMethodDataId(mdCostApproach.getId());
+            initTaxeItem(mdCostApproach);
             try {
                 schemeInfoService.saveSchemeInfo(schemeInfo);
             } catch (BusinessException e) {
@@ -81,7 +82,6 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
 
         modelAndView.addObject("master", mdCostApproach);
         modelAndView.addObject("apply", "apply");
-        initTaxeItem(mdCostApproach);
         setViewParam(mdCostApproach, projectPlanDetails, modelAndView);
         return modelAndView;
     }

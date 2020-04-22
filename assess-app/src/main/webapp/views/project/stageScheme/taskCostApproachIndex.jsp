@@ -164,6 +164,7 @@
                                                                     <th>耕地标准</th>
                                                                     <th>非耕地标准</th>
                                                                     <th>价格(元/亩)</th>
+                                                                    <th>备注</th>
                                                                     <th>操作</th>
                                                                 </tr>
                                                                 </thead>
@@ -176,7 +177,7 @@
                                                                     </tr>
                                                                     <script type="text/javascript">
                                                                         $(function () {
-                                                                            var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}");
+                                                                            var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}", "${approachTaxe.remark}");
                                                                             $("#content${approachTaxe.id}").append(html);
                                                                         })
                                                                     </script>
@@ -223,7 +224,8 @@
                                                                             <button class="btn btn-info btn-sm "
                                                                                     style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                                                                     type="button"
-                                                                                    onclick="getLandLevelTabContent();">土地因素
+                                                                                    onclick="getLandLevelTabContent();">
+                                                                                土地因素
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -821,7 +823,7 @@
         </td>
         <td>
             <select class="form-control input-full" name="landLevelGrade"
-                    onchange="estateCommon.landLevelHandle(this);">
+                    onchange="caseCommon.landLevelHandle(this);">
                 {landLevelGradeHTML}
             </select>
         </td>
@@ -837,14 +839,14 @@
         </td>
         <td>
             <input class="btn btn-warning" type="button" value="X"
-                   onclick="estateCommon.landLevelEmpty(this)">
+                   onclick="caseCommon.landLevelEmpty(this)">
         </td>
     </tr>
 </script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+        src="${pageContext.request.contextPath}/js/case/case.common.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     function submit() {
         if (!$("#master").valid()) {
@@ -882,12 +884,19 @@
         formData.landProductionProfitUnit = parseFloat($("#landProductionProfitUnit").text());
         formData.landProductionInterestUnit = parseFloat($("#landProductionInterestUnit").text());
         formData.landLevelContent = $("#landLevelContent").val();
-
+        var costApproachTaxes = [];
+        $.each($("#master").find("#tbodyContent").find("tr"), function (i, n) {
+            var item = getApproachTaxesData($(n));
+            costApproachTaxes.push(item);
+        });
+        var item = {};
+        item.master = formData;
+        item.costApproachTaxes = costApproachTaxes;
         if ("${processInsId}" != "0") {
-            submitEditToServer(JSON.stringify(formData));
+            submitEditToServer(JSON.stringify(item));
         }
         else {
-            submitToServer(JSON.stringify(formData));
+            submitToServer(JSON.stringify(item));
         }
     }
 
@@ -1268,7 +1277,7 @@
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
-                var item = estateCommon.getLandLevelFilter(obj);
+                var item = caseCommon.getLandLevelFilter(obj);
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
@@ -1293,7 +1302,7 @@
 
     function landLevelLoadHtml2(jsonStr) {
         var jsonParse = JSON.parse(jsonStr);
-        var data = estateCommon.landLevelFilter(jsonParse);
+        var data = caseCommon.landLevelFilter(jsonParse);
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
@@ -1501,6 +1510,12 @@
             data.frm = "frm_taxes";
             return data;
         },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
         loadDataList: function (masterId) {
             var cols = [];
             cols.push({field: 'typeName', title: '类型'});
@@ -1575,7 +1590,7 @@
                         notifySuccess('成功', '保存成功');
                         $('#' + taxes.prototype.config().box).modal('hide');
                         var html = "<tr>"
-                        html += uploadTaxeHtml(result.data.id, result.data.typeKey, result.data.typeName, "", "", "");
+                        html += uploadTaxeHtml(result.data.id, result.data.typeKey, result.data.typeName, "", "", "", "");
                         html += "</tr>"
                         $("#tbodyContent").append(html);
                     } else {
@@ -1689,7 +1704,7 @@
 
     }
 
-    function uploadTaxeHtml(id, typeKey, typeName, standardFirst, standardSecond, price) {
+    function uploadTaxeHtml(id, typeKey, typeName, standardFirst, standardSecond, price, remark) {
         var html = '';
         html += '<td><input type="hidden" name="id" value="' + id + '">';
         html += '<input type="hidden" name="typeKey" value="' + typeKey + '">' + typeName + '</td>';
@@ -1719,7 +1734,12 @@
                 html += '</td>';
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
-                html += '<input type="text" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '" readonly>';
+                html += '<input type="text" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" name="remark" class="form-control input-full " value="' + remark + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
@@ -1750,7 +1770,12 @@
                 html += '</td>';
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
-                html += '<input type="text" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '" readonly>';
+                html += '<input type="text" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" name="remark" class="form-control input-full " value="' + remark + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
@@ -1770,6 +1795,11 @@
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
                 html += '<input type="text" onblur="getThisPrice(this);" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" name="remark" class="form-control input-full " value="' + remark + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
@@ -1800,6 +1830,7 @@
         var standardFirst = $(that).closest("tr").find("input[name='standardFirst']").val();
         var standardSecond = $(that).closest("tr").find("input[name='standardSecond']").val();
         var price = $(that).parent().closest("tr").find("input[name='price']").val();
+        var remark = $(that).parent().closest("tr").find("input[name='remark']").val();
         var data = {};
         data.id = id;
         data.masterId = masterId;
@@ -1807,19 +1838,20 @@
         data.standardFirst = percentToPoint(standardFirst);
         data.standardSecond = percentToPoint(standardSecond);
         data.price = price;
+        data.remark = remark;
         var farmlandArea = $("#farmlandArea").val();
         if (!farmlandArea) {
-            notifyInfo("提示","请填写农用地总面积");
+            notifyInfo("提示", "请填写农用地总面积");
             return false;
         }
         var ploughArea = $("#ploughArea").val();
         if (!ploughArea) {
-            notifyInfo("提示","请填耕地面积");
+            notifyInfo("提示", "请填耕地面积");
             return false;
         }
         var populationNumber = $("#populationNumber").val();
         if (!populationNumber) {
-            notifyInfo("提示","请填人口数");
+            notifyInfo("提示", "请填人口数");
             return false;
         }
         if (!$("#" + taxes.prototype.config().frm).valid()) {
@@ -1866,6 +1898,22 @@
                 return value;
             }
         }
+    }
+
+    function getApproachTaxesData(that) {
+        var data = {};
+        data.id = $(that).find("input[name='id']").val();
+        data.masterId = $("#master").find("input[name='id']").val();
+        data.typeKey = $(that).find("input[name='typeKey']").val();
+        var standardFirst =$(that).find("input[name='standardFirst']").val();
+        var standardSecond =$(that).find("input[name='standardSecond']").val();
+        var price =$(that).find("input[name='price']").val();
+        var remark =$(that).find("input[name='remark']").val();
+        data.standardFirst = standardFirst?percentToPoint(standardFirst):"";
+        data.standardSecond = standardSecond?percentToPoint(standardSecond):"";
+        data.price = price?price:"";
+        data.remark = remark?remark:"";
+        return data;
     }
 </script>
 </html>

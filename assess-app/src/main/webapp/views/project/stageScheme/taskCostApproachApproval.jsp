@@ -119,6 +119,7 @@
                                                             <th>耕地标准</th>
                                                             <th>非耕地标准</th>
                                                             <th>价格(元/亩)</th>
+                                                            <th>备注</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody id="tbodyContent">
@@ -129,7 +130,7 @@
                                                             </tr>
                                                             <script type="text/javascript">
                                                                 $(function () {
-                                                                    var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}");
+                                                                    var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}", "${approachTaxe.remark}");
                                                                     $("#content${approachTaxe.id}").append(html);
                                                                 })
                                                             </script>
@@ -857,7 +858,7 @@
         },
     }
 
-    function uploadTaxeHtml(id, typeKey, typeName, standardFirst, standardSecond, price) {
+    function uploadTaxeHtml(id, typeKey, typeName, standardFirst, standardSecond, price,remark) {
         var html = '';
         html += '<td>' + typeName + '</td>';
         switch (typeKey) {
@@ -877,6 +878,7 @@
                 html += '<td>' + standardFirst + '</td>';
                 html += '<td>' + standardSecond + '</td>';
                 html += '<td>' + price + '</td>';
+                html += '<td>' + remark + '</td>';
                 break;
             }
             case"data.land.approximation.method.crops.compensate": {
@@ -891,6 +893,7 @@
                 html += '/';
                 html += '</td>';
                 html += '<td>' + price + '</td>';
+                html += '<td>' + remark + '</td>';
                 break;
             }
             default:
@@ -901,6 +904,7 @@
                 html += '/';
                 html += '</td>';
                 html += '<td>' + price + '</td>';
+                html += '<td>' + remark + '</td>';
 
         }
 
