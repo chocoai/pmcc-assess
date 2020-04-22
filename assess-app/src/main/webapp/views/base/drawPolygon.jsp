@@ -44,6 +44,7 @@
                 <form class="form-horizontal">
 
                     <input type="hidden" name="id">
+                    <input type="hidden" name="pid">
 
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -92,6 +93,7 @@
                 <form class="form-horizontal">
 
                     <input type="hidden" name="id">
+                    <input type="hidden" name="pid">
 
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -254,8 +256,8 @@
             resizeEnable: true,
             rotateEnable: true,
             zoom: 30,
-            pitch: 0,
-            viewMode: "3D",
+//            pitch: 0,
+            viewMode: "2D",
             center: [104.084569, 30.589714]
         });
         // 地图 加载完成 load
@@ -319,17 +321,21 @@
         })
     };
 
+    /**
+     * 鼠标工具开启和关闭
+     */
     drawPolygon.handleMouseTool = function (param) {
         if (param) {
-            var overlays = drawPolygon.map.getAllOverlays();
-            drawPolygon.mouseTool.close(true);//关闭
-            if ($.isArray(overlays)) {
-                $.each(overlays, function (i, overlay) {
-                    drawPolygon.overlays.push(overlay);
-                })
+            var polygon = drawPolygon.map.getAllOverlays('polygon');
+            var overlays = drawPolygon.map.getAllOverlays('marker');
+            if (drawPolygon.mouseTool){
+                drawPolygon.mouseTool.close(true);//关闭
+                drawPolygon.mouseTool = undefined;
             }
-            drawPolygon.mouseTool = undefined;
-            drawPolygon.showOverlay();
+            console.log(polygon) ;
+            console.log(overlays) ;
+            drawPolygon.map.add(overlays) ;
+            drawPolygon.showOverlay(polygon);
         } else {
             if (!drawPolygon.mouseTool) {
                 drawPolygon.completeEvent();
@@ -358,22 +364,23 @@
             position: lnglat,
             anchor: 'bottom-center',//位置
             text: item.name,
-            extData:item,
+            extData: item,
             draggable: false,//是否可以拖动
 //            style: {'background-color': 'red'}
         });
+        map.add(Text);
+        item.id = Text._amap_id;
+        Text.setExtData(item) ;
         Text.on('click', function (e) {
             var box = drawPolygon.handleJquery(drawPolygon.textBox);
             box.modal("show");
-            var target = e.target ;
-            var data = target.getExtData() ;//target.getText();
+            var target = e.target;
+            var data = target.getExtData();//target.getText();
             var frm = box.find("form");
             frm.clearAll().initForm(data);
             drawPolygon.tempData = target;
         });
-        map.add(Text);
-        console.log(Text) ;
-//        drawPolygon.updateExtData(data) ;
+        drawPolygon.updateExtData(item);
     };
 
     /**
@@ -391,7 +398,7 @@
         target.setExtData(data);
         box.modal("hide");
         drawPolygon.tempData = null;
-        drawPolygon.updateExtData(data) ;
+        drawPolygon.updateExtData(data);
     };
 
     /**
@@ -406,21 +413,14 @@
     /**
      * 显示覆盖物
      */
-    drawPolygon.showOverlay = function () {
-        drawPolygon.overlays = drawPolygon.unique(drawPolygon.overlays);
+    drawPolygon.showOverlay = function (overlays) {
+        drawPolygon.overlays = drawPolygon.unique(overlays);
         if (drawPolygon.overlays.length != 0) {
             $.each(drawPolygon.overlays, function (i, overlay) {
                 overlay.on('click', function (e) {
                     drawPolygon.eventOverlay(e);
                 });
                 drawPolygon.map.add(overlay);
-            });
-        }
-        //收集数据
-        if (drawPolygon.overlays.length != 0) {
-            $.each(drawPolygon.overlays, function (i, overlay) {
-                var obj = {path: overlay.getPath(), extData: overlay.getExtData()};
-                drawPolygon.jsonData.push(obj);
             });
         }
     };
@@ -433,15 +433,41 @@
         var box = drawPolygon.handleJquery(drawPolygon.box);
         box.modal("show");
         var frm = box.find("form");
-        frm.clearAll().initForm({id:e.target._amap_id});
+        frm.clearAll().initForm({pid: e.target._amap_id});
         drawPolygon.tempData = e.lnglat;
     };
 
+    /**
+     * 更新数据
+     */
     drawPolygon.updateExtData = function (data) {
         var overlays = drawPolygon.map.getAllOverlays();
-        $.each(overlays,function (i,overlay) {
-
+        $.each(overlays, function (i, overlay) {
+            if (overlay._amap_id == data.pid){
+                var item = overlay.getExtData() ;
+                if (item.title){
+                    $.each(item.title,function (j,n) {
+                        if (n.id == data.id){
+                            n.name = data.name;
+                        }
+                    }) ;
+                }else {
+                    item.title = [data] ;
+                }
+                overlay.setExtData(item) ;
+            }
         });
+    };
+
+    drawPolygon.getFormData = function () {
+        //收集数据
+        if (drawPolygon.overlays.length != 0) {
+            $.each(drawPolygon.overlays, function (i, overlay) {
+                var obj = {path: overlay.getPath(), extData: overlay.getExtData()};
+                drawPolygon.jsonData.push(obj);
+            });
+        }
+        return drawPolygon.jsonData;
     } ;
 
     drawPolygon.saveTitleData = function () {
