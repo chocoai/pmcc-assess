@@ -503,6 +503,9 @@ public class BasicBuildingService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-        return null;
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/photo/building");
+        BasicBuildingVo buildingVo = getBasicBuildingVoById(basicFormClassifyParamDto.getTbId());
+        modelAndView.addObject("basicBuilding", buildingVo);
+        return modelAndView;
     }
 }

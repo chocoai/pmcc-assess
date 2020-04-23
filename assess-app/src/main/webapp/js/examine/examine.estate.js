@@ -61,9 +61,13 @@
         }
     };
 
-    estateCommon.getUploadKey = function (bisDetail) {
-        estateCommon.getFilePartHtml(AssessDicKey.estateIndustrialFile, bisDetail);
-        estateCommon.getFilePartHtml(AssessDicKey.estateNonIndustrialFile, bisDetail);
+    estateCommon.getUploadKey = function (bisDetail,tbType) {
+        if(tbType=="estate.land"){
+            estateCommon.getFilePartHtml(AssessDicKey.estateLandEstateFile, bisDetail);
+        }else{
+            estateCommon.getFilePartHtml(AssessDicKey.estateIndustrialFile, bisDetail);
+            estateCommon.getFilePartHtml(AssessDicKey.estateNonIndustrialFile, bisDetail);
+        }
     };
 
     estateCommon.getFilePartHtml = function (fieldName, bisDetail) {
@@ -146,7 +150,7 @@
     };
 
     //楼盘初始化by applyId
-    estateCommon.initById = function (id, callback) {
+    estateCommon.initById = function (id, tbType,callback) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateMapById',
             type: 'get',
@@ -155,6 +159,7 @@
                 if (result.ret) {
                     var data = result.data;
                     var basicEstate = data.basicEstate;
+                    basicEstate.tbType = tbType;
                     var basicEstateLandState = data.basicEstateLandState;
                     estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
                     if (callback) {
@@ -166,7 +171,7 @@
     };
 
     //楼盘详情页面
-    estateCommon.initDetailById = function (id, callback, bisDetail) {
+    estateCommon.initDetailById = function (id, callback, bisDetail,tbType) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateMapById',
             type: 'get',
@@ -175,6 +180,7 @@
                 if (result.ret) {
                     var data = result.data;
                     var basicEstate = data.basicEstate;
+                    basicEstate.tbType = tbType;
                     var basicEstateLandState = data.basicEstateLandState;
                     estateCommon.initForm({estate: basicEstate, land: basicEstateLandState}, bisDetail);
                     if (callback) {
@@ -206,7 +212,7 @@
      * @param bisDetail 是否是详情页面
      */
     estateCommon.initForm = function (data, bisDetail) {
-        estateCommon.getUploadKey(bisDetail);
+        estateCommon.getUploadKey(bisDetail,data.estate.tbType);
         estateCommon.estateForm.clearAll().initForm(data.estate);
         estateCommon.estateForm.find('.x-percent').each(function () {
             $(this).attr('data-value', data.estate[$(this).attr('name')]);
@@ -280,13 +286,10 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_infrastructureCompleteness, data.estate.infrastructureCompleteness, function (html, data) {
             estateCommon.estateForm.find("select[name='infrastructureCompleteness']").empty().html(html).trigger('change');
         });
-
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
             estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
             estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id, bisDetail);
         });
-
-
         AssessCommon.loadDataDicByKey(AssessDicKey.estatePlaneness, data.land.planeness, function (html, data) {
             estateCommon.estateLandStateForm.find('select.planeness').empty().html(html).trigger('change');
         });
@@ -377,7 +380,11 @@
         } catch (e) {
             console.log(e) ;
         }
+        try {
+            estateVillageObj.init(data.estate.id);
+        } catch (e) {
 
+        }
     };
 
 
