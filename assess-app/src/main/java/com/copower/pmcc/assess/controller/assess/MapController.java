@@ -101,13 +101,13 @@ public class MapController {
     }
 
     @RequestMapping(value = "/drawPolygonMap", name = "地图多边形标注")
-    public ModelAndView drawPolygonMap(@RequestParam(defaultValue = "false") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String formData) {
-        ModelAndView modelAndView = new ModelAndView("base/drawPolygon");
+    public ModelAndView drawPolygonMap(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String formData) {
+        ModelAndView modelAndView = new ModelAndView();
         if (apply) {
-            modelAndView.addObject("apply", "apply");
+            modelAndView.setViewName("base/drawPolygon");
         }
         if (detail) {
-            modelAndView.addObject("detail", "detail");
+            modelAndView.setViewName("base/drawPolygonDetail");
         }
         if (StringUtils.isNotBlank(formData)){
             modelAndView.addObject("formData", "formData");
