@@ -464,8 +464,9 @@ public class BasicEstateService extends BasicEntityAbstract {
                 List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfos = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
                 if (org.apache.commons.collections.CollectionUtils.isNotEmpty(basicEstateLandCategoryInfos)) {
                     List<BigDecimal> bigDecimals = basicEstateLandCategoryInfos.stream().map(basicEstateLandCategoryInfo -> basicEstateLandCategoryInfo.getLandUseYear()).collect(Collectors.toList());
-                    if (org.apache.commons.collections.CollectionUtils.isNotEmpty(bigDecimals)) {
-                        commonQuoteFieldInfo.setLandUseYear(ArithmeticUtils.add(bigDecimals));
+                    List<BigDecimal> list = bigDecimals.stream().filter(oo -> oo != null).collect(Collectors.toList());
+                    if (org.apache.commons.collections.CollectionUtils.isNotEmpty(list)) {
+                        commonQuoteFieldInfo.setLandUseYear(ArithmeticUtils.add(list));
                     }
                 }
                 basicCommonQuoteFieldInfoService.addBasicCommonQuoteFieldInfo(commonQuoteFieldInfo);

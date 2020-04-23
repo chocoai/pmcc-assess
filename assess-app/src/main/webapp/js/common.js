@@ -443,6 +443,37 @@ $(function () {
                 });
             }
         },
+        loadAreaAsyncInfoByPidAndValue: function (pid, value,callback, async) {
+            if (pid) {
+                $.ajax({
+                    url: getContextPath() + "/area/getAreaList",
+                    type: "get",
+                    dataType: "json",
+                    async: async,
+                    data: {
+                        pid: pid
+                    },
+                    success: function (result) {
+                        if (result.ret && result.data) {
+                            var retHtml = '<option value="" >-请选择-</option>';
+                            $.each(result.data, function (i, item) {
+                                retHtml += '<option value="' + item.areaId + '"'
+                                if (item.areaId == value) {
+                                    retHtml += 'selected="selected"'
+                                }
+                                retHtml += '>' + item.name + '</option>'
+                            });
+                            if (callback) {
+                                callback(retHtml, result.data);
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                });
+            }
+        },
         //初始化区域信息
         initAreaInfo: function (options) {
             assessCommon.initAsyncAreaInfo(options, true);

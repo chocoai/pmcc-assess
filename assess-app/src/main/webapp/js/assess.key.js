@@ -140,6 +140,7 @@ AssessDicKey.dataDealType = "data.deal.type";//土地带房产
 //楼盘
 AssessDicKey.estateIndustrialFile = "industrialFile";//工业附件
 AssessDicKey.estateNonIndustrialFile = "nonIndustrialFile";//非工业附件
+AssessDicKey.estateLandEstateFile = "landEstateFile";//土地楼盘附件
 AssessDicKey.estate_position = "estate.position";//楼盘方位
 AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
 AssessDicKey.estateLandContaminated = "estate.land.contaminated";//	污染
