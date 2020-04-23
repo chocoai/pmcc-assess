@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class BasicCommonQuoteFieldInfo {
@@ -8,15 +7,15 @@ public class BasicCommonQuoteFieldInfo {
 
     private Integer applyBatchId;
 
+    private String type;
+
     private String tableName;
 
     private Integer tableId;
 
-    private Date openTime;
+    private String fieldKey;
 
-    private BigDecimal landUseYear;
-
-    private String type;
+    private String fieldValue;
 
     private Boolean bisDelete;
 
@@ -42,6 +41,14 @@ public class BasicCommonQuoteFieldInfo {
         this.applyBatchId = applyBatchId;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
     public String getTableName() {
         return tableName;
     }
@@ -58,28 +65,20 @@ public class BasicCommonQuoteFieldInfo {
         this.tableId = tableId;
     }
 
-    public Date getOpenTime() {
-        return openTime;
+    public String getFieldKey() {
+        return fieldKey;
     }
 
-    public void setOpenTime(Date openTime) {
-        this.openTime = openTime;
+    public void setFieldKey(String fieldKey) {
+        this.fieldKey = fieldKey == null ? null : fieldKey.trim();
     }
 
-    public BigDecimal getLandUseYear() {
-        return landUseYear;
+    public String getFieldValue() {
+        return fieldValue;
     }
 
-    public void setLandUseYear(BigDecimal landUseYear) {
-        this.landUseYear = landUseYear;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setFieldValue(String fieldValue) {
+        this.fieldValue = fieldValue == null ? null : fieldValue.trim();
     }
 
     public Boolean getBisDelete() {

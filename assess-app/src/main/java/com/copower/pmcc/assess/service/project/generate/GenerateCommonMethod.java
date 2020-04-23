@@ -4,23 +4,26 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.copower.pmcc.erp.common.utils.Reflections;
+import com.copower.pmcc.erp.common.utils.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -72,6 +75,17 @@ public class GenerateCommonMethod {
     private SchemeReportFileService schemeReportFileService;
     @Autowired
     private SurveyAssetInfoService surveyAssetInfoService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+
     public static final String SchemeJudgeObjectName = "委估对象";
 
 
@@ -172,35 +186,25 @@ public class GenerateCommonMethod {
     public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByAreaId(Integer areaId) throws Exception {
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getDeclareRecordId()));
-        if (CollectionUtils.isNotEmpty(declareRecords)) {
-            Map<String, List<Integer>> map = Maps.newHashMap();
-            for (DeclareRecord declareRecord : declareRecords) {
-                if (map.containsKey(declareRecord.getStreetNumber())) {
-                    List<Integer> list = map.get(declareRecord.getStreetNumber());
-                    list.add(declareRecord.getId());
-                    map.put(declareRecord.getStreetNumber(), list);
-                } else {
-                    map.put(declareRecord.getStreetNumber(), Lists.newArrayList(declareRecord.getId()));
-                }
+        if(CollectionUtils.isEmpty(schemeJudgeObjectList)) return listLinkedHashMap;
+        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(schemeJudgeObjectList,o->o.getBasicApplyId()));
+        if(CollectionUtils.isEmpty(basicApplyList)) return listLinkedHashMap;
+        List<Integer> batchDetailIds=LangUtils.transform(basicApplyList,o->o.getBatchDetailId());
+        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(batchDetailIds, BasicFormClassifyEnum.ESTATE.getKey());
+        if(CollectionUtils.isEmpty(batchDetailList)) return listLinkedHashMap;
+        for (BasicApplyBatchDetail basicApplyBatchDetail : batchDetailList) {
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatchDetail.getTableId());
+            List<BasicApplyBatchDetail> batchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(BasicFormClassifyEnum.HOUSE.getKey(), basicApplyBatchDetail.getApplyBatchId(), null, false);
+            if(CollectionUtils.isEmpty(batchDetails)) continue;
+            List<BasicApply> applyList = basicApplyService.getBasicApplysByBatchDetailIds(LangUtils.transform(batchDetails, o -> o.getId()));
+            if(CollectionUtils.isEmpty(applyList)) continue;
+            List<Integer> applyIds=LangUtils.transform(applyList,o->o.getId());
+            List<SchemeJudgeObject> judgeObjectList=Lists.newArrayList();
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if(applyIds.contains(schemeJudgeObject.getBasicApplyId()))
+                    judgeObjectList.add(schemeJudgeObject);
             }
-            for (Map.Entry<String, List<Integer>> stringListEntry : map.entrySet()) {
-                List<Integer> integerList = stringListEntry.getValue();
-                for (Integer integer : integerList) {
-                    List<BasicApply> basicApplyList = surveyCommonService.getSceneExploreBasicApplyList(integer) ;
-                    if (CollectionUtils.isNotEmpty(basicApplyList)){
-                       for ( BasicApply basicApply :basicApplyList){
-                           GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                           BasicEstate basicEstate = generateBaseExamineService.getEstate();
-                           if (basicEstate == null){
-                               continue;
-                           }
-                           listLinkedHashMap.put(basicEstate, schemeJudgeObjectService.getListByDeclareIds(stringListEntry.getValue()));
-                           break;
-                       }
-                    }
-                }
-            }
+            listLinkedHashMap.put(basicEstate, judgeObjectList);
         }
         return listLinkedHashMap;
     }

@@ -4,11 +4,11 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicCommonQuoteFieldInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="apply_batch_id" property="applyBatchId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="table_name" property="tableName" jdbcType="VARCHAR" />
     <result column="table_id" property="tableId" jdbcType="INTEGER" />
-    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
-    <result column="land_use_year" property="landUseYear" jdbcType="DECIMAL" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="field_key" property="fieldKey" jdbcType="VARCHAR" />
+    <result column="field_value" property="fieldValue" jdbcType="VARCHAR" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -73,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_batch_id, table_name, table_id, open_time, land_use_year, type, bis_delete, 
+    id, apply_batch_id, type, table_name, table_id, field_key, field_value, bis_delete, 
     creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicCommonQuoteFieldInfoExample" >
@@ -110,12 +110,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_common_quote_field_info (apply_batch_id, table_name, table_id, 
-      open_time, land_use_year, type, 
+    insert into tb_basic_common_quote_field_info (apply_batch_id, type, table_name, 
+      table_id, field_key, field_value, 
       bis_delete, creator, gmt_created, 
       gmt_modified)
-    values (#{applyBatchId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, 
-      #{openTime,jdbcType=TIMESTAMP}, #{landUseYear,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR}, 
+    values (#{applyBatchId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, 
+      #{tableId,jdbcType=INTEGER}, #{fieldKey,jdbcType=VARCHAR}, #{fieldValue,jdbcType=VARCHAR}, 
       #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -128,20 +128,20 @@
       <if test="applyBatchId != null" >
         apply_batch_id,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
       <if test="tableName != null" >
         table_name,
       </if>
       <if test="tableId != null" >
         table_id,
       </if>
-      <if test="openTime != null" >
-        open_time,
+      <if test="fieldKey != null" >
+        field_key,
       </if>
-      <if test="landUseYear != null" >
-        land_use_year,
-      </if>
-      <if test="type != null" >
-        type,
+      <if test="fieldValue != null" >
+        field_value,
       </if>
       <if test="bisDelete != null" >
         bis_delete,
@@ -160,20 +160,20 @@
       <if test="applyBatchId != null" >
         #{applyBatchId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
       <if test="tableName != null" >
         #{tableName,jdbcType=VARCHAR},
       </if>
       <if test="tableId != null" >
         #{tableId,jdbcType=INTEGER},
       </if>
-      <if test="openTime != null" >
-        #{openTime,jdbcType=TIMESTAMP},
+      <if test="fieldKey != null" >
+        #{fieldKey,jdbcType=VARCHAR},
       </if>
-      <if test="landUseYear != null" >
-        #{landUseYear,jdbcType=DECIMAL},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
+      <if test="fieldValue != null" >
+        #{fieldValue,jdbcType=VARCHAR},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -204,20 +204,20 @@
       <if test="record.applyBatchId != null" >
         apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
       <if test="record.tableName != null" >
         table_name = #{record.tableName,jdbcType=VARCHAR},
       </if>
       <if test="record.tableId != null" >
         table_id = #{record.tableId,jdbcType=INTEGER},
       </if>
-      <if test="record.openTime != null" >
-        open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      <if test="record.fieldKey != null" >
+        field_key = #{record.fieldKey,jdbcType=VARCHAR},
       </if>
-      <if test="record.landUseYear != null" >
-        land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
+      <if test="record.fieldValue != null" >
+        field_value = #{record.fieldValue,jdbcType=VARCHAR},
       </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
@@ -240,11 +240,11 @@
     update tb_basic_common_quote_field_info
     set id = #{record.id,jdbcType=INTEGER},
       apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
       table_name = #{record.tableName,jdbcType=VARCHAR},
       table_id = #{record.tableId,jdbcType=INTEGER},
-      open_time = #{record.openTime,jdbcType=TIMESTAMP},
-      land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
-      type = #{record.type,jdbcType=VARCHAR},
+      field_key = #{record.fieldKey,jdbcType=VARCHAR},
+      field_value = #{record.fieldValue,jdbcType=VARCHAR},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -259,20 +259,20 @@
       <if test="applyBatchId != null" >
         apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
       <if test="tableName != null" >
         table_name = #{tableName,jdbcType=VARCHAR},
       </if>
       <if test="tableId != null" >
         table_id = #{tableId,jdbcType=INTEGER},
       </if>
-      <if test="openTime != null" >
-        open_time = #{openTime,jdbcType=TIMESTAMP},
+      <if test="fieldKey != null" >
+        field_key = #{fieldKey,jdbcType=VARCHAR},
       </if>
-      <if test="landUseYear != null" >
-        land_use_year = #{landUseYear,jdbcType=DECIMAL},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
+      <if test="fieldValue != null" >
+        field_value = #{fieldValue,jdbcType=VARCHAR},
       </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
@@ -292,11 +292,11 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicCommonQuoteFieldInfo" >
     update tb_basic_common_quote_field_info
     set apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
       table_name = #{tableName,jdbcType=VARCHAR},
       table_id = #{tableId,jdbcType=INTEGER},
-      open_time = #{openTime,jdbcType=TIMESTAMP},
-      land_use_year = #{landUseYear,jdbcType=DECIMAL},
-      type = #{type,jdbcType=VARCHAR},
+      field_key = #{fieldKey,jdbcType=VARCHAR},
+      field_value = #{fieldValue,jdbcType=VARCHAR},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

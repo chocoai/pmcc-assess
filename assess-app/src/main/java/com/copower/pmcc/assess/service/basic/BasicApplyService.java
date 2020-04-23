@@ -125,4 +125,9 @@ public class BasicApplyService {
         List<BasicApply> list = basicApplyDao.getBasicApplysByBatchDetailIds(batchDetailIds);
         return LangUtils.transform(list,o->o.getDeclareRecordId());
     }
+
+    public List<BasicApply> getBasicApplysByBatchDetailIds(List<Integer> batchDetailIds) {
+        List<BasicApply> list = basicApplyDao.getBasicApplysByBatchDetailIds(batchDetailIds);
+        return list;
+    }
 }

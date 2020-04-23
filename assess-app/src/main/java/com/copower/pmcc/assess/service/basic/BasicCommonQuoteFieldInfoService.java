@@ -46,27 +46,8 @@ public class BasicCommonQuoteFieldInfoService {
     @Autowired
     private BasicCommonQuoteFieldInfoDao basicCommonQuoteFieldInfoDao;
     @Autowired
-    private BaseDataDicService baseDataDicService;
-    @Autowired
     private CommonService commonService;
-    @Autowired
-    private PublicService publicService;
-    @Autowired
-    private BasicApplyBatchService basicApplyBatchService;
-    @Autowired
-    private BasicEstateService basicEstateService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    /**
-     * 获取数据
-     *
-     * @param id
-     * @return
-     * @throws Exception
-     */
-    public BasicCommonQuoteFieldInfo getBasicCommonQuoteFieldInfoById(Integer id) throws Exception {
-        return basicCommonQuoteFieldInfoDao.getBasicCommonQuoteFieldInfoById(id);
-    }
 
     /**
      * 新增或者修改
@@ -113,144 +94,59 @@ public class BasicCommonQuoteFieldInfoService {
         return flag;
     }
 
-    public void addBasicCommonQuoteFieldInfo(BasicCommonQuoteFieldInfo info) {
-        BasicCommonQuoteFieldInfo query = new BasicCommonQuoteFieldInfo();
-        query.setApplyBatchId(info.getApplyBatchId());
-        query.setType(info.getType());
-        query.setTableName(info.getTableName());
-        query.setTableId(info.getTableId());
-        List<BasicCommonQuoteFieldInfo> fieldInfos = basicCommonQuoteFieldInfoList(query);
-        if (CollectionUtils.isNotEmpty(fieldInfos)) {
-            info.setId(fieldInfos.get(0).getId());
-        }
-        saveAndUpdateBasicCommonQuoteFieldInfo(info, false);
-    }
-
-
     /**
-     * 楼栋
-     *
+     * 设值
      * @param applyBatchId
-     * @param tableName
-     * @param obj
+     * @param quoteFieldEnum
+     * @param value
      */
-    public void settingBuildingObjValue(Integer applyBatchId, String tableName, Object obj) {
-        if (applyBatchId == null) {
-            return;
-        }
-        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
-        if (basicApplyBatch == null) {
-            return;
-        }
-        if (basicApplyBatch.getEstateId() == null) {
-            return;
-        }
-        settingObjValue(applyBatchId, tableName, basicApplyBatch.getEstateId(), obj);
+    public void setValue(Integer applyBatchId,String type,ExamineCommonQuoteFieldEnum quoteFieldEnum,String value){
+        setValue(applyBatchId,type,quoteFieldEnum,value,null,null);
     }
 
     /**
-     * 普通引用
-     *
+     * 设值
      * @param applyBatchId
-     * @param tableName    如楼盘表名
-     * @param tableId      如楼盘id
-     * @param obj          如楼栋对象
+     * @param quoteFieldEnum
+     * @param value
      */
-    public void settingObjValue(Integer applyBatchId, String tableName, Integer tableId, Object obj) {
-        if (applyBatchId == null) {
-            return;
-        }
-        if (obj == null) {
-            return;
-        }
-        BasicCommonQuoteFieldInfo query = new BasicCommonQuoteFieldInfo();
-        query.setApplyBatchId(applyBatchId);
-        query.setTableName(tableName);
-        query.setTableId(tableId);
-        List<BasicCommonQuoteFieldInfo> basicCommonQuoteFieldInfos = basicCommonQuoteFieldInfoList(query);
-        if (CollectionUtils.isEmpty(basicCommonQuoteFieldInfos)) {
-            return;
-        }
-        Iterator<BasicCommonQuoteFieldInfo> iterator = basicCommonQuoteFieldInfos.iterator();
-        while (iterator.hasNext()) {
-            BasicCommonQuoteFieldInfo commonQuoteFieldInfo = iterator.next();
-
-            //目前考虑楼盘的公共字段  引用到楼栋中去使用
-            if (Objects.equal(commonQuoteFieldInfo.getTableName(), BasicFormClassifyEnum.ESTATE.getTableName())) {
-                invokeSetter(obj, ExamineCommonQuoteFieldEnum.COMMON_QUOTE_OPENTIME_ENUM.getKey(), commonQuoteFieldInfo.getOpenTime());
-                invokeSetter(obj, ExamineCommonQuoteFieldEnum.COMMON_QUOTE_LANDUSEYEAR_ENUM.getKey(), commonQuoteFieldInfo.getLandUseYear());
-            }
-
-            //
-
-        }
-    }
-
-    public void settingObjValue(Integer applyBatchId, String tableName, Integer tableId, Object obj, ExamineCommonQuoteFieldEnum examineCommonQuoteFieldEnum) {
-        BasicCommonQuoteFieldInfo query = new BasicCommonQuoteFieldInfo();
-        query.setApplyBatchId(applyBatchId);
-        query.setTableName(tableName);
-        query.setTableId(tableId);
-        List<BasicCommonQuoteFieldInfo> basicCommonQuoteFieldInfos = basicCommonQuoteFieldInfoList(query);
-        if (CollectionUtils.isEmpty(basicCommonQuoteFieldInfos)) {
-            return;
-        }
-        Iterator<BasicCommonQuoteFieldInfo> iterator = basicCommonQuoteFieldInfos.iterator();
-        while (iterator.hasNext()) {
-            BasicCommonQuoteFieldInfo commonQuoteFieldInfo = iterator.next();
-
-            //目前考虑楼盘的公共字段  引用到楼栋中去使用
-            if (Objects.equal(commonQuoteFieldInfo.getTableName(), BasicFormClassifyEnum.ESTATE.getTableName())) {
-                invokeSetter(obj, examineCommonQuoteFieldEnum.getKey(), commonQuoteFieldInfo.getOpenTime());
-            }
-
-            //
-
-        }
-    }
-
-
-    private void invokeSetter(Object target, String propertyName, Object value) {
-        if (value == null || propertyName == null || target == null) {
-            return;
-        }
-        try {
-            Reflections.invokeSetter(target, propertyName, value);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
+    public void setValue(Integer applyBatchId,String type,ExamineCommonQuoteFieldEnum quoteFieldEnum,String value,String tableName,Integer tableId){
+        if(StringUtils.isBlank(value)) return;
+        BasicCommonQuoteFieldInfo info=new BasicCommonQuoteFieldInfo();
+        info.setApplyBatchId(applyBatchId);
+        info.setType(type);
+        info.setTableName(tableName);
+        info.setTableId(tableId);
+        info.setFieldKey(quoteFieldEnum.getKey());
+        info.setFieldValue(value);
+        saveAndUpdateBasicCommonQuoteFieldInfo(info,false);
     }
 
     /**
-     * 获取数据列表
-     *
-     * @param basicCommonQuoteFieldInfo
+     * 取值
+     * @param applyBatchId
+     * @param quoteFieldEnum
      * @return
-     * @throws Exception
      */
-    public List<BasicCommonQuoteFieldInfo> basicCommonQuoteFieldInfoList(BasicCommonQuoteFieldInfo basicCommonQuoteFieldInfo) {
-        return basicCommonQuoteFieldInfoDao.basicCommonQuoteFieldInfoList(basicCommonQuoteFieldInfo);
+    public String getValue(Integer applyBatchId,ExamineCommonQuoteFieldEnum quoteFieldEnum){
+        return getValue(applyBatchId,quoteFieldEnum,null,null,null);
     }
 
-    public List<BasicCommonQuoteFieldInfo> getCommonQuoteInfoByApplyBatchId(Integer applyBatchId, String type) {
-        BasicCommonQuoteFieldInfo query = new BasicCommonQuoteFieldInfo();
-        query.setApplyBatchId(applyBatchId);
-        if (StringUtils.isNotBlank(type)) {
-            query.setType(type);
-        }
-        return basicCommonQuoteFieldInfoList(query);
+    /**
+     * 取值
+     * @param applyBatchId
+     * @param quoteFieldEnum
+     * @return
+     */
+    public String getValue(Integer applyBatchId,ExamineCommonQuoteFieldEnum quoteFieldEnum,String type,String tableName,Integer tableId){
+        BasicCommonQuoteFieldInfo where=new BasicCommonQuoteFieldInfo();
+        where.setApplyBatchId(applyBatchId);
+        where.setFieldKey(quoteFieldEnum.getKey());
+        where.setType(type);
+        where.setTableName(tableName);
+        where.setTableId(tableId);
+        List<BasicCommonQuoteFieldInfo> list = basicCommonQuoteFieldInfoDao.basicCommonQuoteFieldInfoList(where);
+        if(CollectionUtils.isEmpty(list)) return null;
+        return list.get(0).getFieldValue();
     }
-
-
-    public BootstrapTableVo getBootstrapTableVo(BasicCommonQuoteFieldInfo basicCommonQuoteFieldInfo) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicCommonQuoteFieldInfo> basicCommonQuoteFieldInfoList = basicCommonQuoteFieldInfoDao.basicCommonQuoteFieldInfoList(basicCommonQuoteFieldInfo);
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicCommonQuoteFieldInfoList) ? new ArrayList<BasicCommonQuoteFieldInfo>(10) : basicCommonQuoteFieldInfoList);
-        return vo;
-    }
-
-
 }

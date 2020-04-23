@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineCommonQuoteFieldEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
@@ -25,6 +27,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -134,8 +137,19 @@ public class BasicApplyBatchDetailService {
                 if (basicEstate != null)
                     building.setEstateId(basicEstate.getId());
                 building.setBuildingName(basicApplyBatchDetail.getDisplayName());
-                //引用楼盘中的公共数据字段 目前添加2个
-                basicCommonQuoteFieldInfoService.settingBuildingObjValue(basicApplyBatchDetail.getApplyBatchId(),BasicFormClassifyEnum.ESTATE.getTableName(),building);
+
+                String value = basicCommonQuoteFieldInfoService.getValue(basicApplyBatchDetail.getApplyBatchId(), ExamineCommonQuoteFieldEnum.OPEN_TIME_ENUM);
+                if(StringUtils.isNotBlank(value)){
+                    building.setOpenTime(DateUtils.convertDate(value));
+                }
+                value = basicCommonQuoteFieldInfoService.getValue(basicApplyBatchDetail.getApplyBatchId(), ExamineCommonQuoteFieldEnum.COVER_AN_AREA);
+                if(StringUtils.isNotBlank(value)){
+                    building.setCoverAnArea(new BigDecimal(value));
+                }
+                value = basicCommonQuoteFieldInfoService.getValue(basicApplyBatchDetail.getApplyBatchId(), ExamineCommonQuoteFieldEnum.LAND_USE_YEAR_ENUM);
+                if(StringUtils.isNotBlank(value)){
+                    building.setLandUseYear(new BigDecimal(value));
+                }
 
                 basicBuildingService.saveAndUpdate(building, false);
                 basicApplyBatchDetail.setTableId(building.getId());

@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.common.enums.basic.ExamineCommonQuoteFieldEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
@@ -454,21 +455,15 @@ public class BasicEstateService extends BasicEntityAbstract {
                     basicApplyBatch.setEstateName(basicEstate.getName());
                     basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
                 }
+
                 //添加公共引用
-                BasicCommonQuoteFieldInfo commonQuoteFieldInfo = new BasicCommonQuoteFieldInfo();
-                commonQuoteFieldInfo.setTableId(basicEstate.getId());
-                commonQuoteFieldInfo.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-                commonQuoteFieldInfo.setType(estateDetail.getType());
-                commonQuoteFieldInfo.setApplyBatchId(estateDetail.getApplyBatchId());
-                commonQuoteFieldInfo.setOpenTime(basicEstate.getOpenTime());
+                basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.OPEN_TIME_ENUM, DateUtils.formatDate(basicEstate.getOpenTime()));
+                basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.COVER_AN_AREA, String.valueOf(basicEstate.getCoverAnArea()));
                 List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfos = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
-                if (org.apache.commons.collections.CollectionUtils.isNotEmpty(basicEstateLandCategoryInfos)) {
-                    List<BigDecimal> bigDecimals = basicEstateLandCategoryInfos.stream().map(basicEstateLandCategoryInfo -> basicEstateLandCategoryInfo.getLandUseYear()).collect(Collectors.toList());
-                    if (org.apache.commons.collections.CollectionUtils.isNotEmpty(bigDecimals)) {
-                        commonQuoteFieldInfo.setLandUseYear(ArithmeticUtils.add(bigDecimals));
-                    }
+                if (!CollectionUtils.isEmpty(basicEstateLandCategoryInfos)) {
+                    BigDecimal landUseYear = basicEstateLandCategoryInfos.get(0).getLandUseYear();
+                    basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.LAND_USE_YEAR_ENUM, String.valueOf(landUseYear));
                 }
-                basicCommonQuoteFieldInfoService.addBasicCommonQuoteFieldInfo(commonQuoteFieldInfo);
             }
         }
         return basicEstate.getId();

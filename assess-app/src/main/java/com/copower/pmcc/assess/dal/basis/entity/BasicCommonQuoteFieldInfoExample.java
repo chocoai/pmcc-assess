@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -226,6 +225,76 @@ public class BasicCommonQuoteFieldInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(String value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(String value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(String value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(String value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(String value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLike(String value) {
+            addCriterion("type like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotLike(String value) {
+            addCriterion("type not like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<String> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<String> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(String value1, String value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(String value1, String value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andTableNameIsNull() {
             addCriterion("table_name is null");
             return (Criteria) this;
@@ -356,193 +425,143 @@ public class BasicCommonQuoteFieldInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeIsNull() {
-            addCriterion("open_time is null");
+        public Criteria andFieldKeyIsNull() {
+            addCriterion("field_key is null");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeIsNotNull() {
-            addCriterion("open_time is not null");
+        public Criteria andFieldKeyIsNotNull() {
+            addCriterion("field_key is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeEqualTo(Date value) {
-            addCriterion("open_time =", value, "openTime");
+        public Criteria andFieldKeyEqualTo(String value) {
+            addCriterion("field_key =", value, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeNotEqualTo(Date value) {
-            addCriterion("open_time <>", value, "openTime");
+        public Criteria andFieldKeyNotEqualTo(String value) {
+            addCriterion("field_key <>", value, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeGreaterThan(Date value) {
-            addCriterion("open_time >", value, "openTime");
+        public Criteria andFieldKeyGreaterThan(String value) {
+            addCriterion("field_key >", value, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("open_time >=", value, "openTime");
+        public Criteria andFieldKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("field_key >=", value, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeLessThan(Date value) {
-            addCriterion("open_time <", value, "openTime");
+        public Criteria andFieldKeyLessThan(String value) {
+            addCriterion("field_key <", value, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeLessThanOrEqualTo(Date value) {
-            addCriterion("open_time <=", value, "openTime");
+        public Criteria andFieldKeyLessThanOrEqualTo(String value) {
+            addCriterion("field_key <=", value, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeIn(List<Date> values) {
-            addCriterion("open_time in", values, "openTime");
+        public Criteria andFieldKeyLike(String value) {
+            addCriterion("field_key like", value, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeNotIn(List<Date> values) {
-            addCriterion("open_time not in", values, "openTime");
+        public Criteria andFieldKeyNotLike(String value) {
+            addCriterion("field_key not like", value, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeBetween(Date value1, Date value2) {
-            addCriterion("open_time between", value1, value2, "openTime");
+        public Criteria andFieldKeyIn(List<String> values) {
+            addCriterion("field_key in", values, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andOpenTimeNotBetween(Date value1, Date value2) {
-            addCriterion("open_time not between", value1, value2, "openTime");
+        public Criteria andFieldKeyNotIn(List<String> values) {
+            addCriterion("field_key not in", values, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearIsNull() {
-            addCriterion("land_use_year is null");
+        public Criteria andFieldKeyBetween(String value1, String value2) {
+            addCriterion("field_key between", value1, value2, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearIsNotNull() {
-            addCriterion("land_use_year is not null");
+        public Criteria andFieldKeyNotBetween(String value1, String value2) {
+            addCriterion("field_key not between", value1, value2, "fieldKey");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearEqualTo(BigDecimal value) {
-            addCriterion("land_use_year =", value, "landUseYear");
+        public Criteria andFieldValueIsNull() {
+            addCriterion("field_value is null");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearNotEqualTo(BigDecimal value) {
-            addCriterion("land_use_year <>", value, "landUseYear");
+        public Criteria andFieldValueIsNotNull() {
+            addCriterion("field_value is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearGreaterThan(BigDecimal value) {
-            addCriterion("land_use_year >", value, "landUseYear");
+        public Criteria andFieldValueEqualTo(String value) {
+            addCriterion("field_value =", value, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("land_use_year >=", value, "landUseYear");
+        public Criteria andFieldValueNotEqualTo(String value) {
+            addCriterion("field_value <>", value, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearLessThan(BigDecimal value) {
-            addCriterion("land_use_year <", value, "landUseYear");
+        public Criteria andFieldValueGreaterThan(String value) {
+            addCriterion("field_value >", value, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("land_use_year <=", value, "landUseYear");
+        public Criteria andFieldValueGreaterThanOrEqualTo(String value) {
+            addCriterion("field_value >=", value, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearIn(List<BigDecimal> values) {
-            addCriterion("land_use_year in", values, "landUseYear");
+        public Criteria andFieldValueLessThan(String value) {
+            addCriterion("field_value <", value, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearNotIn(List<BigDecimal> values) {
-            addCriterion("land_use_year not in", values, "landUseYear");
+        public Criteria andFieldValueLessThanOrEqualTo(String value) {
+            addCriterion("field_value <=", value, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("land_use_year between", value1, value2, "landUseYear");
+        public Criteria andFieldValueLike(String value) {
+            addCriterion("field_value like", value, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andLandUseYearNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("land_use_year not between", value1, value2, "landUseYear");
+        public Criteria andFieldValueNotLike(String value) {
+            addCriterion("field_value not like", value, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
+        public Criteria andFieldValueIn(List<String> values) {
+            addCriterion("field_value in", values, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
+        public Criteria andFieldValueNotIn(List<String> values) {
+            addCriterion("field_value not in", values, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(String value) {
-            addCriterion("type =", value, "type");
+        public Criteria andFieldValueBetween(String value1, String value2) {
+            addCriterion("field_value between", value1, value2, "fieldValue");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(String value) {
-            addCriterion("type <>", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThan(String value) {
-            addCriterion("type >", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("type >=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThan(String value) {
-            addCriterion("type <", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThanOrEqualTo(String value) {
-            addCriterion("type <=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLike(String value) {
-            addCriterion("type like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("type not like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<String> values) {
-            addCriterion("type in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotIn(List<String> values) {
-            addCriterion("type not in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeBetween(String value1, String value2) {
-            addCriterion("type between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotBetween(String value1, String value2) {
-            addCriterion("type not between", value1, value2, "type");
+        public Criteria andFieldValueNotBetween(String value1, String value2) {
+            addCriterion("field_value not between", value1, value2, "fieldValue");
             return (Criteria) this;
         }
 
