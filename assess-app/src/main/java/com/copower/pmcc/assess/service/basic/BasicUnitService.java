@@ -419,6 +419,8 @@ public class BasicUnitService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-        return null;
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/photo/unit");
+        modelAndView.addObject("basicUnit", getBasicUnitById(basicFormClassifyParamDto.getTbId()));
+        return modelAndView;
     }
 }
