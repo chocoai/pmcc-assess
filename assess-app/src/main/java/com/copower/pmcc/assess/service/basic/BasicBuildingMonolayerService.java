@@ -103,6 +103,8 @@ public class BasicBuildingMonolayerService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-        return null;
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/photo/buildingMonolayer");
+        modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingVoById(basicFormClassifyParamDto.getTbId()));
+        return modelAndView;
     }
 }
