@@ -17,7 +17,6 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <%@include file="landLevelBase.jsp" %>
-
                             </div>
                         </div>
                     </div>
@@ -35,185 +34,139 @@
         </div>
     </div>
 </div>
-
-
 <div id="treeLandLevelDetailListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+    <div class="modal-dialog modal-lg" style="max-width: 85%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">基准地价详情</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                     <div class="row">
                         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                            <ul id="treeLandLevelDetail" class="ztree"></ul>
+                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                    data-permission="permission"
+                                    data-toggle="modal" onclick="landLevel.addLandLevelDetail()"
+                                    href="#land_level_detail_modal">
+                                新增
+                            </button>
+                            <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
+                                    data-permission="permission"
+                                    data-toggle="modal" onclick="zTreeOnEdit()"
+                                    href="#land_level_detail_modal">
+                                编辑
+                            </button>
+                            <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
+                                    data-permission="permission"
+                                    onclick="zTreeOnRemove()">
+                                删除
+                            </button>
+                            <button type="button" style="margin-left: 5px"  class="btn btn-sm btn-primary " onclick="landLevel.treeRefresh();">
+                                刷新
+                            </button>
+                            <button style="margin-left: 5px;margin-top: 5px;" class="btn btn-primary btn-sm" type="button"
+                                    onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
+                                容积率系数
+                            </button>
+                            <button style="margin-left: 5px;margin-top: 5px;" class="btn btn-primary btn-sm" type="button"
+                                    onclick="landLevel.showDataLandDetailAchievementDetail();">
+                                土地因素
+                            </button>
+                            <ul id="treeLandLevelDetail" class="ztree" style="max-height: 260px;overflow: auto;"></ul>
                         </div>
                         <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
-                            <div class="card-body">
-                                <form class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    平方价
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class=" form-control input-full" name="price"></label>
-                                                </div>
-                                                <label class="col-sm-1 col-form-label">
-                                                    每亩单价
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class=" form-control input-full" name="muPrice"></label>
-                                                </div>
-                                                <label class="col-sm-1 col-form-label">
-                                                    标准容积率
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class=" form-control input-full" name="volumeRate"></label>
-                                                </div>
+                            <form class="form-horizontal">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-sm-3">
+                                                <select name="classify"
+                                                        class="form-control input-full">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <select name="type"
+                                                        class="form-control input-full search-select select2"
+                                                        multiple="multiple">
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <select name="factorType" multiple="multiple" class="form-control input-full search-select select2">
+                                                    <option value="因素">因素</option>
+                                                    <option value="系数">系数</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" data-permission="permission"
+                                                        onclick="landLevel.downloadDataLandDetailAchievementFile(this);">
+                                                    模板下载
+                                                </button>
+                                                <button style="margin-left: 5px" class="btn btn-info btn-sm" type="button" data-permission="permission"
+                                                        onclick="landLevel.importDataLandDetailAchievement(true);">
+                                                    数据上传
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-
-
-                                                <label class="col-sm-1 col-form-label">
-                                                    征地比例
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class=" form-control input-full"
-                                                           name="landAcquisitionProportion"></label>
-                                                </div>
-
-                                                <label class="col-sm-1 col-form-label">
-                                                    法定使用年限
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class=" form-control input-full" name="legalAge"></label>
-                                                </div>
+                                </div>
+                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 col-form-label">
+                                                平方价
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class=" form-control input-full" name="price"></label>
+                                            </div>
+                                            <label class="col-sm-1 col-form-label">
+                                                每亩单价
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class=" form-control input-full" name="muPrice"></label>
+                                            </div>
+                                            <label class="col-sm-1 col-form-label">
+                                                标准容积率
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class=" form-control input-full" name="volumeRate"></label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    大类
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <select name="classify"
-                                                            class="form-control input-full">
-                                                    </select>
-                                                </div>
-                                                <label class="col-sm-1 col-form-label">
-                                                    级别
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <select name="type"
-                                                            class="form-control input-full search-select select2"
-                                                            multiple="multiple">
-                                                    </select>
-                                                </div>
-                                                <label class="col-sm-1 col-form-label">
-                                                    导入类型
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <select name="factorType" multiple="multiple"
-                                                            class="form-control input-full search-select select2">
-                                                        <option value="">请选择</option>
-                                                        <option value="因素">因素</option>
-                                                        <option value="系数">系数</option>
-                                                    </select>
-                                                </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 col-form-label">
+                                                征地比例
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class=" form-control input-full"
+                                                       name="landAcquisitionProportion"></label>
+                                            </div>
+                                            <label class="col-sm-1 col-form-label">
+                                                法定使用年限
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class=" form-control input-full" name="legalAge"></label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-permission="permission"
-                                                data-toggle="modal" onclick="landLevel.addLandLevelDetail()"
-                                                href="#land_level_detail_modal">
-											<span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                            新增
-                                        </button>
-                                        <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
-                                                data-permission="permission"
-                                                data-toggle="modal" onclick="zTreeOnEdit()"
-                                                href="#land_level_detail_modal">
-											<span class="btn-label">
-												<i class="fa fa-pen"></i>
-											</span>
-                                            编辑
-                                        </button>
-                                        <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
-                                                data-permission="permission"
-                                                onclick="zTreeOnRemove()">
-											<span class="btn-label">
-												<i class="fa fa-minus"></i>
-											</span>
-                                            删除
-                                        </button>
-
-                                        <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
-                                                onclick="landLevel.treeExpandAll(true);">
-                                            全部展开
-                                        </button>
-
-                                        <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
-                                                onclick="landLevel.treeExpandAll(false);">
-                                            全部收起
-                                        </button>
-                                        <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
-                                                onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
-                                            容积率系数
-                                        </button>
-                                        <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
-                                                onclick="landLevel.showDataLandDetailAchievementDetail();">
-                                            土地因素
-                                        </button>
-                                        <button type="button" style="margin-left: 5px"  class="btn btn-sm btn-primary " onclick="landLevel.treeRefresh();">
-                                            刷新
-                                        </button>
-                                    </div>
-                                    <div class="row form-group">
-
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-permission="permission"
-                                                onclick="landLevel.downloadDataLandDetailAchievementFile(this);">
-											<span class="btn-label">
-												<i class="fa fa-cloud-download-alt"></i>
-											</span>
-                                            模板下载
-                                        </button>
-
-                                        <button style="margin-left: 5px" class="btn btn-info btn-sm" type="button"
-                                                data-permission="permission"
-                                                onclick="landLevel.importDataLandDetailAchievement(true);">
-											<span class="btn-label">
-												<i class="fa fa-cloud-upload-alt"></i>
-											</span>
-                                            数据上传
-                                        </button>
-
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -374,12 +327,9 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>
-
-
 <div id="achievementBoxDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -389,40 +339,23 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="hidden" name="levelDetailId">
-                        <div class="card-body">
-                            <form class="form-horizontal">
-                                <div class="row form-group">
-                                    <div class="col-md-2">
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-toggle="modal" onclick="landLevel.showDataLandDetailAchievement()"
-                                                href="#achievementBox">
-											<span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                            新增
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-
-                            <table class="table table-bordered" id="achievementTable">
-                                <!-- cerare document add ajax data-->
-                            </table>
+                <input type="hidden" name="levelDetailId">
+                <form class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-md-2">
+                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                    data-toggle="modal" href="#achievementBox">
+                                <span class="btn-label"><i class="fa fa-plus"></i></span>新增
+                            </button>
                         </div>
                     </div>
-                </div>
+                </form>
+                <table class="table table-bordered" id="achievementTable"></table>
             </div>
-
         </div>
     </div>
 </div>
-
-
 <div id="achievementBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -432,7 +365,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="achievementFrm" class="form-horizontal">
                     <input type="hidden" name="id">

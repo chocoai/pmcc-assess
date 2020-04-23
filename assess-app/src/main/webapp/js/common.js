@@ -352,8 +352,8 @@ $(function () {
         },
 
         //根据key获取字典信息
-        loadDataDicByKey: function (key, value, callback) {
-            this.loadAsyncDataDicByKey(key, value, callback, true);
+        loadDataDicByKey: function (key, value, callback,initHtml) {
+            this.loadNewAsyncDataDicByKey(key, value, callback, true,initHtml);
         },
         //根据key获取字典信息
         loadAsyncDataDicByKey: function (key, value, callback, async) {
