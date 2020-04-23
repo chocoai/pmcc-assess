@@ -103,8 +103,8 @@ public class MapController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/drawPolygonMap", name = "地图多边形标注")
-    public ModelAndView drawPolygonMap(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String formData) {
+    @RequestMapping(value = "/drawPolygon", name = "地图多边形标注 地图着色备注")
+    public ModelAndView drawPolygon(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String formData) {
         ModelAndView modelAndView = new ModelAndView();
         if (apply) {
             modelAndView.setViewName("base/drawPolygon");
@@ -130,14 +130,6 @@ public class MapController {
         }
         modelAndView.addObject("estateName", applyBatch.getEstateName());
         modelAndView.addObject("click", click);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/drawPolygon", name = "地图着色备注",method = {RequestMethod.GET})
-    public ModelAndView drawPolygon() {
-        String view = "/base/drawPolygon" ;
-        ModelAndView modelAndView =new ModelAndView(view);
-        modelAndView.addObject("formData", "[{\"path\":[[116.40259,39.921129],[116.403571,39.92094],[116.403711,39.92117],[116.403679,39.921293]],\"extData\":{\"title\":[{\"id\":64,\"pid\":\"56\",\"lng\":\"116.403486\",\"lat\":\"39.921162\",\"name\":\"rjadjad\"}]}},{\"path\":[[116.404408,39.921026],[116.404639,39.920347],[116.405728,39.921104]],\"extData\":{\"title\":[{\"id\":67,\"pid\":\"61\",\"lng\":\"116.404837\",\"lat\":\"39.920845\",\"name\":\"sdjsdjdjs\"}]}}]");
         return modelAndView;
     }
 }
