@@ -50,6 +50,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        //当楼盘为新增时
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processExecution.getProcessInstanceId());
         applyBatch.setBisCase(true);
         basicApplyBatchDao.updateInfo(applyBatch);

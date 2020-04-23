@@ -754,61 +754,6 @@ public class BasicApplyBatchService {
     }
 
 
-    //老数据写入楼盘,楼栋,单元Id
-    public void writeRelevanceId() {
-        //获取所有楼盘节点
-        String estateTableName = BasicFormClassifyEnum.ESTATE.getTableName();
-        BasicApplyBatchDetail estateApplyBatchDetail = new BasicApplyBatchDetail();
-        estateApplyBatchDetail.setTableName(estateTableName);
-        List<BasicApplyBatchDetail> estateApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(estateApplyBatchDetail);
-        for (BasicApplyBatchDetail estateApplyBatchDetailItem : estateApplyBatchDetailList) {
-            //获取对应的楼栋节点
-            List<BasicApplyBatchDetail> buildApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(estateApplyBatchDetailItem.getId(), estateApplyBatchDetailItem.getApplyBatchId());
-            if (CollectionUtils.isNotEmpty(buildApplyBatchDetailList)) {
-                for (BasicApplyBatchDetail buildApplyBatchDetailItem : buildApplyBatchDetailList) {
-                    //楼栋数据修改
-                    BasicBuilding building = basicBuildingService.getBasicBuildingById(buildApplyBatchDetailItem.getTableId());
-                    if (building == null) continue;
-                    if (building.getEstateId() == null || building.getEstateId() <= 0) {
-                        building.setEstateId(estateApplyBatchDetailItem.getTableId());
-                        basicBuildingService.saveAndUpdate(building, false);
-                    }
-                    //获取对应的单元节点
-                    List<BasicApplyBatchDetail> unitApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(buildApplyBatchDetailItem.getId(), estateApplyBatchDetailItem.getApplyBatchId());
-                    if (CollectionUtils.isNotEmpty(unitApplyBatchDetailList)) {
-                        for (BasicApplyBatchDetail unitApplyBatchDetailItem : unitApplyBatchDetailList) {
-                            //单元数据修改
-                            BasicUnit unit = basicUnitService.getBasicUnitById(unitApplyBatchDetailItem.getTableId());
-                            if (unit == null) continue;
-                            if (unit.getBuildingId() == null || unit.getBuildingId() <= 0)
-                                unit.setBuildingId(buildApplyBatchDetailItem.getTableId());
-                            if (unit.getEstateId() == null || unit.getEstateId() <= 0)
-                                unit.setEstateId(estateApplyBatchDetailItem.getTableId());
-                            basicUnitService.saveAndUpdate(unit, false);
-
-                            //获取对应的房屋节点
-                            List<BasicApplyBatchDetail> houseApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(unitApplyBatchDetailItem.getId(), estateApplyBatchDetailItem.getApplyBatchId());
-                            if (CollectionUtils.isNotEmpty(houseApplyBatchDetailList)) {
-                                for (BasicApplyBatchDetail houseApplyBatchDetailItem : houseApplyBatchDetailList) {
-                                    //房屋数据修改
-                                    BasicHouse house = basicHouseService.getBasicHouseById(houseApplyBatchDetailItem.getTableId());
-                                    if (house == null) continue;
-                                    if (house.getUnitId() == null || house.getUnitId() <= 0)
-                                        house.setUnitId(unitApplyBatchDetailItem.getTableId());
-                                    if (house.getBuildingId() == null || house.getBuildingId() <= 0)
-                                        house.setBuildingId(buildApplyBatchDetailItem.getTableId());
-                                    if (house.getEstateId() == null || house.getEstateId() <= 0)
-                                        house.setEstateId(estateApplyBatchDetailItem.getTableId());
-                                    basicHouseService.saveAndUpdate(house, false);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     /**
      * 引用楼盘
      *

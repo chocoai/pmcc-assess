@@ -91,20 +91,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card-body">
-                            <table class="table table-bordered" id="achievementTable">
-                                <!-- cerare document add ajax data-->
-                            </table>
-
+                            <table class="table table-bordered" id="achievementTable"></table>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">关闭</button>
             </div>
-
         </div>
     </div>
 </div>
@@ -114,7 +108,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">容积率修正系数配置 详情</h4>
+                <h4 class="modal-title">容积率修正系数</h4>
                 <input type="hidden" name="levelDetailId">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>

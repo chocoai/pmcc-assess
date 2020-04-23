@@ -500,4 +500,9 @@ public class BasicBuildingService extends BasicEntityAbstract {
         modelAndView.addObject("basicBuilding", buildingVo);
         return modelAndView;
     }
+
+    @Override
+    public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        return null;
+    }
 }

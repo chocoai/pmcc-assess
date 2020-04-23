@@ -98,4 +98,9 @@ public class BasicBuildingDifferenceService extends BasicEntityAbstract {
         modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingVoById(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
+
+    @Override
+    public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        return null;
+    }
 }

@@ -71,5 +71,7 @@ public abstract class BasicEntityAbstract {
 
     public abstract ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception;
 
+    public abstract ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception;
+
     public abstract ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception;
 }

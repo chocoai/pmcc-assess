@@ -109,4 +109,9 @@ public class BasicUnitResidenceService extends BasicEntityAbstract {
         detailModelAndView.setViewName("/project/stageSurvey/realEstate/detail/unitResidence");
         return detailModelAndView;
     }
+
+    @Override
+    public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        return null;
+    }
 }

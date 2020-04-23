@@ -740,4 +740,9 @@ public class BasicHouseService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
     }
+
+    @Override
+    public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        return null;
+    }
 }

@@ -267,7 +267,7 @@ public class BasicEstateService extends BasicEntityAbstract {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where estate_id=%s;";
 
-        String baseLandSql = "update %s set bis_delete=1 where estate_id=%s;";
+        String baseLandSql = "update %s set bis_delete=1 where land_id=%s;";
 
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class), estateId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateParking.class), estateId));
@@ -634,5 +634,10 @@ public class BasicEstateService extends BasicEntityAbstract {
         modelAndView.addObject("basicEstate", getBasicEstateVo(getBasicEstateById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
+    }
+
+    @Override
+    public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        return null;
     }
 }
