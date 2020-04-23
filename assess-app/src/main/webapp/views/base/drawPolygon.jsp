@@ -1753,7 +1753,7 @@
             anchor: 'bottom-center',//位置
             text: item.name,
             extData: item,
-            draggable: false,//是否可以拖动
+            draggable: true,//是否可以拖动
 //            style: {'background-color': 'red'}
         });
         map.add(Text);

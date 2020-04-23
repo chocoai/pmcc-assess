@@ -2,6 +2,8 @@ package com.copower.pmcc.assess.controller.assess;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
@@ -10,6 +12,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
@@ -127,6 +130,14 @@ public class MapController {
         }
         modelAndView.addObject("estateName", applyBatch.getEstateName());
         modelAndView.addObject("click", click);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/drawPolygon", name = "地图着色备注",method = {RequestMethod.GET})
+    public ModelAndView drawPolygon() {
+        String view = "/base/drawPolygon" ;
+        ModelAndView modelAndView =new ModelAndView(view);
+        modelAndView.addObject("formData", "[{\"path\":[[116.40259,39.921129],[116.403571,39.92094],[116.403711,39.92117],[116.403679,39.921293]],\"extData\":{\"title\":[{\"id\":64,\"pid\":\"56\",\"lng\":\"116.403486\",\"lat\":\"39.921162\",\"name\":\"rjadjad\"}]}},{\"path\":[[116.404408,39.921026],[116.404639,39.920347],[116.405728,39.921104]],\"extData\":{\"title\":[{\"id\":67,\"pid\":\"61\",\"lng\":\"116.404837\",\"lat\":\"39.920845\",\"name\":\"sdjsdjdjs\"}]}}]");
         return modelAndView;
     }
 }
