@@ -245,9 +245,13 @@
             return false;
         }
         $.each(data, function (i, item) {
+            var fillColor = '#80d8ff';
+            if (item.fillColor) {
+                fillColor = item.fillColor;
+            }
             var polygon = new AMap.Polygon({
                 path: item.path,
-                fillColor: '#80d8ff',
+                fillColor: fillColor,
                 borderWeight: 2, // 线条宽度，默认为 1
                 strokeColor: '#0000FF',
                 map: drawPolygon.map
