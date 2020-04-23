@@ -45,6 +45,8 @@
 
                     <input type="hidden" name="id">
                     <input type="hidden" name="pid">
+                    <input type="hidden" name="lng">
+                    <input type="hidden" name="lat">
 
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -94,6 +96,8 @@
 
                     <input type="hidden" name="id">
                     <input type="hidden" name="pid">
+                    <input type="hidden" name="lng">
+                    <input type="hidden" name="lat">
 
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -201,7 +205,7 @@
 
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                             <input type="text" class="form-control input-full"
-                                                   placeholder="查询...." name="mapSearchName" id="tipinput">
+                                                   placeholder="搜索...." name="mapSearchName" id="tipinput">
                                         </div>
                                     </div>
 
@@ -255,10 +259,9 @@
         drawPolygon.map = new AMap.Map('toolMapHandleContainer', {
             resizeEnable: true,
             rotateEnable: true,
-            zoom: 30,
-//            pitch: 0,
+            zoom: 24,
             viewMode: "2D",
-            center: [104.084569, 30.589714]
+            center: [116.403322, 39.920255]
         });
         // 地图 加载完成 load
         drawPolygon.map.on("complete", function () {
@@ -274,6 +277,19 @@
             AMap.event.addListener(auto, "select", function (e) {
                 drawPolygon.autoCompleteSearch(e.poi.name);
             });
+
+            (function (tt) {
+                if (!tt) {
+                    return false;
+                }
+                var item = [];
+                try {
+                    item = JSON.parse(tt);
+                } catch (e) {
+                }
+                drawPolygon.createOverlay(item);
+            }('${formData}'));
+
             if (callback) {
                 callback();
             }
@@ -327,14 +343,10 @@
     drawPolygon.handleMouseTool = function (param) {
         if (param) {
             var polygon = drawPolygon.map.getAllOverlays('polygon');
-            var overlays = drawPolygon.map.getAllOverlays('marker');
-            if (drawPolygon.mouseTool){
+            if (drawPolygon.mouseTool) {
                 drawPolygon.mouseTool.close(true);//关闭
                 drawPolygon.mouseTool = undefined;
             }
-            console.log(polygon) ;
-            console.log(overlays) ;
-            drawPolygon.map.add(overlays) ;
             drawPolygon.showOverlay(polygon);
         } else {
             if (!drawPolygon.mouseTool) {
@@ -347,11 +359,11 @@
         drawPolygon.mouseTool = new AMap.MouseTool(drawPolygon.map);
         drawPolygon.mouseTool.polygon({
             fillColor: '#80d8ff',
+            borderWeight: 2, // 线条宽度，默认为 1
             strokeColor: '#0000FF'
         });
         //添加事件
         AMap.event.addListener(drawPolygon.mouseTool, 'draw', function (e) {
-
         });
     };
 
@@ -370,7 +382,7 @@
         });
         map.add(Text);
         item.id = Text._amap_id;
-        Text.setExtData(item) ;
+        Text.setExtData(item);
         Text.on('click', function (e) {
             var box = drawPolygon.handleJquery(drawPolygon.textBox);
             box.modal("show");
@@ -414,15 +426,46 @@
      * 显示覆盖物
      */
     drawPolygon.showOverlay = function (overlays) {
-        drawPolygon.overlays = drawPolygon.unique(overlays);
-        if (drawPolygon.overlays.length != 0) {
-            $.each(drawPolygon.overlays, function (i, overlay) {
+        overlays = drawPolygon.unique(overlays);
+        if (overlays.length != 0) {
+            $.each(overlays, function (i, overlay) {
                 overlay.on('click', function (e) {
                     drawPolygon.eventOverlay(e);
                 });
                 drawPolygon.map.add(overlay);
             });
         }
+    };
+
+    /**
+     * 创建覆盖物
+     */
+    drawPolygon.createOverlay = function (data) {
+        if (!$.isArray(data)) {
+            return false;
+        }
+        $.each(data, function (i, item) {
+            var polygon = new AMap.Polygon({
+                path: item.path,
+                fillColor: '#80d8ff',
+                borderWeight: 2, // 线条宽度，默认为 1
+                strokeColor: '#0000FF',
+                map: drawPolygon.map
+            });
+            polygon.on('click', function (e) {
+                drawPolygon.eventOverlay(e);
+            });
+            var title = item.extData.title;
+            if ($.isArray(title)) {
+                $.each(title, function (j, n) {
+                    n.pid = polygon._amap_id;
+                    n.id = null;
+                    drawPolygon.createLabelMarker(new AMap.LngLat(n.lng, n.lat), n, drawPolygon.map);
+                });
+            }
+//            console.log(polygon);
+//            console.log(title);
+        });
     };
 
     /**
@@ -433,8 +476,9 @@
         var box = drawPolygon.handleJquery(drawPolygon.box);
         box.modal("show");
         var frm = box.find("form");
-        frm.clearAll().initForm({pid: e.target._amap_id});
-        drawPolygon.tempData = e.lnglat;
+        var lnglat = e.lnglat;
+        frm.clearAll().initForm({pid: e.target._amap_id, lng: lnglat.lng, lat: lnglat.lat});
+        drawPolygon.tempData = lnglat;
     };
 
     /**
@@ -443,32 +487,41 @@
     drawPolygon.updateExtData = function (data) {
         var overlays = drawPolygon.map.getAllOverlays();
         $.each(overlays, function (i, overlay) {
-            if (overlay._amap_id == data.pid){
-                var item = overlay.getExtData() ;
-                if (item.title){
-                    $.each(item.title,function (j,n) {
-                        if (n.id == data.id){
+            if (overlay._amap_id == data.pid) {
+                var item = overlay.getExtData();
+                if (item.title) {
+                    $.each(item.title, function (j, n) {
+                        if (n.id == data.id) {
                             n.name = data.name;
                         }
-                    }) ;
-                }else {
-                    item.title = [data] ;
+                    });
+                } else {
+                    item.title = [data];
                 }
-                overlay.setExtData(item) ;
+                overlay.setExtData(item);
             }
         });
     };
 
+    /**
+     * 收集数据
+     */
     drawPolygon.getFormData = function () {
-        //收集数据
-        if (drawPolygon.overlays.length != 0) {
-            $.each(drawPolygon.overlays, function (i, overlay) {
-                var obj = {path: overlay.getPath(), extData: overlay.getExtData()};
-                drawPolygon.jsonData.push(obj);
+        var polygon = drawPolygon.map.getAllOverlays('polygon');
+        var jsonData = [];
+        if (polygon.length != 0) {
+            $.each(polygon, function (i, overlay) {
+                var path = [];
+                $.each(overlay.getPath(), function (i, item) {
+                    path.push([item.lng, item.lat]);
+                });
+                var obj = {path: path, extData: overlay.getExtData()};
+                jsonData.push(obj);
             });
         }
-        return drawPolygon.jsonData;
-    } ;
+        drawPolygon.jsonData = jsonData;
+        return jsonData;
+    };
 
     drawPolygon.saveTitleData = function () {
         var box = drawPolygon.handleJquery(drawPolygon.box);
@@ -557,6 +610,12 @@
 
     $(document).ready(function () {
         drawPolygon.loadMap();
+        var tt = '[{"path":[[116.40259,39.921129],[116.403571,39.92094],[116.403711,39.92117],[116.403679,39.921293]],"extData":{"title":[{"id":64,"pid":"56","lng":"116.403486","lat":"39.921162","name":"rjadjad"}]}},{"path":[[116.404408,39.921026],[116.404639,39.920347],[116.405728,39.921104]],"extData":{"title":[{"id":67,"pid":"61","lng":"116.404837","lat":"39.920845","name":"sdjsdjdjs"}]}}]';
+//        setInterval(function () {
+//            var str = JSON.stringify(drawPolygon.getFormData());
+//            console.log(str);
+////            drawPolygon.createOverlay(JSON.parse(tt));
+//        }, 8000);
     });
 
 
