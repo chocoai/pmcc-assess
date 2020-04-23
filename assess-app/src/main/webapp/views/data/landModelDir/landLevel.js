@@ -525,6 +525,7 @@ landLevel.saveLandLevelDetail = function () {
     data.landLevelId = currentLandLevelId;
     landLevel.ajaxServerMethod(data ,'/dataLandLevel/saveAndUpdateDataLandLevelDetail' ,"post",function () {
         landLevel.loadTree(data.landLevelId);
+        box.modal('hide');
     }) ;
 };
 
@@ -700,10 +701,6 @@ landLevel.loadTree = function () {
     var setting = {
         //页面上的显示效果
         view: {
-            selectedMulti: true,
-            removeHoverDom: removeHoverDom,//离开节点时的操作
-            expandSpeed: "slow",
-            fontCss: {color: "red"}
         },
         check: {
             enable: false

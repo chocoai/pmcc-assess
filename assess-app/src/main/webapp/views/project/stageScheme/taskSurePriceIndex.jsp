@@ -443,8 +443,8 @@
                         html = html.replace(/{floor}/g, item.floor);
                         html = html.replace(/{price}/g, item.price);
                         html = html.replace(/{roomNumber}/g, item.roomNumber);
-                        html = html.replace(/{price}/g, item.price);
-                        html = html.replace(/{coefficient}/g, item.factor);
+                        html = html.replace(/{price}/g,AssessCommon.toString(item.price));
+                        html = html.replace(/{coefficient}/g, AssessCommon.toString(item.factor));
                         html = html.replace(/{declareRecordId}/g, item.declareRecordId);
                         html = html.replace(/{bisShow}/g, item.hasPriceAdjust ? "block" : "none");
                         html = html.replace(/{tenementType}/g, item.tenementType);
@@ -527,7 +527,7 @@
                 resultPrice += parseFloat(trialPrice) * parseFloat(weight);
             }
         })
-        $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(2));
+        $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(0));
         if (isAverage) {
             $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').hide();
         } else {
