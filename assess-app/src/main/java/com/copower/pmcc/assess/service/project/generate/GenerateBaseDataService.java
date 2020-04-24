@@ -492,14 +492,10 @@ public class GenerateBaseDataService {
             stringBuffer.append("评估(财产)范围").append(baseDataDicService.getNameById(getSchemeAreaGroup().getPropertyScope())).append(";");
         }
         if (StringUtils.isNotBlank(getSchemeAreaGroup().getScopeInclude())) {
-            stringBuffer.append("包含:").append(getSchemeAreaGroup().getScopeInclude()).append(";");
-        } else {
-            stringBuffer.append("没有包含").append(";");
+            stringBuffer.append("包含").append(getSchemeAreaGroup().getScopeInclude()).append(";");
         }
         if (StringUtils.isNotBlank(getSchemeAreaGroup().getScopeNotInclude())) {
-            stringBuffer.append("不包含:").append(getSchemeAreaGroup().getScopeNotInclude()).append("。");
-        } else {
-            stringBuffer.append("没有不包含").append("。");
+            stringBuffer.append("不包含").append(getSchemeAreaGroup().getScopeNotInclude()).append("。");
         }
         if (StringUtils.isEmpty(stringBuffer.toString())) {
             stringBuffer.append(errorStr);
