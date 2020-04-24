@@ -1490,12 +1490,13 @@ public class GenerateHouseEntityService {
                     functionMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.strip(functionBuilder.toString(), ","));
                 }
             }
-            List<BasicHouseRoom> roomList = basicExamineHandle.getBasicHouseRoomAll();
+            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(schemeJudgeObject.getBasicApplyId());
+            List<BasicHouseRoom> roomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
             if (CollectionUtils.isNotEmpty(roomList)) {
                 StringBuilder roomBuilder = new StringBuilder();
                 for (BasicHouseRoom room : roomList) {
                     if (roomList.size() > 1)
-                        roomBuilder.append(room.getRoomType());
+                        roomBuilder.append(room.getName());
                     Map<String, String> stringMap = Maps.newHashMap();
                     if (StringUtils.isNotBlank(room.getAeration()))
                         stringMap.put("通风", room.getAeration());
