@@ -276,8 +276,8 @@ public class GenerateBaseExamineService {
         return basicHouseIntelligentService.getBasicHouseIntelligentVos(getBasicHouse().getId());
     }
 
-    public List<BasicHouseEquipment> getBasicHouseEquipmentList() {
-        return basicHouseEquipmentService.getBasicHouseEquipmentList(getBasicHouse().getId());
+    public List<BasicHouseEquipmentVo> getBasicHouseEquipmentList(String type) {
+        return  basicHouseEquipmentService.getBasicHouseEquipmentVos(getBasicHouse().getId(),type);
     }
 
     public BasicApply getBasicApply() {

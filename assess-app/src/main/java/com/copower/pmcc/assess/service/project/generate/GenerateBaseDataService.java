@@ -35,10 +35,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
-import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.*;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
@@ -67,6 +64,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
+import javax.websocket.RemoteEndpoint;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -141,6 +139,7 @@ public class GenerateBaseDataService {
     private GenerateEquityService generateEquityService;
     private DeclareRealtyCheckListService declareRealtyCheckListService;
     private SurveyCommonService surveyCommonService;
+    private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
 
     /**
      * 构造器必须传入的参数
@@ -3732,34 +3731,24 @@ public class GenerateBaseDataService {
             if (basicApplyBatch == null) {
                 continue;
             }
-            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
-            List<BasicHouse> basicHouseList = basicExamineHandle.getBasicHouseAll();
-            if (CollectionUtils.isEmpty(basicHouseList)) {
+            BasicApply basicApply=basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+            GenerateBaseExamineService generateBaseExamineService=new GenerateBaseExamineService(basicApply);
+            BasicHouse basicHouse =generateBaseExamineService.getBasicHouse();
+            BasicUnitHuxing query = new BasicUnitHuxing();
+            query.setHouseId(basicHouse.getId());
+            List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);
+            if (CollectionUtils.isEmpty(basicUnitHuxingList)) {
                 continue;
             }
-            Iterator<BasicHouse> houseIterator = basicHouseList.iterator();
-            while (houseIterator.hasNext()) {
-                BasicHouse basicHouse = houseIterator.next();
-                BasicUnitHuxing query = new BasicUnitHuxing();
-                query.setHouseId(basicHouse.getId());
-                List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);
-                if (CollectionUtils.isEmpty(basicUnitHuxingList)) {
-                    continue;
-                }
-                List<BasicUnitHuxing> basicUnitHuxings = basicUnitHuxingList.stream().filter(obj -> StringUtils.isNotBlank(obj.getTenementType())).collect(Collectors.toList());
-                if (CollectionUtils.isEmpty(basicUnitHuxings)) {
-                    continue;
-                }
-                BasicUnitHuxing basicUnitHuxing = basicUnitHuxings.get(0);
-                List<BasicHouseHuxingPrice> houseHuxingPriceList = basicExamineHandle.getBasicHouseHuxingPriceList(basicHouse.getId());
-                if (CollectionUtils.isEmpty(houseHuxingPriceList)) {
-                    continue;
-                }
-                if (StringUtils.isBlank(basicUnitHuxing.getTenementType())) {
-                    continue;
-                }
-                handleBasicHouseHuxingPrice(houseHuxingPriceList, basicHouse, basicUnitHuxing, documentBuilder);
+            BasicUnitHuxing basicUnitHuxing = basicUnitHuxingList.get(0);
+            List<BasicHouseHuxingPrice> houseHuxingPriceList = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(basicHouse.getId());
+            if (CollectionUtils.isEmpty(houseHuxingPriceList)) {
+                continue;
             }
+            if (StringUtils.isBlank(basicUnitHuxing.getTenementType())) {
+                continue;
+            }
+            handleBasicHouseHuxingPrice(houseHuxingPriceList, basicHouse, basicUnitHuxing, documentBuilder);
         }
     }
 
@@ -5290,11 +5279,11 @@ public class GenerateBaseDataService {
                 }
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("1、楼盘名称:%s", generateCommonMethod.trim(basicEstate.getName()))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("2、建筑年份:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingYearNew(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("3、工程质量:%s", generateCommonMethod.trim(generateHouseEntityService.getConstructionQualityNews(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("4、建筑结构:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingStructureNews(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("5、建筑规模:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingScaleNews(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、层高:%s", generateCommonMethod.trim(generateHouseEntityService.getFloorHeightNews(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("2、建筑年份:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingYear(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("3、工程质量:%s", generateCommonMethod.trim(generateHouseEntityService.getConstructionQuality(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("4、建筑结构:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingStructure(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("5、建筑规模:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingScale(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、层高:%s", generateCommonMethod.trim(generateHouseEntityService.getFloorHeight(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("7、空间布局:%s", generateCommonMethod.trim(generateHouseEntityService.getSpatialDistribution(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("8、装饰装修:%s", generateCommonMethod.trim(generateHouseEntityService.getDecoration(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("9、外观:%s", generateCommonMethod.trim(generateHouseEntityService.getAppearance(judgeObjects)))));
@@ -7096,6 +7085,7 @@ public class GenerateBaseDataService {
         this.declareRealtyCheckListService = SpringContextUtils.getBean(DeclareRealtyCheckListService.class);
         this.basicApplyBatchService = SpringContextUtils.getBean(BasicApplyBatchService.class);
         this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
+        this.basicHouseHuxingPriceService = SpringContextUtils.getBean(BasicHouseHuxingPriceService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         if (areaGroup == null) {

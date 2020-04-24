@@ -231,39 +231,20 @@ public class EvaluationHypothesisService {
                     if (basicExamineHandle == null) {
                         continue;
                     }
-                    List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingAll();
-                    if (CollectionUtils.isEmpty(basicBuildingList)) {
-                        continue;
-                    }
                     actualTimenumbers.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
-                    for (BasicBuilding building : basicBuildingList) {
-                        //实际调查
-                        Integer type = building.getCompletedTimeType();
-                        if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
-                            Map<Integer, String> map = Maps.newHashMap();
-                            if (building.getBeCompletedTime() != null) {
-                                completedTime.add(String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
-                                times.add(String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
-                                map.put(Integer.valueOf(schemeJudgeObject.getNumber()), String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
-                            }
-                            maps.add(map);
+                    BasicBuilding building = basicBuildingService.getBasicBuildingByApplyId(schemeJudgeObject.getBasicApplyId());
+                    //实际调查
+                    Integer type = building.getCompletedTimeType();
+                    if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
+                        Map<Integer, String> map = Maps.newHashMap();
+                        if (building.getBeCompletedTime() != null) {
+                            completedTime.add(String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
+                            times.add(String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
+                            map.put(Integer.valueOf(schemeJudgeObject.getNumber()), String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
                         }
+                        maps.add(map);
                     }
 
-                    //实际调查
-//                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-//                    BasicBuilding building = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-//                    Integer type = building.getCompletedTimeType();
-//                    if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
-//                        Map<Integer, String> map = Maps.newHashMap();
-//                        actualTimenumbers.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
-//                        if (building.getBeCompletedTime() != null) {
-//                            completedTime.add(sdf.format(building.getBeCompletedTime()));
-//                            times.add(sdf.format(building.getBeCompletedTime()));
-//                            map.put(Integer.valueOf(schemeJudgeObject.getNumber()), sdf.format(building.getBeCompletedTime()));
-//                        }
-//                        maps.add(map);
-//                    }
                     //用途
                     Integer purpose = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE).getId();
                     SurveyAssetInventoryContent surveyAsset = new SurveyAssetInventoryContent();
@@ -378,26 +359,11 @@ public class EvaluationHypothesisService {
                 StringBuilder paymentAbnormality = new StringBuilder();
 
                 for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                    if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                        continue;
-                    }
-                    BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-                    if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
-                        continue;
-                    }
-                    BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
-                    if (basicExamineHandle == null) {
-                        continue;
-                    }
-                    List<BasicHouse> basicHouseList = basicExamineHandle.getBasicHouseAll();
                     List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
                     if (CollectionUtils.isEmpty(surveyAssetInventories)) {
                         continue;
                     }
-                    if (CollectionUtils.isEmpty(basicHouseList)) {
-                        continue;
-                    }
-                    BasicHouse basicHouse = basicHouseList.get(0) ;
+                    BasicHouse basicHouse = basicHouseService.getHouseByApplyId(schemeJudgeObject.getBasicApplyId());
                     //对应资产清查内容
                     SurveyAssetInventory surveyAssetInventory =surveyAssetInventories.get(0);
                     //参考同类（不配合）
