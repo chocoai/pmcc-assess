@@ -229,8 +229,22 @@
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">兼容类型</label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="兼容类型" name="compatibilityType"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" required="required" name="compatibilityType"
+                                                           class="form-control" list="compatibilityTypeList"
+                                                           placeholder="兼容类型">
+                                                    <datalist id="compatibilityTypeList">
+
+                                                    </datalist>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-warning btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-1 control-label">兼容比例</label>
                                             <div class="col-sm-3">
@@ -506,6 +520,9 @@
         var landUseTypeId = $("#" + landUseType.config.son.tableFrm()).find("input[name='landUseTypeId']").val();
         $("#" + landUseType.config.son.frm()).clearAll();
         $("#" + landUseType.config.son.frm()).find("input[name='landUseTypeId']").val(landUseTypeId);
+        AssessCommon.loadDataListHtml(AssessDicKey.estate_compatibility_rate, '', function (html, data) {
+            $("#" + landUseType.config.son.frm()).find("#compatibilityTypeList").empty().html(html).trigger('change');
+        }, true);
         landUseType.loadCategoryList(landUseTypeId,'');
         $('#' + landUseType.config.son.box()).modal("show");
     }
@@ -546,6 +563,9 @@
                 if (result.ret) {
                     $("#" + landUseType.config.son.frm()).clearAll();
                     $("#" + landUseType.config.son.frm()).initForm(result.data);
+                    AssessCommon.loadDataListHtml(AssessDicKey.estate_compatibility_rate, result.data.compatibilityType, function (html, data) {
+                        $("#" + landUseType.config.son.frm()).find("#compatibilityTypeList").empty().html(html).trigger('change');
+                    }, true);
                     landUseType.loadCategoryList(result.data.landUseTypeId,result.data.landUseCategory);
                     //百分字段
                     $("#" + landUseType.config.son.frm()).find('[name=greeningRate]').attr('data-value', result.data.greeningRate);

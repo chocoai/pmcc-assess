@@ -149,6 +149,7 @@ AssessDicKey.estateLandFertility = "estate.land.fertility";//	肥力
 AssessDicKey.estateLandBearingCapacity = "estate.land.bearingCapacity";//	承载力
 AssessDicKey.estateLandBearingHoldOn = "estate.land.holdOn";//	稳定性
 AssessDicKey.estate_total_land_use = "estate.land_use";//土地用途
+AssessDicKey.estate_compatibility_rate = "estate.compatibility.rate";//兼容类型
 AssessDicKey.estatePlaneness = "estate.planeness";//地形
 AssessDicKey.estateDevelopment_degree = "estate.development_degree";//土地开发程度
 AssessDicKey.estateDevelopment_degreePrepared_land = "estate.development_degree.prepared_land";//熟地
