@@ -466,7 +466,9 @@ public class BasicApplyBatchService {
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
             BasicApply basicApply = new BasicApply();
             basicApply.setBasicEstateId(basicEstate.getId());
-            basicApply.setDeclareRecordId(declareRecord.getId());
+            if(declareRecord!=null){
+                basicApply.setDeclareRecordId(declareRecord.getId());
+            }
             basicApply.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
             basicApplyService.saveBasicApply(basicApply);
         }

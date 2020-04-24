@@ -269,6 +269,30 @@
                             </div>
                         </div>
                     </div>
+                    <c:if test="${empty isHistory}">
+                        <div class="x_content">
+                            <%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingEnvironment.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingFinance.jsp" %>
+                            <c:if test="${basicApplyBatch.type == 0}">
+                                <%@include file="/views/project/stageSurvey/commonDetail/matchingEducation.jsp" %>
+                                <%@include file="/views/project/stageSurvey/commonDetail/matchingRecreation.jsp" %>
+                                <%@include file="/views/project/stageSurvey/commonDetail/matchingRestaurant.jsp" %>
+                                <%@include file="/views/project/stageSurvey/commonDetail/matchingMarket.jsp" %>
+                                <%@include file="/views/project/stageSurvey/commonDetail/matchingMedical.jsp" %>
+                            </c:if>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingTransit.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingTrafficHub.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMetro.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMainRoad.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
+                            <c:if test="${basicApplyBatch.type == 1}">
+                                <%@include file="/views/project/stageSurvey/commonDetail/matchingMaterial.jsp" %>
+                            </c:if>
+                            <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
+                        </div>
+                    </c:if>
 
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
