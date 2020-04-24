@@ -94,10 +94,6 @@ public class SchemeSurePriceService {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private DeclareRecordService declareRecordService;
-    @Autowired
-    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-    @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
@@ -107,8 +103,6 @@ public class SchemeSurePriceService {
     private SchemeSurePriceRecordDao schemeSurePriceRecordDao;
     @Autowired
     private BasicApplyService basicApplyService;
-    @Autowired
-    private BasicUnitService basicUnitService;
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired

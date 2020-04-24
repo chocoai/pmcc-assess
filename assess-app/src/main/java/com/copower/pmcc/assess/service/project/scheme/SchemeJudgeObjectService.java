@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectHistoryDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceFactorDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdNewAndRemoveDto;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectAppendTaskDto;
@@ -99,7 +100,7 @@ public class SchemeJudgeObjectService {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private SchemeSurePriceFactorDao schemeSurePriceFactorDao;
+    private SchemeSurePriceItemDao schemeSurePriceItemDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -854,6 +855,7 @@ public class SchemeJudgeObjectService {
             //处理只改变了评估方法的估价对象
             if (CollectionUtils.isNotEmpty(methodChangeJudges)) {
                 for (MdNewAndRemoveDto item : methodChangeJudges) {
+                    schemeSurePriceItemDao.deleteSurePriceItemByJudgeId(item.getJudgeObjectId());
                     if (CollectionUtils.isNotEmpty(item.getRemoveMethodList())) {
                         for (Integer methodType : item.getRemoveMethodList()) {
                             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(methodType);

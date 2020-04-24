@@ -85,5 +85,10 @@ public class SchemeSurePriceItemDao {
         return schemeSurePriceItemMapper.deleteByPrimaryKey(id) > 0;
     }
 
-
+    public boolean deleteSurePriceItemByJudgeId(Integer judgeId) {
+        if(judgeId==null||judgeId<=0) return false;
+        SchemeSurePriceItemExample example = new SchemeSurePriceItemExample();
+        example.createCriteria().andJudgeObjectIdEqualTo(judgeId);
+        return schemeSurePriceItemMapper.deleteByExample(example) > 0;
+    }
 }
