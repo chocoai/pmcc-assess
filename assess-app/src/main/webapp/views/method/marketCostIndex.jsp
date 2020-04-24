@@ -38,6 +38,12 @@
                                                 <input class="form-check-input" type="radio" name="typeShow" value="1"
                                                        checked="checked"
                                                        data-value="1">
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        cost.writeValueEvent(1, function () {
+                                                        });
+                                                    }) ;
+                                                </script>
                                             </c:when>
                                             <c:otherwise>
                                                 <input class="form-check-input" type="radio" name="typeShow" value="1"
