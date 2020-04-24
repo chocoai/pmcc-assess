@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.method.SchemeInfoVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -39,6 +41,8 @@ public class SchemeInfoService {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     /**
      * 保存信息
@@ -117,6 +121,26 @@ public class SchemeInfoService {
             }
         }
         vo.setMethodName(baseDataDicService.getNameById(schemeInfo.getMethodType()));
+        return vo;
+    }
+
+    public BootstrapTableVo getSchemeIncomeVo(Integer methodType,Integer methodDataId,Integer projectId){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<SchemeInfo> schemeInfoList = schemeInfoDao.getSchemeInfoStart(methodType, methodDataId, projectId);
+        List<SchemeInfoVo> voList = Lists.newArrayList();
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(schemeInfoList)){
+            //事项被删除的排除
+            for (SchemeInfo item: schemeInfoList) {
+                ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(item.getPlanDetailsId());
+                if (planDetails!=null){
+                    voList.add(getSchemeInfoVo(item)) ;
+                }
+            }
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(voList);
         return vo;
     }
 }

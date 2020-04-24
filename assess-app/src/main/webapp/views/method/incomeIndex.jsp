@@ -10,7 +10,7 @@
                         <small>
                             <button class="btn btn-sm btn-primary" data-toggle="modal" type="button"
                                     href="#boxSchemeInfoModel"
-                                    onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdIncome.id}',methodType:'${methodTypeObj.id}'},'incomeIndex.selectFun');">
+                                    onclick="incomeIndex.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdIncome.id}',methodType:'${methodTypeObj.id}'},'incomeIndex.selectFun');">
                                 引用
                             </button>
                         </small>
@@ -554,6 +554,54 @@
                 }
             }
         });
+    };
+
+    incomeIndex.loadSchemeInfoTableList = function (quarm, callbackName) {
+        var table = $("#boxSchemeInfoList");
+        var cols = [];
+        cols.push({
+            field: 'id', title: '测算方法', width: "20%", formatter: function (value, row, index) {
+                var str = '';
+                str += row.judgeObjectName + "-";
+                str += row.methodName;
+                return str;
+            }
+        });
+        cols.push({
+            field: 'gmtModified', title: '最后修改日期', width: "20%", formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
+
+        cols.push({
+            field: 'gmtCreated', title: '测算方法创建日期', width: "20%", formatter: function (value, row, index) {
+                return formatDate(value);
+            }
+        });
+        cols.push({
+            field: 'id', title: '引用', width: "20%", formatter: function (value, row, index) {
+                var str = '';
+                str += '<button type="button" class="btn btn-xs btn-success" onclick="{method}(' + row.methodDataId + "," + "'boxSchemeInfoModel'" + ');" >引用 <i class="fa fa-check-circle"></i></button>';
+                str += '';
+                str = str.replace(/{method}/g, callbackName);
+                return str;
+            }
+        });
+        var method = {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {//加载成功时执行
+                // table.bootstrapTable('filterBy', {
+                //     methodDataId: [itemId]
+                // })
+            },
+            onLoadError: function () {
+
+            }
+        };
+        table.bootstrapTable('destroy');
+        TableInit(table, getContextPath() + "/schemeInfo/getSchemeIncomeVo", cols, quarm, method);
     };
 </script>
 

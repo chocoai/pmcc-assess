@@ -64,6 +64,16 @@ public class SchemeInfoDao {
         return schemeInfoMapper.selectByExample(example);
     }
 
+    //流程id不为空的
+    public List<SchemeInfo> getSchemeInfoStart(Integer methodType,Integer methodDataId,Integer projectId){
+        SchemeInfoExample example = new SchemeInfoExample();
+        SchemeInfoExample.Criteria criterion = example.createCriteria();
+        criterion.andProjectIdEqualTo(projectId) ;
+        criterion.andMethodDataIdNotEqualTo(methodDataId);
+        criterion.andMethodTypeEqualTo(methodType) ;
+        criterion.andProcessInsIdIsNotNull() ;
+        return schemeInfoMapper.selectByExample(example);
+    }
     /**
      * 新增
      *

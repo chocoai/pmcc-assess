@@ -23,4 +23,9 @@ public class SchemeInfoController {
         return schemeInfoService.getBootstrapTableVo(methodType, methodDataId, projectId) ;
     }
 
+
+    @GetMapping(value = "/getSchemeIncomeVo")
+    public BootstrapTableVo getSchemeIncomeVo(Integer methodType,Integer methodDataId,Integer projectId){
+        return schemeInfoService.getSchemeIncomeVo(methodType, methodDataId, projectId) ;
+    }
 }
