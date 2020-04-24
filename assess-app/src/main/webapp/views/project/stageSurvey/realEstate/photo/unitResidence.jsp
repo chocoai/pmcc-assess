@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
@@ -18,28 +17,27 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         附件上传页面
-
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="x_content">
-                                    <form class="form-horizontal" id="basicBuildingFrm">
+                                    <form class="form-horizontal" id="basicUnitFrm">
+                                        <input type="hidden" name="id" value="${basicUnit.id}">
+                                        <input type="hidden" name="quoteId" value="${basicUnit.quoteId}">
+                                        <input type="hidden" name="estateId" value="${basicUnit.estateId}">
+                                        <input type="hidden" name="buildingId" value="${basicUnit.buildingId}">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card-body">
 
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-
-                                                            <div id="basicBuilding"></div>
-                                                        </div>
-                                                    </div>
+                                                    <div id="basicUnit"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -58,18 +56,15 @@
 </div>
 </body>
 </html>
-
-
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
-
-
+        src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
-        buildingCommon.initById('${basicBuilding.id}');
+        unitCommon.initById('${basicUnit.id}');
+
     })
-
-
 </script>

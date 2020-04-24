@@ -41,6 +41,7 @@
                                                            value="${basicBuilding.quoteId}">
                                                     <input type="hidden" name="estateId"
                                                            value="${basicBuilding.estateId}">
+                                                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">

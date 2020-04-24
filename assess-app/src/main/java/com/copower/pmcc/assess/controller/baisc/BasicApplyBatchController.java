@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -468,8 +469,13 @@ public class BasicApplyBatchController extends BaseController {
         return modelAndView;
     }
 
+    //com.copower.pmcc.assess.service.base.BaseQrcodeService.createQrCode( )  这里的参数变动必须把这个方法的参数一起变动
     @RequestMapping(value = "/informationPhoneEdit", name = "信息手机端填写", method = RequestMethod.GET)
     public ModelAndView informationPhoneEdit(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        List<String> stringList = FormatUtils.transformString2List(basicFormClassifyParamDto.getTbType(), BasicFormClassifyEnum.transform(true));
+        basicFormClassifyParamDto.setTbType(org.apache.commons.lang3.StringUtils.join(stringList,BasicFormClassifyEnum.transform(false)));
+
+
         BasicFormClassifyEnum estateTaggingTypeEnum = BasicFormClassifyEnum.getEnumByKey(basicFormClassifyParamDto.getTbType());
         BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(estateTaggingTypeEnum.getKey());
         ModelAndView modelAndView = entityAbstract.getPhoneEditModelAndView(basicFormClassifyParamDto);

@@ -85,6 +85,9 @@ public class BasicEstateLandIncludService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-        return null;
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/landIncludRealEstate/photo/estate");
+        modelAndView.addObject("basicEstate", basicEstateService.getBasicEstateById(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
+        return modelAndView;
     }
 }

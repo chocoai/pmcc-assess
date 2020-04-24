@@ -39,6 +39,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card-body">
+                                                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">

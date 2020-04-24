@@ -35,6 +35,7 @@
                                 <form id="frm_estate" class="form-horizontal">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
                                     <input type="hidden" name="quoteId" value="${basicEstate.quoteId}">
+                                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">

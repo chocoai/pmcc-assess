@@ -78,6 +78,8 @@ public class BasicUnitLandIncludService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-        return null;
+        ModelAndView editModelAndView = basicUnitService.getEditModelAndView(basicFormClassifyParamDto);
+        editModelAndView.setViewName("/project/stageSurvey/landIncludRealEstate/photo/unit");
+        return editModelAndView;
     }
 }
