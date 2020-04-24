@@ -2375,19 +2375,7 @@ public class GenerateBaseDataService {
         }
 
         if (groupItem != null && groupItem.getTotal() != null) {
-            linkedList.addAll(Arrays.asList("合计费用", groupItem.getTotal().toString(), "", "", "", "",""));
-            AsposeUtils.writeWordTitle(builder, linkedList);
-            linkedList.clear();
-            mergeCellModelList.add(new MergeCellModel(j, 1, j, 6));
-        }
-        if (groupItem != null && groupItem.getBuyerTotal() != null) {
-            linkedList.addAll(Arrays.asList("买方费用", groupItem.getBuyerTotal()==null?"":groupItem.getBuyerTotal().toString(), "", "", "", "",""));
-            AsposeUtils.writeWordTitle(builder, linkedList);
-            linkedList.clear();
-            mergeCellModelList.add(new MergeCellModel(j, 1, j, 6));
-        }
-        if (groupItem != null && groupItem.getBuyerTotal() != null) {
-            linkedList.addAll(Arrays.asList("卖方费用", groupItem.getBuyerTotal()==null?"":groupItem.getSellerTotal().toString(), "", "", "", "",""));
+            linkedList.addAll(Arrays.asList("合计费用", String.format("买方费用为%s，卖方费用为%s,合计费用为%s",groupItem.getBuyerTotal(),groupItem.getBuyerTotal(),groupItem.getTotal()), "", "", "", "",""));
             AsposeUtils.writeWordTitle(builder, linkedList);
             linkedList.clear();
             mergeCellModelList.add(new MergeCellModel(j, 1, j, 6));

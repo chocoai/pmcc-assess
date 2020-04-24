@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicEstateLandUseCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="land_use_type_id" property="landUseTypeId" jdbcType="INTEGER" />
+    <result column="land_use_category" property="landUseCategory" jdbcType="VARCHAR" />
+    <result column="land_level" property="landLevel" jdbcType="INTEGER" />
+    <result column="land_level_name" property="landLevelName" jdbcType="VARCHAR" />
+    <result column="acquisition_time" property="acquisitionTime" jdbcType="TIMESTAMP" />
+    <result column="land_use_year" property="landUseYear" jdbcType="DECIMAL" />
+    <result column="land_shape" property="landShape" jdbcType="VARCHAR" />
+    <result column="develop_time" property="developTime" jdbcType="TIMESTAMP" />
+    <result column="plot_ratio" property="plotRatio" jdbcType="DECIMAL" />
+    <result column="building_density" property="buildingDensity" jdbcType="VARCHAR" />
+    <result column="greening_rate" property="greeningRate" jdbcType="DECIMAL" />
+    <result column="compatibility_type" property="compatibilityType" jdbcType="VARCHAR" />
+    <result column="compatibility_rate" property="compatibilityRate" jdbcType="DECIMAL" />
+    <result column="height_permitted" property="heightPermitted" jdbcType="VARCHAR" />
+    <result column="land_factor_total_score" property="landFactorTotalScore" jdbcType="DECIMAL" />
+    <result column="land_level_content_result" property="landLevelContentResult" jdbcType="VARCHAR" />
+    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, land_use_type_id, land_use_category, land_level, land_level_name, acquisition_time, 
+    land_use_year, land_shape, develop_time, plot_ratio, building_density, greening_rate, 
+    compatibility_type, compatibility_rate, height_permitted, land_factor_total_score, 
+    land_level_content_result, bis_delete, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_basic_estate_land_use_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_basic_estate_land_use_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_basic_estate_land_use_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategoryExample" >
+    delete from tb_basic_estate_land_use_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_basic_estate_land_use_category (land_use_type_id, land_use_category, land_level, 
+      land_level_name, acquisition_time, land_use_year, 
+      land_shape, develop_time, plot_ratio, 
+      building_density, greening_rate, compatibility_type, 
+      compatibility_rate, height_permitted, land_factor_total_score, 
+      land_level_content_result, bis_delete, creator, 
+      gmt_created, gmt_modified)
+    values (#{landUseTypeId,jdbcType=INTEGER}, #{landUseCategory,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, 
+      #{landLevelName,jdbcType=VARCHAR}, #{acquisitionTime,jdbcType=TIMESTAMP}, #{landUseYear,jdbcType=DECIMAL}, 
+      #{landShape,jdbcType=VARCHAR}, #{developTime,jdbcType=TIMESTAMP}, #{plotRatio,jdbcType=DECIMAL}, 
+      #{buildingDensity,jdbcType=VARCHAR}, #{greeningRate,jdbcType=DECIMAL}, #{compatibilityType,jdbcType=VARCHAR}, 
+      #{compatibilityRate,jdbcType=DECIMAL}, #{heightPermitted,jdbcType=VARCHAR}, #{landFactorTotalScore,jdbcType=DECIMAL}, 
+      #{landLevelContentResult,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_basic_estate_land_use_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="landUseTypeId != null" >
+        land_use_type_id,
+      </if>
+      <if test="landUseCategory != null" >
+        land_use_category,
+      </if>
+      <if test="landLevel != null" >
+        land_level,
+      </if>
+      <if test="landLevelName != null" >
+        land_level_name,
+      </if>
+      <if test="acquisitionTime != null" >
+        acquisition_time,
+      </if>
+      <if test="landUseYear != null" >
+        land_use_year,
+      </if>
+      <if test="landShape != null" >
+        land_shape,
+      </if>
+      <if test="developTime != null" >
+        develop_time,
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio,
+      </if>
+      <if test="buildingDensity != null" >
+        building_density,
+      </if>
+      <if test="greeningRate != null" >
+        greening_rate,
+      </if>
+      <if test="compatibilityType != null" >
+        compatibility_type,
+      </if>
+      <if test="compatibilityRate != null" >
+        compatibility_rate,
+      </if>
+      <if test="heightPermitted != null" >
+        height_permitted,
+      </if>
+      <if test="landFactorTotalScore != null" >
+        land_factor_total_score,
+      </if>
+      <if test="landLevelContentResult != null" >
+        land_level_content_result,
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="landUseTypeId != null" >
+        #{landUseTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="landUseCategory != null" >
+        #{landUseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="landLevel != null" >
+        #{landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="landLevelName != null" >
+        #{landLevelName,jdbcType=VARCHAR},
+      </if>
+      <if test="acquisitionTime != null" >
+        #{acquisitionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landUseYear != null" >
+        #{landUseYear,jdbcType=DECIMAL},
+      </if>
+      <if test="landShape != null" >
+        #{landShape,jdbcType=VARCHAR},
+      </if>
+      <if test="developTime != null" >
+        #{developTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plotRatio != null" >
+        #{plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingDensity != null" >
+        #{buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="greeningRate != null" >
+        #{greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="compatibilityType != null" >
+        #{compatibilityType,jdbcType=VARCHAR},
+      </if>
+      <if test="compatibilityRate != null" >
+        #{compatibilityRate,jdbcType=DECIMAL},
+      </if>
+      <if test="heightPermitted != null" >
+        #{heightPermitted,jdbcType=VARCHAR},
+      </if>
+      <if test="landFactorTotalScore != null" >
+        #{landFactorTotalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="landLevelContentResult != null" >
+        #{landLevelContentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        #{bisDelete,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategoryExample" resultType="java.lang.Integer" >
+    select count(*) from tb_basic_estate_land_use_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_basic_estate_land_use_category
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.landUseTypeId != null" >
+        land_use_type_id = #{record.landUseTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.landUseCategory != null" >
+        land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landLevel != null" >
+        land_level = #{record.landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.landLevelName != null" >
+        land_level_name = #{record.landLevelName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acquisitionTime != null" >
+        acquisition_time = #{record.acquisitionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.landUseYear != null" >
+        land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landShape != null" >
+        land_shape = #{record.landShape,jdbcType=VARCHAR},
+      </if>
+      <if test="record.developTime != null" >
+        develop_time = #{record.developTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.plotRatio != null" >
+        plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buildingDensity != null" >
+        building_density = #{record.buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.greeningRate != null" >
+        greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.compatibilityType != null" >
+        compatibility_type = #{record.compatibilityType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.compatibilityRate != null" >
+        compatibility_rate = #{record.compatibilityRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.heightPermitted != null" >
+        height_permitted = #{record.heightPermitted,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landFactorTotalScore != null" >
+        land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landLevelContentResult != null" >
+        land_level_content_result = #{record.landLevelContentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisDelete != null" >
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_basic_estate_land_use_category
+    set id = #{record.id,jdbcType=INTEGER},
+      land_use_type_id = #{record.landUseTypeId,jdbcType=INTEGER},
+      land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
+      land_level = #{record.landLevel,jdbcType=INTEGER},
+      land_level_name = #{record.landLevelName,jdbcType=VARCHAR},
+      acquisition_time = #{record.acquisitionTime,jdbcType=TIMESTAMP},
+      land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
+      land_shape = #{record.landShape,jdbcType=VARCHAR},
+      develop_time = #{record.developTime,jdbcType=TIMESTAMP},
+      plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
+      building_density = #{record.buildingDensity,jdbcType=VARCHAR},
+      greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
+      compatibility_type = #{record.compatibilityType,jdbcType=VARCHAR},
+      compatibility_rate = #{record.compatibilityRate,jdbcType=DECIMAL},
+      height_permitted = #{record.heightPermitted,jdbcType=VARCHAR},
+      land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
+      land_level_content_result = #{record.landLevelContentResult,jdbcType=VARCHAR},
+      bis_delete = #{record.bisDelete,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategory" >
+    update tb_basic_estate_land_use_category
+    <set >
+      <if test="landUseTypeId != null" >
+        land_use_type_id = #{landUseTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="landUseCategory != null" >
+        land_use_category = #{landUseCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="landLevel != null" >
+        land_level = #{landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="landLevelName != null" >
+        land_level_name = #{landLevelName,jdbcType=VARCHAR},
+      </if>
+      <if test="acquisitionTime != null" >
+        acquisition_time = #{acquisitionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landUseYear != null" >
+        land_use_year = #{landUseYear,jdbcType=DECIMAL},
+      </if>
+      <if test="landShape != null" >
+        land_shape = #{landShape,jdbcType=VARCHAR},
+      </if>
+      <if test="developTime != null" >
+        develop_time = #{developTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio = #{plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingDensity != null" >
+        building_density = #{buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="greeningRate != null" >
+        greening_rate = #{greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="compatibilityType != null" >
+        compatibility_type = #{compatibilityType,jdbcType=VARCHAR},
+      </if>
+      <if test="compatibilityRate != null" >
+        compatibility_rate = #{compatibilityRate,jdbcType=DECIMAL},
+      </if>
+      <if test="heightPermitted != null" >
+        height_permitted = #{heightPermitted,jdbcType=VARCHAR},
+      </if>
+      <if test="landFactorTotalScore != null" >
+        land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
+      </if>
+      <if test="landLevelContentResult != null" >
+        land_level_content_result = #{landLevelContentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="bisDelete != null" >
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategory" >
+    update tb_basic_estate_land_use_category
+    set land_use_type_id = #{landUseTypeId,jdbcType=INTEGER},
+      land_use_category = #{landUseCategory,jdbcType=VARCHAR},
+      land_level = #{landLevel,jdbcType=INTEGER},
+      land_level_name = #{landLevelName,jdbcType=VARCHAR},
+      acquisition_time = #{acquisitionTime,jdbcType=TIMESTAMP},
+      land_use_year = #{landUseYear,jdbcType=DECIMAL},
+      land_shape = #{landShape,jdbcType=VARCHAR},
+      develop_time = #{developTime,jdbcType=TIMESTAMP},
+      plot_ratio = #{plotRatio,jdbcType=DECIMAL},
+      building_density = #{buildingDensity,jdbcType=VARCHAR},
+      greening_rate = #{greeningRate,jdbcType=DECIMAL},
+      compatibility_type = #{compatibilityType,jdbcType=VARCHAR},
+      compatibility_rate = #{compatibilityRate,jdbcType=DECIMAL},
+      height_permitted = #{heightPermitted,jdbcType=VARCHAR},
+      land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
+      land_level_content_result = #{landLevelContentResult,jdbcType=VARCHAR},
+      bis_delete = #{bisDelete,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

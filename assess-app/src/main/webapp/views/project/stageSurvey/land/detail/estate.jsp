@@ -254,6 +254,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="x_title">
+                                        <h4>土地用途类型类别
+                                        </h4>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered" id="tb_LandUseTypeList">
+                                                <!-- cerare document add ajax data-->
+                                            </table>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -280,6 +291,7 @@
 <%@include file="/views/project/stageSurvey/commonDetail/estateStreetInfo.jsp" %>
 <%@include file="/views/project/stageSurvey/commonDetail/estateLandCategoryInfo.jsp" %>
 <%@include file="/views/project/stageSurvey/commonDetail/estateVillage.jsp" %>
+<%@include file="/views/project/stageSurvey/commonDetail/estateLandUseCategory.jsp" %>
 
 <%@include file="/views/share/chksCommon.jsp" %>
 <script type="text/javascript"

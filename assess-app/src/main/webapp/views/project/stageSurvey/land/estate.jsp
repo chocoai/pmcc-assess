@@ -286,60 +286,31 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="x_title">
+                                        <h4>土地用途类型类别
+
+                                        </h4>
+                                    </div>
+                                    <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                            type="button" data-toggle="modal" type="button"
+                                            onclick="landUseType.showModel()">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                        新增
+                                    </button>
                                     <div class="row form-group">
                                         <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                    土地用途类型<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                    <div class="input-group">
-                                                        <input type="text" name="landUseType" class="form-control"
-                                                               list="landUseTypeList"
-                                                               value="${basicEstateLandState.landUseType}">
-                                                        <datalist id="landUseTypeList">
-
-                                                        </datalist>
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-warning btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                清空
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    土地用途类别<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                    <div class="input-group">
-                                                        <input type="text" name="landUseCategory"
-                                                               list="landUseCategoryList"
-                                                               value="${basicEstateLandState.landUseCategory}"
-                                                               class="form-control">
-                                                        <datalist id="landUseCategoryList">
-
-                                                        </datalist>
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-warning btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                清空
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <table class="table table-bordered" id="tb_LandUseTypeList">
+                                                <!-- cerare document add ajax data-->
+                                            </table>
                                         </div>
                                     </div>
 
-
                                 </form>
 
-                                <%@include file="/views/project/stageSurvey/common/houseTradingBodyBox.jsp" %>
+                                <%@include file="/views/project/stageSurvey/common/estateLandUseCategory.jsp" %>
                                 <%@include file="/views/project/tool/landLevelModalView.jsp" %>
 
                                 <script type="text/javascript"
@@ -432,7 +403,7 @@
 </script>
 <script type="text/javascript">
     $(function () {
-        estateCommon.initById('${basicEstate.id}','${tbType}');
+        estateCommon.initById('${basicEstate.id}', '${tbType}');
     })
 </script>
 

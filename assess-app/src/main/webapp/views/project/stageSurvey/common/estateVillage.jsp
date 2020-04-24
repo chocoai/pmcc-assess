@@ -131,9 +131,7 @@
             var html = estateVillageObj.replaceHtml({id: id});
             table.find("tbody").append(html);
             var districtName = "district" + id;
-            console.log(districtName + "==" + $(estateCommon.estateForm).find(".estateVillages").find("select[name=\"" + districtName + "\"]").attr("name"))
             AssessCommon.loadAreaAsyncInfoByPidAndValue(estateCommon.estateForm.find("select[name='city']").val(), '', function (html, data) {
-                console.log(html + "123")
                 $(estateCommon.estateForm).find(".estateVillages").find("select[name=\"" + districtName + "\"]").empty().html(html).trigger('change');
             }, false);
         });
