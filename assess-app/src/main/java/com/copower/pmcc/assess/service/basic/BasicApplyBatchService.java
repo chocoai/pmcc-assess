@@ -464,19 +464,9 @@ public class BasicApplyBatchService {
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
 
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
-            //纯土地中地块包一部分房屋相关信息
-            BasicHouse basicHouse = new BasicHouse();
-            basicHouse.setHouseNumber("0");
-            basicHouse.setCreator(commonService.thisUserAccount());
-            basicHouseService.saveAndUpdate(basicHouse, false);
-            BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
-            basicHouseTrading.setHouseId(basicHouse.getId());
-            basicHouseTrading.setCreator(commonService.thisUserAccount());
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
-
             BasicApply basicApply = new BasicApply();
             basicApply.setBasicEstateId(basicEstate.getId());
-            basicApply.setBasicHouseId(basicHouse.getId());
+            basicApply.setDeclareRecordId(declareRecord.getId());
             basicApply.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
             basicApplyService.saveBasicApply(basicApply);
         }

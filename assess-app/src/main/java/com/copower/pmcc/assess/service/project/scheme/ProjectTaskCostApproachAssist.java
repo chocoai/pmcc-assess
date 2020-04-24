@@ -160,7 +160,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
         BasicEstate basicEstate = null;
         try {
-            basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            basicEstate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
             if (basicEstate == null) {
                 return;
             }

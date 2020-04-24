@@ -499,9 +499,6 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td>
-            {landLevelCategoryName}
-        </td>
-        <td>
             {gradeName}
         </td>
         <td>
@@ -542,8 +539,7 @@
                             <table class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
-                                    <th width="10%">土地级别类别</th>
-                                    <th width="10%">土地级别类型</th>
+                                    <th width="10%">土地级别类型类别</th>
                                     <th width="10%">土地级别等级</th>
                                     <th width="20%">说明</th>
                                     <th width="10%">分值</th>
@@ -747,6 +743,10 @@
 
     //因素条件说明及修正系数
     function getLandLevelTabContent() {
+        if(!'${landLevelId}'&&!'${levelDetailId}'){
+            notifyInfo("提示","未关联土地级别");
+            return false;
+        }
         FileUtils.getFileShows({
             target: "select_land_level_file",
             formData: {
@@ -777,7 +777,14 @@
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                    var landLevelTypeName = item.typeName;
+                    if(item.classification){
+                        landLevelTypeName+="/"+item.classification;
+                    }
+                    if(item.categoryName){
+                        landLevelTypeName+="/"+item.categoryName;
+                    }
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     var text = "";

@@ -116,7 +116,7 @@
                                                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区域及个别修正系数</label>
                                                             <div class="col-sm-3">
                                                                 <div class="input-group">
-                                                                    <input type="text" readonly="readonly"
+                                                                    <input type="text"
                                                                            class="form-control x-percent"
                                                                            name="areaAndSeveralAmend"
                                                                            id="areaAndSeveralAmend">
@@ -455,8 +455,7 @@
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
-                                                <th width="10%">土地级别类别</th>
-                                                <th width="10%">土地级别类型</th>
+                                                <th width="10%">土地级别类型类别</th>
                                                 <th width="10%">土地级别等级</th>
                                                 <th width="20%">说明</th>
                                                 <th width="10%">分值</th>
@@ -496,9 +495,6 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td>
-            {landLevelCategoryName}
-        </td>
-        <td>
             <select class="form-control input-full" name="landLevelGrade"
                     onchange="estateCommon.landLevelHandle(this);">
                 {landLevelGradeHTML}
@@ -527,14 +523,14 @@
         }
         var formData = formParams("master");
         formData.rewardRate = AssessCommon.pointToPercent(formData.rewardRate);
-        formData.dateAmend = $("#dateAmend").text();
-        formData.periodAmend = $("#periodAmend").text();
-        formData.volumeFractionAmend = $("#volumeFractionAmend").text();
-        formData.parcelPrice = $("#parcelPrice").text();
-        formData.parcelBhouPrice = $("#parcelBhouPrice").text();
-        formData.parcelTotalPrice = $("#parcelTotalPrice").text();
-        formData.floorPremium = $("#floorPremium").text();
-        formData.correctionDifference = $("#correctionDifference").text();
+        formData.dateAmend = $.trim($("#dateAmend").text())?$("#dateAmend").text():'';
+        formData.periodAmend = $.trim($("#periodAmend").text())?$("#periodAmend").text():'';
+        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").text())?$("#volumeFractionAmend").text():'';
+        formData.parcelPrice = $.trim($("#parcelPrice").text())?$("#parcelPrice").text():'';
+        formData.parcelBhouPrice = $.trim($("#parcelBhouPrice").text())?$("#parcelBhouPrice").text():'';
+        formData.parcelTotalPrice = $.trim($("#parcelTotalPrice").text())?$("#parcelTotalPrice").text():'';
+        formData.floorPremium = $.trim($("#floorPremium").text())?$("#floorPremium").text():'';
+        formData.correctionDifference = $.trim($("#correctionDifference").text())?$("#correctionDifference").text():'';
         formData.areaAndSeveralAmend = AssessCommon.percentToPoint($("#areaAndSeveralAmend").val());
         formData.landLevelContent = $("#landLevelContent").val();
 
@@ -722,6 +718,10 @@
 
     //因素条件说明及修正系数
     function getLandLevelTabContent() {
+        if(!'${landLevelId}'&&!'${levelDetailId}'){
+            notifyInfo("提示","未关联土地级别");
+            return false;
+        }
         FileUtils.getFileShows({
             target: "select_land_level_file",
             formData: {
@@ -764,7 +764,14 @@
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                    var landLevelTypeName = item.typeName;
+                    if(item.classification){
+                        landLevelTypeName+="/"+item.classification;
+                    }
+                    if(item.categoryName){
+                        landLevelTypeName+="/"+item.categoryName;
+                    }
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     var text = "";
                     $.each(obj, function (i, n) {
                         text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
@@ -805,7 +812,14 @@
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
+                    var landLevelTypeName = item.typeName;
+                    if(item.classification){
+                        landLevelTypeName+="/"+item.classification;
+                    }
+                    if(item.categoryName){
+                        landLevelTypeName+="/"+item.categoryName;
+                    }
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     var text = "";
                     $.each(obj, function (i, n) {
                         text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
