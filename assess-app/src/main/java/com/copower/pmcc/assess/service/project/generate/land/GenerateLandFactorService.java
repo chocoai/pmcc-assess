@@ -146,7 +146,7 @@ public class GenerateLandFactorService {
             //主要转换交通
             stringList.add(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainConversion, "", false));
             //停车方便度
-            stringList.add(generateLoactionService.getParkingConvenience(basicApply));
+            stringList.add(generateLoactionService.getParkingConvenience(generateBaseExamineService.getBasicEstateParkingList()));
             {
                 String s = StringUtils.join(stringList.stream().filter(s1 -> StringUtils.isNotEmpty(s1)).collect(Collectors.toSet()), "、");
                 if (StringUtils.isNotEmpty(s)) {
@@ -266,13 +266,13 @@ public class GenerateLandFactorService {
         Map<Integer, String> map = Maps.newHashMap();
         StringBuilder stringBuilder = new StringBuilder(8);
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-            if (basicApply == null || basicApply.getId() == 0) {
+            BasicApplyBatch basicApplyBatch = generateCommonMethod.getBasicApplyBatchBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
-            String natural = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
-            String humanity = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
-            String scenery = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY);
+            String natural = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.NATURAL);
+            String humanity = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.HUMANITY);
+            String scenery = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.SCENERY);
 
             stringBuilder.append(String.format("自然要素:%s", generateCommonMethod.trim(natural)));
             stringBuilder.append(String.format("人文环境要素:%s", generateCommonMethod.trim(humanity)));

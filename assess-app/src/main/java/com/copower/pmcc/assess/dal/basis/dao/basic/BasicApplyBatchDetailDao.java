@@ -83,6 +83,14 @@ public class BasicApplyBatchDetailDao {
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
+    public List<BasicApplyBatchDetail> getBatchDetailListByIds(List<Integer> ids) {
+        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        if (CollectionUtils.isNotEmpty(ids))
+            criteria.andIdIn(ids);
+        return basicApplyBatchDetailMapper.selectByExample(example);
+    }
+
 
     /**
      * 案例升级数据

@@ -1304,17 +1304,9 @@ public class GenerateBaseDataService {
                 continue;
             }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicUnitHuxing> basicUnitHuxingList = generateBaseExamineService.getBasicUnitHuxingList();
-            Set<String> names = Sets.newHashSet();
-            if (CollectionUtils.isNotEmpty(basicUnitHuxingList)) {
-                basicUnitHuxingList.forEach(oo -> {
-                    if (StringUtils.isNotEmpty(oo.getName())) {
-                        names.add(oo.getName());
-                    }
-                });
-            }
-            if (CollectionUtils.isNotEmpty(names)) {
-                map.put(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList), StringUtils.join(names, "、"));
+            BasicUnitHuxing unitHuxing = generateBaseExamineService.getBasicUnitHuxing();
+            if (unitHuxing!=null) {
+                map.put(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList), unitHuxing.getName());
             }
         }
         if (!map.isEmpty()) {
@@ -4414,17 +4406,16 @@ public class GenerateBaseDataService {
         ReportFieldUniversalBankEnum reportFieldEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-//        String value = "/";
         String value = errorStr;
         inner:
         switch (reportFieldEnum) {
             case BankGenerallandscape: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                    if (basicApply == null || basicApply.getId() == null) {
+                    BasicApplyBatch basicApplyBatch = generateCommonMethod.getBasicApplyBatchBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApplyBatch == null || basicApplyBatch.getId() == null) {
                         continue;
                     }
-                    String text = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY);
+                    String text = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.SCENERY);
                     if (StringUtils.isNotEmpty(text)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), text);
                     }
@@ -4505,11 +4496,11 @@ public class GenerateBaseDataService {
             break;
             case BankGeneralParkingLot: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                    if (basicApply == null) {
+                    BasicApplyBatch basicApplyBatch = generateCommonMethod.getBasicApplyBatchBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApplyBatch == null) {
                         continue;
                     }
-                    String text = generateLoactionService.getParkingConvenience(basicApply);
+                    String text = generateLoactionService.getParkingConvenience(basicApplyBatch);
                     if (StringUtils.isNotEmpty(text)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), text);
                     }
@@ -4796,6 +4787,7 @@ public class GenerateBaseDataService {
                 continue;
             }
             BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            BasicApplyBatch basicApplyBatch = generateCommonMethod.getBasicApplyBatchBySchemeJudgeObject(schemeJudgeObject);
             if (basicApply == null) {
                 continue;
             }
@@ -4893,9 +4885,6 @@ public class GenerateBaseDataService {
                     if (StringUtils.isNotBlank(basicEstateVo.getInfrastructureName())) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateVo.getInfrastructureName());
                     }
-//                    if (StringUtils.isNotEmpty(basicEstateLandStateVo.getDevelopmentDegreeContentName())) {
-//                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateLandStateVo.getDevelopmentDegreeContentName());
-//                    }
                 }
                 break;
                 case BankGeneralExternal_facilities: {
@@ -4925,14 +4914,14 @@ public class GenerateBaseDataService {
                 }
                 break;
                 case BankGeneralNatural_environment: {
-                    String value = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
+                    String value = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.NATURAL);
                     if (StringUtils.isNotEmpty(value)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
                 break;
                 case BankGeneralcultural_environment: {
-                    String value = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
+                    String value = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.HUMANITY);
                     if (StringUtils.isNotEmpty(value)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
@@ -5089,7 +5078,7 @@ public class GenerateBaseDataService {
                 }
 
                 stringBuilder.append(generateCommonMethod.getIndentHtml("3、外部基础设施"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApplyBatch)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("4、外部公共服务设施"));
                 List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApplyBatch, true);
                 if (CollectionUtils.isNotEmpty(stringArrayList)) {

@@ -445,6 +445,11 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getBasicApplyBatchDetailList(basicApplyBatchIds, type);
     }
 
+    public List<BasicApplyBatchDetail> getBatchDetailListByIds(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) return null;
+        return basicApplyBatchDetailDao.getBatchDetailListByIds(ids);
+    }
+
     public List<BasicApplyBatchDetail> getHouseBatchDetailList(Integer batchDetailId) {
         BasicApplyBatchDetail batchDetail = getDataById(batchDetailId);
         List<BasicApplyBatchDetail> list = Lists.newArrayList();

@@ -508,17 +508,17 @@ public class EvaluationHypothesisService {
                 }
                 if (valuationDate.compareTo(investigationsEndDate) != 0) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DATE_ARE_CONSISTENT);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{查勘结束日期}", DateUtils.format(investigationsEndDate, DateUtils.DATE_PATTERN)).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_PATTERN))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{查勘结束日期}", DateUtils.format(investigationsEndDate, DateUtils.DATE_CHINESE_PATTERN)).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
                 }
                 if (StringUtils.isNotBlank(surroundingsDamage)) {
                     String number = getSubstitutionPrincipleName(surroundingsDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.SURROUNDINGS_CONDITION);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_PATTERN))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
                 }
                 if (StringUtils.isNotBlank(entityDamage)) {
                     String number = getSubstitutionPrincipleName(entityDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTITY_CONDITION);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_PATTERN))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
                 }
                 if (StringUtils.isNotBlank(havePledge)) {
                     String number = getSubstitutionPrincipleName(havePledge.toString());

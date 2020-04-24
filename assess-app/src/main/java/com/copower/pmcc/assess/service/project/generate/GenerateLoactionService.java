@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -39,6 +40,9 @@ public class GenerateLoactionService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+
     private static final String error = "无";
     @Autowired
     private BaseService baseService;
@@ -92,27 +96,6 @@ public class GenerateLoactionService {
             return "";
         }
         return StringUtils.isNotBlank(value) ? value : "不临街";
-    }
-
-    @Deprecated
-    public String getFaceStreetExtend(BasicApply basicApply) throws Exception {
-        if (basicApply == null || basicApply.getId() == 0) {
-            return "";
-        }
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
-        if (CollectionUtils.isEmpty(basicHouseFaceStreetVoList)) {
-            return "";
-        }
-        List<String> stringList = Lists.newArrayList();
-        basicHouseFaceStreetVoList.forEach(oo -> {
-            if (StringUtils.isNotEmpty(oo.getStreetName())) {
-                if (StringUtils.isNotEmpty(oo.getPositionName())) {
-                    stringList.add(String.format("%s%s", oo.getPositionName(), oo.getStreetName()));
-                }
-            }
-        });
-        return StringUtils.join(stringList, ",");
     }
 
     public String getFaceStreetExtend(BasicApplyBatch applyBatch) throws Exception {
@@ -181,191 +164,18 @@ public class GenerateLoactionService {
     }
 
     /**
-     * 环境
-     *
-     * @param basicApply
-     * @param scienceEnum
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getEnvironmentalScience(BasicApply basicApply, EnvironmentalScienceEnum scienceEnum) {
-        StringBuilder builder = new StringBuilder(8);
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = generateBaseExamineService.getBasicMatchingEnvironmentList();
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(scienceEnum.getKey());
-        LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
-        if (CollectionUtils.isNotEmpty(basicMatchingEnvironmentVoList)) {
-            for (BasicMatchingEnvironmentVo oo : basicMatchingEnvironmentVoList) {
-                if (!Objects.equal(oo.getType(), baseDataDic.getId().toString())) {
-                    continue;
-                }
-                if (StringUtils.isNotBlank(oo.getRemark())) {
-                    builder.append(oo.getRemark());
-                } else if (StringUtils.isNotBlank(oo.getHumanImpactName())) {
-                    String name = oo.getHumanImpactName();
-                    if ("无".equals(name)) {
-                        builder.append("无").append(oo.getCategoryName());
-                    } else {
-                        builder.append(oo.getCategoryName()).append(name);
-                    }
-                }
-                if (StringUtils.isNotBlank(builder.toString())) {
-                    hashSet.add(builder.toString());
-                }
-                builder.delete(0, builder.toString().length());
-            }
-        }
-        return StringUtils.join(hashSet, ",");
-    }
-
-
-    /**
      * 外部基础设施
      *
      * @param judgeObjects
      * @return
      * @throws Exception
      */
-    public String getExternalInfrastructure(List<SchemeJudgeObject> judgeObjects) {
-        Map<Integer, String> mapObj = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjects) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                continue;
-            }
-            BasicApplyBatch basicApply = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-            if (basicApply == null) {
-                continue;
-            }
-            StringBuilder stringBuilder = new StringBuilder(8);
-            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
-            List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = basicExamineHandle.getBasicHouseFaceStreetAll();
-            List<BasicEstateSupply> basicEstateSupplyList = basicExamineHandle.getBasicEstateSupplyList();
-            List<BasicEstateNetwork> basicEstateNetworkList = basicExamineHandle.getBasicEstateNetworkList();
-            if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
-                LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-                String v = null;
-                long a1 = 0;
-                long a2 = 0;
-                long a3 = 0;
-                for (BasicHouseFaceStreetVo basicHouseFaceStreetVo : basicHouseFaceStreetVoList) {
-                    linkedHashSet.add(String.format("%s%s", StringUtils.defaultString(basicHouseFaceStreetVo.getPositionName()), StringUtils.defaultString(basicHouseFaceStreetVo.getStreetName())));
-                    if (Objects.equal("主干道", basicHouseFaceStreetVo.getStreetLevelName())) {
-                        a1++;
-                    }
-                    if (Objects.equal("次干道", basicHouseFaceStreetVo.getStreetLevelName())) {
-                        a2++;
-                    }
-                    if (Objects.equal("支路", basicHouseFaceStreetVo.getStreetLevelName())) {
-                        a3++;
-                    }
-
-                }
-                if (a1 > 0 && a2 > 0) {
-                    //支路不必判断
-                    v = "道路体系完善";
-                }
-                if (a1 == 0 && a2 > 0 && a3 > 0) {
-                    v = "道路体系相对完善";
-                }
-                if (a1 == 0 && a2 == 0 && a3 > 0) {
-                    v = "道路体系不完善";
-                }
-                if (a1 == 0 && a2 == 0 && a3 == 0) {
-                    v = "无基本的配套道路体系";
-                }
-                if (a1 > 0 && a2 == 0 && a3 == 0) {
-                    v = "道路体系相对完善";
-                }
-                if (a2 > 0 && a1 == 0 && a3 == 0) {
-                    v = "道路体系相对完善";
-                }
-                if (a3 > 0 && a1 == 0 && a2 == 0) {
-                    v = "道路体系相对完善";
-                }
-                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                    stringBuilder.append(StringUtils.join(linkedHashSet, "，")).append("，");
-                }
-                if (StringUtils.isNotBlank(v)) {
-                    stringBuilder.append(v).append("，");
-                }
-            }
-            if (basicApply.getType().intValue() == BasicApplyTypeEnum.RESIDENCE.getId().intValue()) {
-                BasicEstateVo basicEstateVo = basicExamineHandle.getEstate();
-                if (basicEstateVo != null && StringUtils.isNotBlank(basicEstateVo.getInfrastructureName())) {
-                    stringBuilder.append(basicEstateVo.getInfrastructureName());
-                }
-            }
-            if (basicApply.getType().intValue() == BasicApplyTypeEnum.INDUSTRY.getId().intValue()) {
-                LinkedHashMap<String, Long> map = Maps.newLinkedHashMap();
-                long estateNetwork = 0;
-                long estateSupplyGas = 0;
-                long estateSupplyHeating = 0;
-                long estateSupplyWater = 0;
-                long estateDrainWater = 0;
-                long estateSupplyPower = 0;
-                if (CollectionUtils.isNotEmpty(basicEstateNetworkList)) {
-                    estateNetwork = basicEstateNetworkList.stream().filter(oo -> oo.getSupplier() != null).count();
-                }
-                if (CollectionUtils.isNotEmpty(basicEstateSupplyList)) {
-                    estateSupplyGas = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), basicEstateSupply.getType())).count();
-                    estateSupplyHeating = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getName(), basicEstateSupply.getType())).count();
-                    estateSupplyWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName(), basicEstateSupply.getType())).count();
-                    estateDrainWater = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getName(), basicEstateSupply.getType())).count();
-                    estateSupplyPower = basicEstateSupplyList.stream().filter(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), basicEstateSupply.getType())).count();
-                }
-                map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getDes(), estateSupplyGas);
-                map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING.getDes(), estateSupplyHeating);
-                map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getDes(), estateSupplyWater);
-                map.put(ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER.getDes(), estateDrainWater);
-                map.put(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getDes(), estateSupplyPower);
-                map.put("通讯设施", estateNetwork);
-                LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-                if (map.entrySet().stream().allMatch(entry -> entry.getValue().longValue() != 0)) {
-                    map.forEach((s, aLong) -> {
-                        linkedHashSet.add(s);
-                    });
-                    stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("完善。");
-                } else {
-                    map.forEach((s, aLong) -> {
-                        if (aLong.longValue() != 0) {
-                            linkedHashSet.add(s);
-                        }
-                    });
-                    stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("不完善，");
-                    linkedHashSet.clear();
-                    map.forEach((s, aLong) -> {
-                        if (aLong.longValue() == 0) {
-                            linkedHashSet.add(s);
-                        }
-                    });
-                    stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("完善。");
-                }
-            }
-            mapObj.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
-        }
-        String s = generateCommonMethod.judgeEachDesc(mapObj, "", " ", false);
-        String value = StringUtils.strip(s, "。");
-        return StringUtils.isBlank(value) ? error : value;
-    }
-
-    /**
-     * 外部基础设施
-     *
-     * @param basicApply
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getExternalInfrastructure(BasicApply basicApply) {
+    public String getExternalInfrastructure(BasicApplyBatch basicApply) {
         StringBuilder stringBuilder = new StringBuilder(8);
-        if (basicApply == null) {
-            return null;
-        }
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
-        List<BasicEstateSupply> basicEstateSupplyList = generateBaseExamineService.getBasicEstateSupplyList();
-        List<BasicEstateNetwork> basicEstateNetworkList = generateBaseExamineService.getBasicEstateNetworkList();
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
+        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = basicExamineHandle.getBasicHouseFaceStreetAll();
+        List<BasicEstateSupply> basicEstateSupplyList = basicExamineHandle.getBasicEstateSupplyList();
+        List<BasicEstateNetwork> basicEstateNetworkList = basicExamineHandle.getBasicEstateNetworkList();
         if (CollectionUtils.isNotEmpty(basicHouseFaceStreetVoList)) {
             LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
             String v = null;
@@ -415,7 +225,7 @@ public class GenerateLoactionService {
             }
         }
         if (basicApply.getType().intValue() == BasicApplyTypeEnum.RESIDENCE.getId().intValue()) {
-            BasicEstateVo basicEstateVo = generateBaseExamineService.getEstate();
+            BasicEstateVo basicEstateVo = basicExamineHandle.getEstate();
             if (basicEstateVo != null && StringUtils.isNotBlank(basicEstateVo.getInfrastructureName())) {
                 stringBuilder.append(basicEstateVo.getInfrastructureName());
             }
@@ -466,29 +276,8 @@ public class GenerateLoactionService {
                 stringBuilder.append(StringUtils.join(linkedHashSet, "、")).append("完善。");
             }
         }
-        return generateCommonMethod.trim(stringBuilder.toString());
-    }
-
-
-    /**
-     * 道路状况
-     *
-     * @param judgeObjectList
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getRoadCondition(List<SchemeJudgeObject> judgeObjectList) {
-        Map<Integer, String> map = Maps.newHashMap();
-
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            String s = getRoadConditionExtend(basicApply);
-            if (StringUtils.isNotBlank(s))
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), s);
-        }
-        String s = generateCommonMethod.judgeEachDesc(map, "", "。", false);
-        return StringUtils.strip(s, "。");
+        String value = StringUtils.strip(stringBuilder.toString(), "。");
+        return StringUtils.isBlank(value) ? error : value;
     }
 
     /**
@@ -515,7 +304,7 @@ public class GenerateLoactionService {
         return StringUtils.isBlank(value) ? error : value;
     }
 
-    //道路状况 只取一个
+    //道路状况
     public String getRoadConditionExtend(BasicApplyBatch basicApply) {
         if (basicApply == null || basicApply.getId() == 0) {
             return "";
@@ -531,8 +320,8 @@ public class GenerateLoactionService {
             return false;
         }).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(metroList)){
-            for (int i = 0; i < i; i++) {
-                BasicMatchingTrafficVo trafficVo = metroList.get(0) ;
+            for (int i = 0; i < metroList.size(); i++) {
+                BasicMatchingTrafficVo trafficVo = metroList.get(i) ;
                 if (StringUtils.isNotBlank(trafficVo.getName())) {
                     linkedHashSet.add(trafficVo.getName());
                 }
@@ -552,43 +341,8 @@ public class GenerateLoactionService {
         return StringUtils.join(hashSet, "；");
     }
 
-    @Deprecated
-    public String getRoadConditionExtend(BasicApply basicApply) {
-        if (basicApply == null || basicApply.getId() == 0) {
-            return "";
-        }
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
-        if (CollectionUtils.isEmpty(basicHouseFaceStreetVoList)) {
-            return "";
-        }
-        for (int i = 0; i < basicHouseFaceStreetVoList.size(); i++) {
-            BasicHouseFaceStreetVo basicHouseFaceStreetVo = basicHouseFaceStreetVoList.get(i);
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getPositionName())) {
-                linkedHashSet.add(basicHouseFaceStreetVo.getPositionName());
-            }
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetLevelName())) {
-                linkedHashSet.add(basicHouseFaceStreetVo.getStreetLevelName());
-            }
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetName())) {
-                linkedHashSet.add(basicHouseFaceStreetVo.getStreetName());
-            }
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getTrafficFlowName())) {
-                linkedHashSet.add(String.format("交通流量%s 、", basicHouseFaceStreetVo.getTrafficFlowName()));
-            }
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getVisitorsFlowrateName())) {
-                linkedHashSet.add(String.format("人流量%s", basicHouseFaceStreetVo.getVisitorsFlowrateName()));
-            }
-            hashSet.add(StringUtils.join(linkedHashSet, ""));
-            linkedHashSet.clear();
-        }
-        return StringUtils.join(hashSet, "；");
-    }
-
     /**
-     * 出入可利用的交通工具 只取一个
+     * 出入可利用的交通工具
      *
      * @return
      * @throws Exception
@@ -631,7 +385,6 @@ public class GenerateLoactionService {
             }
         }
         if (CollectionUtils.isNotEmpty(metroList)) {
-            metroList = Arrays.asList(metroList.get(0));
             for (int i = 0; i < metroList.size(); i++) {
                 BasicMatchingTrafficVo basicMatchingTrafficVo = metroList.get(i);
                 String distance = generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName());
@@ -650,66 +403,6 @@ public class GenerateLoactionService {
     }
 
     /**
-     * 出入可利用的交通工具
-     *
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getAccessAvailableMeansTransport(BasicApply basicApply) {
-        if (basicApply == null) {
-            return null;
-        }
-        StringBuilder contentBuilder = new StringBuilder();
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
-        //公交
-        List<BasicMatchingTrafficVo> transitList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
-            if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TRANSIT.getName()) && basicMatchingTrafficVo.getDistance() != null) {
-                return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
-        //地铁
-        List<BasicMatchingTrafficVo> metroList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
-            if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.METRO.getName()) && basicMatchingTrafficVo.getDistance() != null) {
-                return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(transitList)) {
-            for (int i = 0; i < transitList.size(); i++) {
-                BasicMatchingTrafficVo basicMatchingTrafficVo = transitList.get(i);
-                String distance = generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName());
-                if ("0".equals(distance)) {
-                    contentBuilder.append("附近");
-                } else {
-                    contentBuilder.append("距");
-                    contentBuilder.append(basicMatchingTrafficVo.getName());
-                    contentBuilder.append(String.format("大约%s米", generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName())));
-                }
-                contentBuilder.append("有").append("线路").append(basicMatchingTrafficVo.getTheLine()).append("；");
-
-            }
-        }
-        if (CollectionUtils.isNotEmpty(metroList)) {
-            for (int i = 0; i < metroList.size(); i++) {
-                BasicMatchingTrafficVo basicMatchingTrafficVo = metroList.get(i);
-                String distance = generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName());
-                if ("0".equals(distance)) {
-                    contentBuilder.append("附近");
-                } else {
-                    contentBuilder.append("距");
-                    contentBuilder.append(basicMatchingTrafficVo.getName());
-                    contentBuilder.append(String.format("大约%s米", generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName())));
-                }
-                contentBuilder.append("有").append("线路").append(basicMatchingTrafficVo.getTheLine()).append("；");
-            }
-        }
-        return contentBuilder.toString();
-    }
-
-    /**
      * 停车方便度
      *
      * @param basicApply
@@ -720,12 +413,15 @@ public class GenerateLoactionService {
         if (basicApply == null) {
             return null;
         }
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
+        List<BasicEstateParking> basicEstateParkingList = basicExamineHandle.getBasicEstateParkingList();
+        return getParkingConvenience(basicEstateParkingList);
+    }
+
+    public String getParkingConvenience(List<BasicEstateParking> basicEstateParkingList) {
         StringBuilder builder = new StringBuilder(8);
         Set<String> stringSet = Sets.newHashSet();
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        //自有停车场有300个车位
-        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
-        List<BasicEstateParking> basicEstateParkingList = basicExamineHandle.getBasicEstateParkingList();
         final String TYPE = "自有车位";
         if (CollectionUtils.isNotEmpty(basicEstateParkingList)) {
             List<BasicEstateParking> commonParkingList = basicEstateParkingList.stream().filter(basicEstateParking -> !Objects.equal(TYPE, baseDataDicService.getNameById(basicEstateParking.getParkingEstate()))).collect(Collectors.toList());
@@ -768,93 +464,6 @@ public class GenerateLoactionService {
         }
         String value = generateCommonMethod.trim(StringUtils.join(linkedHashSet, "；"));
         return StringUtils.isBlank(value) ? error : value;
-    }
-
-    /**
-     * 停车方便度
-     *
-     * @param basicApply
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getParkingConvenience(BasicApply basicApply) {
-        if (basicApply == null) {
-            return null;
-        }
-        StringBuilder builder = new StringBuilder(8);
-        Set<String> stringSet = Sets.newHashSet();
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        //自有停车场有300个车位
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicEstateParking> basicEstateParkingList = generateBaseExamineService.getBasicEstateParkingList();
-        final String TYPE = "自有车位";
-        if (CollectionUtils.isNotEmpty(basicEstateParkingList)) {
-            List<BasicEstateParking> commonParkingList = basicEstateParkingList.stream().filter(basicEstateParking -> !Objects.equal(TYPE, baseDataDicService.getNameById(basicEstateParking.getParkingEstate()))).collect(Collectors.toList());
-            List<BasicEstateParking> mySelfParkingList = Lists.newArrayList(CollectionUtils.subtract(basicEstateParkingList, commonParkingList));
-            if (CollectionUtils.isNotEmpty(commonParkingList)) {
-                commonParkingList.stream().forEach(basicEstateParking -> {
-                    if (basicEstateParking.getNumber() != null) {
-                        builder.append("自有").append(StringUtils.isNotBlank(basicEstateParking.getName()) ? basicEstateParking.getName() : "").append("停车场");
-                        if (basicEstateParking.getNumber() != null)
-                            builder.append("有").append(basicEstateParking.getNumber()).append("个车位");
-                        stringSet.add(builder.toString());
-                        builder.delete(0, builder.toString().length());
-                    }
-                });
-            }
-            if (CollectionUtils.isNotEmpty(stringSet)) {
-                linkedHashSet.add(StringUtils.join(stringSet, "、"));
-            }
-            stringSet.clear();
-            if (CollectionUtils.isNotEmpty(mySelfParkingList)) {
-                mySelfParkingList.stream().forEach(basicEstateParking -> {
-                    if (basicEstateParking.getNumber() != null) {
-                        String v = baseDataDicService.getNameById(basicEstateParking.getParkingType());
-                        if (StringUtils.isNotBlank(v)) {
-                            builder.append("在").append(baseDataDicService.getNameById(basicEstateParking.getLocation())).append("位置处");
-                            builder.append(v).append("有");
-                            builder.append(basicEstateParking.getNumber()).append("个车位");
-                            stringSet.add(builder.toString());
-                            builder.delete(0, builder.toString().length());
-                        }
-                    }
-                });
-            }
-            if (CollectionUtils.isNotEmpty(stringSet)) {
-                linkedHashSet.add(StringUtils.join(stringSet, "、"));
-            }
-            stringSet.clear();
-        }
-        return generateCommonMethod.trim(StringUtils.join(linkedHashSet, "；"));
-    }
-
-    /**
-     * 交通收费情况
-     *
-     * @param basicApply
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getTrafficCharges(BasicApply basicApply) {
-        if (basicApply == null) {
-            return null;
-        }
-        StringBuilder builder = new StringBuilder(8);
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList().stream().filter(basicMatchingTrafficVo -> {
-            if (StringUtils.isNotBlank(basicMatchingTrafficVo.getCostStandard())) {
-                return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
-            basicMatchingTrafficList.stream().forEach(basicMatchingTrafficVo -> {
-                builder.append(basicMatchingTrafficVo.getName()).append(basicMatchingTrafficVo.getCostStandard());
-            });
-        }
-        return generateCommonMethod.trim(builder.toString());
     }
 
     /**
@@ -921,81 +530,6 @@ public class GenerateLoactionService {
         }
         String value = builder.toString();
         return StringUtils.isBlank(value) ? error : value;
-    }
-
-
-    /**
-     * 交通管制情况
-     *
-     * @param basicApply
-     * @return
-     * @throws Exception
-     */
-    @Deprecated
-    public String getTrafficControl(BasicApply basicApply) {
-        if (basicApply == null) {
-            return null;
-        }
-        StringBuilder builder = new StringBuilder();
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList().stream().filter(basicMatchingTrafficVo -> {
-            if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainRoad.getName())) {
-                if (basicMatchingTrafficVo.getFlag() != null) {
-                    return basicMatchingTrafficVo.getFlag().booleanValue();
-                }
-            }
-            return false;
-        }).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
-            builder.append("限行情况:");
-            Set<String> stringSet = Sets.newHashSet();
-            StringBuffer stringBuffer = new StringBuffer(8);
-            basicMatchingTrafficList.stream().forEach(basicMatchingTrafficVo -> {
-                stringBuffer.append(basicMatchingTrafficVo.getLimitSpeed()).append(basicMatchingTrafficVo.getLimitTime()).append(basicMatchingTrafficVo.getLimitSpeialName()).append(";");
-                stringSet.add(stringBuffer.toString());
-                stringBuffer.delete(0, stringBuffer.toString().length());
-            });
-            builder.append(StringUtils.join(stringSet, ""));
-        }
-        return builder.toString();
-    }
-
-
-    /**
-     * 与重要场所的距离
-     *
-     * @return
-     */
-    @Deprecated
-    public String getWithImportantLocationDistance(BasicApply basicApply) {
-        if (basicApply == null) {
-            return null;
-        }
-        StringBuilder stringBuilder = new StringBuilder(8);
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
-        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
-        List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
-        List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
-        if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
-            //交通枢纽
-            stringBuilder.append(StringUtils.defaultString(this.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "", false)));
-            //主要转换
-            stringBuilder.append(StringUtils.defaultString(this.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainConversion, "", false)));
-        }
-        //购物商场
-        if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-            stringBuilder.append(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "", false)));
-        }
-        //金融服务
-        if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            stringBuilder.append(StringUtils.defaultString(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null, null, "")));
-        }
-        //医疗
-        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            stringBuilder.append(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList, null, "")));
-        }
-        return stringBuilder.toString();
     }
 
     /**
@@ -1110,52 +644,6 @@ public class GenerateLoactionService {
         return stringArrayList;
     }
 
-    /**
-     * 外部公共服务设施
-     *
-     * @param basicApply
-     * @return
-     * @throws Exception
-     */
-    public List<String> getExternalPublicServiceFacilities(BasicApply basicApply, Boolean isShowName) {
-        if (basicApply == null) {
-            return null;
-        }
-        List<String> stringArrayList = Lists.newArrayList();
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
-        List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
-        List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
-        List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
-        if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-            //购物商场
-            stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET,
-                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":") : "", false)));
-            //餐饮
-            stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT,
-                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":") : "", false)));
-            //休闲娱乐
-            stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION,
-                    isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":") : "", false)));
-        }
-        //金融服务
-        if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null,
-                    null, isShowName ? String.format("%s%s", "金融服务", ":") : "")));
-        }
-        //医疗
-        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList,
-                    null, isShowName ? String.format("%s%s", "医疗", ":") : "")));
-        }
-        //教育
-        if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
-            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, null,
-                    basicMatchingEducationList, isShowName ? String.format("%s%s", "教育", ":") : "")));
-        }
-        return stringArrayList;
-    }
-
 
     /**
      * 朝向
@@ -1167,27 +655,16 @@ public class GenerateLoactionService {
     public String getOrientation(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+            GenerateBaseExamineService generateBaseExamineService=new GenerateBaseExamineService(basicApply);
             if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
                 continue;
             }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-            if (basicApplyBatch == null) {
-                continue;
-            }
-            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
-            List<BasicHouse> basicHouseAll = basicExamineHandle.getBasicHouseAll();
-            if (CollectionUtils.isEmpty(basicHouseAll)) {
-                continue;
-            }
+            BasicHouseVo basicHouseVo = generateBaseExamineService.getBasicHouse();
+            BasicUnitHuxing basicUnitHuxing = generateBaseExamineService.getBasicUnitHuxing();
             Map<String, String> stringMap = new HashMap<>();
-            Iterator<BasicHouse> iterator = basicHouseAll.iterator();
-            while (iterator.hasNext()) {
-                BasicHouse basicHouse = iterator.next();
-                if (basicHouse != null && basicHouse.getHuxingId() != null) {
-                    BasicUnitHuxing unitHuxing = basicUnitHuxingDao.getBasicUnitHuxingById(basicHouse.getHuxingId());
-                    if (unitHuxing != null)
-                        stringMap.put(baseDataDicService.getNameById(unitHuxing.getOrientation()), basicHouse.getHouseNumber());
-                }
+            if (basicUnitHuxing != null) {
+                stringMap.put(baseDataDicService.getNameById(basicUnitHuxing.getOrientation()), basicHouseVo.getHouseNumber());
             }
             if (!stringMap.isEmpty()) {
                 if (stringMap.size() == 1) {
@@ -1203,7 +680,6 @@ public class GenerateLoactionService {
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, " "));
                 }
             }
-
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
         String value = StringUtils.strip(s, ";");
@@ -1250,7 +726,7 @@ public class GenerateLoactionService {
      * @return
      */
     public String getFloor(List<SchemeJudgeObject> judgeObjectList) {
-        StringBuffer stringBuffer = new StringBuffer(8);
+        StringBuilder stringBuffer = new StringBuilder(8);
         Map<Integer, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -1266,99 +742,23 @@ public class GenerateLoactionService {
                     if (basicBuilding == null || basicUnit == null || basicHouse == null) {
                         continue;
                     }
-                    stringBuffer.append(basicBuilding.getBuildingNumber()).append("栋");
+                    stringBuffer.append(basicBuilding.getBuildingNumber());
                     if (basicBuilding.getFloorCount() != null) {
                         stringBuffer.append(String.format("%s层建筑", basicBuilding.getFloorCount()));
                     }
                     if (StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
-                        stringBuffer.append(String.format("%s单元", basicUnit.getUnitNumber()));
+                        stringBuffer.append(String.format("%s", basicUnit.getUnitNumber()));
                     }
                     if (StringUtils.isNotBlank(basicHouse.getFloor())) {
                         stringBuffer.append("的第").append(basicHouse.getFloor()).append("层");
                     }
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuffer.toString());
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuffer.toString().replaceAll("层+","层"));
                     stringBuffer.delete(0, stringBuffer.toString().length());
                 }
             }
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
         return StringUtils.strip(s, ";");
-    }
-
-    /**
-     * 获取楼层信息
-     *
-     * @param judgeObjectList
-     * @return
-     */
-    public String getFloorNew(List<SchemeJudgeObject> judgeObjectList) {
-        StringBuffer stringBuffer = new StringBuffer(8);
-        Map<Integer, String> map = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                    continue;
-                }
-                BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-                if (basicApplyBatch == null) {
-                    continue;
-                }
-                BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
-                BasicEstateVo estate = basicExamineHandle.getEstate();
-                List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingList(estate.getId());
-                if (CollectionUtils.isEmpty(basicBuildingList)) {
-                    continue;
-                }
-                Iterator<BasicBuilding> buildingIterator = basicBuildingList.iterator();
-                while (buildingIterator.hasNext()) {
-                    if (basicBuildingList.size() > 1){
-                        stringBuffer.append(";") ;
-                    }
-                    BasicBuilding basicBuilding = buildingIterator.next();
-                    if (judgeObjectList.size() != 1) {
-                        stringBuffer.append("位于");
-                    }
-                    stringBuffer.append(basicBuilding.getBuildingNumber()).append("栋");
-                    if (basicBuilding.getFloorCount() != null) {
-                        stringBuffer.append(String.format("%s层建筑", basicBuilding.getFloorCount()));
-                    }
-                    List<BasicUnit> basicUnitList = basicExamineHandle.getBasicUnitList(basicBuilding.getId());
-                    if (CollectionUtils.isEmpty(basicUnitList)) {
-                        continue;
-                    }
-                    Set<String> unitSet = Sets.newHashSet() ;
-                    Iterator<BasicUnit> unitIterator = basicUnitList.iterator();
-                    while (unitIterator.hasNext()) {
-                        StringBuilder unitBuilder = new StringBuilder() ;
-                        BasicUnit basicUnit = unitIterator.next();
-                        if (StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
-                            unitBuilder.append(String.format("%s单元", basicUnit.getUnitNumber()));
-                        }
-                        List<BasicExamineHandle.BasicHouseAndTrading> houseAndTradingList = basicExamineHandle.getBasicHouseAndTradingList(basicUnit.getId());
-                        if (CollectionUtils.isEmpty(houseAndTradingList)) {
-                            continue;
-                        }
-                        Iterator<BasicExamineHandle.BasicHouseAndTrading> houseAndTradingIterator = houseAndTradingList.iterator();
-                        List<Integer> integerList = Lists.newArrayList();
-                        while (houseAndTradingIterator.hasNext()) {
-                            BasicExamineHandle.BasicHouseAndTrading basicHouseAndTrading = houseAndTradingIterator.next();
-                            BasicHouse basicHouse = basicHouseAndTrading.getHouse();
-                            if (StringUtils.isNotBlank(basicHouse.getFloor())) {
-                                integerList.add(Integer.parseInt(basicHouse.getFloor())) ;
-                            }
-                        }
-                        unitBuilder.append(String.join("","的第",StringUtils.join(integerList.stream().distinct().sorted().collect(Collectors.toList()), "、"),"层")) ;
-                        unitSet.add(unitBuilder.toString()) ;
-                    }
-                    stringBuffer.append(StringUtils.join(unitSet," ")) ;
-                }
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuffer.toString());
-                stringBuffer.delete(0, stringBuffer.toString().length());
-            }
-        }
-        String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
-        String value = StringUtils.strip(s, ";");
-        return StringUtils.isBlank(value) ? error : value;
     }
 
 

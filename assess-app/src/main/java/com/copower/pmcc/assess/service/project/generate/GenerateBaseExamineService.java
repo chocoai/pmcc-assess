@@ -73,12 +73,13 @@ public class GenerateBaseExamineService {
 
     /**
      * 取得版块信息
+     *
      * @return
      * @throws Exception
      */
-    public DataBlockVo getByDataBlock()throws Exception{
+    public DataBlockVo getByDataBlock() throws Exception {
         DataBlockVo dataBlockVo = dataBlockService.getDataBlockVo(dataBlockService.getDataBlockById(getEstate().getBlockId()));
-        if (dataBlockVo == null){
+        if (dataBlockVo == null) {
             dataBlockVo = new DataBlockVo();
         }
         return dataBlockVo;
@@ -88,28 +89,28 @@ public class GenerateBaseExamineService {
         return basicEstateNetworkService.getBasicEstateNetworkList(getEstate().getId());
     }
 
-    public List<BasicEstateParking> getBasicEstateParkingList()  {
+    public List<BasicEstateParking> getBasicEstateParkingList() {
         BasicEstateParking query = new BasicEstateParking();
         query.setEstateId(getEstate().getId());
         return basicEstateParkingService.basicEstateParkingList(query);
     }
 
-    public List<BasicEstateSupply> getBasicEstateSupplyList()  {
+    public List<BasicEstateSupply> getBasicEstateSupplyList() {
         return basicEstateSupplyService.getBasicEstateSupplyList(getEstate().getId());
     }
 
-    public List<BasicMatchingEducation> getBasicMatchingEducatioListn()  {
+    public List<BasicMatchingEducation> getBasicMatchingEducatioListn() {
         return basicMatchingEducationService.getBasicMatchingEducationList(getEstate().getId());
     }
 
-    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentList()  {
+    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentList() {
         return basicMatchingEnvironmentService.getBasicMatchingEnvironmentVos(getEstate().getId());
     }
 
-    public List<BasicMatchingFinanceVo> getBasicMatchingFinanceList()  {
+    public List<BasicMatchingFinanceVo> getBasicMatchingFinanceList() {
         List<BasicMatchingFinanceVo> vos = Lists.newArrayList();
         List<BasicMatchingFinance> financeList = basicMatchingFinanceService.getBasicMatchingFinanceList(getEstate().getId());
-        if (CollectionUtils.isNotEmpty(financeList)){
+        if (CollectionUtils.isNotEmpty(financeList)) {
             financeList.stream().forEach(basicMatchingFinance -> {
                 vos.add(basicMatchingFinanceService.getBasicMatchingFinanceVo(basicMatchingFinance));
             });
@@ -117,7 +118,7 @@ public class GenerateBaseExamineService {
         return vos;
     }
 
-    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList()  {
+    public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList() {
         return basicMatchingLeisurePlaceService.getBasicMatchingLeisurePlaceList(getEstate().getId());
     }
 
@@ -127,11 +128,11 @@ public class GenerateBaseExamineService {
         return basicMatchingMaterialService.basicMatchingMaterialList(query);
     }
 
-    public List<BasicMatchingMedical> getBasicMatchingMedicalList()  {
+    public List<BasicMatchingMedical> getBasicMatchingMedicalList() {
         return basicMatchingMedicalService.getBasicMatchingMedicalList(getEstate().getId());
     }
 
-    public List<BasicMatchingTrafficVo> getBasicMatchingTrafficList()  {
+    public List<BasicMatchingTrafficVo> getBasicMatchingTrafficList() {
         return basicMatchingTrafficService.getBasicMatchingTrafficVos(getEstate().getId());
     }
 
@@ -184,7 +185,7 @@ public class GenerateBaseExamineService {
         return basicBuildingSurfaceService.basicBuildingSurfaceList(query);
     }
 
-    public BasicUnit getBasicUnit()  {
+    public BasicUnit getBasicUnit() {
         BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
         if (basicUnit == null) {
             basicUnit = new BasicUnit();
@@ -193,17 +194,19 @@ public class GenerateBaseExamineService {
         return basicUnit;
     }
 
-    public List<BasicUnitHuxing> getBasicUnitHuxingList()  {
+    public BasicUnitHuxing getBasicUnitHuxing() {
         BasicUnitHuxing query = new BasicUnitHuxing();
         query.setHouseId(getBasicHouse().getId());
-        return basicUnitHuxingService.basicUnitHuxingList(query);
+        List<BasicUnitHuxing> basicUnitHuxings = basicUnitHuxingService.basicUnitHuxingList(query);
+        if (CollectionUtils.isEmpty(basicUnitHuxings)) return null;
+        return basicUnitHuxings.get(0);
     }
 
-    public List<BasicUnitElevator> getBasicUnitElevatorList()  {
+    public List<BasicUnitElevator> getBasicUnitElevatorList() {
         return basicUnitElevatorService.getBasicUnitElevatorList(getBasicUnit().getId());
     }
 
-    public List<BasicUnitDecorateVo> getBasicUnitDecorateList()  {
+    public List<BasicUnitDecorateVo> getBasicUnitDecorateList() {
         return basicUnitDecorateService.getBasicUnitDecorateList(getBasicUnit().getId());
     }
 
@@ -233,8 +236,8 @@ public class GenerateBaseExamineService {
         return basicHouseRoomService.getBasicHouseRoomList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseDamagedDegreeVo> getDamagedDegreeVoList(){
-        List<BasicHouseDamagedDegreeVo> degreeList = basicHouseDamagedDegreeService.getDamagedDegreeVoList(getBasicHouse().getId()) ;
+    public List<BasicHouseDamagedDegreeVo> getDamagedDegreeVoList() {
+        List<BasicHouseDamagedDegreeVo> degreeList = basicHouseDamagedDegreeService.getDamagedDegreeVoList(getBasicHouse().getId());
         return degreeList;
     }
 
@@ -244,19 +247,19 @@ public class GenerateBaseExamineService {
         return basicHouseTradingService.basicHouseTradingList(query);
     }
 
-    public List<BasicHouseWater> getBasicHouseWaterList()  {
+    public List<BasicHouseWater> getBasicHouseWaterList() {
         return basicHouseWaterService.getBasicHouseWaterList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainList()  {
+    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainList() {
         return basicHouseWaterDrainService.getBasicHouseWaterDrainList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseRoomDecorateVo> getBasicHouseRoomDecorateList()  {
+    public List<BasicHouseRoomDecorateVo> getBasicHouseRoomDecorateList() {
         return basicHouseRoomDecorateService.getHouseRoomDecorateList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseFaceStreetVo> getBasicHouseFaceStreetList()  {
+    public List<BasicHouseFaceStreetVo> getBasicHouseFaceStreetList() {
         List<BasicHouseFaceStreetVo> vos = Lists.newArrayList();
         BasicHouseFaceStreet query = new BasicHouseFaceStreet();
         query.setHouseId(getBasicHouse().getId());
@@ -297,13 +300,13 @@ public class GenerateBaseExamineService {
         this.basicApply = apply;
     }
 
-    public GenerateBaseExamineService(BasicApply apply){
+    public GenerateBaseExamineService(BasicApply apply) {
         init();
         this.planDetailsId = apply.getPlanDetailsId();
         this.basicApply = apply;
     }
 
-    private void init(){
+    private void init() {
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
 
         this.basicHouseService = SpringContextUtils.getBean(BasicHouseService.class);

@@ -186,22 +186,23 @@ public class GenerateCommonMethod {
     public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByAreaId(Integer areaId) throws Exception {
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        if(CollectionUtils.isEmpty(schemeJudgeObjectList)) return listLinkedHashMap;
-        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(schemeJudgeObjectList,o->o.getBasicApplyId()));
-        if(CollectionUtils.isEmpty(basicApplyList)) return listLinkedHashMap;
-        List<Integer> batchDetailIds=LangUtils.transform(basicApplyList,o->o.getBatchDetailId());
-        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(batchDetailIds, BasicFormClassifyEnum.ESTATE.getKey());
-        if(CollectionUtils.isEmpty(batchDetailList)) return listLinkedHashMap;
-        for (BasicApplyBatchDetail basicApplyBatchDetail : batchDetailList) {
-            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatchDetail.getTableId());
-            List<BasicApplyBatchDetail> batchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(BasicFormClassifyEnum.HOUSE.getKey(), basicApplyBatchDetail.getApplyBatchId(), null, false);
-            if(CollectionUtils.isEmpty(batchDetails)) continue;
+        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) return listLinkedHashMap;
+        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getBasicApplyId()));
+        if (CollectionUtils.isEmpty(basicApplyList)) return listLinkedHashMap;
+        List<Integer> batchDetailIds = LangUtils.transform(basicApplyList, o -> o.getBatchDetailId());
+        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBatchDetailListByIds(batchDetailIds);
+        Map<Integer, BasicApplyBatchDetail> mappingSingleEntity = FormatUtils.mappingSingleEntity(batchDetailList, o -> o.getApplyBatchId());
+        for (Map.Entry<Integer, BasicApplyBatchDetail> entry : mappingSingleEntity.entrySet()) {
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(entry.getKey());
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+            List<BasicApplyBatchDetail> batchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(BasicFormClassifyEnum.HOUSE.getKey(), entry.getValue().getApplyBatchId(), null, false);
+            if (CollectionUtils.isEmpty(batchDetails)) continue;
             List<BasicApply> applyList = basicApplyService.getBasicApplysByBatchDetailIds(LangUtils.transform(batchDetails, o -> o.getId()));
-            if(CollectionUtils.isEmpty(applyList)) continue;
-            List<Integer> applyIds=LangUtils.transform(applyList,o->o.getId());
-            List<SchemeJudgeObject> judgeObjectList=Lists.newArrayList();
+            if (CollectionUtils.isEmpty(applyList)) continue;
+            List<Integer> applyIds = LangUtils.transform(applyList, o -> o.getId());
+            List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if(applyIds.contains(schemeJudgeObject.getBasicApplyId()))
+                if (applyIds.contains(schemeJudgeObject.getBasicApplyId()))
                     judgeObjectList.add(schemeJudgeObject);
             }
             listLinkedHashMap.put(basicEstate, judgeObjectList);
@@ -373,7 +374,7 @@ public class GenerateCommonMethod {
             SchemeJudgeObject object = schemeJudgeObjectList.get(i);
             integerList.add(parseIntJudgeNumber(object.getNumber()));
         }
-        return checkSchemeJudgeObjectNumberOverloadTwenty(integerList) ;
+        return checkSchemeJudgeObjectNumberOverloadTwenty(integerList);
     }
 
     public String getPercentileSystem(BigDecimal bigDecimal) {
@@ -709,7 +710,7 @@ public class GenerateCommonMethod {
     public void settingBuildingTable(DocumentBuilder builder) throws Exception {
         builder.getFont().setSize(9);
         builder.getFont().setName(AsposeUtils.ImitationSongGB2312FontName);
-        AsposeUtils.setDefaultTable(builder) ;
+        AsposeUtils.setDefaultTable(builder);
 
     }
 

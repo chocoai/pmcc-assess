@@ -68,7 +68,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    private void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+    public void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         if (info == null) {
             MdIncome mdIncome = new MdIncome();
