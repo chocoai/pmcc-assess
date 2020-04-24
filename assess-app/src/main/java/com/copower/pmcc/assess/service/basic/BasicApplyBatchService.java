@@ -19,6 +19,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -108,6 +109,8 @@ public class BasicApplyBatchService {
     private CustomBasicAppBatchMapper customBasicAppBatchMapper;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BaseQrcodeService baseQrcodeService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -462,6 +465,7 @@ public class BasicApplyBatchService {
         estateApplyBatchDetail.setExecutor(commonService.thisUserAccount());
         estateApplyBatchDetail.setType(formClassifyEnum.getKey());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
+        baseQrcodeService.createQrCode(estateApplyBatchDetail);
 
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
             //纯土地中地块包一部分房屋相关信息

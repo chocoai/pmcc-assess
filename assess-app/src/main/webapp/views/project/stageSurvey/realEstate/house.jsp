@@ -45,6 +45,7 @@
                                         <input type="hidden" name="unitId" value="${basicHouse.unitId}">
                                         <input type="hidden" name="estateId" value="${basicHouse.estateId}">
                                         <input type="hidden" name="buildingId" value="${basicHouse.buildingId}">
+                                        <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card-body">

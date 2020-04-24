@@ -51,6 +51,19 @@ public enum BasicFormClassifyEnum {
         return null;
     }
 
+    /**
+     * 用来处理本枚举无法解析的问题 类似的building.difference 转为 building_difference 到 解析完转回building.difference
+     * @param flag
+     * @return
+     */
+    public static String transform(boolean flag){
+        if (flag){
+            return "_" ;
+        }else {
+            return "." ;
+        }
+    }
+
     public static List<BasicFormClassifyEnum> getEnumByFuzzyKey(String key) {
         List<BasicFormClassifyEnum> list = Lists.newArrayList();
         for (BasicFormClassifyEnum e : BasicFormClassifyEnum.values()) {

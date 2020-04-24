@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -67,6 +68,8 @@ public class BasicApplyBatchDetailService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicCommonQuoteFieldInfoService basicCommonQuoteFieldInfoService;
+    @Autowired
+    private BaseQrcodeService baseQrcodeService;
 
     /**
      * 通过applyBatchId获取
@@ -213,6 +216,7 @@ public class BasicApplyBatchDetailService {
         }
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
         this.insertBasicApply(basicApplyBatchDetail, planDetailsId); //存入basicApply
+        baseQrcodeService.createQrCode(basicApplyBatchDetail);
         return basicApplyBatchDetail;
     }
 

@@ -7,6 +7,7 @@
     <result column="table_id" property="tableId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -73,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, table_name, table_id, type, field_name, creator, gmt_created, gmt_modified
+    id, table_name, table_id, type, field_name, code, creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List" >
     qrcode
@@ -131,11 +132,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_base_qrcode (table_name, table_id, type, 
-      field_name, creator, gmt_created, 
-      gmt_modified, qrcode)
+      field_name, code, creator, 
+      gmt_created, gmt_modified, qrcode
+      )
     values (#{tableName,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{fieldName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{qrcode,jdbcType=LONGVARCHAR})
+      #{fieldName,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{qrcode,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BaseQrcode" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -154,6 +157,9 @@
       </if>
       <if test="fieldName != null" >
         field_name,
+      </if>
+      <if test="code != null" >
+        code,
       </if>
       <if test="creator != null" >
         creator,
@@ -180,6 +186,9 @@
       </if>
       <if test="fieldName != null" >
         #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -219,6 +228,9 @@
       <if test="record.fieldName != null" >
         field_name = #{record.fieldName,jdbcType=VARCHAR},
       </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -243,6 +255,7 @@
       table_id = #{record.tableId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       field_name = #{record.fieldName,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
@@ -258,6 +271,7 @@
       table_id = #{record.tableId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       field_name = #{record.fieldName,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -280,6 +294,9 @@
       <if test="fieldName != null" >
         field_name = #{fieldName,jdbcType=VARCHAR},
       </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -301,6 +318,7 @@
       table_id = #{tableId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       field_name = #{fieldName,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
@@ -313,6 +331,7 @@
       table_id = #{tableId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       field_name = #{fieldName,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

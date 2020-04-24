@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseQrcode;
 import com.copower.pmcc.assess.dal.basis.entity.BaseQrcodeExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BaseQrcodeMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -40,6 +41,18 @@ public class BaseQrcodeDao {
         BaseQrcodeExample example = new BaseQrcodeExample();
         BaseQrcodeExample.Criteria criteria = example.createCriteria();
         MybatisUtils.convertObj2Criteria(baseQrcode, criteria);
+        return baseQrcodeMapper.selectByExample(example);
+    }
+
+    public List<BaseQrcode> getBaseQrcodeList(Integer tableId, String type, String tableName) {
+        BaseQrcodeExample example = new BaseQrcodeExample();
+        BaseQrcodeExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        criteria.andTableIdEqualTo(tableId);
+        if (StringUtils.isNotBlank(tableName)) {
+            criteria.andTableNameEqualTo(tableName);
+        }
+        criteria.andTypeEqualTo(type);
         return baseQrcodeMapper.selectByExample(example);
     }
 }

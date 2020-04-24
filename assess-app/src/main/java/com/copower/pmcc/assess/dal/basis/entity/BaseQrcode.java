@@ -13,6 +13,8 @@ public class BaseQrcode {
 
     private String fieldName;
 
+    private String code;
+
     private String creator;
 
     private Date gmtCreated;
@@ -59,6 +61,14 @@ public class BaseQrcode {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName == null ? null : fieldName.trim();
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code == null ? null : code.trim();
     }
 
     public String getCreator() {
