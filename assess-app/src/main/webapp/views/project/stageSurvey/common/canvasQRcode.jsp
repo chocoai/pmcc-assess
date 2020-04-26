@@ -107,8 +107,8 @@
                     return false;
                 }
                 var qrcode = new QRCode(document.getElementById(canvasQRcode.targetId), {
-                    width: 100,
-                    height: 100
+                    width: 150,
+                    height: 150
                 });
                 try {
                     //二维码 canvas 生成
