@@ -24,9 +24,9 @@ public enum BasicFormClassifyEnum {
     HOUSE("house", "房屋", "tb_basic_house", "basicHouseService"),
 
     ESTATE_LAND_INCLUD("estate.land.includ", "土地[房产]", "tb_basic_estate", "basicEstateLandIncludService"),
-    BUILDING_LAND_INCLUD("building.land.includ", "楼栋", "tb_basic_building", "basicBuildingLandIncludService"),
-    UNIT_LAND_INCLUD("unit.land.includ", "单元", "tb_basic_unit", "basicUnitLandIncludService"),
-    HOUSE_LAND_INCLUD("house.land.includ", "房屋", "tb_basic_house", "basicHouseLandIncludService")
+    BUILDING_LAND_INCLUD("building.land.includ", "楼栋[房产]", "tb_basic_building", "basicBuildingLandIncludService"),
+    UNIT_LAND_INCLUD("unit.land.includ", "单元[房产]", "tb_basic_unit", "basicUnitLandIncludService"),
+    HOUSE_LAND_INCLUD("house.land.includ", "房屋[房产]", "tb_basic_house", "basicHouseLandIncludService")
     ;
 
     private Integer level;

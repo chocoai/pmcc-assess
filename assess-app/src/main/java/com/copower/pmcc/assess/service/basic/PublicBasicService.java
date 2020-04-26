@@ -2,9 +2,11 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormStructureEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
+import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -228,6 +230,12 @@ public class PublicBasicService {
         if(StringUtils.isBlank(key)) return null;
         BasicFormClassifyEnum formClassifyEnum = BasicFormClassifyEnum.getEnumByKey(key);
         return (BasicEntityAbstract) SpringContextUtils.getBean(formClassifyEnum.getServiceName());
+    }
+
+    public BasicFormStructureInterface getStructureServiceBeanByKey(String key){
+        if(StringUtils.isBlank(key)) return null;
+        BasicFormStructureEnum structureEnum = BasicFormStructureEnum.getEnumByKey(key);
+        return (BasicFormStructureInterface) SpringContextUtils.getBean(structureEnum.getServiceName());
     }
 
     /**

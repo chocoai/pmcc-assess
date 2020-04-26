@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormStructureEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyBatchVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
+import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.ResidueRatioService;
@@ -411,72 +413,10 @@ public class BasicApplyBatchService {
                 basicApplyBatchDetailService.deleteBasicApplyBatchDetail(basicApplyBatchDetail.getId());
             }
         }
-
         if (basicApplyBatch.getClassify() == null) return basicApplyBatch;
-        BasicFormClassifyEnum formClassifyEnum = BasicFormClassifyEnum.ESTATE;
         BaseDataDic classifyDataDic = baseDataDicService.getCacheDataDicById(basicApplyBatch.getClassify());
-        //楼盘
-        BasicEstate basicEstate = new BasicEstate();
-        //申报表代入的信息
-        DeclareRecord declareRecord = null;
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
-        if (projectPlanDetails != null && projectPlanDetails.getDeclareRecordId() != null) {
-            basicApplyBatch.setProjectId(projectPlanDetails.getProjectId());
-            declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-        }
-        if (declareRecord != null) {
-            basicEstate.setProvince(declareRecord.getProvince());
-            basicEstate.setCity(declareRecord.getCity());
-            basicEstate.setDistrict(declareRecord.getDistrict());
-            basicEstate.setStreetNumber(declareRecord.getStreetNumber());
-            basicEstate.setAttachNumber(declareRecord.getAttachedNumber());
-        }
-        basicEstateService.saveAndUpdate(basicEstate, false);
-        BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
-        if (declareRecord != null) {
-            basicEstateLandState.setLandUseType(declareRecord.getLandCertUse());
-            basicEstateLandState.setLandUseCategory(declareRecord.getLandCertUseCategory());
-        }
-        basicEstateLandState.setEstateId(basicEstate.getId());
-        basicEstateLandState.setCreator(commonService.thisUserAccount());
-        basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, false);
-        if (StringUtils.isBlank(basicApplyBatch.getEstateName())) {
-            String estateName = "楼盘信息";
-            if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(classifyDataDic.getFieldName())) {
-                estateName = "地块信息";
-                formClassifyEnum=BasicFormClassifyEnum.ESTATE_LAND_INCLUD;
-            }
-            if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
-                estateName = "地块信息";
-                formClassifyEnum=BasicFormClassifyEnum.ESTATE_LAND;
-            }
-            basicApplyBatch.setEstateName(estateName);
-        }
-        basicApplyBatch.setEstateId(basicEstate.getId());
-        saveBasicApplyBatch(basicApplyBatch);
-
-        BasicApplyBatchDetail estateApplyBatchDetail = new BasicApplyBatchDetail();
-        estateApplyBatchDetail.setPid(0);
-        estateApplyBatchDetail.setApplyBatchId(basicApplyBatch.getId());
-        estateApplyBatchDetail.setTableName(formClassifyEnum.getTableName());
-        estateApplyBatchDetail.setTableId(basicEstate.getId());
-        estateApplyBatchDetail.setName(basicApplyBatch.getEstateName());
-        estateApplyBatchDetail.setDisplayName(basicApplyBatch.getEstateName());
-        estateApplyBatchDetail.setExecutor(commonService.thisUserAccount());
-        estateApplyBatchDetail.setType(formClassifyEnum.getKey());
-        basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
-        baseQrcodeService.createQrCode(estateApplyBatchDetail);
-
-        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
-            BasicApply basicApply = new BasicApply();
-            basicApply.setBasicEstateId(basicEstate.getId());
-            if(declareRecord!=null){
-                basicApply.setDeclareRecordId(declareRecord.getId());
-            }
-            basicApply.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
-            basicApplyService.saveBasicApply(basicApply);
-        }
-        return basicApplyBatch;
+        BasicFormStructureInterface serviceBean = publicBasicService.getStructureServiceBeanByKey(classifyDataDic.getFieldName());
+        return serviceBean.initBasicApplyBatch(basicApplyBatch);
     }
 
     //保存
