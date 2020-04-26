@@ -32,6 +32,7 @@
                             <div class="card-body">
                                 <form class="form-horizontal" id="frm_estate">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
+                                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">

@@ -47,6 +47,7 @@
                                             <div class="col-md-12">
                                                 <div class="card-body">
                                                     <input type="hidden" name="id" value="${basicBuilding.id}">
+                                                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
