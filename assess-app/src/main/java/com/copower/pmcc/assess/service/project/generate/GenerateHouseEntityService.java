@@ -641,41 +641,26 @@ public class GenerateHouseEntityService {
             List<BasicHouseWater> basicHouseWaterList = generateBaseExamineService.getBasicHouseWaterList();
             if (CollectionUtils.isNotEmpty(basicHouseWaterList)) {
                 basicHouseWaterList.stream().forEach(basicHouseWater -> {
+                    stringBuilder.append("给水采用");
                     String gradeName = baseDataDicService.getNameById(basicHouseWater.getGrade());
-                    int num = 0;
-                    if (StringUtils.isEmpty(gradeName)) {
-                        num++;
+                    if (StringUtils.isNotBlank(gradeName)) {
+                        stringBuilder.append(gradeName);
                     }
                     String boosterEquipmentName = baseDataDicService.getNameById(basicHouseWater.getBoosterEquipment());
-                    if (StringUtils.isEmpty(boosterEquipmentName)) {
-                        num++;
+                    if (StringUtils.isNotBlank(boosterEquipmentName)) {
+                        stringBuilder.append(boosterEquipmentName);
                     }
                     String pipeMaterialName = baseDataDicService.getNameById(basicHouseWater.getPipeMaterial());
-                    if (StringUtils.isEmpty(pipeMaterialName)) {
-                        num++;
+                    if (StringUtils.isNotBlank(pipeMaterialName)) {
+                        stringBuilder.append(pipeMaterialName);
                     }
                     String pipingLayoutName = baseDataDicService.getNameById(basicHouseWater.getPipingLayout());
-                    if (StringUtils.isEmpty(pipingLayoutName)) {
-                        num++;
+                    if (StringUtils.isNotBlank(pipingLayoutName)) {
+                        stringBuilder.append(pipingLayoutName);
                     }
                     String supplyModeName = baseDataDicService.getNameById(basicHouseWater.getSupplyMode());
-                    if (StringUtils.isEmpty(supplyModeName)) {
-                        num++;
-                    }
-                    String fireWaterSupplyName = baseDataDicService.getNameById(basicHouseWater.getFireWaterSupply());
-                    if (StringUtils.isEmpty(fireWaterSupplyName)) {
-                        num++;
-                    }
-                    if (num == 0) {
-                        stringBuilder.append("给水采用")
-                                .append(gradeName)
-                                .append(boosterEquipmentName)
-                                .append(pipeMaterialName)
-                                .append(pipingLayoutName)
-                                .append(supplyModeName)
-                                .append("，")
-                                .append("消防给水")
-                                .append(fireWaterSupplyName);
+                    if (StringUtils.isNotBlank(supplyModeName)) {
+                        stringBuilder.append(supplyModeName);
                     }
                     if (StringUtils.isNotBlank(stringBuilder.toString().trim())) {
                         linkedHashSet.add(stringBuilder.toString());
@@ -684,9 +669,7 @@ public class GenerateHouseEntityService {
                 });
             }
             if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                    map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", schemeJudgeObject.getNumber(), "号"));
-                }
+                map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", schemeJudgeObject.getNumber(), "号"));
             }
             linkedHashSet.clear();
         }
@@ -740,9 +723,7 @@ public class GenerateHouseEntityService {
                 });
             }
             if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                    map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", schemeJudgeObject.getNumber(), "号"));
-                }
+                map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", schemeJudgeObject.getNumber(), "号"));
             }
             linkedHashSet.clear();
         }
@@ -777,36 +758,30 @@ public class GenerateHouseEntityService {
             List<BasicHouseIntelligentVo> voList = generateBaseExamineService.getBasicHouseIntelligentList();
             if (CollectionUtils.isNotEmpty(voList)) {
                 voList.stream().forEach(oo -> {
-                    if (StringUtils.isNotBlank(oo.getIntelligentSystemName())) {
-                        if (StringUtils.isNotBlank(oo.getGradeName())) {
-                            stringBuilder.append("电路采用");
-                            stringBuilder.append(oo.getGradeName()).append("材料");
-                        }
-                        if (StringUtils.isNotBlank(oo.getSwitchCircuitName())) {
-                            stringBuilder.append(oo.getSwitchCircuitName());
-                        }
-                        stringBuilder.append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无").append("铺设，");
-                        centerList.add(stringBuilder.toString());
-                        if (StringUtils.isNotBlank(oo.getLampsLanternsName())) {
-                            centerList.add(String.format("%s%s", "灯具为", oo.getLampsLanternsName()));
-                        }
-                        String s = oo.getIntelligentSystemName();
-                        s = s.replaceAll("；", "");
-                        s = s.replaceAll(";", "");
-                        s = s.replaceAll("/", "-");
-                        centerList.add(s);
-                        if (CollectionUtils.isNotEmpty(centerList)) {
-                            linkedHashSet.add(StringUtils.join(centerList, "，"));
-                        }
-                        centerList.clear();
-                        stringBuilder.delete(0, stringBuilder.toString().length());
+                    if (StringUtils.isNotBlank(oo.getGradeName())) {
+                        stringBuilder.append("电路采用");
+                        stringBuilder.append(oo.getGradeName()).append("材料");
                     }
+                    if (StringUtils.isNotBlank(oo.getSwitchCircuitName())) {
+                        stringBuilder.append(oo.getSwitchCircuitName());
+                    }
+                    stringBuilder.append(StringUtils.isNotBlank(oo.getLayingMethodName()) ? oo.getLayingMethodName() : "无").append("铺设，");
+                    centerList.add(stringBuilder.toString());
+                    if (StringUtils.isNotBlank(oo.getLampsLanternsName())) {
+                        centerList.add(String.format("%s%s", "灯具为", oo.getLampsLanternsName()));
+                    }
+                    if (StringUtils.isNotBlank(oo.getIntelligentSystemName())) {
+                        centerList.add(oo.getIntelligentSystemName());
+                    }
+                    if (CollectionUtils.isNotEmpty(centerList)) {
+                        linkedHashSet.add(StringUtils.join(centerList, "，"));
+                    }
+                    centerList.clear();
+                    stringBuilder.delete(0, stringBuilder.toString().length());
                 });
             }
             if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                    map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", schemeJudgeObject.getNumber(), "号"));
-                }
+                map.put(StringUtils.join(linkedHashSet, "，"), String.format("%s%s", schemeJudgeObject.getNumber(), "号"));
             }
             linkedHashSet.clear();
         }
@@ -861,9 +836,7 @@ public class GenerateHouseEntityService {
                 });
             }
             if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                    map.put(StringUtils.join(linkedHashSet, ";"), String.format("%s%s", generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), "号"));
-                }
+                map.put(StringUtils.join(linkedHashSet, ";"), String.format("%s%s", generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), "号"));
             }
             linkedHashSet.clear();
         }

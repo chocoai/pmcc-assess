@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseIntelligentDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligent;
@@ -18,12 +21,13 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +122,7 @@ public class BasicHouseIntelligentService {
         List<BasicHouseIntelligentVo> vos = Lists.newArrayList();
         basicHouseIntelligentList.forEach(oo -> vos.add(getBasicHouseIntelligentVo(oo)));
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicHouseIntelligentVo>(10) : vos);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<BasicHouseIntelligentVo>(10) : vos);
         return vo;
     }
 
@@ -140,17 +144,28 @@ public class BasicHouseIntelligentService {
         List<BaseDataDic> sysDataDics = baseDataDicService.getCacheDataDicList("examine.house.lamps_lanterns");
         vo.setLampsLanternsName(baseDataDicService.getDataDicName(sysDataDics,basicHouseIntelligent.getLampsLanterns()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouseIntelligent.getCreator()));
+        if(StringUtils.isNotBlank(basicHouseIntelligent.getIntelligentSystem())){
+            JSONArray jsonArray = JSON.parseArray(basicHouseIntelligent.getIntelligentSystem());
+            StringBuilder stringBuilder=new StringBuilder();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String s = jsonObject.getJSONObject("intelligentSystem").getString("value");
+                if(StringUtils.isNotBlank(s)){
+                    stringBuilder.append(baseDataDicService.getNameById(s));
+                }
+                s = jsonObject.getJSONObject("intelligenceGrade").getString("value");
+                if(StringUtils.isNotBlank(s)){
+                    stringBuilder.append("为").append(baseDataDicService.getNameById(s));
+                }
+                s = jsonObject.getJSONObject("layingMethod").getString("value");
+                if(StringUtils.isNotBlank(s)){
+                    stringBuilder.append(baseDataDicService.getNameById(s)).append("铺设");
+                }
+                stringBuilder.append(";");
+            }
+            vo.setIntelligentSystemName(stringBuilder.toString());
+        }
         return vo;
-    }
-
-    /**
-     * 根据查询条件判断是否有数据
-     *
-     * @param houseId
-     * @return
-     */
-    public boolean hasHouseIntelligentData(Integer houseId) {
-        return basicHouseIntelligentDao.countByHouseId(houseId) > 0;
     }
 
 }

@@ -151,17 +151,6 @@ public class BasicHouseEquipmentService {
         return vo;
     }
 
-    /**
-     * 根据查询条件判断是否有数据
-     *
-     * @param houseId
-     * @return
-     */
-    public boolean hasHouseEquipmentData(Integer houseId, String type) {
-        return basicHouseEquipmentDao.countByHouseId(houseId, type) > 0;
-    }
-
-
     public List<BasicHouseEquipment> getBasicHouseEquipmentList(Integer houseId, String type) {
         BasicHouseEquipment basicHouseEquipment = new BasicHouseEquipment();
         basicHouseEquipment.setHouseId(houseId);

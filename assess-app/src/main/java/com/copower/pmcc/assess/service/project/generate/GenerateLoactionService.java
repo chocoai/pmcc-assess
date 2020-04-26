@@ -599,45 +599,34 @@ public class GenerateLoactionService {
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
 
             List<BasicMatchingLeisurePlace> leisurePlaceListA = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(leisurePlaceListA)) {
-                leisurePlaceListA = Arrays.asList(leisurePlaceListA.get(0));
-                //购物商场
+            if (CollectionUtils.isNotEmpty(leisurePlaceListA)) {//购物商场
                 stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(leisurePlaceListA, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET,
                         isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":") : "", false)));
             }
 
-
             List<BasicMatchingLeisurePlace> leisurePlaceListB = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(leisurePlaceListB)) {
-                leisurePlaceListB = Arrays.asList(leisurePlaceListB.get(0));
-                //餐饮
+            if (CollectionUtils.isNotEmpty(leisurePlaceListB)) {//餐饮
                 stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(leisurePlaceListB, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT,
                         isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":") : "", false)));
             }
 
             List<BasicMatchingLeisurePlace> leisurePlaceListC = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(leisurePlaceListC)) {
-                leisurePlaceListC = Arrays.asList(leisurePlaceListC.get(0));
-                //休闲娱乐
+            if (CollectionUtils.isNotEmpty(leisurePlaceListC)) {//休闲娱乐
                 stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(leisurePlaceListC, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION,
                         isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":") : "", false)));
             }
         }
-        //金融服务
-        if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            basicMatchingFinanceVoList = Arrays.asList(basicMatchingFinanceVoList.get(0));
+
+        if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {//金融服务
             stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null,
                     null, isShowName ? String.format("%s%s", "金融服务", ":") : "")));
         }
-        //医疗
-        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            basicMatchingMedicalList = Arrays.asList(basicMatchingMedicalList.get(0));
+        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {//医疗
             stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList,
                     null, isShowName ? String.format("%s%s", "医疗", ":") : "")));
         }
-        //教育
-        if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
-            basicMatchingEducationList = Arrays.asList(basicMatchingEducationList.get(0));
+
+        if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {//教育
             stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, null,
                     basicMatchingEducationList, isShowName ? String.format("%s%s", "教育", ":") : "")));
         }
