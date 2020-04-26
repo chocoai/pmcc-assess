@@ -95,7 +95,6 @@ public class SchemeSurePriceFactorService {
             SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeId);
             //清空原调整因素
             schemeSurePriceFactorDao.deleteSurePriceFactorByJudgeObjectId(judgeObject.getId());
-
             for (SchemeSurePriceFactor factor : factorList) {
                 SchemeSurePriceFactor surePriceFactor = new SchemeSurePriceFactor();
                 BeanUtils.copyProperties(factor, surePriceFactor);
@@ -104,6 +103,7 @@ public class SchemeSurePriceFactorService {
                 schemeSurePriceFactorDao.addSurePriceFactor(surePriceFactor);
             }
             judgeObject.setPrice(beCopyJudgeObject.getPrice());
+            judgeObject.setFactor(beCopyJudgeObject.getFactor());
             schemeJudgeObjectService.updateSchemeJudgeObject(judgeObject);
         }
     }
