@@ -10,10 +10,7 @@
 <div class="row form-group">
     <div class="col-md-12">
         <div class="form-inline x-valid">
-            <label class="col-sm-1">本页面图片,附件等的上传入口
-                <span class="symbol required"></span></label>
             <div class="col-sm-11">
-                <!-- 引入二维码图片  处理文件图片上传的问题 -->
                 <div>
                     <script src="${pageContext.request.contextPath}/assets/qrcodejs/qrcode.js?v=${assessVersion}"></script>
                     <div id="canvasQRcodeModel"></div>
@@ -110,8 +107,8 @@
                     return false;
                 }
                 var qrcode = new QRCode(document.getElementById(canvasQRcode.targetId), {
-                    width: 150,
-                    height: 150
+                    width: 100,
+                    height: 100
                 });
                 try {
                     //二维码 canvas 生成

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.method;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
@@ -33,7 +34,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/marketCompare")
-public class MarketCompareController {
+public class MarketCompareController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -74,7 +75,6 @@ public class MarketCompareController {
     @RequestMapping(value = "/detail", name = "市场比较法显示")
     public ModelAndView detail() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/marketCompareDetail");
-
         return modelAndView;
     }
 
@@ -104,17 +104,19 @@ public class MarketCompareController {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectCase(mcId, planDetailsIdList, judgeObjectId, isLand, jsonData);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("保存失败");
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/selectJudge", name = "选择估价对象", method = RequestMethod.POST)
-    public HttpResult selectCase(Integer mcId, Integer applyId, Integer judgeObjectId, Boolean isLand) {
+    public HttpResult selectJudge(Integer mcId, Integer applyId, Integer judgeObjectId, Boolean isLand) {
         try {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectJudge(judgeObjectId, applyId, mcId, isLand);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("保存失败");
         }
     }
@@ -125,6 +127,7 @@ public class MarketCompareController {
         try {
             return HttpResult.newCorrectResult(mdMarketCompareService.getMdMarketCompare(id));
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("获取失败");
         }
     }
@@ -135,6 +138,7 @@ public class MarketCompareController {
         try {
             return HttpResult.newCorrectResult(mdMarketCompareService.getMarketCompareItemById(id));
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("获取失败");
         }
     }
@@ -146,6 +150,7 @@ public class MarketCompareController {
             mdMarketCompareService.saveMarketCompareItem(mdMarketCompareItem);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("保存失败");
         }
     }
@@ -156,6 +161,7 @@ public class MarketCompareController {
         try {
             return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(judgeObjectId, mcId, rewardRateId, rewardRate));
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("更新失败");
         }
     }
@@ -167,6 +173,7 @@ public class MarketCompareController {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.refreshData(mcId, judgeObjectId, isLand);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("保存失败");
         }
     }

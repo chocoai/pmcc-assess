@@ -160,9 +160,10 @@
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
                                     onclick="window.close()">关闭
                             </button>
-                            <button type="button" class="btn btn-warning" onclick="saveDataInfo();">保存</button>
+                            <button type="button" class="btn btn-warning" style="margin-left: 10px;" onclick="saveDataInfo();">保存</button>
                         </div>
                     </div>
+                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                 </div>
             </div>
         </div>

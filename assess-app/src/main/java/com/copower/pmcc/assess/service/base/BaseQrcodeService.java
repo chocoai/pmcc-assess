@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.base.BaseQrcodeDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseQrcode;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -14,15 +15,21 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.IpUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import javafx.application.Application;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -37,7 +44,7 @@ import java.util.List;
  * @Description:二维码记录表
  */
 @Service
-public class BaseQrcodeService {
+public class BaseQrcodeService extends BaseService {
 
     @Autowired
     private BaseAttachmentService baseAttachmentService;
@@ -49,6 +56,8 @@ public class BaseQrcodeService {
     private ErpRpcToolsService erpRpcToolsService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     /**
      * 获取数据
@@ -72,35 +81,41 @@ public class BaseQrcodeService {
     }
 
     public void createQrCode(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
-        List<String> stringList = FormatUtils.transformString2List(basicApplyBatchDetail.getType(), BasicFormClassifyEnum.transform(false));
-        BaseQrcode baseQrcode = new BaseQrcode();
-        baseQrcode.setTableId(basicApplyBatchDetail.getTableId());
-        baseQrcode.setTableName(basicApplyBatchDetail.getTableName());
-        baseQrcode.setType(StringUtils.join(stringList, BasicFormClassifyEnum.transform(true)));
-        List<BaseQrcode> baseQrcodeList = getBaseQrcodeList(baseQrcode.getTableId(), baseQrcode.getType(), baseQrcode.getTableName());
-        if (CollectionUtils.isNotEmpty(baseQrcodeList)) {
-            return;
+        try{
+            List<String> stringList = FormatUtils.transformString2List(basicApplyBatchDetail.getType(), BasicFormClassifyEnum.transform(false));
+            BaseQrcode baseQrcode = new BaseQrcode();
+            baseQrcode.setTableId(basicApplyBatchDetail.getTableId());
+            baseQrcode.setTableName(basicApplyBatchDetail.getTableName());
+            baseQrcode.setType(StringUtils.join(stringList, BasicFormClassifyEnum.transform(true)));
+            List<BaseQrcode> baseQrcodeList = getBaseQrcodeList(baseQrcode.getTableId(), baseQrcode.getType(), baseQrcode.getTableName());
+            if (CollectionUtils.isNotEmpty(baseQrcodeList)) {
+                return;
+            }
+            StringBuilder stringBuilder = new StringBuilder(8);
+            //这里在正式环境需要改变
+            ServletRequestAttributes attr=(ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request =attr.getRequest();
+            stringBuilder.append(IpUtils.serverPath(request)).append("/");
+            stringBuilder.append(applicationConstant.getAppKey()).append("/basicApplyBatch/informationPhoneEdit").append("?");
+            List<String> params = new ArrayList<>();
+            params.add(String.join("=", "tbType",baseQrcode.getType() ));
+            params.add(String.join("=", "tbId", baseQrcode.getTableId().toString()));
+            params.add(String.join("=", "tableName", baseQrcode.getTableName()));
+            if (basicApplyBatchDetail.getApplyBatchId() != null) {
+                BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
+                params.add(String.join("=", "applyBatchId", basicApplyBatch.getId().toString()));
+                params.add(String.join("=", "formClassify", basicApplyBatch.getClassify().toString()));
+                params.add(String.join("=", "formType", basicApplyBatch.getType().toString()));
+                params.add(String.join("=", "planDetailsId", basicApplyBatch.getPlanDetailsId().toString()));
+            }
+            stringBuilder.append(StringUtils.join(params, "&"));
+            String generateQRCode = erpRpcToolsService.generateQRCode(stringBuilder.toString());
+            baseQrcode.setQrcode(generateQRCode);
+            baseQrcode.setCode(stringBuilder.toString());
+            saveAndUpdateBaseQrcode(baseQrcode, false);
+        }catch (Exception ex){
+            log.error(ex.getMessage(),ex);
         }
-        StringBuilder stringBuilder = new StringBuilder(8);
-        //这里在正式环境需要改变
-        stringBuilder.append("http://dev.pmcc.com").append("/pmcc-assess/basicApplyBatch/informationPhoneEdit").append("?");
-        List<String> params = new ArrayList<>();
-        params.add(String.join("=", "tbType",baseQrcode.getType() ));
-        params.add(String.join("=", "tbId", baseQrcode.getTableId().toString()));
-        params.add(String.join("=", "tableName", baseQrcode.getTableName()));
-        if (basicApplyBatchDetail.getApplyBatchId() != null) {
-            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
-            params.add(String.join("=", "applyBatchId", basicApplyBatch.getId().toString()));
-            params.add(String.join("=", "formClassify", basicApplyBatch.getClassify().toString()));
-            params.add(String.join("=", "formType", basicApplyBatch.getType().toString()));
-            params.add(String.join("=", "planDetailsId", basicApplyBatch.getPlanDetailsId().toString()));
-        }
-        stringBuilder.append(StringUtils.join(params, "&"));
-        String generateQRCode = erpRpcToolsService.generateQRCode(stringBuilder.toString());
-        baseQrcode.setQrcode(generateQRCode);
-        baseQrcode.setCode(stringBuilder.toString());
-        saveAndUpdateBaseQrcode(baseQrcode, false);
-
     }
 
 
