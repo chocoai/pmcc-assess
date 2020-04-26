@@ -26,27 +26,11 @@ public class BasicExamineHandle implements Serializable {
 
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     private BasicApplyBatchService basicApplyBatchService;
-    private BasicApplyService basicApplyService;
-
-    private BaseDataDicService baseDataDicService;
-
     private BasicBuildingService basicBuildingService;
     private BasicBuildingFunctionService basicBuildingFunctionService;
-    private BasicBuildingOutfitService basicBuildingOutfitService;
-    private BasicBuildingMaintenanceService basicBuildingMaintenanceService;
-    private BasicBuildingSurfaceService basicBuildingSurfaceService;
-
     private BasicHouseService basicHouseService;
     private BasicHouseTradingService basicHouseTradingService;
-    private BasicHouseRoomService basicHouseRoomService;
-    private BasicHouseEquipmentService basicHouseEquipmentService;
-    private BasicHouseIntelligentService basicHouseIntelligentService;
-    private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
-    private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
-    private BasicHouseWaterService basicHouseWaterService;
-    private BasicHouseWaterDrainService basicHouseWaterDrainService;
     private BasicHouseFaceStreetService basicHouseFaceStreetService;
-    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
 
     private BasicEstateService basicEstateService;
     private BasicEstateNetworkService basicEstateNetworkService;
@@ -59,19 +43,7 @@ public class BasicExamineHandle implements Serializable {
     private BasicMatchingEnvironmentService basicMatchingEnvironmentService;
     private BasicEstateLandStateService basicEstateLandStateService;
     private BasicEstateParkingService basicEstateParkingService;
-    private BasicMatchingMaterialService basicMatchingMaterialService;
-    private DataBlockService dataBlockService;
-    private BasicEstateInvestigationService basicEstateInvestigationService;
-
-
     private BasicUnitService basicUnitService;
-    private BasicUnitDecorateService basicUnitDecorateService;
-    private BasicUnitElevatorService basicUnitElevatorService;
-    private BasicUnitHuxingService basicUnitHuxingService;
-    private BasicHouseTradingLeaseAndSellDtoService basicHouseTradingLeaseAndSellDtoService;
-    private BasicBuildingPropertyServiceItemService basicBuildingPropertyServiceItemService;
-    private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
-
     private BasicApplyBatch basicApplyBatch;
     private List<BasicApplyBatchDetail> basicApplyBatchDetailList;
 
@@ -142,34 +114,6 @@ public class BasicExamineHandle implements Serializable {
         }
         return vos;
     }
-
-    public List<BasicHouseHuxingPrice> getBasicHouseHuxingPriceList(Integer houseId){
-        List<BasicHouseHuxingPrice> houseHuxingPriceList = getBasicHouseHuxingPriceAll() ;
-        Iterator<BasicHouseHuxingPrice> iterator = houseHuxingPriceList.iterator();
-        while (iterator.hasNext()){
-            BasicHouseHuxingPrice next = iterator.next();
-            if (! Objects.equal(next.getHouseId(),houseId)){
-                iterator.remove();
-            }
-        }
-        return houseHuxingPriceList;
-    }
-
-    public List<BasicHouseHuxingPrice> getBasicHouseHuxingPriceAll(){
-        List<BasicHouseHuxingPrice> houseHuxingPriceList = new ArrayList<>() ;
-        List<BasicHouse> basicHouseList = getBasicHouseAll();
-        if (CollectionUtils.isNotEmpty(basicHouseList)) {
-            for (BasicHouse target : basicHouseList) {
-                List<BasicHouseHuxingPrice> houseHuxingPrices = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(target.getId());
-                if (CollectionUtils.isEmpty(houseHuxingPrices)){
-                    continue;
-                }
-                houseHuxingPriceList.addAll(houseHuxingPrices) ;
-            }
-        }
-        return houseHuxingPriceList ;
-    }
-
 
     public BasicEstateVoAndLandStateVo getBasicEstateVoAndLandStateVo() {
         BasicEstate estate = null;
@@ -327,19 +271,9 @@ public class BasicExamineHandle implements Serializable {
         this.baseService = SpringContextUtils.getBean(BaseService.class);
         this.basicApplyBatchDetailService = SpringContextUtils.getBean(BasicApplyBatchDetailService.class);
         this.basicApplyBatchService = SpringContextUtils.getBean(BasicApplyBatchService.class);
-        this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
-
         this.basicHouseService = SpringContextUtils.getBean(BasicHouseService.class);
         this.basicHouseTradingService = SpringContextUtils.getBean(BasicHouseTradingService.class);
-        this.basicHouseRoomService = SpringContextUtils.getBean(BasicHouseRoomService.class);
-        this.basicHouseEquipmentService = SpringContextUtils.getBean(BasicHouseEquipmentService.class);
-        this.basicHouseIntelligentService = SpringContextUtils.getBean(BasicHouseIntelligentService.class);
-        this.basicHouseRoomDecorateService = SpringContextUtils.getBean(BasicHouseRoomDecorateService.class);
-        this.basicHouseCorollaryEquipmentService = SpringContextUtils.getBean(BasicHouseCorollaryEquipmentService.class);
-        this.basicHouseWaterService = SpringContextUtils.getBean(BasicHouseWaterService.class);
         this.basicHouseFaceStreetService = SpringContextUtils.getBean(BasicHouseFaceStreetService.class);
-        this.basicHouseDamagedDegreeService = SpringContextUtils.getBean(BasicHouseDamagedDegreeService.class);
-
         this.basicEstateService = SpringContextUtils.getBean(BasicEstateService.class);
         this.basicMatchingTrafficService = SpringContextUtils.getBean(BasicMatchingTrafficService.class);
         this.basicMatchingEnvironmentService = SpringContextUtils.getBean(BasicMatchingEnvironmentService.class);
@@ -353,25 +287,9 @@ public class BasicExamineHandle implements Serializable {
 
         this.basicBuildingFunctionService = SpringContextUtils.getBean(BasicBuildingFunctionService.class);
         this.basicBuildingService = SpringContextUtils.getBean(BasicBuildingService.class);
-        this.basicBuildingOutfitService = SpringContextUtils.getBean(BasicBuildingOutfitService.class);
-        this.basicBuildingMaintenanceService = SpringContextUtils.getBean(BasicBuildingMaintenanceService.class);
-        this.basicBuildingSurfaceService = SpringContextUtils.getBean(BasicBuildingSurfaceService.class);
-
-        this.basicUnitHuxingService = SpringContextUtils.getBean(BasicUnitHuxingService.class);
         this.basicUnitService = SpringContextUtils.getBean(BasicUnitService.class);
-        this.basicUnitDecorateService = SpringContextUtils.getBean(BasicUnitDecorateService.class);
-        this.basicHouseWaterDrainService = SpringContextUtils.getBean(BasicHouseWaterDrainService.class);
-        this.basicUnitElevatorService = SpringContextUtils.getBean(BasicUnitElevatorService.class);
-
         this.basicEstateParkingService = SpringContextUtils.getBean(BasicEstateParkingService.class);
         this.basicMatchingEducationService = SpringContextUtils.getBean(BasicMatchingEducationService.class);
-        this.basicMatchingMaterialService = SpringContextUtils.getBean(BasicMatchingMaterialService.class);
-        this.dataBlockService = SpringContextUtils.getBean(DataBlockService.class);
-        this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
-        this.basicHouseTradingLeaseAndSellDtoService = SpringContextUtils.getBean(BasicHouseTradingLeaseAndSellDtoService.class);
-        this.basicEstateInvestigationService = SpringContextUtils.getBean(BasicEstateInvestigationService.class);
-        this.basicBuildingPropertyServiceItemService = SpringContextUtils.getBean(BasicBuildingPropertyServiceItemService.class);
-        this.basicHouseHuxingPriceService = SpringContextUtils.getBean(BasicHouseHuxingPriceService.class);
     }
 
     private List<BasicApplyBatchDetail> getBasicApplyBatchDetailList() {

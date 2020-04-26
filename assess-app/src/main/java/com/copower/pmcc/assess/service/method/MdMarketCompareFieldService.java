@@ -214,7 +214,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case TEMPORARY_ROAD_CONDITION://临街（路）状况
                             stringBuilder = new StringBuilder();
-                            stringBuilder.append(generateLoactionService.getFaceStreetExtend(basicApplyBatch));
+                            stringBuilder.append(generateLoactionService.getFaceStreetExtend(basicApply));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TEMPORARY_ROAD_CONDITION.getKey(), stringBuilder.length() <= 0 ? "不临街" : stringBuilder.toString()));
                             break;
                         case FLOOR://楼栋楼层
@@ -228,7 +228,6 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.FLOOR.getKey(), stringBuilder.toString()));
                             break;
                         case ORIENTATION://朝向
-
                             if (unitHuxing == null) {
                                 unitHuxing = new BasicUnitHuxing();
                             }

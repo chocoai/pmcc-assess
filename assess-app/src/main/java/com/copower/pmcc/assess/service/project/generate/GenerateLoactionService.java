@@ -79,11 +79,11 @@ public class GenerateLoactionService {
             Map<Integer, String> map = Maps.newHashMap();
             StringBuilder contentBuilder = new StringBuilder(8);
             for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-                if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
+                BasicApply basicApply=basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+                if (basicApply == null || basicApply.getId() == 0) {
                     continue;
                 }
-                contentBuilder.append(getFaceStreetExtend(basicApplyBatch));
+                contentBuilder.append(getFaceStreetExtend(basicApply));
                 if (StringUtils.isNotBlank(contentBuilder.toString())) {
                     map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), contentBuilder.toString());
                 }
@@ -98,12 +98,12 @@ public class GenerateLoactionService {
         return StringUtils.isNotBlank(value) ? value : "不临街";
     }
 
-    public String getFaceStreetExtend(BasicApplyBatch applyBatch) throws Exception {
-        if (applyBatch == null || applyBatch.getId() == 0) {
+    public String getFaceStreetExtend(BasicApply basicApply) throws Exception {
+        if (basicApply == null || basicApply.getId() == 0) {
             return "";
         }
-        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(applyBatch);
-        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = basicExamineHandle.getBasicHouseFaceStreetAll();
+        GenerateBaseExamineService generateBaseExamineService=new GenerateBaseExamineService(basicApply);
+        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
         if (CollectionUtils.isEmpty(basicHouseFaceStreetVoList)) {
             return "";
         }
