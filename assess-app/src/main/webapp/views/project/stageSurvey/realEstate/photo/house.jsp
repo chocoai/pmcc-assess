@@ -226,7 +226,19 @@
                 return data;
             },
             loadDataDicList: function () {
-                var cols = commonColumn.houseRoomColumn();
+                var cols = [];
+                cols.push({
+                    field: 'name', title: '名称', formatter: function (value, row, index) {
+                        var s = "";
+                        if (row.name) {
+                            s += row.name;
+                        }
+                        if (row.creatorName) {
+                            s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+                        }
+                        return s;
+                    }
+                });
                 cols.push({field: 'fileViewName', title: '附件'});
                 cols.push({
                     field: 'id', title: '操作', formatter: function (value, row, index) {
