@@ -14,18 +14,24 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by kings on 2018-12-3.
+ * 楼盘
  */
 @Service
 public class BasicHouseCaseSummaryService {
@@ -45,11 +51,15 @@ public class BasicHouseCaseSummaryService {
         return basicHouseCaseSummaryDao.getBasicHouseCaseSummaryById(id);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) throws Exception {
+    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) throws Exception{
+        return getBootstrapTableVo(null,null,areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary) ;
+    }
+
+    public BootstrapTableVo getBootstrapTableVo( Date endDate, Date startDate,BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary)  {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicHouseCaseSummary> list = customCaseMapper.findCaseBaseHouseList(areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<BasicHouseCaseSummary> list = customCaseMapper.findCaseBaseHouseList( endDate,startDate,areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
         List<BasicHouseCaseSummaryVo> vos = LangUtils.transform(list, o -> getBasicHouseCaseSummaryVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
@@ -119,8 +129,26 @@ public class BasicHouseCaseSummaryService {
         basicHouseCaseSummaryDao.deleteBaseHouseSummaryById(id);
     }
 
-    public Integer getCountByFullName(String fullName){
+    public Integer getCountByFullName(String fullName) {
         return basicHouseCaseSummaryDao.getCountByFullName(fullName);
+    }
+
+    public String reportData() throws Exception {
+        return null;
+    }
+
+    private String reportHandle(String name,HSSFWorkbook wb) throws Exception {
+        OutputStream fileOut = null;
+        String path = String.join(File.separator, FileUtils.getTempDirectoryPath(), name) ;
+        File file = new File(path);
+        File fileParent = file.getParentFile();
+        if (!fileParent.exists()) {
+            fileParent.mkdirs();
+        }
+        fileOut = new FileOutputStream(file);
+        wb.write(fileOut);
+        fileOut.close();
+        return path ;
     }
 
 }

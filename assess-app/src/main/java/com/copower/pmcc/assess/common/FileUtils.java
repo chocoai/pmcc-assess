@@ -21,7 +21,7 @@ import java.util.zip.ZipOutputStream;
  * Created by kings on 2018-6-5.
  */
 public class FileUtils {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
     private static FileUtils fileUtils = new FileUtils();
 
 
@@ -32,7 +32,7 @@ public class FileUtils {
      * @param bodys
      * @return
      */
-    public ResponseEntity<byte[]> createResponse(String fileName, byte[] bodys) {
+    public static ResponseEntity<byte[]> createResponse(String fileName, byte[] bodys) {
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<byte[]> responseEntity = null;
         String downloadFileName = null;
