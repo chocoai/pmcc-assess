@@ -324,18 +324,15 @@ public class MdMarketCompareService {
             throw new BusinessException("请选择有效案例");
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdList));
         List<MdMarketCompareItem> compareItemList = getCaseListByMcId(mcId);
-        List<Integer> planDetailsIds = LangUtils.transform(compareItemList, o -> o.getPlanDetailsId());
-        List<Integer> removePlanDetailsIds = Lists.newArrayList();
-        Iterator<Integer> iterator = integers.iterator();
-        while (iterator.hasNext()) {
-            Integer next = iterator.next();
-            if (CollectionUtils.isNotEmpty(planDetailsIds) && planDetailsIds.contains(next)) {
-                iterator.remove();
-            }else{
-                removePlanDetailsIds.add(next);
+        if(CollectionUtils.isNotEmpty(compareItemList)){
+            for (MdMarketCompareItem mdMarketCompareItem : compareItemList) {
+                if (CollectionUtils.isNotEmpty(integers) && integers.contains(mdMarketCompareItem.getPlanDetailsId())) {
+                    integers.remove(mdMarketCompareItem.getPlanDetailsId());
+                }else{
+                    mdMarketCompareItemDao.deleteMarketCompareItem(mdMarketCompareItem.getId());
+                }
             }
         }
-        //compareItemList.forEach(o -> mdMarketCompareItemDao.deleteMarketCompareItem(o.getId()));//清除原案例信息
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
