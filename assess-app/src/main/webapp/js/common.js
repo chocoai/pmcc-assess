@@ -81,8 +81,7 @@ $(function () {
                 var range = txtFocus.createTextRange();
                 range.move("character", position);
                 range.select();
-            }
-            else {
+            } else {
                 txtFocus.setSelectionRange(position, position);
                 txtFocus.focus();
             }
@@ -352,12 +351,12 @@ $(function () {
         },
 
         //根据key获取字典信息
-        loadDataDicByKey: function (key, value, callback,initHtml) {
-            this.loadNewAsyncDataDicByKey(key, value, callback, true,initHtml);
+        loadDataDicByKey: function (key, value, callback, initHtml) {
+            this.loadNewAsyncDataDicByKey(key, value, callback, true, initHtml);
         },
         //根据key获取字典信息
         loadAsyncDataDicByKey: function (key, value, callback, async) {
-            this.loadNewAsyncDataDicByKey(key, value, callback, async,true);
+            this.loadNewAsyncDataDicByKey(key, value, callback, async, true);
         },
         //根据key获取字典信息
         loadNewAsyncDataDicByKey: function (key, value, callback, async, initHtml) {
@@ -373,7 +372,7 @@ $(function () {
                     success: function (result) {
                         if (result.ret) {
                             var retHtml = '';
-                            if (initHtml) {
+                            if (initHtml == undefined || initHtml) {
                                 retHtml += '<option value="" selected>-请选择-</option>';
                             }
                             $.each(result.data, function (i, item) {
@@ -443,7 +442,7 @@ $(function () {
                 });
             }
         },
-        loadAreaAsyncInfoByPidAndValue: function (pid, value,callback, async) {
+        loadAreaAsyncInfoByPidAndValue: function (pid, value, callback, async) {
             if (pid) {
                 $.ajax({
                     url: getContextPath() + "/area/getAreaList",
@@ -757,12 +756,12 @@ $(function () {
                             callback(result.data);
                         }
                     } else {
-                        console.log(result) ;
+                        console.log(result);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         },
@@ -780,8 +779,7 @@ $(function () {
                     if (result.ret) {
                         if (callback)
                             callback();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }

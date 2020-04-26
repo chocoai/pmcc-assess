@@ -119,7 +119,6 @@
     </div>
 </div>
 </body>
-
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -293,8 +292,6 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
 </html>
 <script type="text/javascript">
     $(function () {
@@ -335,7 +332,10 @@
             field: 'name', title: '名称', formatter: function (value, row, index) {
                 var s = row.fullName;
                 if (row.creatorName) {
-                    s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName + "</span>"
+                    s += "<span style='margin-left: 5px;' class='label label-info'>" + row.creatorName + "</span>"
+                }
+                if (row.approverName) {
+                    s += "<span style='margin-left: 5px;' class='label label-danger'>" + row.approverName + "</span>"
                 }
                 return s;
             }
