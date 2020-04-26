@@ -64,6 +64,6 @@ public interface CustomCaseMapper {
      * @return
      * @throws SQLException
      */
-    public List<BasicHouseCaseSummary> findCaseBaseHouseList(@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) throws SQLException;
+    public List<BasicHouseCaseSummary> findCaseBaseHouseList(  @Param("endDate") Date endDate, @Param("startDate") Date startDate,@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) ;
 
 }

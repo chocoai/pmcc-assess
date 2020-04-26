@@ -101,6 +101,12 @@
         <if test="basicHouseCaseSummary.tradingType != null">
             and trading_type = #{basicHouseCaseSummary.tradingType}
         </if>
+        <if test="basicHouseCaseSummary.approver != null">
+            and approver = #{basicHouseCaseSummary.approver}
+        </if>
+        <if test="basicHouseCaseSummary.creator != null">
+            and creator = #{basicHouseCaseSummary.creator}
+        </if>
         <if test="tradingTimeStart != null">
             and trading_time <![CDATA[ >= ]]> #{tradingTimeStart}
         </if>
@@ -112,6 +118,17 @@
         </if>
         <if test="areaEnd != null">
             and area <![CDATA[ <= ]]> #{areaEnd}
+        </if>
+
+
+        <if test="startDate != null and endDate != null">
+            and gmt_created between   #{startDate} and #{endDate}
+        </if>
+        <if test="startDate != null and endDate == null">
+            and gmt_created <![CDATA[ >= ]]>   #{startDate}
+        </if>
+        <if test="startDate == null and endDate != null">
+            and gmt_created <![CDATA[ <= ]]>   #{endDate}
         </if>
 
     </select>
