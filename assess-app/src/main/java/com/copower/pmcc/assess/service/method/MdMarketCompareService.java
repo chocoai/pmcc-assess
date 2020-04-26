@@ -328,13 +328,14 @@ public class MdMarketCompareService {
         List<Integer> removePlanDetailsIds = Lists.newArrayList();
         Iterator<Integer> iterator = integers.iterator();
         while (iterator.hasNext()) {
-            if (CollectionUtils.isNotEmpty(planDetailsIds) && planDetailsIds.contains(iterator.next())) {
+            Integer next = iterator.next();
+            if (CollectionUtils.isNotEmpty(planDetailsIds) && planDetailsIds.contains(next)) {
                 iterator.remove();
             }else{
-                removePlanDetailsIds.add(iterator.next());
+                removePlanDetailsIds.add(next);
             }
         }
-        planDetailsIds.forEach(o -> mdMarketCompareItemDao.deleteMarketCompareItem(o));//清除原案例信息
+        //compareItemList.forEach(o -> mdMarketCompareItemDao.deleteMarketCompareItem(o.getId()));//清除原案例信息
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;

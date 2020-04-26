@@ -285,17 +285,17 @@
             defaluts = $.extend({}, defaluts, options);
             //验证
             if (!defaluts.marketCompare) {
-                AlertInfo("主信息为空！");
+                AlertError("提示","主信息为空！");
                 return;
             }
             $("#marketCompareId").val(defaluts.marketCompare.id);
             if (!defaluts.fields) {
-                AlertInfo("字段为空！");
+                AlertError("提示","字段为空！");
                 return;
             }
             marketCompare.fields = defaluts.fields;
             if (!defaluts.evaluation) {
-                AlertInfo("委估对象为空！");
+                AlertError("提示","委估对象为空！");
                 return;
             }
             marketCompare.projectId = defaluts.projectId;
@@ -930,7 +930,7 @@
             //如果案例的面积超过估价对象面积3倍则必须为面积添加说明
             var rows = $("#select_case_list").bootstrapTable('getSelections');
             if (rows.length <= 0) {
-                AlertInfo("还未选择任何案例");
+                AlertError("提示","还未选择任何案例");
                 return false;
             }
             var jsonData = JSON.stringify(marketCompare.getData());
@@ -969,7 +969,7 @@
                             cases: result.data.cases
                         });
                     } else {
-                        AlertInfo('选择案例异常，' + result.errmsg);
+                        AlertError("提示",'选择案例异常，' + result.errmsg);
                     }
                 }
             })
@@ -1129,7 +1129,7 @@
                         marketCompare.calculation();
                         marketCompare.save();
                     } else {
-                        AlertInfo('刷新异常，' + result.errmsg);
+                        AlertError("提示",'刷新异常，' + result.errmsg);
                     }
                 }
             })
@@ -1180,7 +1180,7 @@
                             cases: result.data.cases
                         });
                     } else {
-                        AlertInfo('选择异常，' + result.errmsg);
+                        AlertError("提示",'选择异常，' + result.errmsg);
                     }
                 }
             })
