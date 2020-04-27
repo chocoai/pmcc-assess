@@ -237,8 +237,8 @@ public class MdMarketCompareService {
         MdMarketCompare marketCompare = getMdMarketCompare(mdMarketCompareItem.getMcId());
         //年期修正系数
         BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-        BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
         if (basicHouse != null && basicHouse.getUseYear() != null) {
+            BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
             BigDecimal legalAge = new BigDecimal(basicHouse.getUseYear());
             BigDecimal surplusYear = null;
             if (isCase) { //计算剩余年限=使用年限-已使用年限 已使用年限=评估基准日-交易时间
@@ -467,9 +467,10 @@ public class MdMarketCompareService {
                 mdCompareCaseVo.setPlanDetailsId(planDetail.getId());
                 mdCompareCaseVo.setName(planDetail.getProjectPhaseName());
                 BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-                if (basicHouse == null) continue;
-                mdCompareCaseVo.setArea(basicHouse.getArea());
-                mdCompareCaseVo.setAreaDesc(basicHouse.getAreaDesc());
+                if (basicHouse != null) {
+                    mdCompareCaseVo.setArea(basicHouse.getArea());
+                    mdCompareCaseVo.setAreaDesc(basicHouse.getAreaDesc());
+                }
                 voList.add(mdCompareCaseVo);
             }
         }

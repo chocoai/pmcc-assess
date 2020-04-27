@@ -147,12 +147,11 @@
                                                         <label class="form-control input-full"
                                                                name="spatialDistributionName">${basicHouseHuxing.spatialDistributionName}</label>
                                                     </div>
-                                                    <label class="col-sm-1">数量</label>
+                                                    <label class="col-sm-1">户数</label>
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full" id="quantity"
                                                                name="quantity">${basicHouseHuxing.quantity}</label>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>

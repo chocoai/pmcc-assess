@@ -96,57 +96,61 @@ public class BasicCommonQuoteFieldInfoService {
 
     /**
      * 设值
+     *
      * @param applyBatchId
      * @param quoteFieldEnum
      * @param value
      */
-    public void setValue(Integer applyBatchId,String type,ExamineCommonQuoteFieldEnum quoteFieldEnum,String value){
-        setValue(applyBatchId,type,quoteFieldEnum,value,null,null);
+    public void setValue(Integer applyBatchId, String type, ExamineCommonQuoteFieldEnum quoteFieldEnum, String value) {
+        setValue(applyBatchId, type, quoteFieldEnum, value, null, null);
     }
 
     /**
      * 设值
+     *
      * @param applyBatchId
      * @param quoteFieldEnum
      * @param value
      */
-    public void setValue(Integer applyBatchId,String type,ExamineCommonQuoteFieldEnum quoteFieldEnum,String value,String tableName,Integer tableId){
-        if(StringUtils.isBlank(value)) return;
-        BasicCommonQuoteFieldInfo info=new BasicCommonQuoteFieldInfo();
+    public void setValue(Integer applyBatchId, String type, ExamineCommonQuoteFieldEnum quoteFieldEnum, String value, String tableName, Integer tableId) {
+        if (StringUtils.isBlank(value) || "null".equals(value)) return;
+        BasicCommonQuoteFieldInfo info = new BasicCommonQuoteFieldInfo();
         info.setApplyBatchId(applyBatchId);
         info.setType(type);
         info.setTableName(tableName);
         info.setTableId(tableId);
         info.setFieldKey(quoteFieldEnum.getKey());
         info.setFieldValue(value);
-        saveAndUpdateBasicCommonQuoteFieldInfo(info,false);
+        saveAndUpdateBasicCommonQuoteFieldInfo(info, false);
     }
 
     /**
      * 取值
+     *
      * @param applyBatchId
      * @param quoteFieldEnum
      * @return
      */
-    public String getValue(Integer applyBatchId,ExamineCommonQuoteFieldEnum quoteFieldEnum){
-        return getValue(applyBatchId,quoteFieldEnum,null,null,null);
+    public String getValue(Integer applyBatchId, ExamineCommonQuoteFieldEnum quoteFieldEnum) {
+        return getValue(applyBatchId, quoteFieldEnum, null, null, null);
     }
 
     /**
      * 取值
+     *
      * @param applyBatchId
      * @param quoteFieldEnum
      * @return
      */
-    public String getValue(Integer applyBatchId,ExamineCommonQuoteFieldEnum quoteFieldEnum,String type,String tableName,Integer tableId){
-        BasicCommonQuoteFieldInfo where=new BasicCommonQuoteFieldInfo();
+    public String getValue(Integer applyBatchId, ExamineCommonQuoteFieldEnum quoteFieldEnum, String type, String tableName, Integer tableId) {
+        BasicCommonQuoteFieldInfo where = new BasicCommonQuoteFieldInfo();
         where.setApplyBatchId(applyBatchId);
         where.setFieldKey(quoteFieldEnum.getKey());
         where.setType(type);
         where.setTableName(tableName);
         where.setTableId(tableId);
         List<BasicCommonQuoteFieldInfo> list = basicCommonQuoteFieldInfoDao.basicCommonQuoteFieldInfoList(where);
-        if(CollectionUtils.isEmpty(list)) return null;
+        if (CollectionUtils.isEmpty(list)) return null;
         return list.get(0).getFieldValue();
     }
 }

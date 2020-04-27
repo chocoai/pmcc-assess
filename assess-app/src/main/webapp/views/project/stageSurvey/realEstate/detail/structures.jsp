@@ -12,9 +12,6 @@
         <div class="content" style="margin-top: 0px;">
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <%@include file="/views/project/stageSurvey/examine/residence/detail/structuresProspect.jsp" %>
-
-
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
 
                         <div class="card-body">
