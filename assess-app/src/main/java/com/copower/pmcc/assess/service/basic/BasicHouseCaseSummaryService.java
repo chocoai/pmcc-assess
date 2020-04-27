@@ -21,6 +21,8 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -181,6 +183,9 @@ public class BasicHouseCaseSummaryService {
         CellStyle style = getCellStyle(wb) ;
         List<BasicHouseCaseSummaryVo> vos = LangUtils.transform(baseHouseList, o -> getBasicHouseCaseSummaryVo(o));
         HSSFSheet sheet = wb.createSheet("基础数据");
+        sheet.setColumnWidth(1,10000);
+        sheet.setColumnWidth(2,10000);
+        sheet.setColumnWidth(3,3500);
         int rowNum = 0;
         Row rowOne = sheet.createRow(rowNum);
         rowNum++;
@@ -242,12 +247,15 @@ public class BasicHouseCaseSummaryService {
     }
 
     private CellStyle getCellStyle(HSSFWorkbook wb){
-        CellStyle style = wb.createCellStyle();
+        HSSFCellStyle style = wb.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);//居中
         style.setWrapText(true);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
-//        style.setFillForegroundColor(IndexedColors.TURQUOISE1.getIndex());
-//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        // 设置字体
+        HSSFFont font = wb.createFont();
+        font.setFontHeightInPoints((short) 13); //字体高度
+        font.setFontName("微软雅黑"); //字体
+        style.setFont(font);
         return style;
     }
 
