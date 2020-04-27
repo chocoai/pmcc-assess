@@ -214,9 +214,6 @@
         if (!frm.valid()) {
             return false;
         }
-        data.releaseDate = data.releaseDate + "-01 00:00:00";
-        data.basePeriod = data.basePeriod + "-01 00:00:00";
-        data.evaluationDate = data.evaluationDate + "-01 00:00:00";
         $.ajax({
             url: "${pageContext.request.contextPath}/housePriceIndex/save",
             data: {formData: JSON.stringify(data)},
@@ -496,7 +493,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly="readonly"
-                                                       class="form-control input-full date-picker dbdate-month"
+                                                       class="form-control input-full date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
                                                        name="releaseDate" placeholder="发布日期">
                                             </div>
@@ -511,7 +508,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly="readonly"
-                                                       class="form-control input-full date-picker dbdate-month"
+                                                       class="form-control input-full date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
                                                        name="evaluationDate" placeholder="报告期">
                                             </div>
@@ -524,7 +521,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" readonly="readonly"
-                                                       class="form-control input-full date-picker dbdate-month"
+                                                       class="form-control input-full date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
                                                        name="basePeriod" placeholder="基期">
                                             </div>
