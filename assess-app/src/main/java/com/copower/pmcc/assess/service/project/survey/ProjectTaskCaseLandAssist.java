@@ -13,8 +13,6 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
-import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -45,31 +43,28 @@ public class ProjectTaskCaseLandAssist implements ProjectTaskInterface {
     @Autowired
     private SurveyCommonService surveyCommonService;
     @Autowired
-    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-    @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ProjectInfoService projectInfoService;
-    @Autowired
-    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseLandIndex", "", 0, "0", "");
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseLandApproval", processInsId, boxId, taskId, agentUserAccount);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseLandIndex", processInsId, boxId, taskId, agentUserAccount);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -81,7 +76,7 @@ public class ProjectTaskCaseLandAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseLandApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -106,6 +101,7 @@ public class ProjectTaskCaseLandAssist implements ProjectTaskInterface {
         modelAndView.addObject("declareRecord", declareRecord);
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         List<BaseDataDic> buildingStatusList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_BUILDING_STATUS);
         modelAndView.addObject("buildingStatusList", buildingStatusList);
@@ -126,7 +122,7 @@ public class ProjectTaskCaseLandAssist implements ProjectTaskInterface {
         }
         if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND == projectTypeEnum) {
             resultList = LangUtils.filter(dataDicList, o -> {
-                return AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(o.getFieldName()) || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(o.getFieldName());
+                return AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(o.getFieldName());
             });
         }
         return resultList;
