@@ -53,7 +53,7 @@
                                 <div class="x_content">
                                     <div class="col-md-12">
                                         <div class="card full-height">
-                                            <div class="card-header collapse-link">
+                                            <div class="card-header ">
                                                 <div class="card-head-row">
                                                     <div class="card-title">
                                                         房间
@@ -65,7 +65,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-body" style="display: none">
+                                            <div class="card-body" >
                                                 <form class="form-horizontal">
                                                     <table class="table table-bordered" id="HouseRoomList">
                                                         <!-- cerare document add ajax data-->
@@ -75,17 +75,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <script type="text/javascript"
-                                        src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
-                                <script type="text/javascript"
-                                        src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
-                                <script type="text/javascript"
-                                        src="${pageContext.request.contextPath}/js/select/huxing.select.js?v=${assessVersion}"></script>
-                                <script type="text/javascript">
-                                    $(function () {
-                                        houseCommon.initById('${basicHouse.id}');
-                                    })
-                                </script>
                             </div>
                         </div>
                     </div>
@@ -106,16 +95,23 @@
 </body>
 
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;">
+
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/select/huxing.select.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
+
 </html>
 <script type="text/javascript">
-
-
-</script>
-
-<script>
 
     var houseRoom;
     (function () {
@@ -140,16 +136,76 @@
             config: function () {
                 var data = {};
                 data.table = "HouseRoomList";
-                data.box = "divBoxHouseRoom";
-                data.frm = "frmHouseRoom";
-                data.tableSubclass = "SubclassHouseRoomList";
-                data.boxSubclass = "SubclassDivBoxHouseRoom";
-                data.boxSubclassSaveView = "boxSubclassSaveViewHouseRoom";
-                data.frmSubclass = "SubclassFrmHouseRoom";
-                data.type = "null";//
                 return data;
             },
+            inputFile: function (this_) {
+                var target = $(this_);
+                var fieldName = target.attr("data-fileid");
+                var id = target.attr("data-id");
+                var table = $("#" + houseRoom.prototype.config().table);
+                Loading.progressShow();
+                $.ajaxFileUpload({
+                    type: "POST",
+                    url: getContextPath() + "/public/importAjaxFile",
+                    data: {
+                        tableName: AssessDBKey.BasicHouseRoom,
+                        tableId: id,
+                        fieldsName: fieldName
+                    },//要传到后台的参数，没有可以不写
+                    secureuri: false,//是否启用安全提交，默认为false
+                    fileElementId: target.attr("id"),//文件选择框的id属性
+                    dataType: 'json',//服务器返回的格式
+                    async: false,
+                    success: function (result) {
+                        Loading.progressHide();
+                        if (result.ret) {
+                            table.bootstrapTable('refresh');
+                            notifySuccess("成功", "上传附件成功!");
+                        } else {
+                            if (result.errmsg) {
+                                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                            } else {
+                                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                            }
+                        }
+                    },
+                    error: function (result, status, e) {
+                        Loading.progressHide();
+                        if (result.errmsg) {
+                            AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                        }
+                    }
+                });
+            },
+            importEvent: function (fileId) {
+                $("#" + fileId).trigger('click');
+            },
+            delFileObj: function (tableId) {
+                var table = $("#" + houseRoom.prototype.config().table);
+                AssessCommon.getSysAttachmentDtoList({
+                    tableId: tableId,
+                    tableName: AssessDBKey.BasicHouseRoom
+                }, function (data) {
+                    if (data.length == 0) {
+                        notifyWarning("警告", "没有附件!");
+                        return false;
+                    }
+                    var arr = [];
+                    $.each(data, function (i, item) {
+                        arr.push(item.id);
+                    });
+                    AlertConfirm("是否确认删除当前附件", "删除相应的数据后将不可恢复", function (flag) {
+                        AssessCommon.deleteAttachmentById(arr.join(","), function () {
+                            notifySuccess("成功", "附件成功删除!");
+                            table.bootstrapTable('refresh');
+                        });
+                    });
+                });
+            },
             loadDataDicList: function () {
+                var table = $("#" + houseRoom.prototype.config().table);
                 var cols = [];
                 cols.push({
                     field: 'name', title: '名称', formatter: function (value, row, index) {
@@ -163,98 +219,52 @@
                         return s;
                     }
                 });
-
                 cols.push({field: 'fileViewName', title: '附件'});
-                cols.push({
-                    field: 'id', title: '操作', formatter: function (value, row, index) {
-                        var str = '<div class="btn-margin">';
-                        str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                        str += '</div>';
-                        return str;
-                    }
-                });
-                $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
-                TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-                    houseId: houseCommon.getHouseId()
-                }, {
-                    showColumns: false,
-                    showRefresh: false,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            },
-            getAndInit: function (id) {
-                var data = $("#" + houseRoom.prototype.config().table).bootstrapTable('getRowByUniqueId',id);
-                var box = $('#' + houseRoom.prototype.config().box) ;
-                var frm = box.find("form") ;
-                frm.clearAll();
-                frm.initForm(frm);
-                houseRoom.prototype.getFilePartHtml(AssessDicKey.examineHouseRoomFilePart, data);
-                box.modal("show");
-            },
-            //附件上传
-            fileUpload: function (fieldsName, id) {
-                FileUtils.uploadFiles({
-                    target: fieldsName,
-                    disabledTarget: "btn_submit",
-                    formData: {
-                        fieldsName: fieldsName,
-                        tableName: AssessDBKey.BasicHouseRoom,
-                        tableId: houseRoom.prototype.isNotBlank(id) ? id : "0"
-                    },
-                    deleteFlag: true,
-                    onUploadComplete: function () {
-                        houseRoom.prototype.fileShow(fieldsName, id);
-                    }
-                });
-            },
-            fileShow: function (fieldsName, id) {
-                FileUtils.getFileShows({
-                    target: fieldsName,
-                    formData: {
-                        fieldsName: fieldsName,
-                        tableName: AssessDBKey.BasicHouseRoom,
-                        tableId: houseRoom.prototype.isNotBlank(id) ? id : "0"
-                    },
-                    deleteFlag: true
-                })
-            },
-            getFilePartHtml: function (fieldName, item) {
-                var fileDiv = $('#' + fieldName);
-                fileDiv.empty();
-                var houseFileHtml = '';
-                AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
-                    houseFileHtml += '<div class="row form-group common">';
-                    houseFileHtml += '<div class="col-md-12">';
-                    houseFileHtml += '<div class="form-inline x-valid">';
-                    for (var i = 0; i < resultData.length; i++) {
-                        houseFileHtml += '<label class="col-sm-2">' + resultData[i].name + '</label>';
-                        houseFileHtml += '<div class="col-sm-10">';
-                        houseFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
-                        houseFileHtml += '<div id="_' + resultData[i].fieldName + '"></div>';
-                        houseFileHtml += '</div>';
-                    }
-                    houseFileHtml += "</div>";
-                    houseFileHtml += "</div>";
-                    houseFileHtml += "</div>";
+                AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineHouseRoomFilePart, '', function (html, resultData) {
+                    cols.push({
+                        field: 'id', title: '文件上传', formatter: function (value, row, index) {
+                            var str = '<div class="btn-margin">';
+                            $.each(resultData, function (i, fileData) {
+                                str += "<input name='file' onchange='houseRoom.prototype.inputFile(this)' style='display: none' type='file' multiple='multiple' id='" + fileData.fieldName + row.id + "'" + "data-id='" + value + "'" + "data-fileId='" + fileData.fieldName + "'" + ">";
+                                str += '<button type="button" onclick="houseRoom.prototype.importEvent(' + "'" + fileData.fieldName + row.id + "'" + ')"  style="margin-left: 5px;"  class="btn btn-info btn-xs tooltips"  data-placement="bottom" data-original-title="上传附件">';
+                                str += '<i class="fa fa-cloud-upload-alt"></i>';
+                                str += '</button>';
 
-                }, false);
-                fileDiv.append(houseFileHtml);
-                AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
-                    $.each(resultData, function (i, fileData) {
-                        houseRoom.prototype.fileUpload(fileData.fieldName, item.id);
-                        houseRoom.prototype.fileShow(fileData.fieldName, item.id);
+                                str += '<button type="button" onclick="houseRoom.prototype.delFileObj(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除附件">';
+                                str += '<i class="fa fa-minus"></i>';
+                                str += '</button>';
+                            });
+                            str += '</div>';
+                            return str;
+                        }
+                    });
+                    table.bootstrapTable('destroy');
+                    TableInit(table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
+                        houseId: houseCommon.getHouseId()
+                    }, {
+                        showColumns: false,
+                        showRefresh: false,
+                        search: false,
+                        onLoadSuccess: function () {
+                            $('.tooltips').tooltip();
+                        }
                     });
                 }, false);
             }
         };
 
-        //绑定事件
-        $('#' + houseRoom.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
-            houseRoom.prototype.loadDataDicList();
-        })
+//        //绑定事件
+//        $('#' + houseRoom.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
+//            houseRoom.prototype.loadDataDicList();
+//        })
     })();
+    $(function () {
+        houseCommon.initById('${basicHouse.id}' ,function () {
+            houseRoom.prototype.loadDataDicList();
+        });
+
+
+    })
 
 </script>
+

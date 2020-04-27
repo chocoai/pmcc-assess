@@ -642,6 +642,21 @@ $(function () {
                 }
             })
         },
+        deleteAttachmentById: function (id, callback) {
+            $.ajax({
+                url: getContextPath() + "/public/deleteAttachmentById",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        if (callback) {
+                            callback(result.data);
+                        }
+                    }
+                }
+            })
+        },
         //新增或者更新附件
         saveAndUpdateSysAttachmentDto: function (item, callback) {
             $.ajax({
