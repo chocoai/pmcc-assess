@@ -1,46 +1,141 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<div id="LandUseCategoryListBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 70%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">明细数据列表</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+<script type="text/html" id="categoryDiv">
+    <div class="col-md-12">
+        <div class="card full-height">
+            <div class="card-header">
+                <div class="card-head-row">
+                    <div class="card-title">
+                        土地类型类别（_number）
+                        <small>
+                        </small>
+                    </div>
+                    <div class="card-tools">
+                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                class="fa fa-angle-down"></span>
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <div class="modal-body">
-                <form class="form-horizontal" id="LandUseCategoryListBoxFrm">
+            <div class="card-body">
+                <form class="form-horizontal" id="categoryFrm_number">
+                    <input type="hidden" name="id">
                     <input type="hidden" name="landUseTypeId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
-                                <div class="col-md-12">
-                                    <table class="table table-bordered" id="tb_LandUseCategoryList">
-                                    </table>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">土地用途类型</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="landUseType"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">土地用途类别</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="landUseCategory"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">土地级别</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="landLevelName"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">土地取得时间</label>
+                                            <div class="col-sm-3">
+                                                <label name="acquisitionTime" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate"></label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">土地使用年限</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="landUseYear"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">土地形状</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="landShape"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">开发时间</label>
+                                            <div class="col-sm-3">
+                                                <label name="developTime" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate"></label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">容积率</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="plotRatio"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">建筑密度</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="buildingDensity"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">绿地率</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="greeningRate"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">兼容类型</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="compatibilityType"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">兼容比例</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="compatibilityRate"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">建筑限高</label>
+                                            <div class="col-sm-3">
+                                                <label type="text" name="heightPermitted"
+                                                       class="form-control input-full"></label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-            </div>
-
         </div>
+
     </div>
-</div>
+</script>
+
 
 
 <script type="text/javascript">
     $(function () {
-        landUseType.loadDataList();
+        landUseType.loadHtml();
     });
 
     var LandUseType = function () {
@@ -85,84 +180,64 @@
 
     var landUseType = new LandUseType();
 
-    landUseType.loadDataList = function () {
-        var cols = [];
-        cols.push({field: 'landUseType', title: '土地用途类型'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<button type="button" onclick="landUseType.showSonBoxModel(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="子项">';
-                str += '<i class="fa fa-search"></i>';
-                str += '</button>';
-                return str;
+    var num = 1;
+
+    landUseType.loadSonDataListHtml = function (landUseTypeId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicEstateLandUseCategory/basicEstateLandUseCategoryList",
+            type: "get",
+            dataType: "json",
+            data: {landUseTypeId: landUseTypeId},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.ret) {
+                        if (result.data.length >= 1) {
+                            $.each(result.data, function (i, item) {
+                                var html = $("#categoryDiv").html();
+                                var number = num;
+                                html = html.replace(/_number/g, number);
+                                $("#LandUseTypeContent").append(html);
+                                $("#categoryFrm" + number).initForm(item);
+                                //百分字段
+                                $("#categoryFrm" + number).find('[name=greeningRate]').text(AssessCommon.pointToPercent(item.greeningRate));
+                                $("#categoryFrm" + number).find('[name=compatibilityRate]').text(AssessCommon.pointToPercent(item.compatibilityRate));
+                               
+                                num++;
+                            });
+                        }
+                    }
+                }
+                else {
+                    ("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
-        });
-        $("#" + landUseType.config.father.table()).bootstrapTable('destroy');
-        TableInit(landUseType.config.father.table(), "${pageContext.request.contextPath}/basicEstateLandUseType/getBootstrapTableVo", cols, {
-            estateId: estateCommon.getEstateId()
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
+        })
     }
 
-
-    landUseType.showSonBoxModel = function (id) {
-        $("#" + landUseType.config.son.tableFrm()).clearAll();
-        landUseType.loadSonDataList(id);
-        $('#' + landUseType.config.son.tableBox()).modal("show");
-
-    }
-
-
-    landUseType.loadSonDataList = function (landUseTypeId) {
-        var cols = [];
-        cols.push({field: 'landUseCategory', title: '土地用途类型'});
-        cols.push({field: 'landLevelName', title: '土地级别'});
-        cols.push({
-            field: 'acquisitionTime', title: '土地取得时间',formatter: function (value, row, index) {
-                return formatDate(row.acquisitionTime, false);
-            }
-        });
-        cols.push({field: 'landUseYear', title: '土地使用年限'});
-        cols.push({field: 'landShape', title: '土地形状'});
-        cols.push({
-            field: 'developTime', title: '开发时间',formatter: function (value, row, index) {
-                return formatDate(row.developTime, false);
-            }
-        });
-        cols.push({field: 'plotRatio', title: '容积率'});
-        cols.push({field: 'buildingDensity', title: '建筑密度'});
-        cols.push({
-            field: 'greeningRate', title: '绿地率', formatter: function (value, row, index) {
-                if (value != null || value != undefined) {
-                    return AssessCommon.pointToPercent(value);
+    landUseType.loadHtml = function () {
+        //找到所有主表数据，一条一个table
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicEstateLandUseType/basicEstateLandUseTypeList",
+            type: "get",
+            dataType: "json",
+            data: {estateId: estateCommon.getEstateId()},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        $.each(result.data, function (i, item) {
+                            landUseType.loadSonDataListHtml(item.id);
+                        })
+                    }
                 }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
-        });
-        cols.push({field: 'compatibilityType', title: '兼容类型'});
-        cols.push({
-            field: 'compatibilityRate', title: '兼容比例', formatter: function (value, row, index) {
-                if (value != null || value != undefined) {
-                    return AssessCommon.pointToPercent(value);
-                }
-            }
-        });
-        cols.push({field: 'heightPermitted', title: '建筑限高'});
-        $("#" + landUseType.config.son.table()).bootstrapTable('destroy');
-        TableInit(landUseType.config.son.table(), "${pageContext.request.contextPath}/basicEstateLandUseCategory/getBootstrapTableVo", cols, {
-            landUseTypeId: landUseTypeId
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
+        })
+
     }
 
 </script>

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.basic.form.structure;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandUseCategoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -22,7 +23,9 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
-    private BaseDataDicService baseDataDicService;
+    private BasicHouseService basicHouseService;
+    @Autowired
+    private BasicHouseTradingService basicHouseTradingService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
@@ -37,6 +40,10 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicEstateLandUseTypeService basicEstateLandUseTypeService;
+    @Autowired
+    private BasicEstateLandUseCategoryDao basicEstateLandUseCategoryDao;
 
     @Override
     public BasicApplyBatch initBasicApplyBatch(BasicApplyBatch basicApplyBatch) throws Exception {
@@ -49,7 +56,7 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
             }
         }
         if (basicApplyBatch.getClassify() == null) return basicApplyBatch;
-        BasicFormClassifyEnum formClassifyEnum = BasicFormClassifyEnum.ESTATE;
+        BasicFormClassifyEnum formClassifyEnum = BasicFormClassifyEnum.ESTATE_LAND;
         BasicEstate basicEstate = new BasicEstate();//楼盘
         DeclareRecord declareRecord = null; //申报表代入的信息
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
@@ -69,10 +76,17 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
         basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, false);
         if (StringUtils.isBlank(basicApplyBatch.getEstateName())) {
             basicApplyBatch.setEstateName("地块信息");
-            formClassifyEnum = BasicFormClassifyEnum.ESTATE_LAND;
         }
         basicApplyBatch.setEstateId(basicEstate.getId());
         basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
+        //默认生成一条土地类型类别
+        BasicEstateLandUseType landUseType = new BasicEstateLandUseType();
+        landUseType.setEstateId(basicEstate.getId());
+        landUseType.setLandUseType("住宅用地");
+        basicEstateLandUseTypeService.saveAndUpdateBasicEstateLandUseType(landUseType,false);
+        BasicEstateLandUseCategory landUseCategory = new BasicEstateLandUseCategory();
+        landUseCategory.setLandUseTypeId(landUseType.getId());
+        basicEstateLandUseCategoryDao.saveBasicEstateLandUseCategory(landUseCategory);
 
         BasicApplyBatchDetail estateApplyBatchDetail = new BasicApplyBatchDetail();
         estateApplyBatchDetail.setPid(0);
@@ -85,11 +99,32 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
         estateApplyBatchDetail.setType(formClassifyEnum.getKey());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
 
+        //纯土地中地块包一部分房屋相关信息
+        BasicHouse basicHouse = new BasicHouse();
+        basicHouse.setHouseNumber("房屋交易信息");
+        basicHouse.setCreator(commonService.thisUserAccount());
+        basicHouseService.saveAndUpdate(basicHouse, false);
+
+        BasicFormClassifyEnum houseLandClassifyEnum = BasicFormClassifyEnum.HOUSE_LAND;
+        BasicApplyBatchDetail houseApplyBatchDetail = new BasicApplyBatchDetail();
+        houseApplyBatchDetail.setPid(estateApplyBatchDetail.getId());
+        houseApplyBatchDetail.setApplyBatchId(basicApplyBatch.getId());
+        houseApplyBatchDetail.setTableName(houseLandClassifyEnum.getTableName());
+        houseApplyBatchDetail.setTableId(basicHouse.getId());
+        houseApplyBatchDetail.setName("房屋交易信息");
+        houseApplyBatchDetail.setDisplayName("房屋交易信息");
+        houseApplyBatchDetail.setExecutor(commonService.thisUserAccount());
+        houseApplyBatchDetail.setType(houseLandClassifyEnum.getKey());
+        basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseApplyBatchDetail);
+
+        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+        basicHouseTrading.setHouseId(basicHouse.getId());
+        basicHouseTrading.setCreator(commonService.thisUserAccount());
+        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
         BasicApply basicApply = new BasicApply();
         basicApply.setBasicEstateId(basicEstate.getId());
-        if (declareRecord != null) {
-            basicApply.setDeclareRecordId(declareRecord.getId());
-        }
+        basicApply.setBasicHouseId(basicHouse.getId());
+        basicApply.setBatchDetailId(houseApplyBatchDetail.getId());
         basicApply.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
         basicApplyService.saveBasicApply(basicApply);
         return basicApplyBatch;

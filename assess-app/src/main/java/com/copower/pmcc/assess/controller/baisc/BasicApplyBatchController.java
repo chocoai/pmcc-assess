@@ -423,6 +423,22 @@ public class BasicApplyBatchController extends BaseController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/saveDeclareRecord", name = "写入权证", method = {RequestMethod.POST})
+    public HttpResult saveDeclareRecord(Integer id,Integer declareRecordId,String declareRecordName,Integer planDetailsId) {
+        try {
+            //更新权证name与权证id
+            BasicApplyBatchDetail oldData = basicApplyBatchDetailService.getDataById(id);
+            oldData.setDeclareRecordId(declareRecordId==null?0:declareRecordId);
+            oldData.setDeclareRecordName(declareRecordName);
+            BasicApplyBatchDetailVo vo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.saveAndUpdateComplete(oldData, planDetailsId));
+            return HttpResult.newCorrectResult(vo);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("保存数据异常");
+        }
+    }
+
     /**
      * 删除操作手册信息
      *

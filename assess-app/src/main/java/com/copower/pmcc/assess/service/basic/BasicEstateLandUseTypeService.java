@@ -65,13 +65,9 @@ public class BasicEstateLandUseTypeService {
      * @throws Exception
      */
     public Integer saveAndUpdateBasicEstateLandUseType(BasicEstateLandUseType basicEstateLandUseType, boolean updateNull) throws Exception {
-        if (verifyData(basicEstateLandUseType.getLandUseType())) {
-            throw new BusinessException("已存在该类型");
-        }
         if (basicEstateLandUseType.getId() == null || basicEstateLandUseType.getId().intValue() == 0) {
             basicEstateLandUseType.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateLandUseTypeDao.saveBasicEstateLandUseType(basicEstateLandUseType);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstateLandUseType.class), id);
             return id;
         } else {
             if (updateNull) {
@@ -89,15 +85,16 @@ public class BasicEstateLandUseTypeService {
     }
 
 
-    public Boolean verifyData(String landUseType) {
+    public BasicEstateLandUseType getDataByType(String landUseType, Integer estateId) {
         BasicEstateLandUseType basicEstateLandUseType = new BasicEstateLandUseType();
         basicEstateLandUseType.setLandUseType(landUseType);
+        basicEstateLandUseType.setEstateId(estateId);
         basicEstateLandUseType.setBisDelete(false);
         List<BasicEstateLandUseType> basicEstateLandUseTypes = basicEstateLandUseTypeDao.basicEstateLandUseTypeList(basicEstateLandUseType);
         if (CollectionUtils.isNotEmpty(basicEstateLandUseTypes)) {
-            return true;
+            return basicEstateLandUseTypes.get(0);
         }
-        return false;
+        return null;
     }
 
     /**
@@ -108,12 +105,7 @@ public class BasicEstateLandUseTypeService {
      * @throws Exception
      */
     public boolean deleteBasicEstateLandUseType(Integer id) throws Exception {
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(id);
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateLandUseType.class));
-        boolean flag = basicEstateLandUseTypeDao.deleteBasicEstateLandUseType(id);
-        baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
-        return flag;
+        return basicEstateLandUseTypeDao.deleteBasicEstateLandUseType(id);
     }
 
     /**

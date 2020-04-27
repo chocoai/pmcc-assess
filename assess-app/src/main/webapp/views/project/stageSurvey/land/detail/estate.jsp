@@ -207,7 +207,8 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">东至</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full" name="eastTo">${basicEstateLandState.eastTo}</label>
+                                                    <label class="form-control input-full"
+                                                           name="eastTo">${basicEstateLandState.eastTo}</label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">南至</label>
                                                 <div class="col-sm-3">
@@ -254,44 +255,37 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="x_title">
-                                        <h4>土地用途类型类别
-                                        </h4>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered" id="tb_LandUseTypeList">
-                                                <!-- cerare document add ajax data-->
-                                            </table>
-                                        </div>
-                                    </div>
                                 </form>
+                                <div class="x_title">
+                                    <h4>土地用途类型类别
+                                    </h4>
+                                </div>
+                                <div class="x_content" id="LandUseTypeContent"></div>
                             </div>
                         </div>
                     </div>
                     <c:if test="${empty isHistory}">
-                        <div class="x_content">
-                            <%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/matchingEnvironment.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/matchingFinance.jsp" %>
-                            <c:if test="${basicApplyBatch.type == 0}">
-                                <%@include file="/views/project/stageSurvey/commonDetail/matchingEducation.jsp" %>
-                                <%@include file="/views/project/stageSurvey/commonDetail/matchingRecreation.jsp" %>
-                                <%@include file="/views/project/stageSurvey/commonDetail/matchingRestaurant.jsp" %>
-                                <%@include file="/views/project/stageSurvey/commonDetail/matchingMarket.jsp" %>
-                                <%@include file="/views/project/stageSurvey/commonDetail/matchingMedical.jsp" %>
-                            </c:if>
-                            <%@include file="/views/project/stageSurvey/commonDetail/matchingTransit.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/matchingTrafficHub.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMetro.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMainRoad.jsp" %>
-                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
-                            <c:if test="${basicApplyBatch.type == 1}">
-                                <%@include file="/views/project/stageSurvey/commonDetail/matchingMaterial.jsp" %>
-                            </c:if>
-                            <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
-                        </div>
+
+                        <%@include file="/views/project/stageSurvey/commonDetail/estateNetwork.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingEnvironment.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingFinance.jsp" %>
+                        <c:if test="${basicApplyBatch.type == 0}">
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingEducation.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingRecreation.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingRestaurant.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMarket.jsp" %>
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMedical.jsp" %>
+                        </c:if>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingTransit.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingTrafficHub.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingMetro.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingMainRoad.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
+                        <c:if test="${basicApplyBatch.type == 1}">
+                            <%@include file="/views/project/stageSurvey/commonDetail/matchingMaterial.jsp" %>
+                        </c:if>
+
                     </c:if>
 
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
@@ -328,7 +322,7 @@
 
 <script type="text/javascript">
     $(function () {
-        estateCommon.initDetailById('${basicEstate.id}', '', false,'${tbType}');
+        estateCommon.initDetailById('${basicEstate.id}', '', false, '${tbType}');
     })
 </script>
 

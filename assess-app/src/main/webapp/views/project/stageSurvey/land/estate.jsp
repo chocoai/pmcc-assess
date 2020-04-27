@@ -288,29 +288,22 @@
                                         </div>
                                     </div>
 
-                                    <div class="x_title">
-                                        <h4>土地用途类型类别
-
-                                        </h4>
-                                    </div>
-                                    <button style="margin-left: 5px" class="btn btn-success btn-sm"
-                                            type="button" data-toggle="modal" type="button"
-                                            onclick="landUseType.showModel()">
+                                </form>
+                                <div class="x_title">
+                                    <h4>土地用途类型类别
+                                        <small>
+                                            <button style="margin-left: 5px" class="btn btn-success btn-xs"
+                                                    type="button" data-toggle="modal" type="button"
+                                                    onclick="landUseType.appendHtml()">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                        新增
-                                    </button>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered" id="tb_LandUseTypeList">
-                                                <!-- cerare document add ajax data-->
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                </form>
-
+                                                新增
+                                            </button>
+                                        </small>
+                                    </h4>
+                                </div>
+                                <div class="x_content" id="LandUseTypeContent"></div>
                                 <%@include file="/views/project/stageSurvey/common/estateLandUseCategory.jsp" %>
                                 <%@include file="/views/project/tool/landLevelModalView.jsp" %>
                                 <div class="x_content">
@@ -333,7 +326,6 @@
                                     <c:if test="${formType eq 'industry'}">
                                         <%@include file="/views/project/stageSurvey/common/matchingMaterial.jsp" %>
                                     </c:if>
-                                    <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
                                 </div>
                                 <script type="text/javascript"
                                         src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>

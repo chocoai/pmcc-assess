@@ -222,7 +222,8 @@ public class BasicApplyBatchDetailService {
 
     //存入basicApply表单
     public void insertBasicApply(BasicApplyBatchDetail houseBasicApplyBatchDetail, Integer planDetailsId) throws Exception {
-        if (!houseBasicApplyBatchDetail.getType().equals(BasicFormClassifyEnum.HOUSE.getKey())) return;
+        if (!houseBasicApplyBatchDetail.getType().equals(BasicFormClassifyEnum.HOUSE.getKey())&&
+                !houseBasicApplyBatchDetail.getType().equals(BasicFormClassifyEnum.HOUSE_LAND.getKey())) return;
         BasicApply basicApply = basicApplyService.getBasicApplyByBatchDetailId(houseBasicApplyBatchDetail.getId());
         if (basicApply == null) {
             basicApply = new BasicApply();

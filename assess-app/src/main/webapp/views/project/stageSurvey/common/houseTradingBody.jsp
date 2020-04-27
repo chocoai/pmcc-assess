@@ -169,17 +169,5 @@
         </div>
     </div>
 </div>
-<div class="row form-group">
-    <div class="col-md-12">
-        <div class="form-inline x-valid">
-            <label class="col-sm-1 control-label">
-                交易附件
-            </label>
-            <div class="col-sm-3">
-                <input id="house_trading_file_f" type="file" multiple="false">
-                <div id="_house_trading_file_f"></div>
-            </div>
-        </div>
-    </div>
-</div>
+<div id="houseTradingFilePart"></div>
 

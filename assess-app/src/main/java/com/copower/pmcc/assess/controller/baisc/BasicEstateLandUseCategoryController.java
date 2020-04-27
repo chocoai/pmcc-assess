@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategory;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandUseCategoryVo;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandUseCategoryService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -32,7 +33,8 @@ public class BasicEstateLandUseCategoryController {
     @RequestMapping(value = "/getBasicEstateLandUseCategoryById", name = "获取数据", method = {RequestMethod.GET})
     public HttpResult getBasicEstateLandUseCategoryById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200, basicEstateLandUseCategoryService.getBasicEstateLandUseCategoryById(id));
+            BasicEstateLandUseCategory landUseCategory = basicEstateLandUseCategoryService.getBasicEstateLandUseCategoryById(id);
+            return HttpResult.newCorrectResult(200, basicEstateLandUseCategoryService.getBasicEstateLandUseCategoryVo(landUseCategory));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -43,8 +45,8 @@ public class BasicEstateLandUseCategoryController {
     @RequestMapping(value = "/saveAndUpdateBasicEstateLandUseCategory", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicEstateLandUseCategory(String formData) {
         try {
-            BasicEstateLandUseCategory basicEstateLandUseCategory = JSON.parseObject(formData, BasicEstateLandUseCategory.class);
-            return HttpResult.newCorrectResult(200, basicEstateLandUseCategoryService.saveAndUpdateBasicEstateLandUseCategory(basicEstateLandUseCategory, false));
+            BasicEstateLandUseCategoryVo basicEstateLandUseCategoryVo = JSON.parseObject(formData, BasicEstateLandUseCategoryVo.class);
+            return HttpResult.newCorrectResult(200, basicEstateLandUseCategoryService.saveAndUpdateBasicEstateLandUseCategory(basicEstateLandUseCategoryVo, false));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

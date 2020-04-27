@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandUseCategoryDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandUseTypeDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseCategory;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandUseType;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandUseCategoryVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -21,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -40,11 +43,11 @@ public class BasicEstateLandUseCategoryService {
     @Autowired
     private BasicEstateLandUseCategoryDao basicEstateLandUseCategoryDao;
     @Autowired
-    private ErpAreaService erpAreaService;
+    private BasicEstateLandUseTypeService basicEstateLandUseTypeService;
     @Autowired
     private CommonService commonService;
     @Autowired
-    private PublicService publicService;
+    private BasicEstateLandUseTypeDao basicEstateLandUseTypeDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -61,15 +64,26 @@ public class BasicEstateLandUseCategoryService {
     /**
      * 新增或者修改
      *
-     * @param basicEstateLandUseCategory
+     * @param basicEstateLandUseCategoryVo
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicEstateLandUseCategory(BasicEstateLandUseCategory basicEstateLandUseCategory, boolean updateNull) throws Exception {
+    public Integer saveAndUpdateBasicEstateLandUseCategory(BasicEstateLandUseCategoryVo basicEstateLandUseCategoryVo, boolean updateNull) throws Exception {
+        BasicEstateLandUseCategory basicEstateLandUseCategory = new BasicEstateLandUseCategory();
+        BeanUtils.copyProperties(basicEstateLandUseCategoryVo, basicEstateLandUseCategory);
         if (basicEstateLandUseCategory.getId() == null || basicEstateLandUseCategory.getId().intValue() == 0) {
+            //保存主表
+            BasicEstateLandUseType dataByType = basicEstateLandUseTypeService.getDataByType(basicEstateLandUseCategoryVo.getLandUseType(), basicEstateLandUseCategoryVo.getEstateId());
+            if (dataByType == null) {
+                dataByType = new BasicEstateLandUseType();
+                dataByType.setEstateId(basicEstateLandUseCategoryVo.getEstateId());
+                dataByType.setLandUseType(basicEstateLandUseCategoryVo.getLandUseType());
+                basicEstateLandUseTypeService.saveAndUpdateBasicEstateLandUseType(dataByType, false);
+            }
+            //子表
+            basicEstateLandUseCategory.setLandUseTypeId(dataByType.getId());
             basicEstateLandUseCategory.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateLandUseCategoryDao.saveBasicEstateLandUseCategory(basicEstateLandUseCategory);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstateLandUseCategory.class), id);
             return id;
         } else {
             if (updateNull) {
@@ -81,6 +95,15 @@ public class BasicEstateLandUseCategoryService {
                     basicEstateLandUseCategory.setGmtModified(DateUtils.now());
                 }
             }
+            //修改主表
+            BasicEstateLandUseType dataByType = basicEstateLandUseTypeService.getDataByType(basicEstateLandUseCategoryVo.getLandUseType(), basicEstateLandUseCategoryVo.getEstateId());
+            if (dataByType == null) {
+                dataByType = new BasicEstateLandUseType();
+                dataByType.setEstateId(basicEstateLandUseCategoryVo.getEstateId());
+                dataByType.setLandUseType(basicEstateLandUseCategoryVo.getLandUseType());
+                basicEstateLandUseTypeService.saveAndUpdateBasicEstateLandUseType(dataByType, false);
+            }
+            basicEstateLandUseCategory.setLandUseTypeId(dataByType.getId());
             basicEstateLandUseCategoryDao.updateBasicEstateLandUseCategory(basicEstateLandUseCategory, updateNull);
             return basicEstateLandUseCategory.getId();
         }
@@ -95,12 +118,7 @@ public class BasicEstateLandUseCategoryService {
      * @throws Exception
      */
     public boolean deleteBasicEstateLandUseCategory(Integer id) throws Exception {
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(id);
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateLandUseCategory.class));
-        boolean flag = basicEstateLandUseCategoryDao.deleteBasicEstateLandUseCategory(id);
-        baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
-        return flag;
+        return basicEstateLandUseCategoryDao.deleteBasicEstateLandUseCategory(id);
     }
 
     /**
@@ -134,7 +152,8 @@ public class BasicEstateLandUseCategoryService {
         }
         BasicEstateLandUseCategoryVo vo = new BasicEstateLandUseCategoryVo();
         BeanUtils.copyProperties(basicEstateLandUseCategory, vo);
-        //vo.setDistrictName(erpAreaService.getSysAreaName(basicEstateLandUseCategory.getDistrict()));
+        BasicEstateLandUseType basicEstateLandUseType = basicEstateLandUseTypeDao.getBasicEstateLandUseTypeById(basicEstateLandUseCategory.getLandUseTypeId());
+        vo.setLandUseType(basicEstateLandUseType.getLandUseType());
         return vo;
     }
 }
