@@ -93,9 +93,6 @@
         var frm = $(dataObjFun.config.frm);
         frm.clearAll();
         frm.initForm(data);
-        frm.find('[name=evaluationDate]').val(dataObjFun.formatDateMonth(data.evaluationDate));
-        frm.find('[name=basePeriod]').val(dataObjFun.formatDateMonth(data.basePeriod));
-        frm.find('[name=releaseDate]').val(dataObjFun.formatDateMonth(data.releaseDate));
         AssessCommon.initAreaInfo({
             provinceTarget: frm.find("select[name='province']"),
             cityTarget: frm.find("select[name='city']"),
@@ -173,12 +170,17 @@
         cols.push({field: 'purposeName', title: '用途'});
         cols.push({
             field: 'releaseDate', title: '发布时间', formatter: function (value, row, index) {
-                return dataObjFun.formatDateMonth(value);
+                return formatDate(value, false);
             }
         });
         cols.push({
             field: 'evaluationDate', title: '报告期', formatter: function (value, row, index) {
-                return dataObjFun.formatDateMonth(value);
+                return formatDate(value, false);
+            }
+        });
+        cols.push({
+            field: 'basePeriod', title: '基期', formatter: function (value, row, index) {
+                return formatDate(value, false);
             }
         });
         cols.push({
@@ -309,6 +311,8 @@
                 return dataObjFun.formatDateMonth(value);
             }
         });
+        cols.push({field: 'unitPremium', title: '单位地价'});
+        cols.push({field: 'floorPremium', title: '楼面地价'});
         cols.push({field: 'indexNumber', title: '指数'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
