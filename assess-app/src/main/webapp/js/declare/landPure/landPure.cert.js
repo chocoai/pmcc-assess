@@ -336,7 +336,7 @@ assessLand.attachmentAutomatedWarrants = function (_this) {
         notifyWarning("警告", "步长非数字请重新填写!");
         return false;
     }
-    if (data.startNumber > data.endNumber) {
+    if (Number(data.startNumber) > Number(data.endNumber)) {
         notifyWarning("警告", "截至编号 必须大于 启始编号!");
         return false;
     }
@@ -894,7 +894,7 @@ declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
         return false;
     }
 
-    if (data.startNumber > data.endNumber) {
+    if (Number(data.startNumber) > Number(data.endNumber)) {
         notifyWarning("警告", "截至编号 必须大于 启始编号!");
         return false;
     }
