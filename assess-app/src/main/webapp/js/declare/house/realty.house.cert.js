@@ -581,7 +581,7 @@ assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
         notifyWarning("警告", "步长非数字请重新填写!");
         return false;
     }
-    if (options.startNumber > options.endNumber) {
+    if (Number(options.startNumber) > Number(options.endNumber)) {
         notifyWarning("警告", "截至编号 必须大于 启始编号!");
         return false;
     }
