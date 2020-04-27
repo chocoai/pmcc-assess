@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
@@ -16,6 +15,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandUseCategoryVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -59,7 +59,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -107,7 +106,7 @@ public class BasicEstateService extends BasicEntityAbstract {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private PublicBasicService publicBasicService;
+    private BasicEstateLandUseCategoryService basicEstateLandUseCategoryService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
@@ -465,7 +464,17 @@ public class BasicEstateService extends BasicEntityAbstract {
                     basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.LAND_USE_YEAR_ENUM, String.valueOf(landUseYear));
                 }
             }
+
+            //土地类型类别
+            jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELandUseTypeCategory.getVar());
+            List<BasicEstateLandUseCategoryVo> landUseCategorieVos = JSONObject.parseArray(jsonContent, BasicEstateLandUseCategoryVo.class);
+            if (!CollectionUtils.isEmpty(landUseCategorieVos)) {
+                for (BasicEstateLandUseCategoryVo item : landUseCategorieVos) {
+                    basicEstateLandUseCategoryService.saveAndUpdateBasicEstateLandUseCategory(item, false);
+                }
+            }
         }
+
         return basicEstate.getId();
     }
 

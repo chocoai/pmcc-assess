@@ -1,12 +1,9 @@
 package com.copower.pmcc.assess.service.basic.form.structure;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandUseCategoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -83,7 +80,7 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
         BasicEstateLandUseType landUseType = new BasicEstateLandUseType();
         landUseType.setEstateId(basicEstate.getId());
         landUseType.setLandUseType("住宅用地");
-        basicEstateLandUseTypeService.saveAndUpdateBasicEstateLandUseType(landUseType,false);
+        basicEstateLandUseTypeService.saveAndUpdateBasicEstateLandUseType(landUseType, false);
         BasicEstateLandUseCategory landUseCategory = new BasicEstateLandUseCategory();
         landUseCategory.setLandUseTypeId(landUseType.getId());
         basicEstateLandUseCategoryDao.saveBasicEstateLandUseCategory(landUseCategory);
@@ -102,6 +99,7 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
         //纯土地中地块包一部分房屋相关信息
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setHouseNumber("房屋交易信息");
+        basicHouse.setEstateId(basicEstate.getId());
         basicHouse.setCreator(commonService.thisUserAccount());
         basicHouseService.saveAndUpdate(basicHouse, false);
 

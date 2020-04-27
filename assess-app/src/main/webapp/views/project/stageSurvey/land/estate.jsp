@@ -330,11 +330,7 @@
                                 <script type="text/javascript"
                                         src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
                                 <script type="text/javascript"
-                                        src="${pageContext.request.contextPath}/js/examine/examine.house.js?v=${assessVersion}"></script>
-                                <script type="text/javascript"
                                         src="${pageContext.request.contextPath}/js/examine/sonEstateView.js?v=${assessVersion}"></script>
-                                <script type="text/javascript"
-                                        src="${pageContext.request.contextPath}/js/examine/sonHouseView.js?v=${assessVersion}"></script>
                                 <script src="${pageContext.request.contextPath}/js/select/land.level.select.js?v=${assessVersion}"></script>
                                 <script src="${pageContext.request.contextPath}/js/select/block.select.js?v=${assessVersion}"></script>
                             </div>
@@ -376,14 +372,30 @@
     //保存数据信息
     function saveDataInfo() {
         Loading.progressShow();
-        var formData = JSON.stringify(examineCommon.getFormData());
+        var formData =examineCommon.getFormData();
+
+        formData.landUseTypeCategory = [];
+        var forms = $("#LandUseTypeContent").find("form");
+        //校验
+        for (var i = 0; i < forms.size(); i++) {
+            if (!$(forms[i]).valid()) {
+                return false;
+            }
+        }
+
+        $.each(forms, function (i, n) {
+            var typeCategoryData = formParams($(n).attr("id"));
+            typeCategoryData.estateId = estateCommon.getEstateId();
+            formData.landUseTypeCategory.push(typeCategoryData);
+
+        });
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveDraft",
             type: "post",
             dataType: "json",
             async: false,
             data: {
-                formData: formData,
+                formData: JSON.stringify(formData),
                 formClassify: '${tbType}',
                 planDetailsId: '${planDetailsId}'
             },
@@ -402,17 +414,14 @@
 
     //打开历史数据modal
     function showHistoryModal() {
-        //打开楼盘modal
         historyInfo.caseEstate.showModel('${tbId}', '${formClassify}', '${tbType}', '${basicApplyBatch.id}');
-
-
     };
 
     function showCaseQuoteModal() {
-        //打开楼盘modal
-        if ("estate" == "${tbType}") {
-            caseFun.caseEstate.showModel();
-        }
+        caseFun.caseEstate.showModel();
+    }
+    function showProjectQuoteModal() {
+        projectData.prototype.showModel();
     }
 </script>
 <script type="text/javascript">

@@ -257,8 +257,7 @@
                                     </div>
                                 </form>
                                 <div class="x_title">
-                                    <h4>土地用途类型类别
-                                    </h4>
+                                    <h4>土地用途类型类别</h4>
                                 </div>
                                 <div class="x_content" id="LandUseTypeContent"></div>
                             </div>
@@ -270,7 +269,7 @@
                         <%@include file="/views/project/stageSurvey/commonDetail/estateParking.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingEnvironment.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingFinance.jsp" %>
-                        <c:if test="${basicApplyBatch.type == 0}">
+                        <c:if test="${formType eq 'residence'}">
                             <%@include file="/views/project/stageSurvey/commonDetail/matchingEducation.jsp" %>
                             <%@include file="/views/project/stageSurvey/commonDetail/matchingRecreation.jsp" %>
                             <%@include file="/views/project/stageSurvey/commonDetail/matchingRestaurant.jsp" %>
@@ -282,7 +281,7 @@
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingMetro.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingMainRoad.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/matchingMainConversion.jsp" %>
-                        <c:if test="${basicApplyBatch.type == 1}">
+                        <c:if test="${formType eq 'industry'}">
                             <%@include file="/views/project/stageSurvey/commonDetail/matchingMaterial.jsp" %>
                         </c:if>
 

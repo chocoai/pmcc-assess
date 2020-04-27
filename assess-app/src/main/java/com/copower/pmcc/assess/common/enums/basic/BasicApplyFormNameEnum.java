@@ -9,6 +9,7 @@ public enum BasicApplyFormNameEnum {
     BASIC_APPLY("basicApply","申请信息"),
     INDUSTRY("industry","工业仓储"),
     BASIC_ESTATE("basicEstate","楼盘"),
+    BASIC_ESTATELandUseTypeCategory("landUseTypeCategory","楼盘土地类型类别"),
     BASIC_ESTATELAND_STATE("basicEstateLandState"," 土地实体"),
     BASIC_BUILDING("basicBuilding","楼栋部分"),
     BASIC_UNIT("basicUnit","单元"),
