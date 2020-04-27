@@ -8,6 +8,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +37,14 @@ public class BasicHouseCaseSummaryController {
     private PublicService publicService;
 
     @RequestMapping(value = "/reportDownloadData", method = {RequestMethod.GET}, name = "下载查询到的报表")
-    public ResponseEntity<byte[]> reportData(String id, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String path = basicHouseCaseSummaryService.reportData();
+    public ResponseEntity<byte[]> reportData(String startDate, String endDate, BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, BasicHouseCaseSummary houseCaseSummary, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (StringUtils.isBlank(houseCaseSummary.getApprover())) {
+            houseCaseSummary.setApprover(null);
+        }
+        if (StringUtils.isBlank(houseCaseSummary.getCreator())) {
+            houseCaseSummary.setCreator(null);
+        }
+        String path = basicHouseCaseSummaryService.reportData(DateUtils.convertDate(endDate), DateUtils.convertDate(startDate), areaStart, areaEnd, DateUtils.convertDate(tradingTimeStart), DateUtils.convertDate(tradingTimeEnd), houseCaseSummary);
         //使用spring 二进制流下载,这样可以解决兼容性问题,并且可以很好解决乱码问题,以及控制下载流
         ResponseEntity<byte[]> responseEntity = FileUtils.createResponse(FilenameUtils.getName(path), org.apache.commons.io.FileUtils.readFileToByteArray(new File(path)));
         return responseEntity;
@@ -45,7 +52,35 @@ public class BasicHouseCaseSummaryController {
 
     @GetMapping(value = "/getBootstrapTableVo")
     public BootstrapTableVo getBootstrapTableVo(String startDate, String endDate, BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, BasicHouseCaseSummary houseCaseSummary) {
+        if (StringUtils.isBlank(houseCaseSummary.getApprover())) {
+            houseCaseSummary.setApprover(null);
+        }
+        if (StringUtils.isBlank(houseCaseSummary.getCreator())) {
+            houseCaseSummary.setCreator(null);
+        }
         return basicHouseCaseSummaryService.getBootstrapTableVo(DateUtils.convertDate(endDate), DateUtils.convertDate(startDate), areaStart, areaEnd, DateUtils.convertDate(tradingTimeStart), DateUtils.convertDate(tradingTimeEnd), houseCaseSummary);
+    }
+
+    @GetMapping(value = "/findReportApplyStatisticsList")
+    public BootstrapTableVo findReportApplyStatisticsList(String startDate, String endDate, BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, BasicHouseCaseSummary houseCaseSummary) {
+        if (StringUtils.isBlank(houseCaseSummary.getApprover())) {
+            houseCaseSummary.setApprover(null);
+        }
+        if (StringUtils.isBlank(houseCaseSummary.getCreator())) {
+            houseCaseSummary.setCreator(null);
+        }
+        return basicHouseCaseSummaryService.findReportApplyStatisticsList(DateUtils.convertDate(endDate), DateUtils.convertDate(startDate), areaStart, areaEnd, DateUtils.convertDate(tradingTimeStart), DateUtils.convertDate(tradingTimeEnd), houseCaseSummary);
+    }
+
+    @GetMapping(value = "/findReportAuditStatisticsList")
+    public BootstrapTableVo findReportAuditStatisticsList(String startDate, String endDate, BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, BasicHouseCaseSummary houseCaseSummary) {
+        if (StringUtils.isBlank(houseCaseSummary.getApprover())) {
+            houseCaseSummary.setApprover(null);
+        }
+        if (StringUtils.isBlank(houseCaseSummary.getCreator())) {
+            houseCaseSummary.setCreator(null);
+        }
+        return basicHouseCaseSummaryService.findReportAuditStatisticsList(DateUtils.convertDate(endDate), DateUtils.convertDate(startDate), areaStart, areaEnd, DateUtils.convertDate(tradingTimeStart), DateUtils.convertDate(tradingTimeEnd), houseCaseSummary);
     }
 
 

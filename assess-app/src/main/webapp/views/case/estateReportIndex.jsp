@@ -36,12 +36,12 @@
                                                    placeholder="审批人" name="approverName"
                                                    class="form-control input-full">
                                         </div>
-                                        <label class="col-md-1 col-form-label">创建人</label>
+                                        <label class="col-md-1 col-form-label">申请人</label>
                                         <div class="col-md-2 p-0">
                                             <input type="hidden" name="creator">
                                             <input type="text" readonly="readonly"
                                                    onclick="estateReport.createSelect(this)"
-                                                   placeholder="创建人" name="creatorName"
+                                                   placeholder="申请人" name="creatorName"
                                                    class="form-control input-full">
                                         </div>
                                     </div>
@@ -60,7 +60,7 @@
                                                    data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
                                         </div>
                                         <button class="btn btn-info  btn-sm" type="button" style="margin-left: 10px"
-                                                onclick="">
+                                                onclick="estateReport.loadReportGroupList(formSerializeArray($('#frmQuery')));">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
@@ -70,8 +70,86 @@
                                                 onclick="$('#frmQuery').clearAll()">
                                             重置
                                         </button>
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px" onclick="estateReport.exportData(formSerializeArray($('#frmQuery')))">
+                                            <span class="btn-label">
+												<i class="fa fa-cloud-download-alt"></i>
+											</span>
+                                            导出
+                                        </button>
                                     </div>
                                 </form>
+                            </div>
+
+                            <div class="card-body">
+                                <ul class="nav nav-pills nav-secondary" role="tablist">
+                                    <li class="nav-item submenu">
+                                        <!-- 设置为默认选中 -->
+                                        <a class="nav-link active show" data-toggle="pill"
+                                           href="#reportBasicDataTab" role="tab" aria-selected="true">基础数据</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#reportApplyStatisticsTab" role="tab"
+                                           aria-selected="false">申请人统计数据</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#reportAuditStatisticsTab" role="tab"
+                                           aria-selected="false">审核人统计数据</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content mt-2 mb-3">
+                                    <div class="tab-pane fade show active" id="reportBasicDataTab" role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                    <table class="table table-bordered"
+                                                           id="baseHouseCaseSummaryTableList">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="reportApplyStatisticsTab"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                    <table class="table table-bordered"
+                                                           id="reportApplyStatisticsTableList">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="reportAuditStatisticsTab"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                    <table class="table table-bordered"
+                                                           id="reportAuditStatisticsTableList">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -89,80 +167,10 @@
 
 
     $(function () {
-
+        estateReport.loadReportGroupList();
     });
 
     var estateReport = {};
-
-    estateReport.run = function (data, url, type, callback, funParams, errorCallback) {
-        Loading.progressShow();
-        $.ajax({
-            type: type,
-            url: '${pageContext.request.contextPath}' + url,
-            data: data,
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    if (funParams) {
-                        if (funParams == 'save') {
-                            notifySuccess("成功", "保存数据成功!");
-                        }
-                        if (funParams == 'add') {
-                            notifySuccess("成功", "添加数据成功!");
-                        }
-                        if (funParams == 'update') {
-                            notifySuccess("成功", "修改数据成功!");
-                        }
-                        if (funParams == 'query') {
-                            notifySuccess("成功", "查询数据成功!");
-                        }
-                        if (funParams == 'delete') {
-                            notifySuccess("成功", "删除数据成功!");
-                        }
-                    }
-                    if (callback) {
-                        callback(result.data);
-                    }
-                } else {
-                    if (result.errmsg) {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                    } else {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
-                    }
-                    if (errorCallback) {
-                        errorCallback();
-                    }
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                if (result.errmsg) {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                } else {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
-                }
-            }
-        });
-    };
-    estateReport.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
-        var deleteParams = false;
-        if (funParams) {
-            if (funParams == 'delete') {
-                deleteParams = true;
-            }
-        }
-        if (deleteParams) {
-            AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
-                estateReport.run(data, url, type, callback, funParams, errorCallback);
-            });
-        } else {
-            estateReport.run(data, url, type, callback, funParams, errorCallback);
-        }
-    };
-
-    estateReport.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
-        estateReport.ajaxServerFun(data, url, type, callback, null, errorCallback);
-    };
 
     estateReport.approverSelect = function (_this) {
         estateReport.selectExecuteUserAccount(false, function (data) {
@@ -192,6 +200,111 @@
             }
         });
     };
+
+    estateReport.loadReportGroupList = function (query) {
+        if (query) {
+            var arr = Object.keys(query);
+            $.each(arr, function (i, item) {
+                if (!query[item]) {
+                    query[item] = undefined;
+                }
+            });
+        } else {
+            query = {};
+        }
+        estateReport.loadBasicHouseCaseSummaryList(query);
+        estateReport.loadApplyStatisticsTableList(query);
+        estateReport.loadAuditStatisticsTableList(query);
+    };
+
+    estateReport.loadBasicHouseCaseSummaryList = function (query) {
+        var table = $("#baseHouseCaseSummaryTableList");
+        var cols = [];
+        cols.push({field: 'fullName', title: '名称'});
+        cols.push({field: 'provinceName', title: '省'});
+        cols.push({field: 'cityName', title: '市'});
+        cols.push({field: 'districtName', title: '县/区'});
+
+        cols.push({field: 'blockName', title: '版块'});
+        cols.push({field: 'street', title: '街'});
+        cols.push({field: 'estateName', title: '楼盘'});
+        cols.push({
+            field: 'creatorName', title: '申请人', formatter: function (value, row, index) {
+                if (value) {
+                    return value;
+                }
+                return row.creator;
+            }
+        });
+        cols.push({
+            field: 'approverName', title: '审批人', formatter: function (value, row, index) {
+                if (value) {
+                    return value;
+                }
+                return row.approver;
+            }
+        });
+        table.bootstrapTable('destroy');
+        TableInit(table, "${pageContext.request.contextPath}/basicHouseCaseSummary/getBootstrapTableVo", cols, query, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
+    estateReport.loadApplyStatisticsTableList = function (query) {
+        var table = $("#reportApplyStatisticsTableList");
+        var cols = [];
+        cols.push({field: 'name', title: '账户名称'});
+        cols.push({field: 'number', title: '统计数量'});
+        table.bootstrapTable('destroy');
+        TableInit(table, "${pageContext.request.contextPath}/basicHouseCaseSummary/findReportApplyStatisticsList", cols, query, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
+
+    estateReport.loadAuditStatisticsTableList = function (query) {
+        var table = $("#reportAuditStatisticsTableList");
+        var cols = [];
+        cols.push({field: 'name', title: '账户名称'});
+        cols.push({field: 'number', title: '统计数量'});
+        table.bootstrapTable('destroy');
+        TableInit(table, "${pageContext.request.contextPath}/basicHouseCaseSummary/findReportAuditStatisticsList", cols, query, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    };
+
+    estateReport.exportData = function (query) {
+        var href = "${pageContext.request.contextPath}/basicHouseCaseSummary/reportDownloadData?" +estateReport.parseParam(query);
+        window.open(href, "");
+    } ;
+
+    estateReport.parseParam = function (param) {
+        var arr = [];
+        var keys = Object.keys(param);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var value = param[key];
+            if (!value) {
+                // continue ;
+            }
+            var paramStr = key + "=" + value;
+            arr.push(paramStr)
+        }
+        return arr.join("&");
+    }
 
 
 </script>

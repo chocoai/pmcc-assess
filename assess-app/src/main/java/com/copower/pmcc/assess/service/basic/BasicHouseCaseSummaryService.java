@@ -3,20 +3,27 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseCaseSummaryDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
+import com.copower.pmcc.assess.dto.input.StatisticsDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseCaseSummaryVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -27,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -46,50 +54,85 @@ public class BasicHouseCaseSummaryService {
     private PublicService publicService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
 
     public BasicHouseCaseSummary getBasicHouseCaseSummaryById(Integer id) {
         return basicHouseCaseSummaryDao.getBasicHouseCaseSummaryById(id);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) throws Exception{
-        return getBootstrapTableVo(null,null,areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary) ;
-    }
-
-    public BootstrapTableVo getBootstrapTableVo( Date endDate, Date startDate,BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary)  {
+    public BootstrapTableVo findReportAuditStatisticsList(Date endDate, Date startDate, BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicHouseCaseSummary> list = customCaseMapper.findCaseBaseHouseList( endDate,startDate,areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findReportAuditStatistics(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(statisticsDtoList);
+        return vo;
+    }
+
+    public BootstrapTableVo findReportApplyStatisticsList(Date endDate, Date startDate, BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findReportApplyStatistics(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(statisticsDtoList);
+        return vo;
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) throws Exception {
+        return getBootstrapTableVo(null, null, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(Date endDate, Date startDate, BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicHouseCaseSummary> list = customCaseMapper.findCaseBaseHouseList(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
         List<BasicHouseCaseSummaryVo> vos = LangUtils.transform(list, o -> getBasicHouseCaseSummaryVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
     }
 
-    public BasicHouseCaseSummaryVo getBasicHouseCaseSummaryVo(BasicHouseCaseSummary BasicHouseCaseSummary) {
-        if (BasicHouseCaseSummary == null) return null;
-        BasicHouseCaseSummaryVo BasicHouseCaseSummaryVo = new BasicHouseCaseSummaryVo();
-        BeanUtils.copyProperties(BasicHouseCaseSummary, BasicHouseCaseSummaryVo);
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(BasicHouseCaseSummary.getProvince())) {
-            BasicHouseCaseSummaryVo.setProvinceName(erpAreaService.getSysAreaName(BasicHouseCaseSummary.getProvince()));
+    public BasicHouseCaseSummaryVo getBasicHouseCaseSummaryVo(BasicHouseCaseSummary houseSummary) {
+        if (houseSummary == null) return null;
+        BasicHouseCaseSummaryVo houseCaseSummaryVo = new BasicHouseCaseSummaryVo();
+        BeanUtils.copyProperties(houseSummary, houseCaseSummaryVo);
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(houseSummary.getProvince())) {
+            houseCaseSummaryVo.setProvinceName(erpAreaService.getSysAreaName(houseSummary.getProvince()));
         }
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(BasicHouseCaseSummary.getCity())) {
-            BasicHouseCaseSummaryVo.setCityName(erpAreaService.getSysAreaName(BasicHouseCaseSummary.getCity()));
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(houseSummary.getCity())) {
+            houseCaseSummaryVo.setCityName(erpAreaService.getSysAreaName(houseSummary.getCity()));
         }
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(BasicHouseCaseSummary.getDistrict())) {
-            BasicHouseCaseSummaryVo.setDistrictName(erpAreaService.getSysAreaName(BasicHouseCaseSummary.getDistrict()));
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(houseSummary.getDistrict())) {
+            houseCaseSummaryVo.setDistrictName(erpAreaService.getSysAreaName(houseSummary.getDistrict()));
         }
-        if (BasicHouseCaseSummary.getPracticalUse() != null)
-            BasicHouseCaseSummaryVo.setPracticalUseName(baseDataDicService.getNameById(BasicHouseCaseSummary.getPracticalUse()));
-        if (BasicHouseCaseSummary.getTradingType() != null)
-            BasicHouseCaseSummaryVo.setTradingTypeName(baseDataDicService.getNameById(BasicHouseCaseSummary.getTradingType()));
-        if (BasicHouseCaseSummary.getDealType() != null)
-            BasicHouseCaseSummaryVo.setDealTypeName(baseDataDicService.getNameById(BasicHouseCaseSummary.getDealType()));
-        if (StringUtils.isNotEmpty(BasicHouseCaseSummary.getApprover()))
-            BasicHouseCaseSummaryVo.setApproverName(publicService.getUserNameByAccount(BasicHouseCaseSummary.getApprover()));
-        if (StringUtils.isNotEmpty(BasicHouseCaseSummary.getCreator()))
-            BasicHouseCaseSummaryVo.setCreatorName(publicService.getUserNameByAccount(BasicHouseCaseSummary.getCreator()));
-        return BasicHouseCaseSummaryVo;
+        if (houseSummary.getPracticalUse() != null) {
+            houseCaseSummaryVo.setPracticalUseName(baseDataDicService.getNameById(houseSummary.getPracticalUse()));
+        }
+        if (houseSummary.getTradingType() != null) {
+            houseCaseSummaryVo.setTradingTypeName(baseDataDicService.getNameById(houseSummary.getTradingType()));
+        }
+        if (houseSummary.getDealType() != null) {
+            houseCaseSummaryVo.setDealTypeName(baseDataDicService.getNameById(houseSummary.getDealType()));
+        }
+        if (StringUtils.isNotBlank(houseSummary.getApprover())) {
+            SysUserDto sysUser = erpRpcUserService.getSysUser(houseSummary.getApprover());
+            if (sysUser != null && StringUtils.isNotBlank(sysUser.getUserName())) {
+                houseCaseSummaryVo.setApproverName(sysUser.getUserName());
+            }
+        }
+        if (StringUtils.isNotBlank(houseSummary.getCreator())) {
+            SysUserDto sysUser = erpRpcUserService.getSysUser(houseSummary.getCreator());
+            if (sysUser != null && StringUtils.isNotBlank(sysUser.getUserName())) {
+                houseCaseSummaryVo.setCreatorName(sysUser.getUserName());
+            }
+        }
+        return houseCaseSummaryVo;
     }
 
     /**
@@ -133,13 +176,169 @@ public class BasicHouseCaseSummaryService {
         return basicHouseCaseSummaryDao.getCountByFullName(fullName);
     }
 
-    public String reportData() throws Exception {
-        return null;
+    private HSSFWorkbook writeBaseExcelData(List<BasicHouseCaseSummary> baseHouseList) {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        CellStyle style = getCellStyle(wb) ;
+        List<BasicHouseCaseSummaryVo> vos = LangUtils.transform(baseHouseList, o -> getBasicHouseCaseSummaryVo(o));
+        HSSFSheet sheet = wb.createSheet("基础数据");
+        int rowNum = 0;
+        Row rowOne = sheet.createRow(rowNum);
+        rowNum++;
+        for (int i = 0; i < 11; i++) {
+            Cell cell = rowOne.createCell(i);
+            switch (i) {
+                case 0: cell.setCellValue("序号");break;
+                case 1: cell.setCellValue("地址");break;
+                case 2: cell.setCellValue("街道");break;
+                case 3: cell.setCellValue("成交单价");break;
+                case 4: cell.setCellValue("类型");break;
+                case 5: cell.setCellValue("面积");break;
+                case 6: cell.setCellValue("成交价");break;
+                case 7: cell.setCellValue("成交时间");break;
+                case 8: cell.setCellValue("创建时间");break;
+                case 9: cell.setCellValue("申请人");break;
+                case 10: cell.setCellValue("审批人");break;
+                default:
+                    break;
+            }
+            cell.setCellStyle(style);
+        }
+        if (CollectionUtils.isNotEmpty(vos)){
+            Iterator<BasicHouseCaseSummaryVo> iterator = vos.iterator();
+            while (iterator.hasNext()){
+                BasicHouseCaseSummaryVo summaryVo = iterator.next();
+                Row row = sheet.createRow(rowNum);
+                rowNum++;
+                for (int i = 0; i < 11; i++) {
+                    Cell cell = row.createCell(i);
+                    switch (i) {
+                        case 0: cell.setCellValue(rowNum);break;
+                        case 1: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getFullName()) ?summaryVo.getFullName():"");break;
+                        case 2: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getStreet()) ?summaryVo.getStreet():"");break;
+                        case 3: cell.setCellValue(summaryVo.getTradingUnitPrice() != null?summaryVo.getTradingUnitPrice().toString():"");break;
+                        case 4: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getHouseType()) ?summaryVo.getHouseType():"");break;
+                        case 5: cell.setCellValue(summaryVo.getArea() != null?summaryVo.getArea().toString():"");break;
+                        case 6: cell.setCellValue(summaryVo.getCurrentPrice() != null?summaryVo.getCurrentPrice().toString():"");break;
+                        case 7: cell.setCellValue(summaryVo.getTradingTime() != null?DateUtils.format(summaryVo.getTradingTime()):"");break;
+                        case 8: cell.setCellValue(summaryVo.getGmtCreated() != null?DateUtils.format(summaryVo.getGmtCreated()):"");break;
+                        case 9: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getCreatorName()) ?summaryVo.getCreatorName():summaryVo.getCreator());break;
+                        case 10: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getApproverName()) ?summaryVo.getApproverName():summaryVo.getApprover());break;
+                        default:
+                            break;
+                    }
+                    cell.setCellStyle(style);
+                }
+            }
+        }
+        return wb;
     }
 
-    private String reportHandle(String name,HSSFWorkbook wb) throws Exception {
+    private HSSFWorkbook writeApplyExcelData(List<com.copower.pmcc.assess.dto.input.StatisticsDto> list) {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
+        HSSFSheet wbSheet = wb.createSheet("申请人统计");
+        commonWriteStatisticsDtoExcel(statisticsDtoList, wbSheet,getCellStyle(wb));
+        return wb;
+    }
+
+    private CellStyle getCellStyle(HSSFWorkbook wb){
+        CellStyle style = wb.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);//居中
+        style.setWrapText(true);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+//        style.setFillForegroundColor(IndexedColors.TURQUOISE1.getIndex());
+//        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return style;
+    }
+
+    private void commonWriteStatisticsDtoExcel(List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList, HSSFSheet sheet ,CellStyle style) {
+        int rowNum = 0;
+        Row rowOne = sheet.createRow(rowNum);
+        rowNum++;
+        for (int i = 0; i < 2; i++) {
+            Cell cell = rowOne.createCell(i);
+            if (i == 0) {
+                cell.setCellValue("账户名称");
+            }
+            if (i == 1) {
+                cell.setCellValue("统计数量");
+            }
+            cell.setCellStyle(style);
+        }
+        if (CollectionUtils.isEmpty(statisticsDtoList)){
+            return;
+        }
+        Iterator<StatisticsDto> iterator = statisticsDtoList.iterator();
+        while (iterator.hasNext()) {
+            StatisticsDto statisticsDto = iterator.next();
+            Row row = sheet.createRow(rowNum);
+            rowNum++;
+            for (int i = 0; i < 2; i++) {
+                Cell cell = row.createCell(i);
+                if (i == 0) {
+                    cell.setCellValue(StringUtils.isNotBlank(statisticsDto.getName()) ? statisticsDto.getName() : "");
+                }
+                if (i == 1) {
+                    cell.setCellValue(statisticsDto.getNumber());
+                }
+                cell.setCellStyle(style);
+            }
+        }
+    }
+
+    private HSSFWorkbook writeAuditExcelData(List<com.copower.pmcc.assess.dto.input.StatisticsDto> list) {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
+        HSSFSheet wbSheet = wb.createSheet("审核人统计");
+        commonWriteStatisticsDtoExcel(statisticsDtoList, wbSheet ,getCellStyle(wb));
+        return wb;
+    }
+
+    /**
+     * 导出数据
+     *
+     * @param endDate
+     * @param startDate
+     * @param areaStart
+     * @param areaEnd
+     * @param tradingTimeStart
+     * @param tradingTimeEnd
+     * @param BasicHouseCaseSummary
+     * @return
+     * @throws Exception
+     */
+    public String reportData(Date endDate, Date startDate, BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) throws Exception {
+        List<BasicHouseCaseSummary> baseHouseList = customCaseMapper.findCaseBaseHouseList(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportApplyStatistics = customCaseMapper.findReportApplyStatistics(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportAuditStatistics = customCaseMapper.findReportAuditStatistics(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        HSSFWorkbook baseWorkBook = writeBaseExcelData(baseHouseList);
+        HSSFWorkbook applyWorkBook = writeApplyExcelData(reportApplyStatistics);
+        HSSFWorkbook auditWorkBook = writeAuditExcelData(reportAuditStatistics);
+        String basePath = String.join(File.separator, FileUtils.getTempDirectoryPath(), "基础数据.xls");
+        String applyPath = String.join(File.separator, FileUtils.getTempDirectoryPath(), "申请人统计.xls");
+        String approverPath = String.join(File.separator, FileUtils.getTempDirectoryPath(), "审核人统计.xls");
+        String path = null;
+        if (startDate != null && endDate != null) {
+            String time = String.join("-", DateUtils.format(startDate, DateUtils.DATETIME_SHORT_PATTERN), DateUtils.format(endDate, DateUtils.DATETIME_SHORT_PATTERN));
+            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "案例数据统计" + time + ".xls");
+        } else if (startDate != null && endDate == null) {
+            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "案例数据统计" + DateUtils.format(startDate, DateUtils.DATETIME_SHORT_PATTERN) + ".zip");
+        } else if (startDate == null && endDate != null) {
+            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "案例数据统计" + DateUtils.format(endDate, DateUtils.DATETIME_SHORT_PATTERN) + ".zip");
+        } else {
+            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "案例数据统计" + DateUtils.format(DateUtils.now(), DateUtils.DATETIME_SHORT_PATTERN) + ".zip");
+        }
+        reportHandle(basePath, baseWorkBook);
+        reportHandle(applyPath, applyWorkBook);
+        reportHandle(approverPath, auditWorkBook);
+        //形成压缩包
+        File[] srcFile = new File[]{new File(basePath), new File(applyPath), new File(approverPath)};
+        com.copower.pmcc.assess.common.FileUtils.zipFiles(srcFile, new File(path));
+        return path;
+    }
+
+    private String reportHandle(String path, HSSFWorkbook wb) throws Exception {
         OutputStream fileOut = null;
-        String path = String.join(File.separator, FileUtils.getTempDirectoryPath(), name) ;
         File file = new File(path);
         File fileParent = file.getParentFile();
         if (!fileParent.exists()) {
@@ -148,7 +347,17 @@ public class BasicHouseCaseSummaryService {
         fileOut = new FileOutputStream(file);
         wb.write(fileOut);
         fileOut.close();
-        return path ;
+        return path;
+    }
+
+    private com.copower.pmcc.assess.dto.input.StatisticsDto getStatisticsDto(com.copower.pmcc.assess.dto.input.StatisticsDto statisticsDto) {
+        if (StringUtils.isNotBlank(statisticsDto.getName())) {
+            SysUserDto sysUser = erpRpcUserService.getSysUser(statisticsDto.getName());
+            if (sysUser != null && StringUtils.isNotBlank(sysUser.getUserName())) {
+                statisticsDto.setName(sysUser.getUserName());
+            }
+        }
+        return statisticsDto;
     }
 
 }

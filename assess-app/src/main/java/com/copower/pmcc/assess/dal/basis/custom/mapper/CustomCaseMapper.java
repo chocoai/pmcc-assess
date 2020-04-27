@@ -66,4 +66,10 @@ public interface CustomCaseMapper {
      */
     public List<BasicHouseCaseSummary> findCaseBaseHouseList(  @Param("endDate") Date endDate, @Param("startDate") Date startDate,@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) ;
 
+    //根据条件查出 CaseBaseHouse 实体列表 group by 审批人
+    public List<com.copower.pmcc.assess.dto.input.StatisticsDto> findReportAuditStatistics(  @Param("endDate") Date endDate, @Param("startDate") Date startDate,@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) ;
+
+    //根据条件查出 CaseBaseHouse 实体列表 group by 申请人
+    public List<com.copower.pmcc.assess.dto.input.StatisticsDto> findReportApplyStatistics(  @Param("endDate") Date endDate, @Param("startDate") Date startDate,@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) ;
+
 }
