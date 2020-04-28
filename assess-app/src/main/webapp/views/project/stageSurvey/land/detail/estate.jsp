@@ -205,17 +205,17 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">东至</label>
+                                                <label class="col-sm-1 control-label">${basicEstateLandState.eastToName}</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="eastTo">${basicEstateLandState.eastTo}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">南至</label>
+                                                <label class="col-sm-1 control-label">${basicEstateLandState.southToName}</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="southTo">${basicEstateLandState.southTo}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">西至</label>
+                                                <label class="col-sm-1 control-label">${basicEstateLandState.westToName}</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="westTo">${basicEstateLandState.westTo}</label>
@@ -226,7 +226,7 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">北至</label>
+                                                <label class="col-sm-1 control-label">${basicEstateLandState.northToName}</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="northTo">${basicEstateLandState.northTo}</label>
