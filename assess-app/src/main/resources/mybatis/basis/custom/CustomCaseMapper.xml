@@ -131,7 +131,7 @@
     </select>
 
     <select id="findReportAuditStatistics" parameterType="map" resultType="com.copower.pmcc.assess.dto.input.StatisticsDto">
-        SELECT count(*) as number ,creator as name from  tb_basic_house_case_summary where 1=1 and bis_newest = true
+        SELECT count(*) as number ,approver as name from  tb_basic_house_case_summary where 1=1 and bis_newest = true
         <if test="basicHouseCaseSummary.blockName != null and basicHouseCaseSummary.blockName!=''">
             and block_name LIKE concat(concat('%',#{basicHouseCaseSummary.blockName}),'%')
         </if>
