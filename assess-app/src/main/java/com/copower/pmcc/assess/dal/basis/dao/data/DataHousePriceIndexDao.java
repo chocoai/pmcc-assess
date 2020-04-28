@@ -72,4 +72,22 @@ public class DataHousePriceIndexDao {
         }
         return mapper.selectByExample(example);
     }
+
+    public List<DataHousePriceIndex> getDataHousePriceIndexListVos(String province, String city, String district, Integer type){
+        DataHousePriceIndexExample example = new DataHousePriceIndexExample();
+        DataHousePriceIndexExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(province)){
+            criteria.andProvinceEqualTo(province);
+        }
+        if(!StringUtils.isEmpty(city)){
+            criteria.andCityEqualTo(city);
+        }
+        if(!StringUtils.isEmpty(district)){
+            criteria.andDistrictEqualTo(district);
+        }
+        if(type!=null){
+            criteria.andTypeEqualTo(type);
+        }
+        return mapper.selectByExample(example);
+    }
 }

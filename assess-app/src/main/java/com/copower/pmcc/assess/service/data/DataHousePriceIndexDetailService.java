@@ -96,16 +96,16 @@ public class DataHousePriceIndexDetailService {
     }
 
     /**
-     * 导出模板
+     * 导出月份模板
      *
      * @param response
      */
-    public void generateTemplate(HttpServletResponse response) throws BusinessException, IOException, Exception {
+    public void generateMonthTemplate(HttpServletResponse response) throws BusinessException, IOException, Exception {
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
         Row row = sheet.createRow(0);
         //创建Excel标题
-        String[] title = {"开始月份", "结束月份", "单位地价", "楼面地价", "指数"};
+        String[] title = {"年份", "月份", "单位地价", "楼面地价", "指数"};
 
         for (int i = 0; i < title.length; i++) {
             Cell cell = row.createCell(i);
@@ -123,6 +123,37 @@ public class DataHousePriceIndexDetailService {
             os.close();
         }
     }
+
+
+    /**
+     * 导出季度模板
+     *
+     * @param response
+     */
+    public void generateQuarterTemplate(HttpServletResponse response) throws BusinessException, IOException, Exception {
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        Row row = sheet.createRow(0);
+        //创建Excel标题
+        String[] title = {"年份", "季度", "单位地价", "楼面地价", "指数"};
+
+        for (int i = 0; i < title.length; i++) {
+            Cell cell = row.createCell(i);
+            cell.setCellValue(title[i]);
+            sheet.setColumnWidth(i, 4000);
+        }
+        OutputStream os = response.getOutputStream();
+        try {
+            this.setResponseHeader(response, "指数详情模板.XLS");
+            wb.write(os);
+        } catch (Exception e) {
+            throw new BusinessException("导出Excel出错:" + e);
+        } finally {
+            os.flush();
+            os.close();
+        }
+    }
+
 
     /**
      * 响应流
@@ -182,6 +213,7 @@ public class DataHousePriceIndexDetailService {
             builder.append("没有数据!");
             return builder.toString();
         }
+        Row firstRow = sheet.getRow(0);
         for (int i = startRowNumber; i < startRowNumber + rowLength; i++) {
             DataHousePriceIndexDetail housePriceIndexDetail = null;
             try {
@@ -191,7 +223,7 @@ public class DataHousePriceIndexDetailService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                if (!importDataHousePriceIndexDetail(housePriceIndexDetail, builder, row, i)) {
+                if (!importDataHousePriceIndexDetail(housePriceIndexDetail, builder, row, i, firstRow)) {
                     continue;
                 }
                 housePriceIndexDetail.setHousePriceId(housePriceId);
@@ -206,33 +238,66 @@ public class DataHousePriceIndexDetailService {
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
-    public boolean importDataHousePriceIndexDetail(DataHousePriceIndexDetail housePriceIndexDetail, StringBuilder builder, Row row, int i) throws Exception {
-        //开始月份
+    public boolean importDataHousePriceIndexDetail(DataHousePriceIndexDetail housePriceIndexDetail, StringBuilder builder, Row row, int i, Row firstRow) throws Exception {
+        Calendar cal1 = Calendar.getInstance();
+        //年份
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(0)))) {
-            Date parse = DateUtils.parse(PoiUtils.getCellValue(row.getCell(0)));
-            Calendar cal1 = Calendar.getInstance();
-            cal1.setTime(parse);
-            //将时分秒清零
-            cal1.set(Calendar.HOUR_OF_DAY, 0);
-            cal1.set(Calendar.MINUTE, 0);
-            cal1.set(Calendar.SECOND, 0);
-            cal1.set(Calendar.DATE, 1);
-            Date result = cal1.getTime();
-            housePriceIndexDetail.setStartDate(result);
+            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(0)))) {
+                String year = PoiUtils.getCellValue(row.getCell(0));
+                cal1.set(Calendar.YEAR, Integer.valueOf(year));
+            } else {
+                builder.append(String.format("\n第%s行异常：年份应填写数字", i));
+                return false;
+            }
+        } else {
+            builder.append(String.format("\n第%s行异常：年份需要填写", i));
+            return false;
         }
-        //结束月份
+        //判断月份还是季度
+        String value = PoiUtils.getCellValue(firstRow.getCell(1));
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(1)))) {
-            Date parse = DateUtils.parse(PoiUtils.getCellValue(row.getCell(1)));
-            Calendar cal1 = Calendar.getInstance();
-            cal1.setTime(parse);
-            //将时分秒清零
-            cal1.set(Calendar.HOUR_OF_DAY, 0);
-            cal1.set(Calendar.MINUTE, 0);
-            cal1.set(Calendar.SECOND, 0);
-            cal1.set(Calendar.DATE, 1);
-            Date result = cal1.getTime();
-            housePriceIndexDetail.setEndDate(result);
+            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(1)))) {
+                if ("月份".equals(value)) {
+                    String month = PoiUtils.getCellValue(row.getCell(1));
+                    cal1.set(Calendar.MONTH,Integer.valueOf(month)-1);
+                    //将时分秒清零
+                    cal1.set(Calendar.DAY_OF_MONTH, 1);
+                    cal1.set(Calendar.HOUR_OF_DAY, 0);
+                    cal1.set(Calendar.MINUTE, 0);
+                    cal1.set(Calendar.SECOND, 0);
+                    Date result = cal1.getTime();
+                    housePriceIndexDetail.setStartDate(result);
+                    housePriceIndexDetail.setEndDate(result);
+                }else {
+                    Integer quarter = Integer.valueOf(PoiUtils.getCellValue(row.getCell(1)));
+                    //开始时间
+                    cal1.set(Calendar.MONTH,(quarter-1)*3);
+                    cal1.set(Calendar.DAY_OF_MONTH, 1);
+                    cal1.set(Calendar.HOUR_OF_DAY, 0);
+                    cal1.set(Calendar.MINUTE, 0);
+                    cal1.set(Calendar.SECOND, 0);
+                    Date startDate = cal1.getTime();
+                    housePriceIndexDetail.setStartDate(startDate);
+                    //结束时间
+                    cal1.set(Calendar.MONTH,quarter*3);
+                    cal1.set(Calendar.DAY_OF_MONTH, 0);
+                    cal1.set(Calendar.HOUR_OF_DAY, 0);
+                    cal1.set(Calendar.MINUTE, 0);
+                    cal1.set(Calendar.SECOND, 0);
+                    Date endData = cal1.getTime();
+                    housePriceIndexDetail.setEndDate(endData);
+                }
+            } else {
+                builder.append(String.format("\n第%s行异常：月份或季度应填写数字", i));
+                return false;
+            }
+
+        }else {
+            builder.append(String.format("\n第%s行异常：月份或季度需要填写", i));
+            return false;
         }
+
+
         //单位地价
         if (!StringUtils.isEmpty(PoiUtils.getCellValue(row.getCell(2)))) {
             if (this.isNumeric(PoiUtils.getCellValue(row.getCell(2)))) {

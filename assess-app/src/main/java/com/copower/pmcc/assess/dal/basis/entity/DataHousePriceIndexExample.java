@@ -864,6 +864,146 @@ public class DataHousePriceIndexExample {
             addCriterion("base_period not between", value1, value2, "basePeriod");
             return (Criteria) this;
         }
+
+        public Criteria andBasePeriodRemarkIsNull() {
+            addCriterion("base_period_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkIsNotNull() {
+            addCriterion("base_period_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkEqualTo(String value) {
+            addCriterion("base_period_remark =", value, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkNotEqualTo(String value) {
+            addCriterion("base_period_remark <>", value, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkGreaterThan(String value) {
+            addCriterion("base_period_remark >", value, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("base_period_remark >=", value, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkLessThan(String value) {
+            addCriterion("base_period_remark <", value, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkLessThanOrEqualTo(String value) {
+            addCriterion("base_period_remark <=", value, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkLike(String value) {
+            addCriterion("base_period_remark like", value, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkNotLike(String value) {
+            addCriterion("base_period_remark not like", value, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkIn(List<String> values) {
+            addCriterion("base_period_remark in", values, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkNotIn(List<String> values) {
+            addCriterion("base_period_remark not in", values, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkBetween(String value1, String value2) {
+            addCriterion("base_period_remark between", value1, value2, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBasePeriodRemarkNotBetween(String value1, String value2) {
+            addCriterion("base_period_remark not between", value1, value2, "basePeriodRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkIsNull() {
+            addCriterion("index_source_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkIsNotNull() {
+            addCriterion("index_source_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkEqualTo(String value) {
+            addCriterion("index_source_remark =", value, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkNotEqualTo(String value) {
+            addCriterion("index_source_remark <>", value, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkGreaterThan(String value) {
+            addCriterion("index_source_remark >", value, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("index_source_remark >=", value, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkLessThan(String value) {
+            addCriterion("index_source_remark <", value, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkLessThanOrEqualTo(String value) {
+            addCriterion("index_source_remark <=", value, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkLike(String value) {
+            addCriterion("index_source_remark like", value, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkNotLike(String value) {
+            addCriterion("index_source_remark not like", value, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkIn(List<String> values) {
+            addCriterion("index_source_remark in", values, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkNotIn(List<String> values) {
+            addCriterion("index_source_remark not in", values, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkBetween(String value1, String value2) {
+            addCriterion("index_source_remark between", value1, value2, "indexSourceRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andIndexSourceRemarkNotBetween(String value1, String value2) {
+            addCriterion("index_source_remark not between", value1, value2, "indexSourceRemark");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

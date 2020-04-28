@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,13 +57,19 @@ public class DataHousePriceIndexService {
         return dataHousePriceIndexDao.getDataHousePriceIndexById(id);
     }
 
-    public BootstrapTableVo getDataHousePriceIndexListVos(DataHousePriceIndex query) {
+    public BootstrapTableVo getDataHousePriceIndexListVos(String province,String city, String district,Integer type) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataHousePriceIndexVo> dataHousePriceIndexList = this.getDataHousePriceIndexList(query);
+        List<DataHousePriceIndex> dataHouseIndexList = dataHousePriceIndexDao.getDataHousePriceIndexListVos(province, city, district, type);
+        List<DataHousePriceIndexVo> vos = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
+            for (DataHousePriceIndex item : dataHouseIndexList) {
+                vos.add(getDataHousePriceIndexVo(item));
+            }
+        }
         vo.setTotal(page.getTotal());
-        vo.setRows(dataHousePriceIndexList);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataHousePriceIndexVo>() : vos);
         return vo;
     }
 

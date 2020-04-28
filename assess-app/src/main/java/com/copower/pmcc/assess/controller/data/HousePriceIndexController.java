@@ -29,8 +29,8 @@ public class HousePriceIndexController {
     }
 
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET}, name = "房价指数 列表")
-    public BootstrapTableVo getBootstrapTableVo(DataHousePriceIndex dataHousePriceIndex) {
-        BootstrapTableVo vo = housePriceIndexService.getDataHousePriceIndexListVos(dataHousePriceIndex);
+    public BootstrapTableVo getBootstrapTableVo(String province,String city, String district,Integer type) {
+        BootstrapTableVo vo = housePriceIndexService.getDataHousePriceIndexListVos(province,city,district,type);
         return vo;
     }
 

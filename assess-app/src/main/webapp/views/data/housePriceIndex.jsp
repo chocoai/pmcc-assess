@@ -26,34 +26,61 @@
                             </div>
                             <div class="card-body">
                                 <form id="frmQuery" class="form-horizontal">
-                                    <div class="form-group form-inline">
-                                        <label for="queryType" class="col-md-1 col-form-label">类别</label>
-                                        <div class="col-md-3 p-0">
-                                            <select name="type"
-                                                    class="form-control search-select select2 input-full"
-                                                    id="queryType">
-                                            </select>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">
+                                                    省
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <select id="queryProvince" class="form-control input-full">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    市
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <select id="queryCity" class="form-control input-full">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    区
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <select id="queryDistrict" class="form-control input-full">
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label for="queryType" class="col-md-1 col-form-label">类别</label>
+                                                <div class="col-md-3">
+                                                    <select name="type" id="queryType"
+                                                            class="form-control search-select select2 input-full">
+                                                    </select>
+                                                </div>
 
-                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                onclick="dataObjFun.listMaster()">
+                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                        onclick="dataObjFun.listMaster()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                            查询
-                                        </button>
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-toggle="modal" onclick="dataObjFun.initFormMaster({})"
-                                                href="#divBoxFather">
+                                                    查询
+                                                </button>
+                                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                        data-toggle="modal" onclick="dataObjFun.initFormMaster({})"
+                                                        href="#divBoxFather">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                            新增
-                                        </button>
-
+                                                    新增
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="tb_FatherList">
                                     <!-- cerare document add ajax data-->
@@ -199,7 +226,10 @@
         });
         $(dataObjFun.config.table).bootstrapTable('destroy');
         TableInit($(dataObjFun.config.table).prop("id"), "${pageContext.request.contextPath}/housePriceIndex/getBootstrapTableVo", cols, {
-            type: $("#queryType").val()
+            type: $("#queryType").val(),
+            province: $("#queryProvince").val(),
+            city: $("#queryCity").val(),
+            district: $("#queryDistrict").val(),
         }, {
             showColumns: false,
             showRefresh: false,
@@ -357,9 +387,15 @@
         return UnixTimeToDate;
     };
 
-    //生成并下载模板
-    dataObjFun.generateTemplate = function () {
-        var href = "${pageContext.request.contextPath}/dataHousePriceIndexDetail/generateTemplate";
+    //生成并下载月份模板
+    dataObjFun.generateMonthTemplate = function () {
+        var href = "${pageContext.request.contextPath}/dataHousePriceIndexDetail/generateMonthTemplate";
+        window.open(href, "");
+    };
+
+    //生成并下载季度模板
+    dataObjFun.generateQuarterTemplate = function () {
+        var href = "${pageContext.request.contextPath}/dataHousePriceIndexDetail/generateQuarterTemplate";
         window.open(href, "");
     };
 
@@ -389,6 +425,11 @@
     };
     $(function () {
         dataObjFun.listMaster();
+        AssessCommon.initAreaInfo({
+            provinceTarget: $("#queryProvince"),
+            cityTarget: $("#queryCity"),
+            districtTarget: $("#queryDistrict")
+        });
         AssessCommon.loadDataDicByKey(AssessDicKey.dataTypeIndex, null, function (html, data) {
             $("#frmQuery").find("select[name='type']").empty().html(html).trigger('change');
         });
@@ -422,25 +463,21 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 省<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <select name="province"
                                                         class="form-control search-select select2 input-full"
                                                         required="required">
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
                                                 市<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <select name="city"
                                                         class="form-control search-select select2 input-full"
                                                         required="required">
@@ -451,24 +488,20 @@
                                 </div>
 
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 县
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <select name="district"
                                                         class="form-control search-select select2 input-full">
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
                                                 类别<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <select name="type" required="required"
                                                         class="form-control search-select select2 input-full">
                                                 </select>
@@ -478,24 +511,20 @@
                                 </div>
 
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 用途
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <select name="purpose"
                                                         class="form-control search-select select2 input-full">
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 发布时间
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" readonly="readonly"
                                                        class="form-control input-full date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
@@ -505,25 +534,21 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 报告期
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" readonly="readonly"
                                                        class="form-control input-full date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
                                                        name="evaluationDate" placeholder="报告期">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 基期
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" readonly="readonly"
                                                        class="form-control input-full date-picker dbdate"
                                                        data-date-format="yyyy-mm-dd"
@@ -532,7 +557,26 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                基期说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control input-full"
+                                                       name="basePeriodRemark" placeholder="基期说明">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label">
+                                                指数来源说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control input-full"
+                                                       name="indexSourceRemark" placeholder="指数来源说明">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -583,12 +627,15 @@
                                                          </span>导入数据
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a class="btn"
-                                               onclick="dataObjFun.generateTemplate()">下载模板</a>
-                                        </li>
                                         <li>
                                             <a class="btn"
                                                onclick="$('#ajaxFileUpload').val('').trigger('click')"><span>导入</span></a>
+                                        </li>
+                                        <li><a class="btn"
+                                               onclick="dataObjFun.generateMonthTemplate()">月份模板</a>
+                                        </li>
+                                        <li><a class="btn"
+                                               onclick="dataObjFun.generateQuarterTemplate()">季度模板</a>
                                         </li>
                                     </ul>
                                 </div>

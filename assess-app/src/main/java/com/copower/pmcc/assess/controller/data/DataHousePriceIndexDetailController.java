@@ -68,10 +68,19 @@ public class DataHousePriceIndexDetailController {
     }
 
 
-    @RequestMapping(value = "/generateTemplate", name = "生成并导出单价调查模板")
-    public void generateTemplate(HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/generateMonthTemplate", name = "生成并导出月份模板")
+    public void generateMonthTemplate(HttpServletResponse response) throws Exception {
         try {
-            dataHousePriceIndexDetailService.generateTemplate(response);
+            dataHousePriceIndexDetailService.generateMonthTemplate(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/generateQuarterTemplate", name = "生成并导出季度模板")
+    public void generateQuarterTemplate(HttpServletResponse response) throws Exception {
+        try {
+            dataHousePriceIndexDetailService.generateQuarterTemplate(response);
         } catch (Exception e) {
             e.printStackTrace();
         }

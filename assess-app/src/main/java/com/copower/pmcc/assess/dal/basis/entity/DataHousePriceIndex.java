@@ -27,6 +27,10 @@ public class DataHousePriceIndex {
 
     private Date basePeriod;
 
+    private String basePeriodRemark;
+
+    private String indexSourceRemark;
+
     public Integer getId() {
         return id;
     }
@@ -121,5 +125,21 @@ public class DataHousePriceIndex {
 
     public void setBasePeriod(Date basePeriod) {
         this.basePeriod = basePeriod;
+    }
+
+    public String getBasePeriodRemark() {
+        return basePeriodRemark;
+    }
+
+    public void setBasePeriodRemark(String basePeriodRemark) {
+        this.basePeriodRemark = basePeriodRemark == null ? null : basePeriodRemark.trim();
+    }
+
+    public String getIndexSourceRemark() {
+        return indexSourceRemark;
+    }
+
+    public void setIndexSourceRemark(String indexSourceRemark) {
+        this.indexSourceRemark = indexSourceRemark == null ? null : indexSourceRemark.trim();
     }
 }
