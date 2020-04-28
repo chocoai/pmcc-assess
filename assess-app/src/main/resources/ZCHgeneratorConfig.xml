@@ -102,7 +102,7 @@
             <!--<columnOverride column="land_level_content_result" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_data_land_level_detail_achievement" domainObjectName="DataLandLevelDetailAchievement">
+        <table tableName="tb_data_land_level_detail" domainObjectName="DataLandLevelDetail">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

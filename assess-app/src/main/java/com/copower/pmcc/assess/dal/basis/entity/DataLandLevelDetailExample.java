@@ -226,6 +226,76 @@ public class DataLandLevelDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
         public Criteria andLandLevelIdIsNull() {
             addCriterion("land_level_id is null");
             return (Criteria) this;
@@ -533,6 +603,66 @@ public class DataLandLevelDetailExample {
 
         public Criteria andPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("price not between", value1, value2, "price");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceIsNull() {
+            addCriterion("floor_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceIsNotNull() {
+            addCriterion("floor_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceEqualTo(BigDecimal value) {
+            addCriterion("floor_price =", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceNotEqualTo(BigDecimal value) {
+            addCriterion("floor_price <>", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceGreaterThan(BigDecimal value) {
+            addCriterion("floor_price >", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_price >=", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceLessThan(BigDecimal value) {
+            addCriterion("floor_price <", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("floor_price <=", value, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceIn(List<BigDecimal> values) {
+            addCriterion("floor_price in", values, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceNotIn(List<BigDecimal> values) {
+            addCriterion("floor_price not in", values, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_price between", value1, value2, "floorPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFloorPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("floor_price not between", value1, value2, "floorPrice");
             return (Criteria) this;
         }
 

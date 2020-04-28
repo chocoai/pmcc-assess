@@ -8,6 +8,8 @@ public class DataLandLevelDetail {
 
     private Integer pid;
 
+    private String name;
+
     private Integer landLevelId;
 
     private Integer classify;
@@ -17,6 +19,8 @@ public class DataLandLevelDetail {
     private String category;
 
     private BigDecimal price;
+
+    private BigDecimal floorPrice;
 
     private BigDecimal muPrice;
 
@@ -52,6 +56,14 @@ public class DataLandLevelDetail {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Integer getLandLevelId() {
@@ -92,6 +104,14 @@ public class DataLandLevelDetail {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getFloorPrice() {
+        return floorPrice;
+    }
+
+    public void setFloorPrice(BigDecimal floorPrice) {
+        this.floorPrice = floorPrice;
     }
 
     public BigDecimal getMuPrice() {

@@ -18,6 +18,7 @@ import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -214,7 +215,7 @@ public class DataLandLevelController {
     public HttpResult getDataLandLevelDetailTree(DataLandLevelDetail dataLandLevelDetail) {
         try {
             dataLandLevelDetail.setBisDelete(false);
-            List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailList(dataLandLevelDetail);
+            List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailTree(dataLandLevelDetail);
             List<ZtreeDto> ztreeDtoList = new ArrayList<ZtreeDto>(dataLandLevelDetailList.size());
             if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
                 dataLandLevelDetailList.forEach(landLevelDetail -> ztreeDtoList.add(getZtreeDto(dataLandLevelDetailService.getDataLandLevelDetailVo(landLevelDetail))));
@@ -251,9 +252,9 @@ public class DataLandLevelController {
 
 
     @RequestMapping(value = "/removeDataLandLevelDetail", method = {RequestMethod.POST}, name = "删除土地级别信息")
-    public HttpResult removeDataLandLevelDetail(Integer id) {
+    public HttpResult removeDataLandLevelDetail(String id) {
         try {
-            dataLandLevelDetailService.removeDataLandLevelDetail(id);
+            FormatUtils.transformString2Integer(id).forEach(integer -> dataLandLevelDetailService.removeDataLandLevelDetail(integer));
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -283,14 +284,19 @@ public class DataLandLevelController {
     private ZtreeDto getZtreeDto(DataLandLevelDetailVo vo) {
         ZtreeDto ztreeDto = new ZtreeDto();
         ztreeDto.setId(vo.getId());
-        if (vo.getPid() == null || vo.getPid() == 0) {
-            ztreeDto.setPid(0);
-            ztreeDto.set_parentId(0);
-            ztreeDto.setName(vo.getClassifyName());
-        } else {
-            ztreeDto.setPid(vo.getPid());
-            ztreeDto.set_parentId(vo.getPid());
-            ztreeDto.setName(vo.getTypeName());
+        ztreeDto.setName(vo.getName());
+        ztreeDto.setPid(vo.getPid());
+        ztreeDto.set_parentId(vo.getPid());
+        if (StringUtils.isBlank(vo.getName())){
+            if (vo.getPid() == null || vo.getPid() == 0) {
+                ztreeDto.setPid(0);
+                ztreeDto.set_parentId(0);
+                ztreeDto.setName(vo.getClassifyName());
+            } else {
+                ztreeDto.setPid(vo.getPid());
+                ztreeDto.set_parentId(vo.getPid());
+                ztreeDto.setName(vo.getTypeName());
+            }
         }
         return ztreeDto;
     }

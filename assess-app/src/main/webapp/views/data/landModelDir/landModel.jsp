@@ -48,16 +48,11 @@
                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                     <div class="row">
                         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                    data-permission="permission"
-                                    data-toggle="modal" onclick="landLevel.addLandLevelDetail()"
-                                    href="#land_level_detail_modal">
+                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" onclick="landLevel.addLandLevelDetail()">
                                 新增
                             </button>
                             <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
-                                    data-permission="permission"
-                                    data-toggle="modal" onclick="zTreeOnEdit()"
-                                    href="#land_level_detail_modal">
+                                     onclick="zTreeOnEdit()">
                                 编辑
                             </button>
                             <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
@@ -67,6 +62,9 @@
                             </button>
                             <button type="button" style="margin-left: 5px"  class="btn btn-sm btn-primary " onclick="landLevel.treeRefresh();">
                                 刷新
+                            </button>
+                            <button type="button" style="margin-left: 5px"  class="btn btn-sm btn-primary " onclick="landLevel.treeCheckAllNodes();">
+                                全选
                             </button>
                             <button style="margin-left: 5px;margin-top: 5px;" class="btn btn-primary btn-sm" type="button"
                                     onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
@@ -197,23 +195,37 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                大类<span class="symbol required"></span></label>
+                                                名称<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
-                                                <select name="classify" required="required"
-                                                        class="form-control input-full search-select select2">
-                                                </select>
+                                                <div class="input-group">
+                                                    <input type="text" name="name" class="form-control form-control-sm"
+                                                           list="LandLevelDetailNameList"
+                                                           required>
+                                                    <datalist id="LandLevelDetailNameList"></datalist>
+                                                    <div class="input-group-prepend ">
+                                                        <button class="btn btn-warning btn-sm"
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                            <i class="fa "></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                类型
+                                                楼面地价
                                             </label>
                                             <div class="col-sm-10">
-                                                <select name="type" class="form-control input-full search-select select2">
-                                                </select>
+                                                <input type="text" data-rule-number='true'
+                                                       class="form-control input-full"
+                                                       name="floorPrice"
+                                                       placeholder="楼面地价">
                                             </div>
                                         </div>
                                     </div>
