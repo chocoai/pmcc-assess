@@ -4,11 +4,13 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="land_level_id" property="landLevelId" jdbcType="INTEGER" />
     <result column="classify" property="classify" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="floor_price" property="floorPrice" jdbcType="DECIMAL" />
     <result column="mu_price" property="muPrice" jdbcType="DECIMAL" />
     <result column="land_acquisition_proportion" property="landAcquisitionProportion" jdbcType="VARCHAR" />
     <result column="volume_rate" property="volumeRate" jdbcType="DECIMAL" />
@@ -79,9 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, land_level_id, classify, type, category, price, mu_price, land_acquisition_proportion, 
-    volume_rate, legal_age, main_street, level_range, bis_delete, creator, gmt_created, 
-    gmt_modified
+    id, pid, name, land_level_id, classify, type, category, price, floor_price, mu_price, 
+    land_acquisition_proportion, volume_rate, legal_age, main_street, level_range, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailExample" >
     select
@@ -117,15 +119,17 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_data_land_level_detail (pid, land_level_id, classify, 
-      type, category, price, 
-      mu_price, land_acquisition_proportion, volume_rate, 
+    insert into tb_data_land_level_detail (pid, name, land_level_id, 
+      classify, type, category, 
+      price, floor_price, mu_price, 
+      land_acquisition_proportion, volume_rate, 
       legal_age, main_street, level_range, 
       bis_delete, creator, gmt_created, 
       gmt_modified)
-    values (#{pid,jdbcType=INTEGER}, #{landLevelId,jdbcType=INTEGER}, #{classify,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{muPrice,jdbcType=DECIMAL}, #{landAcquisitionProportion,jdbcType=VARCHAR}, #{volumeRate,jdbcType=DECIMAL}, 
+    values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landLevelId,jdbcType=INTEGER}, 
+      #{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{floorPrice,jdbcType=DECIMAL}, #{muPrice,jdbcType=DECIMAL}, 
+      #{landAcquisitionProportion,jdbcType=VARCHAR}, #{volumeRate,jdbcType=DECIMAL}, 
       #{legalAge,jdbcType=DECIMAL}, #{mainStreet,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, 
       #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
@@ -138,6 +142,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
         pid,
+      </if>
+      <if test="name != null" >
+        name,
       </if>
       <if test="landLevelId != null" >
         land_level_id,
@@ -153,6 +160,9 @@
       </if>
       <if test="price != null" >
         price,
+      </if>
+      <if test="floorPrice != null" >
+        floor_price,
       </if>
       <if test="muPrice != null" >
         mu_price,
@@ -189,6 +199,9 @@
       <if test="pid != null" >
         #{pid,jdbcType=INTEGER},
       </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
       <if test="landLevelId != null" >
         #{landLevelId,jdbcType=INTEGER},
       </if>
@@ -203,6 +216,9 @@
       </if>
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="floorPrice != null" >
+        #{floorPrice,jdbcType=DECIMAL},
       </if>
       <if test="muPrice != null" >
         #{muPrice,jdbcType=DECIMAL},
@@ -251,6 +267,9 @@
       <if test="record.pid != null" >
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.landLevelId != null" >
         land_level_id = #{record.landLevelId,jdbcType=INTEGER},
       </if>
@@ -265,6 +284,9 @@
       </if>
       <if test="record.price != null" >
         price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.floorPrice != null" >
+        floor_price = #{record.floorPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.muPrice != null" >
         mu_price = #{record.muPrice,jdbcType=DECIMAL},
@@ -305,11 +327,13 @@
     update tb_data_land_level_detail
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
       land_level_id = #{record.landLevelId,jdbcType=INTEGER},
       classify = #{record.classify,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       category = #{record.category,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
+      floor_price = #{record.floorPrice,jdbcType=DECIMAL},
       mu_price = #{record.muPrice,jdbcType=DECIMAL},
       land_acquisition_proportion = #{record.landAcquisitionProportion,jdbcType=VARCHAR},
       volume_rate = #{record.volumeRate,jdbcType=DECIMAL},
@@ -330,6 +354,9 @@
       <if test="pid != null" >
         pid = #{pid,jdbcType=INTEGER},
       </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="landLevelId != null" >
         land_level_id = #{landLevelId,jdbcType=INTEGER},
       </if>
@@ -344,6 +371,9 @@
       </if>
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="floorPrice != null" >
+        floor_price = #{floorPrice,jdbcType=DECIMAL},
       </if>
       <if test="muPrice != null" >
         mu_price = #{muPrice,jdbcType=DECIMAL},
@@ -381,11 +411,13 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail" >
     update tb_data_land_level_detail
     set pid = #{pid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
       land_level_id = #{landLevelId,jdbcType=INTEGER},
       classify = #{classify,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       category = #{category,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
+      floor_price = #{floorPrice,jdbcType=DECIMAL},
       mu_price = #{muPrice,jdbcType=DECIMAL},
       land_acquisition_proportion = #{landAcquisitionProportion,jdbcType=VARCHAR},
       volume_rate = #{volumeRate,jdbcType=DECIMAL},

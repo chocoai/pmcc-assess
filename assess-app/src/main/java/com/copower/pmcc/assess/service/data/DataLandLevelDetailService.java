@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.common.StreamUtils;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -26,7 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -194,25 +202,9 @@ public class DataLandLevelDetailService {
 
     public void saveAndUpdateDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) throws Exception {
         if (dataLandLevelDetail == null) return;
-        if (dataLandLevelDetail.getLandLevelId() == null) {
-            throw new Exception("未挂钩上土地区域数据!");
-        }
-        if (dataLandLevelDetail.getType() != null) {//如果是子项，没有父级时先为其添加父级
-            int count = dataLandLevelDetailDao.getCountByLandLevelId(dataLandLevelDetail.getLandLevelId(), dataLandLevelDetail.getClassify(), 0);
-            DataLandLevelDetail parentLevelDetail = new DataLandLevelDetail();
-            if (count <= 0) {
-                BeanUtils.copyProperties(dataLandLevelDetail, parentLevelDetail);
-                parentLevelDetail.setPid(0);
-                parentLevelDetail.setType(null);
-                parentLevelDetail.setCreator(commonService.thisUserAccount());
-                dataLandLevelDetailDao.addDataLandLevelDetail(parentLevelDetail);
-                dataLandLevelDetail.setPid(parentLevelDetail.getId());
-            } else {
-                parentLevelDetail = dataLandLevelDetailDao.getDataLandLevelDetail(dataLandLevelDetail.getLandLevelId(), dataLandLevelDetail.getClassify(), 0);
-            }
-            dataLandLevelDetail.setPid(parentLevelDetail.getId());
-        } else {
-            dataLandLevelDetail.setPid(0);
+        List<DataLandLevelDetail> dataLandLevelDetailList = getDataLandLevelDetailList(dataLandLevelDetail);
+        if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
+            return;
         }
         if (dataLandLevelDetail.getId() == null || dataLandLevelDetail.getId() <= 0) {
             dataLandLevelDetail.setCreator(commonService.thisUserAccount());
@@ -231,6 +223,32 @@ public class DataLandLevelDetailService {
         return dataLandLevelDetailDao.getDataLandLevelDetailList(oo);
     }
 
+    public List<DataLandLevelDetail> getDataLandLevelDetailTree(DataLandLevelDetail obj) {
+        List<DataLandLevelDetail> detailList = new ArrayList<>();
+        List<DataLandLevelDetail> dataLandLevelDetailList = getDataLandLevelDetailList(obj);
+        settingRecursiveData(dataLandLevelDetailList, detailList);
+        //最后去重 根据对象id
+        return detailList.stream().filter(StreamUtils.distinctByKey(o -> o.getId())).collect(Collectors.toList());
+    }
+
+
+    private void settingRecursiveData(List<DataLandLevelDetail> dataLandLevelDetailList, List<DataLandLevelDetail> detailList) {
+        if (CollectionUtils.isEmpty(dataLandLevelDetailList)) {
+            return;
+        }
+        Iterator<DataLandLevelDetail> iterator = dataLandLevelDetailList.iterator();
+        while (iterator.hasNext()) {
+            DataLandLevelDetail landLevelDetail = iterator.next();
+            DataLandLevelDetail query = new DataLandLevelDetail();
+            query.setPid(landLevelDetail.getId());
+            detailList.add(landLevelDetail);
+            List<DataLandLevelDetail> levelDetailList = getDataLandLevelDetailList(query);
+            if (CollectionUtils.isNotEmpty(levelDetailList)) {
+                settingRecursiveData(levelDetailList, detailList);
+            }
+        }
+    }
+
     /**
      * 根据id获取显示的名称
      *
@@ -240,6 +258,9 @@ public class DataLandLevelDetailService {
     public String getCacheNameById(Integer id) {
         DataLandLevelDetail dataLandLevelDetail = getCacheDataLandLevelDetail(id);
         if (dataLandLevelDetail == null) return null;
+        if (StringUtils.isNotBlank(dataLandLevelDetail.getName())) {
+            return dataLandLevelDetail.getName();
+        }
         String name = StringUtils.EMPTY;
         BaseDataDic baseDataDic = null;
         if (dataLandLevelDetail.getType() != null) {
@@ -280,7 +301,7 @@ public class DataLandLevelDetailService {
      * @param id
      */
     @Transactional(rollbackFor = Exception.class)
-    public void removeDataLandLevelDetail(Integer id) throws Exception {
+    public void removeDataLandLevelDetail(Integer id)  {
         List<DataLandLevelDetail> dataLandLevelDetails = getDataLandLevelDetailListByPid(id);
         if (CollectionUtils.isNotEmpty(dataLandLevelDetails)) {
             dataLandLevelDetails.forEach(o -> dataLandLevelDetailDao.removeDataLandLevelDetailById(o.getId()));

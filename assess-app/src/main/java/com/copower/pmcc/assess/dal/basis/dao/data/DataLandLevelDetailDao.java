@@ -131,6 +131,7 @@ public class DataLandLevelDetailDao {
             criteria.andPidEqualTo(oo.getPid());
         }
         example.setOrderByClause("classify,type,gmt_created ASC");
+        MybatisUtils.convertObj2Criteria(oo, criteria);
         return example;
     }
 }
