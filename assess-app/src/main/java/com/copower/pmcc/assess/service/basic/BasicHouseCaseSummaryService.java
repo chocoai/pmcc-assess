@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.StatisticsDto;
+import com.copower.pmcc.assess.dto.input.basic.BasicHouseCaseSummaryParamsDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseCaseSummaryVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -83,37 +84,43 @@ public class BasicHouseCaseSummaryService {
         return basicHouseCaseSummaryDao.getBasicHouseCaseSummaryById(id);
     }
 
-    public BootstrapTableVo findReportAuditStatisticsList(Date endDate, Date startDate, BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) {
+    public BootstrapTableVo findReportAuditStatisticsList(BasicHouseCaseSummaryParamsDto paramsDto) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findReportAuditStatistics(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findReportAuditStatistics(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
         List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
         vo.setTotal(page.getTotal());
         vo.setRows(statisticsDtoList);
         return vo;
     }
 
-    public BootstrapTableVo findReportApplyStatisticsList(Date endDate, Date startDate, BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) {
+    public BootstrapTableVo findReportApplyStatisticsList(BasicHouseCaseSummaryParamsDto paramsDto) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findReportApplyStatistics(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findReportApplyStatistics(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
         List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
         vo.setTotal(page.getTotal());
         vo.setRows(statisticsDtoList);
         return vo;
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) throws Exception {
-        return getBootstrapTableVo(null, null, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary basicHouseCaseSummary) throws Exception {
+        BasicHouseCaseSummaryParamsDto paramsDto = new BasicHouseCaseSummaryParamsDto() ;
+        paramsDto.setAreaStart(areaStart);
+        paramsDto.setAreaEnd(areaEnd);
+        paramsDto.setTradingTimeEnd(tradingTimeEnd);
+        paramsDto.setTradingTimeStart(tradingTimeStart);
+        paramsDto.setHouseCaseSummary(basicHouseCaseSummary);
+        return getBootstrapTableVo(paramsDto);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(Date endDate, Date startDate, BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) {
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseCaseSummaryParamsDto paramsDto) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicHouseCaseSummary> list = customCaseMapper.findCaseBaseHouseList(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+        List<BasicHouseCaseSummary> list = customCaseMapper.findCaseBaseHouseList(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
         List<BasicHouseCaseSummaryVo> vos = LangUtils.transform(list, o -> getBasicHouseCaseSummaryVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
@@ -206,6 +213,13 @@ public class BasicHouseCaseSummaryService {
         sheet.setColumnWidth(1,10000);
         sheet.setColumnWidth(2,10000);
         sheet.setColumnWidth(3,3500);
+        sheet.setColumnWidth(4,3500);
+        sheet.setColumnWidth(5,3500);
+        sheet.setColumnWidth(6,3500);
+        sheet.setColumnWidth(7,6500);
+        sheet.setColumnWidth(8,6500);
+        sheet.setColumnWidth(9,3500);
+        sheet.setColumnWidth(10,3500);
         int rowNum = 0;
         Row rowOne = sheet.createRow(rowNum);
         rowNum++;
@@ -244,8 +258,8 @@ public class BasicHouseCaseSummaryService {
                         case 4: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getHouseType()) ?summaryVo.getHouseType():"");break;
                         case 5: cell.setCellValue(summaryVo.getArea() != null?summaryVo.getArea().toString():"");break;
                         case 6: cell.setCellValue(summaryVo.getCurrentPrice() != null?summaryVo.getCurrentPrice().toString():"");break;
-                        case 7: cell.setCellValue(summaryVo.getTradingTime() != null?DateUtils.format(summaryVo.getTradingTime()):"");break;
-                        case 8: cell.setCellValue(summaryVo.getGmtCreated() != null?DateUtils.format(summaryVo.getGmtCreated()):"");break;
+                        case 7: cell.setCellValue(summaryVo.getTradingTime() != null?DateUtils.format(summaryVo.getTradingTime(),DateUtils.DATE_CHINESE_PATTERN):"");break;
+                        case 8: cell.setCellValue(summaryVo.getGmtCreated() != null?DateUtils.format(summaryVo.getGmtCreated(),DateUtils.DATE_CHINESE_PATTERN):"");break;
                         case 9: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getCreatorName()) ?summaryVo.getCreatorName():summaryVo.getCreator());break;
                         case 10: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getApproverName()) ?summaryVo.getApproverName():summaryVo.getApprover());break;
                         default:
@@ -280,6 +294,8 @@ public class BasicHouseCaseSummaryService {
     }
 
     private void commonWriteStatisticsDtoExcel(List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList, HSSFSheet sheet ,CellStyle style) {
+        sheet.setColumnWidth(0,6000);
+        sheet.setColumnWidth(1,6000);
         int rowNum = 0;
         Row rowOne = sheet.createRow(rowNum);
         rowNum++;
@@ -325,20 +341,14 @@ public class BasicHouseCaseSummaryService {
     /**
      * 导出数据
      *
-     * @param endDate
-     * @param startDate
-     * @param areaStart
-     * @param areaEnd
-     * @param tradingTimeStart
-     * @param tradingTimeEnd
-     * @param BasicHouseCaseSummary
+     * @param paramsDto
      * @return
      * @throws Exception
      */
-    public String reportData(Date endDate, Date startDate, BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary BasicHouseCaseSummary) throws Exception {
-        List<BasicHouseCaseSummary> baseHouseList = customCaseMapper.findCaseBaseHouseList(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportApplyStatistics = customCaseMapper.findReportApplyStatistics(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportAuditStatistics = customCaseMapper.findReportAuditStatistics(endDate, startDate, areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, BasicHouseCaseSummary);
+    public String reportData(BasicHouseCaseSummaryParamsDto paramsDto) throws Exception {
+        List<BasicHouseCaseSummary> baseHouseList = customCaseMapper.findCaseBaseHouseList(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportApplyStatistics = customCaseMapper.findReportApplyStatistics(paramsDto.getEndDate(),  paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(),  paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportAuditStatistics = customCaseMapper.findReportAuditStatistics(paramsDto.getEndDate(),  paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(),  paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
         HSSFWorkbook baseWorkBook = writeBaseExcelData(baseHouseList);
         HSSFWorkbook applyWorkBook = writeApplyExcelData(reportApplyStatistics);
         HSSFWorkbook auditWorkBook = writeAuditExcelData(reportAuditStatistics);
@@ -346,15 +356,15 @@ public class BasicHouseCaseSummaryService {
         String applyPath = String.join(File.separator, FileUtils.getTempDirectoryPath(), "申请人统计.xls");
         String approverPath = String.join(File.separator, FileUtils.getTempDirectoryPath(), "审核人统计.xls");
         String path = null;
-        if (startDate != null && endDate != null) {
-            String time = String.join("-", DateUtils.format(startDate, DateUtils.DATETIME_SHORT_PATTERN), DateUtils.format(endDate, DateUtils.DATETIME_SHORT_PATTERN));
-            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "案例数据统计" + time + ".xls");
-        } else if (startDate != null && endDate == null) {
-            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "案例数据统计" + DateUtils.format(startDate, DateUtils.DATETIME_SHORT_PATTERN) + ".zip");
-        } else if (startDate == null && endDate != null) {
-            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "案例数据统计" + DateUtils.format(endDate, DateUtils.DATETIME_SHORT_PATTERN) + ".zip");
+        if (paramsDto.getStartDate() != null && paramsDto.getEndDate() != null) {
+            String time = String.join("至", DateUtils.format(paramsDto.getStartDate(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(paramsDto.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "房产案例统计表" + time + ".zip");
+        } else if (paramsDto.getStartDate() != null && paramsDto.getEndDate() == null) {
+            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "房产案例统计表" + DateUtils.format(paramsDto.getStartDate(), DateUtils.DATE_CHINESE_PATTERN) + ".zip");
+        } else if (paramsDto.getStartDate() == null && paramsDto.getEndDate() != null) {
+            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "房产案例统计表" + DateUtils.format(paramsDto.getEndDate(), DateUtils.DATE_CHINESE_PATTERN) + ".zip");
         } else {
-            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "案例数据统计" + DateUtils.format(DateUtils.now(), DateUtils.DATETIME_SHORT_PATTERN) + ".zip");
+            path = String.join(File.separator, FileUtils.getTempDirectoryPath(), "房产案例统计表" + DateUtils.format(DateUtils.now(), DateUtils.DATE_CHINESE_PATTERN) + ".zip");
         }
         reportHandle(basePath, baseWorkBook);
         reportHandle(applyPath, applyWorkBook);
