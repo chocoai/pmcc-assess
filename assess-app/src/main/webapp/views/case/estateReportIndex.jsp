@@ -287,8 +287,28 @@
     };
 
     estateReport.exportData = function (query) {
-        var href = "${pageContext.request.contextPath}/basicHouseCaseSummary/reportDownloadData?" +estateReport.parseParam(query);
-        window.open(href, "");
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicHouseCaseSummary/reportDownload",
+            type: "get",
+            dataType: "json",
+            data: query,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    FileUtils.downAttachments(result.data) ;
+                    FileUtils.deleteFile({attachmentId:result.data}) ;
+                } else {
+                    AlertError("失败", result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        }) ;
+        <%--var href = "${pageContext.request.contextPath}/basicHouseCaseSummary/reportDownloadData?" +estateReport.parseParam(query);--%>
+        <%--window.open(href, "");--%>
     } ;
 
     estateReport.parseParam = function (param) {

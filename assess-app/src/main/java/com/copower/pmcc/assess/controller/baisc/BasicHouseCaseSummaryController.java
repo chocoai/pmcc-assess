@@ -2,10 +2,12 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.basic.BasicHouseCaseSummaryService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +37,8 @@ public class BasicHouseCaseSummaryController {
     private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
     @Autowired
     private PublicService publicService;
-
+    @Autowired
+    private BaseService baseService;
     @RequestMapping(value = "/reportDownloadData", method = {RequestMethod.GET}, name = "下载查询到的报表")
     public ResponseEntity<byte[]> reportData(String startDate, String endDate, BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, BasicHouseCaseSummary houseCaseSummary, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (StringUtils.isBlank(houseCaseSummary.getApprover())) {
@@ -48,6 +51,23 @@ public class BasicHouseCaseSummaryController {
         //使用spring 二进制流下载,这样可以解决兼容性问题,并且可以很好解决乱码问题,以及控制下载流
         ResponseEntity<byte[]> responseEntity = FileUtils.createResponse(FilenameUtils.getName(path), org.apache.commons.io.FileUtils.readFileToByteArray(new File(path)));
         return responseEntity;
+    }
+
+    @RequestMapping(value = "/reportDownload", method = {RequestMethod.GET}, name = "下载查询到的报表")
+    public HttpResult reportDownload(String startDate, String endDate, BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, BasicHouseCaseSummary houseCaseSummary, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (StringUtils.isBlank(houseCaseSummary.getApprover())) {
+            houseCaseSummary.setApprover(null);
+        }
+        if (StringUtils.isBlank(houseCaseSummary.getCreator())) {
+            houseCaseSummary.setCreator(null);
+        }
+        try {
+            String path = basicHouseCaseSummaryService.reportData(DateUtils.convertDate(endDate), DateUtils.convertDate(startDate), areaStart, areaEnd, DateUtils.convertDate(tradingTimeStart), DateUtils.convertDate(tradingTimeEnd), houseCaseSummary);
+            return HttpResult.newCorrectResult(200,basicHouseCaseSummaryService.uploadFilesToFTP(path) );
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500,e) ;
+        }
     }
 
     @GetMapping(value = "/getBootstrapTableVo")

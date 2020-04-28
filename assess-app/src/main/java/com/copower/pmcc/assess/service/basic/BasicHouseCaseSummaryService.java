@@ -3,23 +3,32 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseCaseSummaryDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.StatisticsDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseCaseSummaryVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.FtpUtilsExtense;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -32,6 +41,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
@@ -58,6 +68,16 @@ public class BasicHouseCaseSummaryService {
     private ErpAreaService erpAreaService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
+    private FtpUtilsExtense ftpUtilsExtense;
+    @Autowired
+    private CommonService commonService;
+    @Autowired
+    private BaseService baseService;
 
     public BasicHouseCaseSummary getBasicHouseCaseSummaryById(Integer id) {
         return basicHouseCaseSummaryDao.getBasicHouseCaseSummaryById(id);
@@ -343,6 +363,32 @@ public class BasicHouseCaseSummaryService {
         File[] srcFile = new File[]{new File(basePath), new File(applyPath), new File(approverPath)};
         com.copower.pmcc.assess.common.FileUtils.zipFiles(srcFile, new File(path));
         return path;
+    }
+
+    public String uploadFilesToFTP(String path){
+        File file = new File(path) ;
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        sysAttachmentDto.setFieldsName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
+        sysAttachmentDto.setFileName(FilenameUtils.getName(path));
+        sysAttachmentDto.setFileExtension(FilenameUtils.getExtension(file.getName()));
+        sysAttachmentDto.setCreater(commonService.thisUserAccount());
+        sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
+        //注意这里因为是linux 路径所以采用/ 或者使用Java自带的判断符号 windows下 WinNTFileSystem linux 下UnixFileSystem
+        String ftpBasePath = baseAttachmentService.createFTPBasePath(DateUtils.formatDate(new Date(), "yyyy-MM"), DateUtils.formatNowToYMD(), commonService.thisUserAccount());
+        sysAttachmentDto.setFilePath(ftpBasePath);
+        sysAttachmentDto.setFtpFileName(baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension()));
+        try {
+            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), sysAttachmentDto.getFtpFileName());
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "erp上传文件出错");
+        }
+        baseAttachmentService.addAttachment(sysAttachmentDto);
+        //完毕之后删除临时文件
+        FileUtils.deleteQuietly(file);
+        return sysAttachmentDto.getId().toString();
     }
 
     private String reportHandle(String path, HSSFWorkbook wb) throws Exception {
