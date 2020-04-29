@@ -1398,7 +1398,7 @@
 
 <%--交易价格行数据模板--%>
 <script type="text/html" id="pRowPriceTemp">
-    <tr data-group="{fieldName}" data-bisPrice="{bisPrice}" data-bisPrimaryKey="{bisPrimaryKey}" data-name="utext">
+    <tr data-group="{fieldName}" data-field-parent-id="{fieldParentId}" data-bisPrice="{bisPrice}" data-bisPrimaryKey="{bisPrimaryKey}" data-name="utext">
         <td style="vertical-align: middle">{fieldValue}</td>
         <td class="p_text" data-item-id="{itemId}">
             <a href="javascript://" data-type="textarea"

@@ -323,7 +323,7 @@ public class BasicEstateService extends BasicEntityAbstract {
         String structuralInfo = basicApply.getStructuralInfo();
         List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
         for (KeyValueDto keyValueDto : keyValueDtos) {
-            if (BasicFormClassifyEnum.ESTATE.getKey().equals(keyValueDto.getKey())) {
+            if (StringUtils.isNotBlank(keyValueDto.getKey()) && keyValueDto.getKey().startsWith(BasicFormClassifyEnum.ESTATE.getKey())) {
                 return getBasicEstateById(Integer.valueOf(keyValueDto.getValue()));
             }
         }

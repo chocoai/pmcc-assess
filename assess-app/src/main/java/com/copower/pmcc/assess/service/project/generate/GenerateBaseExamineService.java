@@ -71,61 +71,12 @@ public class GenerateBaseExamineService {
     //===========================================获取的值===============================
     private BasicApply basicApply;
 
-    /**
-     * 取得版块信息
-     *
-     * @return
-     * @throws Exception
-     */
-    public DataBlockVo getByDataBlock() throws Exception {
-        DataBlockVo dataBlockVo = dataBlockService.getDataBlockVo(dataBlockService.getDataBlockById(getEstate().getBlockId()));
-        if (dataBlockVo == null) {
-            dataBlockVo = new DataBlockVo();
-        }
-        return dataBlockVo;
-    }
-
-    public List<BasicEstateNetwork> getBasicEstateNetworkList() {
-        return basicEstateNetworkService.getBasicEstateNetworkList(getEstate().getId());
-    }
-
-    public List<BasicEstateParking> getBasicEstateParkingList() {
-        BasicEstateParking query = new BasicEstateParking();
-        query.setEstateId(getEstate().getId());
-        return basicEstateParkingService.basicEstateParkingList(query);
-    }
-
-    public List<BasicEstateSupply> getBasicEstateSupplyList() {
-        return basicEstateSupplyService.getBasicEstateSupplyList(getEstate().getId());
-    }
-
     public List<BasicMatchingEducation> getBasicMatchingEducatioListn() {
         return basicMatchingEducationService.getBasicMatchingEducationList(getEstate().getId());
     }
 
-    public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentList() {
-        return basicMatchingEnvironmentService.getBasicMatchingEnvironmentVos(getEstate().getId());
-    }
-
-    public List<BasicMatchingFinanceVo> getBasicMatchingFinanceList() {
-        List<BasicMatchingFinanceVo> vos = Lists.newArrayList();
-        List<BasicMatchingFinance> financeList = basicMatchingFinanceService.getBasicMatchingFinanceList(getEstate().getId());
-        if (CollectionUtils.isNotEmpty(financeList)) {
-            financeList.stream().forEach(basicMatchingFinance -> {
-                vos.add(basicMatchingFinanceService.getBasicMatchingFinanceVo(basicMatchingFinance));
-            });
-        }
-        return vos;
-    }
-
     public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList() {
         return basicMatchingLeisurePlaceService.getBasicMatchingLeisurePlaceList(getEstate().getId());
-    }
-
-    public List<BasicMatchingMaterial> getBasicMatchingMaterialList() {
-        BasicMatchingMaterial query = new BasicMatchingMaterial();
-        query.setEstateId(getEstate().getId());
-        return basicMatchingMaterialService.basicMatchingMaterialList(query);
     }
 
     public List<BasicMatchingMedical> getBasicMatchingMedicalList() {

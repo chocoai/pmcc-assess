@@ -99,13 +99,25 @@ public class BasicMatchingMaterialService {
     }
 
     /**
+     * 获取数据 by estateId
+     * @param estateId
+     * @return
+     */
+    public List<BasicMatchingMaterial> getListByEstateId(Integer estateId) {
+        if (estateId == null) return null;
+        BasicMatchingMaterial where = new BasicMatchingMaterial();
+        where.setEstateId(estateId);
+        return basicMatchingMaterialDao.basicMatchingMaterialList(where);
+    }
+
+    /**
      * 获取数据列表
      *
      * @param basicMatchingMaterial
      * @return
      * @throws Exception
      */
-    public List<BasicMatchingMaterial> basicMatchingMaterialList(BasicMatchingMaterial basicMatchingMaterial)  {
+    public List<BasicMatchingMaterial> basicMatchingMaterialList(BasicMatchingMaterial basicMatchingMaterial) {
         return basicMatchingMaterialDao.basicMatchingMaterialList(basicMatchingMaterial);
     }
 
@@ -127,7 +139,6 @@ public class BasicMatchingMaterialService {
         }
         BasicMatchingMaterialVo vo = new BasicMatchingMaterialVo();
         BeanUtils.copyProperties(basicMatchingMaterial, vo);
-        BaseDataDic dataDic = null;
         vo.setCategoryName(baseDataDicService.getNameById(basicMatchingMaterial.getCategory()));
         vo.setScaleName(baseDataDicService.getNameById(basicMatchingMaterial.getScale()));
         vo.setDistanceName(baseDataDicService.getNameById(basicMatchingMaterial.getDistance()));

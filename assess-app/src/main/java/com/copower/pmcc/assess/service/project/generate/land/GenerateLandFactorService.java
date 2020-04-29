@@ -6,10 +6,12 @@ import com.copower.pmcc.assess.common.enums.basic.ExamineEstateSupplyEnumType;
 import com.copower.pmcc.assess.common.enums.basic.ExamineMatchingTrafficTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateVillageVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingFinanceVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicMatchingTrafficVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -29,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.websocket.RemoteEndpoint;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -57,23 +60,45 @@ public class GenerateLandFactorService {
     @Autowired
     private DataSetUseFieldService dataSetUseFieldService;
     @Autowired
-    private GenerateLandEntityService generateLandEntityService;
+    private BasicEstateVillageService basicEstateVillageService;
+    @Autowired
+    private BasicMatchingLeisurePlaceService basicMatchingLeisurePlaceService;
+    @Autowired
+    private BasicMatchingMaterialService basicMatchingMaterialService;
+    @Autowired
+    private BasicMatchingTrafficService basicMatchingTrafficService;
+    @Autowired
+    private BasicEstateParkingService basicEstateParkingService;
+    @Autowired
+    private BasicMatchingFinanceService basicMatchingFinanceService;
+    @Autowired
+    private BasicMatchingMedicalService basicMatchingMedicalService;
+    @Autowired
+    private BasicMatchingEducationService basicMatchingEducationService;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
 
     /**
      * 获取区域位置
      *
      * @return
      */
-    public String getAreaLocation(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        Map<Integer, String> map = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            GenerateBaseExamineService examineService = new GenerateBaseExamineService(basicApply);
-            BasicEstate basicEstate = examineService.getEstate();
-            String content = String.format("%s%s，%s", erpAreaService.getSysAreaName(basicEstate.getDistrict()), basicEstate.getBlockName(), basicEstate.getLocationDescribe());
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), content);
+    public String getAreaLocation(BasicEstate basicEstate) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<BasicEstateVillageVo> villageVoList = basicEstateVillageService.getVillageListByEstateId(basicEstate.getId());
+        if (CollectionUtils.isNotEmpty(villageVoList)) {
+            for (BasicEstateVillageVo basicEstateVillageVo : villageVoList) {
+                if (StringUtils.isNotBlank(basicEstateVillageVo.getDistrictName()))
+                    stringBuilder.append(basicEstateVillageVo.getDistrictName()).append(",");
+            }
         }
-        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        if (StringUtils.isNotBlank(basicEstate.getBlockName())) {
+            stringBuilder.append(basicEstate.getBlockName()).append(";");
+        }
+        if (StringUtils.isNotBlank(basicEstate.getLocationDescribe())) {
+            stringBuilder.append(basicEstate.getLocationDescribe());
+        }
+        return stringBuilder.toString();
     }
 
     /**
@@ -81,42 +106,34 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getAgglomerationDegree(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        Map<Integer, String> map = Maps.newHashMap();
+    public String getAgglomerationDegree(BasicEstate basicEstate) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(basicEstate.getName());
+        List<BasicMatchingLeisurePlace> placeList = basicMatchingLeisurePlaceService.getBasicMatchingLeisurePlaceList(basicEstate.getId());
+        if (CollectionUtils.isNotEmpty(placeList)) {//购物、休闲娱乐、餐饮
+            stringBuilder.append(generateLoactionService.getMatchingLeisurePlacePrivate(placeList, null, null, true));
+        }
         Map<Integer, String> integerStringMap = Maps.newHashMap();
         Map<String, List<String>> listMap = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            StringBuilder stringBuilder = new StringBuilder();
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-            GenerateBaseExamineService examineService = new GenerateBaseExamineService(basicApply);
-            BasicEstate basicEstate = examineService.getEstate();
-            stringBuilder.append(basicEstate.getName());
-            List<BasicMatchingLeisurePlace> placeList = examineService.getBasicMatchingLeisurePlaceList();
-            if (CollectionUtils.isNotEmpty(placeList)) {//购物、休闲娱乐、餐饮
-                stringBuilder.append(generateLoactionService.getMatchingLeisurePlacePrivate(placeList, null, null, true));
+        List<BasicMatchingMaterial> materialList = basicMatchingMaterialService.getListByEstateId(basicEstate.getId());
+        if (CollectionUtils.isNotEmpty(materialList)) {//原料供应及销售条件
+            integerStringMap.clear();
+            listMap.clear();
+            for (BasicMatchingMaterial material : materialList) {
+                integerStringMap.put(material.getDistance() == null ? 0 : material.getDistance(), material.getName());
             }
-
-            List<BasicMatchingMaterial> materialList = examineService.getBasicMatchingMaterialList();
-            if (CollectionUtils.isNotEmpty(materialList)) {//原料供应及销售条件
-                integerStringMap.clear();
-                listMap.clear();
-                for (BasicMatchingMaterial material : materialList) {
-                    integerStringMap.put(material.getDistance() == null ? 0 : material.getDistance(), material.getName());
-                }
-                Map<String, List<Integer>> distance = generateCommonMethod.getGroupByDistance(integerStringMap);
-                if (!distance.isEmpty()) {
-                    distance.entrySet().stream().forEach(entry -> {
-                        List<String> stringList = entry.getValue().stream().map(po -> materialList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                        listMap.put(entry.getKey(), stringList);
-                    });
-                }
-                if (!listMap.isEmpty()) {
-                    stringBuilder.append(generateLoactionService.getDistanceDec(null, listMap));
-                }
+            Map<String, List<Integer>> distance = generateCommonMethod.getGroupByDistance(integerStringMap);
+            if (!distance.isEmpty()) {
+                distance.entrySet().stream().forEach(entry -> {
+                    List<String> stringList = entry.getValue().stream().map(po -> materialList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
+                    listMap.put(entry.getKey(), stringList);
+                });
             }
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
+            if (!listMap.isEmpty()) {
+                stringBuilder.append(generateLoactionService.getDistanceDec(null, listMap));
+            }
         }
-        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        return stringBuilder.toString();
     }
 
     /**
@@ -124,55 +141,24 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getTrafficConditions(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        Map<Integer, String> map = Maps.newHashMap();
+    public String getTrafficConditions(BasicEstate basicEstate) throws Exception {
         StringBuilder stringBuilder = new StringBuilder(8);
-        List<String> stringList = Lists.newArrayList();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-            if (basicApply == null || basicApply.getId() == 0) {
-                continue;
-            }
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
-
-            //主干道
-            if (StringUtils.isNotEmpty(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainRoad, "", false))) {
-                stringBuilder.append(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainRoad, "", false)).append(";");
-            }
-
-            //交通枢纽
-            stringList.add(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "", false));
-            //主要转换交通
-            stringList.add(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainConversion, "", false));
-            //停车方便度
-            stringList.add(generateLoactionService.getParkingConvenience(generateBaseExamineService.getBasicEstateParkingList()));
-            {
-                String s = StringUtils.join(stringList.stream().filter(s1 -> StringUtils.isNotEmpty(s1)).collect(Collectors.toSet()), "、");
-                if (StringUtils.isNotEmpty(s)) {
-                    stringBuilder.append(s).append(";");
-                }
-            }
-            stringList.clear();
-
-            //公交
-            stringList.add(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TRANSIT, "", false));
-            //地铁
-            stringList.add(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.METRO, "", false));
-            {
-                String s = StringUtils.join(stringList.stream().filter(s1 -> StringUtils.isNotEmpty(s1)).collect(Collectors.toSet()), "、");
-                if (StringUtils.isNotEmpty(s)) {
-                    stringBuilder.append(s).append(";");
-                }
-            }
-            stringList.clear();
-
-            if (StringUtils.isNotEmpty(stringBuilder.toString().trim())) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
-            }
-            stringBuilder.delete(0, stringBuilder.toString().length());
+        List<BasicMatchingTrafficVo> basicMatchingTrafficList = basicMatchingTrafficService.getBasicMatchingTrafficVos(basicEstate.getId());
+        //主干道
+        if (StringUtils.isNotEmpty(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainRoad, "", false))) {
+            stringBuilder.append(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainRoad, "", false)).append(";");
         }
-        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        //交通枢纽
+        stringBuilder.append(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TrafficHub, "", false));
+        //主要转换交通
+        stringBuilder.append(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainConversion, "", false));
+        //停车方便度
+        stringBuilder.append(generateLoactionService.getParkingConvenience(basicEstateParkingService.getListByEstateId(basicEstate.getId())));
+        //公交
+        stringBuilder.append(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TRANSIT, "", false));
+        //地铁
+        stringBuilder.append(generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.METRO, "", false));
+        return stringBuilder.toString();
     }
 
 
@@ -181,80 +167,25 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getUpportingFacility(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        Map<Integer, String> map = Maps.newHashMap();
-        List<String> strings = Lists.newArrayList();
+    public String getUpportingFacility(BasicEstate basicEstate) throws Exception {
         StringBuilder stringBuilder = new StringBuilder(8);
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-            if (basicApply == null || basicApply.getId() == 0) {
-                continue;
-            }
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicEstateSupply> basicEstateSupplyList = generateBaseExamineService.getBasicEstateSupplyList();
-            List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = generateBaseExamineService.getBasicMatchingFinanceList();
-            List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
-            List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
-            //工业
-            if (basicApply.getType().intValue() == BasicApplyTypeEnum.RESIDENCE.getId().intValue()) {
-                BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
-                if (StringUtils.isNotBlank(landStateVo.getDevelopmentDegreeContentName())) {
-                    stringBuilder.append(landStateVo.getDevelopmentDegreeContentName());
-                }
-            }
-            //非工业
-            if (basicApply.getType().intValue() == BasicApplyTypeEnum.INDUSTRY.getId().intValue()) {
-                boolean estateSupplyGas = false;
-                boolean estateSupplyWater = false;
-                boolean estateSupplyPower = false;
-                if (CollectionUtils.isNotEmpty(basicEstateSupplyList)) {
-                    estateSupplyGas = basicEstateSupplyList.stream().anyMatch(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS.getName(), basicEstateSupply.getType()));
-                    estateSupplyWater = basicEstateSupplyList.stream().anyMatch(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER.getName(), basicEstateSupply.getType()));
-                    estateSupplyPower = basicEstateSupplyList.stream().anyMatch(basicEstateSupply -> Objects.equal(ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER.getName(), basicEstateSupply.getType()));
-                }
-                if (estateSupplyWater) {
-                    strings.add("通水");
-                }
-                if (estateSupplyPower) {
-                    strings.add("通电");
-                }
-                if (estateSupplyGas) {
-                    strings.add("通气");
-                }
-                if (CollectionUtils.isNotEmpty(strings)) {
-                    //三通
-                    stringBuilder.append(StringUtils.join(strings, "、"));
-                }
-                strings.clear();
-            }
-            {
-                String s = generateLoactionService.getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null, null, null);
-                if (StringUtils.isNotEmpty(s)) {
-                    strings.add(s);
-                }
-            }
-            {
-                String s = generateLoactionService.getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList, null, null);
-                if (StringUtils.isNotEmpty(s)) {
-                    strings.add(s);
-                }
-            }
-            {
-                String s = generateLoactionService.getFinanceAndMedicalAndEducation(null, null, basicMatchingEducationList, null);
-                if (StringUtils.isNotEmpty(s)) {
-                    strings.add(s);
-                }
-            }
-            if (CollectionUtils.isNotEmpty(strings)) {
-                stringBuilder.append(StringUtils.join(strings, "、"));
-                strings.clear();
-            }
-            if (StringUtils.isNotEmpty(stringBuilder.toString().trim())) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
-            }
-            stringBuilder.delete(0, stringBuilder.toString().length());
+        BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        if (StringUtils.isNotBlank(estateLandState.getDevelopmentDegreeContent())) {
+            stringBuilder.append(basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState).getDevelopmentDegreeContentName());
         }
-        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        String s = generateLoactionService.getFinanceAndMedicalAndEducation(basicMatchingFinanceService.getBasicMatchingFinanceList(basicEstate.getId()), null, null, null);
+        if (StringUtils.isNotEmpty(s)) {
+            stringBuilder.append(s).append(";");
+        }
+        s = generateLoactionService.getFinanceAndMedicalAndEducation(null, basicMatchingMedicalService.getBasicMatchingMedicalList(basicEstate.getId()), null, null);
+        if (StringUtils.isNotEmpty(s)) {
+            stringBuilder.append(s).append(";");
+        }
+        s = generateLoactionService.getFinanceAndMedicalAndEducation(null, null, basicMatchingEducationService.getBasicMatchingEducationList(basicEstate.getId()), null);
+        if (StringUtils.isNotEmpty(s)) {
+            stringBuilder.append(s).append(";");
+        }
+        return stringBuilder.toString();
     }
 
     /**
@@ -262,27 +193,16 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getEnvironmentCondition(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        Map<Integer, String> map = Maps.newHashMap();
+    public String getEnvironmentCondition(BasicApplyBatch basicApplyBatch) throws Exception {
         StringBuilder stringBuilder = new StringBuilder(8);
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApplyBatch basicApplyBatch = generateCommonMethod.getBasicApplyBatchBySchemeJudgeObject(schemeJudgeObject);
-            if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
-                continue;
-            }
-            String natural = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.NATURAL);
-            String humanity = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.HUMANITY);
-            String scenery = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.SCENERY);
+        String natural = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.NATURAL);
+        String humanity = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.HUMANITY);
+        String scenery = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.SCENERY);
 
-            stringBuilder.append(String.format("自然要素:%s", generateCommonMethod.trim(natural)));
-            stringBuilder.append(String.format("人文环境要素:%s", generateCommonMethod.trim(humanity)));
-            stringBuilder.append(String.format("景观:%s", generateCommonMethod.trim(scenery)));
-            if (StringUtils.isNotEmpty(stringBuilder.toString().trim())) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
-            }
-            stringBuilder.delete(0, stringBuilder.toString().length());
-        }
-        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        stringBuilder.append(String.format("自然要素:%s", generateCommonMethod.trim(natural)));
+        stringBuilder.append(String.format("人文环境要素:%s", generateCommonMethod.trim(humanity)));
+        stringBuilder.append(String.format("景观:%s", generateCommonMethod.trim(scenery)));
+        return stringBuilder.toString();
     }
 
     /**
@@ -290,45 +210,25 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getPlanningCondition(List<SchemeJudgeObject> judgeObjectList) throws Exception {
-        Map<Integer, String> map = Maps.newHashMap();
-        StringBuilder stringBuilder = new StringBuilder(8);
-        List<String> stringList = Lists.newArrayList();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-            if (basicApply == null || basicApply.getId() == 0) {
-                continue;
-            }
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            BasicEstateLandStateVo landState = generateBaseExamineService.getBasicEstateLandState();
-            if (landState == null || landState.getId() == null || landState.getId() == 0) {
-                continue;
-            }
-            if (StringUtils.isNotEmpty(landState.getPlotRatio())) {
-                stringList.add(String.format("容积率:%s", landState.getPlotRatio()));
-            }
-            if (StringUtils.isNotEmpty(landState.getBuildingDensity())) {
-                stringList.add(String.format("建筑密度:%s", landState.getBuildingDensity()));
-            }
-            if (StringUtils.isNotEmpty(landState.getGreenSpaceRate())) {
-                stringList.add(String.format("绿地率:%s", landState.getGreenSpaceRate()));
-            }
-            if (StringUtils.isNotEmpty(landState.getCompatibleRatio())) {
-                stringList.add(String.format("兼容比:%s", landState.getCompatibleRatio()));
-            }
-            if (landState.getBuildingHeightLimit() != null) {
-                stringList.add(String.format("建筑高度:%s", landState.getBuildingHeightLimit().toString()));
-            }
-            if (CollectionUtils.isNotEmpty(stringList)) {
-                stringBuilder.append(StringUtils.join(stringList, "、"));
-            }
-            stringList.clear();
-            if (StringUtils.isNotEmpty(stringBuilder.toString().trim())) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
-            }
-            stringBuilder.delete(0, stringBuilder.toString().length());
+    public String getPlanningCondition(BasicEstate basicEstate) throws Exception {
+        StringBuilder stringBuilder=new StringBuilder();
+        BasicEstateLandState landState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        if (StringUtils.isNotEmpty(landState.getPlotRatio())) {
+            stringBuilder.append(String.format("容积率:%s", landState.getPlotRatio()));
         }
-        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        if (StringUtils.isNotEmpty(landState.getBuildingDensity())) {
+            stringBuilder.append(String.format("建筑密度:%s", landState.getBuildingDensity()));
+        }
+        if (StringUtils.isNotEmpty(landState.getGreenSpaceRate())) {
+            stringBuilder.append(String.format("绿地率:%s", landState.getGreenSpaceRate()));
+        }
+        if (StringUtils.isNotEmpty(landState.getCompatibleRatio())) {
+            stringBuilder.append(String.format("兼容比:%s", landState.getCompatibleRatio()));
+        }
+        if (landState.getBuildingHeightLimit() != null) {
+            stringBuilder.append(String.format("建筑高度:%s", landState.getBuildingHeightLimit().toString()));
+        }
+        return stringBuilder.toString();
     }
 
     /**

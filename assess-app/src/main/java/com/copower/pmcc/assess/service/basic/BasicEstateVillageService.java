@@ -103,6 +103,17 @@ public class BasicEstateVillageService {
         return flag;
     }
 
+    //获取数据 by estateId
+    public List<BasicEstateVillageVo> getVillageListByEstateId(Integer estateId) {
+        if (estateId == null) return null;
+        BasicEstateVillage where = new BasicEstateVillage();
+        where.setEstateId(estateId);
+        List<BasicEstateVillage> villageList = basicEstateVillageDao.basicEstateVillageList(where);
+        List<BasicEstateVillageVo> vos = Lists.newArrayList();
+        villageList.forEach(oo -> vos.add(getBasicEstateVillageVo(oo)));
+        return vos;
+    }
+
     /**
      * 获取数据列表
      *

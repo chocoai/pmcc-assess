@@ -70,14 +70,8 @@ public class BasicExamineHandle implements Serializable {
     }
 
     public List<BasicMatchingFinanceVo> getBasicMatchingFinanceList() {
-        List<BasicMatchingFinanceVo> vos = Lists.newArrayList();
-        List<BasicMatchingFinance> financeList = basicMatchingFinanceService.getBasicMatchingFinanceList(getEstate().getId());
-        if (CollectionUtils.isNotEmpty(financeList)) {
-            financeList.stream().forEach(basicMatchingFinance -> {
-                vos.add(basicMatchingFinanceService.getBasicMatchingFinanceVo(basicMatchingFinance));
-            });
-        }
-        return vos;
+        List<BasicMatchingFinanceVo> basicMatchingFinanceList = basicMatchingFinanceService.getBasicMatchingFinanceList(getEstate().getId());
+        return basicMatchingFinanceList;
     }
 
     public List<BasicMatchingLeisurePlace> getBasicMatchingLeisurePlaceList() {
