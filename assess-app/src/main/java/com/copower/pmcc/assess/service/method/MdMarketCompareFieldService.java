@@ -468,7 +468,7 @@ public class MdMarketCompareFieldService extends BaseService {
                                     stringBuilder.append(houseWater.getPipingLayout() == null ? "" : String.format("%s", baseDataDicService.getNameById(houseWater.getPipingLayout())));//给水管道布置
                                     stringBuilder.append(houseWater.getSupplyMode() == null ? "" : String.format("%s", baseDataDicService.getNameById(houseWater.getSupplyMode())));//给水方式
                                     stringBuilder.append(",");
-                                    stringBuilder.append(houseWater.getFireWaterSupply() == null ? "" : String.format("消防给水%s；", baseDataDicService.getNameById(houseWater.getFireWaterSupply())));
+                                    stringBuilder.append(houseWater.getFireWaterSupply() == null ? "" : String.format("消防给水为%s；", baseDataDicService.getNameById(houseWater.getFireWaterSupply())));
                                 }
                             }
                             List<BasicHouseWaterDrain> drainList = basicHouseWaterDrainService.getBasicHouseWaterDrainList(examineHouse.getId());
@@ -537,15 +537,16 @@ public class MdMarketCompareFieldService extends BaseService {
                             stringBuilder.append(unitHuxing.getName()).append(";");
                             if (CollectionUtils.isNotEmpty(roomList)) {
                                 for (BasicHouseRoom room : roomList) {
-                                    stringBuilder.append(room.getName()).append(",");
+                                    stringBuilder.append(room.getName());
                                     if(StringUtils.isNotBlank(room.getOpening()))
-                                        stringBuilder.append(String.format("开间:%s米,", room.getOpening()));
+                                        stringBuilder.append(String.format("开间:%s米", room.getOpening()));
                                     if(StringUtils.isNotBlank(room.getDepth()))
-                                        stringBuilder.append(String.format("进深:%s米,", room.getDepth()));
+                                        stringBuilder.append(String.format("进深:%s米", room.getDepth()));
                                     if(StringUtils.isNotBlank(room.getLength()))
-                                        stringBuilder.append(String.format("长:%s米,", room.getLength()));
+                                        stringBuilder.append(String.format("长:%s米", room.getLength()));
                                     if(StringUtils.isNotBlank(room.getWidth()))
-                                        stringBuilder.append(String.format("宽:%s米,", room.getWidth()));
+                                        stringBuilder.append(String.format("宽:%s米", room.getWidth()));
+                                    stringBuilder.append(";");
                                 }
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PLANE_LAYOUT.getKey(), generateCommonMethod.trimText(stringBuilder.toString())));
