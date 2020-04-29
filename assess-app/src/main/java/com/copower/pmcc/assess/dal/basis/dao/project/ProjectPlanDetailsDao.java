@@ -33,10 +33,13 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public List<ProjectPlanDetails> getProjectPlanDetailsList(Integer projectId, Integer projectPhaseId, String projectPhaseName) {
+    public List<ProjectPlanDetails> getProjectPlanDetailsList(Integer projectId, List<Integer> projectPhaseIds, String projectPhaseName) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         ProjectPlanDetailsExample.Criteria criteria = example.createCriteria();
-        criteria.andProjectIdEqualTo(projectId).andProjectPhaseIdEqualTo(projectPhaseId);
+        criteria.andProjectIdEqualTo(projectId);
+        if(CollectionUtils.isNotEmpty(projectPhaseIds)){
+            criteria.andProjectPhaseIdIn(projectPhaseIds);
+        }
         if (StringUtils.isNotBlank(projectPhaseName)) {
             criteria.andProjectPhaseNameLike(String.format("%%%s%%",projectPhaseName));
         }

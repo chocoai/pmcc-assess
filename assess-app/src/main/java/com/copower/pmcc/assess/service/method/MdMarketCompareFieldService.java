@@ -616,27 +616,27 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TEMPORARY_ROAD_CONDITION.getKey(), generateCommonMethod.trimText(temporaryRoadCondition)));
                             break;
                         case LAND_TOPOGRAPHY://形状、地质、地形、地势
-                            String topography = generateLandFactorService.getTopography(Lists.newArrayList(judgeObject));
+                            String topography = generateLandFactorService.getTopography(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TOPOGRAPHY.getKey(), generateCommonMethod.trimText(topography)));
                             break;
                         case LAND_PLOT_RATIO://容积率
-                            String plotRatio = generateLandFactorService.getPlotRatio(Lists.newArrayList(judgeObject));
+                            String plotRatio = generateLandFactorService.getPlotRatio(judgeObject,examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), generateCommonMethod.trimText(plotRatio)));
                             break;
                         case LAND_DEVELOPMENT_LEVEL://宗地开发程度
-                            String developmentLevel = generateLandFactorService.getDevelopmentLevel(Lists.newArrayList(judgeObject));
+                            String developmentLevel = generateLandFactorService.getDevelopmentLevel(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_DEVELOPMENT_LEVEL.getKey(), generateCommonMethod.trimText(developmentLevel)));
                             break;
                         case LAND_USEFUL_LIFE://使用年限
-                            String usefulLife = generateLandFactorService.getUsefulLife(Lists.newArrayList(judgeObject));
+                            String usefulLife = generateLandFactorService.getUsefulLife(judgeObject);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_USEFUL_LIFE.getKey(), generateCommonMethod.trimText(usefulLife)));
                             break;
                         case LAND_RIGHT_CONDITION://土地权利状况
-                            String rightCondition = generateLandFactorService.getRightCondition(Lists.newArrayList(judgeObject));
+                            String rightCondition = generateLandFactorService.getRightCondition(judgeObject);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_RIGHT_CONDITION.getKey(), generateCommonMethod.trimText(rightCondition)));
                             break;
                         case LAND_OTHER://土地其它
-                            String other = generateLandFactorService.getOther(Lists.newArrayList(judgeObject));
+                            String other = generateLandFactorService.getOther(judgeObject);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_OTHER.getKey(), generateCommonMethod.trimText(other)));
                             break;
                         case Land_Annual_Coefficient:

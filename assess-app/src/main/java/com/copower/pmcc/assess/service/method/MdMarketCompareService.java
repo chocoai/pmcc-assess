@@ -176,7 +176,7 @@ public class MdMarketCompareService {
 
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
-        if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId()!= 0) {
+        if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId() != 0) {
             setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
         } else {
             List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
@@ -324,11 +324,11 @@ public class MdMarketCompareService {
             throw new BusinessException("请选择有效案例");
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdList));
         List<MdMarketCompareItem> compareItemList = getCaseListByMcId(mcId);
-        if(CollectionUtils.isNotEmpty(compareItemList)){
+        if (CollectionUtils.isNotEmpty(compareItemList)) {
             for (MdMarketCompareItem mdMarketCompareItem : compareItemList) {
                 if (CollectionUtils.isNotEmpty(integers) && integers.contains(mdMarketCompareItem.getPlanDetailsId())) {
                     integers.remove(mdMarketCompareItem.getPlanDetailsId());
-                }else{
+                } else {
                     mdMarketCompareItemDao.deleteMarketCompareItem(mdMarketCompareItem.getId());
                 }
             }
@@ -455,9 +455,15 @@ public class MdMarketCompareService {
     public BootstrapTableVo getCasesAll(Integer projectId, String projectPhaseName) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        List<Integer> projectPhaseIds = Lists.newArrayList();
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
+        ProjectPhase projectPhaseLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
+        if (projectPhase != null)
+            projectPhaseIds.add(projectPhase.getId());
+        if (projectPhaseLand != null)
+            projectPhaseIds.add(projectPhaseLand.getId());
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getProjectPlanDetailsList(projectId, projectPhase.getId(), projectPhaseName);
+        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getProjectPlanDetailsList(projectId, projectPhaseIds, projectPhaseName);
         List<MdCompareCaseVo> voList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(planDetails)) {
             for (ProjectPlanDetails planDetail : planDetails) {

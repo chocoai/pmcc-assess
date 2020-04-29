@@ -899,6 +899,6 @@ public class GenerateLoactionService {
         if (!listMap.isEmpty()) {
             return this.getDistanceDec(title, listMap);
         }
-        return null;
+        return "";
     }
 }
