@@ -6,8 +6,8 @@
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="land_level_id" property="landLevelId" jdbcType="INTEGER" />
-    <result column="classify" property="classify" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="classify" property="classify" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="category" property="category" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="floor_price" property="floorPrice" jdbcType="DECIMAL" />
@@ -127,7 +127,7 @@
       bis_delete, creator, gmt_created, 
       gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{landLevelId,jdbcType=INTEGER}, 
-      #{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, 
+      #{classify,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
       #{price,jdbcType=DECIMAL}, #{floorPrice,jdbcType=DECIMAL}, #{muPrice,jdbcType=DECIMAL}, 
       #{landAcquisitionProportion,jdbcType=VARCHAR}, #{volumeRate,jdbcType=DECIMAL}, 
       #{legalAge,jdbcType=DECIMAL}, #{mainStreet,jdbcType=VARCHAR}, #{levelRange,jdbcType=VARCHAR}, 
@@ -206,10 +206,10 @@
         #{landLevelId,jdbcType=INTEGER},
       </if>
       <if test="classify != null" >
-        #{classify,jdbcType=INTEGER},
+        #{classify,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         #{category,jdbcType=VARCHAR},
@@ -274,10 +274,10 @@
         land_level_id = #{record.landLevelId,jdbcType=INTEGER},
       </if>
       <if test="record.classify != null" >
-        classify = #{record.classify,jdbcType=INTEGER},
+        classify = #{record.classify,jdbcType=VARCHAR},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.category != null" >
         category = #{record.category,jdbcType=VARCHAR},
@@ -329,8 +329,8 @@
       pid = #{record.pid,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       land_level_id = #{record.landLevelId,jdbcType=INTEGER},
-      classify = #{record.classify,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
+      classify = #{record.classify,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       floor_price = #{record.floorPrice,jdbcType=DECIMAL},
@@ -361,10 +361,10 @@
         land_level_id = #{landLevelId,jdbcType=INTEGER},
       </if>
       <if test="classify != null" >
-        classify = #{classify,jdbcType=INTEGER},
+        classify = #{classify,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="category != null" >
         category = #{category,jdbcType=VARCHAR},
@@ -413,8 +413,8 @@
     set pid = #{pid,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       land_level_id = #{landLevelId,jdbcType=INTEGER},
-      classify = #{classify,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+      classify = #{classify,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       floor_price = #{floorPrice,jdbcType=DECIMAL},

@@ -34,6 +34,18 @@ public class SchemeReimbursementDao {
         return schemeReimbursementMapper.selectByExample(example);
     }
 
+    public SchemeReimbursement getSchemeReimbursementByAreaIdAndByPlanDetailsId(Integer planDetailsId,Integer areaId){
+        SchemeReimbursementExample example = new SchemeReimbursementExample();
+        SchemeReimbursementExample.Criteria criteria = example.createCriteria();
+        criteria.andAreaIdEqualTo(areaId) ;
+        criteria.andPlanDetailsIdEqualTo(planDetailsId) ;
+        List<SchemeReimbursement> schemeReimbursements = schemeReimbursementMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(schemeReimbursements)){
+            return schemeReimbursements.get(0);
+        }
+        return null;
+    }
+
     public boolean addSchemeReimbursement(SchemeReimbursement schemeReimbursement) {
         int i = schemeReimbursementMapper.insertSelective(schemeReimbursement);
         return i > 0;

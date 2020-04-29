@@ -48,11 +48,12 @@
                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                     <div class="row">
                         <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" onclick="landLevel.addLandLevelDetail()">
+                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                    onclick="landLevel.addLandLevelDetail()">
                                 新增
                             </button>
                             <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
-                                     onclick="zTreeOnEdit()">
+                                    onclick="zTreeOnEdit()">
                                 编辑
                             </button>
                             <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
@@ -60,20 +61,34 @@
                                     onclick="zTreeOnRemove()">
                                 删除
                             </button>
-                            <button type="button" style="margin-left: 5px"  class="btn btn-sm btn-primary " onclick="landLevel.treeRefresh();">
+                            <button type="button" style="margin-left: 5px" class="btn btn-sm btn-primary "
+                                    onclick="landLevel.treeRefresh();">
                                 刷新
                             </button>
-                            <button type="button" style="margin-left: 5px"  class="btn btn-sm btn-primary " onclick="landLevel.treeCheckAllNodes();">
-                                全选
+                            <button type="button" style="margin-left: 5px" class="btn btn-sm btn-primary "
+                                    onclick="landLevel.treeCheckAllNodes(this);">
+                                全(全不)选
                             </button>
-                            <button style="margin-left: 5px;margin-top: 5px;" class="btn btn-primary btn-sm" type="button"
-                                    onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
-                                容积率系数
+                            <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
+                                    data-permission="permission"
+                                    onclick="landLevel.clearNodeChild(this);">
+                                清除子数据
                             </button>
-                            <button style="margin-left: 5px;margin-top: 5px;" class="btn btn-primary btn-sm" type="button"
-                                    onclick="landLevel.showDataLandDetailAchievementDetail();">
-                                土地因素
+                            <button type="button" class="btn btn-info btn-sm"
+                                    style="margin-left: 5px"
+                                    onclick="landLevel.importLandLevelDetail(true);">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-cloud-upload-alt"></i>
+                                                    </span>
                             </button>
+                            <button type="button" class="btn btn-success btn-sm"
+                                    style="margin-left: 5px"
+                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseTemplate);">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-cloud-download-alt"></i>
+                                                    </span>
+                            </button>
+
                             <ul id="treeLandLevelDetail" class="ztree" style="max-height: 260px;overflow: auto;"></ul>
                         </div>
                         <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
@@ -81,37 +96,51 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <div class="col-sm-3">
-                                                <select name="classify"
-                                                        class="form-control input-full">
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <select name="type"
-                                                        class="form-control input-full search-select select2"
-                                                        multiple="multiple">
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <select name="factorType" multiple="multiple" class="form-control input-full search-select select2">
-                                                    <option value="因素">因素</option>
-                                                    <option value="系数">系数</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" data-permission="permission"
-                                                        onclick="landLevel.downloadDataLandDetailAchievementFile(this);">
-                                                    模板下载
+                                            <div class="col-sm-6">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="landLevel.showDataLandDetailAchievementDetail();">
+                                                    土地因素
                                                 </button>
-                                                <button style="margin-left: 5px" class="btn btn-info btn-sm" type="button" data-permission="permission"
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                        style="margin-left: 5px"
                                                         onclick="landLevel.importDataLandDetailAchievement(true);">
-                                                    数据上传
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-cloud-upload-alt"></i>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        style="margin-left: 5px"
+                                                        onclick="landLevel.downloadDataLandDetailAchievementFile(this);">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-cloud-download-alt"></i>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                        onclick="landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail();">
+                                                    容积率系数
+                                                </button>
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                        style="margin-left: 5px"
+                                                        onclick="landLevel.importDataAllocationCorrectionCoefficientVolumeRatio(true);">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-cloud-upload-alt"></i>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        style="margin-left: 5px"
+                                                        onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseCoefficientTemplate);">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-cloud-download-alt"></i>
+                                                    </span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                    color="#6f5499" size="10">
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -128,10 +157,10 @@
                                                 <label class=" form-control input-full" name="muPrice"></label>
                                             </div>
                                             <label class="col-sm-1 col-form-label">
-                                                标准容积率
+                                                楼面地价
                                             </label>
                                             <div class="col-sm-3">
-                                                <label class=" form-control input-full" name="volumeRate"></label>
+                                                <label class=" form-control input-full" name="floorPrice"></label>
                                             </div>
                                         </div>
                                     </div>
@@ -151,6 +180,12 @@
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class=" form-control input-full" name="legalAge"></label>
+                                            </div>
+                                            <label class="col-sm-1 col-form-label">
+                                                标准容积率
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class=" form-control input-full" name="volumeRate"></label>
                                             </div>
                                         </div>
                                     </div>
@@ -507,20 +542,6 @@
 												<i class="fa fa-plus"></i>
 											</span>
                                 新增
-                            </button>
-                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseCoefficientTemplate);">
-											<span class="btn-label">
-												<i class="fa fa-cloud-download-alt"></i>
-											</span>
-                                下载模板
-                            </button>
-                            <button style="margin-left: 5px" class="btn btn-info btn-sm" type="button"
-                                    onclick="landLevel.importDataAllocationCorrectionCoefficientVolumeRatio(true);">
-											<span class="btn-label">
-												<i class="fa fa-cloud-upload-alt"></i>
-											</span>
-                                导入数据
                             </button>
                             <table class="table table-bordered"
                                    id="dataAllocationCorrectionCoefficientVolumeRatioDetailTable">

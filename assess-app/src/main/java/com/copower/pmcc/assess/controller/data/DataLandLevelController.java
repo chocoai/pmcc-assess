@@ -239,6 +239,17 @@ public class DataLandLevelController {
         }
     }
 
+    @PostMapping(value = "/clearNodeChildDataLandLevelDetail")
+    public HttpResult clearNodeChildDataLandLevelDetail(String id){
+        try {
+            dataLandLevelDetailService.clearNodeChildDataLandLevelDetail(id);
+            return HttpResult.newCorrectResult("success");
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, String.join("", "", e.getMessage()));
+        }
+    }
+
 
     @GetMapping(value = "/getDataLandLevelDetailById", name = "获取 土地级别信息")
     public HttpResult getDataLandLevelDetailById(Integer id) {

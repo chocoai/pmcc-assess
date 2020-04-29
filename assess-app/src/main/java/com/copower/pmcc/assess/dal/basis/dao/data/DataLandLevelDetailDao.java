@@ -47,7 +47,7 @@ public class DataLandLevelDetailDao {
         return dataLandLevelDetailMapper.selectByExample(example);
     }
 
-    public int getCountByLandLevelId(Integer landLevelId, Integer classify, Integer pid) {
+    public int getCountByLandLevelId(Integer landLevelId, String classify, Integer pid) {
         DataLandLevelDetailExample example = new DataLandLevelDetailExample();
         DataLandLevelDetailExample.Criteria criteria = example.createCriteria();
         criteria.andBisDeleteEqualTo(false);
@@ -63,13 +63,13 @@ public class DataLandLevelDetailDao {
         return dataLandLevelDetailMapper.countByExample(example);
     }
 
-    public DataLandLevelDetail getDataLandLevelDetail(Integer landLevelId, Integer classify, Integer pid) {
+    public DataLandLevelDetail getDataLandLevelDetail(Integer landLevelId, String classify, Integer pid) {
         DataLandLevelDetailExample example = new DataLandLevelDetailExample();
         DataLandLevelDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         if (landLevelId != null) {
             criteria.andLandLevelIdEqualTo(landLevelId);
         }
-        if (classify != null) {
+        if (StringUtils.isNotBlank(classify)) {
             criteria.andClassifyEqualTo(classify);
         }
         if (pid != null) {
@@ -80,15 +80,15 @@ public class DataLandLevelDetailDao {
         return dataLandLevelDetails.get(0);
     }
 
-    public List<DataLandLevelDetail> getDataByClassifyAndType(Integer landLevelId, Integer classify, Integer type) {
+    public List<DataLandLevelDetail> getDataByClassifyAndType(Integer landLevelId, String classify, String type) {
         DataLandLevelDetail oo = new DataLandLevelDetail();
         if (landLevelId != null) {
             oo.setLandLevelId(landLevelId);
         }
-        if (classify != null) {
+        if (StringUtils.isNotBlank(classify)) {
             oo.setClassify(classify);
         }
-        if (type != null) {
+        if (StringUtils.isNotBlank(type)) {
             oo.setType(type);
         }
         return getDataLandLevelDetailList(oo);

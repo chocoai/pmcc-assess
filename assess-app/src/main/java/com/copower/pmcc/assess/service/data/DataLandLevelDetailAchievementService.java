@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailAchievementDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievement;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.data.DataAchievementDto;
@@ -25,7 +24,6 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -75,8 +73,6 @@ public class DataLandLevelDetailAchievementService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
-    @Autowired
-    private DataLandLevelDetailService dataLandLevelDetailService;
 
     private final String FACTOR = "因素";//修正说明 自定义的和页面一致 ,以后优化需要专门放在一个地方 FACTOR
     private final String COEFFICIENT = "系数"; //修正系数 自定义的和页面一致
@@ -91,48 +87,24 @@ public class DataLandLevelDetailAchievementService {
      * @return
      * @throws Exception
      */
-    public String importDataLandLevelDetailAchievementNew(MultipartFile multipartFile, Integer landLevelId) throws Exception {
+    public String importDataLandLevelDetailAchievementNew(MultipartFile multipartFile, Integer levelDetailId) throws Exception {
         StringBuilder builder = new StringBuilder(10);
         //自定义的收集导入数量处理
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         final AtomicInteger relatedAtomicInteger = new AtomicInteger(0);
-        final AtomicInteger treeAtomicInteger = new AtomicInteger(0);
         final List<BaseDataDic> grades = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.programmeMarketCostapproachGrade);
         final List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.programmeMarketCostapproachFactor);
         final List<BaseDataDic> numbers = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_LEVEL_ROMAN);
-        final List<BaseDataDic> classList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_LEVEL_CLASSIFY);
         //1.保存文件
         String filePath = baseAttachmentService.saveUploadFile(multipartFile);
-        String name = FilenameUtils.getBaseName(multipartFile.getOriginalFilename());
-        Integer classify = classList.stream().filter(baseDataDic -> StringUtils.contains(name ,baseDataDic.getName())).findFirst().get().getId();//这里报错就是数据字典没配
-        DataLandLevelDetail landLevelDetail = new DataLandLevelDetail();
-        landLevelDetail.setClassify(classify);
-        landLevelDetail.setPid(0);
-        landLevelDetail.setLandLevelId(landLevelId);
-        List<DataLandLevelDetail> landLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailList(landLevelDetail);
-        if (CollectionUtils.isEmpty(landLevelDetailList)) {
-            dataLandLevelDetailService.saveAndUpdateDataLandLevelDetail(landLevelDetail);
-            landLevelDetailList.add(landLevelDetail);
-            treeAtomicInteger.incrementAndGet();
-        }
         List<Sheet> sheetList = PoiUtils.getSheet(filePath);
         List<DataAchievementDto> dataAchievementDtoList = getFilterList(sheetList, numbers);
         if (CollectionUtils.isNotEmpty(dataAchievementDtoList)) {
             Iterator<DataAchievementDto> iterator = dataAchievementDtoList.iterator();
             while (iterator.hasNext()) {
                 DataAchievementDto achievementDto = iterator.next();
-                DataLandLevelDetail query = new DataLandLevelDetail();
-                query.setType(achievementDto.getType());
-                query.setPid(landLevelDetailList.get(0).getId());
-                query.setLandLevelId(landLevelId);
-                List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailList(query);
-                if (CollectionUtils.isEmpty(dataLandLevelDetailList)) {
-                    dataLandLevelDetailService.saveAndUpdateDataLandLevelDetail(query);
-                    treeAtomicInteger.incrementAndGet();
-                    dataLandLevelDetailList.add(query);
-                }
                 DataLandLevelDetailAchievement dataLandLevelDetailAchievement = new DataLandLevelDetailAchievement();
-                dataLandLevelDetailAchievement.setLevelDetailId(dataLandLevelDetailList.get(0).getId());
+                dataLandLevelDetailAchievement.setLevelDetailId(levelDetailId);
                 List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementList = getDataLandLevelDetailAchievementList(dataLandLevelDetailAchievement);
                 handleSheet(achievementDto, dataLandLevelDetailAchievement, grades, types, dataLandLevelDetailAchievementList, atomicInteger, relatedAtomicInteger);
             }
@@ -142,9 +114,6 @@ public class DataLandLevelDetailAchievementService {
         }
         if (relatedAtomicInteger.get() != 0) {
             builder.append("\r\n").append("共关联").append(relatedAtomicInteger.get()).append("条数据");
-        }
-        if (treeAtomicInteger.get() != 0) {
-            builder.append("\r\n").append("共生成").append(treeAtomicInteger.get()).append("个").append("树节点");
         }
         return builder.toString();
     }
@@ -408,6 +377,20 @@ public class DataLandLevelDetailAchievementService {
 
     public boolean deleteDataLandLevelDetailAchievement(Integer id) {
         return dataLandLevelDetailAchievementDao.deleteDataLandLevelDetailAchievement(id);
+    }
+
+    public void clear(Integer id){
+        DataLandLevelDetailAchievement query = new DataLandLevelDetailAchievement();
+        query.setLevelDetailId(id);
+        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementList = getDataLandLevelDetailAchievementList(query);
+        if (CollectionUtils.isEmpty(dataLandLevelDetailAchievementList)){
+            return;
+        }
+        Iterator<DataLandLevelDetailAchievement> iterator = dataLandLevelDetailAchievementList.iterator();
+        while (iterator.hasNext()){
+            DataLandLevelDetailAchievement next = iterator.next();
+            deleteDataLandLevelDetailAchievement(next.getId()) ;
+        }
     }
 
     public DataLandLevelDetailAchievement getDataLandLevelDetailAchievementById(Integer id) {
