@@ -819,7 +819,7 @@ public class GenerateMdCompareService {
 
             //权重
             for (MdMarketCompareItem caseItem : caseItemList) {
-                if (StringUtils.isNotBlank(caseItem.getWeight())) {
+                if (StringUtils.isNotBlank(caseItem.getWeight()) && !"无".equals(caseItem.getWeight())) {
                     flag = true;
                 }
             }
@@ -828,7 +828,7 @@ public class GenerateMdCompareService {
                 builder.write("权重");
                 for (MdMarketCompareItem caseItem : caseItemList) {
                     builder.insertCell();
-                    if (StringUtils.isNotBlank(caseItem.getWeight())) {
+                    if (StringUtils.isNotBlank(caseItem.getWeight()) && !"无".equals(caseItem.getWeight())) {
                         BigDecimal weight = new BigDecimal(caseItem.getWeight());
                         weight = weight.multiply(new BigDecimal("100"));
                         weight.setScale(2, RoundingMode.HALF_UP);//保留两位小数
