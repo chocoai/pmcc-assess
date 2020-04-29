@@ -1460,7 +1460,7 @@
     };
 
     function loadCertAllFile(declareRecord) {
-        makeJudgeObjectPosition(declareRecord);
+        loadPositionHtml(declareRecord);
         loadLiveSituationHtml(declareRecord);
         loadOwnershipCertHtml(declareRecord);
         loadLandFileHtml(declareRecord);
@@ -1468,17 +1468,19 @@
     }
 
     //位置示意图
-    function makeJudgeObjectPosition(declareRecord) {
+    function makeJudgeObjectPosition(declareRecordId) {
         $.ajax({
             url: "${pageContext.request.contextPath}/projectReportFile/makeJudgeObjectPosition",
             type: "post",
             dataType: "json",
             data: {
-                declareRecordId: declareRecord.id
+                declareRecordId: declareRecordId
             },
             success: function (result) {
                 if (result.ret) {
-                    loadPositionHtml(declareRecord);
+                    uploadFiles(AssessDBKey.DeclareRecord, declareRecordId, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecordId);
+                    loadUploadFiles(AssessDBKey.DeclareRecord, declareRecordId, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecordId);
+
                 }
             },
             error: function (result) {
@@ -1490,9 +1492,11 @@
     //位置示意图html
     function loadPositionHtml(declareRecord) {
         var html = '';
-        html += '<tr><td>' + declareRecord.name + '</td><td>' +
-            '<input type="file" multiple="false"  id="judge_object_position' + declareRecord.id + '">' +
-            '<div id="_judge_object_position' + declareRecord.id + '"></div></td></tr>';
+        html += '<tr><td>' + declareRecord.name;
+        html += '<small style="margin-left: 5px;"><button type="button" value="自动生成" onclick="makeJudgeObjectPosition(' + declareRecord.id + ')" class="btn btn-success btn-xs">自动生成</button></small>';
+        html += "</td><td>";
+        html += '<input type="file" multiple="false"  id="judge_object_position' + declareRecord.id + '">';
+        html +=  '<div id="_judge_object_position' + declareRecord.id + '"></div></td></tr>';
         $("#positionTbody").empty().append(html);
         uploadFiles(AssessDBKey.DeclareRecord, declareRecord.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecord.id);
         loadUploadFiles(AssessDBKey.DeclareRecord, declareRecord.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecord.id);

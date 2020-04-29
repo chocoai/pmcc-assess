@@ -6021,6 +6021,11 @@ public class GenerateBaseDataService {
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                 }
                 List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getDeclareRecordId());
+                if (!CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                    //自动生成
+                    schemeReportFileService.makeJudgeObjectPosition(schemeJudgeObject.getDeclareRecordId());
+                    sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getDeclareRecordId());
+                }
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     this.imgComposingByAttachmentDtoList(sysAttachmentDtoList, builder);
                 }

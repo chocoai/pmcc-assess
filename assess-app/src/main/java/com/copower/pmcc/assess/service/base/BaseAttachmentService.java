@@ -307,7 +307,12 @@ public class BaseAttachmentService {
      */
     public String downloadFtpFileToLocal(Integer attachmentId) throws Exception {
         SysAttachmentDto attachmentDto = erpRpcAttachmentService.getAttachmentDtoById(attachmentId);
-        return ftpUtilsExtense.downloadFileToLocal(attachmentDto);
+        try {
+            String local = ftpUtilsExtense.downloadFileToLocal(attachmentDto);
+            return local;
+        }catch (Exception e){
+            return null;
+        }
     }
 
     /**

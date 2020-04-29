@@ -441,7 +441,9 @@ public class SchemeReimbursementService {
             Map<Integer, SchemeReimbursementItemVo> integerSchemeReimbursementItemVoMap = Maps.newHashMap();
             for (SurveyAssetRightGroup rightGroup : rightGroupList) {
                 SchemeReimbursementItemVo vo = getSchemeReimbursementItemVoByInventoryRightRecordId(rightGroup.getId());
-                integerSchemeReimbursementItemVoMap.put(vo.getId(), vo);
+                if(vo!=null){
+                    integerSchemeReimbursementItemVoMap.put(vo.getId(), vo);
+                }
             }
             integerListMap.put(judgeObject.getId(), integerSchemeReimbursementItemVoMap.values().stream().collect(Collectors.toList()));
         }
