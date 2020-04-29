@@ -772,7 +772,7 @@ public class GenerateMdCompareService {
                 builder.insertCell();
                 if (caseItem.getLocationFactorRatio() != null) {
                     builder.write(String.format("%.4f", caseItem.getLocationFactorRatio()));
-                }else{
+                } else {
                     builder.write(String.format("%.4f", new BigDecimal("1")));
                 }
             }
@@ -785,7 +785,7 @@ public class GenerateMdCompareService {
                 builder.insertCell();
                 if (caseItem.getEntityFactorRatio() != null) {
                     builder.write(String.format("%.4f", caseItem.getEntityFactorRatio()));
-                }else{
+                } else {
                     builder.write(String.format("%.4f", new BigDecimal("1")));
                 }
             }
@@ -798,7 +798,7 @@ public class GenerateMdCompareService {
                 builder.insertCell();
                 if (caseItem.getEquityFactorRatio() != null) {
                     builder.write(String.format("%.4f", caseItem.getEquityFactorRatio()));
-                }else{
+                } else {
                     builder.write(String.format("%.4f", new BigDecimal("1")));
                 }
             }
@@ -843,9 +843,9 @@ public class GenerateMdCompareService {
         }
         //加权平均价
         builder.insertCell();
-        if(flag){
+        if (flag) {
             builder.write("加权平均价");
-        }else{
+        } else {
             builder.write("算数平均价");
         }
         builder.insertCell();
@@ -1119,9 +1119,14 @@ public class GenerateMdCompareService {
                     item.setSpecificPrice("0");
                 }
                 if (StringUtils.isNotBlank(item.getWeight())) {
-                    BigDecimal temp = new BigDecimal(item.getSpecificPrice()).multiply(new BigDecimal(item.getWeight()));
-                    num = num.add(temp);
-                    content.append(item.getSpecificPrice() + "×" + item.getWeight() + "+");
+                    try {
+                        BigDecimal temp = new BigDecimal(item.getSpecificPrice()).multiply(new BigDecimal(item.getWeight()));
+                        num = num.add(temp);
+                        content.append(item.getSpecificPrice() + "×" + item.getWeight() + "+");
+                    } catch (Exception e) {
+                        String error = e.getMessage();
+                        logger.error(error, e);
+                    }
                     weightRemark.append(item.getName()).append("权重说明").append(item.getWeightDescription()).append(",");
                 } else {
                     num = num.add(new BigDecimal(item.getSpecificPrice()));
@@ -1138,10 +1143,10 @@ public class GenerateMdCompareService {
                     //建筑面积单价及套内面积单价用元/㎡
                     BaseDataDic buildAreaUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_BUILD_AREA_UNIT_PRICE);
                     BaseDataDic buildInteriorUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INTERIOR_AREA_UNIT_PRICE);
-                    if(!item2.getValue().equals(buildAreaUnitPrice.getName())&&!item2.getValue().equals(buildInteriorUnitPrice.getName())){
-                       //获取单位
+                    if (!item2.getValue().equals(buildAreaUnitPrice.getName()) && !item2.getValue().equals(buildInteriorUnitPrice.getName())) {
+                        //获取单位
                         BasicApply apply = basicApplyService.getByBasicApplyId(getEvaluationItemList().getBasicApplyId());
-                        if(apply!=null) {
+                        if (apply != null) {
                             BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(apply.getBasicHouseId());
                             unit = houseTrading.getPriceConnotationUnit();
                         }

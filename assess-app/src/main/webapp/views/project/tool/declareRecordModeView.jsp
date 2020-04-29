@@ -208,6 +208,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            singleSelect: true,
             onLoadSuccess: function () {//加载成功时执行
                 //对曾经选中过的依旧保持选中状态
                 if (declareRecordModeObj.ids) {

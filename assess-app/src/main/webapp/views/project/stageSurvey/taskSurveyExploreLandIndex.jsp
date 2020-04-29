@@ -30,10 +30,6 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${projectPlanDetails.projectPhaseName}
-                                        <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
-                                                onclick="batchTreeTool.showAlternativeSurveyModal();">
-                                            引用楼盘
-                                        </button>
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-sm"><span

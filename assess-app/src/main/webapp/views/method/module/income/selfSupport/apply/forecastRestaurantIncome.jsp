@@ -691,7 +691,7 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 if (row.amountMoney != null) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id + ')">查看明细</a>';
+                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id + ')">查看明细</a>';
                     str += '<button type="button" onclick="forecastRestaurant.showItemData(' + row.id  + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看明细">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
