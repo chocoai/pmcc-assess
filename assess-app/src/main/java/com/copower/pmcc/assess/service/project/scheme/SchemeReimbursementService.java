@@ -288,6 +288,10 @@ public class SchemeReimbursementService {
         init(schemeReimbursement, projectPlanDetails, schemeAreaGroup, true);
     }
 
+    public SchemeReimbursement getSchemeReimbursementByAreaIdAndByPlanDetailsId(Integer planDetailsId,Integer areaId){
+        return schemeReimbursementDao.getSchemeReimbursementByAreaIdAndByPlanDetailsId(planDetailsId,areaId) ;
+    }
+
 
     /**
      * 初始化数据

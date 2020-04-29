@@ -3724,16 +3724,20 @@ public class GenerateBaseDataService {
         Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
         while (iterator.hasNext()) {
             SchemeJudgeObject schemeJudgeObject = iterator.next();
-            if (schemeJudgeObject.getDeclareRecordId() == null) {
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-            if (basicApplyBatch == null) {
+            if (schemeJudgeObject.getBasicApplyId() == null || schemeJudgeObject.getBasicApplyId() ==0){
                 continue;
             }
             BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+            if (basicApply == null){
+                baseService.writeExceptionInfo(new java.lang.NullPointerException()," 估价对象中 根据basicApplyId 没有获取到对应的对象,请注意");
+                continue;
+            }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             BasicHouse basicHouse = generateBaseExamineService.getBasicHouse();
+            if (basicHouse == null){
+                baseService.writeExceptionInfo(new java.lang.NullPointerException()," 查勘房屋 没有获取到,请注意");
+                continue;
+            }
             BasicUnitHuxing query = new BasicUnitHuxing();
             query.setHouseId(basicHouse.getId());
             List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);

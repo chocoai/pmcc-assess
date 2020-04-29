@@ -112,6 +112,9 @@
 </body>
 
 <%@include file="/views/data/landModelDir/landModel.jsp" %>
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;">
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     function findQuery() {

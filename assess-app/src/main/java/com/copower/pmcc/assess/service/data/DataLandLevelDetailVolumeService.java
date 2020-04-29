@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -144,6 +145,20 @@ public class DataLandLevelDetailVolumeService {
 
     public boolean deleteDataLandLevelDetailVolume(Integer id) {
         return dataLandDetailAchievementDao.deleteDataLandLevelDetailVolume(id);
+    }
+
+    public void clear(Integer id){
+        DataLandLevelDetailVolume query = new DataLandLevelDetailVolume();
+        query.setLevelDetailId(id);
+        List<DataLandLevelDetailVolume> dataLandLevelDetailVolumeList = getDataLandLevelDetailVolumeList(query);
+        if (CollectionUtils.isEmpty(dataLandLevelDetailVolumeList)){
+            return;
+        }
+        Iterator<DataLandLevelDetailVolume> iterator = dataLandLevelDetailVolumeList.iterator();
+        while (iterator.hasNext()){
+            DataLandLevelDetailVolume next = iterator.next();
+            deleteDataLandLevelDetailVolume(next.getId()) ;
+        }
     }
 
     public DataLandLevelDetailVolume getDataLandLevelDetailVolumeById(Integer id) {

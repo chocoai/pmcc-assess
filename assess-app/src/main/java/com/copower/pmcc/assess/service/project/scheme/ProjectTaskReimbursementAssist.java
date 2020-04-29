@@ -119,7 +119,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
      * @param projectPlanDetails
      */
     private void settingModel(ModelAndView modelAndView,ProjectPlanDetails projectPlanDetails){
-        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getDataByProcessInsId(projectPlanDetails.getProcessInsId());
+        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getSchemeReimbursementByAreaIdAndByPlanDetailsId(projectPlanDetails.getId(),projectPlanDetails.getAreaId());
         modelAndView.addObject("master", schemeReimbursement);
         modelAndView.addObject("areaGroup", schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()));
     }
@@ -132,22 +132,20 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
      * @throws Exception
      */
     private void writeSchemeReimbursement(ProjectPlanDetails projectPlanDetails, SchemeAreaGroup schemeAreaGroup,ModelAndView modelAndView ,boolean repeat) throws Exception {
-        SchemeReimbursement select = new SchemeReimbursement();
-        select.setPlanDetailsId(projectPlanDetails.getId());
-        select.setProjectId(projectPlanDetails.getProjectId());
-        select.setAreaId(schemeAreaGroup.getId());
-        select.setProcessInsId(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())?projectPlanDetails.getProcessInsId():"0");
-        List<SchemeReimbursement> schemeReimbursementList = schemeReimbursementService.getObjectList(select);
+        SchemeReimbursement schemeReimbursement = schemeReimbursementService.getSchemeReimbursementByAreaIdAndByPlanDetailsId(projectPlanDetails.getId(),schemeAreaGroup.getId());
         //当查询不到主法定优先受偿款时则生成一个主数据
-        if (CollectionUtils.isEmpty(schemeReimbursementList)){
-            select.setStatus(ProcessStatusEnum.RUN.getValue());
-            schemeReimbursementService.saveSchemeReimbursement(select);
-            schemeReimbursementList = Lists.newArrayList(select);
+        if (schemeReimbursement == null){
+            schemeReimbursement = new SchemeReimbursement() ;
+            schemeReimbursement.setPlanDetailsId(projectPlanDetails.getId());
+            schemeReimbursement.setProjectId(projectPlanDetails.getProjectId());
+            schemeReimbursement.setAreaId(schemeAreaGroup.getId());
+            schemeReimbursement.setProcessInsId(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())?projectPlanDetails.getProcessInsId():"0");
+            schemeReimbursement.setStatus(ProcessStatusEnum.RUN.getValue());
+            schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
         }
-        modelAndView.addObject("master", schemeReimbursementList.get(0));
+        modelAndView.addObject("master", schemeReimbursement);
         modelAndView.addObject("areaGroup", schemeAreaGroup);
         //初始化数据
-        schemeReimbursementService.init(schemeReimbursementList.get(0),projectPlanDetails,schemeAreaGroup,repeat);
-
+        schemeReimbursementService.init(schemeReimbursement,projectPlanDetails,schemeAreaGroup,repeat);
     }
 }

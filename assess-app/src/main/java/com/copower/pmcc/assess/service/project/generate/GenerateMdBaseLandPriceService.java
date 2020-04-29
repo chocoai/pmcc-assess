@@ -52,6 +52,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -600,7 +601,8 @@ public class GenerateMdBaseLandPriceService {
             builder.write("元/平方米");
             for (int i = 1; i < maxValue; i++) {
                 builder.insertCell();
-                DataLandLevelDetail data = dataLandLevelDetailService.getDataByClassifyAndType(dataLandLevel.getId(), key, i);
+                DataLandLevelDetail data = null;
+                data = dataLandLevelDetailService.getDataByClassifyAndType(dataLandLevel.getId(), key.toString(), String.valueOf(i));
                 if (data != null) {
                     builder.write(data.getPrice().setScale(0, BigDecimal.ROUND_HALF_UP).toString());
                 } else {
@@ -615,7 +617,7 @@ public class GenerateMdBaseLandPriceService {
             builder.write("万元/亩");
             for (int i = 1; i < maxValue; i++) {
                 builder.insertCell();
-                DataLandLevelDetail data = dataLandLevelDetailService.getDataByClassifyAndType(dataLandLevel.getId(), key, i);
+                DataLandLevelDetail data = dataLandLevelDetailService.getDataByClassifyAndType(dataLandLevel.getId(), key.toString(), String.valueOf(i));
                 if (data != null) {
                     builder.write(data.getPrice().multiply(new BigDecimal("666.67")).divide(new BigDecimal("10000")).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
                 } else {
@@ -954,9 +956,13 @@ public class GenerateMdBaseLandPriceService {
                 int i = map.get(user.getClassify());
                 i++;
                 map.remove(user.getClassify());
-                map.put(user.getClassify(), i);
+                if (NumberUtils.isNumber(user.getClassify())) {
+                    map.put(Integer.parseInt(user.getClassify()), i);
+                }
             } else {
-                map.put(user.getClassify(), 1);
+                if (NumberUtils.isNumber(user.getClassify())) {
+                    map.put(Integer.parseInt(user.getClassify()), 1);
+                }
             }
         }
         return map;

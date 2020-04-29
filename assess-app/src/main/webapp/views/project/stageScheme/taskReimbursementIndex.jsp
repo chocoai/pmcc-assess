@@ -210,6 +210,10 @@
     }
 
     function getItemHtml() {
+        if (! "${master.id}"){
+            AlertError("提示","法定优先受偿款没有初始化,进入页面后点击初始化按钮！");
+            return false ;
+        }
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeReimbursement/getSchemeReimbursementList",

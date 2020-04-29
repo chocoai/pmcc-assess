@@ -383,7 +383,7 @@ landLevel.treeLandLevelDetailListModal = function (id) {
     currentLandLevelId = id;
     var box = landLevel.config.land_level_detail_tree_modal;
     this.loadTree(id);
-    this.initLandLevelDetailForm({landLevelId: id, pid: 0}, "none");
+    this.initLandLevelDetailForm({landLevelId: id, pid: 0});
     box.modal();
     var form = box.find("form").first();
     if (form.size() != 0) {
@@ -393,7 +393,8 @@ landLevel.treeLandLevelDetailListModal = function (id) {
             volumeRate: '',
             legalAge: '',
             landAcquisitionProportion: '',
-            mainStreet: ''
+            mainStreet: '',
+            floorPrice: ''
         };
         form.initForm(data);
         landLevel.initLandLevelDetailBaseForm(form, data);
@@ -516,11 +517,13 @@ function removeHoverDom(treeId, treeNode) {
 }
 
 function zTreeOnClick(event, treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var box = landLevel.config.land_level_detail_tree_modal;
     var form = box.find("form").first();
     landLevel.getDataLandLevelDetailById(treeNode.id, function (data) {
         landLevel.initLandLevelDetailBaseForm(form, data);
     });
+    zTree.checkNode(treeNode, true, true);
 }
 
 function zTreeOnRemove() {
@@ -528,7 +531,7 @@ function zTreeOnRemove() {
     // var nodes = zTree.getSelectedNodes();
     var nodes = zTree.getCheckedNodes(true);
     if (nodes.length == 0) {
-        notifyInfo('提示', '至少勾选一个作为层级');
+        notifyInfo('提示', '至少勾选一个节点');
         return false;
     }
     var ids = [];
@@ -547,12 +550,8 @@ function zTreeOnEdit() {
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     // var nodes = zTree.getSelectedNodes();
     var nodes = zTree.getCheckedNodes(true);
-    if (nodes.length == 0) {
-        notifyInfo('提示', '勾选一个作为层级');
-        return false;
-    }
-    if (nodes.length > 1) {
-        notifyInfo('提示', '只能勾选一个作为层级');
+    if (nodes.length != 1) {
+        notifyInfo('提示', '只勾选一个节点');
         return false;
     }
     var box = landLevel.config.land_level_detail_modal;
@@ -656,15 +655,14 @@ function addHoverDom(treeId, treeNode) {
 
 
 landLevel.loadTree = function () {
-    var zTreeObj;
-
     // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
     var setting = {
         //页面上的显示效果
         view: {},
         check: {
             enable: true,
-            chkStyle: "checkbox"
+            chkStyle: "checkbox",
+            chkboxType: {"Y": "", "N": ""}//必须设为null ,这样可以真正意义上让复选框不影响父级和子级,哪个被点击了就勾选哪个
         },
         callback: {
             onClick: zTreeOnClick
@@ -682,7 +680,11 @@ landLevel.loadTree = function () {
         }
     };
     landLevel.ajaxServerMethod({landLevelId: currentLandLevelId}, "/dataLandLevel/getDataLandLevelDetailTree", "get", function (data) {
-        $.fn.zTree.destroy();
+        var zTreeObj = null;
+        zTreeObj = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+        if (zTreeObj != null) {
+            zTreeObj.destroy();
+        }
         zTreeObj = $.fn.zTree.init(landLevel.config.tree, setting, data);
         zTreeObj.expandAll(true);
     });
@@ -698,19 +700,51 @@ landLevel.treeExpandAll = function (flag) {
 };
 
 /**
+ * 清除子数据 clear child data
+ * @param _this
+ */
+landLevel.clearNodeChild = function (_this) {
+    var zTreeObj = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+    var nodes = zTreeObj.getCheckedNodes(true);
+    if (nodes.length == 0) {
+        notifyInfo('提示', '勾选至少一个节点');
+        return false;
+    }
+    var ids = [];
+    $.each(nodes, function (i, node) {
+        ids.push(node.id);
+    });
+    landLevel.ajaxServerMethod({id: ids.join(",")}, "/dataLandLevel/clearNodeChildDataLandLevelDetail", "post", function () {
+        notifyInfo('提示', '清除成功');
+        $.each(nodes, function (i, treeNode) {
+            zTreeObj.checkNode(treeNode, false, true);
+        });
+    });
+};
+
+/**
  * 刷新
  */
 landLevel.treeRefresh = function () {
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
-    zTree.refresh();
+    // zTree.refresh();
+    landLevel.loadTree();
 };
 
 /**
  * 全选
  */
-landLevel.treeCheckAllNodes = function () {
+landLevel.treeCheckAllNodes = function (_this) {
+    var btn = $(_this);
+    var value = btn.attr("data-value");
     var treeObj = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
-    treeObj.checkAllNodes(true);
+    if (value) {
+        treeObj.checkAllNodes(false);
+        btn.attr("data-value", "");
+    } else {
+        treeObj.checkAllNodes(true);
+        btn.attr("data-value", "yes");
+    }
 };
 //---------------------------土地级别 end---------------------------------------//
 
@@ -721,22 +755,14 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
     var box = landLevel.config.land_level_detail_modal;
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
-    if (nodes.length > 1) {
-        notifySuccess('成功', '只能选择一个作为层级');
+    if (nodes.length != 1) {
+        notifyInfo('提示', '请选择一个节点');
         return false;
     }
-    if (nodes.length == 1) {
-        var treeNode = nodes[0];
-        if (treeNode.pid == 0) {
-            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='levelDetailId']").val(treeNode.id);
-            landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
-            landLevel.showDataHousePriceIndexDetailList(treeNode.id);
-        } else {
-            notifySuccess('成功', '第一层级关联容积率系数配置');
-        }
-    } else {
-        notifySuccess('成功', '选择层级');
-    }
+    var treeNode = nodes[0];
+    landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='levelDetailId']").val(treeNode.id);
+    landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
+    landLevel.showDataHousePriceIndexDetailList(treeNode.id);
 };
 
 landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetailBox = function () {
@@ -755,8 +781,14 @@ landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function 
 landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag) {
     var target = $('#ajaxFileUploadLandLevelDetailCoefficientVolumeRatio');
     var levelDetailId = "";
+    var zTreeObj = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     if (flag) {
-        levelDetailId = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.find("input[name='levelDetailId']").val();
+        var nodes = zTreeObj.getCheckedNodes(true);
+        if (nodes.length != 1) {
+            notifyInfo('提示', '勾选一个');
+            return false;
+        }
+        levelDetailId = nodes[0].id;
         target.val('').trigger('click');
         target.attr({levelDetailId: levelDetailId});
         return flag;
