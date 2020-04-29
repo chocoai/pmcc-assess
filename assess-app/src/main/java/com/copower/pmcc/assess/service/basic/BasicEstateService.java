@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.common.enums.basic.ExamineCommonQuoteFieldEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -105,8 +106,6 @@ public class BasicEstateService extends BasicEntityAbstract {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectInfoService projectInfoService;
-    @Autowired
-    private BasicEstateLandUseCategoryService basicEstateLandUseCategoryService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
@@ -467,10 +466,10 @@ public class BasicEstateService extends BasicEntityAbstract {
 
             //土地类型类别
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELandUseTypeCategory.getVar());
-            List<BasicEstateLandUseCategoryVo> landUseCategorieVos = JSONObject.parseArray(jsonContent, BasicEstateLandUseCategoryVo.class);
+            List<BasicEstateLandCategoryInfo> landUseCategorieVos = JSONObject.parseArray(jsonContent, BasicEstateLandCategoryInfo.class);
             if (!CollectionUtils.isEmpty(landUseCategorieVos)) {
-                for (BasicEstateLandUseCategoryVo item : landUseCategorieVos) {
-                    basicEstateLandUseCategoryService.saveAndUpdateBasicEstateLandUseCategory(item, false);
+                for (BasicEstateLandCategoryInfo item : landUseCategorieVos) {
+                    basicEstateLandCategoryInfoService.saveAndUpdateBasicEstateLandCategoryInfo(item, false);
                 }
             }
         }

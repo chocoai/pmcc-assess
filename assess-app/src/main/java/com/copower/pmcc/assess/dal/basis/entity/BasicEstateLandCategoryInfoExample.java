@@ -995,6 +995,526 @@ public class BasicEstateLandCategoryInfoExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andLandShapeIsNull() {
+            addCriterion("land_shape is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeIsNotNull() {
+            addCriterion("land_shape is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeEqualTo(String value) {
+            addCriterion("land_shape =", value, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeNotEqualTo(String value) {
+            addCriterion("land_shape <>", value, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeGreaterThan(String value) {
+            addCriterion("land_shape >", value, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeGreaterThanOrEqualTo(String value) {
+            addCriterion("land_shape >=", value, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeLessThan(String value) {
+            addCriterion("land_shape <", value, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeLessThanOrEqualTo(String value) {
+            addCriterion("land_shape <=", value, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeLike(String value) {
+            addCriterion("land_shape like", value, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeNotLike(String value) {
+            addCriterion("land_shape not like", value, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeIn(List<String> values) {
+            addCriterion("land_shape in", values, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeNotIn(List<String> values) {
+            addCriterion("land_shape not in", values, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeBetween(String value1, String value2) {
+            addCriterion("land_shape between", value1, value2, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandShapeNotBetween(String value1, String value2) {
+            addCriterion("land_shape not between", value1, value2, "landShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeIsNull() {
+            addCriterion("develop_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeIsNotNull() {
+            addCriterion("develop_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeEqualTo(Date value) {
+            addCriterion("develop_time =", value, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeNotEqualTo(Date value) {
+            addCriterion("develop_time <>", value, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeGreaterThan(Date value) {
+            addCriterion("develop_time >", value, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("develop_time >=", value, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeLessThan(Date value) {
+            addCriterion("develop_time <", value, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeLessThanOrEqualTo(Date value) {
+            addCriterion("develop_time <=", value, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeIn(List<Date> values) {
+            addCriterion("develop_time in", values, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeNotIn(List<Date> values) {
+            addCriterion("develop_time not in", values, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeBetween(Date value1, Date value2) {
+            addCriterion("develop_time between", value1, value2, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDevelopTimeNotBetween(Date value1, Date value2) {
+            addCriterion("develop_time not between", value1, value2, "developTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioIsNull() {
+            addCriterion("plot_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioIsNotNull() {
+            addCriterion("plot_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio =", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioNotEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio <>", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioGreaterThan(BigDecimal value) {
+            addCriterion("plot_ratio >", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio >=", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioLessThan(BigDecimal value) {
+            addCriterion("plot_ratio <", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio <=", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio in", values, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioNotIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio not in", values, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio between", value1, value2, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio not between", value1, value2, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityIsNull() {
+            addCriterion("building_density is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityIsNotNull() {
+            addCriterion("building_density is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityEqualTo(String value) {
+            addCriterion("building_density =", value, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityNotEqualTo(String value) {
+            addCriterion("building_density <>", value, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityGreaterThan(String value) {
+            addCriterion("building_density >", value, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityGreaterThanOrEqualTo(String value) {
+            addCriterion("building_density >=", value, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityLessThan(String value) {
+            addCriterion("building_density <", value, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityLessThanOrEqualTo(String value) {
+            addCriterion("building_density <=", value, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityLike(String value) {
+            addCriterion("building_density like", value, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityNotLike(String value) {
+            addCriterion("building_density not like", value, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityIn(List<String> values) {
+            addCriterion("building_density in", values, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityNotIn(List<String> values) {
+            addCriterion("building_density not in", values, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityBetween(String value1, String value2) {
+            addCriterion("building_density between", value1, value2, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingDensityNotBetween(String value1, String value2) {
+            addCriterion("building_density not between", value1, value2, "buildingDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateIsNull() {
+            addCriterion("greening_rate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateIsNotNull() {
+            addCriterion("greening_rate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateEqualTo(BigDecimal value) {
+            addCriterion("greening_rate =", value, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateNotEqualTo(BigDecimal value) {
+            addCriterion("greening_rate <>", value, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateGreaterThan(BigDecimal value) {
+            addCriterion("greening_rate >", value, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("greening_rate >=", value, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateLessThan(BigDecimal value) {
+            addCriterion("greening_rate <", value, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("greening_rate <=", value, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateIn(List<BigDecimal> values) {
+            addCriterion("greening_rate in", values, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateNotIn(List<BigDecimal> values) {
+            addCriterion("greening_rate not in", values, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("greening_rate between", value1, value2, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("greening_rate not between", value1, value2, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeIsNull() {
+            addCriterion("compatibility_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeIsNotNull() {
+            addCriterion("compatibility_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeEqualTo(String value) {
+            addCriterion("compatibility_type =", value, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeNotEqualTo(String value) {
+            addCriterion("compatibility_type <>", value, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeGreaterThan(String value) {
+            addCriterion("compatibility_type >", value, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("compatibility_type >=", value, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeLessThan(String value) {
+            addCriterion("compatibility_type <", value, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeLessThanOrEqualTo(String value) {
+            addCriterion("compatibility_type <=", value, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeLike(String value) {
+            addCriterion("compatibility_type like", value, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeNotLike(String value) {
+            addCriterion("compatibility_type not like", value, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeIn(List<String> values) {
+            addCriterion("compatibility_type in", values, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeNotIn(List<String> values) {
+            addCriterion("compatibility_type not in", values, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeBetween(String value1, String value2) {
+            addCriterion("compatibility_type between", value1, value2, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityTypeNotBetween(String value1, String value2) {
+            addCriterion("compatibility_type not between", value1, value2, "compatibilityType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateIsNull() {
+            addCriterion("compatibility_rate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateIsNotNull() {
+            addCriterion("compatibility_rate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateEqualTo(BigDecimal value) {
+            addCriterion("compatibility_rate =", value, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateNotEqualTo(BigDecimal value) {
+            addCriterion("compatibility_rate <>", value, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateGreaterThan(BigDecimal value) {
+            addCriterion("compatibility_rate >", value, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("compatibility_rate >=", value, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateLessThan(BigDecimal value) {
+            addCriterion("compatibility_rate <", value, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("compatibility_rate <=", value, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateIn(List<BigDecimal> values) {
+            addCriterion("compatibility_rate in", values, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateNotIn(List<BigDecimal> values) {
+            addCriterion("compatibility_rate not in", values, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("compatibility_rate between", value1, value2, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("compatibility_rate not between", value1, value2, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedIsNull() {
+            addCriterion("height_permitted is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedIsNotNull() {
+            addCriterion("height_permitted is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedEqualTo(String value) {
+            addCriterion("height_permitted =", value, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedNotEqualTo(String value) {
+            addCriterion("height_permitted <>", value, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedGreaterThan(String value) {
+            addCriterion("height_permitted >", value, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedGreaterThanOrEqualTo(String value) {
+            addCriterion("height_permitted >=", value, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedLessThan(String value) {
+            addCriterion("height_permitted <", value, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedLessThanOrEqualTo(String value) {
+            addCriterion("height_permitted <=", value, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedLike(String value) {
+            addCriterion("height_permitted like", value, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedNotLike(String value) {
+            addCriterion("height_permitted not like", value, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedIn(List<String> values) {
+            addCriterion("height_permitted in", values, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedNotIn(List<String> values) {
+            addCriterion("height_permitted not in", values, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedBetween(String value1, String value2) {
+            addCriterion("height_permitted between", value1, value2, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeightPermittedNotBetween(String value1, String value2) {
+            addCriterion("height_permitted not between", value1, value2, "heightPermitted");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

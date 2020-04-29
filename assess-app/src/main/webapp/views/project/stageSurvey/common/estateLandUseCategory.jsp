@@ -27,7 +27,6 @@
             <div class="card-body">
                 <form class="form-horizontal" id="categoryFrm_number">
                     <input type="hidden" name="id">
-                    <input type="hidden" name="landUseTypeId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -296,7 +295,7 @@
 
 <script type="text/javascript">
     $(function () {
-        landUseType.loadHtml();
+        landUseType.loadSonDataListHtml();
     });
 
     var LandUseType = function () {
@@ -344,18 +343,17 @@
 
     var num = 1;
 
-    landUseType.loadSonDataListHtml = function (landUseTypeId) {
+    landUseType.loadSonDataListHtml = function () {
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicEstateLandUseCategory/basicEstateLandUseCategoryList",
+            url: "${pageContext.request.contextPath}/basicEstateLandCategoryInfo/basicEstateLandCategoryInfoList",
             type: "get",
             dataType: "json",
-            data: {landUseTypeId: landUseTypeId},
+            data: {landId: estateCommon.estateLandStateForm.find('input[name="id"]').val()},
             success: function (result) {
                 if (result.ret) {
                     if (result.ret) {
                         if (result.data.length >= 1) {
                             $.each(result.data, function (i, item) {
-                                console.log(item.id + "==")
                                 var html = $("#categoryDiv").html();
                                 var number = num;
                                 html = html.replace(/_number/g, number);
@@ -422,9 +420,9 @@
             return false;
         }
         var data = formParams(_that);
-        data.estateId = estateCommon.getEstateId();
+        data.landId = estateCommon.estateLandStateForm.find('input[name="id"]').val();
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicEstateLandUseCategory/saveAndUpdateBasicEstateLandUseCategory",
+            url: "${pageContext.request.contextPath}/basicEstateLandCategoryInfo/saveAndUpdateBasicEstateLandCategoryInfo",
             type: "post",
             dataType: "json",
             data: {formData: JSON.stringify(data)},
@@ -443,36 +441,13 @@
     }
 
 
-    landUseType.loadHtml = function () {
-        //找到所有主表数据，一条一个table
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicEstateLandUseType/basicEstateLandUseTypeList",
-            type: "get",
-            dataType: "json",
-            data: {estateId: estateCommon.getEstateId()},
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        $.each(result.data, function (i, item) {
-                            landUseType.loadSonDataListHtml(item.id);
-                        })
-                    }
-                }
-            },
-            error: function (result) {
-                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        })
-
-    }
-
     landUseType.cleanHTMLData= function(_this) {
         var x_panel = $(_this).closest(".col-md-12");
         var form = x_panel.find("form").eq(0);
         var id= form.find("input[name='id']").val()
         if(id){
             $.ajax({
-                url: "${pageContext.request.contextPath}/basicEstateLandUseCategory/deleteBasicEstateLandUseCategory",
+                url: "${pageContext.request.contextPath}/basicEstateLandCategoryInfo/deleteBasicEstateLandCategoryInfo",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -507,7 +482,7 @@
         }
         landUseType.getBasicEstateLandUseById(id, function (result) {
             var data = [];
-            if (result.landLevelContentResult) {
+            if (result&&result.landLevelContentResult) {
                 try {
                     data = JSON.parse(result.landLevelContentResult);
                 } catch (e) {
@@ -708,7 +683,7 @@
     };
 
     landUseType.getBasicEstateLandUseById = function (id, callback) {
-        landUseType.ajaxServerFun({id: id}, "/basicEstateLandUseCategory/getBasicEstateLandUseCategoryById", "get", callback);
+        landUseType.ajaxServerFun({id: id}, "/basicEstateLandCategoryInfo/getBasicEstateLandCategoryInfoById", "get", callback);
     };
 
     //删除

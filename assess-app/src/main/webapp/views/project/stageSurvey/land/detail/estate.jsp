@@ -239,7 +239,7 @@
                                                 <label class="col-sm-1 control-label">土地形状</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
-                                                           name="shapeStateName">${basicEstateLandState.shapeStateName}</label>
+                                                           name="shapeStateName">${basicEstateLandState.planenessName}</label>
                                                 </div>
                                             </div>
                                         </div>

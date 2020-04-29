@@ -421,7 +421,7 @@
 
         $.each(forms, function (i, n) {
             var typeCategoryData = formParams($(n).attr("id"));
-            typeCategoryData.estateId = estateCommon.getEstateId();
+            typeCategoryData.landId = estateCommon.estateLandStateForm.find('input[name="id"]').val();
             formData.landUseTypeCategory.push(typeCategoryData);
 
         });

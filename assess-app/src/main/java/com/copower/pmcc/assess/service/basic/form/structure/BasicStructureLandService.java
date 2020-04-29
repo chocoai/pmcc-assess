@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic.form.structure;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandUseCategoryDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
 import com.copower.pmcc.assess.service.basic.*;
@@ -38,9 +38,8 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
-    private BasicEstateLandUseTypeService basicEstateLandUseTypeService;
-    @Autowired
-    private BasicEstateLandUseCategoryDao basicEstateLandUseCategoryDao;
+    private BasicEstateLandCategoryInfoDao basicEstateLandCategoryInfoDao;
+
 
     @Override
     public BasicApplyBatch initBasicApplyBatch(BasicApplyBatch basicApplyBatch) throws Exception {
@@ -77,13 +76,10 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
         basicApplyBatch.setEstateId(basicEstate.getId());
         basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
         //默认生成一条土地类型类别
-        BasicEstateLandUseType landUseType = new BasicEstateLandUseType();
-        landUseType.setEstateId(basicEstate.getId());
-        landUseType.setLandUseType("住宅用地");
-        basicEstateLandUseTypeService.saveAndUpdateBasicEstateLandUseType(landUseType, false);
-        BasicEstateLandUseCategory landUseCategory = new BasicEstateLandUseCategory();
-        landUseCategory.setLandUseTypeId(landUseType.getId());
-        basicEstateLandUseCategoryDao.saveBasicEstateLandUseCategory(landUseCategory);
+        BasicEstateLandCategoryInfo categoryInfo = new BasicEstateLandCategoryInfo();
+        categoryInfo.setLandId(basicEstateLandState.getId());
+        categoryInfo.setCreator(commonService.thisUserAccount());
+        basicEstateLandCategoryInfoDao.saveBasicEstateLandCategoryInfo(categoryInfo);
 
         BasicApplyBatchDetail estateApplyBatchDetail = new BasicApplyBatchDetail();
         estateApplyBatchDetail.setPid(0);
@@ -98,7 +94,6 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
 
         //纯土地中地块包一部分房屋相关信息
         BasicHouse basicHouse = new BasicHouse();
-        basicHouse.setHouseNumber("房屋交易信息");
         basicHouse.setEstateId(basicEstate.getId());
         basicHouse.setCreator(commonService.thisUserAccount());
         basicHouseService.saveAndUpdate(basicHouse, false);

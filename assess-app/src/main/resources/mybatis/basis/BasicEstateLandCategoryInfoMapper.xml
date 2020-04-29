@@ -16,6 +16,14 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="land_shape" property="landShape" jdbcType="VARCHAR" />
+    <result column="develop_time" property="developTime" jdbcType="TIMESTAMP" />
+    <result column="plot_ratio" property="plotRatio" jdbcType="DECIMAL" />
+    <result column="building_density" property="buildingDensity" jdbcType="VARCHAR" />
+    <result column="greening_rate" property="greeningRate" jdbcType="DECIMAL" />
+    <result column="compatibility_type" property="compatibilityType" jdbcType="VARCHAR" />
+    <result column="compatibility_rate" property="compatibilityRate" jdbcType="DECIMAL" />
+    <result column="height_permitted" property="heightPermitted" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,7 +86,8 @@
   <sql id="Base_Column_List" >
     id, land_id, land_use_type, land_use_category, acquisition_time, land_use_year, land_factor_total_score, 
     land_level_content_result, land_level, land_level_name, bis_delete, creator, gmt_created, 
-    gmt_modified
+    gmt_modified, land_shape, develop_time, plot_ratio, building_density, greening_rate, 
+    compatibility_type, compatibility_rate, height_permitted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfoExample" >
     select
@@ -118,12 +127,18 @@
       acquisition_time, land_use_year, land_factor_total_score, 
       land_level_content_result, land_level, land_level_name, 
       bis_delete, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, land_shape, develop_time, 
+      plot_ratio, building_density, greening_rate, 
+      compatibility_type, compatibility_rate, height_permitted
+      )
     values (#{landId,jdbcType=INTEGER}, #{landUseType,jdbcType=VARCHAR}, #{landUseCategory,jdbcType=VARCHAR}, 
       #{acquisitionTime,jdbcType=TIMESTAMP}, #{landUseYear,jdbcType=DECIMAL}, #{landFactorTotalScore,jdbcType=DECIMAL}, 
       #{landLevelContentResult,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{landLevelName,jdbcType=VARCHAR}, 
       #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{landShape,jdbcType=VARCHAR}, #{developTime,jdbcType=TIMESTAMP}, 
+      #{plotRatio,jdbcType=DECIMAL}, #{buildingDensity,jdbcType=VARCHAR}, #{greeningRate,jdbcType=DECIMAL}, 
+      #{compatibilityType,jdbcType=VARCHAR}, #{compatibilityRate,jdbcType=DECIMAL}, #{heightPermitted,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -170,6 +185,30 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="landShape != null" >
+        land_shape,
+      </if>
+      <if test="developTime != null" >
+        develop_time,
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio,
+      </if>
+      <if test="buildingDensity != null" >
+        building_density,
+      </if>
+      <if test="greeningRate != null" >
+        greening_rate,
+      </if>
+      <if test="compatibilityType != null" >
+        compatibility_type,
+      </if>
+      <if test="compatibilityRate != null" >
+        compatibility_rate,
+      </if>
+      <if test="heightPermitted != null" >
+        height_permitted,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="landId != null" >
@@ -210,6 +249,30 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landShape != null" >
+        #{landShape,jdbcType=VARCHAR},
+      </if>
+      <if test="developTime != null" >
+        #{developTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plotRatio != null" >
+        #{plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingDensity != null" >
+        #{buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="greeningRate != null" >
+        #{greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="compatibilityType != null" >
+        #{compatibilityType,jdbcType=VARCHAR},
+      </if>
+      <if test="compatibilityRate != null" >
+        #{compatibilityRate,jdbcType=DECIMAL},
+      </if>
+      <if test="heightPermitted != null" >
+        #{heightPermitted,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -264,6 +327,30 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.landShape != null" >
+        land_shape = #{record.landShape,jdbcType=VARCHAR},
+      </if>
+      <if test="record.developTime != null" >
+        develop_time = #{record.developTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.plotRatio != null" >
+        plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buildingDensity != null" >
+        building_density = #{record.buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.greeningRate != null" >
+        greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.compatibilityType != null" >
+        compatibility_type = #{record.compatibilityType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.compatibilityRate != null" >
+        compatibility_rate = #{record.compatibilityRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.heightPermitted != null" >
+        height_permitted = #{record.heightPermitted,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -284,7 +371,15 @@
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      land_shape = #{record.landShape,jdbcType=VARCHAR},
+      develop_time = #{record.developTime,jdbcType=TIMESTAMP},
+      plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
+      building_density = #{record.buildingDensity,jdbcType=VARCHAR},
+      greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
+      compatibility_type = #{record.compatibilityType,jdbcType=VARCHAR},
+      compatibility_rate = #{record.compatibilityRate,jdbcType=DECIMAL},
+      height_permitted = #{record.heightPermitted,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -331,6 +426,30 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="landShape != null" >
+        land_shape = #{landShape,jdbcType=VARCHAR},
+      </if>
+      <if test="developTime != null" >
+        develop_time = #{developTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio = #{plotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="buildingDensity != null" >
+        building_density = #{buildingDensity,jdbcType=VARCHAR},
+      </if>
+      <if test="greeningRate != null" >
+        greening_rate = #{greeningRate,jdbcType=DECIMAL},
+      </if>
+      <if test="compatibilityType != null" >
+        compatibility_type = #{compatibilityType,jdbcType=VARCHAR},
+      </if>
+      <if test="compatibilityRate != null" >
+        compatibility_rate = #{compatibilityRate,jdbcType=DECIMAL},
+      </if>
+      <if test="heightPermitted != null" >
+        height_permitted = #{heightPermitted,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -348,7 +467,15 @@
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      land_shape = #{landShape,jdbcType=VARCHAR},
+      develop_time = #{developTime,jdbcType=TIMESTAMP},
+      plot_ratio = #{plotRatio,jdbcType=DECIMAL},
+      building_density = #{buildingDensity,jdbcType=VARCHAR},
+      greening_rate = #{greeningRate,jdbcType=DECIMAL},
+      compatibility_type = #{compatibilityType,jdbcType=VARCHAR},
+      compatibility_rate = #{compatibilityRate,jdbcType=DECIMAL},
+      height_permitted = #{heightPermitted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

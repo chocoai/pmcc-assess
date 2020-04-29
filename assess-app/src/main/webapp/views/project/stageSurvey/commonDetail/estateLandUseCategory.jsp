@@ -216,7 +216,7 @@
 
 <script type="text/javascript">
     $(function () {
-        landUseType.loadHtml();
+        landUseType.loadSonDataListHtml();
     });
 
     var LandUseType = function () {
@@ -263,12 +263,12 @@
 
     var num = 1;
 
-    landUseType.loadSonDataListHtml = function (landUseTypeId) {
+    landUseType.loadSonDataListHtml = function () {
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicEstateLandUseCategory/basicEstateLandUseCategoryList",
+            url: "${pageContext.request.contextPath}/basicEstateLandCategoryInfo/basicEstateLandCategoryInfoList",
             type: "get",
             dataType: "json",
-            data: {landUseTypeId: landUseTypeId},
+            data: {landId: estateCommon.estateLandStateForm.find('input[name="id"]').val()},
             success: function (result) {
                 if (result.ret) {
                     if (result.ret) {
@@ -298,28 +298,6 @@
         })
     }
 
-    landUseType.loadHtml = function () {
-        //找到所有主表数据，一条一个table
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicEstateLandUseType/basicEstateLandUseTypeList",
-            type: "get",
-            dataType: "json",
-            data: {estateId: estateCommon.getEstateId()},
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        $.each(result.data, function (i, item) {
-                            landUseType.loadSonDataListHtml(item.id);
-                        })
-                    }
-                }
-            },
-            error: function (result) {
-                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        })
-
-    }
 
     //土地因素
     landUseType.openLevelDetailModal = function (this_) {
@@ -492,7 +470,7 @@
     };
 
     landUseType.getBasicEstateLandUseById = function (id, callback) {
-        landUseType.ajaxServerFun({id: id}, "/basicEstateLandUseCategory/getBasicEstateLandUseCategoryById", "get", callback);
+        landUseType.ajaxServerFun({id: id}, "/basicEstateLandCategoryInfo/getBasicEstateLandCategoryInfoById", "get", callback);
     };
 </script>
 

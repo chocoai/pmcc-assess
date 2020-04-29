@@ -107,6 +107,9 @@ public class BasicEstateLandCategoryInfoService {
      * @throws Exception
      */
     public Integer saveAndUpdateBasicEstateLandCategoryInfo(BasicEstateLandCategoryInfo basicEstateLandCategoryInfo, boolean updateNull) throws Exception {
+        if(!StringUtils.isNotEmpty(basicEstateLandCategoryInfo.getLandLevelContentResult())){
+            basicEstateLandCategoryInfo.setLandLevelContentResult(null);
+        }
         if (basicEstateLandCategoryInfo.getId() == null || basicEstateLandCategoryInfo.getId().intValue() == 0) {
             basicEstateLandCategoryInfo.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateLandCategoryInfoDao.saveBasicEstateLandCategoryInfo(basicEstateLandCategoryInfo);
