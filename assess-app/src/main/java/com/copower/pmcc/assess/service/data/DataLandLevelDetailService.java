@@ -110,7 +110,7 @@ public class DataLandLevelDetailService {
                 target.setClassify(null);
             }
         }
-        if (j == 2){
+        if (j == 2 && i != 3){
             query = new DataLandLevelDetail();
             query.setPid(0);
             query.setLandLevelId(landLevelId);
