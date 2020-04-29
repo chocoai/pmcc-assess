@@ -1120,7 +1120,9 @@ public class GenerateMdCompareService {
                 }
                 if (StringUtils.isNotBlank(item.getWeight())) {
                     try {
-                        BigDecimal temp = new BigDecimal(item.getSpecificPrice()).multiply(new BigDecimal(item.getWeight()));
+                        BigDecimal specificPrice = new BigDecimal(item.getSpecificPrice());
+                        BigDecimal weight = new BigDecimal(item.getWeight());
+                        BigDecimal temp = specificPrice.multiply(weight).setScale(4, BigDecimal.ROUND_HALF_UP);
                         num = num.add(temp);
                         content.append(item.getSpecificPrice() + "×" + item.getWeight() + "+");
                     } catch (Exception e) {
