@@ -222,8 +222,7 @@ public class BasicApplyBatchDetailService {
 
     //存入basicApply表单
     public void insertBasicApply(BasicApplyBatchDetail houseBasicApplyBatchDetail, Integer planDetailsId) throws Exception {
-        if (!houseBasicApplyBatchDetail.getType().equals(BasicFormClassifyEnum.HOUSE.getKey())&&
-                !houseBasicApplyBatchDetail.getType().equals(BasicFormClassifyEnum.HOUSE_LAND.getKey())) return;
+        if (!houseBasicApplyBatchDetail.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) return;
         BasicApply basicApply = basicApplyService.getBasicApplyByBatchDetailId(houseBasicApplyBatchDetail.getId());
         if (basicApply == null) {
             basicApply = new BasicApply();
@@ -459,7 +458,7 @@ public class BasicApplyBatchDetailService {
         BasicApplyBatchDetail batchDetail = getDataById(batchDetailId);
         List<BasicApplyBatchDetail> list = Lists.newArrayList();
         collectionChildBatchDetails(batchDetail, list);
-        List<BasicApplyBatchDetail> filter = LangUtils.filter(list, o -> BasicFormClassifyEnum.HOUSE.getKey().equals(o.getType()));
+        List<BasicApplyBatchDetail> filter = LangUtils.filter(list, o ->o.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey()));
         return filter;
     }
 

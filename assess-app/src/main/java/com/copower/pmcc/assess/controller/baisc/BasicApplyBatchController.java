@@ -425,13 +425,16 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveDeclareRecord", name = "写入权证", method = {RequestMethod.POST})
-    public HttpResult saveDeclareRecord(Integer id,Integer declareRecordId,String declareRecordName,Integer planDetailsId) {
+    public HttpResult saveDeclareRecord(Integer id, Integer declareRecordId, String declareRecordName, Integer planDetailsId) {
         try {
-            //更新权证name与权证id
-            BasicApplyBatchDetail oldData = basicApplyBatchDetailService.getDataById(id);
-            oldData.setDeclareRecordId(declareRecordId==null?0:declareRecordId);
-            oldData.setDeclareRecordName(declareRecordName);
-            BasicApplyBatchDetailVo vo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.saveAndUpdateComplete(oldData, planDetailsId));
+            List<BasicApplyBatchDetail> houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(id);
+            BasicApplyBatchDetailVo vo = null;
+            if (CollectionUtils.isNotEmpty(houseBatchDetailList)) {
+                BasicApplyBatchDetail basicApplyBatchDetail = houseBatchDetailList.get(0);
+                basicApplyBatchDetail.setDeclareRecordId(declareRecordId);
+                basicApplyBatchDetail.setDeclareRecordName(declareRecordName);
+                vo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.saveAndUpdateComplete(basicApplyBatchDetail, planDetailsId));
+            }
             return HttpResult.newCorrectResult(vo);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
@@ -489,7 +492,7 @@ public class BasicApplyBatchController extends BaseController {
     @RequestMapping(value = "/informationPhoneEdit", name = "信息手机端填写", method = RequestMethod.GET)
     public ModelAndView informationPhoneEdit(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         List<String> stringList = FormatUtils.transformString2List(basicFormClassifyParamDto.getTbType(), BasicFormClassifyEnum.transform(true));
-        basicFormClassifyParamDto.setTbType(org.apache.commons.lang3.StringUtils.join(stringList,BasicFormClassifyEnum.transform(false)));
+        basicFormClassifyParamDto.setTbType(org.apache.commons.lang3.StringUtils.join(stringList, BasicFormClassifyEnum.transform(false)));
 
 
         BasicFormClassifyEnum estateTaggingTypeEnum = BasicFormClassifyEnum.getEnumByKey(basicFormClassifyParamDto.getTbType());
@@ -745,16 +748,16 @@ public class BasicApplyBatchController extends BaseController {
     public BootstrapTableVo getBasicAlternativeSurveyList(Integer planDetailsId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        List<BasicApplyBatchDetail> estateBatchDetailList =basicApplyBatchDetailService.getExploreEstateList(projectPlanDetails);
+        List<BasicApplyBatchDetail> estateBatchDetailList = basicApplyBatchDetailService.getExploreEstateList(projectPlanDetails);
         vo.setRows(CollectionUtils.isEmpty(estateBatchDetailList) ? new ArrayList<BasicApplyBatchDetail>() : estateBatchDetailList);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getBasicApplyBatchDetailListByType", method = RequestMethod.POST, name = "获取数据")
-    public HttpResult getBasicApplyBatchDetailListByType(String type, Integer basicApplyBatchId,Integer pid) {
+    public HttpResult getBasicApplyBatchDetailListByType(String type, Integer basicApplyBatchId, Integer pid) {
         try {
-            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(type, basicApplyBatchId,pid, true);
+            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(type, basicApplyBatchId, pid, true);
             return HttpResult.newCorrectResult(batchDetailList);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
