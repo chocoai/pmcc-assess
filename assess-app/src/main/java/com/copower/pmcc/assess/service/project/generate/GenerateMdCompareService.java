@@ -1118,11 +1118,9 @@ public class GenerateMdCompareService {
                 if (StringUtils.isEmpty(item.getSpecificPrice())) {
                     item.setSpecificPrice("0");
                 }
-                if (StringUtils.isNotBlank(item.getWeight())) {
+                if (StringUtils.isNotBlank(item.getWeight()) && !"无".equals(item.getWeight())) {
                     try {
-                        BigDecimal specificPrice = new BigDecimal(item.getSpecificPrice());
-                        BigDecimal weight = new BigDecimal(item.getWeight());
-                        BigDecimal temp = specificPrice.multiply(weight).setScale(4, BigDecimal.ROUND_HALF_UP);
+                        BigDecimal temp = new BigDecimal(item.getSpecificPrice()).multiply(new BigDecimal(item.getWeight()));
                         num = num.add(temp);
                         content.append(item.getSpecificPrice() + "×" + item.getWeight() + "+");
                     } catch (Exception e) {
