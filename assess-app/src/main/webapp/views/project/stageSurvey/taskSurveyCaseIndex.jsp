@@ -567,7 +567,8 @@
         });
         $("#basicAlternativeCaseList").bootstrapTable('destroy');
         TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
-            name: $('#queryAlternativeName').val()
+            name: $('#queryAlternativeName').val(),
+            projectId:'${projectId}'
         }, {
             showColumns: false,
             showRefresh: false,

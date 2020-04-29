@@ -449,6 +449,7 @@
             TableInit(projectData.prototype.config().houseTable, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
                 name: $("#queryEstateName").val(),
                 tbType: "estate",
+                planDetailsId:'${planDetailsId}'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -544,6 +545,7 @@
             TableInit(projectBuild.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
                 name: $("#queryBuildName").val(),
                 tbType: "building",
+                planDetailsId:'${planDetailsId}'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -634,6 +636,7 @@
             TableInit(projectUnit.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
                 name: $("#queryUnitName").val(),
                 tbType: "unit",
+                planDetailsId:'${planDetailsId}'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -724,6 +727,7 @@
             TableInit(projectHouse.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
                 name: $("#queryHouseName").val(),
                 tbType: "house",
+                planDetailsId:'${planDetailsId}'
             }, {
                 showColumns: false,
                 showRefresh: false,

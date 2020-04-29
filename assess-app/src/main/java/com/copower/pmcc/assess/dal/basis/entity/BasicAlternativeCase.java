@@ -19,6 +19,8 @@ public class BasicAlternativeCase {
 
     private Date gmtModified;
 
+    private Integer projectCategoryId;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class BasicAlternativeCase {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getProjectCategoryId() {
+        return projectCategoryId;
+    }
+
+    public void setProjectCategoryId(Integer projectCategoryId) {
+        this.projectCategoryId = projectCategoryId;
     }
 }

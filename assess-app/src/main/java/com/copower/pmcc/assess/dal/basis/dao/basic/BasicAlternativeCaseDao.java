@@ -51,7 +51,7 @@ public class BasicAlternativeCaseDao {
         return bBasicAlternativeCaseMapper.selectByExample(example);
     }
 
-    public List<BasicAlternativeCase> getBasicAlternativeCaseList(String name,String tbType) {
+    public List<BasicAlternativeCase> getBasicAlternativeCaseList(String name,String tbType,String creator,Integer projectCategoryId) {
         BasicAlternativeCaseExample example = new BasicAlternativeCaseExample();
         BasicAlternativeCaseExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(name)) {
@@ -59,6 +59,12 @@ public class BasicAlternativeCaseDao {
         }
         if (StringUtils.isNotBlank(tbType)) {
             criteria.andBusinessKeyLike(String.format("%s%s%s", "%", tbType, "%"));
+        }
+        if (StringUtils.isNotBlank(creator)) {
+            criteria.andCreatorLike(String.format("%s%s%s", "%", creator, "%"));
+        }
+        if (projectCategoryId!=null) {
+            criteria.andProjectCategoryIdEqualTo(projectCategoryId);
         }
         example.setOrderByClause("id desc");
         return bBasicAlternativeCaseMapper.selectByExample(example);
