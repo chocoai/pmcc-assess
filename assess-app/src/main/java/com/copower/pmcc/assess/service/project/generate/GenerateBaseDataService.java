@@ -4901,56 +4901,36 @@ public class GenerateBaseDataService {
                 }
                 StringBuilder stringBuilder = new StringBuilder(8);
                 stringBuilder.append(generateCommonMethod.getIndentHtml("1、位置状况"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s", generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate, judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApplyBatch)))));
-                String faceStreet = generateLoactionService.getFaceStreet(judgeObjects);
-                if (StringUtils.isNotBlank(faceStreet.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", generateCommonMethod.trim(faceStreet))));
-                }
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s",StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApplyBatch)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getFaceStreet(judgeObjects))),errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)),errorStr))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("2、交通状况包括"));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("道路状况:%s", generateCommonMethod.trim(generateLoactionService.getRoadConditionNew(judgeObjects)))));
-
-                String transport = generateLoactionService.getAccessAvailableMeansTransport(basicApplyBatch);
-                if (StringUtils.isNotEmpty(transport)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("出入可利用的交通工具:%s", generateCommonMethod.trim(transport))));
-                }
-
-                String trafficControl = generateLoactionService.getTrafficControl(basicApplyBatch);
-                if (StringUtils.isNotEmpty(trafficControl)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通管制情况:%s", generateCommonMethod.trim(trafficControl))));
-                }
-
-                String parkingConvenience = generateLoactionService.getParkingConvenience(basicApplyBatch);
-                if (StringUtils.isNotBlank(parkingConvenience))
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("停车方便度:%s", generateCommonMethod.trim(parkingConvenience))));
-
-                String trafficCharges = generateLoactionService.getTrafficCharges(basicApplyBatch);
-                if (StringUtils.isNotBlank(trafficCharges)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通收费情况:%s", generateCommonMethod.trim(trafficCharges))));
-                }
-
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("出入可利用的交通工具:%s",StringUtils.defaultString( generateCommonMethod.trim(generateLoactionService.getAccessAvailableMeansTransport(basicApplyBatch)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通管制情况:%s",StringUtils.defaultString( generateCommonMethod.trim(generateLoactionService.getTrafficControl(basicApplyBatch)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("停车方便度:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getParkingConvenience(basicApplyBatch)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通收费情况:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getTrafficCharges(basicApplyBatch)),errorStr))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("3、外部基础设施"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApplyBatch)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApplyBatch)),errorStr))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("4、外部公共服务设施"));
                 List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApplyBatch, true);
                 if (CollectionUtils.isNotEmpty(stringArrayList)) {
                     stringArrayList.stream().forEach(s -> {
-                        if (StringUtils.isBlank(s)) {
-                            s = errorStr;
+                        if (StringUtils.isNotBlank(s)) {
+                            stringBuilder.append(generateCommonMethod.getIndentHtml(s));
                         }
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(s));
                     });
                 }
                 stringBuilder.append(generateCommonMethod.getIndentHtml("5、周围环境"));
                 String natural = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.NATURAL);
                 String humanity = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.HUMANITY);
                 String scenery = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.SCENERY);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", generateCommonMethod.trim(natural))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", generateCommonMethod.trim(humanity))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", generateCommonMethod.trim(scenery))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", StringUtils.defaultString(generateCommonMethod.trim(natural)),errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", StringUtils.defaultString(generateCommonMethod.trim(humanity)),errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", StringUtils.defaultString(generateCommonMethod.trim(scenery)),errorStr)));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综述:%s", generateCommonMethod.trim(basicEstate.getLocationDescribe()))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
             }

@@ -54,15 +54,13 @@ public class GenerateLoactionService {
      * 获取坐落信息
      *
      * @param basicEstate
-     * @param judgeObjects
      * @return
      * @throws Exception
      */
-    public String getSeat(BasicEstate basicEstate, List<SchemeJudgeObject> judgeObjects) {
-        List<SchemeJudgeObject> schemeJudgeObjects = judgeObjects.stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
-        DeclareRecord record = declareRecordService.getDeclareRecordById(schemeJudgeObjects.get(0).getDeclareRecordId());
-        String value = String.format("%s%s", record.getStreetNumber(), basicEstate.getName());
-        return StringUtils.isBlank(value) ? error : value;
+    public String getSeat(BasicEstate basicEstate) {
+        if (basicEstate == null) return null;
+        String value = String.format("%s%s", basicEstate.getStreetNumber(), basicEstate.getName());
+        return value;
     }
 
 
@@ -79,7 +77,7 @@ public class GenerateLoactionService {
             Map<Integer, String> map = Maps.newHashMap();
             StringBuilder contentBuilder = new StringBuilder(8);
             for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                BasicApply basicApply=basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+                BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
                 if (basicApply == null || basicApply.getId() == 0) {
                     continue;
                 }
@@ -102,7 +100,7 @@ public class GenerateLoactionService {
         if (basicApply == null || basicApply.getId() == 0) {
             return "";
         }
-        GenerateBaseExamineService generateBaseExamineService=new GenerateBaseExamineService(basicApply);
+        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = generateBaseExamineService.getBasicHouseFaceStreetList();
         if (CollectionUtils.isEmpty(basicHouseFaceStreetVoList)) {
             return "";
@@ -160,7 +158,7 @@ public class GenerateLoactionService {
             }
         }
         String value = StringUtils.join(hashSet, ",");
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     /**
@@ -277,7 +275,7 @@ public class GenerateLoactionService {
             }
         }
         String value = StringUtils.strip(stringBuilder.toString(), "。");
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     /**
@@ -301,7 +299,7 @@ public class GenerateLoactionService {
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", "。", false);
         String value = StringUtils.strip(s, "。");
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     //道路状况
@@ -319,9 +317,9 @@ public class GenerateLoactionService {
             }
             return false;
         }).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(metroList)){
+        if (CollectionUtils.isNotEmpty(metroList)) {
             for (int i = 0; i < metroList.size(); i++) {
-                BasicMatchingTrafficVo trafficVo = metroList.get(i) ;
+                BasicMatchingTrafficVo trafficVo = metroList.get(i);
                 if (StringUtils.isNotBlank(trafficVo.getName())) {
                     linkedHashSet.add(trafficVo.getName());
                 }
@@ -399,7 +397,7 @@ public class GenerateLoactionService {
             }
         }
         String value = contentBuilder.toString();
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     /**
@@ -463,7 +461,7 @@ public class GenerateLoactionService {
             stringSet.clear();
         }
         String value = generateCommonMethod.trim(StringUtils.join(linkedHashSet, "；"));
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     /**
@@ -492,7 +490,7 @@ public class GenerateLoactionService {
             });
         }
         String value = generateCommonMethod.trim(builder.toString());
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     /**
@@ -529,7 +527,7 @@ public class GenerateLoactionService {
             builder.append(StringUtils.join(stringSet, ""));
         }
         String value = builder.toString();
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     /**
@@ -576,7 +574,7 @@ public class GenerateLoactionService {
             stringBuilder.append(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, Arrays.asList(basicMatchingMedicalList.get(0)), null, "")));
         }
         String value = stringBuilder.toString();
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     /**
@@ -645,7 +643,7 @@ public class GenerateLoactionService {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-            GenerateBaseExamineService generateBaseExamineService=new GenerateBaseExamineService(basicApply);
+            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
                 continue;
             }
@@ -672,7 +670,7 @@ public class GenerateLoactionService {
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", ";", false);
         String value = StringUtils.strip(s, ";");
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
 
@@ -705,7 +703,7 @@ public class GenerateLoactionService {
         }
         stringBuffer.append(baseDataDicService.getNameById(basicEstate.getPosition()));
         String value = stringBuffer.toString();
-        return StringUtils.isBlank(value) ? error : value;
+        return value;
     }
 
     /**
@@ -741,7 +739,7 @@ public class GenerateLoactionService {
                     if (StringUtils.isNotBlank(basicHouse.getFloor())) {
                         stringBuffer.append("的第").append(basicHouse.getFloor()).append("层");
                     }
-                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuffer.toString().replaceAll("层+","层"));
+                    map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuffer.toString().replaceAll("层+", "层"));
                     stringBuffer.delete(0, stringBuffer.toString().length());
                 }
             }
