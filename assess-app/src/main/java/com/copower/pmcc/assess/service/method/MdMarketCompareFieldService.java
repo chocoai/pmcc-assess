@@ -570,47 +570,37 @@ public class MdMarketCompareFieldService extends BaseService {
 
 
                         /*-------------------------------------------------------------土地相关*/
-
-                        case Annual_Coefficient:
-                            break;
-                        case VolumeRatio_Coefficient:
-                            break;
                         case LAND_NAME://地块名称
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_NAME.getKey(), examineEstate.getName()));
                             break;
-                        case LAND_TRADING_PRICE:
+                        case LAND_TRADING_PRICE://交易单价
                             if (houseTrading.getTradingUnitPrice() != null && isCase)
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_PRICE.getKey(), String.valueOf(houseTrading.getTradingUnitPrice())));
                             else
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_PRICE.getKey(), null));
                             break;
                         case LAND_AREA_LOCATION://区域位置
-                            String areaLocation = generateLandFactorService.getAreaLocation(Lists.newArrayList(judgeObject));
+                            String areaLocation = generateLandFactorService.getAreaLocation(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AREA_LOCATION.getKey(), generateCommonMethod.trimText(areaLocation)));
                             break;
                         case LAND_AGGLOMERATION_DEGREE://产业聚集度
-                            String agglomerationDegree = null;
-                            try {
-                                agglomerationDegree = generateLandFactorService.getAgglomerationDegree(Lists.newArrayList(judgeObject));
-                            } catch (Exception ex) {
-                                agglomerationDegree = null;
-                            }
+                            String agglomerationDegree =  generateLandFactorService.getAgglomerationDegree(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AGGLOMERATION_DEGREE.getKey(), generateCommonMethod.trimText(agglomerationDegree)));
                             break;
                         case LAND_TRAFFIC_CONDITIONS://交通条件
-                            String trafficConditions = generateLandFactorService.getTrafficConditions(Lists.newArrayList(judgeObject));
+                            String trafficConditions = generateLandFactorService.getTrafficConditions(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRAFFIC_CONDITIONS.getKey(), generateCommonMethod.trimText(trafficConditions)));
                             break;
                         case LAND_UPPORTING_FACILITY://配套设施条件
-                            String upportingFacility = generateLandFactorService.getUpportingFacility(Lists.newArrayList(judgeObject));
+                            String upportingFacility = generateLandFactorService.getUpportingFacility(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_UPPORTING_FACILITY.getKey(), generateCommonMethod.trimText(upportingFacility)));
                             break;
                         case LAND_ENVIRONMENT_CONDITION://环境条件
-                            String environmentCondition = generateLandFactorService.getEnvironmentCondition(Lists.newArrayList(judgeObject));
+                            String environmentCondition = generateLandFactorService.getEnvironmentCondition(basicApplyBatch);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_ENVIRONMENT_CONDITION.getKey(), generateCommonMethod.trimText(environmentCondition)));
                             break;
                         case LAND_PLANNING_CONDITION://规划条件
-                            String planningCondition = generateLandFactorService.getPlanningCondition(Lists.newArrayList(judgeObject));
+                            String planningCondition = generateLandFactorService.getPlanningCondition(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLANNING_CONDITION.getKey(), generateCommonMethod.trimText(planningCondition)));
                             break;
                         case LAND_AREA://面积
@@ -648,6 +638,10 @@ public class MdMarketCompareFieldService extends BaseService {
                         case LAND_OTHER://土地其它
                             String other = generateLandFactorService.getOther(Lists.newArrayList(judgeObject));
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_OTHER.getKey(), generateCommonMethod.trimText(other)));
+                            break;
+                        case Land_Annual_Coefficient:
+                            break;
+                        case Land_VolumeRatio_Coefficient:
                             break;
                     }
                 } catch (Exception e) {

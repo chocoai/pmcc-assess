@@ -105,8 +105,21 @@ public class BasicEstateParkingService {
      * @return
      * @throws Exception
      */
-    public List<BasicEstateParking> basicEstateParkingList(BasicEstateParking basicEstateParking)  {
+    public List<BasicEstateParking> basicEstateParkingList(BasicEstateParking basicEstateParking) {
         return basicEstateParkingDao.basicEstateParkingList(basicEstateParking);
+    }
+
+    /**
+     * 获取数据 by estateId
+     *
+     * @param estateId
+     * @return
+     */
+    public List<BasicEstateParking> getListByEstateId(Integer estateId) {
+        if (estateId == null) return null;
+        BasicEstateParking where = new BasicEstateParking();
+        where.setEstateId(estateId);
+        return basicEstateParkingDao.basicEstateParkingList(where);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicEstateParking basicEstateParking) throws Exception {

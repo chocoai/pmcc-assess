@@ -294,7 +294,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         if(StringUtils.isNotBlank(structuralInfo)){
             List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
             for (KeyValueDto keyValueDto : keyValueDtos) {
-                if (BasicFormClassifyEnum.HOUSE.getKey().equals(keyValueDto.getKey())) {
+                if (StringUtils.isNotBlank(keyValueDto.getKey())&&keyValueDto.getKey().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
                     return getBasicHouseById(Integer.valueOf(keyValueDto.getValue()));
                 }
             }

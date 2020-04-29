@@ -13,6 +13,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -74,16 +76,16 @@ public class BasicMatchingFinanceService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicMatchingFinance.class), id);
             return id;
         } else {
-            if(updateNull){
+            if (updateNull) {
                 BasicMatchingFinance matchingFinance = basicMatchingFinanceDao.getBasicMatchingFinanceById(basicMatchingFinance.getId());
-                if(matchingFinance!=null){
+                if (matchingFinance != null) {
                     basicMatchingFinance.setBisDelete(matchingFinance.getBisDelete());
                     basicMatchingFinance.setCreator(matchingFinance.getCreator());
                     basicMatchingFinance.setGmtCreated(matchingFinance.getGmtCreated());
                     basicMatchingFinance.setGmtModified(DateUtils.now());
                 }
             }
-            basicMatchingFinanceDao.updateBasicMatchingFinance(basicMatchingFinance,updateNull);
+            basicMatchingFinanceDao.updateBasicMatchingFinance(basicMatchingFinance, updateNull);
             return null;
         }
     }
@@ -123,11 +125,12 @@ public class BasicMatchingFinanceService {
         return vo;
     }
 
-    public List<BasicMatchingFinance> getBasicMatchingFinanceList(Integer estateId){
-        BasicMatchingFinance where=new BasicMatchingFinance();
+    public List<BasicMatchingFinanceVo> getBasicMatchingFinanceList(Integer estateId) {
+        BasicMatchingFinance where = new BasicMatchingFinance();
         where.setEstateId(estateId);
         List<BasicMatchingFinance> basicMatchingFinanceList = basicMatchingFinanceDao.basicMatchingFinanceList(where);
-        return basicMatchingFinanceList;
+        if (CollectionUtils.isEmpty(basicMatchingFinanceList)) return null;
+        return LangUtils.transform(basicMatchingFinanceList, o -> getBasicMatchingFinanceVo(o));
     }
 
     public BasicMatchingFinanceVo getBasicMatchingFinanceVo(BasicMatchingFinance basicMatchingFinance) {

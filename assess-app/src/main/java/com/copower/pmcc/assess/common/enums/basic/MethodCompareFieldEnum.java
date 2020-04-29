@@ -70,9 +70,7 @@ public enum MethodCompareFieldEnum {
     BUILDING_YEAR("building.year", "建造年份"),//ps:建造年份
     CONSTRUCTION_QUALITY("construction.quality", "工程质量"),//ps:工程质量
 
-    Annual_Coefficient("annual.coefficient", "年期修正系数"),//ps:年期修正系数
-    VolumeRatio_Coefficient("volumeratio.coefficient", "容积率修正系数"),//ps:容积率修正系数
-
+    //土地相关-----------------------------------------------------------------------------------------------------------------------
     LAND_NAME("land.name", "地块名称"),//ps:地块名称
     LAND_TRADING_PRICE("land.trading.price", "交易价格"),//ps:土地-交易情况-交易价格
     LAND_AREA_LOCATION("land.area.location", "区域位置"),//ps:区域位置
@@ -89,7 +87,9 @@ public enum MethodCompareFieldEnum {
     LAND_DEVELOPMENT_LEVEL("land.development.level", "宗地开发程度"),//ps:宗地开发程度
     LAND_USEFUL_LIFE("land.useful.life", "使用年限"),//ps:使用年限
     LAND_RIGHT_CONDITION("land.right.condition", "土地权利状况"),//ps:土地权利状况
-    LAND_OTHER("land.other", "土地其它")//ps:土地其它
+    LAND_OTHER("land.other", "土地其它"),//ps:土地其它
+    Land_Annual_Coefficient("annual.coefficient", "年期修正系数"),//ps:年期修正系数
+    Land_VolumeRatio_Coefficient("volumeratio.coefficient", "容积率修正系数"),//ps:容积率修正系数
     ;
     private String key;
 
