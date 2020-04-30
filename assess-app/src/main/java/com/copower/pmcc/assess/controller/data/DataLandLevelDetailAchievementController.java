@@ -87,7 +87,7 @@ public class DataLandLevelDetailAchievementController {
     }
 
     @RequestMapping(value = "/importDataLandDetailAchievement", name = "导入 (excel)", method = RequestMethod.POST)
-    public HttpResult importDataLandLevelDetailAchievement(Integer levelDetailId ,HttpServletRequest request) {
+    public HttpResult importDataLandLevelDetailAchievement(Integer landLevelId ,HttpServletRequest request) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -95,7 +95,7 @@ public class DataLandLevelDetailAchievementController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String resultString = LandLevelDetailAchievementService.importDataLandLevelDetailAchievementNew(multipartFile ,levelDetailId);
+            String resultString = LandLevelDetailAchievementService.importDataLandLevelDetailAchievementNew(multipartFile ,landLevelId);
             return HttpResult.newCorrectResult(200, resultString);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -104,9 +104,9 @@ public class DataLandLevelDetailAchievementController {
     }
 
     @PostMapping(value = "/downloadDataLandDetailAchievementFile")
-    public HttpResult downloadDataLandDetailAchievementFile(Integer classify,String type,String factorType){
+    public HttpResult downloadDataLandDetailAchievementFile(String id){
         try {
-            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.downloadDataLandDetailAchievementFile(classify, type,factorType));
+            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.getLandLevelDetailTree(id));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);

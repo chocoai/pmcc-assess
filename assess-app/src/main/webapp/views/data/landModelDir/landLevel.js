@@ -867,19 +867,15 @@ landLevel.showDataHousePriceIndexDetailList = function (levelDetailId) {
 landLevel.showDataLandDetailAchievementDetail = function () {
     var box = landLevel.config.land_level_detail_modal;
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
-    var nodes = zTree.getSelectedNodes();
-    if (nodes.length > 1) {
-        notifySuccess('成功', '只能选择一个作为层级');
+    var nodes = zTree.getCheckedNodes(true);
+    if (nodes.length != 1) {
+        notifyInfo('提示', '仅勾选一个');
         return false;
     }
-    if (nodes.length == 1) {
-        var treeNode = nodes[0];
-        landLevel.showLandDetailAchievementList(treeNode.id);
-        landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val(treeNode.id);
-        landLevel.config.achievementBoxDetail.modal("show");
-    } else {
-        notifySuccess('成功', '选择层级');
-    }
+    var treeNode = nodes[0];
+    landLevel.showLandDetailAchievementList(treeNode.id);
+    landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val(treeNode.id);
+    landLevel.config.achievementBoxDetail.modal("show");
 };
 landLevel.showDataLandDetailAchievement = function () {
     var levelDetailId = landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val();
@@ -893,11 +889,6 @@ landLevel.initFormLandDetailAchievement = function (row) {
     landLevel.config.achievementFrm.initForm(row);
     AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachFactor, row.type, function (html, data) {
         landLevel.config.achievementFrm.find("select[name='type']").empty().html(html).trigger('change');
-    });
-    landLevel.config.achievementFrm.find("select[name='type']").off('change').on('change', function () {
-        // AssessCommon.loadSonDataListHtml($(this).val(), row.category, function (html, data) {
-        //     landLevel.config.achievementFrm.find("#categoryList").empty().html(html).trigger('change');
-        // });
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, row.grade, function (html, data) {
         landLevel.config.achievementFrm.find("select[name='grade']").empty().html(html).trigger('change');
@@ -915,19 +906,17 @@ landLevel.deleteDataLandDetailAchievement = function (index) {
 
 landLevel.downloadDataLandDetailAchievementFile = function (this_) {
     //AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseAchievementTemplate)
-
-    var frm = $(this_).closest("form");
-    var data = formSerializeArray(frm);
-    if (!data.classify) {
-        notifyInfo('提示', "大类没有选择");
+    var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
+    var nodes = zTree.getCheckedNodes(true);
+    if (nodes.length == 0) {
+        notifyInfo('提示', '至少勾选一个节点');
         return false;
     }
-    if (!data.type) {
-        notifyInfo('提示', "级别没有选择");
-        return false;
-    }
-
-    landLevel.ajaxServerFun(data, "/dataLandLevelDetailAchievement/downloadDataLandDetailAchievementFile", "post", function (fileId) {
+    var ids = [] ;
+    $.each(nodes,function (j,node) {
+        ids.push(node.id) ;
+    }) ;
+    landLevel.ajaxServerFun({id:ids.join(",")}, "/dataLandLevelDetailAchievement/downloadDataLandDetailAchievementFile", "post", function (fileId) {
         FileUtils.downAttachments(fileId);
         FileUtils.deleteFile({attachmentId: fileId});
     });

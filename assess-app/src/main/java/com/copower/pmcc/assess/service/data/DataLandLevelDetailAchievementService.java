@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailAchievementDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievement;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.data.DataAchievementDto;
@@ -24,6 +25,7 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -73,11 +75,71 @@ public class DataLandLevelDetailAchievementService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
+    @Autowired
+    private DataLandLevelDetailService dataLandLevelDetailService;
 
     private final String FACTOR = "因素";//修正说明 自定义的和页面一致 ,以后优化需要专门放在一个地方 FACTOR
     private final String COEFFICIENT = "系数"; //修正系数 自定义的和页面一致
     private final String Alias = "个别因素";//这个是数据字典里面的请注意
 
+    /**
+     * 往下查找最后的层级id
+     *
+     * @param landLevelId
+     * @param stringList
+     * @return
+     */
+    private Integer settingRecursiveHandle(Integer landLevelId, List<String> stringList) {
+        DataLandLevelDetail query = null;
+        Integer pid = 0;
+        for (int i = 0; i < stringList.size(); i++) {
+            String name = stringList.get(i);
+            query = new DataLandLevelDetail();
+            if (i == 0) {
+                query.setLandLevelId(landLevelId);
+            }
+            query.setName(name);
+            query.setPid(pid);
+            List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailList(query);
+            if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
+                pid = dataLandLevelDetailList.get(0).getId();
+            }
+        }
+        return pid;
+    }
+
+    /**
+     * 获取树的节点 id
+     *
+     * @param achievementDto
+     * @param landLevelId
+     * @return
+     */
+    private Integer getFilterTreeId(DataAchievementDto achievementDto, Integer landLevelId) {
+        String text = StringUtils.isNotBlank(achievementDto.getaName()) ? achievementDto.getaName() : achievementDto.getBName();
+        if (StringUtils.isBlank(text)) {
+            return null;
+        }
+        List<String> stringList = FormatUtils.transformString2List(text, "-");
+        if (CollectionUtils.isEmpty(stringList)) {
+            return null;
+        }
+        Iterator<String> iterator = stringList.iterator();
+        while (iterator.hasNext()) {
+            String name = iterator.next();
+            if (Objects.equal(name, FACTOR) || Objects.equal(name, COEFFICIENT)) {
+                iterator.remove();
+            }
+        }
+        if (CollectionUtils.isEmpty(stringList)) {
+            return null;
+        }
+        Integer id = settingRecursiveHandle(landLevelId, stringList);
+        if (id != 0) {
+            return id;
+        }
+        return null;
+    }
 
     /**
      * 土地级别详情导入的树结构处理
@@ -87,7 +149,7 @@ public class DataLandLevelDetailAchievementService {
      * @return
      * @throws Exception
      */
-    public String importDataLandLevelDetailAchievementNew(MultipartFile multipartFile, Integer levelDetailId) throws Exception {
+    public String importDataLandLevelDetailAchievementNew(MultipartFile multipartFile, Integer landLevelId) throws Exception {
         StringBuilder builder = new StringBuilder(10);
         //自定义的收集导入数量处理
         final AtomicInteger atomicInteger = new AtomicInteger(0);
@@ -103,6 +165,10 @@ public class DataLandLevelDetailAchievementService {
             Iterator<DataAchievementDto> iterator = dataAchievementDtoList.iterator();
             while (iterator.hasNext()) {
                 DataAchievementDto achievementDto = iterator.next();
+                Integer levelDetailId = getFilterTreeId(achievementDto, landLevelId);
+                if (levelDetailId == null) {
+                    continue;
+                }
                 DataLandLevelDetailAchievement dataLandLevelDetailAchievement = new DataLandLevelDetailAchievement();
                 dataLandLevelDetailAchievement.setLevelDetailId(levelDetailId);
                 List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementList = getDataLandLevelDetailAchievementList(dataLandLevelDetailAchievement);
@@ -197,14 +263,23 @@ public class DataLandLevelDetailAchievementService {
                         landAchievement.setId(target.getId());
                     }
                 }
-                if (landAchievement.getGrade() == null){
+                if (landAchievement.getGrade() == null) {
+                    continue;
+                }
+                if (landAchievement.getType() == null) {
                     continue;
                 }
                 if (landAchievement.getId() != null && landAchievement.getId() != 0) {
                     relatedAtomicInteger.incrementAndGet();
+                } else {
+                    atomicInteger.incrementAndGet();
+                }
+                if (StringUtils.isBlank(landAchievement.getReamark())){
+                    if (landAchievement !=null){
+
+                    }
                 }
                 saveDataLandLevelDetailAchievement(landAchievement);
-                atomicInteger.incrementAndGet();
             }
         }
     }
@@ -277,18 +352,18 @@ public class DataLandLevelDetailAchievementService {
             String filterName = null;
             if (StringUtils.contains(sheetName, FACTOR)) {
                 typeName = StringUtils.remove(sheetName, FACTOR);
-                filterName = COEFFICIENT ;
+                filterName = COEFFICIENT;
             }
             if (StringUtils.contains(sheetName, COEFFICIENT)) {
                 typeName = StringUtils.remove(sheetName, COEFFICIENT);
-                filterName = FACTOR ;
+                filterName = FACTOR;
             }
             if (StringUtils.isBlank(typeName)) {
                 continue;
             }
             Sheet sheetV = null;
             for (Sheet sheet2 : list) {
-                String name = String.format("%s%s",typeName,filterName) ;
+                String name = String.format("%s%s", typeName, filterName);
                 if (StringUtils.equals(sheet2.getSheetName(), name)) {
                     sheetV = sheet2;
                 }
@@ -379,17 +454,17 @@ public class DataLandLevelDetailAchievementService {
         return dataLandLevelDetailAchievementDao.deleteDataLandLevelDetailAchievement(id);
     }
 
-    public void clear(Integer id){
+    public void clear(Integer id) {
         DataLandLevelDetailAchievement query = new DataLandLevelDetailAchievement();
         query.setLevelDetailId(id);
         List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementList = getDataLandLevelDetailAchievementList(query);
-        if (CollectionUtils.isEmpty(dataLandLevelDetailAchievementList)){
+        if (CollectionUtils.isEmpty(dataLandLevelDetailAchievementList)) {
             return;
         }
         Iterator<DataLandLevelDetailAchievement> iterator = dataLandLevelDetailAchievementList.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             DataLandLevelDetailAchievement next = iterator.next();
-            deleteDataLandLevelDetailAchievement(next.getId()) ;
+            deleteDataLandLevelDetailAchievement(next.getId());
         }
     }
 
@@ -499,9 +574,26 @@ public class DataLandLevelDetailAchievementService {
         return null;
     }
 
-    public Integer downloadDataLandDetailAchievementFile(Integer classify, String type, String factorType) throws Exception {
-        BaseDataDic baseDataDic = baseDataDicService.getDataDicById(classify);
-        List<String> stringList = FormatUtils.transformString2List(type, ",");
+    /**
+     * 递归往上 查找
+     *
+     * @param id
+     * @param stringList
+     */
+    private void settingRecursiveHandle(Integer id, LinkedList<String> stringList) {
+        DataLandLevelDetail dataLandLevelDetail = dataLandLevelDetailService.getCacheDataLandLevelDetail(id);
+        if (dataLandLevelDetail == null) {
+            return;
+        }
+        stringList.add(dataLandLevelDetailService.getCacheNameById(id));
+        if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
+            return;
+        } else {
+            settingRecursiveHandle(dataLandLevelDetail.getPid(), stringList);
+        }
+    }
+
+    public String getLandLevelDetailTree(String ids) throws Exception {
         HSSFWorkbook wb = new HSSFWorkbook();
         CellStyle style = wb.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);//居中
@@ -509,6 +601,54 @@ public class DataLandLevelDetailAchievementService {
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         style.setFillForegroundColor(IndexedColors.TURQUOISE1.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        List<Integer> integerList = FormatUtils.transformString2Integer(ids);
+        Iterator<Integer> iterator = integerList.iterator();
+        while (iterator.hasNext()) {
+            Integer id = iterator.next();
+            LinkedList<String> stringList = new LinkedList<>();
+            settingRecursiveHandle(id, stringList);
+            Collections.reverse(stringList);
+            String sheetName = StringUtils.join(stringList, "-");
+            downloadDataLandDetailAchievementFile(sheetName, id, wb, style);
+        }
+
+        OutputStream fileOut = null;
+        String fileName = String.join("", "土地因素模板" + ".xls");
+        File file = new File(String.join(File.separator, FileUtils.getTempDirectoryPath(), fileName));
+        File fileParent = file.getParentFile();
+        if (!fileParent.exists()) {
+            fileParent.mkdirs();
+        }
+        fileOut = new FileOutputStream(file);
+        wb.write(fileOut);
+        fileOut.close();
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableId(0);
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        sysAttachmentDto.setFieldsName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
+
+        sysAttachmentDto.setFileName(fileName);
+        sysAttachmentDto.setFileExtension(FilenameUtils.getExtension(file.getName()));
+        sysAttachmentDto.setCreater(commonService.thisUserAccount());
+        sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
+        //注意这里因为是linux 路径所以采用/ 或者使用Java自带的判断符号 windows下 WinNTFileSystem linux 下UnixFileSystem
+        String ftpBasePath = baseAttachmentService.createFTPBasePath(DateUtils.formatDate(new Date(), "yyyy-MM"), DateUtils.formatNowToYMD(), commonService.thisUserAccount());
+        sysAttachmentDto.setFilePath(ftpBasePath);
+        sysAttachmentDto.setFtpFileName(baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension()));
+        try {
+            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), sysAttachmentDto.getFtpFileName());
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "erp上传文件出错");
+        }
+        baseAttachmentService.addAttachment(sysAttachmentDto);
+        //完毕之后删除临时文件
+        FileUtils.deleteQuietly(file);
+        return sysAttachmentDto.getId().toString();
+    }
+
+
+    public void downloadDataLandDetailAchievementFile(String sheetName, Integer id, HSSFWorkbook wb, CellStyle style) throws Exception {
         BiConsumer<HSSFSheet, Integer> baseDataDicBiConsumer = (((sheet, integer) -> {
             for (int i = 0; i < 3; i++) {
                 Row row = sheet.createRow(i);
@@ -541,7 +681,6 @@ public class DataLandLevelDetailAchievementService {
                     cell.setCellStyle(style);
                 }
             }
-
             sheet.addMergedRegion(new CellRangeAddress(0, 2, 0, 2));
 
             sheet.addMergedRegion(new CellRangeAddress(0, 2, 3, 3));
@@ -558,61 +697,10 @@ public class DataLandLevelDetailAchievementService {
             shape1.setLineStyle(HSSFSimpleShape.LINESTYLE_DASHGEL);
 
         }));
-        for (String id : stringList) {
-            if (!NumberUtils.isNumber(id)) {
-                continue;
-            }
-            BaseDataDic dataDic = baseDataDicService.getDataDicById(Integer.parseInt(id));
-            if (dataDic == null) {
-                continue;
-            }
-            if (StringUtils.isBlank(factorType)) {
-                HSSFSheet wbSheet = wb.createSheet(String.format("%s%s", dataDic.getName(), FACTOR));
-                baseDataDicBiConsumer.accept(wbSheet, null);
-                wbSheet = wb.createSheet(String.format("%s%s", dataDic.getName(), COEFFICIENT));
-                baseDataDicBiConsumer.accept(wbSheet, null);
-            } else {
-                List<String> transformString2List = FormatUtils.transformString2List(factorType, ",");
-                for (String name : transformString2List) {
-                    HSSFSheet wbSheet = wb.createSheet(String.format("%s%s", dataDic.getName(), name));
-                    baseDataDicBiConsumer.accept(wbSheet, null);
-                }
-            }
-
-        }
-        OutputStream fileOut = null;
-        String fileName = String.join("", baseDataDic.getName() + ".xls");
-        File file = new File(String.join(File.separator, FileUtils.getTempDirectoryPath(), fileName));
-        File fileParent = file.getParentFile();
-        if (!fileParent.exists()) {
-            fileParent.mkdirs();
-        }
-        fileOut = new FileOutputStream(file);
-        wb.write(fileOut);
-        fileOut.close();
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(0);
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
-        sysAttachmentDto.setFieldsName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
-        sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-
-        sysAttachmentDto.setFileName(fileName);
-        sysAttachmentDto.setFileExtension(FilenameUtils.getExtension(file.getName()));
-        sysAttachmentDto.setCreater(commonService.thisUserAccount());
-        sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
-        //注意这里因为是linux 路径所以采用/ 或者使用Java自带的判断符号 windows下 WinNTFileSystem linux 下UnixFileSystem
-        String ftpBasePath = baseAttachmentService.createFTPBasePath(DateUtils.formatDate(new Date(), "yyyy-MM"), DateUtils.formatNowToYMD(), commonService.thisUserAccount());
-        sysAttachmentDto.setFilePath(ftpBasePath);
-        sysAttachmentDto.setFtpFileName(baseAttachmentService.createNoRepeatFileName(sysAttachmentDto.getFileExtension()));
-        try {
-            ftpUtilsExtense.uploadFilesToFTP(ftpBasePath, new FileInputStream(file.getPath()), sysAttachmentDto.getFtpFileName());
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e, "erp上传文件出错");
-        }
-        baseAttachmentService.addAttachment(sysAttachmentDto);
-        //完毕之后删除临时文件
-        FileUtils.deleteQuietly(file);
-        return sysAttachmentDto.getId();
+        HSSFSheet wbSheet = wb.createSheet(String.join("-", sheetName, FACTOR));
+        baseDataDicBiConsumer.accept(wbSheet, null);
+        wbSheet = wb.createSheet(String.join("-", sheetName, COEFFICIENT));
+        baseDataDicBiConsumer.accept(wbSheet, null);
     }
 
 }

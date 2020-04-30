@@ -157,7 +157,7 @@
                                                 <label class=" form-control input-full" name="muPrice"></label>
                                             </div>
                                             <label class="col-sm-1 col-form-label">
-                                                楼面地价
+                                                楼面地价(元/平方米)
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class=" form-control input-full" name="floorPrice"></label>
@@ -254,13 +254,13 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                楼面地价
+                                                楼面地价(元/平方米)
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" data-rule-number='true'
                                                        class="form-control input-full"
                                                        name="floorPrice"
-                                                       placeholder="楼面地价">
+                                                       placeholder="楼面地价(元/平方米)">
                                             </div>
                                         </div>
                                     </div>
@@ -391,8 +391,7 @@
                 <form class="form-horizontal">
                     <div class="row form-group">
                         <div class="col-md-2">
-                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                    data-toggle="modal" href="#achievementBox">
+                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" onclick="landLevel.showDataLandDetailAchievement(this);">
                                 <span class="btn-label"><i class="fa fa-plus"></i></span>新增
                             </button>
                         </div>
@@ -437,10 +436,10 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                因素一级<span class="symbol required"></span>
+                                                因素一级
                                             </label>
                                             <div class="col-sm-10">
-                                                <input type="text" required class="form-control input-full  "
+                                                <input type="text"  class="form-control input-full  "
                                                        name="classification">
                                             </div>
                                         </div>
@@ -448,10 +447,10 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                因素二级<span class="symbol required"></span>
+                                                因素二级
                                             </label>
                                             <div class="col-sm-10">
-                                                <input type="text" required name="category"
+                                                <input type="text"  name="category"
                                                        class="form-control input-full">
                                             </div>
                                         </div>

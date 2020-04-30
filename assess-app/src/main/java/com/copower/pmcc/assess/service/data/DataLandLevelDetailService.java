@@ -61,7 +61,18 @@ public class DataLandLevelDetailService {
     @Autowired
     private DataLandLevelDetailVolumeService volumeRatioDetailService;
 
-    public void importLandLevelDetail(List<DataLandLevelDetail> detailList, List<DataLandLevelDetail> landLevelDetailList, DataLandLevelDetail target, Integer landLevelId) {
+    private String getFilterName(String value){
+        if (StringUtils.isBlank(value)){
+            return "" ;
+        }
+        String nameById = baseDataDicService.getNameById(value);
+        if (StringUtils.isNotBlank(nameById)){
+            return nameById ;
+        }
+        return value ;
+    }
+
+    private void importLandLevelDetail(DataLandLevelDetail target, Integer landLevelId) {
         int i = 0;
         int j = 0;
         DataLandLevelDetail query = null;
@@ -84,6 +95,11 @@ public class DataLandLevelDetailService {
             List<DataLandLevelDetail> detailList1 = getDataLandLevelDetailList(query);
             if (CollectionUtils.isEmpty(detailList1)){
                 detailList1 = new ArrayList<>() ;
+                BeanUtils.copyProperties(target,query);
+                query.setName(getFilterName(target.getClassify()));
+                query.setLandLevelId(landLevelId);
+                query.setPid(0);
+                query.setId(null);
                 saveAndUpdateDataLandLevelDetail(query);
                 detailList1.add(query) ;
             }
@@ -93,7 +109,10 @@ public class DataLandLevelDetailService {
             List<DataLandLevelDetail> detailList2 = getDataLandLevelDetailList(query);
             if (CollectionUtils.isEmpty(detailList2)){
                 detailList2 = new ArrayList<>() ;
-                query.setName(target.getCategory());
+                BeanUtils.copyProperties(target,query);
+                query.setName(getFilterName(target.getCategory()));
+                query.setPid(detailList1.get(0).getId());
+                query.setId(null);
                 saveAndUpdateDataLandLevelDetail(query);
                 detailList2.add(query) ;
             }
@@ -108,6 +127,7 @@ public class DataLandLevelDetailService {
                 target.setPid(query.getPid());
                 target.setCategory(null);
                 target.setClassify(null);
+                target.setName(getFilterName(target.getType()));
             }
         }
         if (j == 2 && i != 3){
@@ -118,10 +138,14 @@ public class DataLandLevelDetailService {
             List<DataLandLevelDetail> detailList1 = getDataLandLevelDetailList(query);
             if (CollectionUtils.isEmpty(detailList1)){
                 detailList1 = new ArrayList<>() ;
+                BeanUtils.copyProperties(target,query);
+                query.setName(getFilterName(target.getClassify()));
+                query.setLandLevelId(landLevelId);
+                query.setPid(0);
+                query.setId(null);
                 saveAndUpdateDataLandLevelDetail(query);
                 detailList1.add(query) ;
             }
-
             query = new DataLandLevelDetail();
             query.setPid(detailList1.get(0).getId());
             query.setType(target.getType());
@@ -131,6 +155,7 @@ public class DataLandLevelDetailService {
             }else {
                 target.setPid(query.getPid());
                 target.setClassify(null);
+                target.setName(getFilterName(target.getType()));
             }
         }
     }
@@ -165,8 +190,6 @@ public class DataLandLevelDetailService {
             builder.append("没有数据!");
             return builder.toString();
         }
-        List<DataLandLevelDetail> detailList = new ArrayList<>();
-        List<DataLandLevelDetail> landLevelDetailList = new ArrayList<>();
         Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = ExcelImportUtils.getMultimapByClass(DataLandLevelDetail.class, row);
         List<String> requiredList = Arrays.asList("classify");
         Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
@@ -184,11 +207,12 @@ public class DataLandLevelDetailService {
                 target = new DataLandLevelDetail();
                 BeanUtils.copyProperties(input, target);
                 target.setId(null);
-                //excel 处理
+                //excel 导入处理
                 if (!ExcelImportUtils.excelImportHelp(classArrayListMultimap, target, builder, row, baseMap, requiredList, false)) {
                     continue;
                 }
-                importLandLevelDetail(detailList, landLevelDetailList, target, input.getLandLevelId());
+                //excel数据 判断 重复和其它操作
+                importLandLevelDetail(target, input.getLandLevelId());
                 saveAndUpdateDataLandLevelDetail(target);
                 successCount++;
             } catch (Exception e) {
@@ -286,6 +310,17 @@ public class DataLandLevelDetailService {
             }
             if (baseDataDic != null) {
                 name = baseDataDic.getName() + "/" + name;
+            }
+            if (StringUtils.isBlank(name)){
+                if (NumberUtils.isNumber(dataLandLevelDetail.getCategory())){
+                    baseDataDic = baseDataDicService.getCacheDataDicById(Integer.parseInt(dataLandLevelDetail.getCategory()));
+                }
+            }
+            if (baseDataDic != null) {
+                name = baseDataDic.getName() + "/" + name;
+            }
+            if (StringUtils.isBlank(name) && StringUtils.isNotBlank(dataLandLevelDetail.getCategory())){
+                name = dataLandLevelDetail.getCategory() ;
             }
         }
         return name;
