@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataDepositBenchmarkInterestRateMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataDepositBenchmarkInterestRate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="adjust_time" property="adjustTime" jdbcType="TIMESTAMP" />
+    <result column="demand_deposit" property="demandDeposit" jdbcType="DECIMAL" />
+    <result column="deposit_withdraw_lump_sum_three_month" property="depositWithdrawLumpSumThreeMonth" jdbcType="DECIMAL" />
+    <result column="deposit_withdraw_lump_sum_half_year" property="depositWithdrawLumpSumHalfYear" jdbcType="DECIMAL" />
+    <result column="deposit_withdraw_lump_sum_one_year" property="depositWithdrawLumpSumOneYear" jdbcType="DECIMAL" />
+    <result column="deposit_withdraw_lump_sum_two_year" property="depositWithdrawLumpSumTwoYear" jdbcType="DECIMAL" />
+    <result column="deposit_withdraw_lump_sum_three_year" property="depositWithdrawLumpSumThreeYear" jdbcType="DECIMAL" />
+    <result column="deposit_withdraw_lump_sum_five_year" property="depositWithdrawLumpSumFiveYear" jdbcType="DECIMAL" />
+    <result column="deposit_installments_withdraw_lump_sum_one_year" property="depositInstallmentsWithdrawLumpSumOneYear" jdbcType="DECIMAL" />
+    <result column="deposit_installments_withdraw_lump_sum_two_year" property="depositInstallmentsWithdrawLumpSumTwoYear" jdbcType="DECIMAL" />
+    <result column="deposit_installments_withdraw_lump_sum_three_year" property="depositInstallmentsWithdrawLumpSumThreeYear" jdbcType="DECIMAL" />
+    <result column="time_demand_optional_deposit" property="timeDemandOptionalDeposit" jdbcType="DECIMAL" />
+    <result column="agreement_deposit" property="agreementDeposit" jdbcType="DECIMAL" />
+    <result column="call_deposit_one_day" property="callDepositOneDay" jdbcType="DECIMAL" />
+    <result column="call_deposit_seven_day" property="callDepositSevenDay" jdbcType="DECIMAL" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, adjust_time, demand_deposit, deposit_withdraw_lump_sum_three_month, deposit_withdraw_lump_sum_half_year, 
+    deposit_withdraw_lump_sum_one_year, deposit_withdraw_lump_sum_two_year, deposit_withdraw_lump_sum_three_year, 
+    deposit_withdraw_lump_sum_five_year, deposit_installments_withdraw_lump_sum_one_year, 
+    deposit_installments_withdraw_lump_sum_two_year, deposit_installments_withdraw_lump_sum_three_year, 
+    time_demand_optional_deposit, agreement_deposit, call_deposit_one_day, call_deposit_seven_day, 
+    creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDepositBenchmarkInterestRateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_data_deposit_benchmark_interest_rate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_data_deposit_benchmark_interest_rate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_data_deposit_benchmark_interest_rate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDepositBenchmarkInterestRateExample" >
+    delete from tb_data_deposit_benchmark_interest_rate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDepositBenchmarkInterestRate" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_data_deposit_benchmark_interest_rate (adjust_time, demand_deposit, deposit_withdraw_lump_sum_three_month, 
+      deposit_withdraw_lump_sum_half_year, deposit_withdraw_lump_sum_one_year, 
+      deposit_withdraw_lump_sum_two_year, deposit_withdraw_lump_sum_three_year, 
+      deposit_withdraw_lump_sum_five_year, deposit_installments_withdraw_lump_sum_one_year, 
+      deposit_installments_withdraw_lump_sum_two_year, deposit_installments_withdraw_lump_sum_three_year, 
+      time_demand_optional_deposit, agreement_deposit, 
+      call_deposit_one_day, call_deposit_seven_day, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{adjustTime,jdbcType=TIMESTAMP}, #{demandDeposit,jdbcType=DECIMAL}, #{depositWithdrawLumpSumThreeMonth,jdbcType=DECIMAL}, 
+      #{depositWithdrawLumpSumHalfYear,jdbcType=DECIMAL}, #{depositWithdrawLumpSumOneYear,jdbcType=DECIMAL}, 
+      #{depositWithdrawLumpSumTwoYear,jdbcType=DECIMAL}, #{depositWithdrawLumpSumThreeYear,jdbcType=DECIMAL}, 
+      #{depositWithdrawLumpSumFiveYear,jdbcType=DECIMAL}, #{depositInstallmentsWithdrawLumpSumOneYear,jdbcType=DECIMAL}, 
+      #{depositInstallmentsWithdrawLumpSumTwoYear,jdbcType=DECIMAL}, #{depositInstallmentsWithdrawLumpSumThreeYear,jdbcType=DECIMAL}, 
+      #{timeDemandOptionalDeposit,jdbcType=DECIMAL}, #{agreementDeposit,jdbcType=DECIMAL}, 
+      #{callDepositOneDay,jdbcType=DECIMAL}, #{callDepositSevenDay,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDepositBenchmarkInterestRate" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_data_deposit_benchmark_interest_rate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adjustTime != null" >
+        adjust_time,
+      </if>
+      <if test="demandDeposit != null" >
+        demand_deposit,
+      </if>
+      <if test="depositWithdrawLumpSumThreeMonth != null" >
+        deposit_withdraw_lump_sum_three_month,
+      </if>
+      <if test="depositWithdrawLumpSumHalfYear != null" >
+        deposit_withdraw_lump_sum_half_year,
+      </if>
+      <if test="depositWithdrawLumpSumOneYear != null" >
+        deposit_withdraw_lump_sum_one_year,
+      </if>
+      <if test="depositWithdrawLumpSumTwoYear != null" >
+        deposit_withdraw_lump_sum_two_year,
+      </if>
+      <if test="depositWithdrawLumpSumThreeYear != null" >
+        deposit_withdraw_lump_sum_three_year,
+      </if>
+      <if test="depositWithdrawLumpSumFiveYear != null" >
+        deposit_withdraw_lump_sum_five_year,
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumOneYear != null" >
+        deposit_installments_withdraw_lump_sum_one_year,
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumTwoYear != null" >
+        deposit_installments_withdraw_lump_sum_two_year,
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumThreeYear != null" >
+        deposit_installments_withdraw_lump_sum_three_year,
+      </if>
+      <if test="timeDemandOptionalDeposit != null" >
+        time_demand_optional_deposit,
+      </if>
+      <if test="agreementDeposit != null" >
+        agreement_deposit,
+      </if>
+      <if test="callDepositOneDay != null" >
+        call_deposit_one_day,
+      </if>
+      <if test="callDepositSevenDay != null" >
+        call_deposit_seven_day,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adjustTime != null" >
+        #{adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="demandDeposit != null" >
+        #{demandDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumThreeMonth != null" >
+        #{depositWithdrawLumpSumThreeMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumHalfYear != null" >
+        #{depositWithdrawLumpSumHalfYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumOneYear != null" >
+        #{depositWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumTwoYear != null" >
+        #{depositWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumThreeYear != null" >
+        #{depositWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumFiveYear != null" >
+        #{depositWithdrawLumpSumFiveYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumOneYear != null" >
+        #{depositInstallmentsWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumTwoYear != null" >
+        #{depositInstallmentsWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumThreeYear != null" >
+        #{depositInstallmentsWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      </if>
+      <if test="timeDemandOptionalDeposit != null" >
+        #{timeDemandOptionalDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="agreementDeposit != null" >
+        #{agreementDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="callDepositOneDay != null" >
+        #{callDepositOneDay,jdbcType=DECIMAL},
+      </if>
+      <if test="callDepositSevenDay != null" >
+        #{callDepositSevenDay,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDepositBenchmarkInterestRateExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_deposit_benchmark_interest_rate
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_data_deposit_benchmark_interest_rate
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.adjustTime != null" >
+        adjust_time = #{record.adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.demandDeposit != null" >
+        demand_deposit = #{record.demandDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositWithdrawLumpSumThreeMonth != null" >
+        deposit_withdraw_lump_sum_three_month = #{record.depositWithdrawLumpSumThreeMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositWithdrawLumpSumHalfYear != null" >
+        deposit_withdraw_lump_sum_half_year = #{record.depositWithdrawLumpSumHalfYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositWithdrawLumpSumOneYear != null" >
+        deposit_withdraw_lump_sum_one_year = #{record.depositWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositWithdrawLumpSumTwoYear != null" >
+        deposit_withdraw_lump_sum_two_year = #{record.depositWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositWithdrawLumpSumThreeYear != null" >
+        deposit_withdraw_lump_sum_three_year = #{record.depositWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositWithdrawLumpSumFiveYear != null" >
+        deposit_withdraw_lump_sum_five_year = #{record.depositWithdrawLumpSumFiveYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositInstallmentsWithdrawLumpSumOneYear != null" >
+        deposit_installments_withdraw_lump_sum_one_year = #{record.depositInstallmentsWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositInstallmentsWithdrawLumpSumTwoYear != null" >
+        deposit_installments_withdraw_lump_sum_two_year = #{record.depositInstallmentsWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositInstallmentsWithdrawLumpSumThreeYear != null" >
+        deposit_installments_withdraw_lump_sum_three_year = #{record.depositInstallmentsWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.timeDemandOptionalDeposit != null" >
+        time_demand_optional_deposit = #{record.timeDemandOptionalDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.agreementDeposit != null" >
+        agreement_deposit = #{record.agreementDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.callDepositOneDay != null" >
+        call_deposit_one_day = #{record.callDepositOneDay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.callDepositSevenDay != null" >
+        call_deposit_seven_day = #{record.callDepositSevenDay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_data_deposit_benchmark_interest_rate
+    set id = #{record.id,jdbcType=INTEGER},
+      adjust_time = #{record.adjustTime,jdbcType=TIMESTAMP},
+      demand_deposit = #{record.demandDeposit,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_three_month = #{record.depositWithdrawLumpSumThreeMonth,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_half_year = #{record.depositWithdrawLumpSumHalfYear,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_one_year = #{record.depositWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_two_year = #{record.depositWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_three_year = #{record.depositWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_five_year = #{record.depositWithdrawLumpSumFiveYear,jdbcType=DECIMAL},
+      deposit_installments_withdraw_lump_sum_one_year = #{record.depositInstallmentsWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      deposit_installments_withdraw_lump_sum_two_year = #{record.depositInstallmentsWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      deposit_installments_withdraw_lump_sum_three_year = #{record.depositInstallmentsWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      time_demand_optional_deposit = #{record.timeDemandOptionalDeposit,jdbcType=DECIMAL},
+      agreement_deposit = #{record.agreementDeposit,jdbcType=DECIMAL},
+      call_deposit_one_day = #{record.callDepositOneDay,jdbcType=DECIMAL},
+      call_deposit_seven_day = #{record.callDepositSevenDay,jdbcType=DECIMAL},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDepositBenchmarkInterestRate" >
+    update tb_data_deposit_benchmark_interest_rate
+    <set >
+      <if test="adjustTime != null" >
+        adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="demandDeposit != null" >
+        demand_deposit = #{demandDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumThreeMonth != null" >
+        deposit_withdraw_lump_sum_three_month = #{depositWithdrawLumpSumThreeMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumHalfYear != null" >
+        deposit_withdraw_lump_sum_half_year = #{depositWithdrawLumpSumHalfYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumOneYear != null" >
+        deposit_withdraw_lump_sum_one_year = #{depositWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumTwoYear != null" >
+        deposit_withdraw_lump_sum_two_year = #{depositWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumThreeYear != null" >
+        deposit_withdraw_lump_sum_three_year = #{depositWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositWithdrawLumpSumFiveYear != null" >
+        deposit_withdraw_lump_sum_five_year = #{depositWithdrawLumpSumFiveYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumOneYear != null" >
+        deposit_installments_withdraw_lump_sum_one_year = #{depositInstallmentsWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumTwoYear != null" >
+        deposit_installments_withdraw_lump_sum_two_year = #{depositInstallmentsWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      </if>
+      <if test="depositInstallmentsWithdrawLumpSumThreeYear != null" >
+        deposit_installments_withdraw_lump_sum_three_year = #{depositInstallmentsWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      </if>
+      <if test="timeDemandOptionalDeposit != null" >
+        time_demand_optional_deposit = #{timeDemandOptionalDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="agreementDeposit != null" >
+        agreement_deposit = #{agreementDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="callDepositOneDay != null" >
+        call_deposit_one_day = #{callDepositOneDay,jdbcType=DECIMAL},
+      </if>
+      <if test="callDepositSevenDay != null" >
+        call_deposit_seven_day = #{callDepositSevenDay,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataDepositBenchmarkInterestRate" >
+    update tb_data_deposit_benchmark_interest_rate
+    set adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
+      demand_deposit = #{demandDeposit,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_three_month = #{depositWithdrawLumpSumThreeMonth,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_half_year = #{depositWithdrawLumpSumHalfYear,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_one_year = #{depositWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_two_year = #{depositWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_three_year = #{depositWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      deposit_withdraw_lump_sum_five_year = #{depositWithdrawLumpSumFiveYear,jdbcType=DECIMAL},
+      deposit_installments_withdraw_lump_sum_one_year = #{depositInstallmentsWithdrawLumpSumOneYear,jdbcType=DECIMAL},
+      deposit_installments_withdraw_lump_sum_two_year = #{depositInstallmentsWithdrawLumpSumTwoYear,jdbcType=DECIMAL},
+      deposit_installments_withdraw_lump_sum_three_year = #{depositInstallmentsWithdrawLumpSumThreeYear,jdbcType=DECIMAL},
+      time_demand_optional_deposit = #{timeDemandOptionalDeposit,jdbcType=DECIMAL},
+      agreement_deposit = #{agreementDeposit,jdbcType=DECIMAL},
+      call_deposit_one_day = #{callDepositOneDay,jdbcType=DECIMAL},
+      call_deposit_seven_day = #{callDepositSevenDay,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

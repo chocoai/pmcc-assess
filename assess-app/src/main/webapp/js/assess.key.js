@@ -377,3 +377,5 @@ AssessFTKey.ftpLandLevelAreaBaseTemplate = "ftp.land.level.area.base.template";/
 AssessFTKey.ftpLandLevelDetailBaseTemplate = "ftp.land.level.detail.base.template";//基准地价 级别 详情
 AssessFTKey.ftpLandLevelDetailBaseAchievementTemplate = "ftp.land.level.detail.base.achievement.template";//	基准地价 土地因素
 AssessFTKey.ftpLandLevelDetailBaseCoefficientTemplate = "ftp.land.level.detail.base.coefficient.template";//	基准地价 容积率
+AssessFTKey.ftpDataLoanBenchmarkInterestRateTemplate = "ftp.DataLoanBenchmarkInterestRate.template";//	贷款基准利率
+AssessFTKey.ftpDataDepositBenchmarkInterestRateTemplate = "ftp.DataDepositBenchmarkInterestRate.template";//	存款基准利率
