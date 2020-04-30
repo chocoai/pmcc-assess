@@ -41,10 +41,10 @@
                                                     <label class=" form-control input-full" name="muPrice"></label>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
-                                                    标准容积率
+                                                    楼面地价(元/平方米)
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <label class=" form-control input-full" name="volumeRate"></label>
+                                                    <label class=" form-control input-full" name="floorPrice"></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -64,6 +64,12 @@
                                                 <div class="col-sm-3">
                                                     <label class=" form-control input-full"
                                                            name="landAcquisitionProportion"></label>
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    标准容积率
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <label class=" form-control input-full" name="volumeRate"></label>
                                                 </div>
                                             </div>
                                         </div>
