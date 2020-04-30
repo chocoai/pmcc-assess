@@ -829,7 +829,7 @@ commonColumn.houseWaterColumn = function () {
     cols.push({field: 'boosterEquipmentName', title: '给水升压设备'});
     cols.push({field: 'pretreatedWaterName', title: '前置净水'});
     cols.push({field: 'purificationEquipmentPriceName', title: '前置净水设备价格区间'});
-    cols.push({field: 'fireWaterSupplyName', title: '消防给水'});
+    cols.push({field: 'fireWaterSupplyName', title: '供水分类'});
     return cols;
 }
 

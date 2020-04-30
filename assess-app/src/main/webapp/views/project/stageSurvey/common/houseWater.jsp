@@ -58,7 +58,7 @@
                                     <div class="col-md-12">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
-                                            消防给水<span class="symbol required"></span>
+                                            供水分类<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="fireWaterSupply"
