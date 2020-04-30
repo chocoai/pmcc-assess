@@ -526,7 +526,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功",result.data.replace(/\n/g, '<br/>'));
+                    notifyInfo("成功",result.data);
                     selfSupportForecast.loadHistoryList(type);
                 } else {
                     AlertError("失败","导入数据失败，失败原因:" + result.errmsg);

@@ -592,7 +592,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess(result.data.replace(/\n/g, '<br/>'));
+                    notifyInfo("成功",result.data);
                     forecastRestaurant.loadHistoryList(type);
                 } else {
                     AlertError("失败","导入数据失败，失败原因:" + result.errmsg);
