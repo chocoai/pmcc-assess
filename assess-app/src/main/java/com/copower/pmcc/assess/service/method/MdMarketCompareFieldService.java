@@ -468,7 +468,7 @@ public class MdMarketCompareFieldService extends BaseService {
                                     stringBuilder.append(houseWater.getPipingLayout() == null ? "" : String.format("%s", baseDataDicService.getNameById(houseWater.getPipingLayout())));//给水管道布置
                                     stringBuilder.append(houseWater.getSupplyMode() == null ? "" : String.format("%s", baseDataDicService.getNameById(houseWater.getSupplyMode())));//给水方式
                                     stringBuilder.append(",");
-                                    stringBuilder.append(houseWater.getFireWaterSupply() == null ? "" : String.format("消防给水为%s；", baseDataDicService.getNameById(houseWater.getFireWaterSupply())));
+                                    stringBuilder.append(houseWater.getFireWaterSupply() == null ? "" : String.format("供水分类为%s；", baseDataDicService.getNameById(houseWater.getFireWaterSupply())));
                                 }
                             }
                             List<BasicHouseWaterDrain> drainList = basicHouseWaterDrainService.getBasicHouseWaterDrainList(examineHouse.getId());
