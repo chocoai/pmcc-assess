@@ -563,7 +563,8 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/case/case.common.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");
@@ -757,7 +758,7 @@
         })
 
         var jsonContent = JSON.parse('${master.landLevelContent}');
-        var data = estateCommon.landLevelFilter(jsonContent);
+        var data = caseCommon.landLevelFilter(jsonContent);
         if (jQuery.isEmptyObject(data)) {
             return false;
         }

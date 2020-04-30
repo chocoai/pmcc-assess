@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachTaxesDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
@@ -57,6 +58,8 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     private CommonService commonService;
     @Autowired
     private DataLandLevelDetailService dataLandLevelDetailService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -160,7 +163,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
         BasicEstate basicEstate = null;
         try {
-            basicEstate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
+            basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
             if (basicEstate == null) {
                 return;
             }
@@ -168,13 +171,15 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
             logger.error(String.format("没有获取到数据 ==> %s", e.getMessage()));
         }
         if(basicEstate!=null){
-            BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
-            modelAndView.addObject("landFactorTotalScore", landStateByEstateId.getLandFactorTotalScore());
-            modelAndView.addObject("landLevelContent", landStateByEstateId.getLandLevelContent());
-            modelAndView.addObject("levelDetailId", landStateByEstateId.getLandLevel());
-            DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
-            if(levelDetail!=null){
-                modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+            List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
+            if(CollectionUtils.isNotEmpty(categoryInfoList)){
+                modelAndView.addObject("landFactorTotalScore", categoryInfoList.get(0).getLandFactorTotalScore());
+                modelAndView.addObject("landLevelContent", categoryInfoList.get(0).getLandLevelContentResult());
+                modelAndView.addObject("levelDetailId", categoryInfoList.get(0).getLandLevel());
+                DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfoList.get(0).getLandLevel());
+                if(levelDetail!=null){
+                    modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+                }
             }
         }
     }

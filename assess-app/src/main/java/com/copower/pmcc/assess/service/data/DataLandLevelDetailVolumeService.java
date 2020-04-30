@@ -194,12 +194,13 @@ public class DataLandLevelDetailVolumeService {
 
     //根据配置获取容积率修正
     public BigDecimal getAmendByVolumetricRate(BigDecimal volumeRate,Integer dataLandLevelDetailId) {
-        DataLandLevelDetail levelDetail = dataLandLevelDetailService.getPidByDataLandLevelDetail(dataLandLevelDetailId);
-        if(levelDetail.getVolumeRate()==null) return null;
-
+        if(volumeRate==null) return null;
+        //没有配置则往上级找
+        DataLandLevelDetail hasVolumeFractionAmendData = dataLandLevelDetailService.hasVolumeFractionAmendParent(dataLandLevelDetailId);
         DataLandLevelDetailVolume data = new DataLandLevelDetailVolume();
-        data.setLevelDetailId(levelDetail.getId());
+        data.setLevelDetailId(hasVolumeFractionAmendData.getId());
         List<DataLandLevelDetailVolume> detailList = getDataLandLevelDetailVolumeList(data);
+        if(!CollectionUtils.isNotEmpty(detailList)) return null;
         for (DataLandLevelDetailVolume detailItem : detailList) {
             //直接匹配
             if (detailItem.getPlotRatio() == null) continue;
@@ -208,7 +209,10 @@ public class DataLandLevelDetailVolumeService {
             }
         }
         //不能直接匹配
-        return getAmend(detailList, volumeRate);
+        if(detailList.size()>2){
+            return getAmend(detailList, volumeRate);
+        }
+        return null;
     }
 
     public BigDecimal getAmend(List<DataLandLevelDetailVolume> detailList, BigDecimal volumetricRate) {

@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetail;
+import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailVolume;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -401,13 +402,58 @@ public class DataLandLevelDetailService {
 
 
     //获取最上级明细
-    public DataLandLevelDetail getPidByDataLandLevelDetail(Integer dataLandLevelDetailId) {
+    public DataLandLevelDetail getTopDetailLevelData(Integer dataLandLevelDetailId) {
         DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
         if (dataLandLevelDetail == null) return null;
         if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
             return dataLandLevelDetail;
         } else {
-            return getPidByDataLandLevelDetail(dataLandLevelDetail.getPid());
+            return getTopDetailLevelData(dataLandLevelDetail.getPid());
         }
+    }
+
+    //获取有基准地价的父级(本身有则除外)
+    public DataLandLevelDetail hasStandardPremiumParent(Integer dataLandLevelDetailId) {
+        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
+        if (dataLandLevelDetail == null) return null;
+        if (dataLandLevelDetail.getPrice() != null) {
+            return dataLandLevelDetail;
+        }
+        if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
+            return dataLandLevelDetail;
+        }
+        return hasStandardPremiumParent(dataLandLevelDetail.getPid());
+
+    }
+
+    //获取有法定年限父级(本身有则除外)
+    public DataLandLevelDetail hasLegalAgeParent(Integer dataLandLevelDetailId) {
+        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
+        if (dataLandLevelDetail == null) return null;
+        if (dataLandLevelDetail.getLegalAge() != null) {
+            return dataLandLevelDetail;
+        }
+        if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
+            return dataLandLevelDetail;
+        }
+        return hasLegalAgeParent(dataLandLevelDetail.getPid());
+
+    }
+
+    //获取有容积率修正配置的父级(本身有则除外)
+    public DataLandLevelDetail hasVolumeFractionAmendParent(Integer dataLandLevelDetailId) {
+        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
+        if (dataLandLevelDetail == null) return null;
+        DataLandLevelDetailVolume data = new DataLandLevelDetailVolume();
+        data.setLevelDetailId(dataLandLevelDetail.getId());
+        List<DataLandLevelDetailVolume> detailList = volumeRatioDetailService.getDataLandLevelDetailVolumeList(data);
+        if (CollectionUtils.isNotEmpty(detailList)) {
+            return dataLandLevelDetail;
+        }
+        if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
+            return dataLandLevelDetail;
+        }
+        return hasVolumeFractionAmendParent(dataLandLevelDetail.getPid());
+
     }
 }

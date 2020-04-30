@@ -407,7 +407,8 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/case/case.common.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");
@@ -417,7 +418,7 @@
         //土地指数表
         getLandIndexId();
         //容积率修正系数表
-        showVolumetricRateDetailList('${landLevelDetailId}');
+        showVolumetricRateDetailList('${hasVolumeFractionAmendId}');
 
         $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${master.areaAndSeveralAmend}'));
     });
@@ -477,13 +478,13 @@
 
 
     //容积率修正系数表
-    function showVolumetricRateDetailList(landLevelDetailId) {
+    function showVolumetricRateDetailList(hasVolumeFractionAmendId) {
         var cols = [];
         cols.push({field: 'plotRatio', title: '容积率'});
         cols.push({field: 'correctionFactor', title: '修正系数'});
         $("#volumetricRateDetailTable").bootstrapTable('destroy');
         TableInit("volumetricRateDetailTable", "${pageContext.request.contextPath}/dataLandLevelDetailVolume/getBootstrapTableVo", cols, {
-            allocationVolumeRatioId: landLevelDetailId
+            levelDetailId: hasVolumeFractionAmendId
         }, {
             showColumns: false,
             showRefresh: false,
@@ -511,7 +512,7 @@
         })
 
         var jsonContent = JSON.parse('${master.landLevelContent}');
-        var data = estateCommon.landLevelFilter(jsonContent);
+        var data = caseCommon.landLevelFilter(jsonContent);
         if (jQuery.isEmptyObject(data)) {
             return false;
         }

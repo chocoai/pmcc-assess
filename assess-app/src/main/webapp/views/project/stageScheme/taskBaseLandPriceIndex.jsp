@@ -496,7 +496,7 @@
         </td>
         <td>
             <select class="form-control input-full" name="landLevelGrade"
-                    onchange="estateCommon.landLevelHandle(this);">
+                    onchange="caseCommon.landLevelHandle(this);">
                 {landLevelGradeHTML}
             </select>
         </td>
@@ -512,10 +512,13 @@
         </td>
         <td>
             <input class="btn btn-warning" type="button" value="X"
-                   onclick="estateCommon.landLevelEmpty(this)">
+                   onclick="caseCommon.landLevelEmpty(this)">
         </td>
     </tr>
 </script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/case/case.common.js?v=${assessVersion}"></script>
+
 <script type="application/javascript">
     function submit() {
         if (!$("#master").valid()) {
@@ -547,7 +550,7 @@
         //土地指数表
         getLandIndexId();
         //容积率修正系数表
-        showVolumetricRateDetailList(${landLevelDetailId});
+        showVolumetricRateDetailList(${hasVolumeFractionAmendId});
         //因素条件说明及修正系数
         //getLevelDetailId()
         if ('${apply}' == 'apply') {
@@ -698,13 +701,13 @@
     };
 
     //容积率修正系数表
-    function showVolumetricRateDetailList(landLevelDetailId) {
+    function showVolumetricRateDetailList(hasVolumeFractionAmendId) {
         var cols = [];
         cols.push({field: 'plotRatio', title: '容积率'});
         cols.push({field: 'correctionFactor', title: '修正系数'});
         $("#volumetricRateDetailTable").bootstrapTable('destroy');
         TableInit("volumetricRateDetailTable", "${pageContext.request.contextPath}/dataLandLevelDetailVolume/getBootstrapTableVo", cols, {
-            allocationVolumeRatioId: landLevelDetailId
+            levelDetailId: hasVolumeFractionAmendId
         }, {
             showColumns: false,
             showRefresh: false,
@@ -758,7 +761,7 @@
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
-                var item = estateCommon.getLandLevelFilter(obj);
+                var item = caseCommon.getLandLevelFilter(obj);
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
@@ -790,7 +793,7 @@
 
     function landLevelLoadHtml2(jsonStr) {
         var jsonParse = JSON.parse(jsonStr);
-        var data = estateCommon.landLevelFilter(jsonParse);
+        var data = caseCommon.landLevelFilter(jsonParse);
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
