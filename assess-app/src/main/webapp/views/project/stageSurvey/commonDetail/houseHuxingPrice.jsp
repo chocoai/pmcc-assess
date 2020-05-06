@@ -1,5 +1,5 @@
 <%--
- 单价调查
+ 户型差异调查表
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="col-md-12">
@@ -7,7 +7,7 @@
         <div class="card-header collapse-link">
             <div class="card-head-row">
                 <div class="card-title">
-                    单价调查
+                    户型差异调查表
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span

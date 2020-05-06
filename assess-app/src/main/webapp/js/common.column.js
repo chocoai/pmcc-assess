@@ -462,7 +462,7 @@ commonColumn.buildingFunctionColumn = function () {
     return cols;
 }
 
-//单元-单价调查
+//单元-户型差异调查表
 commonColumn.houseHuxingPriceColumn = function () {
     var cols = [];
     cols.push({field: 'houseNumber', title: '房号'});
@@ -471,7 +471,7 @@ commonColumn.houseHuxingPriceColumn = function () {
     return cols;
 };
 
-//单元-单价调查 其它
+//单元-户型差异调查表 其它
 commonColumn.houseHuxingPriceHandleColumn = function (data, tenementType) {
     var cols = [];
     $.each(data, function (i, item) {

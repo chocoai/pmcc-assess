@@ -260,7 +260,7 @@ public class BasicHouseHuxingPriceService {
 
         OutputStream os = response.getOutputStream();
         try {
-            this.setResponseHeader(response, "单价调查模板.XLS");
+            this.setResponseHeader(response, "户型差异调查表模板.XLS");
             wb.write(os);
         } catch (Exception e) {
             throw new BusinessException("导出Excel出错:" + e);

@@ -371,7 +371,7 @@ AssessFTKey.ftDeclareBuildEquipmentInstall = "ft.declare.build.equipmentInstall"
 AssessFTKey.ftOperationManualCaseBase = "ft.operation.manual.case.base";//案例库操作手册
 AssessFTKey.ftProjectDispatchRegister = "ft.project.dispatch.register";//项目发文登记表模板
 AssessFTKey.ftBasicEstateInvestigation = "ft.basic.estate.investigation";//楼盘调查信息模板
-AssessFTKey.ftBasicUnitPriceInvestigation = "ft.basic.unit.price.investigation";//单价调查模板
+AssessFTKey.ftBasicUnitPriceInvestigation = "ft.basic.unit.price.investigation";//户型差异调查表模板
 
 AssessFTKey.ftpLandLevelAreaBaseTemplate = "ftp.land.level.area.base.template";//	基准地价 区域
 AssessFTKey.ftpLandLevelDetailBaseTemplate = "ftp.land.level.detail.base.template";//基准地价 级别 详情

@@ -103,7 +103,7 @@
                     <div class="row form-group">
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
-                                <label class="col-sm-1 control-label">单价调查信息<span
+                                <label class="col-sm-1 control-label">户型差异调查表<span
                                         class="symbol required"></span></label>
                                 <div class="col-sm-5">
 

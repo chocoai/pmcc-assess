@@ -168,7 +168,7 @@ public class SchemeSurePriceController {
         }
     }
 
-    @RequestMapping(value = "/generateHuxingPrice", name = "生成并导出单价调查模板")
+    @RequestMapping(value = "/generateHuxingPrice", name = "生成并导出户型差异调查表模板")
     public void generateHuxingPrice(HttpServletResponse response, String columns, Integer houseId,Integer judgeObjectId) throws Exception {
         try {
             List<ExamineHousePriceDto> dtoList = JSON.parseArray(columns, ExamineHousePriceDto.class);

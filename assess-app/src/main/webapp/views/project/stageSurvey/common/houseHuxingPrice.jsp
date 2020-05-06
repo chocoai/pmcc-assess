@@ -1,5 +1,5 @@
 <%--
- 单价调查
+ 户型差异调查表
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -8,7 +8,7 @@
         <div class="card-header collapse-link">
             <div class="card-head-row">
                 <div class="card-title">
-                    单价调查
+                    户型差异调查表
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span
@@ -61,7 +61,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">单价调查</h4>
+                <h4 class="modal-title">户型差异调查表</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>

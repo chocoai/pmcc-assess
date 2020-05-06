@@ -530,7 +530,7 @@ public class SchemeLiquidationAnalysisService {
                 }
             }
         }
-        //单价调查
+        //户型差异调查表
         SchemeLiquidationAnalysisGroup analysisGroup = schemeLiquidationAnalysisGroupDao.getSchemeLiquidationAnalysisGroup(groupId);
         if (StringUtils.isNotEmpty(analysisGroup.getHuxingPriceIds())) {
             List<String> idsStr = Arrays.asList(analysisGroup.getHuxingPriceIds().split(","));
