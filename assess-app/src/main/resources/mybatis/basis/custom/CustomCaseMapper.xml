@@ -247,7 +247,7 @@
         <if test="startDate == null and endDate != null">
             and gmt_created <![CDATA[ <= ]]>   #{endDate}
         </if>
-
+        order by id desc
     </select>
 
     <sql id="Base_Column_ListCaseBuilding">
