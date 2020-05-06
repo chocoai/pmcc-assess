@@ -263,7 +263,12 @@ public class BasicBuildingService extends BasicEntityAbstract {
         vo.setAppearanceStyleName(baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()));
         vo.setAppearanceNewAndOldName(baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()));
         if (basicBuilding.getPropertyCompanyNature() != null) {
-            vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
+            try {
+                //crm 未知错误  暂时这样处理
+                vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
         }
         vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(basicBuilding.getPropertySocialPrestige()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicBuilding.getCreator()));

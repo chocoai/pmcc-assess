@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiatePossessorDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -15,6 +17,8 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,6 +50,7 @@ public class InitiatePossessorService {
     private InitiateContactsService initiateContactsService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
     public Integer saveAndUpdate(InitiatePossessor initiatePossessor) {
         if (initiatePossessor == null) {
@@ -108,7 +114,23 @@ public class InitiatePossessorService {
         }
         InitiatePossessorVo vo = new InitiatePossessorVo();
         BeanUtils.copyProperties(possessor, vo);
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = new ArrayList<>();
+        try {
+            crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        } catch (Exception e) {
+            //crm 未知错误
+            logger.error(e.getMessage(),e);
+            List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_INITIATE_UNIT_TYPE);
+            if (CollectionUtils.isNotEmpty(cacheDataDicList)){
+                for (BaseDataDic baseDataDic:cacheDataDicList){
+                    CrmBaseDataDicDto crmBaseDataDicDto = new CrmBaseDataDicDto();
+                    crmBaseDataDicDto.setId(baseDataDic.getId());
+                    crmBaseDataDicDto.setName(baseDataDic.getName());
+                    crmBaseDataDicDtos.add(crmBaseDataDicDto);
+                }
+            }
+        }
+
         if (CollectionUtils.isNotEmpty(crmBaseDataDicDtos)) {
             for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {
                 if (org.apache.commons.lang3.StringUtils.isEmpty(possessor.getpUnitProperties())){

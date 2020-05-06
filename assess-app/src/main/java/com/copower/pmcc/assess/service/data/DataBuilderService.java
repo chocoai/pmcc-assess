@@ -144,7 +144,12 @@ public class DataBuilderService {
             dataBuilderVo.setSocialPrestigeName(baseDataDicService.getNameById(dataBuilder.getSocialPrestige()));
         }
         if (dataBuilder.getCompanyNature() != null) {
-            dataBuilderVo.setCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(dataBuilder.getCompanyNature()).getName());
+            try {
+                //crm 未知错误  暂时这样处理
+                dataBuilderVo.setCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(dataBuilder.getCompanyNature()).getName());
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
         }
         return dataBuilderVo;
     }

@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectChangeTypeEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectChangeLog;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.ProjectInfoChangeVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectStateChangeService;
@@ -50,6 +52,8 @@ public class ProjectInfoChangeController {
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -66,7 +70,8 @@ public class ProjectInfoChangeController {
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("projectInfoVoJson", JSONObject.toJSONString(projectInfoVo));
         modelAndView.addObject("projectId", projectInfo.getId());
-        modelAndView.addObject("ProjectAFFILIATED", crmRpcBaseDataDicService.getUnitPropertiesList());
+//        modelAndView.addObject("ProjectAFFILIATED", crmRpcBaseDataDicService.getUnitPropertiesList());
+        modelAndView.addObject("ProjectAFFILIATED", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_INITIATE_UNIT_TYPE));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
@@ -133,7 +138,8 @@ public class ProjectInfoChangeController {
         modelAndView.addObject("projectInfo", simpleProjectInfoVo);
         modelAndView.addObject("projectInfoVoJson", JSONObject.toJSONString(simpleProjectInfoVo));
         modelAndView.addObject("projectId", simpleProjectInfoVo.getId());
-        modelAndView.addObject("ProjectAFFILIATED", crmRpcBaseDataDicService.getUnitPropertiesList());
+//        modelAndView.addObject("ProjectAFFILIATED", crmRpcBaseDataDicService.getUnitPropertiesList());
+        modelAndView.addObject("ProjectAFFILIATED", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_INITIATE_UNIT_TYPE));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
 
         return modelAndView;

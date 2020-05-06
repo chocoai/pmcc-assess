@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
@@ -69,6 +70,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -630,12 +632,27 @@ public class ProjectInfoService {
      * @return
      */
     public List<CrmBaseDataDicDto> getUnitPropertiesList() {
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = new ArrayList<>();
+        try {
+            crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        } catch (Exception e) {
+            //crm 未知错误
+            logger.error(e.getMessage(),e);
+            List<BaseDataDic> cacheDataDicList = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_INITIATE_UNIT_TYPE);
+            if (CollectionUtils.isNotEmpty(cacheDataDicList)){
+                for (BaseDataDic baseDataDic:cacheDataDicList){
+                    CrmBaseDataDicDto crmBaseDataDicDto = new CrmBaseDataDicDto();
+                    crmBaseDataDicDto.setId(baseDataDic.getId());
+                    crmBaseDataDicDto.setName(baseDataDic.getName());
+                    crmBaseDataDicDtos.add(crmBaseDataDicDto);
+                }
+            }
+        }
         return crmBaseDataDicDtos;
     }
 
     /**
-     * 仅仅是联系人清楚
+     * 仅仅是联系人清除
      */
     public void clear() {
         consignorService.clear();

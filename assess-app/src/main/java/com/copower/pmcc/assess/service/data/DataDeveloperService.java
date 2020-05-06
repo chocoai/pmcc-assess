@@ -133,7 +133,11 @@ public class DataDeveloperService {
         DataDeveloperVo dataDeveloperVo = new DataDeveloperVo();
         BeanUtils.copyProperties(dataDeveloper, dataDeveloperVo);
         if (dataDeveloper.getCompanyNature() != null) {
-            dataDeveloperVo.setCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(dataDeveloper.getCompanyNature()).getName());
+            try {
+                dataDeveloperVo.setCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(dataDeveloper.getCompanyNature()).getName());
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
         }
         if (dataDeveloper.getSocialPrestige() != null) {
             dataDeveloperVo.setSocialPrestigeName(baseDataDicService.getNameById(dataDeveloper.getSocialPrestige()));
