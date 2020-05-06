@@ -2664,7 +2664,7 @@ damagedDegree.valid = function (remark) {
         if (remark) {
             notifySuccess('成功', remark);
         } else {
-            notifySuccess('成功', '请检查房屋完损度');
+            notifySuccess('成功', '请检查房屋完好度');
         }
     }
     return i == 0;

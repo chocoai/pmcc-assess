@@ -1,5 +1,5 @@
 <%--
-  房屋完损度
+  房屋完好度
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="col-md-12">
@@ -7,7 +7,7 @@
         <div class="card-header collapse-link">
             <div class="card-head-row">
                 <div class="card-title">
-                    房屋完损度
+                    房屋完好度
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span
@@ -34,7 +34,7 @@
             <li><a class="collapse-link"><i
                     class="fa fa-chevron-up"></i></a></li>
         </ul>
-        <h4>房屋完损度</h4>
+        <h4>房屋完好度</h4>
         <div class="clearfix"></div>
     </div>
     <div class="x_content collapse">

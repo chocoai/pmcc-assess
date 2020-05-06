@@ -6,7 +6,7 @@
         <div class="card-header collapse-link" onclick="damagedDegree.loadDamagedDegreeList();">
             <div class="card-head-row">
                 <div class="card-title">
-                    房屋完损度
+                    房屋完好度
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span

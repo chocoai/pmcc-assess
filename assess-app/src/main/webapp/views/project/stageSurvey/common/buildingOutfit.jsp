@@ -96,10 +96,10 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                材料价格区间<span class="symbol required"></span>
+                                                材料价格区间
                                             </label>
                                             <div class="col-sm-10">
-                                                <select required="required" name="materialPrice"
+                                                <select name="materialPrice"
                                                         class="form-control input-full materialPrice">
                                                 </select>
                                             </div>
