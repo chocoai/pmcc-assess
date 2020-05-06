@@ -4,15 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseHuxingPriceDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseHuxingPriceVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -20,7 +21,6 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -70,6 +70,8 @@ public class BasicHouseHuxingPriceService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
     @Autowired
     private SchemeSurePriceService schemeSurePriceService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -168,7 +170,7 @@ public class BasicHouseHuxingPriceService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicHouseHuxingPrice> huxingPriceList = Lists.newArrayList();
-        if(StringUtils.isNotEmpty(judgeIds)){
+        if (StringUtils.isNotEmpty(judgeIds)) {
             List<String> idsStr = Arrays.asList(judgeIds.split(","));
             ArrayList<Integer> completeIds = Lists.newArrayList();
             for (String id : idsStr) {
@@ -236,6 +238,7 @@ public class BasicHouseHuxingPriceService {
         ArrayList<ExamineHousePriceDto> columnsList = Lists.newArrayList();
         LinkedHashMap<String, String> base = new LinkedHashMap<>();
         base.put("houseNumber", "房号");
+        base.put("declareName", "权证名称");
         base.put("area", "面积");
         base.put("floor", "楼层");
         if (StringUtils.isNotEmpty(source)) {
@@ -348,8 +351,8 @@ public class BasicHouseHuxingPriceService {
                     continue;
                 }
                 //权证号默认与房屋权证一致
-                BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId);
-                basicHouseHuxingPrice.setDeclareId(houseDetail.getDeclareRecordId());
+                //BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId);
+                //basicHouseHuxingPrice.setDeclareId(houseDetail.getDeclareRecordId());
                 saveAndUpdateBasicHouseHuxingPrice(basicHouseHuxingPrice, false);
                 successCount++;
             } catch (Exception e) {
@@ -381,7 +384,25 @@ public class BasicHouseHuxingPriceService {
                 basicHouseHuxingPrice.setId(list.get(0).getId());
             }
         }
+        //权证号
+        if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(1)))) {
+            String value = PoiUtils.getCellValue(row.getCell(1));
+            basicHouseHuxingPrice.setDeclareName(value);
+            List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
+            if (CollectionUtils.isNotEmpty(declareRecordList)) {
+                List<String> transform = LangUtils.transform(declareRecordList, o -> o.getName());
+                if (transform.contains(value)) {
+                    for (DeclareRecord item : declareRecordList) {
+                        if (value.equals(item.getName())) {
+                            basicHouseHuxingPrice.setDeclareId(item.getId());
+                        }
+                    }
+                } else {
+                    builder.append(String.format("\n第%s行：权证名称没有匹配", i));
+                }
 
+            }
+        }
         boolean check = declarePublicService.excelImportHelp(classArrayListMultimap, basicHouseHuxingPrice, builder, row, baseMap, requiredList);
         return check;
     }
