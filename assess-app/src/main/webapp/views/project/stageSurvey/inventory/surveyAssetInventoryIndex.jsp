@@ -797,14 +797,17 @@
             writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', data.otherProject);
             writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
-        if (data.bisCheckOriginal != null && data.bisCheckOriginal != undefined) {
-            if (data.bisCheckOriginal){
-                frm.find("[name=bisCheckOriginal][value=0]").attr("checked", false);
-                frm.find("[name=bisCheckOriginal][value=1]").attr("checked", true);
-            }else {
-                frm.find("[name=bisCheckOriginal][value=0]").attr("checked", true);
-                frm.find("[name=bisCheckOriginal][value=1]").attr("checked", false);
+        try {
+            if (data.bisCheckOriginal != null && data.bisCheckOriginal != undefined) {
+                if (data.bisCheckOriginal) {
+                    frm.find("[name=bisCheckOriginal][value=0]").attr("checked", false);
+                    frm.find("[name=bisCheckOriginal][value=1]").attr("checked", true);
+                } else {
+                    frm.find("[name=bisCheckOriginal][value=0]").attr("checked", true);
+                    frm.find("[name=bisCheckOriginal][value=1]").attr("checked", false);
+                }
             }
+        } catch (e) {
         }
         frm.find("[name=bisCheckOriginal]").change(function () {
             var value = $(this).val();
