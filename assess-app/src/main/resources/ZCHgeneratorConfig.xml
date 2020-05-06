@@ -102,11 +102,11 @@
             <!--<columnOverride column="land_level_content_result" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_data_deposit_benchmark_interest_rate" domainObjectName="DataDepositBenchmarkInterestRate">
+        <table tableName="tb_data_average_wage_urban_employees" domainObjectName="DataAverageWageUrbanEmployees">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_data_loan_benchmark_interest_rate" domainObjectName="DataLoanBenchmarkInterestRate">
+        <table tableName="tb_data_average_wage_urban_employees_item" domainObjectName="DataAverageWageUrbanEmployeesItem">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
