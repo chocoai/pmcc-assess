@@ -32,6 +32,7 @@
                                     <input type="hidden" name="id" value="${surveyAssetInventory.id}">
                                     <input type="hidden" name="influenceFactorRemarkText"
                                            value="${surveyAssetInventory.influenceFactorRemarkText}">
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -52,7 +53,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div class="row form-group bisCheckOriginalZero">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
 
@@ -79,6 +80,38 @@
                                                 <div class="col-sm-3">
                                            <textarea placeholder="查询说明" class="form-control input-full"
                                                      name="networkRemark">${surveyAssetInventory.networkRemark}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group bisCheckOriginalOne" style="display: none;">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">
+                                                    核对日期<span class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" required placeholder="核对日期"
+                                                           name="checkDate"
+                                                           data-date-format="yyyy-mm-dd"
+                                                           class="form-control input-full date-picker dbdate"
+                                                           readonly="readonly"
+                                                           value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
+
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    证明文件
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input id="checkOriginalFile" type="file" multiple="false">
+                                                    <div id="_checkOriginalFile"></div>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    说明
+                                                </label>
+                                                <div class="col-sm-3">
+                                           <textarea placeholder="说明" class="form-control input-full"
+                                                     name="remark">${surveyAssetInventory.remark}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,41 +163,6 @@
                                                     <select class="form-control input-full search-select select2"
                                                             name="influenceFactor" multiple="multiple">
                                                     </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                        color="#6f5499" size="10"/>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    核对日期<span class="symbol required"></span></label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" required placeholder="核对日期"
-                                                           name="checkDate"
-                                                           data-date-format="yyyy-mm-dd"
-                                                           class="form-control input-full date-picker dbdate"
-                                                           readonly="readonly"
-                                                           value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
-
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    说明
-                                                </label>
-                                                <div class="col-sm-3">
-                                           <textarea placeholder="说明" class="form-control input-full"
-                                                     name="remark">${surveyAssetInventory.remark}</textarea>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    证明文件
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <input id="checkOriginalFile" type="file" multiple="false">
-                                                    <div id="_checkOriginalFile"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -560,7 +558,8 @@
                                                                 onclick="survey.findDeclareRecord() ;">
                                                             权证查看
                                                         </button>
-                                                        <button type="button" class="btn btn-sm btn-success" onclick="survey.findRightDetail();">
+                                                        <button type="button" class="btn btn-sm btn-success"
+                                                                onclick="survey.findRightDetail();">
                                                             他项权力查看
                                                         </button>
                                                     </div>
@@ -668,7 +667,7 @@
     //公共  赋值 方法
     survey.initFormData = function (form, item, fileArr, bisDetail, tableName, inputArr) {
         var frm = $(form.selector);
-        frm.clearAll();
+        frm.clearAll(['bisCheckOriginal']);
         frm.initForm(item);
         frm.validate();
         if (fileArr) {
@@ -730,13 +729,13 @@
             if (data.affected) {
                 frm.find("select[name='affected']").val(data.affected.split(",")).trigger('change');
             }
-        },true,false);
+        }, true, false);
         AssessCommon.loadNewAsyncDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor, data.influenceFactor, function (html, item) {
             frm.find("select[name='influenceFactor']").empty().html(html);
             if (data.influenceFactor) {
                 frm.find("select[name='influenceFactor']").val(data.influenceFactor.split(",")).trigger('change');
             }
-        },true,false);
+        }, true, false);
         frm.find("select[name='influenceFactor']").change(function () {
             var ids = $(this).val();
             if (!ids) {
@@ -798,6 +797,25 @@
             writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', data.otherProject);
             writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
+        if (data.bisCheckOriginal != null && data.bisCheckOriginal != undefined) {
+            if (data.bisCheckOriginal){
+                frm.find("[name=bisCheckOriginal][value=0]").attr("checked", false);
+                frm.find("[name=bisCheckOriginal][value=1]").attr("checked", true);
+            }else {
+                frm.find("[name=bisCheckOriginal][value=0]").attr("checked", true);
+                frm.find("[name=bisCheckOriginal][value=1]").attr("checked", false);
+            }
+        }
+        frm.find("[name=bisCheckOriginal]").change(function () {
+            var value = $(this).val();
+            if (value == '1') {
+                frm.find(".bisCheckOriginalOne").show();
+                frm.find(".bisCheckOriginalZero").hide();
+            } else {
+                frm.find(".bisCheckOriginalOne").hide();
+                frm.find(".bisCheckOriginalZero").show();
+            }
+        });
     };
 
 
@@ -1258,7 +1276,7 @@
                     survey.initSurveyAssetInventoryForm(data);
                 });
             } else {
-                survey.initSurveyAssetInventoryForm({checkDate:new Date()});
+                survey.initSurveyAssetInventoryForm({checkDate: new Date()});
             }
         }
         showLimit();
