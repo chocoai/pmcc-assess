@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataAverageWageUrbanEmployeesMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployees" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+    <result column="state_owned_economy" property="stateOwnedEconomy" jdbcType="DECIMAL" />
+    <result column="collective_economy" property="collectiveEconomy" jdbcType="DECIMAL" />
+    <result column="private_economy" property="privateEconomy" jdbcType="DECIMAL" />
+    <result column="other_economy" property="otherEconomy" jdbcType="DECIMAL" />
+    <result column="total" property="total" jdbcType="DECIMAL" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, province, city, district, date, state_owned_economy, collective_economy, private_economy, 
+    other_economy, total, creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployeesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_data_average_wage_urban_employees
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_data_average_wage_urban_employees
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_data_average_wage_urban_employees
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployeesExample" >
+    delete from tb_data_average_wage_urban_employees
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployees" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_data_average_wage_urban_employees (province, city, district, 
+      date, state_owned_economy, collective_economy, 
+      private_economy, other_economy, total, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+      #{date,jdbcType=TIMESTAMP}, #{stateOwnedEconomy,jdbcType=DECIMAL}, #{collectiveEconomy,jdbcType=DECIMAL}, 
+      #{privateEconomy,jdbcType=DECIMAL}, #{otherEconomy,jdbcType=DECIMAL}, #{total,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployees" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_data_average_wage_urban_employees
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="stateOwnedEconomy != null" >
+        state_owned_economy,
+      </if>
+      <if test="collectiveEconomy != null" >
+        collective_economy,
+      </if>
+      <if test="privateEconomy != null" >
+        private_economy,
+      </if>
+      <if test="otherEconomy != null" >
+        other_economy,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stateOwnedEconomy != null" >
+        #{stateOwnedEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiveEconomy != null" >
+        #{collectiveEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="privateEconomy != null" >
+        #{privateEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="otherEconomy != null" >
+        #{otherEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployeesExample" resultType="java.lang.Integer" >
+    select count(*) from tb_data_average_wage_urban_employees
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_data_average_wage_urban_employees
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null" >
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.stateOwnedEconomy != null" >
+        state_owned_economy = #{record.stateOwnedEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="record.collectiveEconomy != null" >
+        collective_economy = #{record.collectiveEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="record.privateEconomy != null" >
+        private_economy = #{record.privateEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="record.otherEconomy != null" >
+        other_economy = #{record.otherEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="record.total != null" >
+        total = #{record.total,jdbcType=DECIMAL},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_data_average_wage_urban_employees
+    set id = #{record.id,jdbcType=INTEGER},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      district = #{record.district,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=TIMESTAMP},
+      state_owned_economy = #{record.stateOwnedEconomy,jdbcType=DECIMAL},
+      collective_economy = #{record.collectiveEconomy,jdbcType=DECIMAL},
+      private_economy = #{record.privateEconomy,jdbcType=DECIMAL},
+      other_economy = #{record.otherEconomy,jdbcType=DECIMAL},
+      total = #{record.total,jdbcType=DECIMAL},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployees" >
+    update tb_data_average_wage_urban_employees
+    <set >
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stateOwnedEconomy != null" >
+        state_owned_economy = #{stateOwnedEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="collectiveEconomy != null" >
+        collective_economy = #{collectiveEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="privateEconomy != null" >
+        private_economy = #{privateEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="otherEconomy != null" >
+        other_economy = #{otherEconomy,jdbcType=DECIMAL},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployees" >
+    update tb_data_average_wage_urban_employees
+    set province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP},
+      state_owned_economy = #{stateOwnedEconomy,jdbcType=DECIMAL},
+      collective_economy = #{collectiveEconomy,jdbcType=DECIMAL},
+      private_economy = #{privateEconomy,jdbcType=DECIMAL},
+      other_economy = #{otherEconomy,jdbcType=DECIMAL},
+      total = #{total,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

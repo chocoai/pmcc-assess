@@ -135,6 +135,8 @@ AssessDicKey.projectSurveyFormClassifyMultiple = "project.survey.form.classify.m
 AssessDicKey.projectSurveyFormClassifyLandOnly = "project.survey.form.classify.land.only";//纯土地
 AssessDicKey.projectSurveyFormClassifyLand = "project.survey.form.classify.land";//土地带房产
 AssessDicKey.dataDealType = "data.deal.type";//土地带房产
+AssessDicKey.dataAverageWageUrbanEmployeesItemCategory = "data.averageWageUrbanEmployeesItem.category";//城镇就业人员平均工资 类别
+AssessDicKey.dataAverageWageUrbanEmployeesItemType = "data.averageWageUrbanEmployeesItem.type";//城镇就业人员平均工资 类型
 
 
 //楼盘
@@ -379,3 +381,5 @@ AssessFTKey.ftpLandLevelDetailBaseAchievementTemplate = "ftp.land.level.detail.b
 AssessFTKey.ftpLandLevelDetailBaseCoefficientTemplate = "ftp.land.level.detail.base.coefficient.template";//	基准地价 容积率
 AssessFTKey.ftpDataLoanBenchmarkInterestRateTemplate = "ftp.DataLoanBenchmarkInterestRate.template";//	贷款基准利率
 AssessFTKey.ftpDataDepositBenchmarkInterestRateTemplate = "ftp.DataDepositBenchmarkInterestRate.template";//	存款基准利率
+AssessFTKey.ftpDataAverageWageUrbanEmployeesTemplate = "ftp.DataAverageWageUrbanEmployees.template";//	城镇就业人员平均工资
+AssessFTKey.ftpDataAverageWageUrbanEmployeesItemTemplate = "ftp.DataAverageWageUrbanEmployeesItem.template";//	城镇就业人员平均工资 子类
