@@ -1520,7 +1520,14 @@
                             <div class="card-header ">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        高德地图 区块 操作
+                                        高德地图
+                                        <c:if test="${empty masterName}">
+                                            区块
+                                        </c:if>
+                                        <c:if test="${! empty masterName}">
+                                            ${masterName}
+                                        </c:if>
+                                        操作
                                     </div>
                                 </div>
                             </div>
@@ -1579,7 +1586,7 @@
                                         </div>
 
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                            <input type="text" class="form-control input-full"
+                                            <input type="text" class="form-control input-full" value=""
                                                    placeholder="搜索...." name="mapSearchName" id="tipinput">
                                         </div>
                                     </div>
@@ -1669,6 +1676,13 @@
             if (callback) {
                 callback();
             }
+
+            (function (estateName) {
+                if (estateName){
+                    drawPolygon.autoCompleteSearch(estateName) ;
+                }
+            }('${estateName}')) ;
+
         });
     };
 
@@ -1827,9 +1841,9 @@
         var overlays = drawPolygon.map.getAllOverlays();
         $.each(overlays, function (i, overlay) {
             if (overlay._amap_id == data.pid) {
-                var attributeData = overlay.getOptions() ;
-                attributeData.fillColor = data.color ;
-                overlay.setOptions(attributeData) ;
+                var attributeData = overlay.getOptions();
+                attributeData.fillColor = data.color;
+                overlay.setOptions(attributeData);
 //                var path = [];
 //                $.each(overlay.getPath(), function (i, item) {
 //                    path.push([item.lng, item.lat]);
@@ -1935,14 +1949,21 @@
                 $.each(overlay.getPath(), function (i, item) {
                     path.push([item.lng, item.lat]);
                 });
-                var attributeData = overlay.getOptions() ;
-                var obj = {path: path, extData: overlay.getExtData() ,fillColor:attributeData.fillColor};
+                var attributeData = overlay.getOptions();
+                var obj = {path: path, extData: overlay.getExtData(), fillColor: attributeData.fillColor};
                 jsonData.push(obj);
             });
         }
         drawPolygon.jsonData = jsonData;
         return jsonData;
     };
+
+    //layui 无法直接调用 drawPolygon.getFormData
+    function getFormDrawPolygonData(){
+        return drawPolygon.getFormData() ;
+    }
+
+
 
     drawPolygon.saveTitleData = function () {
         var box = drawPolygon.handleJquery(drawPolygon.box);
@@ -1989,6 +2010,17 @@
                 // 加工image data，替换mime type，方便以后唤起浏览器下载
                 imgData = imgData.replace(drawPolygon.onFixType(type), 'image/octet-stream');
                 drawPolygon.fileDownload(imgData);
+                if('${callback}'){
+                    var excuteString = 'if (parent && parent.${callback}) {';
+                    excuteString += 'parent.${callback}(' + "'" + imgData + "'" + ')' + ';';
+                    excuteString += '}';
+                    try {
+                        eval(excuteString);
+                    } catch (e) {
+                        console.log(excuteString) ;
+                        console.log(e) ;
+                    }
+                }
                 Loading.progressHide();
             });
         });

@@ -30,9 +30,6 @@
 </head>
 <body>
 
-
-
-
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -44,7 +41,14 @@
                             <div class="card-header ">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        高德地图 区块 显示
+                                        高德地图
+                                        <c:if test="${empty masterName}">
+                                            区块
+                                        </c:if>
+                                        <c:if test="${! empty masterName}">
+                                            ${masterName}
+                                        </c:if>
+                                        显示
                                     </div>
                                 </div>
                             </div>
