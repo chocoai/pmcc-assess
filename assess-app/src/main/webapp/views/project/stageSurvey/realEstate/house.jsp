@@ -243,7 +243,8 @@
                                                     <div class="col-sm-3">
                                                         <input type="text" placeholder="面积" name="area"
                                                                class="form-control input-full"
-                                                               required  onfocus="examineCommon.referenceValue(houseCommon.houseForm.find('input[name=area]'),$(this));"
+                                                               required
+                                                               onfocus="examineCommon.referenceValue(houseCommon.houseForm.find('input[name=area]'),$(this));"
                                                                value="${basicHouseHuxing.area}">
                                                     </div>
                                                 </div>
@@ -305,348 +306,12 @@
                                     </form>
                                 </div>
                                 <div class="x_content">
-                                    <div class="col-md-12">
-                                        <div class="card full-height">
-                                            <div class="card-header collapse-link">
-                                                <div class="card-head-row">
-                                                    <div class="card-title">
-                                                        交易信息
-                                                    </div>
-                                                    <div class="card-tools">
-                                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                                class="fa fa-angle-down"></span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body" style="display: none">
-                                                <form class="form-horizontal" id="basicTradingFrm">
-                                                    <input type="hidden" name="id" value="${basicHouseTrading.id}">
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">财产范围<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full search-select select2 scopeProperty"
-                                                                            name="scopeProperty"
-                                                                            required>
-                                                                    </select>
-                                                                </div>
-                                                                <label class="col-sm-1">范围包括<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="范围包含" name="scopeInclude"
-                                                                           class="form-control input-full"
-                                                                           required
-                                                                           value="${basicHouseTrading.scopeInclude}">
-                                                                </div>
-                                                                <label class="col-sm-1">范围不包括<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="范围不包含" name="scopeNotInclude"
-                                                                           class="form-control input-full"
-                                                                           required
-                                                                           value="${basicHouseTrading.scopeNotInclude}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">税费负担<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full search-select select2 taxBurden"
-                                                                            name="taxBurden"
-                                                                            required>
-                                                                    </select>
-                                                                </div>
-                                                                <label class="col-sm-1">交易情况<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full transactionSituation"
-                                                                            name="transactionSituation"
-                                                                            required>
-                                                                    </select>
-                                                                </div>
-                                                                <label class="col-sm-1">价格类型<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full " name="priceType"
-                                                                            required>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid" id="abnormalTransaction"
-                                                                 style="display: none;">
-                                                                <label class="col-sm-1">说明事项类型</label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full descriptionType"
-                                                                            name="descriptionType">
-                                                                    </select>
-                                                                </div>
-                                                                <label class="col-sm-1">说明事项内容</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="说明事项内容"
-                                                                           name="descriptionContent"
-                                                                           class="form-control input-full"
-                                                                           value="${basicHouseTrading.descriptionContent}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">交易类型<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full tradingType"
-                                                                            name="tradingType"
-                                                                            required="required">
-                                                                    </select>
-                                                                </div>
-                                                                <label class="col-sm-1">付款方式<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full paymentMethod"
-                                                                            name="paymentMethod" required>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="" style="display: none;">
-                                                                <label class="col-sm-1">分期支付利率</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="分期支付利率"
-                                                                           name="installmentInterestRate"
-                                                                           class="form-control input-full"
-                                                                           value="${basicHouseTrading.installmentInterestRate}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="x_title tradingCondition">融资条件</div>
-                                                    <div class="row form-group tradingCondition">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">首付款比例<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" class="form-control input-full"
-                                                                           name="downPaymentRatio" placeholder="首付款比例"
-                                                                           required>
-                                                                </div>
-                                                                <label class="col-sm-1">贷款利率<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" class="form-control input-full"
-                                                                           name="lendingRate" placeholder="贷款利率"
-                                                                           required>
-                                                                </div>
-                                                                <label class="col-sm-1">贷款期限<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" class="form-control input-full"
-                                                                           data-rule-digits="true" name="loanPeriod"
-                                                                           placeholder="贷款期限"
-                                                                           required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="x_title">
-                                                        <div class="clearfix"></div>
-                                                    </div>
-
-
-                                                    <div class="row form-group ExamineHouseTradingSell" style="display: none">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">买方额外支付的税</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="买方额外支付的税"
-                                                                           name="buyerExtraTax" class="form-control input-full"
-                                                                           value="${basicHouseTrading.buyerExtraTax}">
-                                                                </div>
-                                                                <label class="col-sm-1">买方额外支付的费</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="买方额外支付的费"
-                                                                           name="buyerExtraFee" class="form-control input-full"
-                                                                           value="${basicHouseTrading.buyerExtraFee}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row form-group ExamineHouseTradingLease" style="display: none">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">承租方额外支付的税</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="承租方额外支付的税"
-                                                                           name="rentingExtraTax"
-                                                                           value="${basicHouseTrading.rentingExtraTax}"
-                                                                           class="form-control input-full">
-                                                                </div>
-                                                                <label class="col-sm-1">承租方额外支付的费</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="承租方额外支付的费"
-                                                                           name="rentingExtraFee"
-                                                                           value="${basicHouseTrading.rentingExtraFee}"
-                                                                           class="form-control input-full">
-                                                                </div>
-                                                                <label class="col-sm-1">押金（元）</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="押金（元）"
-                                                                           class="form-control input-full" name="deposit"
-                                                                           value="${basicHouseTrading.deposit}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row form-group ExamineHouseTradingSell" style="display: none">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <div class="col-sm-1" style="text-align: right;">
-                                                                    <button type="button" class="btn btn-success btn-sm"
-                                                                            data-toggle="modal"
-                                                                            onclick="houseCommon.addTradingSellAndLease()"> <span
-                                                                            class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>新增
-                                                                    </button>
-                                                                </div>
-                                                                <div class="col-sm-11">
-                                                                    <table class="table table-bordered"
-                                                                           id="tableTradingSell"></table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group ExamineHouseTradingLease" style="display: none">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <div class="col-sm-1" style="text-align: right;">
-                                                                    <button type="button" class="btn btn-success btn-sm"
-                                                                            data-toggle="modal"
-                                                                            onclick="houseCommon.addTradingSellAndLease()"><span
-                                                                            class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>新增
-                                                                    </button>
-                                                                </div>
-                                                                <div class="col-sm-11">
-                                                                    <table class="table table-bordered"
-                                                                           id="tableTradingLease"></table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">交易时间<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <input placeholder="交易时间" required="required"
-                                                                           name="tradingTime" data-date-format="yyyy-mm-dd"
-                                                                           class="form-control input-full date-picker dbdate tradingTime"
-                                                                           value="<fmt:formatDate value='${basicHouseTrading.tradingTime}' pattern='yyyy-MM-dd'/>">
-                                                                </div>
-                                                                <label class="col-sm-1">交易总价（元）<span
-                                                                        class="symbol required"></span> </label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="交易总价（元）"
-                                                                           class="form-control input-full"
-                                                                           name="tradingTotalPrice" required
-                                                                           onblur="houseCommon.computeUnitPrice();"
-                                                                           value="${basicHouseTrading.tradingTotalPrice}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">交易单价（元）<span
-                                                                        class="symbol required"></span> </label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" placeholder="交易单价（元）"
-                                                                           class="form-control input-full" name="tradingUnitPrice"
-                                                                           required
-                                                                           value="${basicHouseTrading.tradingUnitPrice}">
-                                                                </div>
-                                                                <label class="col-sm-1">单价内涵<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full priceConnotation"
-                                                                            name="priceConnotation"
-                                                                            required>
-                                                                    </select>
-                                                                </div>
-                                                                <label class="col-sm-1 priceConnotationUnitContent">单价单位<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3 priceConnotationUnitContent">
-                                                                    <input type="text" placeholder="单价单位(元/㎡|元/个)"
-                                                                           class="form-control input-full"
-                                                                           name="priceConnotationUnit"
-                                                                           id="priceConnotationUnit" required
-                                                                           value="${basicHouseTrading.priceConnotationUnit}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">信息来源<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full search-select select2 informationType"
-                                                                            name="informationType">
-                                                                    </select>
-                                                                </div>
-                                                                <label class="col-sm-1 infomationTypeOpen" style="display: none;">信息来源类别</label>
-                                                                <div class="col-sm-3 infomationTypeOpen" style="display: none;">
-                                                                    <select class="form-control input-full search-select select2 informationCategory"
-                                                                            name="informationCategory">
-                                                                    </select>
-                                                                </div>
-
-
-                                                                <label class="col-sm-1 infomationTypeOther" style="display: none;">姓名<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3 infomationTypeOther" style="display: none;">
-                                                                    <input type="text" placeholder="姓名"
-                                                                           class="form-control input-full" name="name" required
-                                                                           value="${basicHouseTrading.name}">
-                                                                </div>
-
-
-                                                                <label class="col-sm-1 infomationTypeOther" style="display: none;">电话<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3 infomationTypeOther" style="display: none;">
-                                                                    <input type="text" placeholder="电话"
-                                                                           class="form-control input-full" name="phone" required
-                                                                           value="${basicHouseTrading.phone}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="houseTradingFilePart"></div>
-
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <c:if test="${projectPhase eq 'caseStudyExtend'}">
+                                        <%@include file="/views/project/stageSurvey/common/houseTradingCase.jsp" %>
+                                    </c:if>
+                                    <c:if test="${projectPhase ne 'caseStudyExtend'}">
+                                        <%@include file="/views/project/stageSurvey/common/houseTradingSurvey.jsp" %>
+                                    </c:if>
                                     <%@include file="/views/project/stageSurvey/common/houseRoom.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseRoomDecorate.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
@@ -673,7 +338,9 @@
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
                                     onclick="window.close()">关闭
                             </button>
-                            <button type="button" class="btn btn-warning" style="margin-left: 10px;" onclick="saveDataInfo();">保存</button>
+                            <button type="button" class="btn btn-warning" style="margin-left: 10px;"
+                                    onclick="saveDataInfo();">保存
+                            </button>
                         </div>
                     </div>
                     <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
@@ -821,7 +488,8 @@
                                     专有部分
                                 </label>
                                 <div class="col-sm-8">
-                                    <select id="huxingSpecialPart" class="form-control input-full" onchange="houseCommon.huxingSpecialPartChange(this);"></select>
+                                    <select id="huxingSpecialPart" class="form-control input-full"
+                                            onchange="houseCommon.huxingSpecialPartChange(this);"></select>
                                 </div>
                             </div>
                         </div>
@@ -831,7 +499,8 @@
                                     专有部分(类别)
                                 </label>
                                 <div class="col-sm-8">
-                                    <select id="huxingSpecialPartCategory" class="form-control input-full" onchange="houseCommon.huxingSpecialPartChange(this,true);"></select>
+                                    <select id="huxingSpecialPartCategory" class="form-control input-full"
+                                            onchange="houseCommon.huxingSpecialPartChange(this,true);"></select>
                                 </div>
                             </div>
                         </div>
@@ -843,11 +512,12 @@
                                     公共部分
                                 </label>
                                 <div class="col-sm-8">
-                                    <select id="huxingCommonPart" class="form-control input-full" onchange="houseCommon.huxingCommonPartChange(this);">
+                                    <select id="huxingCommonPart" class="form-control input-full"
+                                            onchange="houseCommon.huxingCommonPartChange(this);">
                                         <option value="">-请选择-</option>
                                         <option value="卫生间" data-desc="卫">卫生间</option>
                                         <option value="洗浴间">洗浴间</option>
-                                        <option value="厨房"  data-desc="厨">厨房</option>
+                                        <option value="厨房" data-desc="厨">厨房</option>
                                         <option value="阳台">阳台</option>
                                         <option value="车库">车库</option>
                                         <option value="楼梯间">楼梯间</option>
@@ -874,7 +544,8 @@
                             </div>
                         </div>
                     </div>
-                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499"
+                        size="10">
                 </form>
             </div>
             <div class="modal-footer">

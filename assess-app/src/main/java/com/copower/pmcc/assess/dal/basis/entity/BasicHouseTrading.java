@@ -78,6 +78,8 @@ public class BasicHouseTrading {
 
     private String priceConnotationUnit;
 
+    private BigDecimal perMuPrice;
+
     public Integer getId() {
         return id;
     }
@@ -372,5 +374,13 @@ public class BasicHouseTrading {
 
     public void setPriceConnotationUnit(String priceConnotationUnit) {
         this.priceConnotationUnit = priceConnotationUnit == null ? null : priceConnotationUnit.trim();
+    }
+
+    public BigDecimal getPerMuPrice() {
+        return perMuPrice;
+    }
+
+    public void setPerMuPrice(BigDecimal perMuPrice) {
+        this.perMuPrice = perMuPrice;
     }
 }

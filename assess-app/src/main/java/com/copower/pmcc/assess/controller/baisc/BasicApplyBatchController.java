@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
@@ -16,10 +16,10 @@ import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
-import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -29,7 +29,6 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
-import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -56,7 +55,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kings on 2018-10-24.
@@ -89,7 +87,7 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
-    private BasicUnitService basicUnitService;
+    private ProjectPhaseService projectPhaseService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
@@ -477,6 +475,15 @@ public class BasicApplyBatchController extends BaseController {
         BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(estateTaggingTypeEnum.getKey());
         ModelAndView modelAndView = entityAbstract.getEditModelAndView(basicFormClassifyParamDto);
         modelAndView.addObject("planDetailsId", basicFormClassifyParamDto.getPlanDetailsId());
+        //交易案例
+        ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
+        ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+        if(caseStudyExtend.getId().equals(projectPhase.getId())||caseStudyLand.getId().equals(projectPhase.getId())){
+            modelAndView.addObject("projectPhase", "caseStudyExtend");
+        }
+        modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
         modelAndView.addObject("formClassify", basicFormClassifyParamDto.getFormClassify());
         modelAndView.addObject("tbId", basicFormClassifyParamDto.getTbId());
@@ -518,6 +525,15 @@ public class BasicApplyBatchController extends BaseController {
         detailsModelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(basicFormClassifyParamDto.getFormType()).getKey());
         detailsModelAndView.addObject("isHistory", basicFormClassifyParamDto.getHistory());
         detailsModelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
+
+        //交易案例
+        ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
+        ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+        if(caseStudyExtend.getId().equals(projectPhase.getId())||caseStudyLand.getId().equals(projectPhase.getId())){
+            detailsModelAndView.addObject("projectPhase", "caseStudyExtend");
+        }
         return detailsModelAndView;
     }
 

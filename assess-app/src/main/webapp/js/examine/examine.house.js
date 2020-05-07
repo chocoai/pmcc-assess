@@ -985,6 +985,15 @@
         }
     };
 
+    //计算每亩单价
+    houseCommon.computePerMuPrice = function () {
+        var unitPrice = houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val();
+        if (AssessCommon.isNumber(unitPrice)) {
+            var value = (parseFloat(unitPrice) * AssessCommon.BHOU).toFixed(2);
+            houseCommon.houseTradingForm.find('[name=perMuPrice]').val(value);
+        }
+    };
+
     //户型专有字段初始化
     houseCommon.huxingSpecialPartInit = function () {
         var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();

@@ -60,6 +60,10 @@ public class BasicAlternativeCaseService extends BaseService {
         BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(basicAlternativeCase.getBatchDetailId());
         BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchDetail.getApplyBatchId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(basicApplyBatch.getProjectId());
+        if (projectInfo == null && basicApplyBatch.getPlanDetailsId()!=null) {
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
+            projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
+        }
         if (projectInfo != null) {
             basicAlternativeCase.setProjectCategoryId(projectInfo.getProjectCategoryId());
         }
