@@ -79,7 +79,7 @@
                                                                     <span class="input-group-btn">
 
                              <c:if test="${empty isApplyBatch}">
-                            <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
+                            <div onclick="estateCommon.mapMarker(false);" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
                              </c:if>
                             <c:if test="${isApplyBatch eq 'show'}">
