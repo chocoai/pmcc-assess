@@ -339,10 +339,6 @@
                     setTimeout(function () {
                         DatepickerUtils.parse();
                     }, 100);
-                } else {
-                    estateLandCategoryInfo.saveData({landId: landId}, function (id) {
-                        estateLandCategoryInfo.init(landId);
-                    });
                 }
             });
         }($(".basicEstateLandCategoryInfo")));
