@@ -56,13 +56,15 @@ public class BasicHouseCaseSummary {
 
     private Integer version;
 
+    private Boolean bisNewest;
+
+    private Boolean bisFromSelf;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Boolean bisNewest;
 
     public Integer getId() {
         return id;
@@ -272,6 +274,22 @@ public class BasicHouseCaseSummary {
         this.version = version;
     }
 
+    public Boolean getBisNewest() {
+        return bisNewest;
+    }
+
+    public void setBisNewest(Boolean bisNewest) {
+        this.bisNewest = bisNewest;
+    }
+
+    public Boolean getBisFromSelf() {
+        return bisFromSelf;
+    }
+
+    public void setBisFromSelf(Boolean bisFromSelf) {
+        this.bisFromSelf = bisFromSelf;
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -294,13 +312,5 @@ public class BasicHouseCaseSummary {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Boolean getBisNewest() {
-        return bisNewest;
-    }
-
-    public void setBisNewest(Boolean bisNewest) {
-        this.bisNewest = bisNewest;
     }
 }

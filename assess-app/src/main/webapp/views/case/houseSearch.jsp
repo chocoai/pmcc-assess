@@ -362,13 +362,11 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                if (!row.dealType) {
-                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="houseSearch.findHouse(' + row.caseHouseId + ')"><i class="fa fa-search fa-white"></i></a>';
+                if (row.bisFromSelf) {
                     str += '<button onclick="houseSearch.findHouse(' + row.caseHouseId + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                 } else {
-                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="houseSearch.showItem(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
                     str += '<button onclick="houseSearch.showItem(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';

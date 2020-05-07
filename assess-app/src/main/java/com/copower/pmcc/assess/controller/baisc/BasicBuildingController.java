@@ -111,7 +111,7 @@ public class BasicBuildingController {
 
     @RequestMapping(value = "/detailView", name = "详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) throws Exception {
-        String view = "project/stageSurvey/house/detail/building";
+        String view = "project/stageSurvey/realEstate/detail/building";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject(StringUtils.uncapitalize(BasicBuilding.class.getSimpleName()), basicBuildingService.getBasicBuildingVoById(id));
         return modelAndView;

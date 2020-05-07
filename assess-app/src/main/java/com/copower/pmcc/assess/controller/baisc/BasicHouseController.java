@@ -56,7 +56,7 @@ public class BasicHouseController {
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) throws Exception {
-        String view = "project/stageSurvey/house/detail/house";
+        String view = "project/stageSurvey/realEstate/detail/house";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(id);
         modelAndView.addObject(StringUtils.uncapitalize(BasicHouse.class.getSimpleName()), basicHouseVo);

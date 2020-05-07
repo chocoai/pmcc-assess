@@ -69,7 +69,7 @@
     practical_use, trading_type, trading_time, trading_unit_price, version, creator,
     gmt_created, gmt_modified, house_type, house_category, area, estate_name, deal_type,
     current_price, consult_price, assess_standard_date, realization_ratios, realization_cycle,
-    deal_part_info, approver,bis_newest
+    deal_part_info, approver,bis_from_self,bis_newest
     </sql>
 
     <select id="findReportApplyStatistics" parameterType="map" resultType="com.copower.pmcc.assess.dto.input.StatisticsDto">

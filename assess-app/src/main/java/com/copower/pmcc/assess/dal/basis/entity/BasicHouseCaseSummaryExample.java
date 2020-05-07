@@ -1786,6 +1786,126 @@ public class BasicHouseCaseSummaryExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisNewestIsNull() {
+            addCriterion("bis_newest is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestIsNotNull() {
+            addCriterion("bis_newest is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestEqualTo(Boolean value) {
+            addCriterion("bis_newest =", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestNotEqualTo(Boolean value) {
+            addCriterion("bis_newest <>", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestGreaterThan(Boolean value) {
+            addCriterion("bis_newest >", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_newest >=", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestLessThan(Boolean value) {
+            addCriterion("bis_newest <", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_newest <=", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestIn(List<Boolean> values) {
+            addCriterion("bis_newest in", values, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestNotIn(List<Boolean> values) {
+            addCriterion("bis_newest not in", values, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_newest between", value1, value2, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_newest not between", value1, value2, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfIsNull() {
+            addCriterion("bis_from_self is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfIsNotNull() {
+            addCriterion("bis_from_self is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfEqualTo(Boolean value) {
+            addCriterion("bis_from_self =", value, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfNotEqualTo(Boolean value) {
+            addCriterion("bis_from_self <>", value, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfGreaterThan(Boolean value) {
+            addCriterion("bis_from_self >", value, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_from_self >=", value, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfLessThan(Boolean value) {
+            addCriterion("bis_from_self <", value, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_from_self <=", value, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfIn(List<Boolean> values) {
+            addCriterion("bis_from_self in", values, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfNotIn(List<Boolean> values) {
+            addCriterion("bis_from_self not in", values, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_from_self between", value1, value2, "bisFromSelf");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFromSelfNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_from_self not between", value1, value2, "bisFromSelf");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -1973,66 +2093,6 @@ public class BasicHouseCaseSummaryExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestIsNull() {
-            addCriterion("bis_newest is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestIsNotNull() {
-            addCriterion("bis_newest is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestEqualTo(Boolean value) {
-            addCriterion("bis_newest =", value, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestNotEqualTo(Boolean value) {
-            addCriterion("bis_newest <>", value, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestGreaterThan(Boolean value) {
-            addCriterion("bis_newest >", value, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_newest >=", value, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestLessThan(Boolean value) {
-            addCriterion("bis_newest <", value, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_newest <=", value, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestIn(List<Boolean> values) {
-            addCriterion("bis_newest in", values, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestNotIn(List<Boolean> values) {
-            addCriterion("bis_newest not in", values, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_newest between", value1, value2, "bisNewest");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisNewestNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_newest not between", value1, value2, "bisNewest");
             return (Criteria) this;
         }
     }
