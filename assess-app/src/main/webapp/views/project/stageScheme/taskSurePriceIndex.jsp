@@ -59,12 +59,19 @@
                                             最终单价
                                         </label>
                                         <div class="col-sm-3">
+                                            <input type="hidden" name="tempPrice" class="form-control">
                                             <input type="text" name="price" class="form-control" readonly="readonly"
                                                    value="${schemeSurePrice.price}">
                                         </div>
                                         <div class="col-sm-3">
                                             <button type="button" class="btn btn-success btn-sm"
                                                     onclick="updatePrice(this)">更新单价
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="surePrice.digitValue(10)">取值到十位
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="surePrice.digitValue(100)">取值到百位
                                             </button>
                                         </div>
                                     </div>
@@ -318,6 +325,7 @@
         surePrice.surePrice('${projectPlanDetails.judgeObjectId}', true);
         surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
         loadDocumentSend();
+
     });
 
     function submit() {
@@ -374,7 +382,8 @@
                 success: function (result) {
                     if (result.ret) {
 //                        window.location.reload(true);
-                        surePrice.surePrice('${projectPlanDetails.judgeObjectId}', false);
+                        //surePrice.surePrice('${projectPlanDetails.judgeObjectId}', false);
+                        surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
                         surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
                     } else {
                         AlertError("失败，失败原因:" + result.errmsg, 1, null, null);
@@ -483,7 +492,7 @@
                     $("#tbody_data_section").find('.x-percent').each(function () {
                         AssessCommon.elementParsePercent($(this));
                     });
-                    surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
+                    //surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
                 }
                 else {
                     AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
@@ -528,11 +537,48 @@
             }
         })
         $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(0));
+        $("#sure_price_form").find('[name=tempPrice]').val(resultPrice.toFixed(0));
         if (isAverage) {
             $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').hide();
         } else {
             $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').show();
         }
+    }
+
+    //取值到十或百位
+    surePrice.digitValue = function(dividend){
+        var tempPrice = $("#sure_price_form").find('[name=tempPrice]').val();
+        if(tempPrice){
+            var tempPrice = Math.round(tempPrice/dividend);
+            $("#sure_price_form").find('[name=price]').val(tempPrice*dividend);
+        }else{
+            notifyInfo("提示","先更新单价");
+        }
+
+        var surePriceApply = {};
+        var form = $("#sure_price_form");
+        if (!form.valid()) {
+            return false;
+        }
+        surePriceApply.id = form.find('[name=id]').val();
+        surePriceApply.judgeObjectId = '${projectPlanDetails.judgeObjectId}';
+        surePriceApply.weightExplain = form.find('[name=weightExplain]').val();
+        surePriceApply.price = form.find('[name=price]').val();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
+            data: {
+                fomData: JSON.stringify(surePriceApply), planDetailsId: '${projectPlanDetails.id}'
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
+                } else {
+                    AlertError("失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
     }
 
     //调整因素

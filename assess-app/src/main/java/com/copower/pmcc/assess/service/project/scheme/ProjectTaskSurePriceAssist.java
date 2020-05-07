@@ -127,9 +127,10 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        if (StringUtils.isBlank(processInsId)) {
-            schemeSurePriceService.addSurePriceRecord(projectPlanDetails);
-        } else {
+        SchemeSurePrice schemeSurePrice = JSON.parseObject(formData, SchemeSurePrice.class);
+        schemeSurePrice.setProcessInsId(processInsId);
+        schemeSurePriceService.saveSchemeSurePrice(schemeSurePrice);
+        if (!StringUtils.isBlank(processInsId)) {
             try {
                 bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName()); //修改监听器
             } catch (BpmException e) {
@@ -145,9 +146,10 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        if (StringUtils.isBlank(processInsId)) {
-            schemeSurePriceService.addSurePriceRecord(projectPlanDetails);
-        } else {
+        SchemeSurePrice schemeSurePrice = JSON.parseObject(formData, SchemeSurePrice.class);
+        schemeSurePrice.setProcessInsId(processInsId);
+        schemeSurePriceService.saveSchemeSurePrice(schemeSurePrice);
+        if (!StringUtils.isBlank(processInsId)) {
             try {
                 bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName()); //修改监听器
             } catch (BpmException e) {
