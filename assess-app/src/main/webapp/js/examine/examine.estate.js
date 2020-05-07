@@ -547,8 +547,57 @@
         });
     };
 
-    estateCommon.settingFileGeneralLayout = function (imgData) {
-        console.log(imgData);
+    /**
+     * canvas 截图  并且上传到附件
+     * @param canvasCode
+     */
+    estateCommon.settingFileGeneralLayout = function (canvasCode) {
+        //这里使用的是胡豪定义的动态数组附件
+        var option = {canvasCode:canvasCode,tableId:estateCommon.getEstateId() , tableName:AssessDBKey.BasicEstate} ;
+        //三个同步方法
+        var arr = [] ;
+        var tempArr = [] ;
+        var filters = ['总平面图'] ;//假如你想把截图的高德地图添加到多个附件中那么把名称加入这个数组
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandEstateFile,null,function (html,data) {
+            if (data.length != 0){
+                $.each(data, function (i, item) {
+                    tempArr.push(item) ;
+                });
+            }
+        },false) ;
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateIndustrialFile,null,function (html,data) {
+            if (data.length != 0){
+                $.each(data, function (i, item) {
+                    tempArr.push(item) ;
+                });
+            }
+        },false) ;
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateNonIndustrialFile,null,function (html,data) {
+            if (data.length != 0){
+                $.each(data, function (i, item) {
+                    tempArr.push(item) ;
+                });
+            }
+        },false) ;
+        $.each(tempArr,function (i, item) {
+            if (jQuery.inArray(item.name, filters) != -1) {
+                arr.push(item.fieldName);
+            }
+        }) ;
+        $.ajax({
+            url: getContextPath() + '/public/html2canvasNetDownloadUtils',
+            data: {canvasCode:canvasCode,tableId:estateCommon.getEstateId() , tableName:AssessDBKey.BasicEstate,fieldsName:arr.join(",")},
+            method: "post",
+            success: function (result) {
+                if (result.ret) {
+                    $.each(arr, function (i, n) {
+                        estateCommon.fileShow(n, option.tableName, option.tableId, true);
+                    });
+                }else {
+
+                }
+            }
+        })
     };
 
     //土地标注画区块

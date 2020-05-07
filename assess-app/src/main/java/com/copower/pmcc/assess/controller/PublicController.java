@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.service.AdRpcQualificationsAppService;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
@@ -20,6 +21,7 @@ import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
@@ -59,22 +61,24 @@ public class PublicController {
     private AdRpcQualificationsAppService adRpcQualificationsAppService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private PublicService publicService;
 
-    @GetMapping(value = "/getAdPersonalIdentityDto",name = "获取资质")
-    public HttpResult getAdPersonalIdentityDto(String userAccount, String qualificationType){
+    @GetMapping(value = "/getAdPersonalIdentityDto", name = "获取资质")
+    public HttpResult getAdPersonalIdentityDto(String userAccount, String qualificationType) {
         List<AdPersonalQualificationDto> adPersonalQualificationDtoList = new ArrayList<>();
         try {
-            adPersonalQualificationDtoList = adRpcQualificationsAppService.getAdPersonalQualificationDto(userAccount,qualificationType);
-            if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)){
+            adPersonalQualificationDtoList = adRpcQualificationsAppService.getAdPersonalQualificationDto(userAccount, qualificationType);
+            if (CollectionUtils.isNotEmpty(adPersonalQualificationDtoList)) {
                 adPersonalQualificationDtoList.forEach(adPersonalQualificationDto -> {
-                    SysUserDto sysUserDto  = erpRpcUserService.getSysUser(adPersonalQualificationDto.getUserAccount()) ;
-                    if (sysUserDto != null && StringUtils.isNotBlank(sysUserDto.getUserName())){
+                    SysUserDto sysUserDto = erpRpcUserService.getSysUser(adPersonalQualificationDto.getUserAccount());
+                    if (sysUserDto != null && StringUtils.isNotBlank(sysUserDto.getUserName())) {
                         adPersonalQualificationDto.setName(sysUserDto.getUserName());
                     }
                 });
             }
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e,"获取资质异常");
+            baseService.writeExceptionInfo(e, "获取资质异常");
         }
         return HttpResult.newCorrectResult(adPersonalQualificationDtoList);
     }
@@ -94,12 +98,12 @@ public class PublicController {
                 });
             }
             if (CollectionUtils.isEmpty(multipartFileList)) {
-                return HttpResult.newErrorResult(500,new Exception("上传的文件不能为空"));
+                return HttpResult.newErrorResult(500, new Exception("上传的文件不能为空"));
             }
-            return HttpResult.newCorrectResult(200,baseAttachmentService.importAjaxFile(multipartFileList, tableName, tableId, fieldsName));
+            return HttpResult.newCorrectResult(200, baseAttachmentService.importAjaxFile(multipartFileList, tableName, tableId, fieldsName));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500,e);
+            return HttpResult.newErrorResult(500, e);
         }
     }
 
@@ -145,12 +149,12 @@ public class PublicController {
     }
 
     @RequestMapping(value = "/saveAndUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "新增或者更新附件")
-    public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto,String formData) {
+    public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto, String formData) {
         try {
-            if (StringUtils.isNotBlank(formData)){
-                sysAttachmentDto = JSONObject.parseObject(formData,SysAttachmentDto.class) ;
+            if (StringUtils.isNotBlank(formData)) {
+                sysAttachmentDto = JSONObject.parseObject(formData, SysAttachmentDto.class);
             }
-            saveAndUpdateSysAttachmentDto2(sysAttachmentDto) ;
+            saveAndUpdateSysAttachmentDto2(sysAttachmentDto);
             return HttpResult.newCorrectResult(sysAttachmentDto);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -158,7 +162,7 @@ public class PublicController {
         }
     }
 
-    private void saveAndUpdateSysAttachmentDto2(SysAttachmentDto sysAttachmentDto){
+    private void saveAndUpdateSysAttachmentDto2(SysAttachmentDto sysAttachmentDto) {
         if (sysAttachmentDto.getId() == null && sysAttachmentDto.getId() != 0) {
             baseAttachmentService.addAttachment(sysAttachmentDto);
         } else {
@@ -169,13 +173,27 @@ public class PublicController {
     @RequestMapping(value = "/batchUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "批量新增或者更新附件")
     public HttpResult batchUpdateSysAttachmentDto(String formData) {
         try {
-           List<SysAttachmentDto> sysAttachmentDtoList = JSONObject.parseArray(formData,SysAttachmentDto.class) ;
-           if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)){
-               for (SysAttachmentDto sysAttachmentDto:sysAttachmentDtoList){
-                   saveAndUpdateSysAttachmentDto2(sysAttachmentDto) ;
-               }
-           }
+            List<SysAttachmentDto> sysAttachmentDtoList = JSONObject.parseArray(formData, SysAttachmentDto.class);
+            if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+                    saveAndUpdateSysAttachmentDto2(sysAttachmentDto);
+                }
+            }
             return HttpResult.newCorrectResult(sysAttachmentDtoList);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @PostMapping(value = "/html2canvasNetDownloadUtils", name = "canvas 转为正常图片  并且形成附件")
+    public HttpResult html2canvasNetDownloadUtils(String canvasCode, Integer tableId, String tableName, String fieldsName) {
+        try {
+            List<String> stringList = FormatUtils.transformString2List(fieldsName, ",");
+            for (String str : stringList) {
+                publicService.html2canvasNetDownloadUtils(canvasCode, tableId, tableName, str);
+            }
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
@@ -273,10 +291,10 @@ public class PublicController {
     @RequestMapping(value = "/getApprovalLog", name = "获取流程审批日志", method = RequestMethod.GET)
     public BootstrapTableVo getApprovalLog(String processInsId) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        BootstrapTableVo approvalLog = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(),processInsId, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BootstrapTableVo approvalLog = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BoxApprovalLogVo> rows = (List<BoxApprovalLogVo>) approvalLog.getRows();
         List<String> transform = LangUtils.transform(rows, o -> o.getProcessTaskId());
-        if(StringUtils.isNotBlank(processInsId)&&!"0".equals(processInsId)){
+        if (StringUtils.isNotBlank(processInsId) && !"0".equals(processInsId)) {
             List<SysAttachmentDto> approvalLogList = baseAttachmentService.getApprovalLogList(processInsId, transform);
             if (CollectionUtils.isNotEmpty(approvalLogList)) {
                 for (BoxApprovalLogVo item : rows) {
