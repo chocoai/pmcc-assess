@@ -61,10 +61,10 @@
         }
     };
 
-    estateCommon.getUploadKey = function (bisDetail,tbType) {
-        if(tbType=="estate.land"){
+    estateCommon.getUploadKey = function (bisDetail, tbType) {
+        if (tbType == "estate.land") {
             estateCommon.getFilePartHtml(AssessDicKey.estateLandEstateFile, bisDetail);
-        }else{
+        } else {
             estateCommon.getFilePartHtml(AssessDicKey.estateIndustrialFile, bisDetail);
             estateCommon.getFilePartHtml(AssessDicKey.estateNonIndustrialFile, bisDetail);
         }
@@ -150,7 +150,7 @@
     };
 
     //楼盘初始化by applyId
-    estateCommon.initById = function (id, tbType,callback) {
+    estateCommon.initById = function (id, tbType, callback) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateMapById',
             type: 'get',
@@ -171,7 +171,7 @@
     };
 
     //楼盘详情页面
-    estateCommon.initDetailById = function (id, callback, bisDetail,tbType) {
+    estateCommon.initDetailById = function (id, callback, bisDetail, tbType) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateMapById',
             type: 'get',
@@ -212,7 +212,7 @@
      * @param bisDetail 是否是详情页面
      */
     estateCommon.initForm = function (data, bisDetail) {
-        estateCommon.getUploadKey(bisDetail,data.estate.tbType);
+        estateCommon.getUploadKey(bisDetail, data.estate.tbType);
         estateCommon.estateForm.clearAll().initForm(data.estate);
         estateCommon.estateForm.find('.x-percent').each(function () {
             $(this).attr('data-value', data.estate[$(this).attr('name')]);
@@ -378,7 +378,7 @@
         try {
             estateLandCategoryInfo.init(data.land.id);
         } catch (e) {
-            console.log(e) ;
+            console.log(e);
         }
         try {
             estateVillageObj.init(data.estate.id);
@@ -484,23 +484,71 @@
 
     //楼盘标注
     estateCommon.mapMarker = function (readonly) {
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        var option = {name: estateCommon.getEstateName(), type: 'estate', tableId: estateCommon.getEstateId()};
+        var contentUrl = getContextPath() + '/map/drawPolygon?callback=estateCommon.settingFileGeneralLayout&masterName=楼盘标注&estateName=' + estateCommon.getEstateName();
+        var btn = [];
         if (readonly != true) {
-            contentUrl += '&click=estateCommon.addMarker';
+            contentUrl += '&apply=true';
+            btn.push('保存');
+            btn.push('关闭');
+        } else {
+            contentUrl += '&detail=true';
+            btn.push('关闭');
         }
-        layer.open({
-            type: 2,
-            title: '楼盘标注',
-            shadeClose: true,
-            shade: true,
-            maxmin: true, //开启最大化最小化按钮
-            area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
-            content: contentUrl,
-            success: function (layero) {
-                estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
-                estateCommon.loadMarkerList();
+        examineCommon.getApplyBatchEstateTaggingsByTableId({
+            tableId: option.tableId,
+            type: option.type
+        }, function (taggingVos) {
+            if (taggingVos.length != 0) {
+                examineCommon.taggingId = taggingVos[0].id;
             }
+            if (examineCommon.taggingId) {
+                contentUrl += "&taggingId=" + examineCommon.taggingId;
+            }
+            layer.open({
+                type: 2,
+                // title: '楼盘标注',
+                shadeClose: true,
+                shade: true,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['100%', '100%'],
+                content: contentUrl,
+                cancel: function (index, layero) {
+                    var iframe = window[layero.find('iframe')[0]['name']];
+                    if (iframe.getFormDrawPolygonData) {
+                        examineCommon.saveDrawPolygon(iframe.getFormDrawPolygonData(), option, function (obj) {
+                            examineCommon.taggingId = obj.id;
+                        });
+                    }
+                },
+                btnAlign: 'c',
+                btn: btn,
+                yes: function (index, layero) {//保存按钮 实际相当于 btn1
+                    var iframe = window[layero.find('iframe')[0]['name']];
+                    if (btn.length == 2) {
+                        if (iframe.getFormDrawPolygonData) {
+                            examineCommon.saveDrawPolygon(iframe.getFormDrawPolygonData(), option, function (obj) {
+                                examineCommon.taggingId = obj.id;
+                            });
+                        }
+                        notifyInfo("成功", "标注数据保存成功");
+                    }
+                    layer.closeAll('iframe');
+                },
+                btn2: function (index, layero) {//关闭按钮
+                    var iframe = window[layero.find('iframe')[0]['name']];
+                    if (iframe.getFormDrawPolygonData) {
+                        examineCommon.saveDrawPolygon(iframe.getFormDrawPolygonData(), option, function (obj) {
+                            examineCommon.taggingId = obj.id;
+                        });
+                    }
+                }
+            });
         });
+    };
+
+    estateCommon.settingFileGeneralLayout = function (imgData) {
+        console.log(imgData);
     };
 
     //土地标注画区块
@@ -631,7 +679,6 @@
             }
         })
     };
-
 
 
     //板块选择
