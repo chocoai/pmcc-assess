@@ -2012,7 +2012,7 @@
                 drawPolygon.fileDownload(imgData);
                 if('${callback}'){
                     var excuteString = 'if (parent && parent.${callback}) {';
-                    excuteString += 'parent.${callback}(' + "'" + imgData + "'" + ')' + ';';
+                    excuteString += 'parent.${callback}(' + "'" +  canvas.toDataURL('image/jpeg') + "'" + ')' + ';';
                     excuteString += '}';
                     try {
                         eval(excuteString);

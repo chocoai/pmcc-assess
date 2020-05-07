@@ -10,7 +10,6 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.event.project.DeclareRealtyEstateCertEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
@@ -40,11 +39,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -262,6 +261,20 @@ public class PublicService {
         baseAttachment.setCreater(commonService.thisUserAccount());
         baseAttachmentService.addAttachment(baseAttachment);
     }
+
+    public void html2canvasNetDownloadUtils(String canvasCode,Integer tableId ,String tableName,String fieldsName)throws Exception{
+        final String BASE64_PREFIX = "data:image/jpeg;base64,";
+        //这的jpg必须和页面一致
+        String imgFilePath  = org.apache.commons.io.FileUtils.getTempDirectoryPath()+UUID.randomUUID().toString().substring(1,7)+".jpg";
+        com.copower.pmcc.assess.common.FileUtils.base64ToImage(StringUtils.remove(canvasCode,BASE64_PREFIX), imgFilePath );
+        SysAttachmentDto baseAttachment = new SysAttachmentDto();
+        baseAttachment.setTableId(tableId);
+        baseAttachment.setTableName(tableName);
+        baseAttachment.setFieldsName(fieldsName);
+        baseAttachmentService.importAjaxFileHandle(imgFilePath,baseAttachment);
+    }
+
+
 
     /**
      * 字符串去重
