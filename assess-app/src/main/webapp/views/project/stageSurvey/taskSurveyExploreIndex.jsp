@@ -160,6 +160,22 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        权证
+                                                    </label>
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <div class='input-group'>
+                                                            <input name='declareRecordId' id='declareRecordId'
+                                                                   type='hidden'>
+                                                            <input name='declareRecordName' id='declareRecordName'
+                                                                   class='form-control input-full' readonly
+                                                                   onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -186,7 +202,7 @@
 
             <div class="modal-body">
                 <form id="frm_detail" class="form-horizontal">
-                    <input type="hidden" name="id" value="0">
+                    <input type="hidden" name="id">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -202,38 +218,25 @@
                                                 <select name='type' required onchange="batchTreeTool.typeChange(this)"
                                                         class='form-control input-full'></select>
                                             </div>
-                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
-                                            <div class="col-sm-5">
-                                                <input id="txtBatchDetailName" type="text" data-rule-maxlength="100"
-                                                       placeholder="名称"
-                                                       name="name" class="form-control input-full" required>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">权证</label>
+                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
-                                                <div class='input-group'>
-                                                    <input name='declareRecordId' id='declareRecordId' type='hidden'>
-                                                    <input name='declareRecordName' id='declareRecordName'
-                                                           class='form-control' readonly
-                                                           onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                <input id="txtBatchDetailName" type="text" data-rule-maxlength="100"
+                                                       placeholder="名称"
+                                                       name="name" class="form-control input-full" required>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" class="btn btn-success btn-sm" onclick=" batchTreeTool.addName(this);">＋</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -274,22 +277,6 @@
                                             <div class="col-sm-5">
                                                 <input type="text" data-rule-maxlength="100" placeholder="名称"
                                                        name="name" class="form-control input-full" required>
-                                            </div>
-                                            <label class="col-sm-1">权证</label>
-                                            <div class="col-sm-5">
-                                                <div class='input-group'>
-                                                    <input name='declareRecordId' type='hidden'>
-                                                    <input name='declareRecordName' class='form-control' readonly
-                                                           onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                        </button>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -338,6 +325,27 @@
 
 </html>
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
+<script type="text/html" id="itemNameHtml">
+    <div class="row form-group append-item-name">
+        <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1 col-form-label">
+                    名称<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-5">
+                    <input type="text" placeholder="名称" required="required"
+                           maxlength="100" name="name"
+                           class="form-control input-full">
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-warning btn-sm"
+                            onclick="$(this).closest('.form-group').remove();">－
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 <script type="text/javascript">
     $(function () {
         if (${!empty applyBatch}) {
@@ -349,7 +357,7 @@
         }
         $('#txtBatchDetailName').autocomplete({
             source: function (request, response) {
-                response(batchTreeTool.getAutoCompleteData($('#txtBatchDetailName').closest('form').find('[name=type]').val(), $('#txtBatchDetailName').val())) ;
+                response(batchTreeTool.getAutoCompleteData($('#txtBatchDetailName').closest('form').find('[name=type]').val(), $('#txtBatchDetailName').val()));
             },
             minLength: 1
         });
@@ -453,6 +461,11 @@
 
     var batchApply = undefined;
     var setting = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: {"Y": "", "N": ""}//必须设为null ,这样可以真正意义上让复选框不影响父级和子级,哪个被点击了就勾选哪个
+        },
         view: {
             fontCss: function (treeId, treeNode) {
                 if (treeNode.executor != '${userAccount}') {
@@ -562,6 +575,7 @@
                     $("#frm_detail").find("input[name='executorName']").val(node.creatorName);
                     $("#frm_detail").find("input[name='declareRecordId']").val(declareRecordId);
                     $("#frm_detail").find("input[name='declareRecordName']").val(declareRecordName);
+                    $("#detail_modal").find('.append-item-name').remove();
                     $("#detail_modal").modal();
                 } else {
                     notifyInfo('提示', '该节点下没有可添加的表单类型');
@@ -598,40 +612,46 @@
             return false;
         }
         var formData = formParams("frm_detail");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
-            type: "post",
-            data: {
-                formData: JSON.stringify(formData),
-                planDetailsId: '${projectPlanDetails.id}'
-            },
-            success: function (result) {
-                if (result.ret) {
-                    notifySuccess('成功', '保存成功');
-                    var node = zTreeObj.getSelectedNodes()[0];
-                    var childNode = zTreeObj.addNodes(node, {
-                        id: result.data.id,
-                        pid: result.data.pid,
-                        tableId: result.data.tableId,
-                        type: result.data.type,
-                        displayName: result.data.displayName + '(' + result.data.executorName + ')',
-                        textName: result.data.displayName,
-                        executor: result.data.executor,
-                        executorName: result.data.executorName,
-                        creator: result.data.creator,
-                        creatorName: result.data.creatorName,
-                        bisStructure: result.data.bisStructure,
-                        declareRecordId: result.data.declareRecordId,
-                        applyBatchId: result.data.applyBatchId,
-                        declareRecordName: result.data.declareRecordName
-                    });
+        $("#frm_detail").find('[name=name]').each(function () {
+            formData.name = $(this).val();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
+                type: "post",
+                async: false,
+                data: {
+                    formData: JSON.stringify(formData),
+                    planDetailsId: '${projectPlanDetails.id}'
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        var node = zTreeObj.getSelectedNodes()[0];
+                        var childNode = zTreeObj.addNodes(node, {
+                            id: result.data.id,
+                            pid: result.data.pid,
+                            tableId: result.data.tableId,
+                            type: result.data.type,
+                            displayName: result.data.displayName + '(' + result.data.executorName + ')',
+                            textName: result.data.displayName,
+                            executor: result.data.executor,
+                            executorName: result.data.executorName,
+                            creator: result.data.creator,
+                            creatorName: result.data.creatorName,
+                            bisStructure: result.data.bisStructure,
+                            declareRecordId: result.data.declareRecordId,
+                            applyBatchId: result.data.applyBatchId,
+                            declareRecordName: result.data.declareRecordName
+                        });
 
-                    $('#detail_modal').modal('hide');
-                } else {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
                 }
-            }
-        });
+            });
+        })
+        notifySuccess("提示", "添加成功");
+        $('#detail_modal').modal('hide');
+
     }
 
 
@@ -887,6 +907,8 @@
 
     batchTreeTool.showFunctionBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
+        $("#basicBatchApplyFrm").find('[name=declareRecordId]').val(node.declareRecordId);
+        $("#basicBatchApplyFrm").find('[name=declareRecordName]').val(node.declareRecordName);
         //是当前执行人时
         if (node.executor == '${userAccount}') {
             $("#btnGroup").find('.btn.masterTool').show();
@@ -1028,6 +1050,16 @@
 
     //选择权证
     function selectRecord(_this, id) {
+        var zTreeObj = $.fn.zTree.getZTreeObj($("#ztree").prop("id"));
+        var nodes = zTreeObj.getCheckedNodes(true);
+        if (nodes.length == 0) {
+            notifyInfo('提示', '勾选至少一个节点');
+            return false;
+        }
+        var ids = [];
+        $.each(nodes, function (i, node) {
+            ids.push(node.id);
+        });
         var group = $(_this).closest(".form-group");
         group.find("input[name='declareRecordId']").val(id);
         $.ajax({
@@ -1041,13 +1073,43 @@
                     $.each(result.data, function (i, item) {
                         $(_this).val(item.name);
                     });
-
+                    batchSaveDeclareRecordId(ids);
                 } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+    }
+
+    //批量设置权证
+    function batchSaveDeclareRecordId(ids) {
+        var declareRecordId = $("#basicBatchApplyFrm").find('[name=declareRecordId]').val();
+        var declareRecordName = $("#basicBatchApplyFrm").find('[name=declareRecordName]').val();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/batchSaveDeclareRecordId",
+            type: "post",
+            dataType: "json",
+            data: {
+                ids: ids.join(","),
+                declareRecordId: declareRecordId,
+                declareRecordName: declareRecordName
+            },
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess('提示', '设置成功');
+                    if (${!empty applyBatch}) {
+                        if (${!empty applyBatch.referenceApplyBatchId}) {
+                            batchTreeTool.ztreeInit(${applyBatch.referenceApplyBatchId});
+                        } else {
+                            batchTreeTool.ztreeInit(${applyBatch.id});
+                        }
+                    }
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
             }
         });
     }
@@ -1060,5 +1122,14 @@
         }
     }
 
-
+    //添加事项名称
+    batchTreeTool.addName = function (_this) {
+        var html = $('#itemNameHtml').html();
+        var itemNameEles = $(_this).closest('form').find('.append-item-name');
+        if (itemNameEles.length > 0) {
+            itemNameEles.last().after(html);
+        } else {
+            $(_this).closest('.form-group').after(html);
+        }
+    }
 </script>

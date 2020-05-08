@@ -101,6 +101,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        权证
+                                                    </label>
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <input name='declareRecordName' id='declareRecordName'
+                                                               class='form-control input-full'>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -226,6 +237,7 @@
 
     function showFunctionBtn() {
         var node = zTreeObj.getSelectedNodes()[0];
+        $("#frmProjectCIP").find('[name=declareRecordName]').val(node.declareRecordName);
         if (node.executor == '${userAccount}') {
             $("#btnGroup").find('.btn.alternativeCase').show();
         } else {
