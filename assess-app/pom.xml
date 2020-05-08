@@ -241,6 +241,20 @@
             <version>${pdfbox.version}</version>
         </dependency>
 
+        <!-- 短信模板 开发包 -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-dysmsapi -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+
         <!--==================================== -->
         <!-- 常用工具 依赖包 -->
         <!--==================================== -->
@@ -466,13 +480,6 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml-schemas</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
-        <dependency>
-            <groupId>javax.websocket</groupId>
-            <artifactId>javax.websocket-api</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
