@@ -486,4 +486,27 @@ public class BasicApplyBatchDetailService {
         List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(LangUtils.transform(applyBatchList, o -> o.getId()), BasicFormClassifyEnum.ESTATE.getKey());
         return batchDetailList;
     }
+
+    //批量设置权证id
+    public void batchSaveDeclareRecordId(String ids, Integer declareRecordId, String declareRecordName){
+        if (!StringUtils.isEmpty(ids)) {
+            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+            List<BasicApplyBatchDetail> detailList = getBatchDetailListByIds(integers);
+            List<BasicApplyBatchDetail> filter = LangUtils.filter(detailList, o ->o.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey()));
+            if(CollectionUtils.isNotEmpty(filter)){
+                for (BasicApplyBatchDetail item: filter) {
+                    item.setDeclareRecordId(declareRecordId);
+                    item.setDeclareRecordName(declareRecordName);
+                    saveBasicApplyBatchDetail(item);
+                    //修改basic_apply表
+                    BasicApply basicApply = basicApplyService.getBasicApplyByBatchDetailId(item.getId());
+                    if(basicApply!=null){
+                        basicApply.setDeclareRecordId(declareRecordId);
+                        basicApplyService.saveBasicApply(basicApply);
+                    }
+                }
+            }
+
+        }
+    }
 }
