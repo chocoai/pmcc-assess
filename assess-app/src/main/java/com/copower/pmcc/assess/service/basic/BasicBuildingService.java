@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateStreetInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
@@ -97,7 +98,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
     @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
-    private BasicEstateLandStateService basicEstateLandStateService;
+    private BasicEstateStreetInfoDao basicEstateStreetInfoDao;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -277,6 +278,10 @@ public class BasicBuildingService extends BasicEntityAbstract {
             if (StringUtils.isNotBlank(nameById)) {
                 vo.setMinimumFloorDistance(nameById);
             }
+        }
+        if(basicBuilding.getStreetInfoId()!=null){
+            BasicEstateStreetInfo estateStreetInfo = basicEstateStreetInfoDao.getBasicEstateStreetInfoById(basicBuilding.getStreetInfoId());
+            vo.setStreetNumber(estateStreetInfo.getStreetNumber());
         }
         return vo;
     }

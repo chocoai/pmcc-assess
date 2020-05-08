@@ -4175,6 +4175,66 @@ public class BasicBuildingExample {
             addCriterion("minimum_floor_distance not between", value1, value2, "minimumFloorDistance");
             return (Criteria) this;
         }
+
+        public Criteria andStreetInfoIdIsNull() {
+            addCriterion("street_info_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdIsNotNull() {
+            addCriterion("street_info_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdEqualTo(Integer value) {
+            addCriterion("street_info_id =", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdNotEqualTo(Integer value) {
+            addCriterion("street_info_id <>", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdGreaterThan(Integer value) {
+            addCriterion("street_info_id >", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("street_info_id >=", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdLessThan(Integer value) {
+            addCriterion("street_info_id <", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdLessThanOrEqualTo(Integer value) {
+            addCriterion("street_info_id <=", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdIn(List<Integer> values) {
+            addCriterion("street_info_id in", values, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdNotIn(List<Integer> values) {
+            addCriterion("street_info_id not in", values, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdBetween(Integer value1, Integer value2) {
+            addCriterion("street_info_id between", value1, value2, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("street_info_id not between", value1, value2, "streetInfoId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

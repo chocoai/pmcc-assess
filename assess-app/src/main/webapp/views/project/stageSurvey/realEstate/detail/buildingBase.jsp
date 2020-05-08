@@ -250,6 +250,13 @@
                                                     <label class="form-control input-full"
                                                            name="propertySocialPrestigeName">${basicBuilding.propertySocialPrestigeName}</label>
                                                 </div>
+                                                <label class="col-sm-1 control-label">
+                                                    街道号
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="streetNumber">${basicBuilding.streetNumber}</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

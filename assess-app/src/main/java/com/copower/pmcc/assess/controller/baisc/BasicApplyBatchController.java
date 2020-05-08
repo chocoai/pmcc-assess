@@ -83,7 +83,7 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BaseDataDicService baseDataDicService;
+    private BasicEstateStreetInfoService basicEstateStreetInfoService;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
@@ -491,6 +491,11 @@ public class BasicApplyBatchController extends BaseController {
         if (basicFormClassifyParamDto.getApplyBatchId() != null) {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicFormClassifyParamDto.getApplyBatchId());
             modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
+            //街道号
+            BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+            basicEstateStreetInfo.setEstateId(basicApplyBatch.getEstateId());
+            List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
+            modelAndView.addObject("streetInfoList", streetInfoList);
         }
         return modelAndView;
     }

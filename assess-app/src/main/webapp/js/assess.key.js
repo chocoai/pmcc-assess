@@ -42,6 +42,10 @@ AssessDBKey.BasicHouseCorollaryEquipment = "tb_basic_house_corollary_equipment";
 AssessDBKey.BasicHouseRoom = "tb_basic_house_room";
 AssessDBKey.BasicEstateStreetInfo = "tb_basic_estate_street_info";
 AssessDBKey.BasicEstateLandCategoryInfo = "tb_basic_estate_land_category_info";
+AssessDBKey.BasicUnitCommonPart = "tb_basic_unit_common_part";
+AssessDBKey.BasicUnitStairs = "tb_basic_unit_stairs";
+AssessDBKey.BasicUnitElevator = "tb_basic_unit_elevator";
+AssessDBKey.BasicUnitDecorate = "tb_basic_unit_decorate";
 
 AssessDBKey.SurveyExaminePurenessLand = "tb_survey_examine_pureness_land";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
