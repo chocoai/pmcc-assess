@@ -11,6 +11,15 @@ public class BasicUnitElevatorVo extends BasicUnitElevator {
     private String typeName;
     private String maintenanceName;
     private String creatorName;
+    private String fileViewName;
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
+    }
 
     public String getTypeName() {
         return typeName;

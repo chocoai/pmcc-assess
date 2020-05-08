@@ -146,7 +146,21 @@
                                     </div>
                                     </div>
                                 </div>
-                                
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input id="unitElevatorFile" placeholder="上传附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_unitElevatorFile"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                             </div>
                         </div>

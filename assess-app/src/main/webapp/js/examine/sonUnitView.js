@@ -17,6 +17,33 @@ var unitDecorate;
             }
             return false;
         },
+        //附件上传
+        fileUpload: function (fieldsName, id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitDecorate,
+                    tableId: unitDecorate.prototype.isNotBlank(id) ? id : "0"
+                },
+                deleteFlag: true,
+                onUploadComplete: function () {
+                    unitDecorate.prototype.fileShow(fieldsName, id);
+                }
+            });
+        },
+        fileShow: function (fieldsName, id) {
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitDecorate,
+                    tableId: unitDecorate.prototype.isNotBlank(id) ? id : "0"
+                },
+                deleteFlag: true
+            })
+        },
         loadDataDicList: function () {
             var cols = commonColumn.unitDecorateColumn();
             cols.push({
@@ -159,6 +186,8 @@ var unitDecorate;
                     frm.find('#unitDecorate_datalist').empty().html(html).trigger('change');
                 });
             });
+            unitDecorate.prototype.fileUpload("unitDecorateFile", item.id);
+            unitDecorate.prototype.fileShow("unitDecorateFile", item.id);
         },
         openPartItemModal: function () {
             UnitCommonPartFun.getBasicUnitCommonPartList({unitId: unitCommon.getUnitId()}, function (dataAll) {
@@ -259,7 +288,33 @@ unitCommonPart.prototype.config = function () {
     data.frm = "frmExamineUnitCommonPart";
     return data;
 };
-
+//附件上传
+unitCommonPart.prototype.fileUpload= function (fieldsName, id) {
+    FileUtils.uploadFiles({
+        target: fieldsName,
+        disabledTarget: "btn_submit",
+        formData: {
+            fieldsName: fieldsName,
+            tableName: AssessDBKey.BasicUnitCommonPart,
+            tableId: unitCommonPart.prototype.isNotBlank(id) ? id : "0"
+        },
+        deleteFlag: true,
+        onUploadComplete: function () {
+            unitCommonPart.prototype.fileShow(fieldsName, id);
+        }
+    });
+};
+unitCommonPart.prototype.fileShow= function (fieldsName, id) {
+    FileUtils.getFileShows({
+        target: fieldsName,
+        formData: {
+            fieldsName: fieldsName,
+            tableName: AssessDBKey.BasicUnitCommonPart,
+            tableId: unitCommonPart.prototype.isNotBlank(id) ? id : "0"
+        },
+        deleteFlag: true
+    })
+};
 unitCommonPart.prototype.isNotBlank = function (item) {
     if (item) {
         return true;
@@ -454,6 +509,8 @@ unitCommonPart.prototype.init = function (item) {
             }
         }
     });
+    unitCommonPart.prototype.fileUpload("unitCommonPartFile", item.id);
+    unitCommonPart.prototype.fileShow("unitCommonPartFile", item.id);
 };
 unitCommonPart.prototype.openPartItemModal = function () {
     AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
@@ -881,6 +938,33 @@ var unitElevator;
             }
             return false;
         },
+        //附件上传
+        fileUpload: function (fieldsName, id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitElevator,
+                    tableId: unitElevator.prototype.isNotNull(id) ? id : "0"
+                },
+                deleteFlag: true,
+                onUploadComplete: function () {
+                    unitElevator.prototype.fileShow(fieldsName, id);
+                }
+            });
+        },
+        fileShow: function (fieldsName, id) {
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitElevator,
+                    tableId: unitElevator.prototype.isNotNull(id) ? id : "0"
+                },
+                deleteFlag: true
+            })
+        },
         config: function () {
             var data = {};
             data.table = "ExamineUnitElevatorList";
@@ -986,6 +1070,8 @@ var unitElevator;
             AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitElevatorType, item.type, function (html, data) {
                 $("#" + unitElevator.prototype.config().frm).find('select.type').empty().html(html).trigger('change');
             });
+            unitElevator.prototype.fileUpload("unitElevatorFile", item.id);
+            unitElevator.prototype.fileShow("unitElevatorFile", item.id);
         }
     }
 
@@ -1015,6 +1101,33 @@ var unitStairs;
             data.box = "divBoxBasicUnitStairs";
             data.boxItem = "divBoxBasicUnitStairsItem";
             return data;
+        },
+        //附件上传
+        fileUpload: function (fieldsName, id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitStairs,
+                    tableId: unitStairs.prototype.isNotNull(id) ? id : "0"
+                },
+                deleteFlag: true,
+                onUploadComplete: function () {
+                    unitStairs.prototype.fileShow(fieldsName, id);
+                }
+            });
+        },
+        fileShow: function (fieldsName, id) {
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitStairs,
+                    tableId: unitStairs.prototype.isNotNull(id) ? id : "0"
+                },
+                deleteFlag: true
+            })
         },
         loadDataDicList: function () {
             var cols = commonColumn.unitStairsColumn();
@@ -1114,6 +1227,8 @@ var unitStairs;
                 });
                 frm.find('#UnitStairs_purpose_List').empty().html(html).trigger('change');
             });
+            unitStairs.prototype.fileUpload("unitStairsFile", item.id);
+            unitStairs.prototype.fileShow("unitStairsFile", item.id);
         },
         openPartItemModal:function () {
             var box = $("#" + unitStairs.prototype.config().boxItem) ;

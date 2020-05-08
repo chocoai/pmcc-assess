@@ -453,6 +453,17 @@
                                                                         <option value="">-请选择-</option>
                                                                     </select>
                                                                 </div>
+                                                                <label class="col-md-1">
+                                                                    街道号
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <select name="streetInfoId" class="form-control input-full">
+                                                                        <option value="">--请选择--</option>
+                                                                        <c:forEach var="item" items="${streetInfoList}">
+                                                                            <option value="${item.id}">${item.streetNumber}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

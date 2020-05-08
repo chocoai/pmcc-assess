@@ -70,6 +70,8 @@ public class BasicApplyBatchDetailService {
     private BasicCommonQuoteFieldInfoService basicCommonQuoteFieldInfoService;
     @Autowired
     private BaseQrcodeService baseQrcodeService;
+    @Autowired
+    private BasicEstateStreetInfoService basicEstateStreetInfoService;
 
     /**
      * 通过applyBatchId获取
@@ -137,8 +139,17 @@ public class BasicApplyBatchDetailService {
                 BasicBuilding building = buildingData == null ? new BasicBuilding() : buildingData;
                 building.setBuildingNumber(basicApplyBatchDetail.getName());
                 BasicEstate basicEstate = getBasicEstateByBatchDetailId(basicApplyBatchDetail.getPid());
-                if (basicEstate != null)
+                if (basicEstate != null){
                     building.setEstateId(basicEstate.getId());
+                    //街道号
+                    BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+                    basicEstateStreetInfo.setEstateId(basicEstate.getId());
+                    List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
+                    if(CollectionUtils.isNotEmpty(streetInfoList)){
+                        building.setStreetInfoId(streetInfoList.get(0).getId());
+                    }
+                }
+
                 building.setBuildingName(basicApplyBatchDetail.getDisplayName());
 
                 String value = basicCommonQuoteFieldInfoService.getValue(basicApplyBatchDetail.getApplyBatchId(), ExamineCommonQuoteFieldEnum.OPEN_TIME_ENUM);

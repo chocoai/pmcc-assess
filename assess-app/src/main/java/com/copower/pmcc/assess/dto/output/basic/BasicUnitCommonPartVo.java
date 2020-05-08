@@ -11,6 +11,15 @@ public class BasicUnitCommonPartVo extends BasicUnitCommonPart {
     private String unitMonadName;
     private String unitQuantityName;
     private String creatorName;
+    private String fileViewName;
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
+    }
 
     public String getCreatorName() {
         return creatorName;

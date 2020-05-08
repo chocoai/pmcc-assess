@@ -132,6 +132,8 @@ public class BasicBuilding {
 
     private String minimumFloorDistance;
 
+    private Integer streetInfoId;
+
     public Integer getId() {
         return id;
     }
@@ -642,5 +644,13 @@ public class BasicBuilding {
 
     public void setMinimumFloorDistance(String minimumFloorDistance) {
         this.minimumFloorDistance = minimumFloorDistance == null ? null : minimumFloorDistance.trim();
+    }
+
+    public Integer getStreetInfoId() {
+        return streetInfoId;
+    }
+
+    public void setStreetInfoId(Integer streetInfoId) {
+        this.streetInfoId = streetInfoId;
     }
 }

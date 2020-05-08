@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitStairsDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitStairs;
+import com.copower.pmcc.assess.dto.output.basic.BasicUnitStairsVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -15,8 +16,10 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -117,10 +120,28 @@ public class BasicUnitStairsService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicUnitStairs> basicUnitStairsList = basicUnitStairsDao.basicUnitStairsList(basicUnitStairs);
+        List<BasicUnitStairsVo> vos = Lists.newArrayList();
+        basicUnitStairsList.forEach(oo -> vos.add(getBasicUnitStairsVo(oo)));
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicUnitStairsList) ? new ArrayList<BasicUnitStairs>(10) : basicUnitStairsList);
+        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicUnitStairsVo>(10) : vos);
         return vo;
     }
 
-
+    public BasicUnitStairsVo getBasicUnitStairsVo(BasicUnitStairs basicUnitStairs) {
+        if (basicUnitStairs == null) {
+            return null;
+        }
+        BasicUnitStairsVo vo = new BasicUnitStairsVo();
+        BeanUtils.copyProperties(basicUnitStairs, vo);
+        vo.setCreatorName(publicService.getUserNameByAccount(basicUnitStairs.getCreator()));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicUnitStairs.getId(), null, FormatUtils.entityNameConvertToTableName(BasicUnitStairs.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
+            }
+            vo.setFileViewName(builder.toString());
+        }
+        return vo;
+    }
 }

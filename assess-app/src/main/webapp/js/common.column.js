@@ -560,6 +560,7 @@ commonColumn.unitDecorateColumn = function () {
     cols.push({field: 'materialGradeName', title: '材料档次'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '材料价格区间'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
 
@@ -594,6 +595,7 @@ commonColumn.unitCommonPartColumn = function () {
         }
     });
     cols.push({field: 'unitLocation', title: '描述'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
 
@@ -635,14 +637,24 @@ commonColumn.unitElevatorColumn = function () {
     cols.push({field: 'quasiLoadNumber', title: '准载人数'});
     cols.push({field: 'quasiLoadWeight', title: '准载重量'});
     cols.push({field: 'runningSpeed', title: '运行速度'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
 
 commonColumn.unitStairsColumn = function () {
     var cols = [];
-    cols.push({field: 'type', title: '楼梯类型'});
+    cols.push({
+        field: 'name', title: '楼梯类型', formatter: function (value, row, index) {
+            var s = row.type;
+            if (row.creatorName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+            }
+            return s;
+        }
+    });
     cols.push({field: 'purpose', title: '用途'});
     cols.push({field: 'staircase', title: '楼梯间'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 };
 

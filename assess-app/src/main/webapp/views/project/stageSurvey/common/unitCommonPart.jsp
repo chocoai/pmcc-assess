@@ -227,6 +227,21 @@
                                 <div class="unitLocationTextModel">
 
                                 </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <input id="unitCommonPartFile" placeholder="上传附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_unitCommonPartFile"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
