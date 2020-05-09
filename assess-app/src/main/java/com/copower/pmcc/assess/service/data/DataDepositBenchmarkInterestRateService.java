@@ -116,6 +116,7 @@ public class DataDepositBenchmarkInterestRateService {
                 "timeDemandOptionalDeposit",
                 "agreementDeposit",
                 "callDepositOneDay",
+                "demandDeposit",
                 "callDepositSevenDay");
         Iterator<String> iterator = stringList.iterator();
         while (iterator.hasNext()) {

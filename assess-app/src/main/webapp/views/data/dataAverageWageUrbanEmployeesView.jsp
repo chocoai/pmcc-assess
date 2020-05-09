@@ -56,9 +56,8 @@
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">年份</label>
                                         <div class="col-md-3 p-0">
-                                            <input name="date"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="年份"/>
+                                            <input name="year" data-rule-number='true'
+                                                   class="form-control input-full " placeholder="年份(数字)"/>
                                         </div>
                                         <div class="col-md-6">
                                             <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
@@ -158,11 +157,11 @@
                 }
             });
             cols.push({
-                field: 'date',
+                field: 'year',
                 width: '5%',
                 title: '年份',
                 formatter: function (value, row, index) {
-                    return formatDate(value);
+                    return value;
                 }
             });
             cols.push({field: 'stateOwnedEconomy', title: '国有经济', width: '5%'});
@@ -558,9 +557,8 @@
                                                 年份
                                             </label>
                                             <div class="col-sm-8">
-                                                <input name="date"
-                                                       class="form-control input-full date-picker dbdate"
-                                                       data-date-format="yyyy-mm-dd" placeholder="年份"/>
+                                                <input name="year" data-rule-number='true'
+                                                       class="form-control input-full " placeholder="年份(数字)"/>
                                             </div>
                                         </div>
                                     </div>
