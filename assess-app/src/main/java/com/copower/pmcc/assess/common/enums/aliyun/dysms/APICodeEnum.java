@@ -49,6 +49,7 @@ public enum APICodeEnum {
     PARAM_NOT_SUPPORT_URL("不支持URL", "isv.PARAM_NOT_SUPPORT_URL"),
     AMOUNT_NOT_ENOUGH("账户余额不足", "isv.AMOUNT_NOT_ENOUGH"),
     SMS_SIGNATURE_SCENE_ILLEGAL("短信所使用签名场景非法,验证码签名只能匹配验证码模板", "isv.SMS_SIGNATURE_SCENE_ILLEGAL"),
+    ERROR_TEMPLATE_NOT_DELETE("模板正在审核中，不允许删除", "isv.ERROR_TEMPLATE_NOT_DELETE"),
     ;
 
     private String message;

@@ -1,37 +1,37 @@
 package com.copower.pmcc.assess.common.aliyun;
 
 import com.alibaba.fastjson.JSONObject;
+import com.aliyuncs.CommonRequest;
+import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.*;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.aliyun.AccessKeyEnum;
 import com.copower.pmcc.assess.common.enums.aliyun.dysms.APICodeEnum;
+import com.copower.pmcc.assess.common.enums.aliyun.dysms.SignSourceTypeEnum;
+import com.copower.pmcc.assess.common.enums.aliyun.dysms.TemplateStatusEnum;
+import com.copower.pmcc.assess.common.enums.aliyun.dysms.TemplateTypeEnum;
+import com.copower.pmcc.assess.dto.input.aliyun.SmsSignDto;
+import com.copower.pmcc.assess.dto.input.aliyun.SmsTemplateDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.base.Objects;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 短信发送工具类
  * 使用需知 短信签名 和  短信模板 必须匹配  如: 验证码签名匹配验证码模板 短信通知
  */
 public class SendSmsUtils {
-
-    private final static String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
-    private final static String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
-
-
-
-    /*
+  /*
     *
     * <!-- 短信模板 开发包 -->
         <dependency>
@@ -52,6 +52,354 @@ public class SendSmsUtils {
 
     //阿里云 密钥 设置地址
     //https://usercenter.console.aliyun.com/?accounttraceid=1ca86cc7f1e2441baac3118d0b3e99c2rerb#/manage/ak
+
+    public final static String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
+    public final static String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
+
+    public final static String VERSION = "2017-05-25";//不要修改这个  官方例子就是这个
+
+    /**
+     * 签名修改
+     * @param accessKeyEnum
+     * @param smsSignDto
+     * @param paths
+     * @return
+     * @throws Exception
+     */
+    public static SmsSignDto modifySmsSign(AccessKeyEnum accessKeyEnum, SmsSignDto smsSignDto, List<String> paths) throws Exception {
+        return modifySmsSign(accessKeyEnum, smsSignDto, null, paths);
+    }
+
+    /**
+     * 签名修改
+     * @param accessKeyEnum
+     * @param smsSignDto
+     * @param version
+     * @param paths
+     * @return
+     * @throws Exception
+     */
+    private static SmsSignDto modifySmsSign(AccessKeyEnum accessKeyEnum, SmsSignDto smsSignDto, String version, List<String> paths) throws Exception {
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(SendSmsUtils.domain);
+        request.setVersion(StringUtils.isNotBlank(version) ? version : VERSION);
+        request.setAction("ModifySmsSign");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("SignName", smsSignDto.getSignName());
+        request.putQueryParameter("SignSource", smsSignDto.getSignSource());
+        request.putQueryParameter("Remark", smsSignDto.getRemark());
+        Iterator<String> iterator = paths.iterator();
+        int count = 0;
+        while (iterator.hasNext()) {
+            count++;
+            String path = iterator.next();
+            String base64Encode = FileUtils.base64Encode(path);
+            request.putQueryParameter(StringUtils.join(Arrays.asList("SignFileList", String.valueOf(count), "FileSuffix", ".")), FilenameUtils.getExtension(path));
+            request.putQueryParameter(StringUtils.join(Arrays.asList("SignFileList", String.valueOf(count), "FileContents", ".")), base64Encode);
+        }
+        CommonResponse response = client.getCommonResponse(request);
+        SmsSignDto signDto = JSONObject.parseObject(response.getData(), SmsSignDto.class);
+        return signDto;
+    }
+
+    /**
+     * 签名 删除
+     *
+     * @param accessKeyEnum
+     * @param SignName 签名名称
+     * @return
+     * @throws Exception
+     */
+    public static SmsSignDto deleteSmsSign(AccessKeyEnum accessKeyEnum, String SignName) throws Exception {
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(SendSmsUtils.domain);
+        request.setAction("DeleteSmsSign");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("SignName", SignName);
+        CommonResponse response = client.getCommonResponse(request);
+        SmsSignDto signDto = JSONObject.parseObject(response.getData(), SmsSignDto.class);
+        return signDto;
+    }
+
+    /**
+     * 签名  查询
+     *
+     * @param accessKeyEnum key
+     * @param SignName      名称
+     * @return
+     * @throws Exception
+     */
+    public static SmsSignDto querySmsSign(AccessKeyEnum accessKeyEnum, String SignName) throws Exception {
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(SendSmsUtils.domain);
+        request.setAction("QuerySmsSign");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("SignName", SignName);
+        CommonResponse response = client.getCommonResponse(request);
+        SmsSignDto signDto = JSONObject.parseObject(response.getData(), SmsSignDto.class);
+        return signDto;
+    }
+
+    /**
+     * 添加签名
+     *
+     * @param accessKeyEnum      key
+     * @param smsSignDto         签名对象数据
+     * @param paths              资质文件 如  营业执照等图片
+     * @param signSourceTypeEnum 签名来源
+     * @return
+     * @throws Exception
+     */
+    public static SmsSignDto addSmsSign(AccessKeyEnum accessKeyEnum, SmsSignDto smsSignDto, List<String> paths, SignSourceTypeEnum signSourceTypeEnum) throws Exception {
+        smsSignDto.setSignSource(signSourceTypeEnum.getKey().toString());
+        return addSmsSign(accessKeyEnum, smsSignDto, null, paths);
+    }
+
+    /**
+     * 添加签名
+     *
+     * @param accessKeyEnum key
+     * @param smsSignDto    签名对象数据
+     * @param paths         资质文件 如  营业执照等图片
+     * @return
+     * @throws Exception
+     */
+    public static SmsSignDto addSmsSign(AccessKeyEnum accessKeyEnum, SmsSignDto smsSignDto, List<String> paths) throws Exception {
+        return addSmsSign(accessKeyEnum, smsSignDto, null, paths);
+    }
+
+    /**
+     * 添加签名
+     *
+     * @param accessKeyEnum
+     * @param smsSignDto
+     * @param version
+     * @param paths         资质文件
+     * @return
+     * @throws Exception
+     */
+    private static SmsSignDto addSmsSign(AccessKeyEnum accessKeyEnum, SmsSignDto smsSignDto, String version, List<String> paths) throws Exception {
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(SendSmsUtils.domain);
+        request.setVersion(StringUtils.isNotBlank(version) ? version : VERSION);
+        request.setAction("AddSmsSign");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("SignName", smsSignDto.getSignName());
+        request.putQueryParameter("SignSource", smsSignDto.getSignSource());
+        request.putQueryParameter("Remark", smsSignDto.getRemark());
+        Iterator<String> iterator = paths.iterator();
+        int count = 0;
+        while (iterator.hasNext()) {
+            count++;
+            String path = iterator.next();
+            String base64Encode = FileUtils.base64Encode(path);
+            request.putQueryParameter(StringUtils.join(Arrays.asList("SignFileList", String.valueOf(count), "FileSuffix", ".")), FilenameUtils.getExtension(path));
+            request.putQueryParameter(StringUtils.join(Arrays.asList("SignFileList", String.valueOf(count), "FileContents", ".")), base64Encode);
+        }
+        //假如一共两个资质文件图片
+//        request.putQueryParameter("SignFileList.1.FileSuffix", "jpg");
+//        request.putQueryParameter("SignFileList.1.FileContents", "sdjsdjsdjdjssdjds");
+//        request.putQueryParameter("SignFileList.2.FileSuffix", "png");
+//        request.putQueryParameter("SignFileList.2.FileContents", "dhsdjsdjdsj");
+        CommonResponse response = client.getCommonResponse(request);
+        SmsSignDto signDto = JSONObject.parseObject(response.getData(), SmsSignDto.class);
+        return signDto;
+    }
+
+    /**
+     * 修改模板 TemplateType , TemplateName ,TemplateContent , Remark , TemplateCode 必填
+     *
+     * @param accessKeyEnum
+     * @param smsTemplateDto
+     * @return
+     * @throws Exception
+     */
+    public static SmsTemplateDto modifySmsTemplate(AccessKeyEnum accessKeyEnum, SmsTemplateDto smsTemplateDto) throws Exception {
+        return modifySmsTemplate(accessKeyEnum, smsTemplateDto, null);
+    }
+
+
+    /**
+     * 修改模板 TemplateType , TemplateName ,TemplateContent , Remark , TemplateCode 必填
+     *
+     * @param accessKeyEnum
+     * @param smsTemplateDto
+     * @return
+     * @throws Exception
+     */
+    private static SmsTemplateDto modifySmsTemplate(AccessKeyEnum accessKeyEnum, SmsTemplateDto smsTemplateDto, String version) throws Exception {
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(SendSmsUtils.domain);
+        request.setVersion(StringUtils.isNotBlank(version) ? version : VERSION);
+        request.setAction("ModifySmsTemplate");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("TemplateType", smsTemplateDto.getTemplateType().toString());
+        request.putQueryParameter("TemplateName", smsTemplateDto.getTemplateName());
+        request.putQueryParameter("TemplateCode", smsTemplateDto.getTemplateCode());
+        request.putQueryParameter("TemplateContent", smsTemplateDto.getTemplateContent());
+        request.putQueryParameter("Remark", smsTemplateDto.getRemark());
+        request.putQueryParameter("TemplateCode", smsTemplateDto.getTemplateCode());
+        CommonResponse response = client.getCommonResponse(request);
+        SmsTemplateDto templateDto = JSONObject.parseObject(response.getData(), SmsTemplateDto.class);
+        return templateDto;
+    }
+
+
+    /**
+     * 获取模板审核状态
+     *
+     * @param accessKeyEnum 阿里云 key
+     * @param templateCode  模板id
+     * @return
+     * @throws Exception
+     */
+    public static TemplateStatusEnum querySmsTemplateStatus(AccessKeyEnum accessKeyEnum, String templateCode) throws Exception {
+        SmsTemplateDto smsTemplateDto = querySmsTemplate(accessKeyEnum, templateCode);
+        return TemplateStatusEnum.getEnumByName(smsTemplateDto.getTemplateStatus());
+    }
+
+
+    /**
+     * 获取模板数据
+     *
+     * @param accessKeyEnum 阿里云 key
+     * @param templateCode  模板id
+     * @return
+     * @throws Exception
+     */
+    public static SmsTemplateDto querySmsTemplate(AccessKeyEnum accessKeyEnum, String templateCode) throws Exception {
+        return querySmsTemplate(accessKeyEnum, templateCode, null);
+    }
+
+    /**
+     * 获取模板数据
+     *
+     * @param accessKeyEnum 阿里云 key
+     * @param templateCode  模板id
+     * @param version       版本
+     * @return
+     * @throws Exception
+     */
+    private static SmsTemplateDto querySmsTemplate(AccessKeyEnum accessKeyEnum, String templateCode, String version) throws Exception {
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(SendSmsUtils.domain);
+        request.setVersion(StringUtils.isNotBlank(version) ? version : VERSION);
+        request.setAction("QuerySmsTemplate");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("TemplateCode", templateCode);
+        CommonResponse response = client.getCommonResponse(request);
+        SmsTemplateDto smsTemplateDto = JSONObject.parseObject(response.getData(), SmsTemplateDto.class);
+        return smsTemplateDto;
+    }
+
+    /**
+     * 模板删除
+     *
+     * @param accessKeyEnum 阿里云 key
+     * @param templateCode  模板id
+     * @return
+     * @throws Exception
+     */
+    public static SmsTemplateDto deleteSmsTemplate(AccessKeyEnum accessKeyEnum, String templateCode) throws Exception {
+        return deleteSmsTemplate(accessKeyEnum, templateCode, null);
+    }
+
+    /**
+     * 模板删除
+     *
+     * @param accessKeyEnum 阿里云 key
+     * @param templateCode  模板id
+     * @param version       版本
+     * @return
+     * @throws Exception
+     */
+    private static SmsTemplateDto deleteSmsTemplate(AccessKeyEnum accessKeyEnum, String templateCode, String version) throws Exception {
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(SendSmsUtils.domain);
+        request.setVersion(StringUtils.isNotBlank(version) ? version : VERSION);
+        request.setAction("DeleteSmsTemplate");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("TemplateCode", templateCode);
+        CommonResponse response = client.getCommonResponse(request);
+        SmsTemplateDto smsTemplateDto = JSONObject.parseObject(response.getData(), SmsTemplateDto.class);
+        return smsTemplateDto;
+    }
+
+    /**
+     * 模板添加
+     *
+     * @param accessKeyEnum    key 必填
+     * @param remark           短信模板申请说明 必填
+     * @param templateTypeEnum 短信模板类型 必填
+     * @param templateName     模板名称 必填 (建议英文字母)
+     * @param templateContent  模板内容
+     * @return
+     * @throws Exception
+     */
+    public static SmsTemplateDto addSmsTemplate(AccessKeyEnum accessKeyEnum, String remark, TemplateTypeEnum templateTypeEnum, String templateName, String templateContent) throws Exception {
+        return addSmsTemplate(accessKeyEnum, remark, templateTypeEnum, templateName, templateContent, null);
+    }
+
+
+    /**
+     * 短信模板添加
+     *
+     * @param accessKeyEnum    key 必填
+     * @param remark           短信模板申请说明 必填
+     * @param templateTypeEnum 短信模板类型 必填
+     * @param templateName     模板名称 必填 (建议英文字母)
+     * @param templateContent  模板内容
+     * @param version          模板版本 可以不填
+     * @return
+     * @throws Exception
+     */
+    private static SmsTemplateDto addSmsTemplate(AccessKeyEnum accessKeyEnum, String remark, TemplateTypeEnum templateTypeEnum, String templateName, String templateContent, String version) throws Exception {
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(domain);
+        request.setVersion(StringUtils.isNotBlank(version) ? version : VERSION);
+        request.setAction("AddSmsTemplate");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("TemplateType", templateTypeEnum.getKey().toString());
+        request.putQueryParameter("TemplateName", templateName);
+        request.putQueryParameter("TemplateContent", templateContent);
+        request.putQueryParameter("Remark", remark);
+        CommonResponse response = client.getCommonResponse(request);
+        SmsTemplateDto smsTemplateDto = JSONObject.parseObject(response.getData(), SmsTemplateDto.class);
+        return smsTemplateDto;
+    }
+
 
     /**
      * @param accessKeyEnum 阿里云API的密钥
@@ -191,22 +539,24 @@ public class SendSmsUtils {
 
     /**
      * 获取某个时间点发送的短信数量
+     *
      * @param accessKeyEnum 阿里云API的密钥
-     * @param phoneNumber 号码一个
-     * @param date 发送的时间
+     * @param phoneNumber   号码一个
+     * @param date          发送的时间
      * @return
      * @throws Exception
      */
     public static int getQuerySendDetailsSize(AccessKeyEnum accessKeyEnum, String phoneNumber, Date date) throws Exception {
-        List<QuerySendDetailsResponse.SmsSendDetailDTO> smsSendDetailDTOS = getSmsSendDetailDTOList(accessKeyEnum, phoneNumber, date) ;
+        List<QuerySendDetailsResponse.SmsSendDetailDTO> smsSendDetailDTOS = getSmsSendDetailDTOList(accessKeyEnum, phoneNumber, date);
         return smsSendDetailDTOS.size();
     }
 
     /**
      * 获取某个时间点发送的短信集合
+     *
      * @param accessKeyEnum 阿里云API的密钥
-     * @param phoneNumber 号码一个
-     * @param date 发送的时间
+     * @param phoneNumber   号码一个
+     * @param date          发送的时间
      * @return
      * @throws Exception
      */
