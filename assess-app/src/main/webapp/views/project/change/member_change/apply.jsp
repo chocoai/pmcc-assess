@@ -38,17 +38,6 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <p id="change_tool">
-                                    <button type="button" class="btn btn-success btn-sm"
-                                            onclick="memberChangeObj.addMember();"><span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>新增成员
-                                    </button>
-                                </p>
-                                <table class="table table-striped jambo_table bulk_action table-bordered"
-                                       id="member_change_table"></table>
-
-                                <hr/>
                                 <form class="form-horizontal" id="member_change_form">
                                     <div class="row form-group">
                                         <div class="col-md-12">
@@ -66,6 +55,17 @@
                                         </div>
                                     </div>
                                 </form>
+                                <p id="change_tool">
+                                    <button type="button" class="btn btn-success btn-sm"
+                                            onclick="memberChangeObj.addMember();"><span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>新增成员
+                                    </button>
+                                </p>
+                                <table class="table table-striped jambo_table bulk_action table-bordered"
+                                       id="member_change_table"></table>
+                                <hr/>
+
 
                             </div>
                         </div>
@@ -79,9 +79,8 @@
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close();">
                                 取消
                             </button>
-                            <button id="commit_btn" class="btn btn-success" onclick="memberChangeObj.submit();"
-                                    onsubmit="return false;">
-                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            <button id="commit_btn" style="margin-left: 10px;" type="button" class="btn btn-primary" onclick="memberChangeObj.submit();">
+                                提交
                             </button>
 
                         </div>
@@ -98,82 +97,7 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
-<%--<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0px">
-            <!-- 公共模块引用 -->
-            <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <!-- 公共模块end -->
-
-            <div class="x_panel">
-                <div class="x_title">
-                    <h3 id="show-title">
-                        项目成员变更<small></small>
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-
-                <div class="x_content">
-                    <div class="panel-body">
-
-                        <p id="change_tool">
-                            <button type="button" class="btn btn-success" onclick="memberChangeObj.addMember();">新增成员</button>
-                        </p>
-                        <table class="table table-striped jambo_table bulk_action table-bordered" id="member_change_table"></table>
-
-                        <hr/>
-                        <form class="form-horizontal" id="member_change_form">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                        变更原因
-                                    </label>
-                                    <div class="col-md-11 col-sm-11 col-xs-12">
-                                        <textarea class="form-control input-full" id="changeReason" name="changeReason" required>${costsProjectChangeLog.changeReason}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- 公共尾部模块引用 -->
-            <div class="x_panel" style="margin-bottom: 50px;">
-                <div class="col-md-4 col-sm-4 col-xs-12 col-sm-offset-5">
-                    <button id="cancel_btn" class="btn btn-default" onclick="window.close();">
-                        取消
-                    </button>
-                    <button id="commit_btn" class="btn btn-success" onclick="memberChangeObj.submit();" onsubmit="return false;">
-                        提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <c:if test="${processInsId != 0}">
-                <%@include file="/views/share/form_log.jsp" %>
-
-                <form id="process_variable_form">
-                    <%@include file="/views/share/form_edit.jsp" %>
-                </form>
-            </c:if>
-            <!-- 尾部end -->
-
-        </div>
-
-    </div>
-
-</div>--%>
-
-
 </body>
 </html>
 
@@ -458,7 +382,7 @@
     memberChangeObj.submit = function () {
         var changeReason = $("#changeReason").val();
         if (!changeReason) {
-            notifyWaring('警告',"变更原因必须填写!");
+            notifyInfo('警告',"变更原因必须填写!");
             $("#changeReason").focus();
             return false;
         }
