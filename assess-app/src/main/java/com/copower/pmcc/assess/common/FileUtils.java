@@ -154,18 +154,9 @@ public class FileUtils {
      * @CreateTime:
      */
     public static String base64Encode(String path) throws Exception {
-        InputStream inputStream = null;
-        byte[] data = null;
-        try {
-            inputStream = new FileInputStream(path);
-            data = new byte[inputStream.available()];
-            inputStream.read(data);
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        byte[] bytes = org.apache.commons.io.FileUtils.readFileToByteArray(new File(path));
         // 加密
         BASE64Encoder encoder = new BASE64Encoder();
-        return encoder.encode(data);
+        return encoder.encode(bytes);
     }
 }

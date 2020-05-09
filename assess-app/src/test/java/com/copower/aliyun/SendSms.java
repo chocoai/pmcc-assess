@@ -16,14 +16,13 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.copower.pmcc.assess.common.aliyun.SendSmsUtils;
 import com.copower.pmcc.assess.common.enums.aliyun.AccessKeyEnum;
+import com.copower.pmcc.assess.common.enums.aliyun.dysms.TemplateTypeEnum;
+import com.copower.pmcc.assess.dto.input.aliyun.SmsTemplateDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,9 +30,10 @@ public class SendSms {
 
     /**
      * 一个号码发短信
+     *
      * @throws Exception
      */
-    public static void runC() throws Exception {
+    public static void send2() throws Exception {
         //注意模板里面有的变量这里必须设置 ,如 您的注册码：${code}，如非本人操作，请忽略本短信！
         Map<String, String> map = Maps.newHashMap();
         map.put("name", "sdsdjdjs");
@@ -46,33 +46,108 @@ public class SendSms {
     /**
      * 多个号码  多个 签名模式  多个 模板的情况
      * 这里需要说明的签名和模板必须匹配, 这里存在多个签名,一个签名模板 ,多个签名必须是一致的类型如都是验证码签名或者都是通用签名,签名类型必须一致
+     *
      * @throws Exception
      */
-    public static void runD() throws Exception {
+    public static void sendBatch2() throws Exception {
         List<String> phoneNumbers = Arrays.asList("15756238830", "18380479453");
-        List<String> signNames = Arrays.asList("zdjdjadj" ,"zdjdjadj") ;//签名
+        List<String> signNames = Arrays.asList("zdjdjadj", "zdjdjadj");//签名
         List<Map<String, String>> mapList = new ArrayList<>(phoneNumbers.size());
         for (int i = 0; i < phoneNumbers.size(); i++) {
             Map<String, String> map = Maps.newHashMap();
             map.put("code", RandomStringUtils.randomNumeric(5));
-            mapList.add(map) ;
+            mapList.add(map);
         }
-        SendSmsUtils.sendBatch(AccessKeyEnum.ZCHAccessKey , phoneNumbers,signNames ,"SMS_189712261" ,mapList) ;//模板SMS_189712261
+        SendSmsUtils.sendBatch(AccessKeyEnum.ZCHAccessKey, phoneNumbers, signNames, "SMS_189712261", mapList);//模板SMS_189712261
     }
 
-    public static void runE()throws Exception{
-        SendSmsUtils.getQuerySendDetailsSize(AccessKeyEnum.ZCHAccessKey ,"15756238830", DateUtils.convertDate("20200508" ,DateUtils.DATE_SHORT_PATTERN));
+    public static void getQuerySendDetailsSize() throws Exception {
+        SendSmsUtils.getQuerySendDetailsSize(AccessKeyEnum.ZCHAccessKey, "15756238830", DateUtils.convertDate("20200508", DateUtils.DATE_SHORT_PATTERN));
+    }
+
+    public static void addSmsTemplate() throws Exception {
+        AccessKeyEnum accessKeyEnum = AccessKeyEnum.ZCHAccessKey;
+
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain("dysmsapi.aliyuncs.com");
+        request.setVersion("2017-05-25");
+        request.setAction("AddSmsTemplate");
+        request.putQueryParameter("RegionId", "cn-hangzhou");
+        request.putQueryParameter("TemplateType", "1");
+        request.putQueryParameter("TemplateName", "sdhsd3838");
+        request.putQueryParameter("TemplateContent", "您的动态码为：${code}，您正在进行密码重置操作，如非本人操作，请忽略本短信！");
+        request.putQueryParameter("Remark", "sdsdjsdj");
+        try {
+            CommonResponse response = client.getCommonResponse(request);
+            System.out.println(response.getData());
+        } catch (ServerException e) {
+            e.printStackTrace();
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addSmsTemplate2() throws Exception {
+        SmsTemplateDto smsTemplateDto = SendSmsUtils.addSmsTemplate(AccessKeyEnum.ZCHAccessKey, "备注", TemplateTypeEnum.Captcha, "mobanName", "您的动态码为：${code}，您正在进行密码重置操作，如非本人操作，请忽略本短信！");
+        System.out.println(smsTemplateDto);
+    }
+
+    public static void deleteSmsTemplate2()throws Exception{
+        SmsTemplateDto smsTemplateDto = SendSmsUtils.deleteSmsTemplate(AccessKeyEnum.ZCHAccessKey, "SMS_189760982");
+        System.out.println(smsTemplateDto);
+    }
+
+    public static void deleteSmsTemplate()throws Exception{
+        AccessKeyEnum accessKeyEnum = AccessKeyEnum.ZCHAccessKey;
+
+        IClientProfile profile = DefaultProfile.getProfile(accessKeyEnum.getRegionId(), accessKeyEnum.getId(), accessKeyEnum.getSecret());
+        DefaultProfile.addEndpoint(accessKeyEnum.getRegionId(), accessKeyEnum.getRegionId(), SendSmsUtils.product, SendSmsUtils.domain);
+        IAcsClient client = new DefaultAcsClient(profile);
+
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain(SendSmsUtils.domain);
+        request.setVersion("2017-05-25");
+        request.setAction("DeleteSmsTemplate");
+        request.putQueryParameter("RegionId", accessKeyEnum.getRegionId());
+        request.putQueryParameter("TemplateCode", "SMS_189761194");
+        try {
+            CommonResponse response = client.getCommonResponse(request);
+            System.out.println(response.getData());
+        } catch (ServerException e) {
+            e.printStackTrace();
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void modifySmsTemplate()throws Exception{
+        AccessKeyEnum accessKeyEnum = AccessKeyEnum.ZCHAccessKey;
+
+        SmsTemplateDto smsTemplateDto = new SmsTemplateDto();
+        smsTemplateDto.setTemplateCode("SMS_189761194");
+        smsTemplateDto.setTemplateName(UUID.randomUUID().toString().substring(2,7));
+        smsTemplateDto.setTemplateContent("验证码为：${code}，您正在注册成为平台会员，感谢您的支持！");
+        smsTemplateDto.setTemplateType(TemplateTypeEnum.Captcha.getKey());
+        smsTemplateDto.setRemark(RandomStringUtils.randomNumeric(33));
+
+        SmsTemplateDto templateDto = SendSmsUtils.modifySmsTemplate(accessKeyEnum, smsTemplateDto);
+        System.out.println(templateDto);
     }
 
     public static void main(String[] args) {
         ExecutorService pool = Executors.newCachedThreadPool();
         pool.execute(() -> {
             try {
-//                runA();
-//                runB();
-//                runC();
-//                runD();
-                runE();
+//                addSmsTemplate2();
+//                deleteSmsTemplate();
+//                deleteSmsTemplate2();
+                modifySmsTemplate();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -81,7 +156,7 @@ public class SendSms {
 //        System.out.println("[\"1500000000\",\"1500000001\"]");
     }
 
-    public static void runA() throws Exception {
+    public static void send() throws Exception {
         AccessKeyEnum zch = AccessKeyEnum.ZCHAccessKey;
         //设置超时时间-可自行调整
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -139,7 +214,7 @@ public class SendSms {
         System.out.println(sendSmsResponse.getRequestId());
     }
 
-    public static void runB() throws Exception {
+    public static void sendBatch() throws Exception {
         AccessKeyEnum zch = AccessKeyEnum.ZCHAccessKey;
         //设置超时时间-可自行调整
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
