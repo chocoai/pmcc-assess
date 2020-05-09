@@ -225,6 +225,9 @@
             <div class="btn btn-xs btn-warning paste" style="display:none;"
                  onclick="surePrice.paste(this)">粘贴
             </div>
+            <div class="btn btn-xs btn-primary houseRommInfo"
+                 onclick="surePrice.getHouseRoomInfo('{id}')">房间信息
+            </div>
             <div class="btn btn-xs btn-primary priceAdjust" style="display:{bisShow};"
                  onclick="surePrice.getHouseId('{id}')">单价调整
             </div>
@@ -989,12 +992,84 @@
             }
         })
     }
+
+    surePrice.getHouseRoomInfo = function (judgeObjectId) {
+        $.ajax({
+            url: getContextPath() + "/schemeSurePrice/getBasicHouse",
+            type: "get",
+            dataType: "json",
+            data: {judgeObjectId: judgeObjectId},
+            success: function (result) {
+                if (result.ret) {
+                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
+                        surePrice.showHouseRoomModal(result.data.id, judgeObjectId);
+                    }
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    surePrice.showHouseRoomModal = function (houseId, judgeObjectId) {
+        $.ajax({
+            url: getContextPath() + "/basicUnitHuxing/getHuxingByHouseId",
+            type: "get",
+            dataType: "json",
+            data: {basicHouseId: houseId},
+            success: function (result) {
+                if (result.ret) {
+                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
+                        surePrice.loadHouseRoomList(houseId,result.data.tenementType);
+                        $("#divBoxHouseRoomTable").modal("show");
+                    } else {
+                        notifyInfo("提示", "没有户型信息")
+                    }
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    surePrice.loadHouseRoomList =  function (houseId,tenementType) {
+        var cols = commonColumn.houseRoomColumn();
+        var temp = [];
+        if (tenementType == '住宅' || tenementType == '办公') {
+            temp = commonColumn.houseRoomResidence();
+        } else if (tenementType == '商铺' || tenementType == '商场') {
+            temp = commonColumn.houseRoomStore();
+        } else if (tenementType == '餐饮酒店') {
+            temp = commonColumn.houseRoomHotel();
+        } else if (tenementType == '生产') {
+            temp = commonColumn.houseRoomProduction();
+        } else if (tenementType == '仓储') {
+            temp = commonColumn.houseRoomStorage();
+        }
+        $.each(temp, function (i, item) {
+            cols.push(item);
+        })
+        cols.push({field: 'fileViewName', title: '附件'});
+        $("#HouseRoomList").bootstrapTable('destroy');
+        TableInit("HouseRoomList", getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
+            houseId: houseId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
 </script>
 
 <div id="divBoxHouseHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">调查信息</h4>
@@ -1405,6 +1480,43 @@
                 </button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="houseHuxingPrice.prototype.saveData()">
                     保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="divBoxHouseRoomTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">房间信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="HouseRoomList">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
             </div>
 
