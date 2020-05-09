@@ -264,8 +264,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
         vo.setAppearanceStyleName(baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()));
         vo.setAppearanceNewAndOldName(baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()));
         if (basicBuilding.getPropertyCompanyNature() != null) {
-            try {
-                //crm 未知错误  暂时这样处理
+            try { //crm 未知错误  暂时这样处理
                 vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
             } catch (Exception e) {
                 logger.error(e.getMessage(),e);

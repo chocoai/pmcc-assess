@@ -260,7 +260,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -273,7 +272,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="basicBuilding"></div>
                                 </form>
                             </div>
                         </div>

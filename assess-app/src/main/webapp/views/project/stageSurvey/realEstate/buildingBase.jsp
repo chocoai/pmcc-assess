@@ -255,8 +255,10 @@
                                                                     <div class="input-group">
 
                                                                         <input type="text" required="required"
-                                                                               name="minimumFloorDistance" placeholder="最小楼间距倍数"
-                                                                               class="form-control form-control-sm" onblur="buildingCommon.minimumFloorDistanceEvent(this);"
+                                                                               name="minimumFloorDistance"
+                                                                               placeholder="最小楼间距倍数"
+                                                                               class="form-control form-control-sm"
+                                                                               onblur="buildingCommon.minimumFloorDistanceEvent(this);"
                                                                                list="build_minimumFloorDistance_data"
                                                                                value="${basicBuilding.minimumFloorDistance}">
 
@@ -402,8 +404,8 @@
                                                                     街道号
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <select name="streetInfoId" class="form-control input-full">
-                                                                        <option value="">--请选择--</option>
+                                                                    <select name="streetInfoId"
+                                                                            class="form-control input-full">
                                                                         <c:forEach var="item" items="${streetInfoList}">
                                                                             <option value="${item.id}">${item.streetNumber}</option>
                                                                         </c:forEach>
@@ -456,8 +458,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div id="basicBuilding"></div>                                                </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
@@ -476,7 +477,9 @@
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
                                     onclick="window.close()">关闭
                             </button>
-                            <button type="button" class="btn btn-warning" style="margin-left: 10px;" onclick="saveDataInfo();">保存</button>
+                            <button type="button" class="btn btn-warning" style="margin-left: 10px;"
+                                    onclick="saveDataInfo();">保存
+                            </button>
                         </div>
                     </div>
                     <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
@@ -696,7 +699,8 @@
 <script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/property.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/builder.js?v=${assessVersion}'></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/sonBuildView.js?v=${assessVersion}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
@@ -762,7 +766,7 @@
     }
 
     function showHistoryModal() {
-        historyInfo.caseBuild.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+        historyInfo.caseBuild.showModel('${tbId}', '${formClassify}', '${tbType}', '${basicApplyBatch.id}');
     };
 
     function showCaseQuoteModal() {

@@ -6,10 +6,12 @@ import com.copower.pmcc.assess.common.enums.DeclareCertificateTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
@@ -69,6 +71,8 @@ public class SurveyAssetInventoryContentService {
     private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     public BootstrapTableVo getList(Integer planDetailsId) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -161,7 +165,12 @@ public class SurveyAssetInventoryContentService {
                 SurveyAssetInventoryContent inventoryAddress = getInventoryAddress(declareRecord);
                 if (inventoryAddress != null) {
                     surveyAssetInventoryContent.setRegistration(inventoryAddress.getRegistration());
-                    //surveyAssetInventoryContent.setActual(inventoryAddress.getActual());
+                    surveyAssetInventoryContent.setActual(inventoryAddress.getActual());
+                    if (Objects.equal(surveyAssetInventoryContent.getRegistration(), surveyAssetInventoryContent.getActual())) {
+                        surveyAssetInventoryContent.setAreConsistent("一致");
+                    } else {
+                        surveyAssetInventoryContent.setAreConsistent("不一致");
+                    }
                 }
                 inventoryContentList.add(surveyAssetInventoryContent);
             }
@@ -265,9 +274,16 @@ public class SurveyAssetInventoryContentService {
         SurveyAssetInventoryContent content = new SurveyAssetInventoryContent();
         if (declareRecord == null) return content;
         SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemByDeclareId(declareRecord.getId());
+        List<String> actualList = Lists.newArrayList();
         if (assetInfoItem == null || assetInfoItem.getGroupId() == null || assetInfoItem.getGroupId() <= 0) {
             List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
-            String fusinString = publicService.fusinString(LangUtils.transform(applyList, o -> o.getAddress()), true);
+            if(CollectionUtils.isNotEmpty(applyList)){
+                for (BasicApply basicApply : applyList) {
+                    BasicBuildingVo building = basicApplyBatchDetailService.getBasicBuildingByBatchDetailId(basicApply.getBatchDetailId());
+                    actualList.add(building.getStreetNumber()+basicApply.getAddress());
+                }
+            }
+            String fusinString = publicService.fusinString(actualList, true);
             content.setRegistration(declareRecord.getSeat());
             content.setActual(fusinString);
             return content;
@@ -277,11 +293,13 @@ public class SurveyAssetInventoryContentService {
             List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(infoItems, o -> o.getDeclareId()));
             if (CollectionUtils.isNotEmpty(declareRecords)) {
                 List<String> registrationList = LangUtils.transform(declareRecords, o -> o.getSeat());
-                List<String> actualList = Lists.newArrayList();
                 for (DeclareRecord record : declareRecords) {
                     List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(record.getId());
                     if (CollectionUtils.isNotEmpty(applyList)) {
-                        applyList.forEach(o -> actualList.add(o.getAddress()));
+                        for (BasicApply basicApply : applyList) {
+                            BasicBuildingVo building = basicApplyBatchDetailService.getBasicBuildingByBatchDetailId(basicApply.getBatchDetailId());
+                            actualList.add(building.getStreetNumber()+basicApply.getAddress());
+                        }
                     }
                 }
                 content.setRegistration(publicService.fusinString(registrationList, true));

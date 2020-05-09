@@ -41,7 +41,8 @@
                                                            value="${basicBuilding.quoteId}">
                                                     <input type="hidden" name="estateId"
                                                            value="${basicBuilding.estateId}">
-                                                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
+                                                    <%@include
+                                                            file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
@@ -138,8 +139,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div id="basicBuilding"></div>                                                </div>
+                                                    <div id="basicBuilding"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
@@ -160,7 +161,9 @@
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
                                     onclick="window.close()">关闭
                             </button>
-                            <button type="button" class="btn btn-warning" style="margin-left: 10px;" onclick="saveDataInfo();">保存</button>
+                            <button type="button" class="btn btn-warning" style="margin-left: 10px;"
+                                    onclick="saveDataInfo();">保存
+                            </button>
                         </div>
                     </div>
                     <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
@@ -182,7 +185,8 @@
 <script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/property.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/builder.js?v=${assessVersion}'></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/sonBuildView.js?v=${assessVersion}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
@@ -248,7 +252,7 @@
     }
 
     function showHistoryModal() {
-        historyInfo.caseBuild.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+        historyInfo.caseBuild.showModel('${tbId}', '${formClassify}', '${tbType}', '${basicApplyBatch.id}');
     };
 
     function showCaseQuoteModal() {

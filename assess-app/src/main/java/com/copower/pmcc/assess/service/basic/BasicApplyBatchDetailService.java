@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
@@ -255,12 +256,7 @@ public class BasicApplyBatchDetailService {
                 BasicApplyBatchDetail batchDetail = list.get(i);
                 stringBuilder.append(batchDetail.getName());
                 if (BasicFormClassifyEnum.ESTATE.getKey().equals(batchDetail.getType())) {
-                    BasicEstate estate = basicEstateService.getBasicEstateById(batchDetail.getTableId());
-                    if (estate != null) {
-                        addressBuilder.append(estate.getStreetNumber());
-                        if (StringUtils.isNotBlank(estate.getAttachNumber()))
-                            addressBuilder.append("附").append(estate.getAttachNumber());
-                    }
+                    continue;
                 } else {
                     addressBuilder.append(batchDetail.getName());
                 }
@@ -374,7 +370,7 @@ public class BasicApplyBatchDetailService {
      * @param basicApplyBatchDetailId
      * @return
      */
-    public BasicBuilding getBasicBuildingByBatchDetailId(Integer basicApplyBatchDetailId) {
+    public BasicBuildingVo getBasicBuildingByBatchDetailId(Integer basicApplyBatchDetailId) {
         BasicApplyBatchDetail applyBatchDetail = getDataById(basicApplyBatchDetailId);
         if (applyBatchDetail == null) return null;
         if (FormatUtils.entityNameConvertToTableName(BasicBuilding.class).equalsIgnoreCase(applyBatchDetail.getTableName())) {

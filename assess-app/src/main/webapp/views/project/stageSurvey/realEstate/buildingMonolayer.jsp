@@ -458,7 +458,6 @@
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <select name="streetInfoId" class="form-control input-full">
-                                                                        <option value="">--请选择--</option>
                                                                         <c:forEach var="item" items="${streetInfoList}">
                                                                             <option value="${item.id}">${item.streetNumber}</option>
                                                                         </c:forEach>
@@ -511,8 +510,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div id="basicBuilding"></div>                                                </div>
+                                                    <div id="basicBuilding"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
