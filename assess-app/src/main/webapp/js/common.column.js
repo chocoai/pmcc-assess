@@ -465,7 +465,15 @@ commonColumn.buildingFunctionColumn = function () {
 //单元-户型差异调查表
 commonColumn.houseHuxingPriceColumn = function () {
     var cols = [];
-    cols.push({field: 'houseNumber', title: '房号'});
+    cols.push({
+        field: 'houseNumber', title: '房号', formatter: function (value, row, index) {
+            var s = row.houseNumber;
+            if (row.declareName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.declareName + "</span>"
+            }
+            return s;
+        }
+    });
     cols.push({field: 'area', title: '面积'});
     cols.push({field: 'floor', title: '楼层'});
     return cols;
@@ -692,8 +700,8 @@ commonColumn.houseRoomResidence = function () {
     cols.push({
         field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
             var s = row.length;
-            if (row.houseShape == '不规则'&&row.length) {
-                s = "最长"+s;
+            if (row.houseShape == '不规则' && row.length) {
+                s = "最长" + s;
             }
             return s;
         }
@@ -701,8 +709,8 @@ commonColumn.houseRoomResidence = function () {
     cols.push({
         field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
             var s = row.width;
-            if (row.houseShape == '不规则'&&row.width) {
-                s = "最宽"+s;
+            if (row.houseShape == '不规则' && row.width) {
+                s = "最宽" + s;
             }
             return s;
         }
@@ -718,8 +726,8 @@ commonColumn.houseRoomStore = function () {
     cols.push({
         field: 'openingDisplay', title: '开间', formatter: function (value, row, index) {
             var s = row.opening;
-            if (row.houseShape == '不规则'&&row.opening) {
-                s = "最大"+s;
+            if (row.houseShape == '不规则' && row.opening) {
+                s = "最大" + s;
             }
             return s;
         }
@@ -727,8 +735,8 @@ commonColumn.houseRoomStore = function () {
     cols.push({
         field: 'depthDisplay', title: '进深', formatter: function (value, row, index) {
             var s = row.depth;
-            if (row.houseShape == '不规则'&&row.depth) {
-                s = "最小"+s;
+            if (row.houseShape == '不规则' && row.depth) {
+                s = "最小" + s;
             }
             return s;
         }
@@ -744,8 +752,8 @@ commonColumn.houseRoomHotel = function () {
     cols.push({
         field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
             var s = row.length;
-            if (row.houseShape == '不规则'&&row.length) {
-                s = "最长"+s;
+            if (row.houseShape == '不规则' && row.length) {
+                s = "最长" + s;
             }
             return s;
         }
@@ -753,8 +761,8 @@ commonColumn.houseRoomHotel = function () {
     cols.push({
         field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
             var s = row.width;
-            if (row.houseShape == '不规则'&&row.width) {
-                s = "最宽"+s;
+            if (row.houseShape == '不规则' && row.width) {
+                s = "最宽" + s;
             }
             return s;
         }
