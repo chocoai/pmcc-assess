@@ -1462,18 +1462,16 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">区块标题</h4>
+                <h4 class="modal-title">描述内容</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
-
                     <input type="hidden" name="id">
                     <input type="hidden" name="pid">
                     <input type="hidden" name="lng">
                     <input type="hidden" name="lat">
-
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -1481,10 +1479,10 @@
                                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                                标题<span class="symbol required"></span>
+                                                名称<span class="symbol required"></span>
                                             </label>
                                             <div class="col-xs-9  col-sm-9  col-md-9  col-lg-9">
-                                                <input type="text" placeholder="标题"
+                                                <input type="text" placeholder="名称"
                                                        name="name" required="required"
                                                        class="form-control input-full">
                                             </div>
@@ -1517,23 +1515,8 @@
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header ">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        高德地图
-                                        <c:if test="${empty masterName}">
-                                            区块
-                                        </c:if>
-                                        <c:if test="${! empty masterName}">
-                                            ${masterName}
-                                        </c:if>
-                                        操作
-                                    </div>
-                                </div>
-                            </div>
                             <div class="card-body">
                                 <form class="form-horizontal">
-
                                     <div class="row form-group">
                                         <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                             <button style="margin-left: 5px" class="btn btn-primary btn-sm"
@@ -1566,31 +1549,26 @@
                                             </button>
                                         </div>
                                         <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-
                                             <button style="margin-left: 5px" class="btn btn-primary btn-sm"
                                                     type="button"
                                                     onclick="drawPolygon.handleMouseTool(true);">
 											<span class="btn-label">
-                                                <%--<i class="far fa-stop-circle"></i>--%>
                                             </span>
-                                                关闭绘图
+                                                添加描述
                                             </button>
                                             <button style="margin-left: 5px" class="btn btn-primary btn-sm"
                                                     type="button"
                                                     onclick="drawPolygon.handleMouseTool(false);">
 											<span class="btn-label">
-                                                <%--<i class="far fa-square"></i>--%>
                                             </span>
                                                 开启绘图
                                             </button>
                                         </div>
-
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                             <input type="text" class="form-control input-full" value=""
                                                    placeholder="搜索...." name="mapSearchName" id="tipinput">
                                         </div>
                                     </div>
-
                                     <div class="row form-group">
                                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                             <div class="form-inline x-valid">
@@ -1612,7 +1590,6 @@
     </div>
 </div>
 </body>
-
 <script>
 
     var drawPolygon = {};
