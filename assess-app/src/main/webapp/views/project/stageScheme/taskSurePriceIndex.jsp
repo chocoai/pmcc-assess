@@ -16,16 +16,16 @@
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header collapse-link">
+                            <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${judgeObject.name}
-                                        <small>(${judgeObject.evaluationArea}㎡)</small>
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
+                                        <small>(${judgeObject.evaluationArea}㎡)
+                                            <button type="button" href="javascript://;" class="btn btn-xs btn-warning"
+                                                    onclick="surePrice.initSurePriceItem('${projectPlanDetails.judgeObjectId}',true)">
+                                                初始化
+                                            </button>
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -56,11 +56,16 @@
                                     </div>
                                     <div class="row form-group form-inline">
                                         <label class="col-sm-1 control-label">
+                                            计算单价
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" name="tempPrice" class="form-control input-full" readonly="readonly">
+                                        </div>
+                                        <label class="col-sm-1 control-label">
                                             最终单价
                                         </label>
-                                        <div class="col-sm-3">
-                                            <input type="hidden" name="tempPrice" class="form-control">
-                                            <input type="text" name="price" class="form-control" readonly="readonly"
+                                        <div class="col-sm-2">
+                                            <input type="text" name="price" class="form-control input-full" readonly="readonly"
                                                    value="${schemeSurePrice.price}">
                                         </div>
                                         <div class="col-sm-3">
@@ -322,10 +327,9 @@
 
 <script type="application/javascript">
     $(function () {
-        surePrice.surePrice('${projectPlanDetails.judgeObjectId}', true);
+        surePrice.surePrice('${projectPlanDetails.judgeObjectId}');
         surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
         loadDocumentSend();
-
     });
 
     function submit() {
@@ -355,42 +359,7 @@
     }
 
     function updatePrice() {
-        var surePriceApply = {};
-        var form = $("#sure_price_form");
-        if (!form.valid()) {
-            return false;
-        }
-        surePriceApply.id = form.find('[name=id]').val();
-        surePriceApply.judgeObjectId = '${projectPlanDetails.judgeObjectId}';
-        surePriceApply.weightExplain = form.find('[name=weightExplain]').val();
-        surePriceApply.price = form.find('[name=price]').val();
-        surePriceApply.surePriceItemList = [];
-        $("#tbody_data_section tr").each(function () {
-            var schemeSurePriceItem = {};
-            schemeSurePriceItem.id = $(this).find('[name=id]').val();
-            schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
-            surePriceApply.surePriceItemList.push(schemeSurePriceItem);
-        });
-        AlertConfirm("确认更新么", "将同步更新与标准估价对象关联的其他对象的初始单价", function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
-                data: {
-                    fomData: JSON.stringify(surePriceApply), planDetailsId: '${projectPlanDetails.id}'
-                },
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-//                        window.location.reload(true);
-                        //surePrice.surePrice('${projectPlanDetails.judgeObjectId}', false);
-                        surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
-                        surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
-                    } else {
-                        AlertError("失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                }
-            });
-        });
+        surePrice.digitValue(1);
     }
 
 
@@ -468,9 +437,9 @@
     };
 
     //确定单价
-    surePrice.surePrice = function (judgeObjectId, isUpdatePrice) {
+    surePrice.initSurePriceItem = function (judgeObjectId,isUpdatePrice) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/schemeSurePrice/getSchemeSurePriceItemList",
+            url: "${pageContext.request.contextPath}/schemeSurePrice/initSchemeSurePriceItemList",
             data: {
                 judgeObjectId: judgeObjectId,
                 isUpdatePrice: isUpdatePrice
@@ -492,7 +461,40 @@
                     $("#tbody_data_section").find('.x-percent').each(function () {
                         AssessCommon.elementParsePercent($(this));
                     });
-                    //surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
+                    surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
+                }
+                else {
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
+    };
+
+    //确定单价
+    surePrice.surePrice = function (judgeObjectId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeSurePrice/getSchemeSurePriceItemList",
+            data: {
+                judgeObjectId: judgeObjectId,
+            },
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    $("#tbody_data_section").empty();
+                    $.each(result.data, function (i, item) {
+                        var html = $("#surePriceTemp").html();
+                        html = html.replace(/{id}/g, AssessCommon.toString(item.id));
+                        html = html.replace(/{methodName}/g, AssessCommon.toString(item.methodName));
+                        html = html.replace(/{trialPrice}/g, AssessCommon.toString(item.trialPrice));
+                        html = html.replace(/{weight}/g, AssessCommon.toString(item.weight));
+                        $("#tbody_data_section").append(html);
+                    });
+                    $("#tbody_data_section").find('.x-percent').each(function () {
+                        AssessCommon.elementParsePercent($(this));
+                    });
+                    surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
                 }
                 else {
                     AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
@@ -536,7 +538,6 @@
                 resultPrice += parseFloat(trialPrice) * parseFloat(weight);
             }
         })
-        $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(0));
         $("#sure_price_form").find('[name=tempPrice]').val(resultPrice.toFixed(0));
         if (isAverage) {
             $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').hide();
@@ -551,8 +552,6 @@
         if(tempPrice){
             var tempPrice = Math.round(tempPrice/dividend);
             $("#sure_price_form").find('[name=price]').val(tempPrice*dividend);
-        }else{
-            notifyInfo("提示","先更新单价");
         }
 
         var surePriceApply = {};
@@ -564,6 +563,13 @@
         surePriceApply.judgeObjectId = '${projectPlanDetails.judgeObjectId}';
         surePriceApply.weightExplain = form.find('[name=weightExplain]').val();
         surePriceApply.price = form.find('[name=price]').val();
+        surePriceApply.surePriceItemList = [];
+        $("#tbody_data_section tr").each(function () {
+            var schemeSurePriceItem = {};
+            schemeSurePriceItem.id = $(this).find('[name=id]').val();
+            schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
+            surePriceApply.surePriceItemList.push(schemeSurePriceItem);
+        });
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
             data: {

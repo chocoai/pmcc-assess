@@ -75,7 +75,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
         List<SchemeSurePriceItem> surePriceItemList = null;
         try {
-            surePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId(), false);
+            surePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId());
             modelAndView.addObject("surePriceItemList", surePriceItemList);
         } catch (BusinessException e) {
             logger.error(e.getMessage(),e);
@@ -116,7 +116,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
         List<SchemeSurePriceItem> surePriceItemList = null;
         try {
-            surePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId(), false);
+            surePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId());
             modelAndView.addObject("surePriceItemList", surePriceItemList);
         } catch (BusinessException e) {
             logger.error(e.getMessage(),e);
@@ -127,10 +127,9 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        SchemeSurePrice schemeSurePrice = JSON.parseObject(formData, SchemeSurePrice.class);
-        schemeSurePrice.setProcessInsId(processInsId);
-        schemeSurePriceService.saveSchemeSurePrice(schemeSurePrice);
-        if (!StringUtils.isBlank(processInsId)) {
+        if (StringUtils.isBlank(processInsId)) {
+            schemeSurePriceService.addSurePriceRecord(projectPlanDetails);
+        } else {
             try {
                 bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName()); //修改监听器
             } catch (BpmException e) {
@@ -146,10 +145,9 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        SchemeSurePrice schemeSurePrice = JSON.parseObject(formData, SchemeSurePrice.class);
-        schemeSurePrice.setProcessInsId(processInsId);
-        schemeSurePriceService.saveSchemeSurePrice(schemeSurePrice);
-        if (!StringUtils.isBlank(processInsId)) {
+        if (StringUtils.isBlank(processInsId)) {
+            schemeSurePriceService.addSurePriceRecord(projectPlanDetails);
+        } else {
             try {
                 bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName()); //修改监听器
             } catch (BpmException e) {

@@ -45,10 +45,21 @@ public class SchemeSurePriceController {
     private BaseService baseService;
     private final String errorInfo = "确定单价异常";
 
+    @GetMapping(value = "/initSchemeSurePriceItemList", name = "初始化")
+    public HttpResult initSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) {
+        try {
+            List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.initSchemeSurePriceItemList(judgeObjectId,isUpdatePrice);
+            return HttpResult.newCorrectResult(200, schemeSurePriceList);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, errorInfo);
+            return HttpResult.newErrorResult(500, "初始化数据异常");
+        }
+    }
+
     @GetMapping(value = "/getSchemeSurePriceItemList", name = "获取确定单价明细数据信息")
     public HttpResult getSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) {
         try {
-            List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceItemList(judgeObjectId, isUpdatePrice);
+            List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceItemList(judgeObjectId);
             return HttpResult.newCorrectResult(200, schemeSurePriceList);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, errorInfo);

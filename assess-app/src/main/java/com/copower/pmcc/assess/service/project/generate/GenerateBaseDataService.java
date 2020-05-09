@@ -1810,7 +1810,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int k = 0; k < schemeJudgeObjectList.size(); k++) {
                 SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(k);
-                List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
+                List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.initSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
                 SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSchemeSurePriceBySchemeJudgeObjectId(schemeJudgeObject.getId());
                 if (CollectionUtils.isEmpty(schemeSurePriceItemList)) {
                     continue;
@@ -3288,7 +3288,7 @@ public class GenerateBaseDataService {
         Map<SchemeJudgeObject, List<SchemeSurePriceItem>> objectListMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
+                List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.initSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
                 if (CollectionUtils.isNotEmpty(schemeSurePriceItemList)) {
                     objectListMap.put(schemeJudgeObject, schemeSurePriceItemList);
                 }
