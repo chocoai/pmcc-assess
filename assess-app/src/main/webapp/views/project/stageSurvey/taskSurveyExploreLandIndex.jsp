@@ -110,7 +110,7 @@
                                                             <input name='declareRecordId' id='declareRecordId' type='hidden'>
                                                             <input name='declareRecordName' id='declareRecordName'
                                                                    class='form-control' readonly
-                                                                   onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
+                                                                   onclick='declareRecordModeObj.init({callback:selectRecord,this_:this},true);'>
                                                             <div class="input-group-prepend">
                                                                 <button class="btn btn-warning btn-sm "
                                                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"

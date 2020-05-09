@@ -97,8 +97,9 @@
     declareRecordModeObj.this_ = undefined;
     declareRecordModeObj.ids = undefined;
     declareRecordModeObj.projectId = undefined;
+    declareRecordModeObj.singleSelect = undefined;
 
-    declareRecordModeObj.init = function (options) {
+    declareRecordModeObj.init = function (options,singleSelect) {
         var defaultObj = {projectId: '${projectPlanDetails.projectId}'};
         jQuery.extend(defaultObj, options);
         var box = declareRecordModeObj.targetBox;
@@ -118,7 +119,8 @@
         if (defaultObj.projectId) {
             declareRecordModeObj.projectId = defaultObj.projectId;
         }
-        declareRecordModeObj.loadDeclareRecordTable({projectId: defaultObj.projectId});
+        declareRecordModeObj.singleSelect = singleSelect;
+        declareRecordModeObj.loadDeclareRecordTable({projectId: defaultObj.projectId},singleSelect);
         box.modal('show');
     };
 
@@ -184,12 +186,12 @@
             data.buildingNumber = buildingNumber;
         }
         if (seat) {
-            seat.name = seat;
+            data.seat = seat;
         }
-        declareRecordModeObj.loadDeclareRecordTable(data);
+        declareRecordModeObj.loadDeclareRecordTable(data,declareRecordModeObj.singleSelect);
     };
 
-    declareRecordModeObj.loadDeclareRecordTable = function (options) {
+    declareRecordModeObj.loadDeclareRecordTable = function (options,singleSelect) {
         var table = declareRecordModeObj.targetTable;
         if (table instanceof jQuery) {
         } else {
@@ -208,7 +210,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            singleSelect: true,
+            singleSelect: singleSelect?true:false,
             onLoadSuccess: function () {//加载成功时执行
                 //对曾经选中过的依旧保持选中状态
                 if (declareRecordModeObj.ids) {

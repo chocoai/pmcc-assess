@@ -171,7 +171,7 @@
                                                                    type='hidden'>
                                                             <input name='declareRecordName' id='declareRecordName'
                                                                    class='form-control input-full' readonly
-                                                                   onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
+                                                                   onclick='declareRecordModeObj.init({callback:selectRecord,this_:this},true);'>
                                                         </div>
                                                     </div>
                                                 </div>
