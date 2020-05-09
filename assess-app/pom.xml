@@ -246,6 +246,7 @@
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>4.0.3</version>
+            <!--<version>4.5.1</version>-->
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.aliyun/aliyun-java-sdk-dysmsapi -->
         <dependency>
@@ -253,6 +254,24 @@
             <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
             <version>2.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-ecs</artifactId>
+            <version>4.17.6</version>
+        </dependency>
+        <!-- 文字识别 新 坐标 -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>ocr20191230</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+        <!-- 文字识别旧 坐标 -->
+        <!--<dependency>-->
+            <!--<groupId>com.aliyun</groupId>-->
+            <!--<artifactId>aliyun-java-sdk-ocr</artifactId>-->
+            <!--<version>1.0.7</version>-->
+        <!--</dependency>-->
+
 
 
         <!--==================================== -->
