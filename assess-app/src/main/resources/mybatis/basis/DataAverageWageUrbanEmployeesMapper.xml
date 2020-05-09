@@ -6,6 +6,7 @@
     <result column="province" property="province" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
     <result column="date" property="date" jdbcType="TIMESTAMP" />
     <result column="state_owned_economy" property="stateOwnedEconomy" jdbcType="DECIMAL" />
     <result column="collective_economy" property="collectiveEconomy" jdbcType="DECIMAL" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, province, city, district, date, state_owned_economy, collective_economy, private_economy, 
-    other_economy, total, creator, gmt_created, gmt_modified
+    id, province, city, district, year, date, state_owned_economy, collective_economy, 
+    private_economy, other_economy, total, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployeesExample" >
     select
@@ -113,15 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_average_wage_urban_employees (province, city, district, 
-      date, state_owned_economy, collective_economy, 
-      private_economy, other_economy, total, 
-      creator, gmt_created, gmt_modified
-      )
+      year, date, state_owned_economy, 
+      collective_economy, private_economy, other_economy, 
+      total, creator, gmt_created, 
+      gmt_modified)
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{date,jdbcType=TIMESTAMP}, #{stateOwnedEconomy,jdbcType=DECIMAL}, #{collectiveEconomy,jdbcType=DECIMAL}, 
-      #{privateEconomy,jdbcType=DECIMAL}, #{otherEconomy,jdbcType=DECIMAL}, #{total,jdbcType=DECIMAL}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{year,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, #{stateOwnedEconomy,jdbcType=DECIMAL}, 
+      #{collectiveEconomy,jdbcType=DECIMAL}, #{privateEconomy,jdbcType=DECIMAL}, #{otherEconomy,jdbcType=DECIMAL}, 
+      #{total,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAverageWageUrbanEmployees" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +138,9 @@
       </if>
       <if test="district != null" >
         district,
+      </if>
+      <if test="year != null" >
+        year,
       </if>
       <if test="date != null" >
         date,
@@ -175,6 +179,9 @@
       </if>
       <if test="district != null" >
         #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=VARCHAR},
       </if>
       <if test="date != null" >
         #{date,jdbcType=TIMESTAMP},
@@ -226,6 +233,9 @@
       <if test="record.district != null" >
         district = #{record.district,jdbcType=VARCHAR},
       </if>
+      <if test="record.year != null" >
+        year = #{record.year,jdbcType=VARCHAR},
+      </if>
       <if test="record.date != null" >
         date = #{record.date,jdbcType=TIMESTAMP},
       </if>
@@ -264,6 +274,7 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=VARCHAR},
       date = #{record.date,jdbcType=TIMESTAMP},
       state_owned_economy = #{record.stateOwnedEconomy,jdbcType=DECIMAL},
       collective_economy = #{record.collectiveEconomy,jdbcType=DECIMAL},
@@ -288,6 +299,9 @@
       </if>
       <if test="district != null" >
         district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=VARCHAR},
       </if>
       <if test="date != null" >
         date = #{date,jdbcType=TIMESTAMP},
@@ -324,6 +338,7 @@
     set province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
+      year = #{year,jdbcType=VARCHAR},
       date = #{date,jdbcType=TIMESTAMP},
       state_owned_economy = #{stateOwnedEconomy,jdbcType=DECIMAL},
       collective_economy = #{collectiveEconomy,jdbcType=DECIMAL},
