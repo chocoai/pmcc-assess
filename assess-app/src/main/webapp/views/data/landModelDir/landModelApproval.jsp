@@ -29,19 +29,19 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 col-form-label">
-                                                    平方价
+                                                    平方价(元/m²)
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class=" form-control input-full" name="price"></label>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
-                                                    每亩单价
+                                                    每亩单价(万元/亩)
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class=" form-control input-full" name="muPrice"></label>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
-                                                    楼面地价(元/平方米)
+                                                    楼面地价(元/m²)
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class=" form-control input-full" name="floorPrice"></label>

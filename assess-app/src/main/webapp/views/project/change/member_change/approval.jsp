@@ -38,9 +38,6 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-striped jambo_table bulk_action table-bordered" id="member_change_table"></table>
-
-
                                 <form class="form-horizontal" id="member_change_form">
                                     <div class="row form-group">
                                         <div class="col-md-12">
@@ -56,7 +53,7 @@
                                         </div>
                                     </div>
                                 </form>
-
+                                <table class="table table-striped jambo_table bulk_action table-bordered" id="member_change_table"></table>
                             </div>
                         </div>
                     </div>
