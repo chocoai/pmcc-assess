@@ -1817,11 +1817,11 @@ public class GenerateBaseDataService {
                 }
                 for (SchemeSurePriceItem schemeSurePriceItem : schemeSurePriceItemList) {
                     if (StringUtils.isNotBlank(schemeSurePriceItem.getMethodName()) && schemeSurePriceItem.getTrialPrice() != null) {
-                        linkedHashSet.add(String.format("%s%s元", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
+                        linkedHashSet.add(String.format("%s%s元/㎡", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
                     }
                 }
                 if (schemeSurePrice != null && schemeSurePrice.getPrice() != null) {
-                    linkedHashSet.add(String.format("最终单价%s元", schemeSurePrice.getPrice().toString()));
+                    linkedHashSet.add(String.format("最终单价%s元/㎡", schemeSurePrice.getPrice().toString()));
                 }
                 List<Integer> integerList = Lists.newArrayList();
                 if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
@@ -3276,6 +3276,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         StringBuilder stringBuilder = new StringBuilder(8);
+        StringBuilder evaluationExpression = new StringBuilder(8);
         BaseDataDic mdIncome = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
         BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
         final int TEN = 10;
@@ -3312,7 +3313,12 @@ public class GenerateBaseDataService {
                     stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey(), schemeJudgeObjectList));
                 }
                 if (size == 1) {
-                    stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，比较法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(entry.getValue().stream().findFirst().get().getTrialPrice(), 2, false));
+                    if (mdCompareItem != null) {
+                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，比较法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(entry.getValue().stream().findFirst().get().getTrialPrice(), 2, false)).append("元/㎡");
+                    }
+                    if (mdIncomeItem != null) {
+                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，收益法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(entry.getValue().stream().findFirst().get().getTrialPrice(), 2, false)).append("元/㎡");
+                    }
                 }
                 if (size == 2) {
                     //刚好收益法和市场比较法 选择的情况
@@ -3358,6 +3364,7 @@ public class GenerateBaseDataService {
                             stringBuilder.append(mdIncomeItem.getTrialPrice().toString()).append("×").append("50%").append("+").append(mdCompareItem.getTrialPrice().toString()).append("×").append("50%").append("（").append("收益法价格*权重+比较法价格*权重").append("）");
                         }
                     }
+                    evaluationExpression.append("比较法价格*权重+收益法价格*权重");
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                     List<String> stringList = Lists.newArrayList();
@@ -3370,6 +3377,10 @@ public class GenerateBaseDataService {
                     stringBuilder.append(StringUtils.join(stringList, "，")).append("估价对象结果如下表");
                 }
                 AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(stringBuilder.toString(), keyValueDtoList));
+                if(StringUtils.isNotEmpty(evaluationExpression.toString())){
+                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(evaluationExpression.toString())), true);
+                }
+
                 //当为合并对象的时候,需要写入单价调整表
                 if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                     List<SchemeJudgeObjectVo> voList = judgeObjectList.stream().map(oo -> schemeJudgeObjectService.getSchemeJudgeObjectVo(oo)).collect(Collectors.toList());
@@ -3724,18 +3735,18 @@ public class GenerateBaseDataService {
         Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
         while (iterator.hasNext()) {
             SchemeJudgeObject schemeJudgeObject = iterator.next();
-            if (schemeJudgeObject.getBasicApplyId() == null || schemeJudgeObject.getBasicApplyId() ==0){
+            if (schemeJudgeObject.getBasicApplyId() == null || schemeJudgeObject.getBasicApplyId() == 0) {
                 continue;
             }
             BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-            if (basicApply == null){
-                baseService.writeExceptionInfo(new java.lang.NullPointerException()," 估价对象中 根据basicApplyId 没有获取到对应的对象,请注意");
+            if (basicApply == null) {
+                baseService.writeExceptionInfo(new java.lang.NullPointerException(), " 估价对象中 根据basicApplyId 没有获取到对应的对象,请注意");
                 continue;
             }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             BasicHouse basicHouse = generateBaseExamineService.getBasicHouse();
-            if (basicHouse == null){
-                baseService.writeExceptionInfo(new java.lang.NullPointerException()," 查勘房屋 没有获取到,请注意");
+            if (basicHouse == null) {
+                baseService.writeExceptionInfo(new java.lang.NullPointerException(), " 查勘房屋 没有获取到,请注意");
                 continue;
             }
             BasicUnitHuxing query = new BasicUnitHuxing();
@@ -4905,20 +4916,20 @@ public class GenerateBaseDataService {
                 }
                 StringBuilder stringBuilder = new StringBuilder(8);
                 stringBuilder.append(generateCommonMethod.getIndentHtml("1、位置状况"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s",StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate)),errorStr))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)),errorStr))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApplyBatch)),errorStr))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getFaceStreet(judgeObjects))),errorStr)));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)),errorStr))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate)), errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)), errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApplyBatch)), errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getFaceStreet(judgeObjects))), errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)), errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)), errorStr))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("2、交通状况包括"));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("道路状况:%s", generateCommonMethod.trim(generateLoactionService.getRoadConditionNew(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("出入可利用的交通工具:%s",StringUtils.defaultString( generateCommonMethod.trim(generateLoactionService.getAccessAvailableMeansTransport(basicApplyBatch)),errorStr))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通管制情况:%s",StringUtils.defaultString( generateCommonMethod.trim(generateLoactionService.getTrafficControl(basicApplyBatch)),errorStr))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("停车方便度:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getParkingConvenience(basicApplyBatch)),errorStr))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通收费情况:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getTrafficCharges(basicApplyBatch)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("出入可利用的交通工具:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getAccessAvailableMeansTransport(basicApplyBatch)), errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通管制情况:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getTrafficControl(basicApplyBatch)), errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("停车方便度:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getParkingConvenience(basicApplyBatch)), errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通收费情况:%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getTrafficCharges(basicApplyBatch)), errorStr))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("3、外部基础设施"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApplyBatch)),errorStr))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", StringUtils.defaultString(generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApplyBatch)), errorStr))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("4、外部公共服务设施"));
                 List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApplyBatch, true);
                 if (CollectionUtils.isNotEmpty(stringArrayList)) {
@@ -4932,9 +4943,9 @@ public class GenerateBaseDataService {
                 String natural = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.NATURAL);
                 String humanity = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.HUMANITY);
                 String scenery = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.SCENERY);
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", StringUtils.defaultString(generateCommonMethod.trim(natural)),errorStr)));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", StringUtils.defaultString(generateCommonMethod.trim(humanity)),errorStr)));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", StringUtils.defaultString(generateCommonMethod.trim(scenery)),errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", StringUtils.defaultString(generateCommonMethod.trim(natural)), errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", StringUtils.defaultString(generateCommonMethod.trim(humanity)), errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", StringUtils.defaultString(generateCommonMethod.trim(scenery)), errorStr)));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综述:%s", generateCommonMethod.trim(basicEstate.getLocationDescribe()))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), false);
             }
