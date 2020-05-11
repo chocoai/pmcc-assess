@@ -88,7 +88,11 @@
                                                         onchange="houseRoom.prototype.houseShapeChange()"
                                                         class='form-control input-full' required>
                                                     <option value="">-请选择-</option>
-                                                    <option value="规则">规则</option>
+                                                    <option value="矩形">矩形</option>
+                                                    <option value="正方形">正方形</option>
+                                                    <option value="L型">L型</option>
+                                                    <option value="方形弧形组合">方形弧形组合</option>
+                                                    <option value="规则多边形">规则多边形</option>
                                                     <option value="不规则">不规则</option>
                                                 </select>
                                             </div>

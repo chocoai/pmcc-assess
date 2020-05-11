@@ -56,6 +56,21 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                给水方式<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="supplyMode"
+                                                        class="form-control input-full search-select select2 supplyMode">
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             供水分类<span class="symbol required"></span>
@@ -153,22 +168,6 @@
                                     </div>
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            给水方式<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="supplyMode"
-                                                    class="form-control input-full search-select select2 supplyMode">
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>

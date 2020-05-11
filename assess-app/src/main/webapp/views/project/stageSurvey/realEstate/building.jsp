@@ -133,7 +133,7 @@
                                                                                value="${basicBuilding.reference}">
                                                                         <datalist id="build_reference_data">
                                                                             <option value="" selected="">-请选择-</option>
-                                                                            <option value="楼盘中">楼盘中</option>
+                                                                            <option value="楼盘内">楼盘内</option>
                                                                             <option value="楼盘大门">楼盘大门</option>
                                                                         </datalist>
                                                                         <input type="text" required="required"

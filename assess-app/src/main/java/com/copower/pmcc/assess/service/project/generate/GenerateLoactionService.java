@@ -446,9 +446,10 @@ public class GenerateLoactionService {
                     if (basicEstateParking.getNumber() != null) {
                         String v = baseDataDicService.getNameById(basicEstateParking.getParkingType());
                         if (StringUtils.isNotBlank(v)) {
-                            builder.append("在").append(baseDataDicService.getNameById(basicEstateParking.getLocation())).append("位置处");
-                            builder.append(v).append("有");
-                            builder.append(basicEstateParking.getNumber()).append("个车位");
+                            builder.append(baseDataDicService.getNameById(basicEstateParking.getParkingEstate()));
+                            builder.append(baseDataDicService.getNameById(basicEstateParking.getLocation()));
+                            builder.append(v);
+                            builder.append(basicEstateParking.getNumber()).append("个");
                             stringSet.add(builder.toString());
                             builder.delete(0, builder.toString().length());
                         }

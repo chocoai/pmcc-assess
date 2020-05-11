@@ -701,10 +701,12 @@ public class MdMarketCompareFieldService extends BaseService {
                 }
                 if (StringUtils.isNotBlank(intelligentVoList.get(j).getLampsLanternsName())) {
                     stringBuilder.append(",");
+                    stringBuilder.append("灯具为");
                     stringBuilder.append(intelligentVoList.get(j).getLampsLanternsName());
                 }
                 if (StringUtils.isNotBlank(intelligentVoList.get(j).getIntelligentSystemName())) {
                     stringBuilder.append(",");
+                    stringBuilder.append("智能系统中");
                     stringBuilder.append(intelligentVoList.get(j).getIntelligentSystemName());
                 }
                 if (j == size - 1 && size != 1) {

@@ -834,22 +834,20 @@ commonColumn.houseIntelligentColumn = function () {
 //房屋-供水
 commonColumn.houseWaterColumn = function () {
     var cols = [];
-    cols.push({
-        field: 'name', title: '给水方式', formatter: function (value, row, index) {
+    cols.push({field: 'fireWaterSupplyName', title: '供水分类', formatter: function (value, row, index) {
             var s = row.supplyModeName;
             if (row.creatorName) {
                 s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
-        }
-    });
+        }});
+    cols.push({field: 'name', title: '给水方式'});
     cols.push({field: 'pipingLayoutName', title: '给水管道布置'});
     cols.push({field: 'pipeMaterialName', title: '给水管材料'});
     cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'boosterEquipmentName', title: '给水升压设备'});
     cols.push({field: 'pretreatedWaterName', title: '前置净水'});
     cols.push({field: 'purificationEquipmentPriceName', title: '前置净水设备价格区间'});
-    cols.push({field: 'fireWaterSupplyName', title: '供水分类'});
     return cols;
 }
 
