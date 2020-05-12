@@ -70,123 +70,130 @@
                                         </div>
                                     </div>
                                     <div id="showOtherQuery" style="display: none">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-md-1 col-form-label">状态</label>
-                                                <div class="col-md-2 p-0">
-                                                    <select name="projectStatus" class="form-control input-full">
-                                                        <option value="">--请选择--</option>
-                                                        <c:forEach var="item" items="${statusEnumList}">
-                                                            <option value="${item.key}">${item.value}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-                                                <label class="col-md-1 col-form-label">项目成员</label>
-                                                <div class="col-md-2 p-0">
-                                                    <input type="hidden" name="queryMember" data-title="account">
-                                                    <input type="text" data-rule-maxlength="50" readonly="readonly"
-                                                           onclick="selectCreate(this)"
-                                                           placeholder="项目成员" name="queryMemberName"
-                                                           class="form-control input-full" data-title="name">
-                                                </div>
-                                                <label class="col-md-1 col-form-label">立项人</label>
-                                                <div class="col-md-2 p-0">
-                                                    <input type="hidden" name="queryCreator" data-title="account">
-                                                    <input type="text" readonly="readonly" onclick="selectCreate(this)"
-                                                           placeholder="立项人" name="queryCreatorName"
-                                                           class="form-control input-full" data-title="name">
-                                                </div>
-                                                <label class="col-md-1 col-form-label">委托目的</label>
-                                                <div class="col-md-2 p-0">
-                                                    <select name="entrustPurpose" class="form-control input-full">
-                                                        <option value="">--请选择--</option>
-                                                        <c:forEach var="item" items="${entrustPurposeList}">
-                                                            <option value="${item.id}">${item.name}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-md-1 col-form-label">开始时间</label>
-                                                <div class="col-md-2 p-0">
-                                                    <input type="text"
-                                                           class="form-control input-full date-picker dbdate"
-                                                           data-date-format="yyyy-mm-dd" name="queryTimeStart"
-                                                           placeholder="开始时间"/>
-                                                </div>
-                                                <label class="col-md-1 col-form-label">结束时间</label>
-                                                <div class="col-md-2 p-0">
-                                                    <input type="text"
-                                                           class="form-control input-full date-picker dbdate"
-                                                           data-date-format="yyyy-mm-dd" name="queryTimeEnd"
-                                                           placeholder="结束时间"/>
-                                                </div>
-                                                <label class="col-md-1 col-form-label">报告使用单位</label>
-                                                <div class="col-md-2 p-0">
-                                                    <input type="text"
-                                                           placeholder="单位" class="form-control input-full"
-                                                           name="queryUseUnitName">
-                                                </div>
-                                                <label class="col-md-1 col-form-label">评估部门</label>
-                                                <div class="col-md-2 p-0">
-                                                    <input name="queryDepartmentId" class="form-control input-full"
-                                                           type="hidden"/>
-                                                    <input name="queryDepartmentName" class="form-control input-full"
-                                                           placeholder="评估部门"
-                                                           onclick="selectDepartment(this)" readonly="readonly"/>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-md-1 col-form-label">委托人</label>
-                                                <div class="col-md-1 p-0">
-                                                    <select name="queryConsignorType" class="form-control input-full">
-                                                        <option value="">--请选择--</option>
-                                                        <option value="0">自然人</option>
-                                                        <option value="1">法人</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-1 p-0">
-                                                    <input type="text" placeholder="委托人" class="form-control input-full"
-                                                           name="queryConsignor">
-                                                </div>
-                                                <label class="col-md-1 col-form-label">贷款类型</label>
-                                                <div class="col-md-2 p-0">
-                                                    <select name="queryLoanType" class="form-control input-full">
-                                                        <option value="">--请选择--</option>
-                                                        <c:forEach var="item" items="${loanTypeList}">
-                                                            <option value="${item.id}">${item.name}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-                                                <label class="col-md-1 col-form-label">项目类型</label>
-                                                <div class="col-md-2 p-0">
-                                                    <select class="form-control input-full" name="queryProjectCategoryId">
-                                                        <option value="">--请选择--</option>
-                                                        <c:forEach var="classItem" items="${projectCategoryList}">
-                                                            <c:forEach var="typeItem" items="${classItem.keyValueDtos}">
-                                                                <c:if test="${not empty typeItem.keyValueDtos}">
-                                                                    <c:forEach var="categoryItem" items="${typeItem.keyValueDtos}">
-                                                                        <option value="${categoryItem.key}">${categoryItem.value}</option>
-                                                                    </c:forEach>
-                                                                </c:if>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-md-1 col-form-label">状态</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <select name="projectStatus" class="form-control input-full">
+                                                            <option value="">--请选择--</option>
+                                                            <c:forEach var="item" items="${statusEnumList}">
+                                                                <option value="${item.key}">${item.value}</option>
                                                             </c:forEach>
-                                                        </c:forEach>
-                                                    </select>
+                                                        </select>
+                                                    </div>
+                                                    <label class="col-md-1 col-form-label">项目成员</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <input type="hidden" name="queryMember" data-title="account">
+                                                        <input type="text" data-rule-maxlength="50" readonly="readonly"
+                                                               onclick="selectCreate(this)"
+                                                               placeholder="项目成员" name="queryMemberName"
+                                                               class="form-control input-full" data-title="name">
+                                                    </div>
+                                                    <label class="col-md-1 col-form-label">立项人</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <input type="hidden" name="queryCreator" data-title="account">
+                                                        <input type="text" readonly="readonly"
+                                                               onclick="selectCreate(this)"
+                                                               placeholder="立项人" name="queryCreatorName"
+                                                               class="form-control input-full" data-title="name">
+                                                    </div>
+                                                    <label class="col-md-1 col-form-label">委托目的</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <select name="entrustPurpose" class="form-control input-full">
+                                                            <option value="">--请选择--</option>
+                                                            <c:forEach var="item" items="${entrustPurposeList}">
+                                                                <option value="${item.id}">${item.name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-md-1 col-form-label">开始时间</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <input type="text"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               data-date-format="yyyy-mm-dd" name="queryTimeStart"
+                                                               placeholder="开始时间"/>
+                                                    </div>
+                                                    <label class="col-md-1 col-form-label">结束时间</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <input type="text"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               data-date-format="yyyy-mm-dd" name="queryTimeEnd"
+                                                               placeholder="结束时间"/>
+                                                    </div>
+                                                    <label class="col-md-1 col-form-label">报告使用单位</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <input type="text"
+                                                               placeholder="单位" class="form-control input-full"
+                                                               name="queryUseUnitName">
+                                                    </div>
+                                                    <label class="col-md-1 col-form-label">评估部门</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <input name="queryDepartmentId" class="form-control input-full"
+                                                               type="hidden"/>
+                                                        <input name="queryDepartmentName"
+                                                               class="form-control input-full"
+                                                               placeholder="评估部门"
+                                                               onclick="selectDepartment(this)" readonly="readonly"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-md-1 col-form-label">委托人</label>
+                                                    <div class="col-md-1 p-0">
+                                                        <select name="queryConsignorType"
+                                                                class="form-control input-full">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="0">自然人</option>
+                                                            <option value="1">法人</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-1 p-0">
+                                                        <input type="text" placeholder="委托人"
+                                                               class="form-control input-full"
+                                                               name="queryConsignor">
+                                                    </div>
+                                                    <label class="col-md-1 col-form-label">贷款类型</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <select name="queryLoanType" class="form-control input-full">
+                                                            <option value="">--请选择--</option>
+                                                            <c:forEach var="item" items="${loanTypeList}">
+                                                                <option value="${item.id}">${item.name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                    <label class="col-md-1 col-form-label">项目类型</label>
+                                                    <div class="col-md-2 p-0">
+                                                        <select class="form-control input-full"
+                                                                name="queryProjectCategoryId">
+                                                            <option value="">--请选择--</option>
+                                                            <c:forEach var="classItem" items="${projectCategoryList}">
+                                                                <c:forEach var="typeItem"
+                                                                           items="${classItem.keyValueDtos}">
+                                                                    <c:if test="${not empty typeItem.keyValueDtos}">
+                                                                        <c:forEach var="categoryItem"
+                                                                                   items="${typeItem.keyValueDtos}">
+                                                                            <option value="${categoryItem.key}">${categoryItem.value}</option>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
@@ -280,6 +287,7 @@
         var div = $(_this).closest("div");
         erpEmployee.select({
             currOrgId: '${companyId}',
+            showAllUser: 2,
             onSelected: function (data) {
                 div.find("input[data-title='name']").val(data.name);
                 div.find("input[data-title='account']").val(data.account);
