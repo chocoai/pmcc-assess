@@ -60,7 +60,7 @@ public class BasicAlternativeCaseService extends BaseService {
         BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(basicAlternativeCase.getBatchDetailId());
         BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchDetail.getApplyBatchId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(basicApplyBatch.getProjectId());
-        if (projectInfo == null && basicApplyBatch.getPlanDetailsId()!=null) {
+        if (projectInfo == null && basicApplyBatch.getPlanDetailsId() != null) {
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
             projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
         }
@@ -79,12 +79,15 @@ public class BasicAlternativeCaseService extends BaseService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        if (projectId == null) {
+        Integer projectCategoryId = null;
+        if (projectId == null && planDetailsId != null) {
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             projectId = planDetails.getProjectId();
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        List<BasicAlternativeCase> alternativeCases = basicAlternativeCaseDao.getBasicAlternativeCaseList(name, tbType, commonService.thisUserAccount(), projectInfo.getProjectCategoryId());
+        if (projectInfo != null)
+            projectCategoryId = projectInfo.getProjectCategoryId();
+        List<BasicAlternativeCase> alternativeCases = basicAlternativeCaseDao.getBasicAlternativeCaseList(name, tbType, commonService.thisUserAccount(), projectCategoryId);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(alternativeCases) ? new ArrayList<BasicAlternativeCase>() : alternativeCases);
         return vo;
@@ -149,6 +152,7 @@ public class BasicAlternativeCaseService extends BaseService {
             newApplyBatchDetail.setType(sourceApplyBatchDetail.getType());
             newApplyBatchDetail.setName(sourceApplyBatchDetail.getName());
             newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());
+            newApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
             pid = newApplyBatchDetail.getId();
         }
@@ -165,7 +169,7 @@ public class BasicAlternativeCaseService extends BaseService {
                     BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(item.getBatchDetailId());
                     if (applyBatchDetail != null) {
                         BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchDetail.getApplyBatchId());
-                        if(basicApplyBatch==null) continue;
+                        if (basicApplyBatch == null) continue;
                         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(basicApplyBatch.getProjectId());
                         if (projectInfo == null) continue;
                         item.setProjectCategoryId(projectInfo.getProjectCategoryId());

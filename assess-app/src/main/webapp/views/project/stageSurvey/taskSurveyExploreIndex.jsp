@@ -32,7 +32,11 @@
                                         ${projectPlanDetails.projectPhaseName}
                                         <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
                                                 onclick="batchTreeTool.showAlternativeSurveyModal();">
-                                            引用楼盘
+                                            引用楼盘结构
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
+                                                onclick="batchTreeTool.showAlternativeCaseModal();">
+                                            引用备选案例
                                         </button>
                                     </div>
                                     <div class="card-tools">
@@ -231,7 +235,9 @@
                                                        name="name" class="form-control input-full" required>
                                             </div>
                                             <div class="col-sm-2">
-                                                <button type="button" class="btn btn-success btn-sm" onclick=" batchTreeTool.addName(this);">＋</button>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick=" batchTreeTool.addName(this);">＋
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -320,7 +326,60 @@
         </div>
     </div>
 </div>
+<div id="reference_modal_case" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">备选案例</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="50" placeholder="名称"
+                                                       id="queryAlternativeName" class="form-control input-full">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <button type="button" class="btn btn-sm btn-info"
+                                                        onclick="batchTreeTool.loadAlternativeCaseList();">
+                                                    <span class="btn-label"><i class="fa fa-search"></i></span>
+                                                    查询
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="basicAlternativeCaseList">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
 
+        </div>
+    </div>
+</div>
 </body>
 
 </html>
@@ -973,29 +1032,29 @@
     }
 
     //显示弹窗
-    batchTreeTool.showAlternativeSurveyModal = function () {
-        batchTreeTool.loadAlternativeSurveyList();
-        $('#reference_modal').modal();
+    batchTreeTool.showAlternativeCaseModal = function () {
+        batchTreeTool.loadAlternativeCaseList();
+        $('#reference_modal_case').modal();
     }
 
     //加载备选案例数据列表
-    batchTreeTool.loadAlternativeSurveyList = function () {
+    batchTreeTool.loadAlternativeCaseList = function () {
         var cols = [];
         cols.push({field: 'name', title: '名称', width: '80%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeSurvey(' + row.applyBatchId + ')"><i class="fa fa-check"></i></button>';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeCase(' + row.id + ')"><i class="fa fa-check"></i></button>';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="删除" onclick="batchTreeTool.deleteAlternativeCase(' + row.id + ')"><i class="fa fa-minus"></i></button>';
                 str += '</div>';
                 return str;
             }
         });
-        $("#basicAlternativeSurveyList").bootstrapTable('destroy');
-        TableInit($("#basicAlternativeSurveyList"), "${pageContext.request.contextPath}/basicApplyBatch/getBasicAlternativeSurveyList", cols, {
+        $("#basicAlternativeCaseList").bootstrapTable('destroy');
+        TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
             name: $('#queryAlternativeName').val(),
-            planDetailsId: "${projectPlanDetails.id}"
+            projectId:'${projectId}'
         }, {
-            pagination: false,
             showColumns: false,
             showRefresh: false,
             search: false,
@@ -1006,23 +1065,38 @@
     }
 
     //引用备选案例
-    batchTreeTool.referenceAlternativeSurvey = function (referenceId) {
+    batchTreeTool.referenceAlternativeCase = function (id) {
+        notifyInfo('提示','请耐心等待....');
+        Loading.progressShow();
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/referenceEstate",
+            url: '${pageContext.request.contextPath}/basicApplyBatch/deleteBatchAllById',
+            type: 'post',
             data: {
-                referenceId: referenceId,
-                basicApplyBatchId: batchTreeTool.getApplyBatchId(),
-                planDetailsId: "${projectPlanDetails.id}"
+                applyBatchId: batchTreeTool.getApplyBatchId(),
             },
-            type: "post",
-            dataType: "json",
+            dataType: 'json',
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess('成功', '引用成功', function () {
-                        window.location.href = window.location.href;
+                    var data = {};
+                    data.id = id;
+                    data.projectId = "${projectInfo.id}";
+                    data.planDetailsId = "${projectPlanDetails.id}";
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/basicAlternativeCase/referenceDataById',
+                        type: 'post',
+                        data: data,
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.ret) {
+                                AlertSuccess('成功', '引用成功', function () {
+                                    window.location.href = window.location.href;
+                                })
+                            }else{
+                                AlertError('失败', '引用失败');
+                            }
+                        }
                     })
-                } else {
-                    AlertError('失败', '引用失败');
                 }
             }
         })
