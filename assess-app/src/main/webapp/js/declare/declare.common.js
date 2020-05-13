@@ -1178,31 +1178,9 @@ declareCommon.loadDeclareRealtyCheckListTable = function (marsterId, tableId) {
     frm.clearAll();
     frm.initForm(query);
     var cols = [];
-    if (tableId) {
-        cols.push({
-            field: 'id', title: '编辑', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<button onclick="declareCommon.editDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
-                str += '<i class="fa fa-pen"></i>';
-                str += '</button>';
-                str += '</div>';
-                return str;
-            }
-        });
-    } else {
-        cols.push({
-            field: 'id', title: '详情', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<button onclick="declareCommon.findDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
-                str += '<i class="fa fa-search"></i>';
-                str += '</button>';
-                str += '</div>';
-                return str;
-            }
-        });
-    }
+
     cols.push({field: 'district', title: '所在区'});
-    cols.push({field: 'streetNumber', title: '街道号'});
+    cols.push({field: 'streetNumber', title: '街道'});
     cols.push({field: 'houseNumber', title: '门牌号'});
     // cols.push({field: 'attachedNumber', title: '附号'});
     // cols.push({field: 'buildingNumber', title: '栋号'});
@@ -1213,6 +1191,29 @@ declareCommon.loadDeclareRealtyCheckListTable = function (marsterId, tableId) {
     cols.push({field: 'floorArea', title: '房屋建筑面积'});
     cols.push({field: 'apportionmentArea', title: '分摊面积'});
     cols.push({field: 'realEstateUnitNumber', title: '不动产单元号'});
+    if (tableId) {
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.editDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    } else {
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.findDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
     var table = $(declareCommon.config.declareRealtyCheckListTable);
     table.bootstrapTable('destroy');
     TableInit(table, getContextPath() + "/declareRealtyCheckList/getBootstrapTableVo", cols, query, {
