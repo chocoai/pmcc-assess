@@ -18,6 +18,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -139,8 +140,22 @@ public class DataLandLevelDetailVolumeService {
             oo.setCreator(commonService.thisUserAccount());
             return dataLandDetailAchievementDao.saveDataLandLevelDetailVolume(oo);
         } else {
-            return dataLandDetailAchievementDao.editDataLandLevelDetailVolume(oo);
+            DataLandLevelDetailVolume dataLandLevelDetailVolume = getDataLandLevelDetailVolumeById(oo.getId()) ;
+            if (oo.getLevelDetailId() == null){
+                oo.setLevelDetailId(dataLandLevelDetailVolume.getLevelDetailId());
+            }
+            if (StringUtils.isBlank(oo.getCreator())) {
+                oo.setCreator(dataLandLevelDetailVolume.getCreator());
+            }
+            if (oo.getGmtCreated() == null){
+                oo.setGmtCreated(dataLandLevelDetailVolume.getGmtCreated());
+            }
+            return updateDataLandLevelDetailVolume(oo,true);
         }
+    }
+
+    public boolean updateDataLandLevelDetailVolume(DataLandLevelDetailVolume oo, boolean updateNull){
+        return dataLandDetailAchievementDao.updateDataLandLevelDetailVolume(oo, updateNull) ;
     }
 
     public boolean deleteDataLandLevelDetailVolume(Integer id) {

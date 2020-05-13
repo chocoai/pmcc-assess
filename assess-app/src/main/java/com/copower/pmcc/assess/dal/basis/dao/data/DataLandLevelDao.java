@@ -40,7 +40,11 @@ public class DataLandLevelDao {
     }
 
     public boolean updateDataLandLevel(DataLandLevel dataLandLevel) {
-        return dataLandLevelMapper.updateByPrimaryKeySelective(dataLandLevel) == 1;
+        return updateDataLandLevel(dataLandLevel,false) ;
+    }
+
+    public boolean updateDataLandLevel(DataLandLevel oo, boolean updateNull) {
+        return updateNull ? dataLandLevelMapper.updateByPrimaryKey(oo) == 1 : dataLandLevelMapper.updateByPrimaryKeySelective(oo) == 1;
     }
 
     public void removeDataLandLevel(DataLandLevel dataLandLevel) {

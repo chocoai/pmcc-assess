@@ -25,7 +25,11 @@ public class DataLandLevelDetailAchievementDao {
     }
 
     public boolean editDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo){
-        return mapper.updateByPrimaryKeySelective(oo)==1;
+        return updateDataLandLevelDetailAchievement(oo,false) ;
+    }
+
+    public boolean updateDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo, boolean updateNull) {
+        return updateNull ? mapper.updateByPrimaryKey(oo) == 1 : mapper.updateByPrimaryKeySelective(oo) == 1;
     }
 
     public boolean deleteDataLandLevelDetailAchievement(Integer id){

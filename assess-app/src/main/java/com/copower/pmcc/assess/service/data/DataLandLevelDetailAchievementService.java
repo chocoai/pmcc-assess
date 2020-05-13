@@ -446,8 +446,22 @@ public class DataLandLevelDetailAchievementService {
             oo.setCreator(commonService.thisUserAccount());
             return dataLandLevelDetailAchievementDao.saveDataLandLevelDetailAchievement(oo);
         } else {
-            return dataLandLevelDetailAchievementDao.editDataLandLevelDetailAchievement(oo);
+            DataLandLevelDetailAchievement dataLandLevelDetailAchievement = getDataLandLevelDetailAchievementById(oo.getId()) ;
+            if (oo.getLevelDetailId() == null ){
+                oo.setLevelDetailId(dataLandLevelDetailAchievement.getLevelDetailId());
+            }
+            if (StringUtils.isBlank(oo.getCreator())) {
+                oo.setCreator(dataLandLevelDetailAchievement.getCreator());
+            }
+            if (oo.getGmtCreated() == null){
+                oo.setGmtCreated(dataLandLevelDetailAchievement.getGmtCreated());
+            }
+            return updateDataLandLevelDetailAchievement(oo,true);
         }
+    }
+
+    public boolean updateDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo, boolean updateNull){
+        return dataLandLevelDetailAchievementDao.updateDataLandLevelDetailAchievement(oo, updateNull) ;
     }
 
     public boolean deleteDataLandLevelDetailAchievement(Integer id) {

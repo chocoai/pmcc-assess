@@ -63,15 +63,15 @@ public class DataLandLevelDetailService {
     @Autowired
     private DataLandLevelDetailVolumeService volumeRatioDetailService;
 
-    private String getFilterName(String value){
-        if (StringUtils.isBlank(value)){
-            return "" ;
+    private String getFilterName(String value) {
+        if (StringUtils.isBlank(value)) {
+            return "";
         }
         String nameById = baseDataDicService.getNameById(value);
-        if (StringUtils.isNotBlank(nameById)){
-            return nameById ;
+        if (StringUtils.isNotBlank(nameById)) {
+            return nameById;
         }
-        return value ;
+        return value;
     }
 
     private void importLandLevelDetail(DataLandLevelDetail target, Integer landLevelId) {
@@ -89,72 +89,72 @@ public class DataLandLevelDetailService {
             i++;
             j++;
         }
-        if (i == 3){
+        if (i == 3) {
             query = new DataLandLevelDetail();
             query.setLandLevelId(landLevelId);
             query.setPid(0);
             query.setClassify(target.getClassify());
             List<DataLandLevelDetail> detailList1 = getDataLandLevelDetailList(query);
-            if (CollectionUtils.isEmpty(detailList1)){
-                detailList1 = new ArrayList<>() ;
-                BeanUtils.copyProperties(target,query);
+            if (CollectionUtils.isEmpty(detailList1)) {
+                detailList1 = new ArrayList<>();
+                BeanUtils.copyProperties(target, query);
                 query.setName(getFilterName(target.getClassify()));
                 query.setLandLevelId(landLevelId);
                 query.setPid(0);
                 query.setId(null);
                 saveAndUpdateDataLandLevelDetail(query);
-                detailList1.add(query) ;
+                detailList1.add(query);
             }
             query = new DataLandLevelDetail();
             query.setPid(detailList1.get(0).getId());
             query.setCategory(target.getCategory());
             List<DataLandLevelDetail> detailList2 = getDataLandLevelDetailList(query);
-            if (CollectionUtils.isEmpty(detailList2)){
-                detailList2 = new ArrayList<>() ;
-                BeanUtils.copyProperties(target,query);
+            if (CollectionUtils.isEmpty(detailList2)) {
+                detailList2 = new ArrayList<>();
+                BeanUtils.copyProperties(target, query);
                 query.setName(getFilterName(target.getCategory()));
                 query.setPid(detailList1.get(0).getId());
                 query.setId(null);
                 saveAndUpdateDataLandLevelDetail(query);
-                detailList2.add(query) ;
+                detailList2.add(query);
             }
 
             query = new DataLandLevelDetail();
             query.setPid(detailList2.get(0).getId());
             query.setType(target.getType());
             List<DataLandLevelDetail> detailList3 = getDataLandLevelDetailList(query);
-            if (CollectionUtils.isNotEmpty(detailList3)){
+            if (CollectionUtils.isNotEmpty(detailList3)) {
                 target.setId(detailList3.get(0).getId());
-            }else {
+            } else {
                 target.setPid(query.getPid());
                 target.setCategory(null);
                 target.setClassify(null);
                 target.setName(getFilterName(target.getType()));
             }
         }
-        if (j == 2 && i != 3){
+        if (j == 2 && i != 3) {
             query = new DataLandLevelDetail();
             query.setPid(0);
             query.setLandLevelId(landLevelId);
             query.setClassify(target.getClassify());
             List<DataLandLevelDetail> detailList1 = getDataLandLevelDetailList(query);
-            if (CollectionUtils.isEmpty(detailList1)){
-                detailList1 = new ArrayList<>() ;
-                BeanUtils.copyProperties(target,query);
+            if (CollectionUtils.isEmpty(detailList1)) {
+                detailList1 = new ArrayList<>();
+                BeanUtils.copyProperties(target, query);
                 query.setName(getFilterName(target.getClassify()));
                 query.setLandLevelId(landLevelId);
                 query.setPid(0);
                 query.setId(null);
                 saveAndUpdateDataLandLevelDetail(query);
-                detailList1.add(query) ;
+                detailList1.add(query);
             }
             query = new DataLandLevelDetail();
             query.setPid(detailList1.get(0).getId());
             query.setType(target.getType());
             List<DataLandLevelDetail> detailList2 = getDataLandLevelDetailList(query);
-            if (CollectionUtils.isNotEmpty(detailList2)){
+            if (CollectionUtils.isNotEmpty(detailList2)) {
                 target.setId(detailList2.get(0).getId());
-            }else {
+            } else {
                 target.setPid(query.getPid());
                 target.setClassify(null);
                 target.setName(getFilterName(target.getType()));
@@ -234,8 +234,25 @@ public class DataLandLevelDetailService {
             dataLandLevelDetail.setCreator(commonService.thisUserAccount());
             dataLandLevelDetailDao.addDataLandLevelDetail(dataLandLevelDetail);
         } else {
-            dataLandLevelDetailDao.updateDataLandLevelDetail(dataLandLevelDetail);
+            DataLandLevelDetail detail = getCacheDataLandLevelDetail(dataLandLevelDetail.getId());
+            if (dataLandLevelDetail.getPid() == null ) {
+                dataLandLevelDetail.setPid(detail.getPid());
+            }
+            if (dataLandLevelDetail.getLandLevelId() == null ) {
+                dataLandLevelDetail.setLandLevelId(detail.getLandLevelId());
+            }
+            if (StringUtils.isBlank(dataLandLevelDetail.getCreator())) {
+                dataLandLevelDetail.setCreator(detail.getCreator());
+            }
+            if (dataLandLevelDetail.getGmtCreated() == null){
+                dataLandLevelDetail.setGmtCreated(detail.getGmtCreated());
+            }
+            updateDataLandLevelDetail(dataLandLevelDetail,true) ;
         }
+    }
+
+    public boolean updateDataLandLevelDetail(DataLandLevelDetail oo, boolean updateNull) {
+        return dataLandLevelDetailDao.updateDataLandLevelDetail(oo, updateNull);
     }
 
     public void clearNodeChildDataLandLevelDetail(String id) {
@@ -272,7 +289,7 @@ public class DataLandLevelDetailService {
                 return o1.getId().compareTo(o2.getId());
             }
         });
-//        Collections.sort(collect,ordering);
+        Collections.sort(collect,ordering);
         return collect;
     }
 
@@ -321,16 +338,16 @@ public class DataLandLevelDetailService {
             if (baseDataDic != null) {
                 name = baseDataDic.getName() + "/" + name;
             }
-            if (StringUtils.isBlank(name)){
-                if (NumberUtils.isNumber(dataLandLevelDetail.getCategory())){
+            if (StringUtils.isBlank(name)) {
+                if (NumberUtils.isNumber(dataLandLevelDetail.getCategory())) {
                     baseDataDic = baseDataDicService.getCacheDataDicById(Integer.parseInt(dataLandLevelDetail.getCategory()));
                 }
             }
             if (baseDataDic != null) {
                 name = baseDataDic.getName() + "/" + name;
             }
-            if (StringUtils.isBlank(name) && StringUtils.isNotBlank(dataLandLevelDetail.getCategory())){
-                name = dataLandLevelDetail.getCategory() ;
+            if (StringUtils.isBlank(name) && StringUtils.isNotBlank(dataLandLevelDetail.getCategory())) {
+                name = dataLandLevelDetail.getCategory();
             }
         }
         return name;
