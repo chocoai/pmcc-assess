@@ -28,6 +28,10 @@ public class DataLandLevelDetailVolumeDao {
         return mapper.updateByPrimaryKeySelective(oo)==1;
     }
 
+    public boolean updateDataLandLevelDetailVolume(DataLandLevelDetailVolume oo, boolean updateNull) {
+        return updateNull ? mapper.updateByPrimaryKey(oo) == 1 : mapper.updateByPrimaryKeySelective(oo) == 1;
+    }
+
     public boolean deleteDataLandLevelDetailVolume(Integer id){
         return mapper.deleteByPrimaryKey(id)==1;
     }

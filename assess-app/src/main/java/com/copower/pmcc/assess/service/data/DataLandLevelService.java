@@ -313,8 +313,19 @@ public class DataLandLevelService {
             dataLandLevelDao.addDataLandLevel(dataLandLevel);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class), dataLandLevel.getId());
         } else {
-            dataLandLevelDao.updateDataLandLevel(dataLandLevel);
+            DataLandLevel landLevel = getDataLandLevelById(dataLandLevel.getId()) ;
+            if (StringUtils.isBlank(dataLandLevel.getCreator())) {
+                dataLandLevel.setCreator(landLevel.getCreator());
+            }
+            if (dataLandLevel.getGmtCreated() == null){
+                dataLandLevel.setGmtCreated(landLevel.getGmtCreated());
+            }
+            updateDataLandLevel(dataLandLevel ,true);
         }
+    }
+
+    public boolean updateDataLandLevel(DataLandLevel oo, boolean updateNull){
+        return dataLandLevelDao.updateDataLandLevel(oo, updateNull) ;
     }
 
     public List<DataLandLevel> getByIds(String ids) {

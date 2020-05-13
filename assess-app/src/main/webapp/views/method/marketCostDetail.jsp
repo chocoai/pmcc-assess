@@ -672,6 +672,7 @@
         var target = $("#" + eleName);
         target.modal("show");
         var table = target.find(".card-body").find("div[data-title=" + eleName + "]");
+        table.empty() ;
         developmentCommon.getMdArchitecturalObjById(id, function (item) {
             var data = [];
             try {
