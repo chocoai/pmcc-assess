@@ -20,6 +20,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -264,7 +265,15 @@ public class DataLandLevelDetailService {
         List<DataLandLevelDetail> dataLandLevelDetailList = getDataLandLevelDetailList(obj);
         settingRecursiveData(dataLandLevelDetailList, detailList);
         //最后去重 根据对象id
-        return detailList.stream().filter(StreamUtils.distinctByKey(o -> o.getId())).collect(Collectors.toList());
+        List<DataLandLevelDetail> collect = detailList.stream().filter(StreamUtils.distinctByKey(o -> o.getId())).collect(Collectors.toList());
+        Ordering<DataLandLevelDetail> ordering = Ordering.from(new Comparator<DataLandLevelDetail>() {
+            @Override
+            public int compare(DataLandLevelDetail o1, DataLandLevelDetail o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });
+//        Collections.sort(collect,ordering);
+        return collect;
     }
 
 

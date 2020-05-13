@@ -147,9 +147,13 @@ examineCommon.saveDrawPolygon = function (json, option, callback) {
     var data = json[0];
     var path = data.path;
     var lnglat = examineCommon.getTheAreaCenter(path);
-    jQuery.extend(lnglat, option);
-    lnglat.pathArray = JSON.stringify(json);
-    examineCommon.addBasicEstateTagging(lnglat,callback) ;
+    if (option.lng){
+        jQuery.extend(option, lnglat);
+    }
+    option.pathArray = JSON.stringify(json);
+    if (option.pathArray) {
+        examineCommon.addBasicEstateTagging(option,callback) ;
+    }
 };
 
 
