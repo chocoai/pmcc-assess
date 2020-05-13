@@ -486,14 +486,10 @@
     estateCommon.mapMarker = function (readonly) {
         var option = {name: estateCommon.getEstateName(), type: 'estate', tableId: estateCommon.getEstateId()};
         var contentUrl = getContextPath() + '/map/drawPolygon?callback=estateCommon.settingFileGeneralLayout&masterName=楼盘标注&estateName=' + estateCommon.getEstateName();
-        var btn = [];
         if (readonly != true) {
             contentUrl += '&apply=true';
-            btn.push('保存');
-            btn.push('关闭');
         } else {
             contentUrl += '&detail=true';
-            btn.push('关闭');
         }
         examineCommon.getApplyBatchEstateTaggingsByTableId({
             tableId: option.tableId,
@@ -515,36 +511,33 @@
                 content: contentUrl,
                 cancel: function (index, layero) {
                     var iframe = window[layero.find('iframe')[0]['name']];
-                    if (iframe.getFormDrawPolygonData) {
-                        examineCommon.saveDrawPolygon(iframe.getFormDrawPolygonData(), option, function (obj) {
-                            examineCommon.taggingId = obj.id;
-                        });
-                    }
+                    estateCommon.mapMarkerSaveData(iframe, option);
                 },
                 btnAlign: 'c',
-                btn: btn,
-                yes: function (index, layero) {//保存按钮 实际相当于 btn1
+                btn: ['关闭'],
+                yes: function (index, layero) {
                     var iframe = window[layero.find('iframe')[0]['name']];
-                    if (btn.length == 2) {
-                        if (iframe.getFormDrawPolygonData) {
-                            examineCommon.saveDrawPolygon(iframe.getFormDrawPolygonData(), option, function (obj) {
-                                examineCommon.taggingId = obj.id;
-                            });
-                        }
-                        notifyInfo("成功", "标注数据保存成功");
+                    if (readonly != true) {
+                        estateCommon.mapMarkerSaveData(iframe, option);
                     }
                     layer.closeAll('iframe');
-                },
-                btn2: function (index, layero) {//关闭按钮
-                    var iframe = window[layero.find('iframe')[0]['name']];
-                    if (iframe.getFormDrawPolygonData) {
-                        examineCommon.saveDrawPolygon(iframe.getFormDrawPolygonData(), option, function (obj) {
-                            examineCommon.taggingId = obj.id;
-                        });
-                    }
                 }
             });
         });
+    };
+
+    estateCommon.mapMarkerSaveData = function (iframe, option) {
+        if (iframe.getFormDrawPolygonData) {
+            if (iframe.getFormDrawCenterData) {
+                var centerObj = iframe.getFormDrawCenterData();
+                option.lng = centerObj.lng;
+                option.lat = centerObj.lat;
+            }
+            examineCommon.saveDrawPolygon(iframe.getFormDrawPolygonData(), option, function (obj) {
+                examineCommon.taggingId = obj.id;
+                notifyInfo("成功", "标注数据保存成功");
+            });
+        }
     };
 
     /**
@@ -553,47 +546,52 @@
      */
     estateCommon.settingFileGeneralLayout = function (canvasCode) {
         //这里使用的是胡豪定义的动态数组附件
-        var option = {canvasCode:canvasCode,tableId:estateCommon.getEstateId() , tableName:AssessDBKey.BasicEstate} ;
+        var option = {canvasCode: canvasCode, tableId: estateCommon.getEstateId(), tableName: AssessDBKey.BasicEstate};
         //三个同步方法
-        var arr = [] ;
-        var tempArr = [] ;
-        var filters = ['总平面图'] ;//假如你想把截图的高德地图添加到多个附件中那么把名称加入这个数组
-        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandEstateFile,null,function (html,data) {
-            if (data.length != 0){
+        var arr = [];
+        var tempArr = [];
+        var filters = ['总平面图'];//假如你想把截图的高德地图添加到多个附件中那么把名称加入这个数组
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandEstateFile, null, function (html, data) {
+            if (data.length != 0) {
                 $.each(data, function (i, item) {
-                    tempArr.push(item) ;
+                    tempArr.push(item);
                 });
             }
-        },false) ;
-        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateIndustrialFile,null,function (html,data) {
-            if (data.length != 0){
+        }, false);
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateIndustrialFile, null, function (html, data) {
+            if (data.length != 0) {
                 $.each(data, function (i, item) {
-                    tempArr.push(item) ;
+                    tempArr.push(item);
                 });
             }
-        },false) ;
-        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateNonIndustrialFile,null,function (html,data) {
-            if (data.length != 0){
+        }, false);
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateNonIndustrialFile, null, function (html, data) {
+            if (data.length != 0) {
                 $.each(data, function (i, item) {
-                    tempArr.push(item) ;
+                    tempArr.push(item);
                 });
             }
-        },false) ;
-        $.each(tempArr,function (i, item) {
+        }, false);
+        $.each(tempArr, function (i, item) {
             if (jQuery.inArray(item.name, filters) != -1) {
                 arr.push(item.fieldName);
             }
-        }) ;
+        });
         $.ajax({
             url: getContextPath() + '/public/html2canvasNetDownloadUtils',
-            data: {canvasCode:canvasCode,tableId:estateCommon.getEstateId() , tableName:AssessDBKey.BasicEstate,fieldsName:arr.join(",")},
+            data: {
+                canvasCode: canvasCode,
+                tableId: estateCommon.getEstateId(),
+                tableName: AssessDBKey.BasicEstate,
+                fieldsName: arr.join(",")
+            },
             method: "post",
             success: function (result) {
                 if (result.ret) {
                     $.each(arr, function (i, n) {
                         estateCommon.fileShow(n, option.tableName, option.tableId, true);
                     });
-                }else {
+                } else {
 
                 }
             }

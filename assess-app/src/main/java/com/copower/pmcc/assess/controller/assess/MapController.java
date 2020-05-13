@@ -102,13 +102,14 @@ public class MapController {
     }
 
     @RequestMapping(value = "/drawPolygon", name = "地图多边形标注 地图着色备注")
-    public ModelAndView drawPolygon(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String masterName, String callback, String estateName,String formData,Integer taggingId) {
+    public ModelAndView drawPolygon(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String masterName, String callback, String estateName, String formData, Integer taggingId) {
         ModelAndView modelAndView = new ModelAndView();
-        if (taggingId != null && taggingId != 0){
-            BasicEstateTagging basicEstateTagging = basicEstateTaggingService.getBasicEstateTaggingById(taggingId);
-            if (basicEstateTagging != null){
-                if (StringUtils.isNotBlank(basicEstateTagging.getPathArray())){
-                    formData = basicEstateTagging.getPathArray() ;
+        BasicEstateTagging basicEstateTagging = null;
+        if (taggingId != null && taggingId != 0) {
+            basicEstateTagging = basicEstateTaggingService.getBasicEstateTaggingById(taggingId);
+            if (basicEstateTagging != null) {
+                if (StringUtils.isNotBlank(basicEstateTagging.getPathArray())) {
+                    formData = basicEstateTagging.getPathArray();
                 }
             }
         }
@@ -120,6 +121,10 @@ public class MapController {
         }
         if (StringUtils.isNotBlank(formData)) {
             modelAndView.addObject("formData", formData);
+            if (basicEstateTagging != null){
+                basicEstateTagging.setPathArray(null);
+                modelAndView.addObject("basicEstateTagging", JSONObject.toJSONString(basicEstateTagging));
+            }
         }
         if (StringUtils.isNotBlank(masterName)) {
             modelAndView.addObject("masterName", masterName);

@@ -14,7 +14,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 
     <script type="text/javascript"
-            src="//webapi.amap.com/maps?v=1.4.15&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.ToolBar,AMap.PlaceSearch,AMap.MouseTool,AMap.RectangleEditor"></script>
+            src="//webapi.amap.com/maps?v=1.4.15&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.ToolBar,AMap.PlaceSearch,AMap.MouseTool,AMap.RectangleEditor,AMap.CitySearch"></script>
     <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
     <link rel='stylesheet' type='text/css' href='https://a.amap.com/jsapi_demos/static/demo-center/css/prety-json.css'>
     <script type='text/javascript'
@@ -1410,7 +1410,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">区块标题</h4>
+                <h4 class="modal-title">描述内容</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -1516,7 +1516,7 @@
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-body">
-                                <form class="form-horizontal">
+                                <div class="form-horizontal">
                                     <div class="row form-group">
                                         <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                             <button style="margin-left: 5px" class="btn btn-primary btn-sm"
@@ -1561,7 +1561,7 @@
                                                     onclick="drawPolygon.handleMouseTool(false);">
 											<span class="btn-label">
                                             </span>
-                                                开启绘图
+                                                添加绘图
                                             </button>
                                         </div>
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
@@ -1579,7 +1579,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1601,6 +1601,10 @@
     drawPolygon.box = $("#divPolygonBox");
     drawPolygon.textBox = $("#divTextBox");
     drawPolygon.colorBox = $("#divPolygonColorBox");
+    drawPolygon.fillColor = '#00b0ff'; //多边形填充颜色，使用16进制颜色代码赋值，如：#00B2D5
+    drawPolygon.fillOpacity = '0.3';//多边形填充透明度，取值范围 [0,1] ，0表示完全透明，1表示不透明。默认为0.5
+    drawPolygon.strokeWeight = '2';//轮廓线宽度
+    drawPolygon.strokeColor = '#80d8ff';//线条颜色，使用16进制颜色代码赋值。默认值为#006600
 
 
     drawPolygon.jsonData = [];
@@ -1625,8 +1629,7 @@
         });
         // 地图 加载完成 load
         drawPolygon.map.on("complete", function () {
-            //地图加载完成后要做的事
-            drawPolygon.completeEvent();
+
 
             //输入提示
             var autoOptions = {
@@ -1640,6 +1643,8 @@
 
             (function (tt) {
                 if (!tt) {
+                    //地图加载完成后要做的事
+                    drawPolygon.completeEvent();
                     return false;
                 }
                 var item = [];
@@ -1655,10 +1660,29 @@
             }
 
             (function (estateName) {
-                if (estateName){
-                    drawPolygon.autoCompleteSearch(estateName) ;
+                if (estateName && estateName != 'undefined') {
+                    drawPolygon.autoCompleteSearch(estateName);
+                } else {
+                    var citySearch = new AMap.CitySearch();
+                    citySearch.getLocalCity(function (status, result) {
+                        if (status === 'complete' && result.info === 'OK') {
+                            var bounds = result.bounds;
+                            var center = bounds.getCenter();
+                            var basicEstateTaggingStr = '${basicEstateTagging}';
+                            if (basicEstateTaggingStr) {
+                                try {
+                                    var center2 = JSON.parse(basicEstateTaggingStr);
+                                    center2 = new AMap.LngLat(center2.lng,center2.lat);
+                                    center = center2;
+                                } catch (e) {
+                                    console.log(e) ;
+                                }
+                            }
+                            drawPolygon.map.setCenter(center); //设置地图中心点
+                        }
+                    });
                 }
-            }('${estateName}')) ;
+            }('${estateName}'));
 
         });
     };
@@ -1708,16 +1732,20 @@
      * 鼠标工具开启和关闭
      */
     drawPolygon.handleMouseTool = function (param) {
+        var polygons = drawPolygon.map.getAllOverlays('polygon');
         if (param) {
-            var polygon = drawPolygon.map.getAllOverlays('polygon');
             if (drawPolygon.mouseTool) {
                 drawPolygon.mouseTool.close(true);//关闭
                 drawPolygon.mouseTool = undefined;
             }
-            drawPolygon.showOverlay(polygon);
+            drawPolygon.showOverlay(polygons);
         } else {
             if (!drawPolygon.mouseTool) {
                 drawPolygon.completeEvent();
+                //关闭描述 事件
+                $.each(polygons, function (j, polygon) {
+                    polygon.off('click', drawPolygon.eventOverlay);
+                });
             }
         }
     };
@@ -1725,9 +1753,10 @@
     drawPolygon.completeEvent = function () {
         drawPolygon.mouseTool = new AMap.MouseTool(drawPolygon.map);
         drawPolygon.mouseTool.polygon({
-            fillColor: '#80d8ff',
-            borderWeight: 2, // 线条宽度，默认为 1
-            strokeColor: '#0000FF'
+            fillColor: drawPolygon.fillColor,
+            strokeWeight: drawPolygon.strokeWeight,
+            strokeColor: drawPolygon.strokeColor,
+            fillOpacity: drawPolygon.fillOpacity
         });
         //添加事件
         AMap.event.addListener(drawPolygon.mouseTool, 'draw', function (e) {
@@ -1750,6 +1779,7 @@
         map.add(Text);
         item.id = Text._amap_id;
         Text.setExtData(item);
+        //单击事件
         Text.on('click', function (e) {
             var box = drawPolygon.handleJquery(drawPolygon.textBox);
             box.modal("show");
@@ -1758,6 +1788,14 @@
             var frm = box.find("form");
             frm.clearAll().initForm(data);
             drawPolygon.tempData = target;
+        });
+        //拖拽  事件
+        Text.on('dragend', function (e) {
+            var target = e.target;
+            var data = target.getExtData();//target.getText();
+            var position = target.getPosition();
+            $.extend(data, {lng: position.getLng(), lat: position.getLat()});
+            drawPolygon.updateExtData(data);
         });
         drawPolygon.updateExtData(item);
     };
@@ -1796,11 +1834,9 @@
         overlays = drawPolygon.unique(overlays);
         if (overlays.length != 0) {
             $.each(overlays, function (i, overlay) {
-                overlay.on('click', function (e) {
-                    drawPolygon.eventOverlay(e);
-                });
+                overlay.on('click', drawPolygon.eventOverlay);
                 overlay.on('rightclick', function (e) {
-                    drawPolygon.setOverlayFillColor(e);
+                    // drawPolygon.setOverlayFillColor(e);
                 });
                 drawPolygon.map.add(overlay);
             });
@@ -1821,14 +1857,6 @@
                 var attributeData = overlay.getOptions();
                 attributeData.fillColor = data.color;
                 overlay.setOptions(attributeData);
-//                var path = [];
-//                $.each(overlay.getPath(), function (i, item) {
-//                    path.push([item.lng, item.lat]);
-//                });
-//                var obj = {path: path, extData: overlay.getExtData()};
-//                obj.fillColor = data.color;
-//                drawPolygon.map.remove(overlay);
-//                drawPolygon.createOverlay([obj]);
             }
         });
     };
@@ -1851,22 +1879,27 @@
             return false;
         }
         $.each(data, function (i, item) {
-            var fillColor = '#80d8ff';
+            var fillColor = drawPolygon.fillColor;
             if (item.fillColor) {
                 fillColor = item.fillColor;
             }
             var polygon = new AMap.Polygon({
                 path: item.path,
                 fillColor: fillColor,
-                borderWeight: 2, // 线条宽度，默认为 1
-                strokeColor: '#0000FF',
+                fillOpacity: drawPolygon.fillOpacity,
+                strokeWeight: drawPolygon.strokeWeight,
+                strokeColor: drawPolygon.strokeColor,
                 map: drawPolygon.map
             });
-            polygon.on('click', function (e) {
-                drawPolygon.eventOverlay(e);
-            });
+
+            // polygon.on('click', function (e) {
+            //     drawPolygon.eventOverlay(e);
+            // });
+
+            polygon.on('click', drawPolygon.eventOverlay);
+
             polygon.on('rightclick', function (e) {
-                drawPolygon.setOverlayFillColor(e);
+                // drawPolygon.setOverlayFillColor(e);
             });
             var title = item.extData.title;
             if ($.isArray(title)) {
@@ -1901,11 +1934,16 @@
             if (overlay._amap_id == data.pid) {
                 var item = overlay.getExtData();
                 if (item.title) {
+                    var k = 1;
                     $.each(item.title, function (j, n) {
                         if (n.id == data.id) {
                             n.name = data.name;
+                            k++;
                         }
                     });
+                    if (k == 1) {
+                        item.title.push(data);
+                    }
                 } else {
                     item.title = [data];
                 }
@@ -1936,10 +1974,13 @@
     };
 
     //layui 无法直接调用 drawPolygon.getFormData
-    function getFormDrawPolygonData(){
-        return drawPolygon.getFormData() ;
+    function getFormDrawPolygonData() {
+        return drawPolygon.getFormData();
     }
 
+    function getFormDrawCenterData() {
+        return drawPolygon.map.getCenter();
+    }
 
 
     drawPolygon.saveTitleData = function () {
@@ -1987,15 +2028,15 @@
                 // 加工image data，替换mime type，方便以后唤起浏览器下载
                 imgData = imgData.replace(drawPolygon.onFixType(type), 'image/octet-stream');
                 drawPolygon.fileDownload(imgData);
-                if('${callback}'){
+                if ('${callback}') {
                     var excuteString = 'if (parent && parent.${callback}) {';
-                    excuteString += 'parent.${callback}(' + "'" +  canvas.toDataURL('image/jpeg') + "'" + ')' + ';';
+                    excuteString += 'parent.${callback}(' + "'" + canvas.toDataURL('image/jpeg') + "'" + ')' + ';';
                     excuteString += '}';
                     try {
                         eval(excuteString);
                     } catch (e) {
-                        console.log(excuteString) ;
-                        console.log(e) ;
+                        console.log(excuteString);
+                        console.log(e);
                     }
                 }
                 Loading.progressHide();
