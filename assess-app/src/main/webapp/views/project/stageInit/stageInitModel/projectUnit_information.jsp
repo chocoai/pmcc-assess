@@ -118,22 +118,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row form-group">
-                <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 col-form-label"></label>
-                        <div class="col-sm-11">
-                            <div class="form-check" style="justify-content:left">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" name="infoWrite" value="true">
-                                    <span class="form-check-sign">回写客户系统</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </div>
     </form>
     <div style="display: none">

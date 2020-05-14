@@ -371,19 +371,29 @@ public class SchemeJudgeObjectService {
             if (bestUseDescription != null)
                 schemeJudgeObjectVo.setBestUseName(bestUseDescription.getName());
         }
+        if(schemeJudgeObject.getStandardJudgeId()!=null){
+            SchemeJudgeObject judgeObject = getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
+            if(judgeObject!=null)
+                schemeJudgeObjectVo.setStandardNumber(judgeObject.getNumber());
+        }
+        if(schemeJudgeObject.getBasicApplyId()!=null){
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+            if(basicApply!=null)
+                schemeJudgeObjectVo.setSurveyInfo(basicApply.getAddress());
+        }
         return schemeJudgeObjectVo;
     }
 
     /**
      * 权证拆分
      *
-     * @param id
+     * @param judgeObjectId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void splitJudge(Integer projectId, Integer areaGroupId, Integer id, Integer splitCount) {
+    public void splitJudge(Integer projectId, Integer areaGroupId, Integer judgeObjectId, Integer splitCount) {
         //1.找出该权证已拆分的数据，以确定新权证的拆分序号
         //2.添加拆分数据,如果没有拆分数据，则需将主数据的拆分号设置为1
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(id);
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(judgeObjectId);
         for (int i = 0; i < splitCount; i++) {
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByNumber(projectId, areaGroupId, schemeJudgeObject.getNumber());
             if (judgeObjectList.size() == 1) {
@@ -393,37 +403,44 @@ public class SchemeJudgeObjectService {
                 schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
                 i++;
             }
-            SchemeJudgeObject splitJudgeObject = new SchemeJudgeObject();
-            splitJudgeObject.setPid(0);
-            splitJudgeObject.setSplitFrom(schemeJudgeObject.getId());
-            splitJudgeObject.setProjectId(schemeJudgeObject.getProjectId());
-            splitJudgeObject.setAreaGroupId(schemeJudgeObject.getAreaGroupId());
-            splitJudgeObject.setOriginalAreaGroupId(schemeJudgeObject.getOriginalAreaGroupId());
-            splitJudgeObject.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-            splitJudgeObject.setBasicApplyId(schemeJudgeObject.getBasicApplyId());
-            splitJudgeObject.setNumber(schemeJudgeObject.getNumber());
-            splitJudgeObject.setSplitNumber(judgeObjectList.size() + 1);
-            splitJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), splitJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
-            splitJudgeObject.setCertName(schemeJudgeObject.getCertName());
-            splitJudgeObject.setOwnership(schemeJudgeObject.getOwnership());
-            splitJudgeObject.setSeat(schemeJudgeObject.getSeat());
-            splitJudgeObject.setCertUse(schemeJudgeObject.getCertUse());
-            splitJudgeObject.setPracticalUse(schemeJudgeObject.getPracticalUse());
-            splitJudgeObject.setLandCertUse(schemeJudgeObject.getLandCertUse());
-            splitJudgeObject.setLandPracticalUse(schemeJudgeObject.getPracticalUse());
-            splitJudgeObject.setLandUseEndDate(schemeJudgeObject.getLandUseEndDate());
-            splitJudgeObject.setLandRemainingYear(schemeJudgeObject.getLandRemainingYear());
-            splitJudgeObject.setSetUse(schemeJudgeObject.getSetUse());
-            splitJudgeObject.setBestUse(schemeJudgeObject.getBestUse());
-            splitJudgeObject.setFloorArea(schemeJudgeObject.getFloorArea());
-            splitJudgeObject.setBisSplit(true);
-            splitJudgeObject.setBisSetFunction(false);
-            splitJudgeObject.setBisEnable(true);
-            splitJudgeObject.setSorting(schemeJudgeObject.getSorting());
-            splitJudgeObject.setCreator(commonService.thisUserAccount());
-            schemeJudgeObjectDao.addSchemeJudgeObject(splitJudgeObject);
+            splitJudge(schemeJudgeObject,judgeObjectList.size() + 1,null);
         }
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void splitJudge(SchemeJudgeObject schemeJudgeObject,Integer splitNumber,Integer basicApplyId) {
+        SchemeJudgeObject splitJudgeObject = new SchemeJudgeObject();
+        splitJudgeObject.setPid(0);
+        splitJudgeObject.setSplitFrom(schemeJudgeObject.getId());
+        splitJudgeObject.setProjectId(schemeJudgeObject.getProjectId());
+        splitJudgeObject.setAreaGroupId(schemeJudgeObject.getAreaGroupId());
+        splitJudgeObject.setOriginalAreaGroupId(schemeJudgeObject.getOriginalAreaGroupId());
+        splitJudgeObject.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+        splitJudgeObject.setBasicApplyId(basicApplyId);
+        splitJudgeObject.setNumber(schemeJudgeObject.getNumber());
+        splitJudgeObject.setSplitNumber(splitNumber);
+        splitJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), splitJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+        splitJudgeObject.setCertName(schemeJudgeObject.getCertName());
+        splitJudgeObject.setOwnership(schemeJudgeObject.getOwnership());
+        splitJudgeObject.setSeat(schemeJudgeObject.getSeat());
+        splitJudgeObject.setCertUse(schemeJudgeObject.getCertUse());
+        splitJudgeObject.setPracticalUse(schemeJudgeObject.getPracticalUse());
+        splitJudgeObject.setLandCertUse(schemeJudgeObject.getLandCertUse());
+        splitJudgeObject.setLandPracticalUse(schemeJudgeObject.getPracticalUse());
+        splitJudgeObject.setLandUseEndDate(schemeJudgeObject.getLandUseEndDate());
+        splitJudgeObject.setLandRemainingYear(schemeJudgeObject.getLandRemainingYear());
+        splitJudgeObject.setSetUse(schemeJudgeObject.getSetUse());
+        splitJudgeObject.setBestUse(schemeJudgeObject.getBestUse());
+        splitJudgeObject.setFloorArea(schemeJudgeObject.getFloorArea());
+        splitJudgeObject.setBisSplit(true);
+        splitJudgeObject.setBisSetFunction(false);
+        splitJudgeObject.setBisEnable(true);
+        splitJudgeObject.setSorting(schemeJudgeObject.getSorting());
+        splitJudgeObject.setCreator(commonService.thisUserAccount());
+        schemeJudgeObjectDao.addSchemeJudgeObject(splitJudgeObject);
+    }
+
+
 
     /**
      * 删除拆分出来的权证

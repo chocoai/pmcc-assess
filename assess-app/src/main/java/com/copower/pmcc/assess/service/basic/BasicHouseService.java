@@ -228,6 +228,10 @@ public class BasicHouseService extends BasicEntityAbstract {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), houseId));
         sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
+
+        //同步删除apply信息
+        BasicApply basicApply = basicApplyService.getBasicApplyByHouseId(houseId);
+        if(basicApply!=null) basicApplyService.deleteBasicApplyById(basicApply.getId());
     }
 
     /**

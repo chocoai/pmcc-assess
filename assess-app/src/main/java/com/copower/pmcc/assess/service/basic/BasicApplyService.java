@@ -59,6 +59,11 @@ public class BasicApplyService {
         return basicApplyDao.getBasicApplyById(id);
     }
 
+    public BasicApply getBasicApplyByHouseId(Integer houseId) {
+        if (houseId == null || houseId <= 0) return null;
+        return basicApplyDao.getBasicApplyByHouseId(houseId);
+    }
+
     public List<BasicApply> getListByDeclareRecordId(Integer declareRecordId) {
         BasicApply where = new BasicApply();
         where.setDeclareRecordId(declareRecordId);
@@ -123,7 +128,7 @@ public class BasicApplyService {
      */
     public List<Integer> getDeclareIdsByBatchDetailIds(List<Integer> batchDetailIds) {
         List<BasicApply> list = basicApplyDao.getBasicApplysByBatchDetailIds(batchDetailIds);
-        return LangUtils.transform(list,o->o.getDeclareRecordId());
+        return LangUtils.transform(list, o -> o.getDeclareRecordId());
     }
 
     public List<BasicApply> getBasicApplysByBatchDetailIds(List<Integer> batchDetailIds) {

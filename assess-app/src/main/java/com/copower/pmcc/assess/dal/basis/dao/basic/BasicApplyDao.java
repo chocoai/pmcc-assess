@@ -18,14 +18,22 @@ public class BasicApplyDao {
     @Autowired
     private BasicApplyMapper basicApplyMapper;
 
+    public BasicApply getBasicApplyById(Integer id) {
+        return basicApplyMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 获取数据信息
      *
-     * @param id
+     * @param houseId
      * @return
      */
-    public BasicApply getBasicApplyById(Integer id) {
-        return basicApplyMapper.selectByPrimaryKey(id);
+    public BasicApply getBasicApplyByHouseId(Integer houseId) {
+        BasicApplyExample example = new BasicApplyExample();
+        BasicApplyExample.Criteria criteria = example.createCriteria();
+        criteria.andBasicHouseIdEqualTo(houseId);
+        List<BasicApply> applyList = basicApplyMapper.selectByExample(example);
+        return applyList.get(0);
     }
 
     public List<BasicApply> getBasicApplyListByIds(List<Integer> ids){

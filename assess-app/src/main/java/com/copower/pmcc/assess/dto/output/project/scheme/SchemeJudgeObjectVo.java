@@ -11,7 +11,9 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
     private String floor;
     private String roomNumber;
     private String tenementType;//物业类型
-    private boolean hasPriceAdjust;//是否可以单价调查
+    private Boolean hasPriceAdjust;//是否可以单价调查
+    private String standardNumber;//标准估价对象号
+    private String surveyInfo;//查勘信息
 
     public String getTenementType() {
         return tenementType;
@@ -59,5 +61,29 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
 
     public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    public Boolean getHasPriceAdjust() {
+        return hasPriceAdjust;
+    }
+
+    public void setHasPriceAdjust(Boolean hasPriceAdjust) {
+        this.hasPriceAdjust = hasPriceAdjust;
+    }
+
+    public String getStandardNumber() {
+        return standardNumber;
+    }
+
+    public void setStandardNumber(String standardNumber) {
+        this.standardNumber = standardNumber;
+    }
+
+    public String getSurveyInfo() {
+        return surveyInfo;
+    }
+
+    public void setSurveyInfo(String surveyInfo) {
+        this.surveyInfo = surveyInfo;
     }
 }
