@@ -1660,27 +1660,23 @@
             }
 
             (function (estateName) {
-                if (estateName && estateName != 'undefined') {
-                    drawPolygon.autoCompleteSearch(estateName);
+                var basicEstateTaggingStr = '${basicEstateTagging}';
+                var center = {};
+                if (basicEstateTaggingStr) {
+                    try {
+                        var center2 = JSON.parse(basicEstateTaggingStr);
+                        center2 = new AMap.LngLat(center2.lng, center2.lat);
+                        center = center2;
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+                if (center) {
+                    drawPolygon.map.setCenter(center); //设置地图中心点
                 } else {
-                    var citySearch = new AMap.CitySearch();
-                    citySearch.getLocalCity(function (status, result) {
-                        if (status === 'complete' && result.info === 'OK') {
-                            var bounds = result.bounds;
-                            var center = bounds.getCenter();
-                            var basicEstateTaggingStr = '${basicEstateTagging}';
-                            if (basicEstateTaggingStr) {
-                                try {
-                                    var center2 = JSON.parse(basicEstateTaggingStr);
-                                    center2 = new AMap.LngLat(center2.lng,center2.lat);
-                                    center = center2;
-                                } catch (e) {
-                                    console.log(e) ;
-                                }
-                            }
-                            drawPolygon.map.setCenter(center); //设置地图中心点
-                        }
-                    });
+                    if (estateName && estateName != 'undefined') {
+                        drawPolygon.autoCompleteSearch(estateName);
+                    }
                 }
             }('${estateName}'));
 
@@ -1723,6 +1719,14 @@
                 if (result.poiList.pois.length > 0) {
                     var poi = result.poiList.pois[0];
                     drawPolygon.map.setCenter([poi.location.lng, poi.location.lat]); //设置地图中心点
+                } else {
+                    var citySearch = new AMap.CitySearch();
+                    citySearch.getLocalCity(function (status, result) {
+                        if (status === 'complete' && result.info === 'OK') {
+                            var bounds = result.bounds;
+                            drawPolygon.map.setCenter(bounds); //设置地图中心点
+                        }
+                    });
                 }
             }
         })
