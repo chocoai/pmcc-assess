@@ -810,7 +810,7 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <select id="queryProvince"
-                                                        class="form-control input-full search-select select2">
+                                                        class="form-control input-full  ">
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">
@@ -818,7 +818,7 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <select id="queryCity"
-                                                        class="form-control input-full search-select select2">
+                                                        class="form-control input-full  ">
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">楼盘名称</label>

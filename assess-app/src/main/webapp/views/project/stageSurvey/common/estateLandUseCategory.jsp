@@ -27,6 +27,7 @@
             <div class="card-body">
                 <form class="form-horizontal" id="categoryFrm_number">
                     <input type="hidden" name="id">
+                    <input type="hidden" name="number" value="_number">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -39,17 +40,12 @@
                                                 <div class="input-group">
                                                     <input type="text" required="required" name="landUseType"
                                                            placeholder="土地用途类型"
-                                                           class="form-control" list="landUseTypeList_number">
-                                                    <datalist id="landUseTypeList_number">
-
-                                                    </datalist>
-                                                    <div class="input-group-prepend .cleanUseTypeBtn">
-                                                        <button class="btn btn-warning btn-sm cleanUseTypeBtn"
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                        </button>
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button"
+                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="landUseTypeList_number">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -58,18 +54,12 @@
                                             <div class="col-sm-3">
                                                 <div class="input-group">
                                                     <input type="text" required="required" name="landUseCategory"
-                                                           class="form-control" list="landUseCategoryList_number"
+                                                           class="form-control form-control-sm"
                                                            placeholder="土地用途类别">
-                                                    <datalist id="landUseCategoryList_number">
-
-                                                    </datalist>
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                        </button>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onfocus="landUseTypeChange(this);">选择</button>
+                                                        <div class="dropdown-menu" id="landUseCategoryList_number">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,18 +160,12 @@
                                             <div class="col-sm-3">
                                                 <div class="input-group">
                                                     <input type="text" name="compatibilityType"
-                                                           class="form-control" list="compatibilityTypeList_number"
+                                                           class="form-control"
                                                            placeholder="兼容类型">
-                                                    <datalist id="compatibilityTypeList_number">
-
-                                                    </datalist>
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                        </button>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="compatibilityTypeList_number">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -360,25 +344,20 @@
                                 $("#LandUseTypeContent").append(html);
                                 $("#categoryFrm" + number).initForm(item);
 
-                                AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, item.landUseType, item.landUseCategory, function (html, data) {
-                                    $("#categoryFrm" + number).find("#landUseCategoryList" + number).empty().html(html).trigger('change');
-                                });
-                                AssessCommon.loadDataListHtml(AssessDicKey.estate_compatibility_rate, item.compatibilityType, function (html, data) {
+
+                                AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_compatibility_rate, null, function (html, data) {
                                     $("#categoryFrm" + number).find("#compatibilityTypeList" + number).empty().html(html).trigger('change');
                                 }, false);
-                                AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, item.landUseType, function (html, data) {
+                                AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
                                     $("#categoryFrm" + number).find("#landUseTypeList" + number).empty().html(html).trigger('change');
                                 }, false);
+
                                 //百分字段
                                 $("#categoryFrm" + number).find('[name=greeningRate]').attr('data-value', item.greeningRate);
                                 AssessCommon.elementParsePercent($("#categoryFrm" + number).find('[name=greeningRate]'));
                                 $("#categoryFrm" + number).find('[name=compatibilityRate]').attr('data-value', item.compatibilityRate);
                                 AssessCommon.elementParsePercent($("#categoryFrm" + number).find('[name=compatibilityRate]'));
-                                $("#categoryFrm" + number).find("input[name='landUseType']").off('change').on('change', function () {
-                                    AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), item.landUseCategory, function (html, data) {
-                                        $("#categoryFrm" + number).find("#landUseCategoryList" + number).empty().html(html).trigger('change');
-                                    });
-                                });
+
                                 num++;
                             });
                         }
@@ -400,19 +379,27 @@
         html = html.replace(/_number/g, number);
         $("#LandUseTypeContent").append(html);
 
-        AssessCommon.loadDataListHtml(AssessDicKey.estate_compatibility_rate, '', function (html, data) {
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_compatibility_rate, null, function (html, data) {
             $("#categoryFrm" + number).find("#compatibilityTypeList" + number).empty().html(html).trigger('change');
         }, false);
-        AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, '', function (html, data) {
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
             $("#categoryFrm" + number).find("#landUseTypeList" + number).empty().html(html).trigger('change');
         }, false);
-        $("#categoryFrm" + number).find("input[name='landUseType']").off('change').on('change', function () {
-            AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), '', function (html, data) {
-                $("#categoryFrm" + number).find("#landUseCategoryList" + number).empty().html(html).trigger('change');
-            });
-        });
+
+
         DatepickerUtils.parse();
         num++;
+    }
+
+
+    function landUseTypeChange(_this){
+        var number = $(_this).closest("form").find('[name=number]').val() ;
+        console.log(number+"==")
+        var value = $("#categoryFrm" + number).find('[name=landUseType]').val();
+        console.log(value+"===+")
+        AssessCommon.getSonTextAppendDicList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
+            $("#landUseCategoryList" + number).empty().html(html).trigger('change');
+        });
     }
 
     landUseType.saveAndUpdateSonData = function (_that) {

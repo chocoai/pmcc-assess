@@ -1304,13 +1304,13 @@ var houseIntelligent;
             var html = houseIntelligent.prototype.createHTML(intelligentSystem, layingMethod, intelligenceGrade);
             $("#" + houseIntelligent.prototype.config().frm).find(".system").append(html);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, null, function (html, data) {
-                $("#" + houseIntelligent.prototype.config().frm).find("." + intelligentSystem).select2().empty().html(html).trigger('change');
+                $("#" + houseIntelligent.prototype.config().frm).find("." + intelligentSystem).empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, null, function (html, data) {
-                $("#" + houseIntelligent.prototype.config().frm).find("." + layingMethod).select2().empty().html(html).trigger('change');
+                $("#" + houseIntelligent.prototype.config().frm).find("." + layingMethod).empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, null, function (html, data) {
-                $("#" + houseIntelligent.prototype.config().frm).find("." + intelligenceGrade).select2().empty().html(html).trigger('change');
+                $("#" + houseIntelligent.prototype.config().frm).find("." + intelligenceGrade).empty().html(html).trigger('change');
             });
             arr.push({
                 intelligentSystem: {key: intelligentSystem, value: ""},
@@ -1385,31 +1385,31 @@ var houseIntelligent;
 
                     if (n.intelligentSystem) {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, n.intelligentSystem.value, function (html, data) {
-                            form.find("." + intelligentSystem).select2().empty().html(html).trigger('change');
+                            form.find("." + intelligentSystem).empty().html(html).trigger('change');
                         });
                     } else {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_intelligent_system, null, function (html, data) {
-                            form.find("." + intelligentSystem).select2().empty().html(html).trigger('change');
+                            form.find("." + intelligentSystem).empty().html(html).trigger('change');
                         });
                     }
 
                     if (n.layingMethod) {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, n.layingMethod.value, function (html, data) {
-                            form.find("." + layingMethod).select2().empty().html(html).trigger('change');
+                            form.find("." + layingMethod).empty().html(html).trigger('change');
                         });
                     } else {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLayingMethod, null, function (html, data) {
-                            form.find("." + layingMethod).select2().empty().html(html).trigger('change');
+                            form.find("." + layingMethod).empty().html(html).trigger('change');
                         });
                     }
 
                     if (n.intelligenceGrade) {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, n.intelligenceGrade.value, function (html, data) {
-                            form.find("." + intelligenceGrade).select2().empty().html(html).trigger('change');
+                            form.find("." + intelligenceGrade).empty().html(html).trigger('change');
                         });
                     } else {
                         AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, null, function (html, data) {
-                            form.find("." + intelligenceGrade).select2().empty().html(html).trigger('change');
+                            form.find("." + intelligenceGrade).empty().html(html).trigger('change');
                         });
                     }
 
@@ -2318,7 +2318,8 @@ var houseRoom;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_storage_request, item.storageRequest, function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("select.storageRequest").empty().html(html).trigger('change');
             });
-            AssessCommon.loadDataListHtml(AssessDicKey.examine_house_room_names, item.name, function (html, data) {
+
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_names, null, function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("#nameList").empty().html(html).trigger('change');
             }, true);
             houseRoom.prototype.getFilePartHtml(AssessDicKey.examineHouseRoomFilePart, item);

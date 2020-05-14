@@ -25,7 +25,7 @@
                             <label class="col-sm-1">财产范围<span
                                     class="symbol required"></span></label>
                             <div class="col-sm-3">
-                                <select class="form-control input-full search-select select2 scopeProperty"
+                                <select class="form-control input-full  scopeProperty"
                                         name="scopeProperty"
                                         required>
                                 </select>
@@ -57,7 +57,7 @@
                             <label class="col-sm-1">税费负担<span
                                     class="symbol required"></span></label>
                             <div class="col-sm-3">
-                                <select class="form-control input-full search-select select2 taxBurden"
+                                <select class="form-control input-full  taxBurden"
                                         name="taxBurden"
                                         required>
                                 </select>

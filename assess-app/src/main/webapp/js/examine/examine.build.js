@@ -206,14 +206,11 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, data.propertySocialPrestige, function (html, data) {
             buildingCommon.buildingForm.find("select[name='propertySocialPrestige']").empty().html(html).trigger('change');
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_minimumFloorDistance, null, function (html, data) {
-            html = '';
-            html += '<option value="" selected>-请选择-</option>';
-            $.each(data, function (i, item) {
-                html += "<option value='" + item.name + "'>" + item.name + "</option>";
-            });
-            buildingCommon.buildingForm.find('#build_minimumFloorDistance_data').empty().html(html).trigger('change');
-        });
+
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_building_minimumFloorDistance, null, function (html, data) {
+            var minimumFloorDistanceList = $("#build_minimumFloorDistance_data");
+            minimumFloorDistanceList.empty().html(html).trigger('change');
+        }, true);
         $.ajax({
             url: getContextPath() + '/architecture/dataBuildingNewRateList',
             type: 'get',

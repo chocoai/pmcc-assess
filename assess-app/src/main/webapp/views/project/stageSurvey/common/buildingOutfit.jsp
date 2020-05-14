@@ -116,23 +116,13 @@
                                                 <div class="input-group">
                                                     <input type="text" required="required" name="decorationPart"
                                                            placeholder="装修部位"
-                                                           class="form-control form-control-sm"
-                                                           list="build_decorationPart_datalist">
-                                                    <datalist id="build_decorationPart_datalist">
-                                                        <option value="" selected="">-请选择-</option>
-                                                    </datalist>
+                                                           class="form-control form-control-sm">
 
-
-                                                    <div class="input-group-prepend ">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                            <i class="fa "></i>
-                                                        </button>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="build_decorationPart_datalist">
+                                                        </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>

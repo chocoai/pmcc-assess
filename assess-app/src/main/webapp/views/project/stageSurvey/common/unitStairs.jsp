@@ -62,19 +62,12 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <input type="text" required="required" name="type"
-                                                           placeholder="楼梯类型" class="form-control form-control-sm"
-                                                           list="UnitStairs_TYPE_List">
-                                                    <datalist id="UnitStairs_TYPE_List">
-                                                        <option value="" selected="">-请选择-</option>
-                                                    </datalist>
-                                                    <div class="input-group-prepend ">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                            <i class="fa "></i>
-                                                        </button>
+                                                           placeholder="楼梯类型" class="form-control form-control-sm">
+
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="UnitStairs_TYPE_List">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -90,19 +83,12 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <input type="text" required="required" name="purpose"
-                                                           placeholder="用途" class="form-control form-control-sm"
-                                                           list="UnitStairs_purpose_List">
-                                                    <datalist id="UnitStairs_purpose_List">
-                                                        <option value="" selected="">-请选择-</option>
-                                                    </datalist>
-                                                    <div class="input-group-prepend ">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                            <i class="fa "></i>
-                                                        </button>
+                                                           placeholder="用途" class="form-control form-control-sm">
+
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="UnitStairs_purpose_List">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -92,7 +92,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="streetLevel"
-                                                    class="form-control input-full search-select select2 streetLevel">
+                                                    class="form-control input-full  streetLevel">
                                             </select>
                                         </div>
                                     </div>
@@ -106,7 +106,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="visitorsFlowrate"
-                                                    class="form-control input-full search-select select2 visitorsFlowrate">
+                                                    class="form-control input-full  visitorsFlowrate">
                                             </select>
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="position"
-                                                    class="form-control input-full search-select select2 position">
+                                                    class="form-control input-full  position">
                                             </select>
                                         </div>
                                     </div>
@@ -135,7 +135,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="trafficFlow"
-                                                    class="form-control input-full search-select select2 trafficFlow">
+                                                    class="form-control input-full  trafficFlow">
                                             </select>
                                         </div>
                                     </div>

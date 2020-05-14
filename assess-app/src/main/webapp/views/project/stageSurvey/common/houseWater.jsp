@@ -62,7 +62,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select name="supplyMode"
-                                                        class="form-control input-full search-select select2 supplyMode">
+                                                        class="form-control input-full  supplyMode">
 
                                                 </select>
                                             </div>
@@ -77,7 +77,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="fireWaterSupply"
-                                                    class="form-control input-full search-select select2 fireWaterSupply">
+                                                    class="form-control input-full  fireWaterSupply">
                                             </select>
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="pipingLayout"
-                                                    class="form-control input-full search-select select2 pipingLayout">
+                                                    class="form-control input-full  pipingLayout">
 
                                             </select>
                                         </div>
@@ -106,7 +106,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="pipeMaterial"
-                                                    class="form-control input-full search-select select2 pipeMaterial">
+                                                    class="form-control input-full  pipeMaterial">
 
                                             </select>
                                         </div>
@@ -120,7 +120,7 @@
                                             档次<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="grade" class="form-control input-full search-select select2 grade">
+                                            <select name="grade" class="form-control input-full  grade">
                                             </select>
                                         </div>
                                     </div>
@@ -134,7 +134,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="boosterEquipment"
-                                                    class="form-control input-full search-select select2 boosterEquipment">
+                                                    class="form-control input-full  boosterEquipment">
                                             </select>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="pretreatedWater"
-                                                    class="form-control input-full search-select select2 pretreatedWater">
+                                                    class="form-control input-full  pretreatedWater">
                                             </select>
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="purificationEquipmentPrice"
-                                                    class="form-control input-full search-select select2 purificationEquipmentPrice">
+                                                    class="form-control input-full  purificationEquipmentPrice">
                                             </select>
                                         </div>
                                     </div>

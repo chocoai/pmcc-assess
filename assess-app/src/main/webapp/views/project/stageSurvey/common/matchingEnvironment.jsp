@@ -88,7 +88,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="humanImpact"
-                                                    class="form-control input-full search-select select2 humanImpact">
+                                                    class="form-control input-full humanImpact">
                                             </select>
                                         </div>
                                     </div>

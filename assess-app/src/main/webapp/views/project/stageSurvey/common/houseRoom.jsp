@@ -42,7 +42,7 @@
 <div id="divBoxHouseRoom" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 80%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">房间</h4>
@@ -66,17 +66,12 @@
                                                 <div class="input-group">
                                                     <input type="text" required name="name"
                                                            value="${basicHouseHuxing.name}"
-                                                           class="form-control" list="nameList">
-                                                    <datalist id="nameList">
+                                                           class="form-control form-control-sm">
 
-                                                    </datalist>
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                        </button>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="nameList">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -374,7 +369,7 @@
                                                 方位
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 orientation"
+                                                <select class="form-control input-full  orientation"
                                                         name="orientation">
                                                 </select>
                                             </div>
@@ -463,7 +458,7 @@
                                                 计量标准
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 standardMeasure"
+                                                <select class="form-control input-full  standardMeasure"
                                                         name="standardMeasure">
                                                 </select>
                                             </div>
@@ -471,7 +466,7 @@
                                                 仓储要求
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 storageRequest"
+                                                <select class="form-control input-full  storageRequest"
                                                         name="storageRequest">
                                                 </select>
                                             </div>

@@ -61,7 +61,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="maintenance"
-                                                    class="form-control input-full search-select select2 maintenance">
+                                                    class="form-control input-full  maintenance">
                                             </select>
                                         </div>
                                     </div>
@@ -75,7 +75,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="type"
-                                                    class="form-control input-full search-select select2 type">
+                                                    class="form-control input-full  type">
                                             </select>
                                         </div>
                                     </div>

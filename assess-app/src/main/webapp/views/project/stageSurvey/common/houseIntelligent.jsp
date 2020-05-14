@@ -61,7 +61,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="switchCircuit"
-                                                    class="form-control input-full search-select select2 switchCircuit">
+                                                    class="form-control input-full  switchCircuit">
                                             </select>
                                         </div>
                                     </div>
@@ -75,7 +75,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="layingMethod"
-                                                    class="form-control input-full search-select select2 layingMethod">
+                                                    class="form-control input-full  layingMethod">
                                             </select>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="lampsLanterns" multiple="multiple"
-                                                    class="form-control input-full search-select select2 lampsLanterns">
+                                                    class="form-control input-full  lampsLanterns">
                                             </select>
                                         </div>
                                     </div>
@@ -103,7 +103,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="grade"
-                                                    class="form-control input-full search-select select2 grade">
+                                                    class="form-control input-full  grade">
                                             </select>
                                         </div>
                                     </div>
@@ -132,17 +132,17 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <select required="required" name="intelligentSystem1"
-                                                        class="form-control input-full search-select select2 intelligentSystem1">
+                                                        class="form-control input-full  intelligentSystem1">
                                                 </select>
                                             </div>
                                             <div class="col-sm-2">
                                                 <select required="required" name="layingMethod1"
-                                                        class="form-control input-full search-select select2 layingMethod1">
+                                                        class="form-control input-full  layingMethod1">
                                                 </select>
                                             </div>
                                             <div class="col-sm-2">
                                                 <select required="required" name="intelligenceGrade1"
-                                                        class="form-control input-full search-select select2 intelligenceGrade1">
+                                                        class="form-control input-full  intelligenceGrade1">
                                                 </select>
                                             </div>
                                             <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">

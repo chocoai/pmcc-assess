@@ -74,7 +74,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="lineGrade"
-                                                    class="form-control input-full search-select select2 lineGrade">
+                                                    class="form-control input-full  lineGrade">
                                             </select>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="reputation"
-                                                    class="form-control input-full search-select select2 reputation">
+                                                    class="form-control input-full  reputation">
                                             </select>
                                         </div>
                                     </div>
@@ -103,7 +103,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="grade"
-                                                    class="form-control input-full search-select select2 grade">
+                                                    class="form-control input-full  grade">
                                             </select>
                                         </div>
                                     </div>
