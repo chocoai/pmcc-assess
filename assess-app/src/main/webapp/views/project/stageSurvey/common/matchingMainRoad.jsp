@@ -140,7 +140,7 @@
                                                 </label>
                                                 <div class="col-sm-10">
                                                     <select name="limitSpeial"
-                                                            class="form-control input-full search-select select2 limitSpeial">
+                                                            class="form-control input-full  limitSpeial">
                                                     </select>
                                                 </div>
                                             </div>
@@ -155,7 +155,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select required="required" name="distance"
-                                                        class="form-control input-full search-select select2 distance">
+                                                        class="form-control input-full  distance">
                                                 </select>
                                             </div>
                                         </div>
@@ -169,7 +169,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select required="required" name="visitorsFlowrate"
-                                                        class="form-control input-full search-select select2 visitorsFlowrate">
+                                                        class="form-control input-full  visitorsFlowrate">
                                                 </select>
                                             </div>
                                         </div>
@@ -183,7 +183,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select required="required" name="position"
-                                                        class="form-control input-full search-select select2 position">
+                                                        class="form-control input-full  position">
                                                 </select>
                                             </div>
                                         </div>
@@ -198,7 +198,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select required="required" name="trafficFlow"
-                                                        class="form-control input-full search-select select2 trafficFlow">
+                                                        class="form-control input-full  trafficFlow">
                                                 </select>
                                             </div>
                                         </div>

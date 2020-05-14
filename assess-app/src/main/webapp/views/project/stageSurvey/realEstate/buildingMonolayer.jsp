@@ -298,18 +298,10 @@
                                                                                list="build_minimumFloorDistance_data"
                                                                                value="${basicBuilding.minimumFloorDistance}">
 
-                                                                        <datalist id="build_minimumFloorDistance_data">
-                                                                            <option value="" selected="">-请选择-</option>
-                                                                        </datalist>
-
-                                                                        <div class="input-group-prepend ">
-                                                                            <button class="btn btn-warning btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                                清空
-                                                                                <i class="fa "></i>
-                                                                            </button>
+                                                                        <div class="input-group-append">
+                                                                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                                            <div class="dropdown-menu" id="build_minimumFloorDistance_data">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
 

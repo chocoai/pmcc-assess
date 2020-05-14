@@ -63,7 +63,7 @@
                                                 供应商名称<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
-                                                <select class="form-control input-full search-select select2 supplier"
+                                                <select class="form-control input-full  supplier"
                                                         name="supplier" required></select>
                                             </div>
                                         </div>
@@ -76,7 +76,7 @@
                                                 服务内容
                                             </label>
                                             <div class="col-sm-10">
-                                                <select class="form-control input-full search-select select2 serviceContent"
+                                                <select class="form-control input-full  serviceContent"
                                                         name="serviceContent"></select>
                                             </div>
                                         </div>

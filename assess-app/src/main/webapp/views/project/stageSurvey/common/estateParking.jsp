@@ -75,7 +75,7 @@
                                             停车场类别<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control input-full search-select select2 parkingEstate"
+                                            <select class="form-control input-full  parkingEstate"
                                                     name="parkingEstate" required>
                                             </select>
                                         </div>
@@ -89,7 +89,7 @@
                                             车位位置<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control input-full search-select select2 location"
+                                            <select class="form-control input-full  location"
                                                     name="location" required>
                                             </select>
                                         </div>
@@ -103,7 +103,7 @@
                                             车位类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select class="form-control input-full search-select select2 parkingType"
+                                            <select class="form-control input-full  parkingType"
                                                     name="parkingType" required>
                                             </select>
                                         </div>

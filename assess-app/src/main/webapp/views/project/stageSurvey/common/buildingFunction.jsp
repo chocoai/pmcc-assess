@@ -59,7 +59,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="type"
-                                                    class="form-control input-full search-select select2 type">
+                                                    class="form-control input-full   type">
                                             </select>
                                         </div>
                                     </div>
@@ -73,7 +73,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="decorationPart"
-                                                    class="form-control input-full search-select select2 decorationPart">
+                                                    class="form-control input-full   decorationPart">
                                             </select>
                                         </div>
                                     </div>

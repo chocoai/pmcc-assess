@@ -427,7 +427,7 @@
                                                 等级评价
                                             </label>
                                             <div class="col-sm-10">
-                                                <select name="gradeEvaluation" class="form-control input-full search-select select2">
+                                                <select name="gradeEvaluation" class="form-control input-full  ">
                                                     <option value="">-请选择-</option>
                                                     <c:forEach items="${reputations}" var="item">
                                                         <option value="${item.id}">${item.name}</option>
@@ -528,7 +528,7 @@
                                             等级评价
                                         </label>
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                            <select name="gradeEvaluation" class="form-control input-full search-select select2">
+                                            <select name="gradeEvaluation" class="form-control input-full  ">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach items="${reputations}" var="item">
                                                     <option value="${item.id}">${item.name}</option>

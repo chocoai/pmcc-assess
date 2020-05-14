@@ -285,12 +285,12 @@
                                                                 <div class="col-md-3">
                                                                     <c:if test="${basicApply.type == 0 || basicApply.type==null || basicApply.type == 3}">
                                                                         <select name="residenceUseYear" required
-                                                                                class="form-control input-full residenceUseYear search-select select2">
+                                                                                class="form-control input-full residenceUseYear  ">
                                                                         </select>
                                                                     </c:if>
                                                                     <c:if test="${basicApply.type == 1}">
                                                                         <select name="industryUseYear" required
-                                                                                class="form-control input-full industryUseYear search-select select2">
+                                                                                class="form-control input-full industryUseYear  ">
                                                                         </select>
                                                                     </c:if>
                                                                 </div>
@@ -322,7 +322,7 @@
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <select name="betweenDistance" required
-                                                                            class="form-control input-full betweenDistance search-select select2">
+                                                                            class="form-control input-full betweenDistance  ">
                                                                     </select>
                                                                 </div>
                                                                 <label class="col-sm-1">最小楼间距倍数</label>
@@ -330,7 +330,7 @@
 
                                                                     <div class="input-group">
 
-                                                                        <input type="text" required="required"
+                                                                        <input type="text" required="required" style="width: 60%;"
                                                                                name="minimumFloorDistance"
                                                                                placeholder="最小楼间距倍数"
                                                                                class="form-control form-control-sm"
@@ -338,18 +338,11 @@
                                                                                list="build_minimumFloorDistance_data"
                                                                                value="${basicBuilding.minimumFloorDistance}">
 
-                                                                        <datalist id="build_minimumFloorDistance_data">
-                                                                            <option value="" selected="">-请选择-</option>
-                                                                        </datalist>
 
-                                                                        <div class="input-group-prepend ">
-                                                                            <button class="btn btn-warning btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                                清空
-                                                                                <i class="fa "></i>
-                                                                            </button>
+                                                                        <div class="input-group-append">
+                                                                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                                            <div class="dropdown-menu" id="build_minimumFloorDistance_data">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
 
@@ -369,7 +362,7 @@
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <select name="completedTimeType" required
-                                                                            class="form-control input-full completedTimeType search-select select2">
+                                                                            class="form-control input-full completedTimeType  ">
                                                                     </select>
                                                                 </div>
                                                                 <label class="col-sm-1">
@@ -646,7 +639,7 @@
                                                     </label>
                                                     <div class="col-sm-4">
                                                         <select required="required" name="gradeEvaluation"
-                                                                class="form-control input-full search-select select2">
+                                                                class="form-control input-full  ">
                                                             <option value="">-请选择-</option>
                                                         </select>
                                                     </div>
@@ -748,7 +741,7 @@
                                         </label>
                                         <div class="col-sm-3">
                                             <select required="required" name="gradeEvaluation"
-                                                    class="form-control input-full search-select select2">
+                                                    class="form-control input-full  ">
                                                 <option value="">-请选择-</option>
                                             </select>
                                         </div>
