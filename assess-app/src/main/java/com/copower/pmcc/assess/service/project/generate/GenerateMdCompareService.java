@@ -490,16 +490,14 @@ public class GenerateMdCompareService {
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
             for (MdMarketCompareItem caseItem : caseItemList) {
-                BigDecimal scoreTotal = new BigDecimal("0.00");
-                BigDecimal num = new BigDecimal("0");
+                BigDecimal ratio = new BigDecimal("1");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey()) || data.getName().equals(MethodCompareFieldEnum.NET_HEIGHT.getKey())) {
                         if(data.getScore().compareTo(new BigDecimal("100"))!=0){
-                            scoreTotal = scoreTotal.add(data.getScore());
-                            num = num.add(new BigDecimal("1"));
+                            ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
                             if (StringUtil.isNotEmpty(data.getValue()) && !"无".equals(data.getValue())) {
@@ -513,10 +511,10 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(num.compareTo(new BigDecimal("0"))==0){
+                    if(ratio.compareTo(new BigDecimal("1"))==0){
                         builder.write("100");
                     }else{
-                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                        builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
                     content.deleteCharAt(content.length() - 1).toString();
@@ -531,16 +529,14 @@ public class GenerateMdCompareService {
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
             for (MdMarketCompareItem caseItem : caseItemList) {
-                BigDecimal scoreTotal = new BigDecimal("0.00");
-                BigDecimal num = new BigDecimal("0");
+                BigDecimal ratio = new BigDecimal("1");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ELEVATOR_HOUSEHOLD_RATIO.getKey()) || data.getName().equals(MethodCompareFieldEnum.PLANE_LAYOUT.getKey())) {
                         if(data.getScore().compareTo(new BigDecimal("100"))!=0){
-                            scoreTotal = scoreTotal.add(data.getScore());
-                            num = num.add(new BigDecimal("1"));
+                            ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -548,10 +544,10 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(num.compareTo(new BigDecimal("0"))==0){
+                    if(ratio.compareTo(new BigDecimal("1"))==0){
                         builder.write("100");
                     }else{
-                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                        builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
                     builder.write(content.toString());
@@ -565,16 +561,14 @@ public class GenerateMdCompareService {
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
             for (MdMarketCompareItem caseItem : caseItemList) {
-                BigDecimal scoreTotal = new BigDecimal("0.00");
-                BigDecimal num = new BigDecimal("0");
+                BigDecimal ratio = new BigDecimal("1");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey()) || data.getName().equals(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey())) {
                         if(data.getScore().compareTo(new BigDecimal("100"))!=0){
-                            scoreTotal = scoreTotal.add(data.getScore());
-                            num = num.add(new BigDecimal("1"));
+                            ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -582,10 +576,10 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(num.compareTo(new BigDecimal("0"))==0){
+                    if(ratio.compareTo(new BigDecimal("1"))==0){
                         builder.write("100");
                     }else{
-                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                        builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
                     builder.write(content.toString());
@@ -599,8 +593,7 @@ public class GenerateMdCompareService {
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
             for (MdMarketCompareItem caseItem : caseItemList) {
-                BigDecimal scoreTotal = new BigDecimal("0.00");
-                BigDecimal num = new BigDecimal("0");
+                BigDecimal ratio = new BigDecimal("1");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
@@ -608,8 +601,7 @@ public class GenerateMdCompareService {
                     if (data.getName().equals(MethodCompareFieldEnum.INTELLIGENT_LEVEL.getKey()) || data.getName().equals(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEATING_MODE.getKey()) || data.getName().equals(MethodCompareFieldEnum.NETWORK.getKey())) {
                         if(data.getScore().compareTo(new BigDecimal("100"))!=0){
-                            scoreTotal = scoreTotal.add(data.getScore());
-                            num = num.add(new BigDecimal("1"));
+                            ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -617,10 +609,10 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(num.compareTo(new BigDecimal("0"))==0){
+                    if(ratio.compareTo(new BigDecimal("1"))==0){
                         builder.write("100");
                     }else{
-                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                        builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
                     builder.write(content.toString());
@@ -634,8 +626,7 @@ public class GenerateMdCompareService {
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
             for (MdMarketCompareItem caseItem : caseItemList) {
-                BigDecimal scoreTotal = new BigDecimal("0.00");
-                BigDecimal num = new BigDecimal("0");
+                BigDecimal ratio = new BigDecimal("1");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
@@ -645,8 +636,7 @@ public class GenerateMdCompareService {
                             || data.getName().equals(MethodCompareFieldEnum.HEAT_PRESERVATION.getKey()) || data.getName().equals(MethodCompareFieldEnum.HEAT_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.WATERPROOF.getKey())) {
                         if(data.getScore().compareTo(new BigDecimal("100"))!=0){
-                            scoreTotal = scoreTotal.add(data.getScore());
-                            num = num.add(new BigDecimal("1"));
+                            ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
                             this.jointContent(content, data);
@@ -654,10 +644,10 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(num.compareTo(new BigDecimal("0"))==0){
+                    if(ratio.compareTo(new BigDecimal("1"))==0){
                         builder.write("100");
                     }else{
-                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                        builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
                     builder.write(content.toString());
