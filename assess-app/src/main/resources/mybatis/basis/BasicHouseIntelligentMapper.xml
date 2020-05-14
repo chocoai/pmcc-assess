@@ -14,6 +14,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="system_describe" property="systemDescribe" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, house_id, switch_circuit, laying_method, lamps_lanterns, grade, intelligent_system, 
-    remark, bis_delete, creator, gmt_created, gmt_modified
+    remark, bis_delete, creator, gmt_created, gmt_modified, system_describe
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligentExample" >
     select
@@ -114,11 +115,13 @@
     insert into tb_basic_house_intelligent (house_id, switch_circuit, laying_method, 
       lamps_lanterns, grade, intelligent_system, 
       remark, bis_delete, creator, 
-      gmt_created, gmt_modified)
+      gmt_created, gmt_modified, system_describe
+      )
     values (#{houseId,jdbcType=INTEGER}, #{switchCircuit,jdbcType=INTEGER}, #{layingMethod,jdbcType=INTEGER}, 
       #{lampsLanterns,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, #{intelligentSystem,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{systemDescribe,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligent" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -159,6 +162,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="systemDescribe != null" >
+        system_describe,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
@@ -193,6 +199,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="systemDescribe != null" >
+        #{systemDescribe,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -241,6 +250,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.systemDescribe != null" >
+        system_describe = #{record.systemDescribe,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -259,7 +271,8 @@
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      system_describe = #{record.systemDescribe,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -300,6 +313,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="systemDescribe != null" >
+        system_describe = #{systemDescribe,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -315,7 +331,8 @@
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      system_describe = #{systemDescribe,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

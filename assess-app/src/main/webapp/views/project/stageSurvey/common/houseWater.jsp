@@ -140,7 +140,7 @@
                                     </div>
                                     </div>
                                 </div>
-                                <div class="row form-group">
+                                <div class="row form-group otherContent" style="display:none;">
                                     <div class="col-md-12">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
@@ -154,7 +154,7 @@
                                     </div>
                                     </div>
                                 </div>
-                                <div class="row form-group">
+                                <div class="row form-group otherContent" style="display: none">
                                     <div class="col-md-12">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">

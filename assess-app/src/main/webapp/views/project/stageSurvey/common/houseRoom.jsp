@@ -69,7 +69,10 @@
                                                            class="form-control form-control-sm">
 
                                                     <div class="input-group-append">
-                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
                                                         <div class="dropdown-menu" id="nameList">
                                                         </div>
                                                     </div>
@@ -121,15 +124,35 @@
                                                 层高(m)
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" data-rule-number="true" placeholder="层高"
-                                                       name="layerHeight" class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" data-rule-number="true" placeholder="层高"
+                                                           name="layerHeight" class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="layerHeightList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 净高(m)
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="净高" name="clearHeight"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="净高" name="clearHeight"
+                                                           data-rule-number="true" class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="clearHeightList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -157,15 +180,35 @@
                                                 通风
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="通风" name="aeration"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="residenceAerationList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="采光" name="lighting"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="residenceLightingList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -177,15 +220,35 @@
                                                 日照
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="日照" name="sunshine"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="日照" name="sunshine"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="residenceSunshineList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 隔音
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="隔音" name="soundInsulation"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="隔音" name="soundInsulation"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="residenceSoundInsulationList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -238,15 +301,35 @@
                                                 通风
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="通风" name="aeration"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="hotelAerationList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="采光" name="lighting"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="hotelLightingList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -404,15 +487,35 @@
                                                 通风
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="通风" name="aeration"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="productionAerationList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="采光" name="lighting"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="productionLightingList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

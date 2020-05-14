@@ -27,6 +27,8 @@ public class BasicHouseIntelligent {
 
     private Date gmtModified;
 
+    private String systemDescribe;
+
     public Integer getId() {
         return id;
     }
@@ -121,5 +123,13 @@ public class BasicHouseIntelligent {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getSystemDescribe() {
+        return systemDescribe;
+    }
+
+    public void setSystemDescribe(String systemDescribe) {
+        this.systemDescribe = systemDescribe == null ? null : systemDescribe.trim();
     }
 }

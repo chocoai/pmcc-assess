@@ -864,6 +864,76 @@ public class BasicHouseIntelligentExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andSystemDescribeIsNull() {
+            addCriterion("system_describe is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeIsNotNull() {
+            addCriterion("system_describe is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeEqualTo(String value) {
+            addCriterion("system_describe =", value, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeNotEqualTo(String value) {
+            addCriterion("system_describe <>", value, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeGreaterThan(String value) {
+            addCriterion("system_describe >", value, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeGreaterThanOrEqualTo(String value) {
+            addCriterion("system_describe >=", value, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeLessThan(String value) {
+            addCriterion("system_describe <", value, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeLessThanOrEqualTo(String value) {
+            addCriterion("system_describe <=", value, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeLike(String value) {
+            addCriterion("system_describe like", value, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeNotLike(String value) {
+            addCriterion("system_describe not like", value, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeIn(List<String> values) {
+            addCriterion("system_describe in", values, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeNotIn(List<String> values) {
+            addCriterion("system_describe not in", values, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeBetween(String value1, String value2) {
+            addCriterion("system_describe between", value1, value2, "systemDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andSystemDescribeNotBetween(String value1, String value2) {
+            addCriterion("system_describe not between", value1, value2, "systemDescribe");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

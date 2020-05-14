@@ -84,7 +84,7 @@ var houseHuxingPrice;
         },
         showModel: function () {
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
-            houseHuxingPrice.prototype.init({},tenementType);
+            houseHuxingPrice.prototype.init({}, tenementType);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
                 $("#" + houseHuxingPrice.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
             });
@@ -139,18 +139,18 @@ var houseHuxingPrice;
                         var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
                         $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
                         if (houseHuxingPrice.prototype.isNotBlank(result.data)) {
-                            houseHuxingPrice.prototype.init(result.data,tenementType);
+                            houseHuxingPrice.prototype.init(result.data, tenementType);
                             if (tenementType == '商铺' || tenementType == '商场') {
-                                if(houseHuxingPrice.prototype.isNotBlank(result.data.adjacentPosition)){
+                                if (houseHuxingPrice.prototype.isNotBlank(result.data.adjacentPosition)) {
                                     houseHuxingPrice.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
-                                }else{
+                                } else {
                                     AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
                                         $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
-                                    },false);
+                                    }, false);
                                 }
                             }
                         } else {
-                            houseHuxingPrice.prototype.init({},tenementType);
+                            houseHuxingPrice.prototype.init({}, tenementType);
                         }
 
                         $('#' + houseHuxingPrice.prototype.config().box).modal("show");//
@@ -161,7 +161,7 @@ var houseHuxingPrice;
                 }
             })
         },
-        init: function (item,tenementType) {
+        init: function (item, tenementType) {
             $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
             if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
                 $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").attr("style", "display:none");
@@ -203,6 +203,30 @@ var houseHuxingPrice;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_storage_request, item.storageRequest, function (html, data) {
                 $("#" + houseHuxingPrice.prototype.config().frm).find("select.storageRequest2").empty().html(html).trigger('change');
             });
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceAerationList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceLightingList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceSunshineList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceSoundInsulationList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("#productionAerationList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("#hotelAerationList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("#hotelLightingList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("#productionLightingList").empty().html(html).trigger('change');
+            }, true);
 
         },
         importData: function (planDetailsId) {
@@ -270,7 +294,7 @@ var houseHuxingPrice;
             var length = strs.length;
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, strs[0], function (html, data) {
                 $("#" + houseHuxingPrice.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
-            },false);
+            }, false);
             $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='distance']").val(strs2[0]);
             for (var j = 1; j < length; j++) {
                 if (houseHuxingPrice.prototype.isNotBlank(strs[j])) {
@@ -280,7 +304,7 @@ var houseHuxingPrice;
 
                     html += "<label class='col-sm-2 control-label'>相邻位置<span class='symbol required'></span></label>";
                     html += "<div class='col-sm-4'>";
-                    html += '<select class="form-control input-full adjacentPosition'+j+'" name="adjacentPosition' + j + '" required >';
+                    html += '<select class="form-control input-full adjacentPosition' + j + '" name="adjacentPosition' + j + '" required >';
                     html += "</select>";
                     html += "</div>";
 
@@ -298,10 +322,10 @@ var houseHuxingPrice;
                     html += "</div>";
                     $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").append(html);
                     var name = "select[name='adjacentPosition" + j + "']";
-                    if(j>0){
+                    if (j > 0) {
                         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, strs[j], function (html, data) {
                             $("#" + houseHuxingPrice.prototype.config().frm).find(name).empty().html(html).trigger('change');
-                        },false);
+                        }, false);
                     }
                 }
 
@@ -1573,6 +1597,43 @@ var houseWater;
             AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonGrade, item.grade, function (html, data) {
                 $("#" + houseWater.prototype.config().frm).find("select.grade").empty().html(html).trigger('change');
             });
+            houseWater.prototype.showOtherContent(item);
+        },
+        showOtherContent: function (data) {
+            if (houseWater.prototype.isNotBlank(data.supplyMode)) {
+                var strArr = ["生活供水"];//来自于实体描述1(1).docx中的规则
+                var supplyModeId = data.supplyMode;
+                if (supplyModeId) {
+                    AssessCommon.getDataDicInfo(supplyModeId, function (data) {
+                        var str = strArr.join(",");
+                        //当属于数组中的任意一项时显示
+                        if (str.indexOf(data.name) > -1) {
+                            $("#" + houseWater.prototype.config().frm).find(".otherContent").show();
+                        } else {
+                            $("#" + houseWater.prototype.config().frm).find(".otherContent").hide();
+                        }
+                    });
+                }
+            } else {
+                $("#" + houseWater.prototype.config().frm).find(".otherContent").hide();
+            }
+
+            //绑定变更事件
+            $("#" + houseWater.prototype.config().frm).find("select.supplyMode").off('change').on('change', function () {
+                var strArr = ["生活供水"];//来自于实体描述1(1).docx中的规则
+                var supplyModeId = $("#" + houseWater.prototype.config().frm).find("select.supplyMode").val();
+                if (supplyModeId) {
+                    AssessCommon.getDataDicInfo(supplyModeId, function (data) {
+                        var str = strArr.join(",");
+                        //当属于数组中的任意一项时显示
+                        if (str.indexOf(data.name) > -1) {
+                            $("#" + houseWater.prototype.config().frm).find(".otherContent").show();
+                        } else {
+                            $("#" + houseWater.prototype.config().frm).find(".otherContent").hide();
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -1973,7 +2034,7 @@ var houseRoom;
         loadDataDicList: function () {
             var cols = commonColumn.houseRoomColumn();
             var temp = [];
-            if(houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text()=="多层"){
+            if (houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text() == "多层") {
                 cols.push({field: 'currentFloor', title: '所在楼层'});
             }
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
@@ -2038,7 +2099,7 @@ var houseRoom;
         showModel: function () {
             $("#" + houseRoom.prototype.config().frm).clearAll();
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
-            houseRoom.prototype.init({},tenementType);
+            houseRoom.prototype.init({}, tenementType);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
             });
@@ -2161,13 +2222,13 @@ var houseRoom;
             if (tenementType == '商铺' || tenementType == '商场') {
                 var adjacentPosition = '';
                 $("#" + houseRoom.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
-                    adjacentPosition += $(this).val()=="null"?"":$(this).val();
-                    adjacentPosition +=  ',';
+                    adjacentPosition += $(this).val() == "null" ? "" : $(this).val();
+                    adjacentPosition += ',';
                 })
                 data.adjacentPosition = adjacentPosition;
                 var distance = '';
                 $("#" + houseRoom.prototype.config().frm).find('[name^=distance]').each(function () {
-                    distance += $(this).val()=="null"?"":$(this).val();
+                    distance += $(this).val() == "null" ? "" : $(this).val();
                     distance += ',';
                 })
                 data.distance = distance;
@@ -2202,15 +2263,15 @@ var houseRoom;
                     if (result.ret) {
                         var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
                         $("#" + houseRoom.prototype.config().frm).clearAll();
-                        houseRoom.prototype.init(result.data,tenementType);
+                        houseRoom.prototype.init(result.data, tenementType);
                         var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
                         if (tenementType == '商铺' || tenementType == '商场') {
-                            if(houseRoom.prototype.isNotBlank(result.data.adjacentPosition)){
+                            if (houseRoom.prototype.isNotBlank(result.data.adjacentPosition)) {
                                 houseRoom.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
-                            }else{
+                            } else {
                                 AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
                                     $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
-                                },false);
+                                }, false);
                             }
                         }
                         $('#' + houseRoom.prototype.config().box).modal("show");
@@ -2273,7 +2334,7 @@ var houseRoom;
             }
 
         },
-        init: function (item,tenementType) {
+        init: function (item, tenementType) {
             $("#" + houseRoom.prototype.config().frm).clearAll();
             if (houseRoom.prototype.isNotBlank(tenementType)) {
                 $("#" + houseRoom.prototype.config().frm).find(".content").find(".form-group").attr("style", "display:none");
@@ -2321,6 +2382,37 @@ var houseRoom;
 
             AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_names, null, function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("#nameList").empty().html(html).trigger('change');
+            }, true);
+
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#residenceAerationList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#residenceLightingList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#residenceSunshineList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#residenceSoundInsulationList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#productionAerationList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#hotelAerationList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#hotelLightingList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#productionLightingList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_floor_high, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#layerHeightList").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_clear_high, null, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("#clearHeightList").empty().html(html).trigger('change');
             }, true);
             houseRoom.prototype.getFilePartHtml(AssessDicKey.examineHouseRoomFilePart, item);
 
@@ -2521,7 +2613,7 @@ var houseRoom;
             var length = strs.length;
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, strs[0], function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
-            },false);
+            }, false);
             $("#" + houseRoom.prototype.config().frm).find("input[name='distance']").val(strs2[0]);
             for (var j = 1; j < length; j++) {
                 if (houseRoom.prototype.isNotBlank(strs[j])) {
@@ -2531,7 +2623,7 @@ var houseRoom;
 
                     html += "<label class='col-sm-2 control-label'>相邻位置<span class='symbol required'></span></label>";
                     html += "<div class='col-sm-4'>";
-                    html += '<select class="form-control input-full adjacentPosition'+j+'" name="adjacentPosition' + j + '" required >';
+                    html += '<select class="form-control input-full adjacentPosition' + j + '" name="adjacentPosition' + j + '" required >';
                     html += "</select>";
                     html += "</div>";
 
@@ -2549,10 +2641,10 @@ var houseRoom;
                     html += "</div>";
                     $("#" + houseRoom.prototype.config().frm).find(".streetNumbers").append(html);
                     var name = "select[name='adjacentPosition" + j + "']";
-                    if(j>0){
+                    if (j > 0) {
                         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, strs[j], function (html, data) {
                             $("#" + houseRoom.prototype.config().frm).find(name).empty().html(html).trigger('change');
-                        },false);
+                        }, false);
                     }
                 }
 

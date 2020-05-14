@@ -69,6 +69,18 @@
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                备注
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <textarea name="remark" class="form-control input-full"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             铺设方式<span class="symbol required"></span>
@@ -89,7 +101,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select name="lampsLanterns" multiple="multiple"
-                                                    class="form-control input-full  lampsLanterns">
+                                                    class="form-control input-full search-select select2 lampsLanterns">
                                             </select>
                                         </div>
                                     </div>
@@ -155,14 +167,14 @@
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            描述
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea name="remark" class="form-control input-full"></textarea>
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                智能系统描述
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <textarea name="systemDescribe" class="form-control input-full"></textarea>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
 

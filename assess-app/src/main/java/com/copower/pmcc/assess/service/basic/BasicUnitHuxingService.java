@@ -206,7 +206,11 @@ public class BasicUnitHuxingService {
             }
             vo.setFileViewName(builder.toString());
         }
-        vo.setOrientationName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getOrientation()) ? Integer.parseInt(basicUnitHuxing.getOrientation()) : null));
+        if (NumberUtils.isNumber(basicUnitHuxing.getOrientation())) {
+            vo.setOrientationName(String.format("%s%s", basicUnitHuxing.getReference(), baseDataDicService.getNameById(basicUnitHuxing.getOrientation())));
+        } else {
+            vo.setOrientationName(String.format("%s%s", basicUnitHuxing.getReference(), basicUnitHuxing.getOrientation()));
+        }
         vo.setSpatialDistributionName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getSpatialDistribution()) ? Integer.parseInt(basicUnitHuxing.getSpatialDistribution()) : null));
         vo.setCreatorName(publicService.getUserNameByAccount(basicUnitHuxing.getCreator()));
         vo.setUtilitiesMeasureName(baseDataDicService.getNameById(basicUnitHuxing.getUtilitiesMeasure()));
@@ -346,7 +350,7 @@ public class BasicUnitHuxingService {
      *
      * @return
      */
-    public Integer getAttachmentId(Integer tableId)throws Exception {
+    public Integer getAttachmentId(Integer tableId) throws Exception {
         //生成Excel并上传
         return createExcelFile(tableId);
     }
@@ -430,7 +434,7 @@ public class BasicUnitHuxingService {
         }
         //将标准信息代入
         if (standardsource != null) {
-            basicHouseService.copyBasicEntity(standardsource.getId(),basicHouse.getId(),true);
+            basicHouseService.copyBasicEntity(standardsource.getId(), basicHouse.getId(), true);
         }
         //房号
         if (StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(1)))) {
