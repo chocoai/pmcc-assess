@@ -1514,74 +1514,112 @@
                 <div class="row mt--2">
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
-                        <div class="card full-height">
+
+                        <div class="card">
                             <div class="card-body">
-                                <div class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    type="button"
-                                                    onclick="drawPolygon.clearMap() ;">
-											<span class="btn-label">
-												<i class="fa "></i>
-											</span>
-                                                清除所有标记
-                                            </button>
-                                        </div>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    type="button" onclick="drawPolygon.html2canvas(this) ;">
-											<span class="btn-label">
-												<i class="fa fa-mouse-pointer"></i>
-											</span>
-                                                地图截取
-                                            </button>
-                                            <%--<span class="label label-warning">请使用360极速浏览器或者谷歌浏览器或者火狐浏览器请不要使用遨游浏览器和IE浏览器</span>--%>
-                                        </div>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    data-value="2D"
-                                                    type="button" onclick="drawPolygon.switch3DMap(this) ;">
-											<span class="btn-label">
-												<i class="fas fa-recycle"></i>
-											</span>
-                                                3D或2D切换
-                                            </button>
-                                        </div>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    type="button"
-                                                    onclick="drawPolygon.handleMouseTool(true);">
-											<span class="btn-label">
-                                            </span>
-                                                添加描述
-                                            </button>
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    type="button"
-                                                    onclick="drawPolygon.handleMouseTool(false);">
-											<span class="btn-label">
-                                            </span>
-                                                添加绘图
-                                            </button>
-                                        </div>
-                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                            <input type="text" class="form-control input-full" value=""
-                                                   placeholder="搜索...." name="mapSearchName" id="tipinput">
+                                <div class="row">
+                                    <div class="col-3 col-md-2">
+                                        <div class="nav flex-column nav-pills nav-secondary" role="tablist" aria-orientation="vertical">
+                                            <!-- 设置为默认选中 -->
+                                            <a class="nav-link active show" data-toggle="pill"
+                                               href="#tab_content_drawing" role="tab" id="tab_content_drawing_nav"
+                                               onclick="drawPolygon.handleMouseTool(false);"
+                                               aria-selected="true">添加绘图</a>
+
+                                            <a class="nav-link" data-toggle="pill"
+                                               href="#tab_content_description" role="tab" id="tab_content_description_nav"
+                                               onclick="drawPolygon.handleMouseTool(true);"
+                                               aria-selected="false">添加描述</a>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                            <div class="form-inline x-valid">
-                                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                                    <div id="toolMapHandleContainer" style="height:650px;">
+                                    <div class="col-9 col-md-10">
+                                        <div class="tab-content" >
+
+                                            <div class="tab-pane fade show active" id="tab_content_drawing"
+                                                 role="tabpanel">
+                                                <div class="form-horizontal">
+                                                    <div class="row form-group">
+                                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
+                                                                    type="button"
+                                                                    onclick="drawPolygon.clearMap() ;">
+                                                    <span class="btn-label">
+                                                        <i class="fa "></i>
+                                                    </span>
+                                                                清除所有标记
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
+                                                                    type="button" onclick="drawPolygon.html2canvas(this) ;">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-mouse-pointer"></i>
+                                                    </span>
+                                                                地图截取
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
+                                                                    data-value="2D"
+                                                                    type="button" onclick="drawPolygon.switch3DMap(this) ;">
+                                                    <span class="btn-label">
+                                                        <i class="fas fa-recycle"></i>
+                                                    </span>
+                                                                3D或2D切换
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                            <input type="text" class="form-control input-full" value=""
+                                                                   placeholder="搜索...." name="mapSearchName" id="tipinput">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="tab-pane fade " id="tab_content_description"
+                                                 role="tabpanel">
+                                                <div class="form-horizontal">
+                                                    <div class="row form-group">
+                                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
+                                                                    type="button" onclick="drawPolygon.html2canvas(this) ;">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-mouse-pointer"></i>
+                                                    </span>
+                                                                地图截取
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
+                                                                    data-value="2D"
+                                                                    type="button" onclick="drawPolygon.switch3DMap(this) ;">
+                                                    <span class="btn-label">
+                                                        <i class="fas fa-recycle"></i>
+                                                    </span>
+                                                                3D或2D切换
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                            <input type="text" class="form-control input-full" value=""
+                                                                   placeholder="搜索...." name="mapSearchName"
+                                                                   id="tipinputDescription">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
+
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12" style="margin-top: 15px;">
+                                        <div id="toolMapHandleContainer" style="height:650px;">
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -1601,6 +1639,10 @@
     drawPolygon.box = $("#divPolygonBox");
     drawPolygon.textBox = $("#divTextBox");
     drawPolygon.colorBox = $("#divPolygonColorBox");
+
+    drawPolygon.tabDescription = $("#tab_content_description_nav");
+    drawPolygon.tabDrawing = $("#tab_content_drawing_nav");
+
     drawPolygon.fillColor = '#00b0ff'; //多边形填充颜色，使用16进制颜色代码赋值，如：#00B2D5
     drawPolygon.fillOpacity = '0.3';//多边形填充透明度，取值范围 [0,1] ，0表示完全透明，1表示不透明。默认为0.5
     drawPolygon.strokeWeight = '2';//轮廓线宽度
@@ -1632,13 +1674,16 @@
 
 
             //输入提示
-            var autoOptions = {
-                input: "tipinput"
-            };
-            var auto = new AMap.Autocomplete(autoOptions);
-            //注册监听，当选中某条记录时会触发
-            AMap.event.addListener(auto, "select", function (e) {
-                drawPolygon.autoCompleteSearch(e.poi.name);
+            var tipIds = ["tipinputDescription", "tipinput"];
+            $.each(tipIds, function (m, input) {
+                var autoOptions = {
+                    input: input
+                };
+                var auto = new AMap.Autocomplete(autoOptions);
+                //注册监听，当选中某条记录时会触发
+                AMap.event.addListener(auto, "select", function (e) {
+                    drawPolygon.autoCompleteSearch(e.poi.name);
+                });
             });
 
             (function (tt) {
@@ -1653,6 +1698,7 @@
                 } catch (e) {
                 }
                 drawPolygon.createOverlay(item);
+                drawPolygon.handleJquery(drawPolygon.tabDescription).trigger('click');
             }('${formData}'));
 
             if (callback) {
