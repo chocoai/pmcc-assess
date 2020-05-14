@@ -247,8 +247,15 @@
                                                 </div>
                                             </div>
                                         </c:forEach>
+                                        <%--<div id="generateReportGroupTool${generationVo.areaGroupId}">--%>
+
+                                        <%--</div>--%>
                                     </form>
+
+
+
                                 </div>
+
                             </div>
                         </div>
                         <script type="text/javascript">
@@ -264,6 +271,7 @@
                     </c:forEach>
                     <%@include file="/views/share/form_apply.jsp" %>
                     <%@include file="/views/share/form_log.jsp" %>
+                    <%@include file="generateReportGroupView.jsp" %>
                 </div>
             </div>
         </div>
@@ -359,15 +367,15 @@
 
     objGenerate.reportTypeChangeEvent = function (_this, reportType) {
         var frm = $(_this).closest('form');
-        frm.find("div[data-name="+reportType+"]").hide() ;
+        frm.find("div[data-name=" + reportType + "]").hide();
         var data = formSerializeArray(frm);
         if (data.reportType) {
-            saveGenerateReportInfo([data],function () {
+            saveGenerateReportInfo([data], function () {
                 var ids = data.reportType.split(",");
                 $.each(ids, function (i, node) {
                     $("#" + reportType + node).show();
                 });
-            }) ;
+            });
         }
     };
 
@@ -604,8 +612,7 @@
             data.areaGroupId = $("#areaGroupId").val();
             if ("${processInsId}" != "0") {
                 submitEditToServer(JSON.stringify(data));
-            }
-            else {
+            } else {
                 submitToServer(JSON.stringify(data));
             }
         });

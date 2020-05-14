@@ -80,12 +80,10 @@ public class DataAverageWageUrbanEmployeesController {
         }
     }
 
-    @RequestMapping(value = "/getLoanBenchmarkInterestRateList", name = "获取数据列表", method = {RequestMethod.GET})
-    public HttpResult dataAverageWageUrbanEmployeesList(DataAverageWageUrbanEmployees dataAverageWageUrbanEmployees) {
+    @RequestMapping(value = "/getDataAverageWageUrbanEmployeesList", name = "获取数据列表", method = {RequestMethod.GET})
+    public HttpResult getDataAverageWageUrbanEmployeesList(DataAverageWageUrbanEmployees dataAverageWageUrbanEmployees) {
         try {
-            dataAverageWageUrbanEmployeesService.getDataAverageWageUrbanEmployeesListByQuery(dataAverageWageUrbanEmployees);
-            ;
-            return HttpResult.newCorrectResult(200, "");
+            return HttpResult.newCorrectResult(200, dataAverageWageUrbanEmployeesService.getDataAverageWageUrbanEmployeesListByQuery(dataAverageWageUrbanEmployees));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
