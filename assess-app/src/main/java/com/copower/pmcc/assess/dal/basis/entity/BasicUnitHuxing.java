@@ -58,6 +58,8 @@ public class BasicUnitHuxing {
 
     private String quantity;
 
+    private String reference;
+
     public Integer getId() {
         return id;
     }
@@ -272,5 +274,13 @@ public class BasicUnitHuxing {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity == null ? null : quantity.trim();
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference == null ? null : reference.trim();
     }
 }

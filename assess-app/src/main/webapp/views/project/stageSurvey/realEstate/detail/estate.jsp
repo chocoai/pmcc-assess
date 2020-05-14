@@ -424,12 +424,12 @@
                                                     <label class="form-control input-full"
                                                            name="phName">${basicEstateLandState.phName}</label>
                                                 </div>
-                                                <c:if test="${not empty basicEstateLandState.fertilityName}">
+                                                <c:if test="${not empty basicEstateLandState.holdOnName}">
 
-                                                    <label class="col-sm-1 control-label">肥力</label>
+                                                    <label class="col-sm-1 control-label">稳定性</label>
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full"
-                                                               name="fertilityName">${basicEstateLandState.fertilityName}</label>
+                                                               name="holdOnName">${basicEstateLandState.holdOnName}</label>
                                                     </div>
                                                 </c:if>
                                             </div>
@@ -443,15 +443,6 @@
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full"
                                                                name="bearingCapacityName">${basicEstateLandState.bearingCapacityName}</label>
-                                                    </div>
-
-                                                </c:if>
-                                                <c:if test="${not empty basicEstateLandState.holdOnName}">
-
-                                                    <label class="col-sm-1 control-label">稳定性</label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full"
-                                                               name="holdOnName">${basicEstateLandState.holdOnName}</label>
                                                     </div>
                                                 </c:if>
                                             </div>

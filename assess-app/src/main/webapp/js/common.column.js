@@ -828,20 +828,21 @@ commonColumn.houseIntelligentColumn = function () {
     cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'intelligentSystemName', title: '智能系统'});
     cols.push({field: 'remark', title: '备注'});
+    cols.push({field: 'systemDescribe', title: '智能系统描述'});
     return cols;
 }
 
 //房屋-供水
 commonColumn.houseWaterColumn = function () {
     var cols = [];
-    cols.push({field: 'fireWaterSupplyName', title: '供水分类', formatter: function (value, row, index) {
+    cols.push({field: 'fireWaterSupplyName', title: '给水方式', formatter: function (value, row, index) {
             var s = row.supplyModeName;
             if (row.creatorName) {
                 s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }});
-    cols.push({field: 'name', title: '给水方式'});
+    cols.push({field: 'fireWaterSupplyName', title: '供水分类'});
     cols.push({field: 'pipingLayoutName', title: '给水管道布置'});
     cols.push({field: 'pipeMaterialName', title: '给水管材料'});
     cols.push({field: 'gradeName', title: '档次'});

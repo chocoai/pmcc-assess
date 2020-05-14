@@ -5,12 +5,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/datagrid.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
 <body>
 <div class="wrapper">
@@ -474,28 +468,6 @@
         </div>
     </div>
 </div>
-<!--查看调查信息-->
-<div id="viewExamineInfoModal" class="modal fade bs-example-modal-xs" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-xs">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title"><h4>调查信息</h4></div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="x_content">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 <!--查看合并的委估对象明细-->
 <div id="viewMergeJudgeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -564,6 +536,7 @@
                                class="btn btn-sm btn-info judge-relation-object tooltips">关联查勘</button>
                             <button type="button" href="javascript://" onclick="programmeMethod.setMethod(this);"
                                class="btn btn-sm btn-info judge-method tooltips">评估方法</button>
+                            <label class="judge-desc"></label>
                         </div>
                         <div class="card-tools">
                             <button type="button" class="btn  btn-link btn-primary btn-xs collapse-link"><span
@@ -589,10 +562,7 @@
                                         所有权人
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control input-full" data-name="ownership">{ownership}
-                                            <button type="button" href="javascript://" onclick="programme.viewJudgeInfo(this);"
-                                               class="btn btn-xs btn-info tooltips"><i class="fa fa-white fa-search"></i></button>
-                                        </label>
+                                        <label class="form-control input-full" data-name="ownership">{ownership}</label>
                                     </div>
                                     <label class="col-sm-1 control-label">
                                         坐落
@@ -702,8 +672,6 @@
     </div>
 </script>
 </body>
-<script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
-
 <script type="text/javascript">
     $(function () {
         programme.loadDeclareRecordList();
@@ -831,16 +799,24 @@
                         }
                         if (item.bisMerge) {
                             lastTr.find('[data-name=mergeExplainContainer' + item.id + ']').show();
-                            lastTr.find('.x_title').find('.judge-split').remove();
+                            lastTr.find('.card-title').find('.judge-split').remove();
                         }
                         if (!item.bisSplit && item.splitNumber) {
                             lastTr.find('[data-name=splitExplainContainer' + item.id + ']').show();
                         }
-                        lastTr.find('.x_title').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
-                        lastTr.find('.x_title').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
+                        lastTr.find('.card-title').find(item.bisSplit ? '.judge-split' : '.judge-remove').remove();
+                        lastTr.find('.card-title').find(item.bisMerge ? '.judge-merge' : '.judge-merge-cancel').remove();
                         if (item.bisSetFunction) {
-                            lastTr.find('.x_title').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
+                            lastTr.find('.card-title').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }
+                        var desc='';
+                        if(item.standardNumber){
+                            desc+="【"+item.standardNumber+"号】";
+                        }
+                        if(item.surveyInfo){
+                            desc+="【"+item.surveyInfo+"】";
+                        }
+                        lastTr.find('.card-title').find('.judge-desc').text(desc);
                     })
                 }
             },
@@ -1459,56 +1435,6 @@
         } else {
             programme.viewExamineInfo(tr.find('[data-name=declareId]').val());
         }
-    };
-
-    //查看委估对象调查信息
-    programme.viewExamineInfo = function (declareId) {
-        layer.open({
-            type: 1,
-            title: "调查信息",
-            offset: 't',
-            shade: false,
-            area: ['720px', '450px'], //宽高
-            content: '<table id="examine_list" class="table table-bordered" style="max-height: auto;"></table>',
-            success: function () {
-                $("#examine_list").treegrid({
-                        url: '${pageContext.request.contextPath}/schemeProgramme/getPlanDetailsByDeclareId?declareId=' + declareId,
-                        method: 'get',
-                        idField: 'id',
-                        treeField: 'projectPhaseName',
-                        datatype: 'json',
-                        lines: true,
-                        width: 'auto',
-                        rownumbers: true,
-                        onLoadSuccess: function () {
-                            $(".tooltips").tooltip();
-                        },
-                        columns: [[
-                            {
-                                field: "projectPhaseName",
-                                title: "工作内容",
-                                width: "70%",
-                                align: "left",
-                                formatter: function (value, row) {
-                                    return value
-                                }
-                            },
-                            {
-                                field: 'workStages', title: '操作', width: '30%', formatter: function (value, row) {
-                                if (row.bisEnable) {
-                                    var s = "";
-                                    if (row.displayUrl) {
-                                        s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
-                                    }
-                                    return s;
-                                }
-                            }
-                            }
-                        ]]
-                    }
-                );
-            }
-        });
     };
 
     //加载权证信息

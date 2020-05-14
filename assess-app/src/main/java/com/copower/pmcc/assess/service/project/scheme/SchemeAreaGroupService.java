@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.*;
@@ -74,6 +75,8 @@ public class SchemeAreaGroupService {
     private ProjectMemberService projectMemberService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -286,16 +289,19 @@ public class SchemeAreaGroupService {
      *
      * @param declareRecord
      * @param areaGroup
-     * @param i
      * @return
      */
-    private SchemeJudgeObject declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup) {
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
-        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
-        schemeJudgeObject.setProjectId(declareRecord.getProjectId());
-        schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
-        schemeJudgeObject.setBuildingStatus(declareRecord.getBuildingStatus());
-        if (basicApply != null) {
+    private void declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup) {
+        //根据查勘情况生成对应的估价对象，并将查勘applyid关联到估价对象上
+        List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
+        if (CollectionUtils.isEmpty(basicApplyList)) return;
+        SchemeJudgeObject splitSource = null;//拆分源对象
+        for (int i = 0; i < basicApplyList.size(); i++) {
+            BasicApply basicApply = basicApplyList.get(i);
+            SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+            schemeJudgeObject.setProjectId(declareRecord.getProjectId());
+            schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
+            schemeJudgeObject.setBuildingStatus(declareRecord.getBuildingStatus());
             schemeJudgeObject.setBasicApplyId(basicApply.getId());
             schemeJudgeObject.setEvaluationArea(basicApply.getArea());
 
@@ -304,31 +310,39 @@ public class SchemeAreaGroupService {
                 schemeJudgeObject.setCertUse(basicHouse.getCertUse());
                 schemeJudgeObject.setPracticalUse(basicHouse.getPracticalUse());
             }
+            schemeJudgeObject.setNumber(String.valueOf(declareRecord.getNumber()));
+            schemeJudgeObject.setCreator(commonService.thisUserAccount());
+            schemeJudgeObject.setAreaGroupId(areaGroup.getId());
+            schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
+            schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
+
+            schemeJudgeObject.setCertName(declareRecord.getName());
+            schemeJudgeObject.setOwnership(declareRecord.getOwnership());
+            schemeJudgeObject.setSeat(declareRecord.getSeat());
+            if (declareRecord.getLandUseEndDate() != null) {
+                schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());//计算出土地剩余年限
+                if (areaGroup.getValueTimePoint() != null)
+                    schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
+            }
+            schemeJudgeObject.setBisSplit(false);
+            schemeJudgeObject.setSorting(declareRecord.getNumber());
+            schemeJudgeObject.setCreator(commonService.thisUserAccount());
+            if (basicApplyList.size() > 1) {//自动拆分
+                if (i == 0) {
+                    schemeJudgeObject.setSplitNumber(1);
+                    schemeJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                    schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
+                    splitSource = schemeJudgeObject;
+                } else {
+                    schemeJudgeObjectService.splitJudge(splitSource, i + 1, basicApply.getId());
+                }
+            } else {
+                schemeJudgeObject.setName(String.format("%s%s", declareRecord.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                schemeJudgeObject.setPid(0);
+                schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
+            }
+
         }
-        schemeJudgeObject.setNumber(String.valueOf(declareRecord.getNumber()));
-        schemeJudgeObject.setCreator(commonService.thisUserAccount());
-        schemeJudgeObject.setAreaGroupId(areaGroup.getId());
-        schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
-        schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
-        schemeJudgeObject.setName(String.format("%s%s", declareRecord.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
-        schemeJudgeObject.setCertName(declareRecord.getName());
-        schemeJudgeObject.setOwnership(declareRecord.getOwnership());
-        schemeJudgeObject.setSeat(declareRecord.getSeat());
-        if (declareRecord.getLandUseEndDate() != null) {
-            schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());//计算出土地剩余年限
-            if (areaGroup.getValueTimePoint() != null)
-                schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
-        }
-        schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
-        schemeJudgeObject.setPid(0);
-        schemeJudgeObject.setBisSplit(false);
-        schemeJudgeObject.setSorting(declareRecord.getNumber());
-        schemeJudgeObject.setCreator(commonService.thisUserAccount());
-        schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
-        //反写申报数据的区域id
-        declareRecord.setAreaGroupId(areaGroup.getId());
-        declareRecordDao.updateDeclareRecord(declareRecord);
-        return schemeJudgeObject;
     }
 
     /**

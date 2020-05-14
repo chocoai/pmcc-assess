@@ -1835,6 +1835,76 @@ public class BasicUnitHuxingExample {
             addCriterion("quantity not between", value1, value2, "quantity");
             return (Criteria) this;
         }
+
+        public Criteria andReferenceIsNull() {
+            addCriterion("reference is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceIsNotNull() {
+            addCriterion("reference is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceEqualTo(String value) {
+            addCriterion("reference =", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceNotEqualTo(String value) {
+            addCriterion("reference <>", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceGreaterThan(String value) {
+            addCriterion("reference >", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceGreaterThanOrEqualTo(String value) {
+            addCriterion("reference >=", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceLessThan(String value) {
+            addCriterion("reference <", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceLessThanOrEqualTo(String value) {
+            addCriterion("reference <=", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceLike(String value) {
+            addCriterion("reference like", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceNotLike(String value) {
+            addCriterion("reference not like", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceIn(List<String> values) {
+            addCriterion("reference in", values, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceNotIn(List<String> values) {
+            addCriterion("reference not in", values, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceBetween(String value1, String value2) {
+            addCriterion("reference between", value1, value2, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceNotBetween(String value1, String value2) {
+            addCriterion("reference not between", value1, value2, "reference");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
