@@ -84,7 +84,7 @@
                                                                 <label class="col-sm-1">调查方式<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-sm-3">
-                                                                    <select class="form-control input-full search-select select2 researchType"
+                                                                    <select class="form-control input-full  researchType"
                                                                             name="researchType"
                                                                             required>
                                                                     </select>
@@ -95,20 +95,13 @@
                                                                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                                                     <div class="input-group">
                                                                         <input type="text" name="certUse"
-                                                                               list="certUseList"
                                                                                value="${basicHouse.certUse}"
-                                                                               class="form-control">
-                                                                        <datalist id="certUseList">
+                                                                               class="form-control form-control-sm">
 
-                                                                        </datalist>
-
-                                                                        <div class="input-group-prepend">
-                                                                            <button class="btn btn-warning btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                                清空
-                                                                            </button>
+                                                                        <div class="input-group-append">
+                                                                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                                            <div class="dropdown-menu" id="certUseList">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -118,19 +111,12 @@
                                                                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                                                     <div class="input-group">
                                                                         <input type="text" required name="practicalUse"
-                                                                               list="practicalUseList"
                                                                                value="${basicHouse.practicalUse}"
                                                                                class="form-control">
-                                                                        <datalist id="practicalUseList">
-
-                                                                        </datalist>
-                                                                        <div class="input-group-prepend">
-                                                                            <button class="btn btn-warning btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                                清空
-                                                                            </button>
+                                                                        <div class="input-group-append">
+                                                                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                                            <div class="dropdown-menu" id="practicalUseList">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -204,17 +190,11 @@
                                                             <input type="hidden" name="priceExportColumns">
                                                             <input type="text" required name="tenementType"
                                                                    value="${basicHouseHuxing.tenementType}"
-                                                                   class="form-control" list="tenementTypeList">
-                                                            <datalist id="tenementTypeList">
-
-                                                            </datalist>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-warning btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                    清空
-                                                                </button>
+                                                                   class="form-control">
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                                <div class="dropdown-menu" id="tenementTypeList">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -256,7 +236,7 @@
                                                     <label class="col-sm-1">朝向<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
-                                                        <select class="form-control input-full search-select select2 orientation"
+                                                        <select class="form-control input-full  orientation"
                                                                 name="orientation"
                                                                 required>
                                                         </select>
@@ -264,7 +244,7 @@
                                                     <label class="col-sm-1">空间布局<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
-                                                        <select class="form-control input-full search-select select2 spatialDistribution"
+                                                        <select class="form-control input-full  spatialDistribution"
                                                                 name="spatialDistribution"
                                                                 required>
                                                         </select>

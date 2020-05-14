@@ -19,14 +19,12 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" required="required" name="unitLocation{index}" data-name="unitLocation"
-                               class="form-control" list="unitLocationList" value="{unitLocation}">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-warning btn-sm "
-                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                    type="button"
-                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                清空
-                            </button>
+                               class="form-control" value="{unitLocation}">
+
+                        <div class="input-group-append">
+                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                            <div class="dropdown-menu" id="unitLocationList{index}">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -36,15 +34,14 @@
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text"  name="description{index}" data-name="description"
-                               class="form-control" list="unitDescriptionList" value="{description}">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-warning btn-sm "
-                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                    type="button"
-                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                清空
-                            </button>
-                        </div>
+                               class="form-control" value="{description}">
+
+                            <div class="input-group-append">
+                                <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                <div class="dropdown-menu" id="unitDescriptionList{index}">
+                                </div>
+                            </div>
+
                     </div>
                 </div>
                 <div class="col-sm-1">
@@ -98,7 +95,7 @@
 <div id="divBoxExamineUnitCommonPart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 80%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">公共部分</h4>
@@ -122,23 +119,12 @@
                                                 <div class="input-group">
                                                     <input type="text" required="required" name="unitCommonPart"
                                                            onblur=";"
-                                                           placeholder="部位名称" class="form-control form-control-sm"
-                                                           list="unitCommonPart_datalist">
-                                                    <datalist id="unitCommonPart_datalist">
-                                                        <option value="" selected="">-请选择-</option>
-                                                    </datalist>
-
-
-                                                    <div class="input-group-prepend ">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                            <i class="fa "></i>
-                                                        </button>
+                                                           placeholder="部位名称" class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="unitCommonPart_datalist">
+                                                        </div>
                                                     </div>
-
                                                 </div>
                                             </div>
 
@@ -151,22 +137,12 @@
                                                     <input type="text" required="required" name="unitQuantity"
                                                            onblur=" ;"
                                                            placeholder="数量 (选择后生成类似楼梯间1)"
-                                                           class="form-control form-control-sm"
-                                                           list="unitQuantity_datalist">
-                                                    <datalist id="unitQuantity_datalist">
-                                                        <option value="" selected="">-请选择-</option>
-                                                    </datalist>
-
-                                                    <div class="input-group-prepend ">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                            <i class="fa "></i>
-                                                        </button>
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="unitQuantity_datalist">
+                                                        </div>
                                                     </div>
-
                                                 </div>
 
                                             </div>
@@ -178,35 +154,17 @@
                                                 <div class="input-group">
                                                     <input type="text" required="required" name="unitMonad"
                                                            onblur=" ;"
-                                                           placeholder="单位" class="form-control form-control-sm"
-                                                           list="unitMonad_datalist">
-                                                    <datalist id="unitMonad_datalist">
-                                                        <option value="" selected="">-请选择-</option>
-                                                    </datalist>
-
-                                                    <div class="input-group-prepend ">
-                                                        <button class="btn btn-warning btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                            清空
-                                                            <i class="fa "></i>
-                                                        </button>
+                                                           placeholder="单位" class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                        <div class="dropdown-menu" id="unitMonad_datalist">
+                                                        </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <datalist id="unitLocationList">
-                                    <option value="" selected="">-请选择-</option>
-                                </datalist>
-
-                                <datalist id="unitDescriptionList">
-                                    <option value="" selected="">-请选择-</option>
-                                </datalist>
 
                                 <div class="row form-group">
                                     <div class="col-md-12">
@@ -222,7 +180,6 @@
                                         </div>
                                     </div>
                                 </div>
-
 
                                 <div class="unitLocationTextModel">
 

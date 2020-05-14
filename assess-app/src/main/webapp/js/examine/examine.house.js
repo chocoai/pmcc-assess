@@ -213,10 +213,10 @@
         //基本信息
         houseCommon.houseForm.initForm(data.basicHouse, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
-            AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, data.basicHouse.certUse, function (html, data) {
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineHouseLoadUtility, null, function (html, data) {
                 houseCommon.houseForm.find("#certUseList").empty().html(html).trigger('change');
             }, true);
-            AssessCommon.loadDataListHtml(AssessDicKey.examineHousePracticalUse, data.basicHouse.practicalUse, function (html, data) {
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineHousePracticalUse, null, function (html, data) {
                 houseCommon.houseForm.find("#practicalUseList").empty().html(html).trigger('change');
             }, true);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, data.basicHouse.useEnvironment, function (html, data) {
@@ -307,7 +307,7 @@
         //户型
         houseCommon.houseHuxingForm.initForm(data.basicHouseHuxing, function () {
             if (data.basicHouseHuxing != null) {
-                AssessCommon.loadDataListHtml(AssessDicKey.examineHouseTenementType, data.basicHouseHuxing.tenementType, function (html, data) {
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineHouseTenementType, null, function (html, data) {
                     houseCommon.houseHuxingForm.find("#tenementTypeList").empty().html(html).trigger('change');
                 }, true);
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonHouseOrientation, data.basicHouseHuxing.orientation, function (html, data) {
