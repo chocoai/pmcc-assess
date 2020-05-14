@@ -1661,7 +1661,7 @@
 
             (function (estateName) {
                 var basicEstateTaggingStr = '${basicEstateTagging}';
-                var center = {};
+                var center = null;
                 if (basicEstateTaggingStr) {
                     try {
                         var center2 = JSON.parse(basicEstateTaggingStr);
