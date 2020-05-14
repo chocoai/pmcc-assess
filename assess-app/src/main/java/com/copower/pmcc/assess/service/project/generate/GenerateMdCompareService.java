@@ -463,23 +463,21 @@ public class GenerateMdCompareService {
         builder.write("建筑规模");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
-            BigDecimal scoreTotal = new BigDecimal("0.00");
-            BigDecimal num = new BigDecimal("0");
             for (MdMarketCompareItem caseItem : caseItemList) {
+                BigDecimal scoreTotal = new BigDecimal("0.00");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.BUILDING_SCALE.getKey())) {
-                        scoreTotal = scoreTotal.add(new BigDecimal(data.getScore().toString()));
-                        num = num.add(new BigDecimal("1"));
+                        scoreTotal = data.getScore();
                         if (!isIndex) {
                             this.jointContent(content, data);
                         }
                     }
                 }
                 if (isIndex) {
-                    builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    builder.write(df.format(scoreTotal));
                 } else {
                     builder.write(content.toString());
                 }
@@ -491,16 +489,18 @@ public class GenerateMdCompareService {
         builder.write("层高");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
-            BigDecimal scoreTotal = new BigDecimal("0.00");
-            BigDecimal num = new BigDecimal("0");
             for (MdMarketCompareItem caseItem : caseItemList) {
+                BigDecimal scoreTotal = new BigDecimal("0.00");
+                BigDecimal num = new BigDecimal("0");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey()) || data.getName().equals(MethodCompareFieldEnum.NET_HEIGHT.getKey())) {
-                        scoreTotal = scoreTotal.add(new BigDecimal(data.getScore().toString()));
-                        num = num.add(new BigDecimal("1"));
+                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                            scoreTotal = scoreTotal.add(data.getScore());
+                            num = num.add(new BigDecimal("1"));
+                        }
                         if (!isIndex) {
                             if (StringUtil.isNotEmpty(data.getValue()) && !"无".equals(data.getValue())) {
                                 content.append(MethodCompareFieldEnum.getNameByKey(data.getName())).append(":");
@@ -513,7 +513,11 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    if(num.compareTo(new BigDecimal("0"))==0){
+                        builder.write("100");
+                    }else{
+                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    }
                 } else {
                     content.deleteCharAt(content.length() - 1).toString();
                     builder.write(content.toString());
@@ -526,23 +530,29 @@ public class GenerateMdCompareService {
         builder.write("空间布局");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
-            BigDecimal scoreTotal = new BigDecimal("0.00");
-            BigDecimal num = new BigDecimal("0");
             for (MdMarketCompareItem caseItem : caseItemList) {
+                BigDecimal scoreTotal = new BigDecimal("0.00");
+                BigDecimal num = new BigDecimal("0");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ELEVATOR_HOUSEHOLD_RATIO.getKey()) || data.getName().equals(MethodCompareFieldEnum.PLANE_LAYOUT.getKey())) {
-                        scoreTotal = scoreTotal.add(new BigDecimal(data.getScore().toString()));
-                        num = num.add(new BigDecimal("1"));
+                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                            scoreTotal = scoreTotal.add(data.getScore());
+                            num = num.add(new BigDecimal("1"));
+                        }
                         if (!isIndex) {
                             this.jointContent(content, data);
                         }
                     }
                 }
                 if (isIndex) {
-                    builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    if(num.compareTo(new BigDecimal("0"))==0){
+                        builder.write("100");
+                    }else{
+                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    }
                 } else {
                     builder.write(content.toString());
                 }
@@ -554,23 +564,29 @@ public class GenerateMdCompareService {
         builder.write("装饰装修");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
-            BigDecimal scoreTotal = new BigDecimal("0.00");
-            BigDecimal num = new BigDecimal("0");
             for (MdMarketCompareItem caseItem : caseItemList) {
+                BigDecimal scoreTotal = new BigDecimal("0.00");
+                BigDecimal num = new BigDecimal("0");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey()) || data.getName().equals(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey())) {
-                        scoreTotal = scoreTotal.add(new BigDecimal(data.getScore().toString()));
-                        num = num.add(new BigDecimal("1"));
+                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                            scoreTotal = scoreTotal.add(data.getScore());
+                            num = num.add(new BigDecimal("1"));
+                        }
                         if (!isIndex) {
                             this.jointContent(content, data);
                         }
                     }
                 }
                 if (isIndex) {
-                    builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    if(num.compareTo(new BigDecimal("0"))==0){
+                        builder.write("100");
+                    }else{
+                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    }
                 } else {
                     builder.write(content.toString());
                 }
@@ -582,24 +598,30 @@ public class GenerateMdCompareService {
         builder.write("设备设施");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
-            BigDecimal scoreTotal = new BigDecimal("0.00");
-            BigDecimal num = new BigDecimal("0");
             for (MdMarketCompareItem caseItem : caseItemList) {
+                BigDecimal scoreTotal = new BigDecimal("0.00");
+                BigDecimal num = new BigDecimal("0");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.INTELLIGENT_LEVEL.getKey()) || data.getName().equals(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEATING_MODE.getKey()) || data.getName().equals(MethodCompareFieldEnum.NETWORK.getKey())) {
-                        scoreTotal = scoreTotal.add(new BigDecimal(data.getScore().toString()));
-                        num = num.add(new BigDecimal("1"));
+                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                            scoreTotal = scoreTotal.add(data.getScore());
+                            num = num.add(new BigDecimal("1"));
+                        }
                         if (!isIndex) {
                             this.jointContent(content, data);
                         }
                     }
                 }
                 if (isIndex) {
-                    builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    if(num.compareTo(new BigDecimal("0"))==0){
+                        builder.write("100");
+                    }else{
+                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    }
                 } else {
                     builder.write(content.toString());
                 }
@@ -611,9 +633,9 @@ public class GenerateMdCompareService {
         builder.write("建筑功能");
         if (CollectionUtils.isNotEmpty(caseItemList)) {
             DecimalFormat df = new DecimalFormat("###.##");
-            BigDecimal scoreTotal = new BigDecimal("0.00");
-            BigDecimal num = new BigDecimal("0");
             for (MdMarketCompareItem caseItem : caseItemList) {
+                BigDecimal scoreTotal = new BigDecimal("0.00");
+                BigDecimal num = new BigDecimal("0");
                 builder.insertCell();
                 StringBuilder content = new StringBuilder();
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
@@ -622,15 +644,21 @@ public class GenerateMdCompareService {
                             || data.getName().equals(MethodCompareFieldEnum.SUNSHINE.getKey()) || data.getName().equals(MethodCompareFieldEnum.SOUND_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEAT_PRESERVATION.getKey()) || data.getName().equals(MethodCompareFieldEnum.HEAT_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.WATERPROOF.getKey())) {
-                        scoreTotal = scoreTotal.add(new BigDecimal(data.getScore().toString()));
-                        num = num.add(new BigDecimal("1"));
+                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                            scoreTotal = scoreTotal.add(data.getScore());
+                            num = num.add(new BigDecimal("1"));
+                        }
                         if (!isIndex) {
                             this.jointContent(content, data);
                         }
                     }
                 }
                 if (isIndex) {
-                    builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    if(num.compareTo(new BigDecimal("0"))==0){
+                        builder.write("100");
+                    }else{
+                        builder.write(df.format(scoreTotal.divide(num, 2, BigDecimal.ROUND_HALF_UP)));
+                    }
                 } else {
                     builder.write(content.toString());
                 }
