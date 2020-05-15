@@ -17,15 +17,15 @@
                     <div class="card-title">
                             ${projectPlan.planName}
                         <small>
-                            <input type="button" class="btn btn-xs btn-primary"
+                            <input type="button" class="btn btn-md btn-primary"
                                    onclick="window.open('${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}');"
                                    value="估价委托书及相关证明">
-                            <input type="button" class="btn btn-xs btn-primary"
+                            <input type="button" class="btn btn-md btn-primary"
                                    onclick="projectDetailsEnterNextStage();" value="进入下阶段">
-                            <input type="button" class="btn btn-xs btn-primary"
+                            <input type="button" class="btn btn-md btn-primary"
                                    onclick="window.open('${pageContext.request.contextPath}/declareRecord/editDeclareRecordNumber/${projectInfo.id}');"
                                    value="权证编号变更">
-                            <input type="button" class="btn btn-xs btn-primary"
+                            <input type="button" class="btn btn-md btn-primary"
                                    onclick="window.open('${pageContext.request.contextPath}/generateReport/viewResultSheetReport/${projectInfo.id}');"
                                    value="结果表生成">
                         </small>
