@@ -18,61 +18,141 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">估价对象名称</label>
-                                            <div class="col-sm-3">
-                                                <input class="form-control input-full" type="text" name="name"
-                                                       placeholder="估价对象名称">
-                                            </div>
-                                            <label class="col-sm-1 control-label">权证名称</label>
-                                            <div class="col-sm-3">
-                                                <input class="form-control input-full" type="text" name="certName"
-                                                       placeholder="权证名称">
-                                            </div>
-                                            <label class="col-sm-1 control-label">所有权人</label>
-                                            <div class="col-sm-3">
-                                                <input class="form-control input-full" type="text" name="ownership"
-                                                       placeholder="所有权人">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">坐落</label>
-                                            <div class="col-sm-3">
-                                                <input class="form-control input-full" type="text" name="seat"
-                                                       placeholder="坐落">
 
-                                            </div>
+                <ul class="nav nav-pills nav-secondary" role="tablist">
+                    <li class="nav-item submenu">
+                        <!-- 设置为默认选中 -->
+                        <a class="nav-link active show" data-toggle="pill" onclick="schemeJudgeObj.searchData(null,{url:'getSchemeJudgeObjectList'});"
+                           href="#tab_content_schemejudgeobject" role="tab"
+                           aria-selected="true">估价对象</a>
+                    </li>
+                    <li class="nav-item submenu">
+                        <a class="nav-link" data-toggle="pill"
+                           href="#tab_content_schemejudgeobject_all" role="tab" onclick="schemeJudgeObj.searchData(null,{url:'getSchemeJudgeObjectListAll'});"
+                           aria-selected="false">所有估价对象</a>
+                    </li>
+                </ul>
 
-                                            <button class="btn btn-info btn-sm" type="button"
-                                                    onclick="schemeJudgeObj.searchData(this);"><span class="btn-label">
+                <div class="tab-content mt-2 mb-3">
+                    <div class="tab-pane fade show active"
+                         id="tab_content_schemejudgeobject" role="tabpanel">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card-body">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 control-label">估价对象名称</label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control input-full" type="text"
+                                                                   name="name"
+                                                                   placeholder="估价对象名称">
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">权证名称</label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control input-full" type="text"
+                                                                   name="certName"
+                                                                   placeholder="权证名称">
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">所有权人</label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control input-full" type="text"
+                                                                   name="ownership"
+                                                                   placeholder="所有权人">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 control-label">坐落</label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control input-full" type="text"
+                                                                   name="seat"
+                                                                   placeholder="坐落">
+
+                                                        </div>
+
+                                                        <button class="btn btn-info btn-sm" type="button"
+                                                                onclick="schemeJudgeObj.searchData(this,{url:'getSchemeJudgeObjectList'});"><span
+                                                                class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>搜索
-                                            </button>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-sm-12">
-                                        <table class="table table-bordered" id="boxSchemeJudgeObjList">
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
+                            </form>
                         </div>
                     </div>
-                </form>
+
+                    <div class="tab-pane fade " id="tab_content_schemejudgeobject_all"
+                         role="tabpanel">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <form class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card-body">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 control-label">估价对象名称</label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control input-full" type="text"
+                                                                   name="name"
+                                                                   placeholder="估价对象名称">
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">权证名称</label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control input-full" type="text"
+                                                                   name="certName"
+                                                                   placeholder="权证名称">
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">所有权人</label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control input-full" type="text"
+                                                                   name="ownership"
+                                                                   placeholder="所有权人">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 control-label">坐落</label>
+                                                        <div class="col-sm-3">
+                                                            <input class="form-control input-full" type="text"
+                                                                   name="seat"
+                                                                   placeholder="坐落">
+
+                                                        </div>
+
+                                                        <button class="btn btn-info btn-sm" type="button"
+                                                                onclick="schemeJudgeObj.searchData(this,{url:'getSchemeJudgeObjectListAll'});"><span
+                                                                class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>搜索
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered" id="boxSchemeJudgeObjList">
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
@@ -107,7 +187,8 @@
         if (defaultObj.this_) {
             schemeJudgeObj.this_ = defaultObj.this_;
         }
-        schemeJudgeObj.loadSchemeJudgeObjTable({areaGroupId:options.areaGroupId});
+        schemeJudgeObj.areaGroupId = options.areaGroupId;
+        schemeJudgeObj.loadSchemeJudgeObjTable({areaGroupId: options.areaGroupId});
         schemeJudgeObj.targetBox.modal('show');
     };
 
@@ -127,7 +208,13 @@
             }
         };
         table.bootstrapTable('destroy');
-        TableInit(table, "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getSchemeJudgeObjList", cols, options, method, true);
+        var url = '${pageContext.request.contextPath}';
+        if (options.url) {
+            url += '/schemeJudgeObject/' + options.url;
+        } else {
+            url += '/schemeJudgeObject/getSchemeJudgeObjectList';
+        }
+        TableInit(table, url, cols, options, method, true);
     };
 
     schemeJudgeObj.select = function () {
@@ -136,7 +223,7 @@
             var idArray = [];
             $.each(rows, function (i, item) {
                 idArray.push(item.id);
-            })
+            });
 
             var ids = idArray.join(",");
             if (schemeJudgeObj.callback) {
@@ -147,28 +234,32 @@
         } else {
             notifyInfo('提示', '至少选择一个');
         }
-    }
+    };
 
-    schemeJudgeObj.searchData = function (_this) {
-        var group = $(_this).closest(".form-horizontal");
-        var name = group.find("[name='name']").val();
-        var certName = group.find("[name='certName']").val();
-        var ownership = group.find("[name='ownership']").val();
-        var seat = group.find("[name='seat']").val();
-        var data = {areaGroupId: '${areaGroup.id}'};
-        if (name) {
-            data.name = name;
+    schemeJudgeObj.searchData = function (_this, option) {
+        var data = {areaGroupId: schemeJudgeObj.areaGroupId};
+        if (_this){
+            var group = $(_this).closest(".form-horizontal");
+            var name = group.find("[name='name']").val();
+            var certName = group.find("[name='certName']").val();
+            var ownership = group.find("[name='ownership']").val();
+            var seat = group.find("[name='seat']").val();
+            if (name) {
+                data.name = name;
+            }
+            if (certName) {
+                data.certName = certName;
+            }
+            if (ownership) {
+                data.ownership = ownership;
+            }
+            if (seat) {
+                data.seat = seat;
+            }
         }
-        if (certName) {
-            data.certName = certName;
+        if (option) {
+            $.extend(data, option);
         }
-        if (ownership) {
-            data.ownership = ownership;
-        }
-        if (seat) {
-            data.seat = seat;
-        }
-
         schemeJudgeObj.loadSchemeJudgeObjTable(data);
     };
 </script>
