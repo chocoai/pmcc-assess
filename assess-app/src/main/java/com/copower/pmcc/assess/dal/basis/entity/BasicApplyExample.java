@@ -296,6 +296,246 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andDeclareRecordIdIsNull() {
+            addCriterion("declare_record_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdIsNotNull() {
+            addCriterion("declare_record_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdEqualTo(Integer value) {
+            addCriterion("declare_record_id =", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdNotEqualTo(Integer value) {
+            addCriterion("declare_record_id <>", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdGreaterThan(Integer value) {
+            addCriterion("declare_record_id >", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_record_id >=", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdLessThan(Integer value) {
+            addCriterion("declare_record_id <", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_record_id <=", value, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdIn(List<Integer> values) {
+            addCriterion("declare_record_id in", values, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdNotIn(List<Integer> values) {
+            addCriterion("declare_record_id not in", values, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_record_id between", value1, value2, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareRecordIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_record_id not between", value1, value2, "declareRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdIsNull() {
+            addCriterion("land_category_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdIsNotNull() {
+            addCriterion("land_category_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdEqualTo(Integer value) {
+            addCriterion("land_category_id =", value, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdNotEqualTo(Integer value) {
+            addCriterion("land_category_id <>", value, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdGreaterThan(Integer value) {
+            addCriterion("land_category_id >", value, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("land_category_id >=", value, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdLessThan(Integer value) {
+            addCriterion("land_category_id <", value, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdLessThanOrEqualTo(Integer value) {
+            addCriterion("land_category_id <=", value, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdIn(List<Integer> values) {
+            addCriterion("land_category_id in", values, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdNotIn(List<Integer> values) {
+            addCriterion("land_category_id not in", values, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdBetween(Integer value1, Integer value2) {
+            addCriterion("land_category_id between", value1, value2, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCategoryIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("land_category_id not between", value1, value2, "landCategoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andStructuralInfoIsNull() {
             addCriterion("structural_info is null");
             return (Criteria) this;
@@ -366,63 +606,63 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
+        public Criteria andAreaIsNull() {
+            addCriterion("area is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
+        public Criteria andAreaIsNotNull() {
+            addCriterion("area is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
-            addCriterion("type =", value, "type");
+        public Criteria andAreaEqualTo(BigDecimal value) {
+            addCriterion("area =", value, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
-            addCriterion("type <>", value, "type");
+        public Criteria andAreaNotEqualTo(BigDecimal value) {
+            addCriterion("area <>", value, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
-            addCriterion("type >", value, "type");
+        public Criteria andAreaGreaterThan(BigDecimal value) {
+            addCriterion("area >", value, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("type >=", value, "type");
+        public Criteria andAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("area >=", value, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Integer value) {
-            addCriterion("type <", value, "type");
+        public Criteria andAreaLessThan(BigDecimal value) {
+            addCriterion("area <", value, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("type <=", value, "type");
+        public Criteria andAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("area <=", value, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
-            addCriterion("type in", values, "type");
+        public Criteria andAreaIn(List<BigDecimal> values) {
+            addCriterion("area in", values, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
-            addCriterion("type not in", values, "type");
+        public Criteria andAreaNotIn(List<BigDecimal> values) {
+            addCriterion("area not in", values, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            addCriterion("type between", value1, value2, "type");
+        public Criteria andAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("area between", value1, value2, "area");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("type not between", value1, value2, "type");
+        public Criteria andAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("area not between", value1, value2, "area");
             return (Criteria) this;
         }
 
@@ -493,66 +733,6 @@ public class BasicApplyExample {
 
         public Criteria andAddressNotBetween(String value1, String value2) {
             addCriterion("address not between", value1, value2, "address");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdIsNull() {
-            addCriterion("declare_record_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdIsNotNull() {
-            addCriterion("declare_record_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdEqualTo(Integer value) {
-            addCriterion("declare_record_id =", value, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdNotEqualTo(Integer value) {
-            addCriterion("declare_record_id <>", value, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdGreaterThan(Integer value) {
-            addCriterion("declare_record_id >", value, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("declare_record_id >=", value, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdLessThan(Integer value) {
-            addCriterion("declare_record_id <", value, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdLessThanOrEqualTo(Integer value) {
-            addCriterion("declare_record_id <=", value, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdIn(List<Integer> values) {
-            addCriterion("declare_record_id in", values, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdNotIn(List<Integer> values) {
-            addCriterion("declare_record_id not in", values, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdBetween(Integer value1, Integer value2) {
-            addCriterion("declare_record_id between", value1, value2, "declareRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareRecordIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("declare_record_id not between", value1, value2, "declareRecordId");
             return (Criteria) this;
         }
 
@@ -793,126 +973,6 @@ public class BasicApplyExample {
 
         public Criteria andBasicHouseIdNotBetween(Integer value1, Integer value2) {
             addCriterion("basic_house_id not between", value1, value2, "basicHouseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdIsNull() {
-            addCriterion("plan_details_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdIsNotNull() {
-            addCriterion("plan_details_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdEqualTo(Integer value) {
-            addCriterion("plan_details_id =", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
-            addCriterion("plan_details_id <>", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
-            addCriterion("plan_details_id >", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("plan_details_id >=", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdLessThan(Integer value) {
-            addCriterion("plan_details_id <", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
-            addCriterion("plan_details_id <=", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdIn(List<Integer> values) {
-            addCriterion("plan_details_id in", values, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
-            addCriterion("plan_details_id not in", values, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
-            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaIsNull() {
-            addCriterion("area is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaIsNotNull() {
-            addCriterion("area is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaEqualTo(BigDecimal value) {
-            addCriterion("area =", value, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaNotEqualTo(BigDecimal value) {
-            addCriterion("area <>", value, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGreaterThan(BigDecimal value) {
-            addCriterion("area >", value, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("area >=", value, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaLessThan(BigDecimal value) {
-            addCriterion("area <", value, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("area <=", value, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaIn(List<BigDecimal> values) {
-            addCriterion("area in", values, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaNotIn(List<BigDecimal> values) {
-            addCriterion("area not in", values, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("area between", value1, value2, "area");
-            return (Criteria) this;
-        }
-
-        public Criteria andAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("area not between", value1, value2, "area");
             return (Criteria) this;
         }
 

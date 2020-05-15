@@ -1,9 +1,10 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
-import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -47,7 +48,7 @@ public class BasicEstateLandCategoryInfoService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private PublicService publicService;
+    private BasicApplyDao basicApplyDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void copy(Integer oldId, Integer newId)throws Exception {
@@ -114,6 +115,13 @@ public class BasicEstateLandCategoryInfoService {
             basicEstateLandCategoryInfo.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateLandCategoryInfoDao.saveBasicEstateLandCategoryInfo(basicEstateLandCategoryInfo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class), id);
+            //tb_basic_apply添加数据
+            BasicEstateLandState estateLandState = basicEstateLandStateService.getBasicEstateLandStateById(basicEstateLandCategoryInfo.getLandId());
+            BasicApply source = new BasicApply();
+            source.setBasicEstateId(estateLandState.getEstateId());
+            BasicApply sourceBasicApply = basicApplyDao.getBasicApplyListByWhere(source).get(0);
+            addBasicApplyByLandCategory(sourceBasicApply,basicEstateLandCategoryInfo);
+
             return id;
         } else {
 
@@ -136,6 +144,19 @@ public class BasicEstateLandCategoryInfoService {
         }
     }
 
+    public void addBasicApplyByLandCategory(BasicApply sourceBasicApply,BasicEstateLandCategoryInfo categoryInfo){
+        BasicApply where = new BasicApply();
+        where.setLandCategoryId(categoryInfo.getId());
+        where.setBisDelete(false);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
+        if(CollectionUtils.isEmpty(basicApplyList)){
+            BasicApply basicApply = new BasicApply();
+            BeanUtils.copyProperties(sourceBasicApply,basicApply,"id");
+            basicApply.setLandCategoryId(categoryInfo.getId());
+            basicApply.setBisDelete(false);
+            basicApplyDao.addBasicApply(basicApply);
+        }
+    }
 
     /**
      * 删除数据
@@ -150,6 +171,14 @@ public class BasicEstateLandCategoryInfoService {
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
         boolean flag = basicEstateLandCategoryInfoDao.deleteBasicEstateLandCategoryInfo(id);
         baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
+        BasicApply where = new BasicApply();
+        where.setLandCategoryId(id);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
+        if(CollectionUtils.isNotEmpty(basicApplyList)){
+            for(BasicApply basicApply:basicApplyList){
+                basicApplyDao.deleteBasicApply(basicApply.getId());
+            }
+        }
         return flag;
     }
 

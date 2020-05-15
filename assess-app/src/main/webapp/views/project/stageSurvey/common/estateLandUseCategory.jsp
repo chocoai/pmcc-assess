@@ -415,6 +415,7 @@
             data: {formData: JSON.stringify(data)},
             success: function (result) {
                 if (result.ret) {
+                    $("#"+_that).find("[name='id']").val(result.data);
                     notifySuccess('成功', '保存成功');
                 }
                 else {

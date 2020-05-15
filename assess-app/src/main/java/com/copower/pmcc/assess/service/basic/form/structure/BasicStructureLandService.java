@@ -119,6 +119,7 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
         basicApply.setBasicHouseId(basicHouse.getId());
         basicApply.setBatchDetailId(houseApplyBatchDetail.getId());
         basicApply.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
+        basicApply.setLandCategoryId(categoryInfo.getId());
         basicApplyService.saveBasicApply(basicApply);
         return basicApplyBatch;
     }

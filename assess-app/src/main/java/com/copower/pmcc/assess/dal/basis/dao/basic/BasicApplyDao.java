@@ -51,6 +51,14 @@ public class BasicApplyDao {
         return basicApplyMapper.selectByExample(example);
     }
 
+    public List<BasicApply> getBasicApplyListByWhere(BasicApply basicApply) {
+        BasicApplyExample example = new BasicApplyExample();
+        BasicApplyExample.Criteria criteria = example.createCriteria();
+        MybatisUtils.convertObj2Criteria(basicApply,criteria);
+        example.setOrderByClause("id desc");
+        return basicApplyMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      *

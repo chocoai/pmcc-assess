@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.enums.basic.ExamineCommonQuoteFieldEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
@@ -73,6 +74,8 @@ public class BasicApplyBatchDetailService {
     private BaseQrcodeService baseQrcodeService;
     @Autowired
     private BasicEstateStreetInfoService basicEstateStreetInfoService;
+    @Autowired
+    private BasicApplyDao basicApplyDao;
 
     /**
      * 通过applyBatchId获取
@@ -235,10 +238,22 @@ public class BasicApplyBatchDetailService {
     //存入basicApply表单
     public void insertBasicApply(BasicApplyBatchDetail houseBasicApplyBatchDetail, Integer planDetailsId) throws Exception {
         if (!houseBasicApplyBatchDetail.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) return;
-        BasicApply basicApply = basicApplyService.getBasicApplyByBatchDetailId(houseBasicApplyBatchDetail.getId());
-        if (basicApply == null) {
-            basicApply = new BasicApply();
+        //BasicApply basicApply = basicApplyService.getBasicApplyByBatchDetailId(houseBasicApplyBatchDetail.getId());
+
+        BasicApply where = new BasicApply();
+        where.setBatchDetailId(houseBasicApplyBatchDetail.getId());
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
+        if(CollectionUtils.isNotEmpty(basicApplyList)){
+            for(BasicApply item:basicApplyList){
+                writeBasicApply(item,houseBasicApplyBatchDetail,planDetailsId);
+            }
+        }else{
+            BasicApply basicApply = new BasicApply();
+            writeBasicApply(basicApply,houseBasicApplyBatchDetail,planDetailsId);
         }
+    }
+
+    public void writeBasicApply(BasicApply basicApply ,BasicApplyBatchDetail houseBasicApplyBatchDetail , Integer planDetailsId){
         basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
         basicApply.setDeclareRecordId(houseBasicApplyBatchDetail.getDeclareRecordId());
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
