@@ -471,6 +471,23 @@ public class BasicApplyBatchController extends BaseController {
     }
 
     /**
+     * 批量删除操作手册信息
+     *
+     * @param ids
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/batchDeleteDetail", name = "批量删除明细", method = RequestMethod.POST)
+    public HttpResult batchDeleteDetail(String ids) throws Exception {
+        try {
+            basicApplyBatchDetailService.batchDeleteBasicApplyBatchDetail(ids);
+            return HttpResult.newCorrectResult();
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    /**
      * 获取和编辑
      *
      * @param id

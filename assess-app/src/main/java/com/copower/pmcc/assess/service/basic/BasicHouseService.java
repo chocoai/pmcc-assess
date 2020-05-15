@@ -466,9 +466,11 @@ public class BasicHouseService extends BasicEntityAbstract {
                 Integer houseId = saveAndUpdate(basicHouse, true);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
-                    houseDetail.setName(basicHouse.getHouseNumber());
-                    houseDetail.setDisplayName(basicHouse.getHouseNumber());
-                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
+                    if(StringUtils.isNotEmpty(basicHouse.getHouseNumber())){
+                        houseDetail.setName(basicHouse.getHouseNumber());
+                        houseDetail.setDisplayName(basicHouse.getHouseNumber());
+                        basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
+                    }
                     basicApplyBatchDetailService.insertBasicApply(houseDetail,planDetailsId);
                 }
                 //户型

@@ -346,6 +346,15 @@ public class BasicApplyBatchDetailService {
         }
     }
 
+    public void batchDeleteBasicApplyBatchDetail(String ids) throws Exception{
+        if (!StringUtils.isEmpty(ids)) {
+            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+            for(Integer id:integers){
+                deleteBasicApplyBatchDetail(id);
+            }
+        }
+    }
+
     /**
      * 通过id获取
      *

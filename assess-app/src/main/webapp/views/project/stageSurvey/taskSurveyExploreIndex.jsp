@@ -68,8 +68,8 @@
                                             编辑
                                         </button>
                                         <button type="button" class="btn btn-sm btn-warning masterTool"
-                                                onclick=" batchTreeTool.deleteDetail();">
-                                            删除
+                                                onclick=" batchTreeTool.batchDeleteDetail();">
+                                            批量删除
                                         </button>
 
                                         <button type="button" style="margin-left: 20px;"
@@ -825,6 +825,48 @@
         });
     }
 
+    //批量删除
+    batchTreeTool.batchDeleteDetail = function () {
+        var zTreeObj = $.fn.zTree.getZTreeObj($("#ztree").prop("id"));
+        var nodes = zTreeObj.getCheckedNodes(true);
+        if (nodes.length == 0) {
+            notifyInfo('提示', '勾选至少一个节点');
+            return false;
+        }
+        var ids = [];
+        var types = [];
+        $.each(nodes, function (i, node) {
+            ids.push(node.id);
+            types.push(node.type);
+        });
+
+        if (types.join(",").indexOf("estate") != -1) {
+            notifyInfo('提示', "不能删除楼盘");
+            return false;
+        }
+
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicApplyBatch/batchDeleteDetail",
+                data: {ids: ids.join(",")},
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除成功");
+                        if (${!empty applyBatch.referenceApplyBatchId}) {
+                            batchTreeTool.ztreeInit(${applyBatch.referenceApplyBatchId});
+                        } else {
+                            batchTreeTool.ztreeInit(${applyBatch.id});
+                        }
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                }
+            })
+        });
+    }
+
     //进入填写信息页面
     batchTreeTool.fillInformation = function () {
         if (!$("#basicBatchApplyFrm").valid()) {
@@ -1053,7 +1095,7 @@
         $("#basicAlternativeCaseList").bootstrapTable('destroy');
         TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
             name: $('#queryAlternativeName').val(),
-            projectId:'${projectId}'
+            projectId: '${projectId}'
         }, {
             showColumns: false,
             showRefresh: false,
@@ -1066,7 +1108,7 @@
 
     //引用备选案例
     batchTreeTool.referenceAlternativeCase = function (id) {
-        notifyInfo('提示','请耐心等待....');
+        notifyInfo('提示', '请耐心等待....');
         Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/deleteBatchAllById',
@@ -1092,7 +1134,7 @@
                                 AlertSuccess('成功', '引用成功', function () {
                                     window.location.href = window.location.href;
                                 })
-                            }else{
+                            } else {
                                 AlertError('失败', '引用失败');
                             }
                         }
