@@ -124,18 +124,33 @@ public class MdBaseLandPriceService {
             dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
         }
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
-            Integer masterId = dataHouseIndexList.get(0).getId();
+            DataHousePriceIndex housePriceIndex = dataHouseIndexList.get(0);
             DataHousePriceIndexDetail dataHousePriceIndexDetail = new DataHousePriceIndexDetail();
-            dataHousePriceIndexDetail.setHousePriceId(masterId);
+            dataHousePriceIndexDetail.setHousePriceId(housePriceIndex.getId());
             List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(dataHousePriceIndexDetail);
-            //最早月份的指数
-            DataHousePriceIndexDetail firstIndex = detailList.get(0);
+
             if (CollectionUtils.isNotEmpty(detailList)) {
-                for (DataHousePriceIndexDetail item : detailList) {
-                    if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
-                        return item.getIndexNumber().divide(firstIndex.getIndexNumber(), 4, BigDecimal.ROUND_HALF_UP);
+                //基期
+                Date basePeriod = housePriceIndex.getBasePeriod();
+                BigDecimal basePeriodIndex = null;
+                if(basePeriod!=null){
+                    for (DataHousePriceIndexDetail item : detailList) {
+                        //基期对应的指数
+                        if (item.getStartDate().compareTo(basePeriod) != 1 && item.getStartDate().compareTo(basePeriod) != -1) {
+                            basePeriodIndex = item.getIndexNumber();
+                        }
                     }
                 }
+
+                if(basePeriodIndex!=null){
+                    //找到自身对应指数：基期指数
+                    for (DataHousePriceIndexDetail item : detailList) {
+                        if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
+                            return item.getIndexNumber().divide(basePeriodIndex, 4, BigDecimal.ROUND_HALF_UP);
+                        }
+                    }
+                }
+
             }
         }
         return null;

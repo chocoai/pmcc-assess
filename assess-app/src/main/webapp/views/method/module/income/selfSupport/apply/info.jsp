@@ -459,13 +459,13 @@
                                                     <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
                                                            onblur="selfSupport.computeInitialAmount(this);"
                                                            class="form-control x-percent">
-                                                    <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="selfSupport.operatingCostItem()"
-                                                    data-toggle="tooltip" data-original-title="明细">
-                                            <i class="fa fa-edit"></i>
-                                            </button>
-                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <button type="button" class="btn btn-warning btn-sm"
+                                                                onclick="selfSupport.operatingCostItem()"
+                                                                data-toggle="tooltip" data-original-title="明细">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
@@ -1724,7 +1724,7 @@
         //var data = formParams("frmCostItem");
         var id = $("#frmCostItem").find("input[name='id']").val();
         var operatingCostItem = [];
-        $("#frmCostItem").find('.system').find('.row form-group').each(function () {
+        $("#frmCostItem").find('.system').find('.form-group').each(function () {
             var item = {};
             var amountMoney = $(this).find('[name^=amountMoney]').val();
             var total = $(this).find('[name^=total]').val();
@@ -1738,6 +1738,7 @@
                 operatingCostItem.push(item);
             }
         });
+        console.log(operatingCostItem+"==")
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/saveOperatingCostItem",
@@ -1779,8 +1780,9 @@
 
     selfSupport.writeHTMLData = function (json) {
         var jsonarray = eval(json);
+        console.log(jsonarray)
         $.each(jsonarray, function (i, n) {
-            var html = "<div class='row form-group' >";
+            var html = "<div class='row form-group'>";
             html += ' <div class="col-md-12">'
 
             html += "<input type='hidden'  name='amountMoney'  value='" + n.amountMoney + "'>";
