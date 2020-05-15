@@ -115,13 +115,6 @@ public class BasicEstateLandCategoryInfoService {
             basicEstateLandCategoryInfo.setCreator(commonService.thisUserAccount());
             Integer id = basicEstateLandCategoryInfoDao.saveBasicEstateLandCategoryInfo(basicEstateLandCategoryInfo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class), id);
-            //tb_basic_apply添加数据
-            BasicEstateLandState estateLandState = basicEstateLandStateService.getBasicEstateLandStateById(basicEstateLandCategoryInfo.getLandId());
-            BasicApply source = new BasicApply();
-            source.setBasicEstateId(estateLandState.getEstateId());
-            BasicApply sourceBasicApply = basicApplyDao.getBasicApplyListByWhere(source).get(0);
-            addBasicApplyByLandCategory(sourceBasicApply,basicEstateLandCategoryInfo);
-
             return id;
         } else {
 
