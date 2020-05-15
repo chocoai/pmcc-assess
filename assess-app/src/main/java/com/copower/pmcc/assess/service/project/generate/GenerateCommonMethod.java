@@ -1302,16 +1302,17 @@ public class GenerateCommonMethod {
      * @param areaId
      * @return
      */
-    public String getReportFieldsName(String reportType, Integer areaId) {
+    public String getReportFieldsName(String reportType, GenerateReportGroup reportGroup) {
         if (StringUtils.isBlank(reportType)) return null;
         List<String> FieldsName = Lists.newArrayList();
         for (String s : reportType.split("\\.")) {
             FieldsName.add(s.toUpperCase());
         }
-        if (areaId == null)
+        if (reportGroup == null) {
             return StringUtils.join(FieldsName, "_");
-        else
-            return String.format("%s%d", StringUtils.join(FieldsName, "_"), areaId);
+        } else {
+            return String.format("%s%d%d", StringUtils.join(FieldsName, "_"), reportGroup.getAreaGroupId(), reportGroup.getId());
+        }
     }
 
     //拼接2-4张图片

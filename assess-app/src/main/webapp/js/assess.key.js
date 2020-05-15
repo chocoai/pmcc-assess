@@ -62,6 +62,7 @@ AssessDBKey.SchemeReportFileCustom = "tb_scheme_report_file_custom";
 
 AssessDBKey.BaseFileTemplate = "tb_base_file_template";
 AssessDBKey.GenerateReportInfo = "tb_generate_report_info";
+AssessDBKey.GenerateReportGroup = "tb_generate_report_group";
 
 
 AssessDBKey.DeclareRecord = "tb_declare_record";

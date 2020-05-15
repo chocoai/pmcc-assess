@@ -83,6 +83,8 @@ public class GenerateReportService {
     private ProjectNumberRecordService projectNumberRecordService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private GenerateReportGroupService generateReportGroupService;
 
     public List<SchemeAreaGroup> getAreaGroupList(Integer projectId) {
         return schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
@@ -96,7 +98,7 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-    public void createReportWord(String ids, GenerateReportInfo generateReportInfo) throws Exception {
+    public void createReportWord(String ids, GenerateReportInfo generateReportInfo, GenerateReportGroup reportGroup) throws Exception {
         if (StringUtils.isEmpty(ids) || generateReportInfo.getProjectPlanId() == null) {
             return;
         }
@@ -106,9 +108,10 @@ public class GenerateReportService {
             return;
         }
         generateReportInfoService.saveGenerateReportInfo(generateReportInfo);
+        generateReportGroupService.saveAndUpdateGenerateReportGroup(reportGroup,false);
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(generateReportInfo.getId());
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+        sysAttachmentDto.setTableId(reportGroup.getId());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGroup.class));
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
         //必要的(否则垃圾会越来越多)
@@ -138,9 +141,9 @@ public class GenerateReportService {
             if (baseReportTemplate == null) {
                 continue;
             }
-            String path = this.fullReportHandlePath(baseReportTemplate, generateReportInfo, baseDataDic);
+            String path = this.fullReportHandlePath(baseReportTemplate, generateReportInfo, baseDataDic ,reportGroup);
             if (StringUtils.isNotBlank(path)) {
-                this.createSysAttachment(path, generateReportInfo, baseDataDic, sysAttachmentDtoList);
+                this.createSysAttachment(path, baseDataDic, sysAttachmentDtoList ,reportGroup);
             }
         }
     }
@@ -151,19 +154,19 @@ public class GenerateReportService {
      * @param path
      * @return
      */
-    private void createSysAttachment(String path, GenerateReportInfo generateReportInfo, BaseDataDic reportType, List<SysAttachmentDto> sysAttachmentDtoList) throws Exception {
+    private void createSysAttachment(String path,BaseDataDic reportType, List<SysAttachmentDto> sysAttachmentDtoList ,GenerateReportGroup reportGroup) throws Exception {
         if (StringUtils.isEmpty(path)) {
             return;
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(generateReportInfo.getId());
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+        sysAttachmentDto.setTableId(reportGroup.getId());
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGroup.class));
         File file = new File(path);
         sysAttachmentDto.setFileExtension(FilenameUtils.getExtension(file.getName()));//获取文件后缀名,FilenameUtils.getName()获取文件夹或文件的名称,FilenameUtils.isExtension()判断后缀是否是指定后缀(区分大小写)
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        sysAttachmentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType.getFieldName(), generateReportInfo.getAreaGroupId()));
+        sysAttachmentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType.getFieldName(), reportGroup));
         String timeName = String.join("-", DateUtils.format(DateUtils.now(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(DateUtils.now(), DateUtils.HOUR_MINUTE_CHINESE_PATTERN));
         String fileName = String.join("", reportType.getName(), timeName, ".", FilenameUtils.getExtension(file.getName()));
         sysAttachmentDto.setFileName(fileName);
@@ -230,7 +233,7 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-    private String fullReportHandlePath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
+    private String fullReportHandlePath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception {
         List<String> names = getReportEnums();
         String dir = null;
         SysAttachmentDto query = new SysAttachmentDto();
@@ -238,14 +241,14 @@ public class GenerateReportService {
         //使用曾经使用过的word进行替换
         String[] keys = new String[]{ReportSymbolOperationEnum.GET.getKey(), ReportSymbolOperationEnum.RESET.getKey()};
         for (int i = 0; i < keys.length; i++) {
-            if (Objects.equal(generateReportInfo.getSymbolOperation(), keys[i])) {
-                query.setTableId(generateReportInfo.getId());
-                query.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
-                query.setFieldsName(generateCommonMethod.getReportFieldsName(reportType.getFieldName(), generateReportInfo.getAreaGroupId()));
+            if (Objects.equal(reportGroup.getSymbolOperation(), keys[i])) {
+                query.setTableId(reportGroup.getId());
+                query.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGroup.class));
+                query.setFieldsName(generateCommonMethod.getReportFieldsName(reportType.getFieldName(), reportGroup));
             }
         }
         //使用报告模板
-        if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.NONE.getKey())) {
+        if (Objects.equal(reportGroup.getSymbolOperation(), ReportSymbolOperationEnum.NONE.getKey())) {
             query.setTableId(baseReportTemplate.getId());
             query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         }
@@ -262,7 +265,7 @@ public class GenerateReportService {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
         //重新拿号
-        if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.RESET.getKey())) {
+        if (Objects.equal(reportGroup.getSymbolOperation(), ReportSymbolOperationEnum.RESET.getKey())) {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
             ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(generateReportInfo.getProjectId(), generateReportInfo.getAreaGroupId(), assessProjectType, reportType.getId());
             if (numberRecord != null) {
@@ -276,7 +279,7 @@ public class GenerateReportService {
                 AsposeUtils.replaceText(dir, projectNumberRecordService.getWordNumber2(numberRecord.getNumberValue()), projectNumberRecordService.getWordNumber2(value));
             }
             //重新设回拿号标志
-            generateReportInfo.setSymbolOperation(ReportSymbolOperationEnum.GET.getKey());
+            reportGroup.setSymbolOperation(ReportSymbolOperationEnum.GET.getKey());
         }
         //评估类型(添加一个封面)
         if (generateReportInfo.getAssessCategory() != null) {
@@ -289,7 +292,7 @@ public class GenerateReportService {
         Map<String, String> textMap = Maps.newHashMap();
         Map<String, String> bookmarkMap = Maps.newHashMap();
         Map<String, String> fileMap = Maps.newHashMap();
-        generateReplaceWord(names, textMap, bookmarkMap, fileMap, dir, generateBaseDataService, generateReportInfo, reportType, count, max);
+        generateReplaceWord(names, textMap, bookmarkMap, fileMap, dir, generateBaseDataService, generateReportInfo, reportType, count, max ,reportGroup);
         return dir;
     }
 
@@ -305,7 +308,7 @@ public class GenerateReportService {
      * @return
      * @throws Exception
      */
-    private String generateReplaceWord(List<String> names, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, String tempDir, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType, int count, final int max) throws Exception {
+    private String generateReplaceWord(List<String> names, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, String tempDir, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType, int count, final int max ,GenerateReportGroup reportGroup) throws Exception {
         Set<BookmarkAndRegexDto> bookmarkAndRegexDtoHashSet = getBookmarkAndRegexDtoHashSet(tempDir);
         Set<String> compareHashSet = Sets.newHashSet();
         if (CollectionUtils.isNotEmpty(bookmarkAndRegexDtoHashSet)) {
@@ -331,31 +334,31 @@ public class GenerateReportService {
                     //像 公共和 基础字段的组尽量放前面 , 因为大部分数据都是这两个组中,因此在这两个组中找到了那么就没必要在下面继续去循环查找了
 
                     //以后有时间可以把组里面的if 判断全部改为switch
-                    if (GenerateReportAssembleHelp.assembleCommonMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                    if (GenerateReportAssembleHelp.assembleCommonMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType ,reportGroup)) {
                         continue;
                     }
 
-                    if (GenerateReportAssembleHelp.assembleBaseMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                    if (GenerateReportAssembleHelp.assembleBaseMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType ,reportGroup)) {
                         continue;
                     }
 
-                    if (GenerateReportAssembleHelp.assembleSifaMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                    if (GenerateReportAssembleHelp.assembleSifaMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType ,reportGroup)) {
                         continue;
                     }
 
-                    if (GenerateReportAssembleHelp.assembleGongshangMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                    if (GenerateReportAssembleHelp.assembleGongshangMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType ,reportGroup)) {
                         continue;
                     }
 
-                    if (GenerateReportAssembleHelp.assembleJiansheMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                    if (GenerateReportAssembleHelp.assembleJiansheMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType ,reportGroup)) {
                         continue;
                     }
 
-                    if (GenerateReportAssembleHelp.assembleUniversalBankMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                    if (GenerateReportAssembleHelp.assembleUniversalBankMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType ,reportGroup)) {
                         continue;
                     }
 
-                    if (GenerateReportAssembleHelp.assembleOtherMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType)) {
+                    if (GenerateReportAssembleHelp.assembleOtherMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType ,reportGroup)) {
                         continue;
                     }
                 } catch (Exception e) {
@@ -367,7 +370,7 @@ public class GenerateReportService {
                 return tempDir;
             }
             //递归回去 判断是否可以跳出循环
-            return generateReplaceWord(names, textMap, bookmarkMap, fileMap, tempDir, generateBaseDataService, generateReportInfo, reportType, count, max);
+            return generateReplaceWord(names, textMap, bookmarkMap, fileMap, tempDir, generateBaseDataService, generateReportInfo, reportType, count, max ,reportGroup);
         } else {
             return tempDir;
         }

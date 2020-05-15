@@ -505,6 +505,66 @@ public class GenerateReportGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andAreaGroupIdIsNull() {
+            addCriterion("area_group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdIsNotNull() {
+            addCriterion("area_group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdEqualTo(Integer value) {
+            addCriterion("area_group_id =", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotEqualTo(Integer value) {
+            addCriterion("area_group_id <>", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdGreaterThan(Integer value) {
+            addCriterion("area_group_id >", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("area_group_id >=", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdLessThan(Integer value) {
+            addCriterion("area_group_id <", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("area_group_id <=", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdIn(List<Integer> values) {
+            addCriterion("area_group_id in", values, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotIn(List<Integer> values) {
+            addCriterion("area_group_id not in", values, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("area_group_id between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("area_group_id not between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
         public Criteria andReportInfoIdIsNull() {
             addCriterion("report_info_id is null");
             return (Criteria) this;
@@ -692,6 +752,76 @@ public class GenerateReportGroupExample {
 
         public Criteria andProcessInsIdNotBetween(String value1, String value2) {
             addCriterion("process_ins_id not between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationIsNull() {
+            addCriterion("symbol_operation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationIsNotNull() {
+            addCriterion("symbol_operation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationEqualTo(String value) {
+            addCriterion("symbol_operation =", value, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationNotEqualTo(String value) {
+            addCriterion("symbol_operation <>", value, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationGreaterThan(String value) {
+            addCriterion("symbol_operation >", value, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationGreaterThanOrEqualTo(String value) {
+            addCriterion("symbol_operation >=", value, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationLessThan(String value) {
+            addCriterion("symbol_operation <", value, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationLessThanOrEqualTo(String value) {
+            addCriterion("symbol_operation <=", value, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationLike(String value) {
+            addCriterion("symbol_operation like", value, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationNotLike(String value) {
+            addCriterion("symbol_operation not like", value, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationIn(List<String> values) {
+            addCriterion("symbol_operation in", values, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationNotIn(List<String> values) {
+            addCriterion("symbol_operation not in", values, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationBetween(String value1, String value2) {
+            addCriterion("symbol_operation between", value1, value2, "symbolOperation");
+            return (Criteria) this;
+        }
+
+        public Criteria andSymbolOperationNotBetween(String value1, String value2) {
+            addCriterion("symbol_operation not between", value1, value2, "symbolOperation");
             return (Criteria) this;
         }
 
