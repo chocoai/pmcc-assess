@@ -142,6 +142,7 @@ public class BasicApplyService {
                 }
             }
             basicApply.setName(StringUtils.strip(stringBuilder.toString(), "/"));
+            updateBasicApply(basicApply);
         }
     }
 }
