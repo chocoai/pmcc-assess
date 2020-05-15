@@ -77,15 +77,6 @@ public class BasicApplyService {
         return basicApplyList;
     }
 
-    public BasicApply getBasicApplyByBatchDetailId(Integer batchDetailId) {
-        BasicApply where = new BasicApply();
-        where.setBatchDetailId(batchDetailId);
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
-        if (CollectionUtils.isEmpty(basicApplyList)) return null;
-        return basicApplyList.get(0);
-    }
-
-
     public BasicApply getBasicApplyByPlanDetailsId(Integer planDetailsId) {
         List<BasicApply> basicApplies = getBasicApplyListByPlanDetailsId(planDetailsId);
         if (!ObjectUtils.isEmpty(basicApplies)) {
@@ -130,18 +121,27 @@ public class BasicApplyService {
         return list;
     }
 
-    public void updateNameByBatchDetailId(Integer batchDetailId){
+    /**
+     * 根据apply表中名称
+     * @param batchDetailId
+     */
+    public void updateNameByBatchDetailId(Integer batchDetailId) {
         List<BasicApplyBatchDetail> houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(batchDetailId);
-        if(CollectionUtils.isEmpty(houseBatchDetailList)) return;
+        if (CollectionUtils.isEmpty(houseBatchDetailList)) return;
         for (BasicApplyBatchDetail basicApplyBatchDetail : houseBatchDetailList) {
             BasicApply basicApply = getBasicApplyByHouseId(basicApplyBatchDetail.getTableId());
-            if(basicApply==null) continue;
+            if (basicApply == null) continue;
             List<KeyValueDto> keyValueDtos = JSON.parseArray(basicApply.getStructuralInfo(), KeyValueDto.class);
-            StringBuilder stringBuilder=new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             for (KeyValueDto keyValueDto : keyValueDtos) {
-
+                if(StringUtils.isNotBlank(keyValueDto.getExplain())){
+                    BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(Integer.valueOf(keyValueDto.getExplain()));
+                    if (batchDetail != null) {
+                        stringBuilder.append(batchDetail.getName()).append("/");
+                    }
+                }
             }
-            basicApply.setName(stringBuilder.toString());
+            basicApply.setName(StringUtils.strip(stringBuilder.toString(), "/"));
         }
     }
 }
