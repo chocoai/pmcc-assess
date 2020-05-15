@@ -682,11 +682,32 @@ commonColumn.houseRoomColumn = function () {
             return s;
         }
     });
-    cols.push({field: 'houseShape', title: '房间形状'});
-    cols.push({field: 'shapeRemark', title: '形状说明'});
-    cols.push({field: 'area', title: '面积(m²)'});
-    cols.push({field: 'layerHeight', title: '层高(m)'});
-    cols.push({field: 'clearHeight', title: '净高(m)'});
+    cols.push({
+        field: 'baseDescription', title: '基本信息', formatter: function (value, row, index) {
+            var s = "";
+            if (row.houseShape) {
+                s += "房间形状:"+row.houseShape;
+                s += ";";
+            }
+            if (row.houseShape) {
+                s += "形状说明:"+row.houseShape;
+                s += ";";
+            }
+            if (row.area) {
+                s += "面积(m²):"+row.area;
+                s += ";";
+            }
+            if (row.layerHeight) {
+                s += "层高(m):"+row.layerHeight;
+                s += ";";
+            }
+            if (row.clearHeight) {
+                s += "净高(m):"+row.clearHeight;
+                s += ";";
+            }
+            return s;
+        }
+    });
 
     return cols;
 }
