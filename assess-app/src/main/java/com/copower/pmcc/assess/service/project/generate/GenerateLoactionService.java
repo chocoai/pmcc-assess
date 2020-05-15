@@ -289,10 +289,7 @@ public class GenerateLoactionService {
         Map<Integer, String> map = Maps.newHashMap();
 
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
             String s = getRoadConditionExtend(basicApplyBatch);
             if (StringUtils.isNotBlank(s))
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), s);

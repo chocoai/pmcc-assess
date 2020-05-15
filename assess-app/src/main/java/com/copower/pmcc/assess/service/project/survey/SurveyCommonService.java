@@ -131,37 +131,10 @@ public class SurveyCommonService {
         }
     }
 
-    public BasicApplyBatch getBasicApplyBatchById(Integer declareId) {
-
-        List<BasicApply> basicApplyList = getSceneExploreBasicApplyList(declareId) ;
-        if (CollectionUtils.isNotEmpty(basicApplyList)){
-            for (BasicApply basicApply:basicApplyList){
-                try {
-                    BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(basicApply.getPlanDetailsId());
-                    if (basicApplyBatch != null){
-                        return basicApplyBatch ;
-                    }
-                    if (basicApply.getBatchDetailId() != null){
-                        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getDataById(basicApply.getBatchDetailId());
-                        if (batchDetail != null){
-                            BasicApplyBatch batchById = basicApplyBatchService.getBasicApplyBatchById(batchDetail.getApplyBatchId());
-                            if (batchById != null){
-                                return batchById;
-                            }
-                        }
-                    }
-                    if (basicApply.getBasicEstateId() != null){
-                        BasicApplyBatch batchByEstateId = basicApplyBatchService.getBasicApplyBatchByEstateId(basicApply.getBasicEstateId());
-                        if (batchByEstateId != null){
-                            return batchByEstateId;
-                        }
-                    }
-                } catch (Exception e) {
-                    baseService.writeExceptionInfo(e);
-                }
-            }
-        }
-        return null;
+    public BasicApplyBatch getBasicApplyBatchByApplyId(Integer applyId) {
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+        if (basicApply == null) return null;
+        return basicApplyBatchService.getBasicApplyBatchById(basicApply.getApplyBatchId());
     }
 
     /**
@@ -187,6 +160,7 @@ public class SurveyCommonService {
 
     /**
      * 修改申报记录实际用途
+     *
      * @param projectPlanDetails
      */
     public void updateDeclarePracticalUse(ProjectPlanDetails projectPlanDetails) {
@@ -196,7 +170,7 @@ public class SurveyCommonService {
                 BasicHouse house = basicHouseService.getHouseByBasicApply(basicApply);
                 if (house != null && house.getPracticalUse() != null) {
                     DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(basicApply.getDeclareRecordId());
-                    if(declareRecord!=null){
+                    if (declareRecord != null) {
                         declareRecord.setPracticalUse(house.getPracticalUse());
                         declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                     }

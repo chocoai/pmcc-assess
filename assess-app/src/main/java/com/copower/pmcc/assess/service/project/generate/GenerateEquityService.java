@@ -297,7 +297,7 @@ public class GenerateEquityService {
             publicSituationMap.put(number, declareRecord.getPublicSituation());
             ownershipMap.put(number, declareRecord.getOwnership());
 
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(judgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(judgeObject.getBasicApplyId());
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
@@ -454,10 +454,7 @@ public class GenerateEquityService {
     private Map<Integer, SchemeJudgeObjectSimpleDto> getSchemeJudgeObjectSimpleDto(List<SchemeJudgeObject> judgeObjects) {
         Map<Integer, SchemeJudgeObjectSimpleDto> judgeObjectSimpleDtoMap = Maps.newHashMap();//用于综合评价生成
         for (SchemeJudgeObject schemeJudgeObject : judgeObjects) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }

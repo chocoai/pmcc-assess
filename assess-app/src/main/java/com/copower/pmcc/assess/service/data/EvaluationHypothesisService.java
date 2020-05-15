@@ -223,14 +223,6 @@ public class EvaluationHypothesisService {
                     if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
                         continue;
                     }
-                    BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-                    if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
-                        continue;
-                    }
-                    BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
-                    if (basicExamineHandle == null) {
-                        continue;
-                    }
                     actualTimenumbers.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
                     BasicBuilding building = basicBuildingService.getBasicBuildingByApplyId(schemeJudgeObject.getBasicApplyId());
                     //实际调查

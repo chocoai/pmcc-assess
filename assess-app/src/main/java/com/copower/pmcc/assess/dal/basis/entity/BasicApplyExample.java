@@ -236,6 +236,66 @@ public class BasicApplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andApplyBatchIdIsNull() {
+            addCriterion("apply_batch_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdIsNotNull() {
+            addCriterion("apply_batch_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdEqualTo(Integer value) {
+            addCriterion("apply_batch_id =", value, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdNotEqualTo(Integer value) {
+            addCriterion("apply_batch_id <>", value, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdGreaterThan(Integer value) {
+            addCriterion("apply_batch_id >", value, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("apply_batch_id >=", value, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdLessThan(Integer value) {
+            addCriterion("apply_batch_id <", value, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdLessThanOrEqualTo(Integer value) {
+            addCriterion("apply_batch_id <=", value, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdIn(List<Integer> values) {
+            addCriterion("apply_batch_id in", values, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdNotIn(List<Integer> values) {
+            addCriterion("apply_batch_id not in", values, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdBetween(Integer value1, Integer value2) {
+            addCriterion("apply_batch_id between", value1, value2, "applyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyBatchIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("apply_batch_id not between", value1, value2, "applyBatchId");
+            return (Criteria) this;
+        }
+
         public Criteria andBatchDetailIdIsNull() {
             addCriterion("batch_detail_id is null");
             return (Criteria) this;

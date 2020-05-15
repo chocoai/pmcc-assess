@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="apply_batch_id" property="applyBatchId" jdbcType="INTEGER" />
     <result column="batch_detail_id" property="batchDetailId" jdbcType="INTEGER" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
@@ -80,7 +81,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, batch_detail_id, declare_record_id, plan_details_id, land_category_id, 
+    id, name, apply_batch_id, batch_detail_id, declare_record_id, plan_details_id, land_category_id, 
     type, structural_info, area, address, basic_estate_id, basic_building_id, basic_unit_id, 
     basic_house_id, bis_delete, creator, gmt_created, gmt_modified
   </sql>
@@ -118,18 +119,20 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply (name, batch_detail_id, declare_record_id, 
-      plan_details_id, land_category_id, type, 
-      structural_info, area, address, 
-      basic_estate_id, basic_building_id, basic_unit_id, 
-      basic_house_id, bis_delete, creator, 
-      gmt_created, gmt_modified)
-    values (#{name,jdbcType=VARCHAR}, #{batchDetailId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, 
-      #{planDetailsId,jdbcType=INTEGER}, #{landCategoryId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{structuralInfo,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, 
-      #{basicEstateId,jdbcType=INTEGER}, #{basicBuildingId,jdbcType=INTEGER}, #{basicUnitId,jdbcType=INTEGER}, 
-      #{basicHouseId,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_apply (name, apply_batch_id, batch_detail_id, 
+      declare_record_id, plan_details_id, land_category_id, 
+      type, structural_info, area, 
+      address, basic_estate_id, basic_building_id, 
+      basic_unit_id, basic_house_id, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{name,jdbcType=VARCHAR}, #{applyBatchId,jdbcType=INTEGER}, #{batchDetailId,jdbcType=INTEGER}, 
+      #{declareRecordId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{landCategoryId,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{structuralInfo,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
+      #{address,jdbcType=VARCHAR}, #{basicEstateId,jdbcType=INTEGER}, #{basicBuildingId,jdbcType=INTEGER}, 
+      #{basicUnitId,jdbcType=INTEGER}, #{basicHouseId,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -139,6 +142,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         name,
+      </if>
+      <if test="applyBatchId != null" >
+        apply_batch_id,
       </if>
       <if test="batchDetailId != null" >
         batch_detail_id,
@@ -192,6 +198,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="applyBatchId != null" >
+        #{applyBatchId,jdbcType=INTEGER},
       </if>
       <if test="batchDetailId != null" >
         #{batchDetailId,jdbcType=INTEGER},
@@ -258,6 +267,9 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.applyBatchId != null" >
+        apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
+      </if>
       <if test="record.batchDetailId != null" >
         batch_detail_id = #{record.batchDetailId,jdbcType=INTEGER},
       </if>
@@ -315,6 +327,7 @@
     update tb_basic_apply
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
+      apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
       batch_detail_id = #{record.batchDetailId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
@@ -340,6 +353,9 @@
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="applyBatchId != null" >
+        apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
       </if>
       <if test="batchDetailId != null" >
         batch_detail_id = #{batchDetailId,jdbcType=INTEGER},
@@ -395,6 +411,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
     update tb_basic_apply
     set name = #{name,jdbcType=VARCHAR},
+      apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
       batch_detail_id = #{batchDetailId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},

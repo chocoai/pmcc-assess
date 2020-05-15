@@ -4450,10 +4450,7 @@ public class GenerateBaseDataService {
 //        String value = "/";
         String value = errorStr;
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }

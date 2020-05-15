@@ -1262,14 +1262,10 @@ public class GenerateCommonMethod {
     }
 
     public BasicApplyBatch getBasicApplyBatchBySchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
-        if (schemeJudgeObject.getDeclareRecordId() == null) {
+        if (schemeJudgeObject == null) {
             return null;
         }
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        if (declareRecord == null) {
-            return null;
-        }
-        BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+        BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
         if (basicApplyBatch == null) {
             return null;
         }

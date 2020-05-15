@@ -90,7 +90,7 @@ public class MdMarketCompareFieldService extends BaseService {
     @Autowired
     private GenerateLandFactorService generateLandFactorService;
     @Autowired
-    private BasicUnitHuxingDao basicUnitHuxingDao;
+    private BasicApplyBatchService basicApplyBatchService;
 
     /**
      * 获取市场比较法各个字段对应值
@@ -103,7 +103,7 @@ public class MdMarketCompareFieldService extends BaseService {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             if (basicApply == null) return null;
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(judgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApply.getApplyBatchId());
             //取得楼盘信息
             BasicEstate examineEstate = basicEstateService.getBasicEstateByBasicApply(basicApply);
             if (examineEstate == null) {

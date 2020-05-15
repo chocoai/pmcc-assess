@@ -8,6 +8,8 @@ public class BasicApply {
 
     private String name;
 
+    private Integer applyBatchId;
+
     private Integer batchDetailId;
 
     private Integer declareRecordId;
@@ -54,6 +56,14 @@ public class BasicApply {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getApplyBatchId() {
+        return applyBatchId;
+    }
+
+    public void setApplyBatchId(Integer applyBatchId) {
+        this.applyBatchId = applyBatchId;
     }
 
     public Integer getBatchDetailId() {

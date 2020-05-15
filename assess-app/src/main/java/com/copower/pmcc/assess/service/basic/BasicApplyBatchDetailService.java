@@ -270,6 +270,7 @@ public class BasicApplyBatchDetailService {
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
         if (basicHouse != null)
             basicApply.setArea(basicHouse.getArea());
+        basicApply.setApplyBatchId(houseBasicApplyBatchDetail.getApplyBatchId());
         basicApply.setBatchDetailId(houseBasicApplyBatchDetail.getId());
         basicApply.setPlanDetailsId(planDetailsId);
         List<BasicApplyBatchDetail> list = Lists.newArrayList();

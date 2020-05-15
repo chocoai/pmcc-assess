@@ -951,10 +951,7 @@ public class GenerateHouseEntityService {
     private Map<String, List<Integer>> groupByBuilding(List<SchemeJudgeObject> judgeObjectList) {
         Map<String, List<Integer>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
@@ -990,10 +987,7 @@ public class GenerateHouseEntityService {
     private Map<String, List<Integer>> groupByUnit(List<SchemeJudgeObject> judgeObjectList) {
         Map<String, List<Integer>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
@@ -1038,10 +1032,7 @@ public class GenerateHouseEntityService {
         Map<Integer, String> functionMap = Maps.newHashMap();
         Map<Integer, String> roomMap = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0){
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId()) ;
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId()) ;
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0){
                 continue;
             }
