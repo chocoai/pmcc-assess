@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
@@ -19,6 +21,7 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -52,6 +55,8 @@ public class BasicApplyService {
     private BasicApplyDao basicApplyDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -120,19 +125,23 @@ public class BasicApplyService {
         return basicApplyDao.getBasicApplyListByIds(ids);
     }
 
-    /**
-     * 获取权证信息by list
-     *
-     * @param batchDetailIds
-     * @return
-     */
-    public List<Integer> getDeclareIdsByBatchDetailIds(List<Integer> batchDetailIds) {
-        List<BasicApply> list = basicApplyDao.getBasicApplysByBatchDetailIds(batchDetailIds);
-        return LangUtils.transform(list, o -> o.getDeclareRecordId());
-    }
-
     public List<BasicApply> getBasicApplysByBatchDetailIds(List<Integer> batchDetailIds) {
         List<BasicApply> list = basicApplyDao.getBasicApplysByBatchDetailIds(batchDetailIds);
         return list;
+    }
+
+    public void updateNameByBatchDetailId(Integer batchDetailId){
+        List<BasicApplyBatchDetail> houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(batchDetailId);
+        if(CollectionUtils.isEmpty(houseBatchDetailList)) return;
+        for (BasicApplyBatchDetail basicApplyBatchDetail : houseBatchDetailList) {
+            BasicApply basicApply = getBasicApplyByHouseId(basicApplyBatchDetail.getTableId());
+            if(basicApply==null) continue;
+            List<KeyValueDto> keyValueDtos = JSON.parseArray(basicApply.getStructuralInfo(), KeyValueDto.class);
+            StringBuilder stringBuilder=new StringBuilder();
+            for (KeyValueDto keyValueDto : keyValueDtos) {
+
+            }
+            basicApply.setName(stringBuilder.toString());
+        }
     }
 }

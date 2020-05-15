@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineCommonQuoteFieldEnum;
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
@@ -21,6 +22,7 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -98,6 +100,21 @@ public class BasicApplyBatchDetailService {
         if (CollectionUtils.isNotEmpty(infoList))
             return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail).get(0);
         return null;
+    }
+
+    /**
+     * 缓存中获取数据
+     * @param id
+     * @return
+     */
+    public BasicApplyBatchDetail getCacheBasicApplyBatchDetailById(Integer id) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_BASIC_APPLY_BATCH_DETAIL_ID, String.valueOf(id));
+        try {
+            BasicApplyBatchDetail basicApplyBatchDetail = LangUtils.singleCache(rdsKey, id, BasicApplyBatchDetail.class, o -> basicApplyBatchDetailDao.getInfoById(o));
+            return basicApplyBatchDetail;
+        } catch (Exception e) {
+            return basicApplyBatchDetailDao.getInfoById(id);
+        }
     }
 
     public void saveBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) {

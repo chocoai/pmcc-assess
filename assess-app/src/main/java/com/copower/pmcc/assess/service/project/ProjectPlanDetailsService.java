@@ -639,23 +639,6 @@ public class ProjectPlanDetailsService {
     }
 
     /**
-     * 任务粘贴
-     *
-     * @param copyPlanDetailsId
-     * @param pastePlanDetailsId
-     */
-    public void taskPaste(Integer copyPlanDetailsId, Integer pastePlanDetailsId) throws Exception {
-        //1.被复制的任务必须是叶子节点 2.目前只支持资产清查，现场查勘案例调查可被复制
-        //3.被粘贴的任务必须是还未开始的任务 4.被粘贴的任务必须与被复制数据的工作事项一致
-        //5.被粘贴的任务也必须是叶子节点
-        if (copyPlanDetailsId == null || pastePlanDetailsId == null)
-            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        ProjectPlanDetails copyPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(copyPlanDetailsId);
-        ProjectPlanDetails pastePlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pastePlanDetailsId);
-        publicBasicService.copyForExamine(copyPlanDetails.getId(), pastePlanDetails.getId());
-    }
-
-    /**
      * 根据计划编号，取得计划所有的任务总数
      *
      * @param planId

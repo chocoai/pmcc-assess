@@ -13,7 +13,7 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
     private String tenementType;//物业类型
     private Boolean hasPriceAdjust;//是否可以单价调查
     private String standardNumber;//标准估价对象号
-    private String surveyInfo;//查勘信息
+    private String surveyObjectName;//查勘对象名称
 
     public String getTenementType() {
         return tenementType;
@@ -79,11 +79,11 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
         this.standardNumber = standardNumber;
     }
 
-    public String getSurveyInfo() {
-        return surveyInfo;
+    public String getSurveyObjectName() {
+        return surveyObjectName;
     }
 
-    public void setSurveyInfo(String surveyInfo) {
-        this.surveyInfo = surveyInfo;
+    public void setSurveyObjectName(String surveyObjectName) {
+        this.surveyObjectName = surveyObjectName;
     }
 }

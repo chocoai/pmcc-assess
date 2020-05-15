@@ -95,4 +95,7 @@ public class AssessCacheConstant {
 
     //批量申请
     public static final String PMCC_ASSESS_BASIC_BATCH_APPLY_ESTATE_ID = "pmcc:assess:basic:batch:apply:estate:id";
+
+    //查勘结构
+    public static final String PMCC_ASSESS_BASIC_APPLY_BATCH_DETAIL_ID = "pmcc:assess:basic:apply:batch:detail:id";
 }

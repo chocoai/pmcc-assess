@@ -97,22 +97,22 @@
                                         <div class="card-title">
                                             <strong>${item.areaName}</strong>
                                             <c:if test="${item.bisMerge eq true}">
-                                                <button type="button" class="btn btn-sm btn-warning btn-area-merge-cancel">
+                                                <button type="button" class="btn btn-md btn-warning btn-area-merge-cancel">
                                                     取消合并
                                                 </button>
                                             </c:if>
                                             <c:if test="${item.bisMerge ne true}">
-                                                <button type="button" class="btn btn-sm btn-info btn-area-merge">
+                                                <button type="button" class="btn btn-md btn-info btn-area-merge">
                                                     合并
                                                 </button>
                                                 <c:if test="${item.bisSplit ne true}">
-                                                    <button type="button" class="btn btn-sm btn-info btn-area-split">
+                                                    <button type="button" class="btn btn-md btn-info btn-area-split">
                                                         拆分
                                                     </button>
                                                 </c:if>
                                             </c:if>
                                             <c:if test="${item.bisSplit eq true}">
-                                                <button type="button" class="btn btn-sm btn-warning btn-area-split-remove">
+                                                <button type="button" class="btn btn-md btn-warning btn-area-split-remove">
                                                     移除
                                                 </button>
                                             </c:if>
@@ -281,44 +281,29 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="x_title">
-                                            <h4>估价对象查询</h4>
-                                            <div class="clearfix"></div>
-                                        </div>
+                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10"/>
                                         <div class="judge-object-query">
                                             <div class="row form-group">
                                                 <div class="col-md-12">
                                                     <div class="form-inline">
-                                                        <label class="col-sm-1 control-label">
-                                                            估价对象号
-                                                        </label>
                                                         <div class="col-sm-2">
                                                             <input type="text" data-rule-maxlength="100" placeholder="估价对象号"
                                                                    name="number"
                                                                    class="form-control input-full">
                                                         </div>
-                                                        <label class="col-sm-1 control-label">
-                                                            所有权人
-                                                        </label>
                                                         <div class="col-sm-2">
                                                             <input type="text" data-rule-maxlength="100" placeholder="所有权人"
                                                                    name="ownership"
                                                                    class="form-control input-full">
                                                         </div>
-                                                        <label class="col-sm-1 control-label">
-                                                            坐落
-                                                        </label>
                                                         <div class="col-sm-2">
                                                             <input type="text" data-rule-maxlength="100" placeholder="坐落"
                                                                    name="seat"
                                                                    class="form-control input-full">
                                                         </div>
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-6">
                                                             <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
                                                                     onclick="programme.loadJudgeObjectList(this);">查询
-                                                            </button>
-                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
-                                                                    onclick="programme.batchMerge(this);">批量合并
                                                             </button>
                                                             <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
                                                                     onclick="programme.selectAll(this);">全选
@@ -332,11 +317,18 @@
                                                             <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
                                                                     onclick="programme.expandJudge(this);">展开
                                                             </button>
+                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                                    onclick="programme.batchMerge(this);">批量合并
+                                                            </button>
+                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                                    onclick="programme.showBatchSetModal(this);">批量设置
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10"/>
                                         <div class="judge-object-content"></div>
                                     </form>
                                     <script type="text/javascript">
@@ -468,6 +460,60 @@
         </div>
     </div>
 </div>
+<%--估价对象批量设置--%>
+<div id="judgeBatchSetModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>批量设置</h4></div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="areaId">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline">
+                                <label class="col-sm-2 control-label">
+                                    设定用途
+                                </label>
+                                <div class="col-sm-4 x-valid">
+                                    <select class="form-control input-full" name="setUse">
+                                        <option value="">--请选择--</option>
+                                        <c:forEach items="${setUseList}" var="setUse">
+                                            <option value="${setUse.id}">${setUse.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 control-label">
+                                    最佳利用方式
+                                </label>
+                                <div class="col-sm-4 x-valid">
+                                    <select class="form-control input-full" name="bestUse">
+                                        <c:forEach items="${bestUseList}" var="bestUse">
+                                            <option value="${bestUse.id}">${bestUse.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick=" programme.batchSetValue(this);">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--查看合并的委估对象明细-->
 <div id="viewMergeJudgeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -522,21 +568,21 @@
                             <input type="checkbox">
                             <label style="word-break: break-all">{mergeNumber}</label>
                             <button type="button" href="javascript://" onclick="programme.splitJudge(this);"
-                               class="btn btn-sm btn-info judge-split tooltips">拆分</button>
+                               class="btn btn-md btn-info judge-split tooltips">拆分</button>
                             <button type="button" href="javascript://" onclick="programme.delSplitJudge(this);"
-                               class="btn btn-sm btn-warning judge-remove tooltips">移除</button>
+                               class="btn btn-md btn-warning judge-remove tooltips">移除</button>
                             <button type="button" href="javascript://" onclick="programme.mergeJudge(this);"
-                               class="btn btn-sm btn-info judge-merge tooltips">合并</button>
+                               class="btn btn-md btn-info judge-merge tooltips">合并</button>
                             <button type="button" href="javascript://" onclick="programme.mergeJudgeCancel(this);"
-                               class="btn btn-sm btn-warning judge-merge-cancel tooltips">取消合并</button>
+                               class="btn btn-md btn-warning judge-merge-cancel tooltips">取消合并</button>
                             <button type="button" href="javascript://" onclick="programme.mergeJudgeAdjustView(this);"
-                               class="btn btn-sm btn-info judge-merge-cancel tooltips">调整合并</button>
+                               class="btn btn-md btn-info judge-merge-cancel tooltips">调整合并</button>
                             <button type="button" href="javascript://"
                                onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
-                               class="btn btn-sm btn-info judge-relation-object tooltips">关联查勘</button>
+                               class="btn btn-md btn-info judge-relation-object tooltips">关联查勘</button>
                             <button type="button" href="javascript://" onclick="programmeMethod.setMethod(this);"
-                               class="btn btn-sm btn-info judge-method tooltips">评估方法</button>
-                            <label class="judge-desc"></label>
+                               class="btn btn-md btn-info judge-method tooltips">评估方法</button>
+                            <small></small>
                         </div>
                         <div class="card-tools">
                             <button type="button" class="btn  btn-link btn-primary btn-xs collapse-link"><span
@@ -813,10 +859,10 @@
                         if(item.standardNumber){
                             desc+="【"+item.standardNumber+"号】";
                         }
-                        if(item.surveyInfo){
-                            desc+="【"+item.surveyInfo+"】";
+                        if(item.surveyObjectName){
+                            desc+="【"+item.surveyObjectName+"】";
                         }
-                        lastTr.find('.card-title').find('.judge-desc').text(desc);
+                        lastTr.find('.card-title').find('small').text(desc);
                     })
                 }
             },
@@ -1657,6 +1703,30 @@
                 AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
+    }
+
+    //显示批量设置弹窗
+    programme.showBatchSetModal=function (_this) {
+        var areaId= $(_this).closest('.area_panel').find('[name="areaGroupId"]').val()
+        var checkedBoxs = $("#frmJudgeObject"+areaId).find('input:checkbox:checked');
+        if(checkedBoxs.length<=0){
+            notifyInfo('提示','请选择估价对象信息');
+            return false;
+        }
+        $("#judgeBatchSetModal").find('[name=areaId]').val(areaId);
+        $("#judgeBatchSetModal").modal();
+    }
+
+    //批量设值
+    programme.batchSetValue=function (_this) {
+        var form=$(_this).closest('.modal').find('form');
+        var checkedBoxs = $("#frmJudgeObject"+form.find('[name="areaId"]').val()).find('input:checkbox:checked');
+        $.each(checkedBoxs,function (i,item) {
+            var panel = $(item).closest('.x_panel');
+            panel.find('[data-name="setUse"]').val(form.find('[name="setUse"]').val()).trigger('change');
+            panel.find('[data-name="bestUse"]').val(form.find('[name="bestUse"]').val()).trigger('change');
+        })
+        $("#judgeBatchSetModal").modal('hide');
     }
 </script>
 
