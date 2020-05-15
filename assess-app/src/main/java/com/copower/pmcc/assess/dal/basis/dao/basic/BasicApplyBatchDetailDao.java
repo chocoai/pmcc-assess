@@ -91,21 +91,6 @@ public class BasicApplyBatchDetailDao {
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
-
-    /**
-     * 案例升级数据
-     *
-     * @param applyBatchId
-     * @return
-     */
-    public List<BasicApplyBatchDetail> getUpgradeAddDetail(Integer applyBatchId) {
-        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
-        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria();
-        criteria.andUpgradeTableIdIsNotNull();
-        criteria.andApplyBatchIdEqualTo(applyBatchId);
-        return basicApplyBatchDetailMapper.selectByExample(example);
-    }
-
     /**
      * 新增
      *
@@ -137,27 +122,5 @@ public class BasicApplyBatchDetailDao {
         if (basicApplyBatchDetail == null) return false;
         basicApplyBatchDetail.setBisDelete(true);
         return basicApplyBatchDetailMapper.updateByPrimaryKeySelective(basicApplyBatchDetail) > 0;
-    }
-
-    public BasicApplyBatchDetail getBasicApplyBatchDetailList(Integer basicApplyBatchId, String tableName, Integer tableId,String name) {
-        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
-        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria();
-        if(basicApplyBatchId!=null){
-            criteria.andApplyBatchIdEqualTo(basicApplyBatchId);
-        }
-        if (StringUtils.isNotBlank(name)) {
-            criteria.andNameLike(String.format("%s%s%s", "%", name, "%"));
-        }
-        if (StringUtils.isNotBlank(tableName)) {
-            criteria.andTableNameEqualTo(tableName);
-        }
-        if (tableId!=null) {
-            criteria.andTableIdEqualTo(tableId);
-        }
-        example.setOrderByClause("id desc");
-
-        List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailMapper.selectByExample(example);
-        if (CollectionUtils.isNotEmpty(basicApplyBatchDetails)) return basicApplyBatchDetails.get(0);
-        return null;
     }
 }

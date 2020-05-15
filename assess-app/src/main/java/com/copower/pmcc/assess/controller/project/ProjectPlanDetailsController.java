@@ -66,17 +66,6 @@ public class ProjectPlanDetailsController {
         }
     }
 
-    @PostMapping(name = "任务信息粘贴", value = "/taskPaste")
-    public HttpResult taskPaste(Integer copyPlanDetailsId, Integer pastePlanDetailsId) {
-        try {
-            projectPlanDetailsService.taskPaste(copyPlanDetailsId, pastePlanDetailsId);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e, "项目详情粘贴数据");
-            return HttpResult.newErrorResult("粘贴数据异常");
-        }
-    }
-
     @PostMapping(name = "添加任务", value = "/saveProjectStagePlan")
     public HttpResult saveProjectStagePlan(String formData) {
         try {

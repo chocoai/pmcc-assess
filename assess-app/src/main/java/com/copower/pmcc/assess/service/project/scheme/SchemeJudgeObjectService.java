@@ -281,13 +281,13 @@ public class SchemeJudgeObjectService {
                         schemeJudgeObjectVo.setFloor(basicHouse.getFloor());
                         schemeJudgeObjectVo.setRoomNumber(basicHouse.getHouseNumber());
                         BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
-                        if(unitHuxing!=null){
+                        if (unitHuxing != null) {
                             schemeJudgeObjectVo.setTenementType(unitHuxing.getTenementType());
                         }
                         List<BasicHouseHuxingPrice> huxingPrices = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(basicHouse.getId());
-                        if(CollectionUtils.isNotEmpty(huxingPrices)){
+                        if (CollectionUtils.isNotEmpty(huxingPrices)) {
                             schemeJudgeObjectVo.setHasPriceAdjust(true);
-                        }else {
+                        } else {
                             schemeJudgeObjectVo.setHasPriceAdjust(false);
                         }
                     }
@@ -371,15 +371,20 @@ public class SchemeJudgeObjectService {
             if (bestUseDescription != null)
                 schemeJudgeObjectVo.setBestUseName(bestUseDescription.getName());
         }
-        if(schemeJudgeObject.getStandardJudgeId()!=null){
+        if (schemeJudgeObject.getStandardJudgeId() != null) {
             SchemeJudgeObject judgeObject = getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
-            if(judgeObject!=null)
-                schemeJudgeObjectVo.setStandardNumber(judgeObject.getNumber());
+            if (judgeObject != null) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(judgeObject.getNumber());
+                if (judgeObject.getSplitNumber() != null)
+                    stringBuilder.append("-").append(judgeObject.getSplitNumber());
+                schemeJudgeObjectVo.setStandardNumber(stringBuilder.toString());
+            }
         }
-        if(schemeJudgeObject.getBasicApplyId()!=null){
+        if (schemeJudgeObject.getBasicApplyId() != null) {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-            if(basicApply!=null)
-                schemeJudgeObjectVo.setSurveyInfo(basicApply.getAddress());
+            if (basicApply != null)
+                schemeJudgeObjectVo.setSurveyObjectName(basicApply.getName());
         }
         return schemeJudgeObjectVo;
     }
@@ -403,12 +408,12 @@ public class SchemeJudgeObjectService {
                 schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
                 i++;
             }
-            splitJudge(schemeJudgeObject,judgeObjectList.size() + 1,null);
+            splitJudge(schemeJudgeObject, judgeObjectList.size() + 1, null);
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void splitJudge(SchemeJudgeObject schemeJudgeObject,Integer splitNumber,Integer basicApplyId) {
+    public void splitJudge(SchemeJudgeObject schemeJudgeObject, Integer splitNumber, Integer basicApplyId) {
         SchemeJudgeObject splitJudgeObject = new SchemeJudgeObject();
         splitJudgeObject.setPid(0);
         splitJudgeObject.setSplitFrom(schemeJudgeObject.getId());
@@ -439,7 +444,6 @@ public class SchemeJudgeObjectService {
         splitJudgeObject.setCreator(commonService.thisUserAccount());
         schemeJudgeObjectDao.addSchemeJudgeObject(splitJudgeObject);
     }
-
 
 
     /**

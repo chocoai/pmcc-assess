@@ -348,7 +348,8 @@
                             <input type="checkbox">
                             <label style="word-break: break-all">{mergeNumber}</label>
                             <button type="button" href="javascript://" onclick="programmeMethod.setMethod(this);"
-                                    class="btn btn-sm btn-info judge-method tooltips">评估方法</button>
+                                    class="btn btn-md btn-info judge-method tooltips">评估方法</button>
+                            <small></small>
                         </div>
                         <div class="card-tools">
                             <button type="button" class="btn  btn-link btn-primary btn-xs collapse-link"><span
@@ -549,6 +550,14 @@
                         if (item.bisSetFunction) {
                             lastTr.find('.x_title').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }
+                        var desc='';
+                        if(item.standardNumber){
+                            desc+="【"+item.standardNumber+"号】";
+                        }
+                        if(item.surveyObjectName){
+                            desc+="【"+item.surveyObjectName+"】";
+                        }
+                        lastTr.find('.card-title').find('small').text(desc);
                     })
                 }
             },
