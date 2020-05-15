@@ -72,8 +72,7 @@ var houseHuxingPrice;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseHuxingPrice.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -118,8 +117,7 @@ var houseHuxingPrice;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseHuxingPrice.prototype.config().box).modal('hide');
                         houseHuxingPrice.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -395,8 +393,7 @@ var houseHeating;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseHeating.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -426,8 +423,7 @@ var houseHeating;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseHeating.prototype.config().box).modal('hide');
                         houseHeating.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -535,8 +531,7 @@ var houseAirConditioner;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseAirConditioner.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -566,8 +561,7 @@ var houseAirConditioner;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseAirConditioner.prototype.config().box).modal('hide');
                         houseAirConditioner.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -675,8 +669,7 @@ var houseNewWind;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseNewWind.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -706,8 +699,7 @@ var houseNewWind;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseNewWind.prototype.config().box).modal('hide');
                         houseNewWind.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -814,8 +806,7 @@ var houseCorollaryEquipment;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseCorollaryEquipment.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -844,8 +835,7 @@ var houseCorollaryEquipment;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseCorollaryEquipment.prototype.config().box).modal('hide');
                         houseCorollaryEquipment.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -973,8 +963,7 @@ var houseFaceStreet;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseFaceStreet.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1021,8 +1010,7 @@ var houseFaceStreet;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseFaceStreet.prototype.config().box).modal('hide');
                         houseFaceStreet.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1182,8 +1170,7 @@ var houseIntelligent;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseIntelligent.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1234,8 +1221,7 @@ var houseIntelligent;
                         houseIntelligent.prototype.loadDataDicList();
                         num = 0;
                         arr.length = 0;
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1509,8 +1495,7 @@ var houseWater;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseWater.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1539,8 +1524,7 @@ var houseWater;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseWater.prototype.config().box).modal('hide');
                         houseWater.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1696,8 +1680,7 @@ var houseRoomDecorate;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseRoomDecorate.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1726,8 +1709,7 @@ var houseRoomDecorate;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseRoomDecorate.prototype.config().box).modal('hide');
                         houseRoomDecorate.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1981,8 +1963,7 @@ houseWaterDrain.saveData = function () {
                 notifySuccess("成功", "保存成功");
                 $('#' + houseWaterDrain.config.box).modal('hide');
                 houseWaterDrain.loadDataDicList();
-            }
-            else {
+            } else {
                 AlertError("保存数据失败，失败原因:" + result.errmsg);
             }
         },
@@ -2086,8 +2067,7 @@ var houseRoom;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseRoom.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -2135,8 +2115,7 @@ var houseRoom;
                         if (houseRoom.prototype.isEmpty(item)) {
                             houseRoom.prototype.subclassLoadList(item);
                         }
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -2155,8 +2134,7 @@ var houseRoom;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseRoom.prototype.subclassLoadList(result.data);
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -2243,8 +2221,7 @@ var houseRoom;
                         notifySuccess("成功", "保存成功");
                         $('#' + houseRoom.prototype.config().box).modal('hide');
                         houseRoom.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -2724,6 +2701,7 @@ damagedDegree.entityConditionChange = function (_this) {
     var group = $(_this).closest('.group');
     var text = $(_this).attr('data-' + $(_this).val());
     group.find('[data-name=entityConditionContent]').text(text);
+    group.find('[name=entityConditionContent]').val(text);
     group.find("textarea").attr("required", "required");
 };
 
@@ -2893,7 +2871,9 @@ damagedDegree.autoFillEntityConditionContent = function () {
     var option = $("#damagedDegreeDetailForm").find('[name=type]').find("option:selected");
     var entityCondition = $("#damagedDegreeDetailForm").find('[name=entityCondition]').val();
     if (option && entityCondition) {
-        $("#damagedDegreeDetailForm").find('[data-name=entityConditionContent]').text($(option).attr('data-' + entityCondition));
+        var text = $(option).attr('data-' + entityCondition);
+        $("#damagedDegreeDetailForm").find('[data-name=entityConditionContent]').text(text);
+        $("#damagedDegreeDetailForm").find('[name=entityConditionContent]').val(text);
     }
 }
 
