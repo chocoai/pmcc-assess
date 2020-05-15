@@ -193,7 +193,7 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getReportQrcode(GenerateReportInfo generateReportInfo, String reportType) throws Exception {
+    public String getReportQrcode(GenerateReportInfo generateReportInfo, String reportType ,GenerateReportGroup reportGroup) throws Exception {
         //1.先从本地查看是否已生成过二维码
         //2.如果已生成直接返回已生成的二维码
         //3.如果没有生成则调用接口生成二维码并记录数据到本地
@@ -218,7 +218,7 @@ public class GenerateBaseDataService {
             projectDocumentDto.setAppKey(applicationConstant.getAppKey());
             projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
             projectDocumentDto.setTableId(generateReportInfo.getId());
-            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
+            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
             projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
             projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
             projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
@@ -231,7 +231,7 @@ public class GenerateBaseDataService {
             qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
             projectQrcodeRecordService.saveProjectQrcodeRecode(qrcodeRecode);
             qrCode = projectDocumentDto.getQrcode();
-            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, generateReportInfo.getAreaGroupId()));
+            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
             erpRpcToolsService.saveProjectDocument(projectDocumentDto);
         }
         return toolBaseOrCode(qrCode, 100L, 100L);

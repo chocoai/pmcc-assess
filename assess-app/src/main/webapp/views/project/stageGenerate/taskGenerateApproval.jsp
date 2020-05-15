@@ -113,47 +113,25 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 control-label">报告类型</label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full">${generationVo.reportTypeName}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
-                                            <c:if test="${fn:contains(generationVo.reportType, reportType.id)}">
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1 control-label">
-                                                                    ${reportType.name}
-                                                            </label>
-                                                            <div class="col-sm-3">
-                                                                <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:if>
-                                        </c:forEach>
                                     </form>
                                 </div>
+
+
+                                <div class="card-body">
+                                    <div id="generateReportGroupTool${generationVo.areaGroupId}">
+
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
-                        <script>
-                            $(function () {
-                                getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
-                                    $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
-                                        fileShow(n + '${generationVo.areaGroupId}', false, '${generationVo.id}');
-                                    });
-                                });
-                            })
-                        </script>
                     </c:forEach>
+
+                    <%@include file="/views/project/stageGenerate/generateReportGroupDetail.jsp" %>
                     <%@include file="/views/share/form_approval.jsp" %>
+
+
                 </div>
             </div>
         </div>
@@ -166,50 +144,8 @@
 
 </html>
 <script type="text/javascript">
-    function fileShow(fieldsName, deleteFlag, id) {
-        FileUtils.getFileShows({
-            target: fieldsName,
-            //showMode: 'table',
-            formData: {
-                fieldsName: fieldsName,
-                tableName: AssessDBKey.GenerateReportInfo,
-                tableId: id == undefined ? 0 : id
-            },
-            editFlag: true,
-            signatureFlag: '${activityCnName}'.indexOf("盖章") > -1,
-            deleteFlag: deleteFlag == undefined ? true : deleteFlag
-        })
-    }
 
-    /**
-     * @author:  zch
-     * 描述:报告附件 数组  拼接为REPORT_TYPE_PREAUDIT
-     * @date:  2019-05-27
-     **/
-    function getSchemeReportGenerationFileControlIdArray(callback) {
-        AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_TYPE, '', function (html, data) {
-            var fileArray = [];
-            var underline = "_";
-            data.forEach(function (value, index) {
-                var fieldName = value.fieldName;
-                if (fieldName) {
-                    var strArray = fieldName.split(".");
-                    var tempArray = [];
-                    if (strArray.length >= 1) {
-                        strArray.forEach(function (item, i) {
-                            tempArray.push(item.toUpperCase());
-                        });
-                    }
-                    if (tempArray.length >= 1) {
-                        fileArray.push(tempArray.join(underline));
-                    }
-                }
-            });
-            if (callback) {
-                callback(fileArray);
-            }
-        });
-    }
+
 
     function saveform() {
         saveApprovalform("");

@@ -41,6 +41,12 @@ public class GenerateReportItemDao {
         return mapper.insertSelective(oo) == 1;
     }
 
+    public  List<GenerateReportItem> getGenerateReportItemByJudgeObjectIds(Integer masterId,List<Integer> judgeObjectIds){
+        GenerateReportItemExample example = new GenerateReportItemExample();
+        example.createCriteria().andMasterIdEqualTo(masterId).andJudgeObjectIdIn(judgeObjectIds);
+        return mapper.selectByExample(example);
+    }
+
     public List<GenerateReportItem> getGenerateReportItemByIds(List<Integer> ids) {
         GenerateReportItemExample example = new GenerateReportItemExample();
         example.createCriteria().andIdIn(ids);

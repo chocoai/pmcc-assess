@@ -15,11 +15,15 @@ public class GenerateReportGroup {
 
     private String reportType;
 
+    private Integer areaGroupId;
+
     private Integer reportInfoId;
 
     private Integer planDetailsId;
 
     private String processInsId;
+
+    private String symbolOperation;
 
     private String status;
 
@@ -77,6 +81,14 @@ public class GenerateReportGroup {
         this.reportType = reportType == null ? null : reportType.trim();
     }
 
+    public Integer getAreaGroupId() {
+        return areaGroupId;
+    }
+
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
+    }
+
     public Integer getReportInfoId() {
         return reportInfoId;
     }
@@ -99,6 +111,14 @@ public class GenerateReportGroup {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public String getSymbolOperation() {
+        return symbolOperation;
+    }
+
+    public void setSymbolOperation(String symbolOperation) {
+        this.symbolOperation = symbolOperation == null ? null : symbolOperation.trim();
     }
 
     public String getStatus() {

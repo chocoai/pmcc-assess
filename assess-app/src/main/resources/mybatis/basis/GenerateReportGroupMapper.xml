@@ -8,9 +8,11 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="report_type_name" property="reportTypeName" jdbcType="VARCHAR" />
     <result column="report_type" property="reportType" jdbcType="VARCHAR" />
+    <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
     <result column="report_info_id" property="reportInfoId" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="symbol_operation" property="symbolOperation" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -75,8 +77,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, full_name, name, report_type_name, report_type, report_info_id, plan_details_id, 
-    process_ins_id, status, creator, gmt_created, gmt_modified
+    id, project_id, full_name, name, report_type_name, report_type, area_group_id, report_info_id, 
+    plan_details_id, process_ins_id, symbol_operation, status, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGroupExample" >
     select
@@ -113,15 +116,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_generate_report_group (project_id, full_name, name, 
-      report_type_name, report_type, report_info_id, 
-      plan_details_id, process_ins_id, status, 
-      creator, gmt_created, gmt_modified
-      )
+      report_type_name, report_type, area_group_id, 
+      report_info_id, plan_details_id, process_ins_id, 
+      symbol_operation, status, creator, 
+      gmt_created, gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{fullName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{reportTypeName,jdbcType=VARCHAR}, #{reportType,jdbcType=VARCHAR}, #{reportInfoId,jdbcType=INTEGER}, 
-      #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{reportTypeName,jdbcType=VARCHAR}, #{reportType,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, 
+      #{reportInfoId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
+      #{symbolOperation,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.GenerateReportGroup" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -144,6 +147,9 @@
       <if test="reportType != null" >
         report_type,
       </if>
+      <if test="areaGroupId != null" >
+        area_group_id,
+      </if>
       <if test="reportInfoId != null" >
         report_info_id,
       </if>
@@ -152,6 +158,9 @@
       </if>
       <if test="processInsId != null" >
         process_ins_id,
+      </if>
+      <if test="symbolOperation != null" >
+        symbol_operation,
       </if>
       <if test="status != null" >
         status,
@@ -182,6 +191,9 @@
       <if test="reportType != null" >
         #{reportType,jdbcType=VARCHAR},
       </if>
+      <if test="areaGroupId != null" >
+        #{areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="reportInfoId != null" >
         #{reportInfoId,jdbcType=INTEGER},
       </if>
@@ -190,6 +202,9 @@
       </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="symbolOperation != null" >
+        #{symbolOperation,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -232,6 +247,9 @@
       <if test="record.reportType != null" >
         report_type = #{record.reportType,jdbcType=VARCHAR},
       </if>
+      <if test="record.areaGroupId != null" >
+        area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="record.reportInfoId != null" >
         report_info_id = #{record.reportInfoId,jdbcType=INTEGER},
       </if>
@@ -240,6 +258,9 @@
       </if>
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.symbolOperation != null" >
+        symbol_operation = #{record.symbolOperation,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
@@ -266,9 +287,11 @@
       name = #{record.name,jdbcType=VARCHAR},
       report_type_name = #{record.reportTypeName,jdbcType=VARCHAR},
       report_type = #{record.reportType,jdbcType=VARCHAR},
+      area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
       report_info_id = #{record.reportInfoId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      symbol_operation = #{record.symbolOperation,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -295,6 +318,9 @@
       <if test="reportType != null" >
         report_type = #{reportType,jdbcType=VARCHAR},
       </if>
+      <if test="areaGroupId != null" >
+        area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      </if>
       <if test="reportInfoId != null" >
         report_info_id = #{reportInfoId,jdbcType=INTEGER},
       </if>
@@ -303,6 +329,9 @@
       </if>
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="symbolOperation != null" >
+        symbol_operation = #{symbolOperation,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -326,9 +355,11 @@
       name = #{name,jdbcType=VARCHAR},
       report_type_name = #{reportTypeName,jdbcType=VARCHAR},
       report_type = #{reportType,jdbcType=VARCHAR},
+      area_group_id = #{areaGroupId,jdbcType=INTEGER},
       report_info_id = #{reportInfoId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      symbol_operation = #{symbolOperation,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.GenerateReportItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportItem;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -36,6 +38,8 @@ public class GenerateReportItemService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
 
 
@@ -50,11 +54,29 @@ public class GenerateReportItemService {
         if (StringUtils.isEmpty(oo.getCreator())) {
             oo.setCreator(commonService.thisUserAccount());
         }
-
+        handle(oo) ;
         boolean b = generateReportItemDao.saveGenerateReportItem(oo);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(GenerateReportItem.class), oo.getId());
         return b;
 
+    }
+
+
+
+    public  List<GenerateReportItem> getGenerateReportItemByJudgeObjectIds(Integer masterId,List<Integer> judgeObjectIds){
+        return generateReportItemDao.getGenerateReportItemByJudgeObjectIds(masterId, judgeObjectIds) ;
+    }
+
+
+    private void handle(GenerateReportItem oo){
+        if (oo.getJudgeObjectId() == null || oo.getJudgeObjectId() == 0){
+            return;
+        }
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(oo.getJudgeObjectId());
+        oo.setName(schemeJudgeObject.getName());
+        oo.setNumber(schemeJudgeObject.getNumber());
+        oo.setProjectId(oo.getProjectId());
+        oo.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
     }
 
     public void saveAndUpdateGenerateReportItem(GenerateReportItem oo, boolean updateNull) throws BusinessException {

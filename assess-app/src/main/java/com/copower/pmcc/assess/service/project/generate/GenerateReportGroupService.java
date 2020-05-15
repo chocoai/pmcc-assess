@@ -121,7 +121,7 @@ public class GenerateReportGroupService {
             Iterator<GenerateReportGroup> iterator = list.iterator();
             while (iterator.hasNext()) {
                 GenerateReportGroup generateReportGroup = iterator.next();
-                handle(generateReportGroup) ;
+                handle(generateReportGroup);
             }
         }
         vo.setTotal(page.getTotal());
@@ -134,28 +134,40 @@ public class GenerateReportGroupService {
     }
 
     public GenerateReportGroup getGenerateReportGroupById(Integer id) {
-        return generateReportGroupDao.getGenerateReportGroupById(id);
+        GenerateReportGroup generateReportGroup = generateReportGroupDao.getGenerateReportGroupById(id);
+        handle(generateReportGroup);
+        return generateReportGroup;
     }
 
 
     public List<GenerateReportGroup> getGenerateReportGroupListByQuery(GenerateReportGroup oo) {
         List<GenerateReportGroup> list = generateReportGroupDao.getGenerateReportGroupListByExample(oo);
-        if (CollectionUtils.isNotEmpty(list)){
-            list.forEach( obj  -> handle(obj));
+        if (CollectionUtils.isNotEmpty(list)) {
+            list.forEach(obj -> handle(obj));
         }
         return list;
     }
 
     /**
      * 生成估价对象编码名称
+     *
      * @param generateReportGroup
      */
     public void handle(GenerateReportGroup generateReportGroup) {
-        if (generateReportGroup == null){
+        if (generateReportGroup == null) {
             return;
         }
-        if (NumberUtils.isNumber(generateReportGroup.getReportType())){
+        if (NumberUtils.isNumber(generateReportGroup.getReportType())) {
             generateReportGroup.setReportTypeName(baseDataDicService.getNameById(generateReportGroup.getReportType()));
+        } else {
+            List<String> stringList = FormatUtils.transformString2List(generateReportGroup.getReportType());
+            if (CollectionUtils.isNotEmpty(stringList)) {
+                List<String> lists = new ArrayList<>(stringList.size());
+                stringList.forEach(s -> {
+                    lists.add(baseDataDicService.getNameById(s));
+                });
+                generateReportGroup.setReportTypeName(StringUtils.join(lists, ","));
+            }
         }
         List<GenerateReportItem> generateReportItemList = generateReportItemService.getGenerateReportItemListByMasterIdList(generateReportGroup.getId());
         if (CollectionUtils.isEmpty(generateReportItemList)) {

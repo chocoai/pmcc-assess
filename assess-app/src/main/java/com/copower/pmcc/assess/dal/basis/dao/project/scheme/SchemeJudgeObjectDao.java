@@ -64,6 +64,30 @@ public class SchemeJudgeObjectDao {
         return mapper.selectByExample(example);
     }
 
+    public List<SchemeJudgeObject> getSchemeJudgeObjectListAll(String name,String certName, String seat,String ownership,Integer areaGroupId,List<Integer> ids) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria();
+        if(areaGroupId!=null){
+            criteria.andAreaGroupIdEqualTo(areaGroupId);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
+        }
+        if (StringUtils.isNotBlank(seat)) {
+            criteria.andSeatLike(String.format("%%%s%%", seat));
+        }
+          if (StringUtils.isNotBlank(certName)) {
+            criteria.andCertNameLike(String.format("%%%s%%", certName));
+        }
+          if (StringUtils.isNotBlank(ownership)) {
+            criteria.andOwnershipLike(String.format("%%%s%%", ownership));
+        }
+        if(CollectionUtils.isNotEmpty(ids)){
+            criteria.andIdIn(ids);
+        }
+        return mapper.selectByExample(example);
+    }
+
     public boolean updateSchemeJudgeObject(Integer oldAreaGroupId, Integer newAreaGroupId) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andAreaGroupIdEqualTo(oldAreaGroupId);

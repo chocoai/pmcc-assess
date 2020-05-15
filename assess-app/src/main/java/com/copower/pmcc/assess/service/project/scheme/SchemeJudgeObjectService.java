@@ -166,6 +166,30 @@ public class SchemeJudgeObjectService {
         return LangUtils.transform(schemeJudgeObjectList, o -> getSchemeJudgeObjectVo(o));
     }
 
+    public BootstrapTableVo getJudgeObjectListByQuery(String name,String certName, String seat,String ownership,Integer areaGroupId){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getJudgeObjectListByQuery(name,certName,seat,ownership,areaGroupId,null);
+        List<SchemeJudgeObjectVo> objectVoList = LangUtils.transform(schemeJudgeObjectList, o -> getSchemeJudgeObjectVo(o));
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(objectVoList) ? new ArrayList<SchemeJudgeObject>() : objectVoList);
+        vo.setTotal(page.getTotal());
+        return vo ;
+    }
+
+    public BootstrapTableVo getSchemeJudgeObjectListAll(String name,String certName, String seat,String ownership,Integer areaGroupId){
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectListAll(name,certName,seat,ownership,areaGroupId,null);
+        List<SchemeJudgeObjectVo> objectVoList = LangUtils.transform(schemeJudgeObjectList, o -> getSchemeJudgeObjectVo(o));
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(objectVoList) ? new ArrayList<SchemeJudgeObject>() : objectVoList);
+        vo.setTotal(page.getTotal());
+        return vo ;
+    }
+
+
+
     public List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId) {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setProjectId(projectId);

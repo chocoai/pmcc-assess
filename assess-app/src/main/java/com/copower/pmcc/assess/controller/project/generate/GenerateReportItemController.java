@@ -5,10 +5,13 @@ import com.copower.pmcc.assess.dal.basis.entity.GenerateReportItem;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportItemService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -35,9 +38,23 @@ public class GenerateReportItemController {
     @RequestMapping(value = "/saveAndUpdateGenerateReportItem", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateGenerateReportItem(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
         try {
-            GenerateReportItem generateReportItem = JSONObject.parseObject(formData,GenerateReportItem.class) ;
+            GenerateReportItem generateReportItem = JSONObject.parseObject(formData, GenerateReportItem.class);
             generateReportItemService.saveAndUpdateGenerateReportItem(generateReportItem, updateNull);
             return HttpResult.newCorrectResult(200, generateReportItem);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/saveAndUpdateGenerateReportItemArray", name = "新增或者修改", method = {RequestMethod.POST})
+    public HttpResult saveAndUpdateGenerateReportItemArray(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
+        try {
+            List<GenerateReportItem> generateReportItems = JSONObject.parseArray(formData, GenerateReportItem.class);
+            for (GenerateReportItem generateReportItem : generateReportItems) {
+                generateReportItemService.saveAndUpdateGenerateReportItem(generateReportItem, updateNull);
+            }
+            return HttpResult.newCorrectResult(200, generateReportItems);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -62,6 +79,16 @@ public class GenerateReportItemController {
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return generateReportItemService.getBootstrapTableVo(new GenerateReportItem());
+        }
+    }
+
+    @GetMapping(value = "/getGenerateReportItemByJudgeObjectIds")
+    public HttpResult getGenerateReportItemByJudgeObjectIds(Integer masterId,String ids){
+        try {
+            return HttpResult.newCorrectResult(200, generateReportItemService.getGenerateReportItemByJudgeObjectIds(masterId, FormatUtils.transformString2Integer(ids)));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
