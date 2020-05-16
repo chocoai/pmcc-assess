@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="land_id" property="landId" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="land_use_type" property="landUseType" jdbcType="VARCHAR" />
     <result column="land_use_category" property="landUseCategory" jdbcType="VARCHAR" />
     <result column="acquisition_time" property="acquisitionTime" jdbcType="TIMESTAMP" />
@@ -18,11 +19,11 @@
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="land_shape" property="landShape" jdbcType="VARCHAR" />
     <result column="develop_time" property="developTime" jdbcType="TIMESTAMP" />
-    <result column="plot_ratio" property="plotRatio" jdbcType="DECIMAL" />
+    <result column="plot_ratio" property="plotRatio" jdbcType="VARCHAR" />
     <result column="building_density" property="buildingDensity" jdbcType="VARCHAR" />
-    <result column="greening_rate" property="greeningRate" jdbcType="DECIMAL" />
+    <result column="greening_rate" property="greeningRate" jdbcType="VARCHAR" />
     <result column="compatibility_type" property="compatibilityType" jdbcType="VARCHAR" />
-    <result column="compatibility_rate" property="compatibilityRate" jdbcType="DECIMAL" />
+    <result column="compatibility_rate" property="compatibilityRate" jdbcType="VARCHAR" />
     <result column="height_permitted" property="heightPermitted" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -84,10 +85,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, land_id, land_use_type, land_use_category, acquisition_time, land_use_year, land_factor_total_score, 
-    land_level_content_result, land_level, land_level_name, bis_delete, creator, gmt_created, 
-    gmt_modified, land_shape, develop_time, plot_ratio, building_density, greening_rate, 
-    compatibility_type, compatibility_rate, height_permitted
+    id, land_id, house_id, land_use_type, land_use_category, acquisition_time, land_use_year, 
+    land_factor_total_score, land_level_content_result, land_level, land_level_name, 
+    bis_delete, creator, gmt_created, gmt_modified, land_shape, develop_time, plot_ratio, 
+    building_density, greening_rate, compatibility_type, compatibility_rate, height_permitted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfoExample" >
     select
@@ -123,22 +124,22 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_estate_land_category_info (land_id, land_use_type, land_use_category, 
-      acquisition_time, land_use_year, land_factor_total_score, 
-      land_level_content_result, land_level, land_level_name, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified, land_shape, develop_time, 
-      plot_ratio, building_density, greening_rate, 
-      compatibility_type, compatibility_rate, height_permitted
-      )
-    values (#{landId,jdbcType=INTEGER}, #{landUseType,jdbcType=VARCHAR}, #{landUseCategory,jdbcType=VARCHAR}, 
-      #{acquisitionTime,jdbcType=TIMESTAMP}, #{landUseYear,jdbcType=DECIMAL}, #{landFactorTotalScore,jdbcType=DECIMAL}, 
-      #{landLevelContentResult,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{landLevelName,jdbcType=VARCHAR}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{landShape,jdbcType=VARCHAR}, #{developTime,jdbcType=TIMESTAMP}, 
-      #{plotRatio,jdbcType=DECIMAL}, #{buildingDensity,jdbcType=VARCHAR}, #{greeningRate,jdbcType=DECIMAL}, 
-      #{compatibilityType,jdbcType=VARCHAR}, #{compatibilityRate,jdbcType=DECIMAL}, #{heightPermitted,jdbcType=VARCHAR}
-      )
+    insert into tb_basic_estate_land_category_info (land_id, house_id, land_use_type, 
+      land_use_category, acquisition_time, land_use_year, 
+      land_factor_total_score, land_level_content_result, 
+      land_level, land_level_name, bis_delete, 
+      creator, gmt_created, gmt_modified, 
+      land_shape, develop_time, plot_ratio, 
+      building_density, greening_rate, compatibility_type, 
+      compatibility_rate, height_permitted)
+    values (#{landId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{landUseType,jdbcType=VARCHAR}, 
+      #{landUseCategory,jdbcType=VARCHAR}, #{acquisitionTime,jdbcType=TIMESTAMP}, #{landUseYear,jdbcType=DECIMAL}, 
+      #{landFactorTotalScore,jdbcType=DECIMAL}, #{landLevelContentResult,jdbcType=VARCHAR}, 
+      #{landLevel,jdbcType=INTEGER}, #{landLevelName,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{landShape,jdbcType=VARCHAR}, #{developTime,jdbcType=TIMESTAMP}, #{plotRatio,jdbcType=VARCHAR}, 
+      #{buildingDensity,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, #{compatibilityType,jdbcType=VARCHAR}, 
+      #{compatibilityRate,jdbcType=VARCHAR}, #{heightPermitted,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -148,6 +149,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="landId != null" >
         land_id,
+      </if>
+      <if test="houseId != null" >
+        house_id,
       </if>
       <if test="landUseType != null" >
         land_use_type,
@@ -214,6 +218,9 @@
       <if test="landId != null" >
         #{landId,jdbcType=INTEGER},
       </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=INTEGER},
+      </if>
       <if test="landUseType != null" >
         #{landUseType,jdbcType=VARCHAR},
       </if>
@@ -257,19 +264,19 @@
         #{developTime,jdbcType=TIMESTAMP},
       </if>
       <if test="plotRatio != null" >
-        #{plotRatio,jdbcType=DECIMAL},
+        #{plotRatio,jdbcType=VARCHAR},
       </if>
       <if test="buildingDensity != null" >
         #{buildingDensity,jdbcType=VARCHAR},
       </if>
       <if test="greeningRate != null" >
-        #{greeningRate,jdbcType=DECIMAL},
+        #{greeningRate,jdbcType=VARCHAR},
       </if>
       <if test="compatibilityType != null" >
         #{compatibilityType,jdbcType=VARCHAR},
       </if>
       <if test="compatibilityRate != null" >
-        #{compatibilityRate,jdbcType=DECIMAL},
+        #{compatibilityRate,jdbcType=VARCHAR},
       </if>
       <if test="heightPermitted != null" >
         #{heightPermitted,jdbcType=VARCHAR},
@@ -290,6 +297,9 @@
       </if>
       <if test="record.landId != null" >
         land_id = #{record.landId,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
       <if test="record.landUseType != null" >
         land_use_type = #{record.landUseType,jdbcType=VARCHAR},
@@ -334,19 +344,19 @@
         develop_time = #{record.developTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.plotRatio != null" >
-        plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
+        plot_ratio = #{record.plotRatio,jdbcType=VARCHAR},
       </if>
       <if test="record.buildingDensity != null" >
         building_density = #{record.buildingDensity,jdbcType=VARCHAR},
       </if>
       <if test="record.greeningRate != null" >
-        greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
+        greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
       </if>
       <if test="record.compatibilityType != null" >
         compatibility_type = #{record.compatibilityType,jdbcType=VARCHAR},
       </if>
       <if test="record.compatibilityRate != null" >
-        compatibility_rate = #{record.compatibilityRate,jdbcType=DECIMAL},
+        compatibility_rate = #{record.compatibilityRate,jdbcType=VARCHAR},
       </if>
       <if test="record.heightPermitted != null" >
         height_permitted = #{record.heightPermitted,jdbcType=VARCHAR},
@@ -360,6 +370,7 @@
     update tb_basic_estate_land_category_info
     set id = #{record.id,jdbcType=INTEGER},
       land_id = #{record.landId,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=INTEGER},
       land_use_type = #{record.landUseType,jdbcType=VARCHAR},
       land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
       acquisition_time = #{record.acquisitionTime,jdbcType=TIMESTAMP},
@@ -374,11 +385,11 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       land_shape = #{record.landShape,jdbcType=VARCHAR},
       develop_time = #{record.developTime,jdbcType=TIMESTAMP},
-      plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
+      plot_ratio = #{record.plotRatio,jdbcType=VARCHAR},
       building_density = #{record.buildingDensity,jdbcType=VARCHAR},
-      greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
+      greening_rate = #{record.greeningRate,jdbcType=VARCHAR},
       compatibility_type = #{record.compatibilityType,jdbcType=VARCHAR},
-      compatibility_rate = #{record.compatibilityRate,jdbcType=DECIMAL},
+      compatibility_rate = #{record.compatibilityRate,jdbcType=VARCHAR},
       height_permitted = #{record.heightPermitted,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -389,6 +400,9 @@
     <set >
       <if test="landId != null" >
         land_id = #{landId,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=INTEGER},
       </if>
       <if test="landUseType != null" >
         land_use_type = #{landUseType,jdbcType=VARCHAR},
@@ -433,19 +447,19 @@
         develop_time = #{developTime,jdbcType=TIMESTAMP},
       </if>
       <if test="plotRatio != null" >
-        plot_ratio = #{plotRatio,jdbcType=DECIMAL},
+        plot_ratio = #{plotRatio,jdbcType=VARCHAR},
       </if>
       <if test="buildingDensity != null" >
         building_density = #{buildingDensity,jdbcType=VARCHAR},
       </if>
       <if test="greeningRate != null" >
-        greening_rate = #{greeningRate,jdbcType=DECIMAL},
+        greening_rate = #{greeningRate,jdbcType=VARCHAR},
       </if>
       <if test="compatibilityType != null" >
         compatibility_type = #{compatibilityType,jdbcType=VARCHAR},
       </if>
       <if test="compatibilityRate != null" >
-        compatibility_rate = #{compatibilityRate,jdbcType=DECIMAL},
+        compatibility_rate = #{compatibilityRate,jdbcType=VARCHAR},
       </if>
       <if test="heightPermitted != null" >
         height_permitted = #{heightPermitted,jdbcType=VARCHAR},
@@ -456,6 +470,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo" >
     update tb_basic_estate_land_category_info
     set land_id = #{landId,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=INTEGER},
       land_use_type = #{landUseType,jdbcType=VARCHAR},
       land_use_category = #{landUseCategory,jdbcType=VARCHAR},
       acquisition_time = #{acquisitionTime,jdbcType=TIMESTAMP},
@@ -470,11 +485,11 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       land_shape = #{landShape,jdbcType=VARCHAR},
       develop_time = #{developTime,jdbcType=TIMESTAMP},
-      plot_ratio = #{plotRatio,jdbcType=DECIMAL},
+      plot_ratio = #{plotRatio,jdbcType=VARCHAR},
       building_density = #{buildingDensity,jdbcType=VARCHAR},
-      greening_rate = #{greeningRate,jdbcType=DECIMAL},
+      greening_rate = #{greeningRate,jdbcType=VARCHAR},
       compatibility_type = #{compatibilityType,jdbcType=VARCHAR},
-      compatibility_rate = #{compatibilityRate,jdbcType=DECIMAL},
+      compatibility_rate = #{compatibilityRate,jdbcType=VARCHAR},
       height_permitted = #{heightPermitted,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

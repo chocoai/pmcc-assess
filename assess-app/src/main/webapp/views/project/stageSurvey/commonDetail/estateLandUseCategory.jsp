@@ -1,146 +1,122 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<script type="text/html" id="categoryDiv">
-    <div class="col-md-12">
-        <div class="card full-height">
-            <div class="card-header">
-                <div class="card-head-row">
-                    <div class="card-title">
-                        土地类型类别（_number）
-                        <small>
-                        </small>
-                    </div>
-                    <div class="card-tools">
-                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                class="fa fa-angle-down"></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+<form class="form-horizontal" id="landCategoryInfoFrm">
+    <input type="hidden" name="id">
+    <div class="row">
+        <div class="col-md-12">
             <div class="card-body">
-                <form class="form-horizontal" id="categoryFrm_number">
-                    <input type="hidden" name="id">
-                    <input type="hidden" name="landUseTypeId">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">土地用途类型</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="landUseType"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                            <label class="col-sm-1 control-label">土地用途类别</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="landUseCategory"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                            <label class="col-sm-1 control-label">土地级别</label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                <input type="hidden" name="landLevel">
-                                                <label type="text" name="landLevelName"
-                                                       class="form-control"></label>
-                                                <div class="input-group-prepend">
-                                                    <button class="btn btn-info btn-sm "
-                                                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                            type="button"
-                                                            onclick="landUseType.openLevelDetailModal(this);">
-                                                        因素
-                                                    </button>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">土地取得时间</label>
-                                            <div class="col-sm-3">
-                                                <label name="acquisitionTime" data-date-format="yyyy-mm-dd"
-                                                       class="form-control input-full date-picker dbdate"></label>
-                                            </div>
-                                            <label class="col-sm-1 control-label">土地使用年限</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="landUseYear"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                            <label class="col-sm-1 control-label">土地形状</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="landShape"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">开发时间</label>
-                                            <div class="col-sm-3">
-                                                <label name="developTime" data-date-format="yyyy-mm-dd"
-                                                       class="form-control input-full date-picker dbdate"></label>
-                                            </div>
-                                            <label class="col-sm-1 control-label">容积率</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="plotRatio"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                            <label class="col-sm-1 control-label">建筑密度</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="buildingDensity"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">绿地率</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="greeningRate"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                            <label class="col-sm-1 control-label">兼容类型</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="compatibilityType"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                            <label class="col-sm-1 control-label">兼容比例</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="compatibilityRate"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">建筑限高</label>
-                                            <div class="col-sm-3">
-                                                <label type="text" name="heightPermitted"
-                                                       class="form-control input-full"></label>
-                                            </div>
-                                        </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">土地用途类型</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="landUseType"
+                                       class="form-control input-full"></label>
+                            </div>
+                            <label class="col-sm-1 control-label">土地用途类别</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="landUseCategory"
+                                       class="form-control input-full"></label>
+                            </div>
+                            <label class="col-sm-1 control-label">土地级别</label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="hidden" name="landLevel">
+                                    <label type="text" name="landLevelName"
+                                           class="form-control"></label>
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-info btn-sm "
+                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                type="button"
+                                                onclick="openLevelDetailModal(this);">
+                                            因素
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-                </form>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">土地取得时间</label>
+                            <div class="col-sm-3">
+                                <label name="acquisitionTime" data-date-format="yyyy-mm-dd"
+                                       class="form-control input-full date-picker dbdate"></label>
+                            </div>
+                            <label class="col-sm-1 control-label">土地使用年限</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="landUseYear"
+                                       class="form-control input-full"></label>
+                            </div>
+                            <label class="col-sm-1 control-label">土地形状</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="landShape"
+                                       class="form-control input-full"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">开发时间</label>
+                            <div class="col-sm-3">
+                                <label name="developTime" data-date-format="yyyy-mm-dd"
+                                       class="form-control input-full date-picker dbdate"></label>
+                            </div>
+                            <label class="col-sm-1 control-label">容积率</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="plotRatio"
+                                       class="form-control input-full"></label>
+                            </div>
+                            <label class="col-sm-1 control-label">建筑密度</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="buildingDensity"
+                                       class="form-control input-full"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">绿地率</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="greeningRate"
+                                       class="form-control input-full"></label>
+                            </div>
+                            <label class="col-sm-1 control-label">兼容类型</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="compatibilityType"
+                                       class="form-control input-full"></label>
+                            </div>
+                            <label class="col-sm-1 control-label">兼容比例</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="compatibilityRate"
+                                       class="form-control input-full"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">建筑限高</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="heightPermitted"
+                                       class="form-control input-full"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
-</script>
+
+
+</form>
 
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
@@ -169,6 +145,7 @@
         </td>
     </tr>
 </script>
+
 
 <div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -215,100 +192,26 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
-        landUseType.loadSonDataListHtml();
-    });
+    var landLevel = {};
 
-    var LandUseType = function () {
-
-    };
-    LandUseType.prototype.config = {
-        father: {
-            frm: function () {
-                return "frmFather";
-            },
-            table: function () {
-                return "tb_LandUseTypeList";
-            },
-            box: function () {
-                return "divBoxUseTypeFather";
-            }
-        },
-        son: {
-            frm: function () {
-                return "frmSon";
-            },
-            table: function () {
-                return "tb_LandUseCategoryList";
-            },
-            box: function () {
-                return "divBoxUseCategorySon";
-            },
-            tableBox: function () {
-                return "LandUseCategoryListBox";
-            },
-            tableFrm: function () {
-                return "LandUseCategoryListBoxFrm";
-            },
-        }
-    }
-    LandUseType.prototype.isEmpty = function (item) {
-        if (item) {
+    landLevel.isNotBlankObject = function (obj) {
+        for (var key in obj) {
             return true;
         }
-        return false;
-    }
-
-    var landUseType = new LandUseType();
-
-    var num = 1;
-
-    landUseType.loadSonDataListHtml = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicEstateLandCategoryInfo/basicEstateLandCategoryInfoList",
-            type: "get",
-            dataType: "json",
-            data: {landId: estateCommon.estateLandStateForm.find('input[name="id"]').val()},
-            success: function (result) {
-                if (result.ret) {
-                    if (result.ret) {
-                        if (result.data.length >= 1) {
-                            $.each(result.data, function (i, item) {
-                                var html = $("#categoryDiv").html();
-                                var number = num;
-                                html = html.replace(/_number/g, number);
-                                $("#LandUseTypeContent").append(html);
-                                $("#categoryFrm" + number).initForm(item);
-                                //百分字段
-                                $("#categoryFrm" + number).find('[name=greeningRate]').text(AssessCommon.pointToPercent(item.greeningRate));
-                                $("#categoryFrm" + number).find('[name=compatibilityRate]').text(AssessCommon.pointToPercent(item.compatibilityRate));
-                               
-                                num++;
-                            });
-                        }
-                    }
-                }
-                else {
-                    ("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        })
-    }
-
+        return false
+    };
 
     //土地因素
-    landUseType.openLevelDetailModal = function (this_) {
-        var form = $(this_).closest("form");
+    function openLevelDetailModal(this_) {
+        var group = $(this_).closest('.input-group');
+        var form = $(this_).closest(".form-horizontal");
         var id = form.find('input[name="id"]').val();
-        var landLevelId = form.find('input[name="landLevel"]').val();
+        var landLevelId = group.find('input[name="landLevel"]').val();
         if (!landLevelId) {
-            notifyWarning("提示", "无土地级别!");
+            notifyWarning("提示", "请选择土地级别!");
             return false;
         }
-        landUseType.getBasicEstateLandUseById(id, function (result) {
+        landLevel.getBasicEstateLandCategoryInfoById(id, function (result) {
             var data = [];
             if (result.landLevelContentResult) {
                 try {
@@ -317,19 +220,54 @@
                     console.log(e);
                 }
                 //过滤 分组
-                data = landUseType.landLevelFilter(data);
+                data = landLevel.landLevelFilter(data);
             }
             if (data.length >= 1) {
                 //编辑
-                landUseType.landLevelLoadHtml(data, true);
-            }else {
-                notifyWarning("提示", "无土地因素数据!");
+                landLevel.landLevelLoadHtml(data, true, this_);
+            } else {
+                //新增
+                landLevel.ajaxServerFun({levelDetailId: landLevelId}, "/dataLandLevelDetailAchievement/landLevelFilter", "get", function (dataAll) {
+                    landLevel.landLevelLoadHtml(dataAll, false, this_);
+                });
             }
         });
 
     };
 
-    landUseType.landLevelLoadHtml = function (data, beEcho) {
+    landLevel.getBasicEstateLandCategoryInfoById = function (id, callback) {
+        landLevel.ajaxServerFun({id: id}, "/basicEstateLandCategoryInfo/getBasicEstateLandCategoryInfoById", "get", callback);
+    };
+
+    /**
+     * 土地级别详情分类
+     * @param list
+     * @returns {Array}
+     */
+    landLevel.landLevelFilter = function (list) {
+        var flag = 0, data = [];
+        for (var i = 0; i < list.length; i++) {
+            var az = '';
+            for (var j = 0; j < data.length; j++) {
+                if (data[j][0].type == list[i].type) {
+                    flag = 1;
+                    az = j;
+                    break;
+                }
+            }
+            if (flag == 1) {
+                data[az].push(list[i]);
+                flag = 0;
+            } else if (flag == 0) {
+                var wdy = [];
+                wdy.push(list[i]);
+                data.push(wdy);
+            }
+        }
+        return data;
+    };
+
+    landLevel.landLevelLoadHtml = function (data, beEcho, this_) {
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
@@ -348,13 +286,15 @@
                             item = value;
                         }
                     })
+                } else {
+                    item = landLevel.getLandLevelFilter(obj);
                 }
 
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
-                    //landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.categoryName);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.categoryName);
                     var landLevelTypeName = item.typeName;
                     if(item.classification){
                         landLevelTypeName+="/"+item.classification;
@@ -377,9 +317,44 @@
             });
 
         });
+        landLevel.option = {this_: this_};
     };
 
-    landUseType.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
+    /**
+     * 获取数组中随机的一个对象或者数组中曾经被选中的那个对象,原则是在收集数据的时候对选中元素进行添加元素属性
+     * @param obj
+     * @returns {*}
+     */
+    landLevel.getLandLevelFilter = function (obj) {
+        var random = Math.random() * (obj.length - 1);
+        random = Math.round(random);
+        random = 0;
+        var objArray = [];
+        obj.forEach(function (data, index) {
+            //这里主要是获取对象长度
+            var arr = Object.keys(data);
+            objArray.push(arr.length);
+        });
+        if (objArray.deleteEle().length >= 2) {
+            //说明修改过一次
+            objArray.sort(function (a, b) {
+                return a - b;
+            });
+            //获取有最大属性值的那个对象
+            var max = objArray[objArray.length - 1];
+            obj.forEach(function (data, index) {
+                //这里主要是获取对象长度
+                var arr = Object.keys(data);
+                if (max == arr.length) {
+                    return data;
+                }
+            });
+        }
+        var item = obj[random];
+        return item;
+    };
+
+    landLevel.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
         var deleteParams = false;
         if (funParams) {
             if (funParams == 'delete') {
@@ -388,14 +363,14 @@
         }
         if (deleteParams) {
             AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
-                landUseType.run(data, url, type, callback, funParams, errorCallback);
+                landLevel.run(data, url, type, callback, funParams, errorCallback);
             });
         } else {
-            landUseType.run(data, url, type, callback, funParams, errorCallback);
+            landLevel.run(data, url, type, callback, funParams, errorCallback);
         }
     };
 
-    landUseType.run = function (data, url, type, callback, funParams, errorCallback) {
+    landLevel.run = function (data, url, type, callback, funParams, errorCallback) {
         Loading.progressShow();
         $.ajax({
             type: type,
@@ -445,32 +420,76 @@
             }
         });
     };
-
-    landUseType.landLevelFilter = function (list) {
-        var flag = 0, data = [];
-        for (var i = 0; i < list.length; i++) {
-            var az = '';
-            for (var j = 0; j < data.length; j++) {
-                if (data[j][0].type == list[i].type) {
-                    flag = 1;
-                    az = j;
+    //js数组去重复 ,直接重载在原生js上
+    Array.prototype.deleteEle = function () {
+        var newArr = this;
+        for (var i = newArr.length - 1; i >= 0; i--) {
+            var targetNode = newArr[i];
+            for (var j = 0; j < i; j++) {
+                if (targetNode == newArr[j]) {
+                    newArr.splice(i, 1);
                     break;
                 }
             }
-            if (flag == 1) {
-                data[az].push(list[i]);
-                flag = 0;
-            } else if (flag == 0) {
-                var wdy = [];
-                wdy.push(list[i]);
-                data.push(wdy);
-            }
         }
-        return data;
+        return newArr;
     };
 
-    landUseType.getBasicEstateLandUseById = function (id, callback) {
-        landUseType.ajaxServerFun({id: id}, "/basicEstateLandCategoryInfo/getBasicEstateLandCategoryInfoById", "get", callback);
+    //change 事件 随着等级变化页面展示不同内容
+    landLevel.landLevelHandle = function (that) {
+        var group = $(that).closest('.group');
+        var landLevelContent = group.find("input[name='landLevelContent']").val();
+        var obj = {};
+        try {
+            obj = JSON.parse(landLevelContent);
+        } catch (e) {
+        }
+        if (landLevel.isNotBlankObject(obj)) {
+            AssessCommon.getDataDicInfo($(that).val(), function (item) {
+                obj.forEach(function (data, index) {
+                    if (data.gradeName == item.name) {
+                        group.find("input[name='landFactorTotalScore']").val(AssessCommon.pointToPercent(data.achievement));
+                        group.find("input[name='dataLandLevelAchievement']").val(data.id);
+                    }
+                });
+            });
+        }
+    };
+
+    //删除
+    landLevel.landLevelEmpty = function (that) {
+        $(that).parent().parent().remove();
+    };
+
+
+    landLevel.saveLandLevelTabContent = function () {
+        var landLevelContent = [];
+        var landFactorTotalScoreResult = 0;
+        $("#landLevelContentFrm").find("input[name='landLevelContent']").each(function (i, n) {
+            var group = $(n).closest(".group");
+            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
+            var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
+            landFactorTotalScoreResult += Number(landFactorTotalScore);
+            var obj = JSON.parse($(n).val());
+            var dataObject = [];
+            obj.forEach(function (value, index) {
+                if (value.id == dataLandLevelAchievement) {
+                    value.modelStr = "update";
+                    value.achievement = landFactorTotalScore;
+                } else {
+                    delete value.modelStr;
+                }
+                dataObject.push(value);
+            });
+            landLevelContent.push(dataObject);
+        });
+        if (landLevel.option) {
+            var group = $(landLevel.option.this_).closest('.input-group');
+            group.find("input[name=landLevelContentResult]").val(JSON.stringify(landLevelContent));
+            group.find("input[name=landFactorTotalScore]").val(landFactorTotalScoreResult).trigger('onblur');
+            landLevel.option = null;
+        }
+        $("#detailAchievementModal").modal('hide');
     };
 </script>
 

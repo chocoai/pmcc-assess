@@ -7,6 +7,7 @@
     houseCommon.houseTradingForm = $('#basicTradingFrm');
     houseCommon.houseForm = $('#basicHouseFrm');
     houseCommon.houseHuxingForm = $('#basicHouseHuxing');
+    houseCommon.landCategoryInfoForm = $('#landCategoryInfoFrm');
     houseCommon.houseTradingTypeSell = 'ExamineHouseTradingSell';
     houseCommon.houseTradingTypeLease = 'ExamineHouseTradingLease';
     houseCommon.houseMapiframe = undefined;
@@ -327,12 +328,31 @@
             }
 
         });
+
+        //土地类型类别
+        houseCommon.landCategoryInfoForm.initForm(data.landCategoryInfo, function () {
+            if (data.landCategoryInfo != null) {
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_compatibility_rate, null, function (html, data) {
+                    houseCommon.landCategoryInfoForm.find("#compatibilityTypeList").empty().html(html).trigger('change');
+                }, false);
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
+                    houseCommon.landCategoryInfoForm.find("#landUseTypeList").empty().html(html).trigger('change');
+                }, false);
+            }
+        });
         //完损度数据加载
         try {
             damagedDegree.loadDamagedDegreeList();
         } catch (e) {
         }
     };
+
+    houseCommon.landUseTypeChange = function(){
+        var value = houseCommon.landCategoryInfoForm.find('[name=landUseType]').val();
+        AssessCommon.getSonTextAppendDicList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
+            houseCommon.landCategoryInfoForm.find("#landUseCategoryList").empty().html(html).trigger('change');
+        });
+    }
 
     houseCommon.showUseCondition = function (data) {
         if (houseCommon.isNotBlank(data.basicHouse.useCondition)) {

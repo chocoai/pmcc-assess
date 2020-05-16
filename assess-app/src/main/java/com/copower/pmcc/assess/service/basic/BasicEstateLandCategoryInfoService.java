@@ -89,6 +89,16 @@ public class BasicEstateLandCategoryInfoService {
         return new ArrayList<>();
     }
 
+    public BasicEstateLandCategoryInfo getBasicEstateLandCategoryInfoByHouseId(Integer houseId){
+        BasicEstateLandCategoryInfo query = new BasicEstateLandCategoryInfo();
+        query.setHouseId(houseId);
+        List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfoList = basicEstateLandCategoryInfoList(query);
+        if(CollectionUtils.isNotEmpty(basicEstateLandCategoryInfoList)){
+            return basicEstateLandCategoryInfoList.get(0);
+        }
+        return null ;
+    }
+
     /**
      * 获取数据
      *
@@ -137,19 +147,6 @@ public class BasicEstateLandCategoryInfoService {
         }
     }
 
-    public void addBasicApplyByLandCategory(BasicApply sourceBasicApply,BasicEstateLandCategoryInfo categoryInfo){
-        BasicApply where = new BasicApply();
-        where.setLandCategoryId(categoryInfo.getId());
-        where.setBisDelete(false);
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
-        if(CollectionUtils.isEmpty(basicApplyList)){
-            BasicApply basicApply = new BasicApply();
-            BeanUtils.copyProperties(sourceBasicApply,basicApply,"id");
-            basicApply.setLandCategoryId(categoryInfo.getId());
-            basicApply.setBisDelete(false);
-            basicApplyDao.addBasicApply(basicApply);
-        }
-    }
 
     /**
      * 删除数据
@@ -164,14 +161,6 @@ public class BasicEstateLandCategoryInfoService {
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
         boolean flag = basicEstateLandCategoryInfoDao.deleteBasicEstateLandCategoryInfo(id);
         baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
-        BasicApply where = new BasicApply();
-        where.setLandCategoryId(id);
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
-        if(CollectionUtils.isNotEmpty(basicApplyList)){
-            for(BasicApply basicApply:basicApplyList){
-                basicApplyDao.deleteBasicApply(basicApply.getId());
-            }
-        }
         return flag;
     }
 

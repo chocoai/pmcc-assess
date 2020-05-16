@@ -103,6 +103,8 @@ public class BasicHouseService extends BasicEntityAbstract {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -414,6 +416,10 @@ public class BasicHouseService extends BasicEntityAbstract {
 
         BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
         objectMap.put("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) != null ? basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) : new BasicUnitHuxingVo());
+
+        BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
+        objectMap.put("landCategoryInfo",landCategoryInfo != null ? landCategoryInfo : new BasicEstateLandCategoryInfo());
+
         initDemagedDegree(basicHouse);
         return objectMap;
     }
@@ -494,6 +500,17 @@ public class BasicHouseService extends BasicEntityAbstract {
                         basicTrading.setId(houseTradingOld.getId());
                         basicTrading.setHouseId(houseId);
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
+                    }
+                }
+                //土地类型类别
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_LANDCATEGORYINFO.getVar());
+                BasicEstateLandCategoryInfo landCategoryInfo = JSONObject.parseObject(jsonContent, BasicEstateLandCategoryInfo.class);
+                if (landCategoryInfo != null) {
+                    BasicEstateLandCategoryInfo landCategoryInfoOld = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
+                    if (landCategoryInfoOld != null) {
+                        landCategoryInfo.setId(landCategoryInfoOld.getId());
+                        landCategoryInfo.setHouseId(houseId);
+                        basicEstateLandCategoryInfoService.saveAndUpdateBasicEstateLandCategoryInfo(landCategoryInfo, true);
                     }
                 }
                 //完损度

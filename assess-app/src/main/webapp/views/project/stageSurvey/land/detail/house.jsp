@@ -22,10 +22,22 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="basicHouseFrm" class="form-horizontal">
-                                    <input type="hidden" name="id" value="${basicHouse.id}">
-                                    <input type="hidden" name="houseNumber" value="${basicHouse.houseNumber}">
-                                </form>
+                                <div class="x_content">
+                                    <div class="card-header">
+                                        <div class="card-title">土地类型类别</div>
+                                    </div>
+                                    <%@include file="/views/project/stageSurvey/commonDetail/estateLandUseCategory.jsp" %>
+                                </div>
+                                <div class="x_content">
+                                    <div class="card-header">
+                                        <div class="card-title">交易信息</div>
+                                    </div>
+                                    <form id="basicHouseFrm" class="form-horizontal">
+                                        <input type="hidden" name="id" value="${basicHouse.id}">
+                                        <input type="hidden" name="houseNumber" value="${basicHouse.houseNumber}">
+                                    </form>
+                                </div>
+                                <div class="x_content">
                                 <c:if test="${projectPhase eq 'caseStudyExtend'}">
                                     <%@include file="/views/project/stageSurvey/commonDetail/houseTradingLandCase.jsp" %>
                                 </c:if>
@@ -33,6 +45,7 @@
                                     <%@include file="/views/project/stageSurvey/commonDetail/houseTradingLandSurvey.jsp" %>
                                 </c:if>
                                 <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
+                                </div>
                             </div>
                         </div>
                     </div>

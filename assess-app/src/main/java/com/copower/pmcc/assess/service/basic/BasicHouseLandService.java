@@ -34,6 +34,8 @@ public class BasicHouseLandService extends BasicEntityAbstract {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -84,6 +86,7 @@ public class BasicHouseLandService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("landCategoryInfo", basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicFormClassifyParamDto.getTbId()));
         Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
         Integer tbId = basicFormClassifyParamDto.getTbId();
         BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicHouse.class), tbId);
@@ -106,6 +109,7 @@ public class BasicHouseLandService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouse",basicHouseService.getBasicHouseVo(basicHouseService.getBasicHouseById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId())));
+        modelAndView.addObject("landCategoryInfo", basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
 
@@ -115,6 +119,7 @@ public class BasicHouseLandService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("landCategoryInfo", basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
 

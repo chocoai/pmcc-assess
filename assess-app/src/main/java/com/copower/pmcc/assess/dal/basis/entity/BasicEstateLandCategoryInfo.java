@@ -8,6 +8,8 @@ public class BasicEstateLandCategoryInfo {
 
     private Integer landId;
 
+    private Integer houseId;
+
     private String landUseType;
 
     private String landUseCategory;
@@ -36,15 +38,15 @@ public class BasicEstateLandCategoryInfo {
 
     private Date developTime;
 
-    private BigDecimal plotRatio;
+    private String plotRatio;
 
     private String buildingDensity;
 
-    private BigDecimal greeningRate;
+    private String greeningRate;
 
     private String compatibilityType;
 
-    private BigDecimal compatibilityRate;
+    private String compatibilityRate;
 
     private String heightPermitted;
 
@@ -62,6 +64,14 @@ public class BasicEstateLandCategoryInfo {
 
     public void setLandId(Integer landId) {
         this.landId = landId;
+    }
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
     }
 
     public String getLandUseType() {
@@ -176,12 +186,12 @@ public class BasicEstateLandCategoryInfo {
         this.developTime = developTime;
     }
 
-    public BigDecimal getPlotRatio() {
+    public String getPlotRatio() {
         return plotRatio;
     }
 
-    public void setPlotRatio(BigDecimal plotRatio) {
-        this.plotRatio = plotRatio;
+    public void setPlotRatio(String plotRatio) {
+        this.plotRatio = plotRatio == null ? null : plotRatio.trim();
     }
 
     public String getBuildingDensity() {
@@ -192,12 +202,12 @@ public class BasicEstateLandCategoryInfo {
         this.buildingDensity = buildingDensity == null ? null : buildingDensity.trim();
     }
 
-    public BigDecimal getGreeningRate() {
+    public String getGreeningRate() {
         return greeningRate;
     }
 
-    public void setGreeningRate(BigDecimal greeningRate) {
-        this.greeningRate = greeningRate;
+    public void setGreeningRate(String greeningRate) {
+        this.greeningRate = greeningRate == null ? null : greeningRate.trim();
     }
 
     public String getCompatibilityType() {
@@ -208,12 +218,12 @@ public class BasicEstateLandCategoryInfo {
         this.compatibilityType = compatibilityType == null ? null : compatibilityType.trim();
     }
 
-    public BigDecimal getCompatibilityRate() {
+    public String getCompatibilityRate() {
         return compatibilityRate;
     }
 
-    public void setCompatibilityRate(BigDecimal compatibilityRate) {
-        this.compatibilityRate = compatibilityRate;
+    public void setCompatibilityRate(String compatibilityRate) {
+        this.compatibilityRate = compatibilityRate == null ? null : compatibilityRate.trim();
     }
 
     public String getHeightPermitted() {

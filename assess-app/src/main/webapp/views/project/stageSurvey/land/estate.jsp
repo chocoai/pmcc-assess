@@ -325,23 +325,7 @@
                                     </div>
 
                                 </form>
-                                <div class="x_title">
-                                    <h4>土地用途类型类别
-                                        <small>
-                                            <button style="margin-left: 5px" class="btn btn-success btn-xs"
-                                                    type="button" data-toggle="modal" type="button"
-                                                    onclick="landUseType.appendHtml()">
-											<span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                                新增
-                                            </button>
-                                        </small>
-                                    </h4>
-                                </div>
-                                <div class="x_content" id="LandUseTypeContent"></div>
-                                <%@include file="/views/project/stageSurvey/common/estateLandUseCategory.jsp" %>
-                                <%@include file="/views/project/tool/landLevelModalView.jsp" %>
+
                                 <div class="x_content">
                                     <%@include file="/views/project/stageSurvey/common/estateNetwork.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/estateParking.jsp" %>

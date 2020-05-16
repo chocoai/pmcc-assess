@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
@@ -78,6 +79,8 @@ public class BasicApplyBatchDetailService {
     private BasicEstateStreetInfoService basicEstateStreetInfoService;
     @Autowired
     private BasicApplyDao basicApplyDao;
+    @Autowired
+    private BasicEstateLandCategoryInfoDao basicEstateLandCategoryInfoDao;
 
     /**
      * 通过applyBatchId获取
@@ -183,7 +186,7 @@ public class BasicApplyBatchDetailService {
                 building.setCoverAnArea(new BigDecimal(value));
             }
             value = basicCommonQuoteFieldInfoService.getValue(basicApplyBatchDetail.getApplyBatchId(), ExamineCommonQuoteFieldEnum.LAND_USE_YEAR_ENUM);
-            if (StringUtils.isNotBlank(value)) {
+            if (StringUtils.isNotBlank(value) && !"null".equals(value)) {
                 building.setLandUseYear(new BigDecimal(value));
             }
 
@@ -241,6 +244,14 @@ public class BasicApplyBatchDetailService {
             huxing.setHouseId(house.getId());
             huxing.setEstateId(house.getEstateId());
             basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(huxing, false);
+            if (enumByKey.getKey().equals(BasicFormClassifyEnum.HOUSE_LAND.getKey())) {
+                BasicEstateLandCategoryInfo categoryInfo = new BasicEstateLandCategoryInfo();
+                categoryInfo.setHouseId(house.getId());
+                categoryInfo.setLandId(0);
+                categoryInfo.setCreator(processControllerComponent.getThisUser());
+                basicEstateLandCategoryInfoDao.saveBasicEstateLandCategoryInfo(categoryInfo);
+            }
+
         }
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
         this.insertBasicApply(basicApplyBatchDetail, planDetailsId); //存入basicApply
@@ -254,23 +265,26 @@ public class BasicApplyBatchDetailService {
         BasicApply where = new BasicApply();
         where.setBatchDetailId(houseBasicApplyBatchDetail.getId());
         List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
-        if(CollectionUtils.isNotEmpty(basicApplyList)){
-            for(BasicApply item:basicApplyList){
-                writeBasicApply(item,houseBasicApplyBatchDetail,planDetailsId);
-            }
-        }else{
-            BasicApply basicApply = new BasicApply();
-            writeBasicApply(basicApply,houseBasicApplyBatchDetail,planDetailsId);
+        BasicApply basicApply = null;
+        if (CollectionUtils.isNotEmpty(basicApplyList)) {
+            basicApply = basicApplyList.get(0);
         }
-    }
-
-    public void writeBasicApply(BasicApply basicApply ,BasicApplyBatchDetail houseBasicApplyBatchDetail , Integer planDetailsId){
+        if (basicApply == null) {
+            basicApply = new BasicApply();
+        }
         basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
+
+        BasicEstateLandCategoryInfo query = new BasicEstateLandCategoryInfo();
+        query.setHouseId(houseBasicApplyBatchDetail.getTableId());
+        List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfoList = basicEstateLandCategoryInfoDao.basicEstateLandCategoryInfoList(query);
+        if(CollectionUtils.isNotEmpty(basicEstateLandCategoryInfoList)){
+            basicApply.setLandCategoryId(basicEstateLandCategoryInfoList.get(0).getId());
+        }
+
         basicApply.setDeclareRecordId(houseBasicApplyBatchDetail.getDeclareRecordId());
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
         if (basicHouse != null)
             basicApply.setArea(basicHouse.getArea());
-        basicApply.setApplyBatchId(houseBasicApplyBatchDetail.getApplyBatchId());
         basicApply.setBatchDetailId(houseBasicApplyBatchDetail.getId());
         basicApply.setPlanDetailsId(planDetailsId);
         List<BasicApplyBatchDetail> list = Lists.newArrayList();
@@ -292,6 +306,7 @@ public class BasicApplyBatchDetailService {
         }
         basicApplyService.saveBasicApply(basicApply);
     }
+
 
     /**
      * 通过pid获取

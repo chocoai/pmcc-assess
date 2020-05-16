@@ -1,15 +1,12 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo;
 import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
-import org.apache.commons.collections.CollectionUtils;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,34 +23,16 @@ public class BasicEstateLandService extends BasicEntityAbstract {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
-    @Autowired
-    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
-    @Autowired
-    private BasicApplyDao basicApplyDao;
-    @Autowired
-    private BasicApplyBatchService basicApplyBatchService;
-    @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+
     @Override
     public Integer saveAndUpdate(Object o, Boolean updateNull) {
-        return basicEstateService.saveAndUpdate(o,updateNull);
+        return basicEstateService.saveAndUpdate(o, updateNull);
     }
 
     @Override
     public Integer saveAndUpdateByFormData(String formData, Integer planDetailsId) throws Exception {
         Integer estateId = basicEstateService.saveAndUpdateByFormData(formData, planDetailsId);
-        //更新tb_basic_apply
-        BasicApply source = new BasicApply();
-        source.setBasicEstateId(estateId);
-        BasicApply sourceBasicApply = basicApplyDao.getBasicApplyListByWhere(source).get(0);
 
-        List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(estateId);
-        if(CollectionUtils.isNotEmpty(categoryInfoList)){
-            for(BasicEstateLandCategoryInfo categoryInfo:categoryInfoList){
-                basicEstateLandCategoryInfoService.addBasicApplyByLandCategory(sourceBasicApply,categoryInfo);
-            }
-
-        }
         return estateId;
     }
 
@@ -74,17 +53,19 @@ public class BasicEstateLandService extends BasicEntityAbstract {
 
     @Override
     public Object copyBasicEntity(Integer sourceId, Integer targetId, Boolean containChild) throws Exception {
-        return basicEstateService.copyBasicEntity(sourceId,targetId,containChild);
+        return basicEstateService.copyBasicEntity(sourceId, targetId, containChild);
     }
 
     @Override
     public Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception {
-        return basicEstateService.copyBasicEntityIgnore(sourceId,targetId,containChild,ignoreList);
+        return basicEstateService.copyBasicEntityIgnore(sourceId, targetId, containChild, ignoreList);
     }
 
     @Override
     public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
-        return null;
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        list.add(BasicFormClassifyEnum.HOUSE_LAND);
+        return list;
     }
 
     @Override

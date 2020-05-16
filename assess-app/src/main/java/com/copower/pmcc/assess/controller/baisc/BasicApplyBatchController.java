@@ -411,8 +411,6 @@ public class BasicApplyBatchController extends BaseController {
             //更新name与权证id
             BasicApplyBatchDetail oldData = basicApplyBatchDetailService.getDataById(tempData.getId());
             oldData.setName(tempData.getName());
-            oldData.setDeclareRecordId(tempData.getDeclareRecordId());
-            oldData.setDeclareRecordName(tempData.getDeclareRecordName());
             BasicApplyBatchDetailVo vo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.saveAndUpdateComplete(oldData, planDetailsId));
             return HttpResult.newCorrectResult(vo);
         } catch (Exception e1) {

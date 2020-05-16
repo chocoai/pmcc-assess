@@ -226,6 +226,66 @@ public class BasicEstateLandCategoryInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andHouseIdIsNull() {
+            addCriterion("house_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIsNotNull() {
+            addCriterion("house_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdEqualTo(Integer value) {
+            addCriterion("house_id =", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotEqualTo(Integer value) {
+            addCriterion("house_id <>", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThan(Integer value) {
+            addCriterion("house_id >", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("house_id >=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThan(Integer value) {
+            addCriterion("house_id <", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("house_id <=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIn(List<Integer> values) {
+            addCriterion("house_id in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotIn(List<Integer> values) {
+            addCriterion("house_id not in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdBetween(Integer value1, Integer value2) {
+            addCriterion("house_id between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("house_id not between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
         public Criteria andLandUseTypeIsNull() {
             addCriterion("land_use_type is null");
             return (Criteria) this;
@@ -1136,52 +1196,62 @@ public class BasicEstateLandCategoryInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioEqualTo(BigDecimal value) {
+        public Criteria andPlotRatioEqualTo(String value) {
             addCriterion("plot_ratio =", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotEqualTo(BigDecimal value) {
+        public Criteria andPlotRatioNotEqualTo(String value) {
             addCriterion("plot_ratio <>", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioGreaterThan(BigDecimal value) {
+        public Criteria andPlotRatioGreaterThan(String value) {
             addCriterion("plot_ratio >", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andPlotRatioGreaterThanOrEqualTo(String value) {
             addCriterion("plot_ratio >=", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioLessThan(BigDecimal value) {
+        public Criteria andPlotRatioLessThan(String value) {
             addCriterion("plot_ratio <", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andPlotRatioLessThanOrEqualTo(String value) {
             addCriterion("plot_ratio <=", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioIn(List<BigDecimal> values) {
+        public Criteria andPlotRatioLike(String value) {
+            addCriterion("plot_ratio like", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioNotLike(String value) {
+            addCriterion("plot_ratio not like", value, "plotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioIn(List<String> values) {
             addCriterion("plot_ratio in", values, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotIn(List<BigDecimal> values) {
+        public Criteria andPlotRatioNotIn(List<String> values) {
             addCriterion("plot_ratio not in", values, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andPlotRatioBetween(String value1, String value2) {
             addCriterion("plot_ratio between", value1, value2, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andPlotRatioNotBetween(String value1, String value2) {
             addCriterion("plot_ratio not between", value1, value2, "plotRatio");
             return (Criteria) this;
         }
@@ -1266,52 +1336,62 @@ public class BasicEstateLandCategoryInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateEqualTo(BigDecimal value) {
+        public Criteria andGreeningRateEqualTo(String value) {
             addCriterion("greening_rate =", value, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateNotEqualTo(BigDecimal value) {
+        public Criteria andGreeningRateNotEqualTo(String value) {
             addCriterion("greening_rate <>", value, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateGreaterThan(BigDecimal value) {
+        public Criteria andGreeningRateGreaterThan(String value) {
             addCriterion("greening_rate >", value, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andGreeningRateGreaterThanOrEqualTo(String value) {
             addCriterion("greening_rate >=", value, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateLessThan(BigDecimal value) {
+        public Criteria andGreeningRateLessThan(String value) {
             addCriterion("greening_rate <", value, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andGreeningRateLessThanOrEqualTo(String value) {
             addCriterion("greening_rate <=", value, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateIn(List<BigDecimal> values) {
+        public Criteria andGreeningRateLike(String value) {
+            addCriterion("greening_rate like", value, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateNotLike(String value) {
+            addCriterion("greening_rate not like", value, "greeningRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andGreeningRateIn(List<String> values) {
             addCriterion("greening_rate in", values, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateNotIn(List<BigDecimal> values) {
+        public Criteria andGreeningRateNotIn(List<String> values) {
             addCriterion("greening_rate not in", values, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andGreeningRateBetween(String value1, String value2) {
             addCriterion("greening_rate between", value1, value2, "greeningRate");
             return (Criteria) this;
         }
 
-        public Criteria andGreeningRateNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andGreeningRateNotBetween(String value1, String value2) {
             addCriterion("greening_rate not between", value1, value2, "greeningRate");
             return (Criteria) this;
         }
@@ -1396,52 +1476,62 @@ public class BasicEstateLandCategoryInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateEqualTo(BigDecimal value) {
+        public Criteria andCompatibilityRateEqualTo(String value) {
             addCriterion("compatibility_rate =", value, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateNotEqualTo(BigDecimal value) {
+        public Criteria andCompatibilityRateNotEqualTo(String value) {
             addCriterion("compatibility_rate <>", value, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateGreaterThan(BigDecimal value) {
+        public Criteria andCompatibilityRateGreaterThan(String value) {
             addCriterion("compatibility_rate >", value, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andCompatibilityRateGreaterThanOrEqualTo(String value) {
             addCriterion("compatibility_rate >=", value, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateLessThan(BigDecimal value) {
+        public Criteria andCompatibilityRateLessThan(String value) {
             addCriterion("compatibility_rate <", value, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andCompatibilityRateLessThanOrEqualTo(String value) {
             addCriterion("compatibility_rate <=", value, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateIn(List<BigDecimal> values) {
+        public Criteria andCompatibilityRateLike(String value) {
+            addCriterion("compatibility_rate like", value, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateNotLike(String value) {
+            addCriterion("compatibility_rate not like", value, "compatibilityRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibilityRateIn(List<String> values) {
             addCriterion("compatibility_rate in", values, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateNotIn(List<BigDecimal> values) {
+        public Criteria andCompatibilityRateNotIn(List<String> values) {
             addCriterion("compatibility_rate not in", values, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andCompatibilityRateBetween(String value1, String value2) {
             addCriterion("compatibility_rate between", value1, value2, "compatibilityRate");
             return (Criteria) this;
         }
 
-        public Criteria andCompatibilityRateNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andCompatibilityRateNotBetween(String value1, String value2) {
             addCriterion("compatibility_rate not between", value1, value2, "compatibilityRate");
             return (Criteria) this;
         }

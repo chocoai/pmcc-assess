@@ -39,6 +39,9 @@ examineCommon.getFormData = function () {
     if (window.houseCommon && houseCommon.houseHuxingForm.length > 0) {
         item.basicHouseHuxing = formSerializeArray(houseCommon.houseHuxingForm);
     }
+    if (window.houseCommon && houseCommon.landCategoryInfoForm.length > 0) {
+        item.landCategoryInfo = formSerializeArray(houseCommon.landCategoryInfoForm);
+    }
     if (window.damagedDegree) {
         item.basicDamagedDegree = damagedDegree.getFormData();
     }

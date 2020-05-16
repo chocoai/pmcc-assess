@@ -32,10 +32,22 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <div class="x_content">
+                                    <div class="card-header">
+                                        <div class="card-title">土地类型类别</div>
+                                    </div>
+                                    <%@include file="/views/project/stageSurvey/common/estateLandUseCategory.jsp" %>
+                                </div>
+                                <div class="x_content">
+                                    <div class="card-header">
+                                        <div class="card-title">交易信息</div>
+                                    </div>
                                 <form id="basicHouseFrm" class="form-horizontal">
                                     <input type="hidden" name="id" value="${basicHouse.id}">
                                     <input type="hidden" name="houseNumber" value="${basicHouse.houseNumber}">
                                 </form>
+                                </div>
+                                <div class="x_content">
                                 <c:if test="${projectPhase eq 'caseStudyExtend'}">
                                     <%@include file="/views/project/stageSurvey/common/houseTradingLandCase.jsp" %>
                                 </c:if>
@@ -43,6 +55,7 @@
                                     <%@include file="/views/project/stageSurvey/common/houseTradingLandSurvey.jsp" %>
                                 </c:if>
                                 <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -183,6 +196,7 @@
 </div>
 <%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
 <%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
+
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
@@ -201,6 +215,7 @@
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 
 </html>
+
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');
@@ -249,6 +264,10 @@
     function showProjectQuoteModal() {
         projectHouse.prototype.showModel();
     }
+    
+
+   
 </script>
+
 
 
