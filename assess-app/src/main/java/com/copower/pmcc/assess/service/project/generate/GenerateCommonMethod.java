@@ -4,6 +4,7 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
+import com.copower.pmcc.assess.common.StreamUtils;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
@@ -24,6 +25,7 @@ import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.*;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -223,23 +225,61 @@ public class GenerateCommonMethod {
         if (CollectionUtils.isEmpty(schemeJudgeObjectList)) return listLinkedHashMap;
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getBasicApplyId()));
         if (CollectionUtils.isEmpty(basicApplyList)) return listLinkedHashMap;
-        List<Integer> batchDetailIds = LangUtils.transform(basicApplyList, o -> o.getBatchDetailId());
-        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBatchDetailListByIds(batchDetailIds);
-        Map<Integer, BasicApplyBatchDetail> mappingSingleEntity = FormatUtils.mappingSingleEntity(batchDetailList, o -> o.getApplyBatchId());
-        for (Map.Entry<Integer, BasicApplyBatchDetail> entry : mappingSingleEntity.entrySet()) {
-            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(entry.getKey());
-            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
-            List<BasicApplyBatchDetail> batchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(BasicFormClassifyEnum.HOUSE.getKey(), entry.getValue().getApplyBatchId(), null, false);
-            if (CollectionUtils.isEmpty(batchDetails)) continue;
-            List<BasicApply> applyList = basicApplyService.getBasicApplysByBatchDetailIds(LangUtils.transform(batchDetails, o -> o.getId()));
-            if (CollectionUtils.isEmpty(applyList)) continue;
-            List<Integer> applyIds = LangUtils.transform(applyList, o -> o.getId());
-            List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (applyIds.contains(schemeJudgeObject.getBasicApplyId()))
-                    judgeObjectList.add(schemeJudgeObject);
+        Map<Integer, List<SchemeJudgeObject>> basicApplyListMap = new HashMap<>();
+        //去除重复
+        basicApplyList = basicApplyList.stream().filter(StreamUtils.distinctByKey(o -> o.getId())).collect(Collectors.toList());
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            if (schemeJudgeObject.getBasicApplyId() == null || schemeJudgeObject.getBasicApplyId() == 0) {
+                continue;
             }
-            listLinkedHashMap.put(basicEstate, judgeObjectList);
+            if (basicApplyListMap.containsKey(schemeJudgeObject.getBasicApplyId())) {
+                basicApplyListMap.get(schemeJudgeObject.getBasicApplyId()).add(schemeJudgeObject);
+            } else {
+                List<SchemeJudgeObject> schemeJudgeObjects = new ArrayList<>();
+                schemeJudgeObjects.add(schemeJudgeObject);
+                basicApplyListMap.put(schemeJudgeObject.getBasicApplyId(), schemeJudgeObjects);
+            }
+        }
+
+        if (basicApplyListMap.isEmpty()) {
+            return listLinkedHashMap;
+        }
+        Iterator<Map.Entry<Integer, List<SchemeJudgeObject>>> iterator = basicApplyListMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, List<SchemeJudgeObject>> integerListEntry = iterator.next();
+            BasicApply basicApply = basicApplyList.stream().filter(apply -> Objects.equal(apply.getId(), integerListEntry.getKey())).findFirst().get();
+            BasicEstate basicEstate = null;
+            if (basicApply.getBasicEstateId() != null && basicApply.getBasicEstateId() != 0) {
+                basicEstate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
+            }
+            if (basicApply.getApplyBatchId() != null && basicApply.getApplyBatchId() != 0){
+                BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApply.getApplyBatchId());
+                if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0){
+                    basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+                }
+            }
+            if (basicApply.getBatchDetailId() != null && basicApply.getBatchDetailId() !=0 ){
+                BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApply.getBatchDetailId()) ;
+                if (basicApplyBatchDetail != null ){
+                    if (Objects.equal(basicApplyBatchDetail.getTableName(),FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
+                        basicEstate = basicEstateService.getBasicEstateById(basicApplyBatchDetail.getTableId());
+                    }
+                    if (basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0){
+                        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
+                        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0){
+                            basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+                        }
+                    }
+                    //如果 basicEstate 还为null
+                    if (basicEstate == null){
+
+                    }
+                }
+            }
+            if (basicEstate == null){
+                continue;
+            }
+            listLinkedHashMap.put(basicEstate,integerListEntry.getValue()) ;
         }
         return listLinkedHashMap;
     }
@@ -1358,7 +1398,7 @@ public class GenerateCommonMethod {
         for (String s : reportType.split("\\.")) {
             fieldsName.add(s.toUpperCase());
         }
-        fieldsName.add("Attachment") ;
+        fieldsName.add("Attachment");
         return String.format("%s%d%d", StringUtils.join(fieldsName, "_"), reportGroup.getAreaGroupId(), reportGroup.getId());
     }
 
