@@ -551,7 +551,7 @@
             $.each(caseItemIdArray, function (i, item) {
                 //先找到该案例的成交价，再将成交价与测算值依次相乘，最后将结果保留两位小数
                 //交易情况、市场状况、单价内涵、区位状况、权益状况、实体状况 的各项测算值保留4位小数 再与案例成交价相乘计算结果
-                var price = table.find('tr[data-bisprice="true"]').closest('tbody').find('td[data-item-id=' + item + '].p_text').text();
+                var price = table.find('tr[data-bisprice="true"]').closest('tbody').find('td[data-item-id=' + item + '].p_text a').text();
                 if (price && AssessCommon.isNumber(price)) {
                     var specificPrice = price = parseFloat(price);
                     if (marketCompare.isLand) {
