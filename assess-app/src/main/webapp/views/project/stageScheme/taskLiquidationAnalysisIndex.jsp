@@ -595,7 +595,7 @@
                 success: function (result) {
                     if (result.ret) {
                         var html = $("#" + commonField.taskLiquidationAnalysisDiv).html();
-                        var index = $("#" + commonField.taskLiquidationAnalysisAppend).find('.col-md-12').length;
+                        var index = $("#" + commonField.taskLiquidationAnalysisAppend).find('.form-horizontal').length;
                         var number = result.data.id;
                         html = html.replace(/_number/g, number).replace(/{index}/g, index + 1);
                         $("#" + commonField.taskLiquidationAnalysisAppend).append(html);
