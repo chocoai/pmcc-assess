@@ -16,6 +16,7 @@
     <result column="house_id" property="houseId" jdbcType="INTEGER" />
     <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="initial_price" property="initialPrice" jdbcType="DECIMAL" />
+    <result column="price_connotation" property="priceConnotation" jdbcType="VARCHAR" />
     <result column="must_adjust_price" property="mustAdjustPrice" jdbcType="BIT" />
     <result column="annual_coefficient" property="annualCoefficient" jdbcType="DECIMAL" />
     <result column="volume_ratio_coefficient" property="volumeRatioCoefficient" jdbcType="DECIMAL" />
@@ -95,11 +96,11 @@
   </sql>
   <sql id="Base_Column_List" >
     id, mc_id, name, type, plan_details_id, basic_apply_id, json_content, trading_time_explain, 
-    residue_ratio_id, used_year, usable_year, house_id, area, initial_price, must_adjust_price, 
-    annual_coefficient, volume_ratio_coefficient, specific_price, correction_difference, 
-    case_difference, weight, weight_description, average_price, deve_degree, evaluate_price, 
-    location_factor_ratio, equity_factor_ratio, entity_factor_ratio, remark, creator, 
-    gmt_created, gmt_modified
+    residue_ratio_id, used_year, usable_year, house_id, area, initial_price, price_connotation, 
+    must_adjust_price, annual_coefficient, volume_ratio_coefficient, specific_price, 
+    correction_difference, case_difference, weight, weight_description, average_price, 
+    deve_degree, evaluate_price, location_factor_ratio, equity_factor_ratio, entity_factor_ratio, 
+    remark, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
     select
@@ -139,24 +140,26 @@
       plan_details_id, basic_apply_id, json_content, 
       trading_time_explain, residue_ratio_id, used_year, 
       usable_year, house_id, area, 
-      initial_price, must_adjust_price, annual_coefficient, 
-      volume_ratio_coefficient, specific_price, 
-      correction_difference, case_difference, weight, 
-      weight_description, average_price, deve_degree, 
-      evaluate_price, location_factor_ratio, equity_factor_ratio, 
-      entity_factor_ratio, remark, creator, 
-      gmt_created, gmt_modified)
+      initial_price, price_connotation, must_adjust_price, 
+      annual_coefficient, volume_ratio_coefficient, 
+      specific_price, correction_difference, case_difference, 
+      weight, weight_description, average_price, 
+      deve_degree, evaluate_price, location_factor_ratio, 
+      equity_factor_ratio, entity_factor_ratio, remark, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{planDetailsId,jdbcType=INTEGER}, #{basicApplyId,jdbcType=INTEGER}, #{jsonContent,jdbcType=VARCHAR}, 
       #{tradingTimeExplain,jdbcType=VARCHAR}, #{residueRatioId,jdbcType=INTEGER}, #{usedYear,jdbcType=INTEGER}, 
       #{usableYear,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, 
-      #{initialPrice,jdbcType=DECIMAL}, #{mustAdjustPrice,jdbcType=BIT}, #{annualCoefficient,jdbcType=DECIMAL}, 
-      #{volumeRatioCoefficient,jdbcType=DECIMAL}, #{specificPrice,jdbcType=VARCHAR}, 
-      #{correctionDifference,jdbcType=VARCHAR}, #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, 
-      #{weightDescription,jdbcType=VARCHAR}, #{averagePrice,jdbcType=DECIMAL}, #{deveDegree,jdbcType=DECIMAL}, 
-      #{evaluatePrice,jdbcType=DECIMAL}, #{locationFactorRatio,jdbcType=DECIMAL}, #{equityFactorRatio,jdbcType=DECIMAL}, 
-      #{entityFactorRatio,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{initialPrice,jdbcType=DECIMAL}, #{priceConnotation,jdbcType=VARCHAR}, #{mustAdjustPrice,jdbcType=BIT}, 
+      #{annualCoefficient,jdbcType=DECIMAL}, #{volumeRatioCoefficient,jdbcType=DECIMAL}, 
+      #{specificPrice,jdbcType=VARCHAR}, #{correctionDifference,jdbcType=VARCHAR}, #{caseDifference,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=VARCHAR}, #{weightDescription,jdbcType=VARCHAR}, #{averagePrice,jdbcType=DECIMAL}, 
+      #{deveDegree,jdbcType=DECIMAL}, #{evaluatePrice,jdbcType=DECIMAL}, #{locationFactorRatio,jdbcType=DECIMAL}, 
+      #{equityFactorRatio,jdbcType=DECIMAL}, #{entityFactorRatio,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -202,6 +205,9 @@
       </if>
       <if test="initialPrice != null" >
         initial_price,
+      </if>
+      <if test="priceConnotation != null" >
+        price_connotation,
       </if>
       <if test="mustAdjustPrice != null" >
         must_adjust_price,
@@ -297,6 +303,9 @@
       </if>
       <if test="initialPrice != null" >
         #{initialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="priceConnotation != null" >
+        #{priceConnotation,jdbcType=VARCHAR},
       </if>
       <if test="mustAdjustPrice != null" >
         #{mustAdjustPrice,jdbcType=BIT},
@@ -405,6 +414,9 @@
       <if test="record.initialPrice != null" >
         initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       </if>
+      <if test="record.priceConnotation != null" >
+        price_connotation = #{record.priceConnotation,jdbcType=VARCHAR},
+      </if>
       <if test="record.mustAdjustPrice != null" >
         must_adjust_price = #{record.mustAdjustPrice,jdbcType=BIT},
       </if>
@@ -480,6 +492,7 @@
       house_id = #{record.houseId,jdbcType=INTEGER},
       area = #{record.area,jdbcType=DECIMAL},
       initial_price = #{record.initialPrice,jdbcType=DECIMAL},
+      price_connotation = #{record.priceConnotation,jdbcType=VARCHAR},
       must_adjust_price = #{record.mustAdjustPrice,jdbcType=BIT},
       annual_coefficient = #{record.annualCoefficient,jdbcType=DECIMAL},
       volume_ratio_coefficient = #{record.volumeRatioCoefficient,jdbcType=DECIMAL},
@@ -543,6 +556,9 @@
       </if>
       <if test="initialPrice != null" >
         initial_price = #{initialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="priceConnotation != null" >
+        price_connotation = #{priceConnotation,jdbcType=VARCHAR},
       </if>
       <if test="mustAdjustPrice != null" >
         must_adjust_price = #{mustAdjustPrice,jdbcType=BIT},
@@ -616,6 +632,7 @@
       house_id = #{houseId,jdbcType=INTEGER},
       area = #{area,jdbcType=DECIMAL},
       initial_price = #{initialPrice,jdbcType=DECIMAL},
+      price_connotation = #{priceConnotation,jdbcType=VARCHAR},
       must_adjust_price = #{mustAdjustPrice,jdbcType=BIT},
       annual_coefficient = #{annualCoefficient,jdbcType=DECIMAL},
       volume_ratio_coefficient = #{volumeRatioCoefficient,jdbcType=DECIMAL},

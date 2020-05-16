@@ -306,6 +306,7 @@ public class BasicApplyBatchService {
 
 
     public BasicApplyBatch getBasicApplyBatchById(Integer id) {
+        if(id==null) return null;
         return basicApplyBatchDao.getBasicApplyBatchById(id);
     }
 

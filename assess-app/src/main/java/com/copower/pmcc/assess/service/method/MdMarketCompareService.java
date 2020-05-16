@@ -282,6 +282,9 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setResidueRatioId(0);
         mdMarketCompareItem.setUsedYear(usedYear);
         mdMarketCompareItem.setHouseId(basicHouse.getId());
+        BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+        if (houseTrading != null)
+            mdMarketCompareItem.setPriceConnotation(baseDataDicService.getNameById(houseTrading.getPriceConnotation()));
     }
 
 

@@ -32,6 +32,8 @@ public class MdMarketCompareItem {
 
     private BigDecimal initialPrice;
 
+    private String priceConnotation;
+
     private Boolean mustAdjustPrice;
 
     private BigDecimal annualCoefficient;
@@ -178,6 +180,14 @@ public class MdMarketCompareItem {
 
     public void setInitialPrice(BigDecimal initialPrice) {
         this.initialPrice = initialPrice;
+    }
+
+    public String getPriceConnotation() {
+        return priceConnotation;
+    }
+
+    public void setPriceConnotation(String priceConnotation) {
+        this.priceConnotation = priceConnotation == null ? null : priceConnotation.trim();
     }
 
     public Boolean getMustAdjustPrice() {

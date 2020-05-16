@@ -130,10 +130,10 @@
                                     <input type="text" required class="form-control x-percent" name="rewardRate"
                                            placeholder="报酬率"
                                            data-value="${mdIncome.rewardRate}" onblur="selfSupport.computePrice();">
-                                    <span class="input-group-btn">
-                              <input type="button" class="btn btn-primary" value="报酬率测算"
-                                     onclick="selfSupport.getRewardRate(this);"/>
-                            </span>
+                                    <div class="input-group-prepend">
+                              <button type="button" class="btn btn-info btn-sm" value="" style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                     onclick="selfSupport.getRewardRate(this);">报酬率</button>
+                            </div>
                                 </div>
                             </div>
                         </div>

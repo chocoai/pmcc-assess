@@ -844,11 +844,11 @@ commonColumn.houseIntelligentColumn = function () {
             return s;
         }
     });
+    cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'layingMethodName', title: '铺设方式'});
     cols.push({field: 'lampsLanternsName', title: '灯具'});
-    cols.push({field: 'gradeName', title: '档次'});
-    cols.push({field: 'intelligentSystemName', title: '智能系统'});
     cols.push({field: 'remark', title: '备注'});
+    cols.push({field: 'intelligentSystemName', title: '智能系统'});
     cols.push({field: 'systemDescribe', title: '智能系统描述'});
     return cols;
 }
