@@ -75,5 +75,15 @@ public class GenerateReportGroupController {
         }
     }
 
+    @RequestMapping(value = "/getValidData", name = "获取校验列表", method = {RequestMethod.GET})
+    public HttpResult getValidData(Integer projectId) {
+        try {
+            return HttpResult.newCorrectResult(200, generateReportGroupService.getValidData(projectId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
 
 }
