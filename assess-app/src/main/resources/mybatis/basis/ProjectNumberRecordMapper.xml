@@ -7,6 +7,7 @@
     <result column="assess_project_type" property="assessProjectType" jdbcType="VARCHAR" />
     <result column="report_type" property="reportType" jdbcType="INTEGER" />
     <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
     <result column="number_value" property="numberValue" jdbcType="VARCHAR" />
     <result column="year" property="year" jdbcType="INTEGER" />
     <result column="number" property="number" jdbcType="INTEGER" />
@@ -74,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, assess_project_type, report_type, area_id, number_value, year, number, 
-    bis_delete, creator, gmt_created, gmt_modified
+    id, project_id, assess_project_type, report_type, area_id, group_id, number_value, 
+    year, number, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecordExample" >
     select
@@ -112,13 +113,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_number_record (project_id, assess_project_type, report_type, 
-      area_id, number_value, year, 
-      number, bis_delete, creator, 
-      gmt_created, gmt_modified)
+      area_id, group_id, number_value, 
+      year, number, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{projectId,jdbcType=INTEGER}, #{assessProjectType,jdbcType=VARCHAR}, #{reportType,jdbcType=INTEGER}, 
-      #{areaId,jdbcType=INTEGER}, #{numberValue,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, 
-      #{number,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{areaId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{numberValue,jdbcType=VARCHAR}, 
+      #{year,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -137,6 +140,9 @@
       </if>
       <if test="areaId != null" >
         area_id,
+      </if>
+      <if test="groupId != null" >
+        group_id,
       </if>
       <if test="numberValue != null" >
         number_value,
@@ -172,6 +178,9 @@
       </if>
       <if test="areaId != null" >
         #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
       </if>
       <if test="numberValue != null" >
         #{numberValue,jdbcType=VARCHAR},
@@ -220,6 +229,9 @@
       <if test="record.areaId != null" >
         area_id = #{record.areaId,jdbcType=INTEGER},
       </if>
+      <if test="record.groupId != null" >
+        group_id = #{record.groupId,jdbcType=INTEGER},
+      </if>
       <if test="record.numberValue != null" >
         number_value = #{record.numberValue,jdbcType=VARCHAR},
       </if>
@@ -253,6 +265,7 @@
       assess_project_type = #{record.assessProjectType,jdbcType=VARCHAR},
       report_type = #{record.reportType,jdbcType=INTEGER},
       area_id = #{record.areaId,jdbcType=INTEGER},
+      group_id = #{record.groupId,jdbcType=INTEGER},
       number_value = #{record.numberValue,jdbcType=VARCHAR},
       year = #{record.year,jdbcType=INTEGER},
       number = #{record.number,jdbcType=INTEGER},
@@ -278,6 +291,9 @@
       </if>
       <if test="areaId != null" >
         area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=INTEGER},
       </if>
       <if test="numberValue != null" >
         number_value = #{numberValue,jdbcType=VARCHAR},
@@ -309,6 +325,7 @@
       assess_project_type = #{assessProjectType,jdbcType=VARCHAR},
       report_type = #{reportType,jdbcType=INTEGER},
       area_id = #{areaId,jdbcType=INTEGER},
+      group_id = #{groupId,jdbcType=INTEGER},
       number_value = #{numberValue,jdbcType=VARCHAR},
       year = #{year,jdbcType=INTEGER},
       number = #{number,jdbcType=INTEGER},
