@@ -13,6 +13,8 @@ public class ProjectNumberRecord {
 
     private Integer areaId;
 
+    private Integer groupId;
+
     private String numberValue;
 
     private Integer year;
@@ -65,6 +67,14 @@ public class ProjectNumberRecord {
 
     public void setAreaId(Integer areaId) {
         this.areaId = areaId;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public String getNumberValue() {

@@ -141,6 +141,10 @@ public class ProjectNumberRecordService {
      */
     @Transactional(rollbackFor = Exception.class)
     public SysSymbolListDto getReportNumber(ProjectInfo projectInfo, Integer areaId, AssessProjectTypeEnum assessProjectType, Integer reportType, Boolean isMustTakeNew) throws BusinessException {
+        return getReportNumber(projectInfo,areaId,0,assessProjectType,reportType,isMustTakeNew);
+    }
+
+    public SysSymbolListDto getReportNumber(ProjectInfo projectInfo, Integer areaId,Integer groupId, AssessProjectTypeEnum assessProjectType, Integer reportType, Boolean isMustTakeNew) throws BusinessException {
         //1.根据文号规则走号
         //2.生成报告号之后将其存储
         if (projectInfo == null || areaId == null || reportType == null)
@@ -148,7 +152,7 @@ public class ProjectNumberRecordService {
         SysSymbolListDto sysSymbolListDto = new SysSymbolListDto();
         int year = DateUtils.getYear(DateUtils.today());
         if (isMustTakeNew == Boolean.FALSE) {
-            ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId, year, assessProjectType.getKey(), reportType);
+            ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId,groupId, year, assessProjectType.getKey(), reportType);
             if (numberRecord != null) {
                 sysSymbolListDto.setSymbol(numberRecord.getNumberValue());
                 return sysSymbolListDto;
@@ -162,11 +166,12 @@ public class ProjectNumberRecordService {
         if (CollectionUtils.isNotEmpty(sysSymbolList))
             sysSymbolListDto = sysSymbolList.get(0);
         else
-            sysSymbolListDto = erpRpcToolsService.getSysSymbol(applicationConstant.getAppKey(), numberRule.getErpRuleId(), year);
+            sysSymbolListDto = getSymbolDto(numberRule.getErpRuleId(), year);
         if (sysSymbolListDto != null) {
             ProjectNumberRecord projectNumberRecord = new ProjectNumberRecord();
             projectNumberRecord.setProjectId(projectInfo.getId());
             projectNumberRecord.setAreaId(areaId);
+            projectNumberRecord.setGroupId(groupId);
             projectNumberRecord.setAssessProjectType(assessProjectType.getKey());
             projectNumberRecord.setReportType(reportType);
             projectNumberRecord.setYear(year);
@@ -174,9 +179,16 @@ public class ProjectNumberRecordService {
             projectNumberRecord.setNumber(sysSymbolListDto.getSymbolNumber());
             projectNumberRecord.setCreator(commonService.thisUserAccount());
             projectNumberRecordDao.addProjectNumberRecord(projectNumberRecord);
-            erpRpcToolsService.updateSymbolExamine(applicationConstant.getAppKey(), sysSymbolListDto.getSymbol());
         }
         return sysSymbolListDto;
+    }
+
+    //erp获取文号
+    public synchronized SysSymbolListDto getSymbolDto(Integer ruleId, Integer years) throws BusinessException {
+        SysSymbolListDto sysSymbol = erpRpcToolsService.getSysSymbol(applicationConstant.getAppKey(), ruleId, years);
+        if (sysSymbol != null)
+            erpRpcToolsService.updateSymbolExamine(applicationConstant.getAppKey(), sysSymbol.getSymbol());
+        return sysSymbol;
     }
 
 
