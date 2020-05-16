@@ -77,6 +77,19 @@ public class ProjectReportController {
         }
     }
 
+    @PostMapping(value = "/generateReportAttachment", name = "生成报告的附件")
+    public HttpResult generateReportAttachment(String ids, String group,String info) {
+        try {
+            GenerateReportInfo generateReportInfo = JSONObject.parseObject(info, GenerateReportInfo.class);
+            GenerateReportGroup reportGroup = JSONObject.parseObject(group, GenerateReportGroup.class);
+            generateReportService.generateReportAttachment(ids, generateReportInfo ,reportGroup);
+            return HttpResult.newCorrectResult(200, generateReportInfo);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "生成报告的附件");
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
     @GetMapping(value = "/getGenerateReportGeneration", name = "获取报告替换数据")
     public HttpResult getGenerateReportGeneration(Integer areaGroupId, Integer projectPlanId) {
         GenerateReportInfo generateReportGeneration = null;

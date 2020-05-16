@@ -19,6 +19,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeFunctionApplyDto;
 import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
@@ -140,17 +141,19 @@ public class GenerateBaseDataService {
     private DeclareRealtyCheckListService declareRealtyCheckListService;
     private SurveyCommonService surveyCommonService;
     private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
+    private GenerateReportGroupService generateReportGroupService;
 
     /**
      * 构造器必须传入的参数
      */
     private Integer projectId;
     private Integer areaId;
-    private BaseReportTemplate baseReportTemplate;
     private ProjectInfoVo projectInfo = null;
+    private BaseDataDic reportType = null;
     /**
      * 中间变量
      */
+    private GenerateReportGroup reportGroup = null;
     private SchemeAreaGroup schemeAreaGroup = null;
     private List<SchemeJudgeObject> schemeJudgeObjectList = null;
     private List<SchemeJudgeObject> schemeJudgeObjectFullList = null;
@@ -168,7 +171,7 @@ public class GenerateBaseDataService {
     public String getWordNumber() {
         try {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId, assessProjectType, this.baseReportTemplate.getReportType(), false);
+            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId, assessProjectType, this.reportType.getId(), false);
             String number = symbolListDto.getSymbol();
             if (StringUtils.isNotBlank(number)) {
                 return number;
@@ -193,11 +196,11 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getReportQrcode(GenerateReportInfo generateReportInfo, String reportType ,GenerateReportGroup reportGroup) throws Exception {
+    public String getReportQrcode(GenerateReportInfo generateReportInfo, String reportType, GenerateReportGroup reportGroup) throws Exception {
         //1.先从本地查看是否已生成过二维码
         //2.如果已生成直接返回已生成的二维码
         //3.如果没有生成则调用接口生成二维码并记录数据到本地
-        ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.baseReportTemplate.getReportType());
+        ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.reportType.getId());
         String qrCode = null;
         if (qrcodeRecode != null) {
             qrCode = qrcodeRecode.getQrcode();//更新部分信息
@@ -226,7 +229,7 @@ public class GenerateBaseDataService {
             qrcodeRecode = new ProjectQrcodeRecord();
             qrcodeRecode.setProjectId(projectId);
             qrcodeRecode.setAreaId(areaId);
-            qrcodeRecode.setReportType(this.baseReportTemplate.getReportType());
+            qrcodeRecode.setReportType(this.reportType.getId());
             qrcodeRecode.setProjectDocumentId(projectDocumentDto.getId());
             qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
             projectQrcodeRecordService.saveProjectQrcodeRecode(qrcodeRecode);
@@ -581,7 +584,7 @@ public class GenerateBaseDataService {
      * 估价项目名称
      */
     public String getValuationProjectName() throws Exception {
-        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByGroupId(reportGroup);
         if (map.isEmpty()) return "";
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : map.entrySet()) {
@@ -1292,7 +1295,7 @@ public class GenerateBaseDataService {
     public String getDeclareRecordUnitType() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(8);
         Map<String, String> map = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
             if (basicApply == null || basicApply.getId() == null) {
@@ -1332,7 +1335,7 @@ public class GenerateBaseDataService {
      */
     public String getDecorationStatus() {
         Map<Integer, String> map = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
             if (basicApply == null || basicApply.getId() == null) {
@@ -1806,7 +1809,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = new DocumentBuilder(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (int k = 0; k < schemeJudgeObjectList.size(); k++) {
                 SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(k);
@@ -1838,7 +1841,7 @@ public class GenerateBaseDataService {
 
     //房地产总价
     private BigDecimal getTotalRealEstate() {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         BigDecimal temp = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -1882,7 +1885,7 @@ public class GenerateBaseDataService {
      */
     public String getStatutoryOptimumReimbursement(Integer num) {
         Map<String, List<Integer>> stringListMap = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             Map<SchemeJudgeObject, List<SchemeReimbursementItemVo>> map = schemeReimbursementService.getSchemeReimbursementItemVoMapAndSchemeJudgeObject2(schemeJudgeObjectList, projectId);
             if (!map.isEmpty()) {
@@ -1933,7 +1936,7 @@ public class GenerateBaseDataService {
         List<BaseDataDic> types = new ArrayList<>(Arrays.asList(
                 baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS),
                 baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS)));
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getDeclareRecordId() != null) {
@@ -1996,7 +1999,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.settingBuildingTable(builder);
         LinkedList<Double> doubleLinkedList = Lists.newLinkedList(Lists.newArrayList(20d, 100d, 30d, 30d, 30d, 50d, 55d));
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         LinkedList<String> linkedLists = new LinkedList<String>();
         final String nullValue = "";
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -2097,7 +2100,7 @@ public class GenerateBaseDataService {
         LinkedList<String> linkedLists = new LinkedList<String>();
         final int colMax = 13;
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Iterator<SchemeJudgeObject> objectIterator = schemeJudgeObjectList.iterator();
         while (objectIterator.hasNext()) {
             SchemeJudgeObject schemeJudgeObject = objectIterator.next();
@@ -2225,7 +2228,7 @@ public class GenerateBaseDataService {
 
     public String getEquityStatusObjectNumber() {
         LinkedList<String> linkedLists = new LinkedList<String>();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             if (declareRecord == null) {
@@ -2394,7 +2397,30 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getEvaluationMethod() throws Exception {
-        List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctionsByAreaId(areaId);
+        List<SchemeJudgeFunction> functionList = new ArrayList<>() ;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList() ;
+        Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
+        while (iterator.hasNext()){
+            SchemeJudgeObject judgeObject = iterator.next();
+            SchemeJudgeFunctionApplyDto functionApplyDto = schemeJudgeFunctionService.getJudgeFunction(judgeObject.getId());
+            if (functionApplyDto == null){
+                continue;
+            }
+            if (CollectionUtils.isEmpty(functionApplyDto.getJudgeFunctions())){
+                continue;
+            }
+            functionList.addAll(functionApplyDto.getJudgeFunctions()) ;
+        }
+        Iterator<SchemeJudgeFunction> functionIterator = functionList.iterator();
+        while (functionIterator.hasNext()){
+            SchemeJudgeFunction judgeFunction = functionIterator.next();
+            //setBisApplicable
+            if (judgeFunction.getBisApplicable()  != null && judgeFunction.getBisApplicable()){
+                continue;
+            }
+            functionIterator.remove();
+        }
+        List<SchemeJudgeFunction> judgeFunctions = functionList;
         if (CollectionUtils.isEmpty(judgeFunctions)) return "";
         List<Integer> methodTypeList = LangUtils.transform(judgeFunctions, o -> o.getMethodType());
         List<BaseDataDic> baseMethodList = mdCommonService.getBaseMethodList(projectInfo.getProjectCategoryId());
@@ -2413,7 +2439,29 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = getLocalPath();
-        List<SchemeJudgeFunction> functionList = schemeJudgeFunctionService.getApplicableJudgeFunctionsByAreaId(areaId);
+        List<SchemeJudgeFunction> functionList = new ArrayList<>() ;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList() ;
+        Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
+        while (iterator.hasNext()){
+            SchemeJudgeObject judgeObject = iterator.next();
+            SchemeJudgeFunctionApplyDto functionApplyDto = schemeJudgeFunctionService.getJudgeFunction(judgeObject.getId());
+            if (functionApplyDto == null){
+                continue;
+            }
+            if (CollectionUtils.isEmpty(functionApplyDto.getJudgeFunctions())){
+                continue;
+            }
+            functionList.addAll(functionApplyDto.getJudgeFunctions()) ;
+        }
+        Iterator<SchemeJudgeFunction> functionIterator = functionList.iterator();
+        while (functionIterator.hasNext()){
+            SchemeJudgeFunction judgeFunction = functionIterator.next();
+            //setBisApplicable
+            if (judgeFunction.getBisApplicable()  != null && judgeFunction.getBisApplicable()){
+                continue;
+            }
+            functionIterator.remove();
+        }
         if (CollectionUtils.isNotEmpty(functionList)) {
             Map<String, String> compareMap = Maps.newHashMap();
             Map<String, String> incomeMap = Maps.newHashMap();
@@ -2472,7 +2520,30 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
         String localPath = getLocalPath();
-        List<SchemeJudgeFunction> functionList = schemeJudgeFunctionService.getNotApplicableJudgeFunctionsByAreaId(areaId);
+        List<SchemeJudgeFunction> functionList = new ArrayList<>() ;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList() ;
+        Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
+        while (iterator.hasNext()){
+            SchemeJudgeObject judgeObject = iterator.next();
+            SchemeJudgeFunctionApplyDto functionApplyDto = schemeJudgeFunctionService.getJudgeFunction(judgeObject.getId());
+            if (functionApplyDto == null){
+                continue;
+            }
+            if (CollectionUtils.isEmpty(functionApplyDto.getJudgeFunctions())){
+                continue;
+            }
+            functionList.addAll(functionApplyDto.getJudgeFunctions()) ;
+        }
+        if (CollectionUtils.isNotEmpty(functionList)){
+            Iterator<SchemeJudgeFunction> functionIterator = functionList.iterator();
+            while (functionIterator.hasNext()){
+                SchemeJudgeFunction judgeFunction = functionIterator.next();
+                if (judgeFunction.getBisApplicable() != null && !judgeFunction.getBisApplicable()){
+                    continue;
+                }
+                functionIterator.remove();
+            }
+        }
         if (CollectionUtils.isNotEmpty(functionList)) {
             Map<String, String> compareMap = Maps.newHashMap();
             Map<String, String> incomeMap = Maps.newHashMap();
@@ -3285,7 +3356,7 @@ public class GenerateBaseDataService {
         keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
         keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
         keyValueDtoList.add(new KeyValueDto("text-indent", "2em"));
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Map<SchemeJudgeObject, List<SchemeSurePriceItem>> objectListMap = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -3377,7 +3448,7 @@ public class GenerateBaseDataService {
                     stringBuilder.append(StringUtils.join(stringList, "，")).append("估价对象结果如下表");
                 }
                 AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(stringBuilder.toString(), keyValueDtoList));
-                if(StringUtils.isNotEmpty(evaluationExpression.toString())){
+                if (StringUtils.isNotEmpty(evaluationExpression.toString())) {
                     documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(evaluationExpression.toString())), true);
                 }
 
@@ -3470,7 +3541,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Map<String, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -3705,7 +3776,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getJudgeBuildResultSurveySheet(boolean seat) throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         String path = generateCommonMethod.getLocalPath();
         Document doc = new Document();
         DocumentBuilder documentBuilder = new DocumentBuilder(doc);
@@ -4079,7 +4150,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getJudicialSchemeJudgeObjectSheet() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList =getSchemeJudgeObjectList();
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -4225,14 +4296,12 @@ public class GenerateBaseDataService {
         writeJudgeObjectResultSurveyInCell2(basicApply, schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, mortgageFlag, isLabelJudgeObjectShowName);
     }
 
-
     /**
      * 估价结果一览表 结果集
      *
      * @throws Exception
      */
-    public String getjudgeBuildResultSurveySheet(Integer areaId, ProjectInfoVo projectInfo) throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+    public String getjudgeBuildResultSurveySheet(List<SchemeJudgeObject> schemeJudgeObjectList, ProjectInfoVo projectInfo) throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
@@ -4892,7 +4961,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByGroupId(reportGroup);
         if (!linkedHashMap.isEmpty()) {
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
                 if (CollectionUtils.isEmpty(entry.getValue())) {
@@ -4961,7 +5030,7 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = generateCommonMethod.getLocalPath();
         LinkedList<BasicExamineHandle.BasicVo> basicVoLinkedList = new LinkedList<>();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
             while (iterator.hasNext()) {
@@ -5087,7 +5156,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        Map<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        Map<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByGroupId(reportGroup);
         for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> schemeJudgeObjectEntry : map.entrySet()) {
             BasicEstate basicEstate = schemeJudgeObjectEntry.getKey();
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstate.getId());
@@ -5143,7 +5212,7 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-        Map<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        Map<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByGroupId(reportGroup);
         if (!linkedHashMap.isEmpty()) {
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> listEntry : linkedHashMap.entrySet()) {
                 BasicEstate basicEstate = listEntry.getKey();
@@ -5193,7 +5262,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
         //1.先根据楼盘分组，再分别获取到楼盘下的权益信息
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
-        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByGroupId(reportGroup);
         if (!linkedHashMap.isEmpty()) {
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
                 //根据不同项目类别确定获取数据的方法
@@ -5277,7 +5346,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         LinkedHashMap<String, String> map = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
-        schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
+        getSchemeJudgeObjectList().forEach(schemeJudgeObject -> {
             if (schemeJudgeObject.getDeclareRecordId() != null) {
                 schemeJudgeObjectList.add(schemeJudgeObject);
             }
@@ -5528,7 +5597,7 @@ public class GenerateBaseDataService {
         ReportFieldJiansheBankEnum reportFieldEnum = ReportFieldJiansheBankEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
-        schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
+        getSchemeJudgeObjectList().forEach(schemeJudgeObject -> {
             if (schemeJudgeObject.getDeclareRecordId() != null) {
                 schemeJudgeObjectList.add(schemeJudgeObject);
             }
@@ -5868,7 +5937,7 @@ public class GenerateBaseDataService {
      */
     public String getDetailedCalculationProcessValuationObject() throws Exception {
         String localPath = getLocalPath();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Document document = new Document();
         //测算估价方法key的集合
         final String keys = String.join(",",
@@ -6253,7 +6322,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/25 10:09
      */
     public String getTypesFormEnabledDeclarationOffice() throws Exception {
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<DeclareRecord> declareRecordList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList.stream().forEach(schemeJudgeObject -> {
@@ -6438,7 +6507,7 @@ public class GenerateBaseDataService {
         StringBuffer buffer = new StringBuffer(8);
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
         generateCommonMethod.setDefaultDocumentBuilderSetting(documentBuilder);
-        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByGroupId(reportGroup);
         if (!linkedHashMap.isEmpty()) {
             int i = 0;
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
@@ -6905,11 +6974,11 @@ public class GenerateBaseDataService {
     private GenerateBaseDataService() {
     }
 
-    public GenerateBaseDataService(ProjectInfoVo projectInfoVo, Integer areaId, BaseReportTemplate baseReportTemplate, ProjectPlan projectPlan) {
+    public GenerateBaseDataService(ProjectInfoVo projectInfoVo, Integer areaId, BaseDataDic reportType, ProjectPlan projectPlan, GenerateReportGroup reportGroup) {
         this.projectId = projectInfoVo.getId();
         this.projectInfo = projectInfoVo;
         this.areaId = areaId;
-        this.baseReportTemplate = baseReportTemplate;
+        this.reportGroup = reportGroup;
         //注入bean
         this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
@@ -6965,19 +7034,26 @@ public class GenerateBaseDataService {
         this.basicApplyBatchService = SpringContextUtils.getBean(BasicApplyBatchService.class);
         this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
         this.basicHouseHuxingPriceService = SpringContextUtils.getBean(BasicHouseHuxingPriceService.class);
+        this.generateReportGroupService = SpringContextUtils.getBean(GenerateReportGroupService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         if (areaGroup == null) {
             areaGroup = new SchemeAreaGroup();
         }
         this.schemeAreaGroup = areaGroup;
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        List<SchemeJudgeObject> judgeObjectList =  generateReportGroupService.getSchemeJudgeObjectByGroupId(reportGroup.getId());
         if (CollectionUtils.isEmpty(judgeObjectList)) {
             judgeObjectList = new ArrayList<SchemeJudgeObject>(0);
         }
         this.schemeJudgeObjectList = judgeObjectList;
-        this.schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
-        this.schemeJudgeObjectDeclareList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+
+        this.schemeJudgeObjectFullList = judgeObjectList;
+        this.schemeJudgeObjectDeclareList = judgeObjectList;
+
+//        this.schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
+//        this.schemeJudgeObjectDeclareList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+
+
         this.schemeJudgeObjectMap = FormatUtils.mappingSingleEntity(this.schemeJudgeObjectList, o -> o.getId());
     }
 
@@ -7048,7 +7124,10 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public synchronized List<SchemeJudgeObject> getSchemeJudgeObjectList() {
+    public List<SchemeJudgeObject> getSchemeJudgeObjectList() {
+        if (CollectionUtils.isEmpty(this.schemeJudgeObjectList)) {
+            this.schemeJudgeObjectList = generateReportGroupService.getSchemeJudgeObjectByGroupId(reportGroup.getId());
+        }
         return generateCommonMethod.getSortSchemeJudgeObject(this.schemeJudgeObjectList);
     }
 }

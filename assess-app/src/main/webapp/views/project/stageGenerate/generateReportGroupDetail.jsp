@@ -135,6 +135,15 @@
                                     <!-- 报告附件id -->
                                     <div id="_${reportType.fieldName}{areaGroupId}{id}"></div>
                                 </div>
+
+                                <label class="col-sm-1">
+                                        ${reportType.name} 附件
+                                </label>
+
+                                <div class="col-sm-3">
+                                    <!-- 报告附件id -->
+                                    <div id="_${reportType.fieldName}_Attachment{areaGroupId}{id}"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -402,6 +411,7 @@
                         getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
                             $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
                                 reportGroupObj.fileShow(n + "" + areaGroupId+""+item.id, true, item.id);
+                                reportGroupObj.fileShow(n + "_Attachment" + areaGroupId+""+item.id, true, item.id);
                             });
                         });
                     });
