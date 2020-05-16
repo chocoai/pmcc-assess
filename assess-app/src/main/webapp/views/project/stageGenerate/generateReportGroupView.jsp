@@ -170,9 +170,22 @@
                                         <i class="fa fa-file-word-o"></i></button>
                                 </label>
 
+
                                 <div class="col-sm-3">
                                     <!-- 报告附件id -->
                                     <div id="_${reportType.fieldName}{areaGroupId}{id}"></div>
+                                </div>
+
+                                <label class="col-sm-1">
+                                    <!-- 报告附件方法 -->
+                                    <button type="button" class="btn-dark btn btn-sm" onclick="reportGroupObj.generateReportAttachment('${reportType.id}','{id}')">
+                                        生成${reportType.name}附件
+                                        <i class="fa fa-file-word-o"></i></button>
+                                </label>
+
+                                <div class="col-sm-2">
+                                    <!-- 报告附件id -->
+                                    <div id="_${reportType.fieldName}_Attachment{areaGroupId}{id}"></div>
                                 </div>
 
                                 <div class="col-sm-1">
@@ -369,6 +382,10 @@
 
     reportGroupObj.getGenerateReportGroupById = function (id, callback) {
         reportGroupObj.ajaxServerFun({id: id}, "/generateReportGroup/getGenerateReportGroupById", "get", callback, null, null);
+    };
+
+    reportGroupObj.getValidData = function (projectId, callback) {
+        reportGroupObj.ajaxServerFun({projectId: projectId}, "/generateReportGroup/getValidData", "get", callback, null, null);
     };
 
     reportGroupObj.cleanHTMLData = function (_this, id) {
@@ -586,6 +603,44 @@
     } ;
 
     /**
+     * 生成报告
+     * @param reportType
+     * @param id
+     */
+    reportGroupObj.generateReportAttachment = function(reportType ,id){
+        reportGroupObj.getGenerateReportGroupById(id,function (group) {
+            var form = $("#groupForm"+group.areaGroupId);
+            var data = formSerializeArray(form);
+            if (!form.valid()) {
+                return false;
+            }
+            if (data.realEstateAppraiser) {
+
+            } else {
+                notifyInfo('提示', '估价师必须选择');
+                return false;
+            }
+            data.areaGroupId = group.areaGroupId;
+            data.projectPlanId = '${projectPlan.id}';
+            data.projectId = '${projectPlan.projectId}';
+            if (!AssessCommon.isNumber(data.assessCategory)) {
+                data.assessCategory = null;
+            }
+            objGenerate.ajaxServerMethod({
+                ids: reportType,
+                info: JSON.stringify(data),
+                group: JSON.stringify(group)
+            }, '/generateReport/generateReportAttachment', "post", function (data) {
+                getSchemeReportGeneration(data, function (info) {
+                    initFormSchemeReportGeneration(info, form, group.areaGroupId);
+                    reportGroupObj.init(data) ;
+                    notifySuccess("成功", '报告附件生成成功');
+                });
+            });
+        }) ;
+    } ;
+
+    /**
      * @param reportType
      * @param id
      */
@@ -685,6 +740,7 @@
                         getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
                             $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
                                 reportGroupObj.fileShow(n + "" + areaGroupId+""+item.id, true, item.id);
+                                reportGroupObj.fileShow(n + "_Attachment" + areaGroupId+""+item.id, true, item.id);
                             });
                         });
                     });

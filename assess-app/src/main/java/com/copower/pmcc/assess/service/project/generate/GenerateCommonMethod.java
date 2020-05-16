@@ -85,7 +85,8 @@ public class GenerateCommonMethod {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicEstateService basicEstateService;
-
+    @Autowired
+    private GenerateReportGroupService generateReportGroupService;
     public static final String SchemeJudgeObjectName = "委估对象";
 
 
@@ -186,6 +187,39 @@ public class GenerateCommonMethod {
     public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByAreaId(Integer areaId) throws Exception {
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) return listLinkedHashMap;
+        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getBasicApplyId()));
+        if (CollectionUtils.isEmpty(basicApplyList)) return listLinkedHashMap;
+        List<Integer> batchDetailIds = LangUtils.transform(basicApplyList, o -> o.getBatchDetailId());
+        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBatchDetailListByIds(batchDetailIds);
+        Map<Integer, BasicApplyBatchDetail> mappingSingleEntity = FormatUtils.mappingSingleEntity(batchDetailList, o -> o.getApplyBatchId());
+        for (Map.Entry<Integer, BasicApplyBatchDetail> entry : mappingSingleEntity.entrySet()) {
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(entry.getKey());
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+            List<BasicApplyBatchDetail> batchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(BasicFormClassifyEnum.HOUSE.getKey(), entry.getValue().getApplyBatchId(), null, false);
+            if (CollectionUtils.isEmpty(batchDetails)) continue;
+            List<BasicApply> applyList = basicApplyService.getBasicApplysByBatchDetailIds(LangUtils.transform(batchDetails, o -> o.getId()));
+            if (CollectionUtils.isEmpty(applyList)) continue;
+            List<Integer> applyIds = LangUtils.transform(applyList, o -> o.getId());
+            List<SchemeJudgeObject> judgeObjectList = Lists.newArrayList();
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (applyIds.contains(schemeJudgeObject.getBasicApplyId()))
+                    judgeObjectList.add(schemeJudgeObject);
+            }
+            listLinkedHashMap.put(basicEstate, judgeObjectList);
+        }
+        return listLinkedHashMap;
+    }
+
+    /**
+     * 获取区域下楼盘的分组
+     *
+     * @param reportGroup
+     * @return
+     */
+    public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByGroupId(GenerateReportGroup reportGroup) throws Exception {
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = generateReportGroupService.getSchemeJudgeObjectByGroupId(reportGroup.getId());
         if (CollectionUtils.isEmpty(schemeJudgeObjectList)) return listLinkedHashMap;
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getBasicApplyId()));
         if (CollectionUtils.isEmpty(basicApplyList)) return listLinkedHashMap;
@@ -1295,20 +1329,37 @@ public class GenerateCommonMethod {
      * 获取报告附件关联fieldsName
      *
      * @param reportType
-     * @param areaId
+     * @param reportGroup
      * @return
      */
     public String getReportFieldsName(String reportType, GenerateReportGroup reportGroup) {
         if (StringUtils.isBlank(reportType)) return null;
-        List<String> FieldsName = Lists.newArrayList();
+        List<String> stringArrayList = Lists.newArrayList();
         for (String s : reportType.split("\\.")) {
-            FieldsName.add(s.toUpperCase());
+            stringArrayList.add(s.toUpperCase());
         }
         if (reportGroup == null) {
-            return StringUtils.join(FieldsName, "_");
+            return StringUtils.join(stringArrayList, "_");
         } else {
-            return String.format("%s%d%d", StringUtils.join(FieldsName, "_"), reportGroup.getAreaGroupId(), reportGroup.getId());
+            return String.format("%s%d%d", StringUtils.join(stringArrayList, "_"), reportGroup.getAreaGroupId(), reportGroup.getId());
         }
+    }
+
+    /**
+     * 获取报告附件模板关联fieldsName
+     *
+     * @param reportType
+     * @param reportGroup
+     * @return
+     */
+    public String getReportFooterFieldsName(String reportType, GenerateReportGroup reportGroup) {
+        if (StringUtils.isBlank(reportType)) return null;
+        List<String> fieldsName = Lists.newArrayList();
+        for (String s : reportType.split("\\.")) {
+            fieldsName.add(s.toUpperCase());
+        }
+        fieldsName.add("Attachment") ;
+        return String.format("%s%d%d", StringUtils.join(fieldsName, "_"), reportGroup.getAreaGroupId(), reportGroup.getId());
     }
 
     //拼接2-4张图片

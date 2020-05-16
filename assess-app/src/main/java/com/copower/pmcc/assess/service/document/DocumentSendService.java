@@ -383,7 +383,7 @@ public class DocumentSendService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(documentSend.getProjectId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(documentSend.getProjectId(), 0, numberRule.getReportType());
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, 0, new BaseReportTemplate(), new ProjectPlan());
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, 0, new BaseDataDic(), new ProjectPlan(),new GenerateReportGroup());
         String qrCode = null;
         if (qrcodeRecode != null) {
             qrCode = qrcodeRecode.getQrcode();//更新部分信息

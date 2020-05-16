@@ -3,9 +3,13 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.GenerateReportGroupDao;
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportGroup;
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportItem;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -46,6 +50,54 @@ public class GenerateReportGroupService {
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
+
+    public List<String> getValidData(Integer projectId){
+        List<String> stringList = new ArrayList<>() ;
+        List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
+        GenerateReportGroup query = null;
+        Iterator<SchemeAreaGroup> iterator = schemeAreaGroupList.iterator();
+        while (iterator.hasNext()){
+            SchemeAreaGroup schemeAreaGroup = iterator.next();
+            query = new GenerateReportGroup();
+            query.setAreaGroupId(schemeAreaGroup.getId());
+            List<GenerateReportGroup> reportGroups = getGenerateReportGroupListByQuery(query);
+            if (CollectionUtils.isEmpty(reportGroups)){
+                stringList.add(String.join("",schemeAreaGroup.getAreaName(),"  没有添加分组")) ;
+                continue;
+            }
+            Iterator<GenerateReportGroup> groupIterator = reportGroups.iterator();
+            int count = 0;
+            while (groupIterator.hasNext()){
+                GenerateReportGroup reportGroup = groupIterator.next();
+                List<GenerateReportItem> generateReportItemListByMasterIdList = generateReportItemService.getGenerateReportItemListByMasterIdList(reportGroup.getId());
+                if (CollectionUtils.isNotEmpty(generateReportItemListByMasterIdList)){
+                    count ++;
+                }
+            }
+            if (count == 0){
+                stringList.add(String.join("",schemeAreaGroup.getAreaName(),"  组中没有添加估价对象")) ;
+            }
+        }
+        return stringList;
+    }
+
+    public List<SchemeJudgeObject> getSchemeJudgeObjectByGroupId(Integer groupId){
+        List<GenerateReportItem> generateReportItemListByMasterIdList = generateReportItemService.getGenerateReportItemListByMasterIdList(groupId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = new ArrayList<>(generateReportItemListByMasterIdList.size()) ;
+        if (CollectionUtils.isNotEmpty(generateReportItemListByMasterIdList)){
+            Iterator<GenerateReportItem> iterator = generateReportItemListByMasterIdList.iterator();
+            while (iterator.hasNext()){
+                GenerateReportItem reportItem = iterator.next();
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(reportItem.getJudgeObjectId());
+                schemeJudgeObjectList.add(schemeJudgeObject) ;
+            }
+        }
+        return schemeJudgeObjectList;
+    }
 
 
     public boolean updateGenerateReportGroup(GenerateReportGroup oo, boolean updateNull) {
@@ -171,15 +223,19 @@ public class GenerateReportGroupService {
         }
         List<GenerateReportItem> generateReportItemList = generateReportItemService.getGenerateReportItemListByMasterIdList(generateReportGroup.getId());
         if (CollectionUtils.isEmpty(generateReportItemList)) {
+            generateReportGroup.setFullName("");
             return;
         }
         List<Integer> integerList = new ArrayList<>();
+        List<String> stringList = new ArrayList<>() ;
         Iterator<GenerateReportItem> iterator = generateReportItemList.iterator();
         while (iterator.hasNext()) {
             GenerateReportItem reportItem = iterator.next();
-            if (org.apache.commons.lang3.StringUtils.isBlank(reportItem.getNumber())) {
-                continue;
+            String name = reportItem.getName() ;
+            if (StringUtils.containsAny(name,"估价对象")){
+                name = StringUtils.remove(name,"估价对象") ;
             }
+            stringList.add(name) ;
             Integer parseIntJudgeNumber = null;
             try {
                 parseIntJudgeNumber = generateCommonMethod.parseIntJudgeNumber(reportItem.getNumber());
@@ -190,7 +246,8 @@ public class GenerateReportGroupService {
         if (CollectionUtils.isEmpty(integerList)) {
             return;
         }
-        String name = String.join("", generateCommonMethod.convertNumber(integerList), "号");
+//        String name = String.join("", generateCommonMethod.convertNumber(integerList), "号");
+        String name = StringUtils.join(stringList,",");
         generateReportGroup.setFullName(name);
     }
 

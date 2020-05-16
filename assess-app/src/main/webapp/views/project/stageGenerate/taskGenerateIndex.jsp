@@ -518,61 +518,77 @@
 
     //提交
     function submit() {
-        var allData = [];
-        $(".area_panel").each(function () {
-            var form = $(this).find('form');
-            allData.push(formSerializeArray(form));
-        });
-        saveGenerateReportInfo(allData, function () {
-            var data = {};
-            data.planId = '${projectPlan.id}';
-            data.areaGroupId = $("#areaGroupId").val();
-            if ("${processInsId}" != "0") {
-                submitEditToServer(JSON.stringify(data));
-            } else {
-                submitToServer(JSON.stringify(data));
+        reportGroupObj.getValidData('${projectInfo.id}' ,function (validData) {
+            if (validData.length != 0){
+                var message = validData.join("\n\r") ;
+                AlertSuccess("提示",message );
+                return false ;
             }
-        });
+            var allData = [];
+            $(".area_panel").each(function () {
+                var form = $(this).find('form');
+                allData.push(formSerializeArray(form));
+            });
+            saveGenerateReportInfo(allData, function () {
+                var data = {};
+                data.planId = '${projectPlan.id}';
+                data.areaGroupId = $("#areaGroupId").val();
+                if ("${processInsId}" != "0") {
+                    submitEditToServer(JSON.stringify(data));
+                } else {
+                    submitToServer(JSON.stringify(data));
+                }
+            });
+        }) ;
     }
 
     //提交
     function commitApply() {
-        var allData = [];
-        var isPass = true;
-        $(".area_panel").each(function () {
-            $(this).find('.x_content').show();
-            var form = $(this).find('form');
-            isPass = form.valid();
-            allData.push(formSerializeArray(form));
-        });
-        if (!isPass) {
-            return false;
-        }
-        var data = {};
-        data.planId = '${projectPlan.id}';
-        data.areaGroupId = $("#areaGroupId").val();
-        var url = "${pageContext.request.contextPath}/generate/submitApply";
-        if ("${empty processInsId?"0":processInsId}" != "0") {
-            url = "${pageContext.request.contextPath}/generate/submitEditApproval";
-            var approvalData = formParams("frm_approval");
-            data = $.extend(data, approvalData);
-        }
-        saveGenerateReportInfo(allData, function () {
-            //提交流程
-            $.ajax({
-                url: url,
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        AlertSuccess("成功", "提交成功", function () {
-                            window.close();
-                        });
-                    } else {
-                        AlertError(result.errmsg);
+        reportGroupObj.getValidData('${projectInfo.id}' ,function (validData) {
+            if (validData.length != 0){
+                var message = validData.join("\n\r") ;
+                AlertSuccess("提示",message );
+                return false ;
+            }
+            var allData = [];
+            var isPass = true;
+            $(".area_panel").each(function () {
+                $(this).find('.x_content').show();
+                var form = $(this).find('form');
+                isPass = form.valid();
+                allData.push(formSerializeArray(form));
+            });
+            if (!isPass) {
+                return false;
+            }
+            var data = {};
+            data.planId = '${projectPlan.id}';
+            data.areaGroupId = $("#areaGroupId").val();
+            var url = "${pageContext.request.contextPath}/generate/submitApply";
+            if ("${empty processInsId?"0":processInsId}" != "0") {
+                url = "${pageContext.request.contextPath}/generate/submitEditApproval";
+                var approvalData = formParams("frm_approval");
+                data = $.extend(data, approvalData);
+            }
+            saveGenerateReportInfo(allData, function () {
+                //提交流程
+                $.ajax({
+                    url: url,
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            AlertSuccess("成功", "提交成功", function () {
+                                window.close();
+                            });
+                        } else {
+                            AlertError(result.errmsg);
+                        }
                     }
-                }
-            })
-        });
+                })
+            });
+        }) ;
+
+
     }
 
 </script>

@@ -75,6 +75,16 @@ public class AssessDataDicKeyConstant {
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_BLOCK = "report.analysis.category.background.block"; //同类房地产市场板块状况
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_PROPERTY = "report.analysis.category.background.property"; //背景估价对象区域物业总体状况
 
+
+    /*
+     * 报告模板附件
+     */
+    public static final String REPORT_ATTACHMENT_PREAUDIT = "report.house.attachment.preaudit"; //预评报告 附件
+    public static final String REPORT_ATTACHMENT_CONSULTATION = "report.house.attachment.consultation"; //咨评报告 附件
+    public static final String REPORT_ATTACHMENT_TECHNOLOGY = "report.house.attachment.technology"; //技术报告 附件
+    public static final String REPORT_ATTACHMENT_RESULT = "report.house.attachment.result"; //结果报告附件 附件
+
+
     /*
      * 项目立项
      */
