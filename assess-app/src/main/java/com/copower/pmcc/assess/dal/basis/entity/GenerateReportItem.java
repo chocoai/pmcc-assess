@@ -7,6 +7,8 @@ public class GenerateReportItem {
 
     private Integer projectId;
 
+    private Integer areaGroupId;
+
     private Integer masterId;
 
     private String groupName;
@@ -41,6 +43,14 @@ public class GenerateReportItem {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public Integer getAreaGroupId() {
+        return areaGroupId;
+    }
+
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
     }
 
     public Integer getMasterId() {

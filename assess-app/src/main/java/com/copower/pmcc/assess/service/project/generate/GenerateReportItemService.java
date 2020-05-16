@@ -63,8 +63,8 @@ public class GenerateReportItemService {
 
 
 
-    public  List<GenerateReportItem> getGenerateReportItemByJudgeObjectIds(Integer masterId,List<Integer> judgeObjectIds){
-        return generateReportItemDao.getGenerateReportItemByJudgeObjectIds(masterId, judgeObjectIds) ;
+    public  List<GenerateReportItem> getGenerateReportItemByJudgeObjectIds(Integer areaGroupId,List<Integer> judgeObjectIds){
+        return generateReportItemDao.getGenerateReportItemByJudgeObjectIds(areaGroupId, judgeObjectIds) ;
     }
 
 

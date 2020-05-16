@@ -83,9 +83,9 @@ public class GenerateReportItemController {
     }
 
     @GetMapping(value = "/getGenerateReportItemByJudgeObjectIds")
-    public HttpResult getGenerateReportItemByJudgeObjectIds(Integer masterId,String ids){
+    public HttpResult getGenerateReportItemByJudgeObjectIds(Integer areaGroupId,String ids){
         try {
-            return HttpResult.newCorrectResult(200, generateReportItemService.getGenerateReportItemByJudgeObjectIds(masterId, FormatUtils.transformString2Integer(ids)));
+            return HttpResult.newCorrectResult(200, generateReportItemService.getGenerateReportItemByJudgeObjectIds(areaGroupId, FormatUtils.transformString2Integer(ids)));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

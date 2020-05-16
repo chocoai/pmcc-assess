@@ -225,6 +225,66 @@ public class GenerateReportItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andAreaGroupIdIsNull() {
+            addCriterion("area_group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdIsNotNull() {
+            addCriterion("area_group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdEqualTo(Integer value) {
+            addCriterion("area_group_id =", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotEqualTo(Integer value) {
+            addCriterion("area_group_id <>", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdGreaterThan(Integer value) {
+            addCriterion("area_group_id >", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("area_group_id >=", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdLessThan(Integer value) {
+            addCriterion("area_group_id <", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("area_group_id <=", value, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdIn(List<Integer> values) {
+            addCriterion("area_group_id in", values, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotIn(List<Integer> values) {
+            addCriterion("area_group_id not in", values, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("area_group_id between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("area_group_id not between", value1, value2, "areaGroupId");
+            return (Criteria) this;
+        }
+
         public Criteria andMasterIdIsNull() {
             addCriterion("master_id is null");
             return (Criteria) this;

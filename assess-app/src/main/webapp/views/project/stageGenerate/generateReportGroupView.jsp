@@ -120,6 +120,7 @@
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
                             <input type="hidden" data-name="id" value="{id}">
+                            <input type="hidden" data-name="areaGroupId" value="{areaGroupId}">
 
                             <label class="col-sm-1 control-label">估价对象</label>
 
@@ -358,8 +359,8 @@
         reportGroupObj.ajaxServerFun({id: id}, "/generateReportItem/deleteGenerateReportItem", "post", callback, null, null);
     };
 
-    reportGroupObj.getGenerateReportItemByJudgeObjectIds = function (masterId, ids,callback) {
-        reportGroupObj.ajaxServerFun({masterId: masterId ,ids:ids}, "/generateReportItem/getGenerateReportItemByJudgeObjectIds", "get", callback, null, null);
+    reportGroupObj.getGenerateReportItemByJudgeObjectIds = function (areaGroupId, ids,callback) {
+        reportGroupObj.ajaxServerFun({areaGroupId: areaGroupId ,ids:ids}, "/generateReportItem/getGenerateReportItemByJudgeObjectIds", "get", callback, null, null);
     };
 
     reportGroupObj.deleteGenerateReportGroup = function (id, callback) {
@@ -399,15 +400,18 @@
         var arr = [];
         var group = $(_this).closest(".form-group");
         var masterId = group.find("[data-name=id]").val();
+        var areaGroupId = group.find("[data-name=areaGroupId]").val();
+        var form = $("#groupForm"+areaGroupId);
+        var dataInfo = formSerializeArray(form);
         $.each(ids, function (k, judgeObjectId) {
-            var item = {judgeObjectId: judgeObjectId, masterId: masterId};
+            var item = {judgeObjectId: judgeObjectId, masterId: masterId ,areaGroupId:areaGroupId};
             arr.push(item);
         });
-        reportGroupObj.getGenerateReportItemByJudgeObjectIds(masterId , id ,function (data) {
+        reportGroupObj.getGenerateReportItemByJudgeObjectIds(areaGroupId , id ,function (data) {
             if (data.length == 0){
                 reportGroupObj.saveAndUpdateGenerateReportItemArray(arr, function () {
                     notifySuccess("成功", "估价对象选择成功!");
-                    reportGroupObj.initData();
+                    reportGroupObj.init(dataInfo);
                 });
             }else {
                 var tempArr = [] ;
@@ -462,7 +466,9 @@
         frm.clearAll();
         reportGroupObj.getGenerateReportGroupById(id, function (data) {
             frm.initForm(data);
-            frm.find("select[name=reportType]").val(data.reportType.split(",")).trigger('change');
+            if (data.reportType){
+                 frm.find("select[name=reportType]").val(data.reportType.split(",")).trigger('change');
+            }
             reportGroupObj.loadGenerateReportItemList(id);
             box.modal('show');
         });
