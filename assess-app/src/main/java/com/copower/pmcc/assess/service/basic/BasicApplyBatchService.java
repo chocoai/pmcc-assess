@@ -127,7 +127,6 @@ public class BasicApplyBatchService {
             ZtreeDto ztreeDto = new ZtreeDto();
             ztreeDto.setId(item.getId());
             ztreeDto.setName(item.getName());
-            ztreeDto.setTextName(item.getDisplayName());
             if (basicApplyBatch.getPlanDetailsId() == null) {
                 ztreeDto.setDisplayName(item.getDisplayName());
             } else {
@@ -149,7 +148,6 @@ public class BasicApplyBatchService {
             ztreeDto.setCreator(item.getCreator());
             ztreeDto.setExecutor(item.getExecutor());
             ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
-            ztreeDto.setBisStructure(item.getBisStructure());
             ztreeDto.setApplyBatchId(item.getApplyBatchId());
             ztreeDto.setDeclareRecordId(item.getDeclareRecordId());
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(item.getDeclareRecordId());

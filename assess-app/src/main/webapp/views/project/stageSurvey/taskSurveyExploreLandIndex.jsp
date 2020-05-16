@@ -610,7 +610,6 @@
         } else {
             $("#frm_detail_b").find("input[name='declareRecordName']").attr("required", false);
         }
-        $("#bisStructure_b").val('' + data.bisStructure);
         $("#detail_modal_b").modal();
     }
 
@@ -636,7 +635,6 @@
                     node.id = result.data.id;
                     node.name = result.data.name;
                     node.displayName = result.data.displayName + '(' + result.data.executorName + ')';
-                    node.textName = result.data.displayName;
                     node.pid = result.data.pid;
                     node.type = result.data.type;
                     node.executor = result.data.executor;
@@ -811,7 +809,6 @@
                             tableId: result.data.tableId,
                             type: result.data.type,
                             displayName: result.data.displayName + '(' + result.data.executorName + ')',
-                            textName: result.data.displayName,
                             executor: result.data.executor,
                             executorName: result.data.executorName,
                             creator: result.data.creator,

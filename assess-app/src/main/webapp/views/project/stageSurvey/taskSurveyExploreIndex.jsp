@@ -690,12 +690,10 @@
                             tableId: result.data.tableId,
                             type: result.data.type,
                             displayName: result.data.displayName + '(' + result.data.executorName + ')',
-                            textName: result.data.displayName,
                             executor: result.data.executor,
                             executorName: result.data.executorName,
                             creator: result.data.creator,
                             creatorName: result.data.creatorName,
-                            bisStructure: result.data.bisStructure,
                             declareRecordId: result.data.declareRecordId,
                             applyBatchId: result.data.applyBatchId,
                             declareRecordName: result.data.declareRecordName
@@ -745,7 +743,6 @@
         } else {
             $("#frm_detail_b").find("input[name='declareRecordName']").attr("required", false);
         }
-        $("#bisStructure_b").val('' + data.bisStructure);
         $("#detail_modal_b").modal();
     }
 
@@ -771,14 +768,12 @@
                     node.id = result.data.id;
                     node.name = result.data.name;
                     node.displayName = result.data.displayName + '(' + result.data.executorName + ')';
-                    node.textName = result.data.displayName;
                     node.pid = result.data.pid;
                     node.type = result.data.type;
                     node.executor = result.data.executor;
                     node.creator = result.data.creator;
                     node.creatorName = result.data.creatorName;
                     node.executorName = result.data.executorName;
-                    node.bisStructure = result.data.bisStructure;
                     node.declareRecordId = result.data.declareRecordId;
                     node.applyBatchId = result.data.applyBatchId;
                     node.declareRecordName = result.data.declareRecordName;
