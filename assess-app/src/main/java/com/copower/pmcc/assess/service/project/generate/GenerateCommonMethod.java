@@ -271,8 +271,11 @@ public class GenerateCommonMethod {
                         }
                     }
                     //如果 basicEstate 还为null
-                    if (basicEstate == null){
-
+                    if (basicEstate == null && basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0){
+                        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
+                        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0){
+                            basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+                        }
                     }
                 }
             }
