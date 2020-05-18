@@ -252,37 +252,37 @@ public class GenerateCommonMethod {
             if (basicApply.getBasicEstateId() != null && basicApply.getBasicEstateId() != 0) {
                 basicEstate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
             }
-            if (basicApply.getApplyBatchId() != null && basicApply.getApplyBatchId() != 0){
+            if (basicApply.getApplyBatchId() != null && basicApply.getApplyBatchId() != 0) {
                 BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApply.getApplyBatchId());
-                if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0){
+                if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
                     basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
                 }
             }
-            if (basicApply.getBatchDetailId() != null && basicApply.getBatchDetailId() !=0 ){
-                BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApply.getBatchDetailId()) ;
-                if (basicApplyBatchDetail != null ){
-                    if (Objects.equal(basicApplyBatchDetail.getTableName(),FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
+            if (basicApply.getBatchDetailId() != null && basicApply.getBatchDetailId() != 0) {
+                BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApply.getBatchDetailId());
+                if (basicApplyBatchDetail != null) {
+                    if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
                         basicEstate = basicEstateService.getBasicEstateById(basicApplyBatchDetail.getTableId());
                     }
-                    if (basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0){
+                    if (basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0) {
                         BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
-                        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0){
+                        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
                             basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
                         }
                     }
                     //如果 basicEstate 还为null
-                    if (basicEstate == null && basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0){
+                    if (basicEstate == null && basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0) {
                         BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
-                        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0){
+                        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
                             basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
                         }
                     }
                 }
             }
-            if (basicEstate == null){
+            if (basicEstate == null) {
                 continue;
             }
-            listLinkedHashMap.put(basicEstate,integerListEntry.getValue()) ;
+            listLinkedHashMap.put(basicEstate, integerListEntry.getValue());
         }
         return listLinkedHashMap;
     }
@@ -1121,17 +1121,7 @@ public class GenerateCommonMethod {
      * @return
      */
     public String getNumber(String text) {
-        if (StringUtils.isEmpty(text)) {
-            return "0";
-        }
-        if (NumberUtils.isNumber(text)) {
-            return text;
-        }
-        String regEx = "[^0-9]";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(text);
-        String s = m.replaceAll("").trim();
-        return StringUtils.isNotBlank(s) ? s : "0";
+        return StreamUtils.getNumber(text);
     }
 
     /**
@@ -1295,26 +1285,47 @@ public class GenerateCommonMethod {
      * @param map
      * @return (距离, List < id >)
      */
-    public Map<String, List<Integer>> getGroupByDistance(Map<Integer, String> map) {
-        Map<String, List<Integer>> listMap = Maps.newHashMap();
-        if (!map.isEmpty()) {
-            map.entrySet().stream().forEach(entry -> {
-                String key = entry.getValue();
-                if (NumberUtils.isNumber(entry.getValue())) {
-                    key = baseDataDicService.getNameById(entry.getValue());
-                }
-                key = getNumber(key);
-                List<Integer> integerList = listMap.get(key);
-                if (CollectionUtils.isEmpty(integerList)) {
-                    integerList = Lists.newArrayList();
-                }
-                integerList.add(entry.getKey());
-                if (StringUtils.isNumeric(key)) {
-                    listMap.put(key, integerList);
-                }
-            });
-        }
+    public LinkedHashMap<String, List<Integer>> getGroupByDistance(Map<Integer, String> map) {
+        AssembleGroupByDistance<Integer> assembleGroupByDistance = new AssembleGroupByDistance<>() ;
+        LinkedHashMap<String, List<Integer>> listMap = assembleGroupByDistance.getGroupByDistance(map,baseDataDicService) ;
         return listMap;
+    }
+
+    /**
+     * 根据距离分组
+     *
+     * @param map
+     * @return (距离, List < name >)
+     */
+    public LinkedHashMap<String, List<String>> getGroupByDistanceToString(Map<String, String> map) {
+        AssembleGroupByDistance<String> assembleGroupByDistance = new AssembleGroupByDistance<>() ;
+        LinkedHashMap<String, List<String>> listMap = assembleGroupByDistance.getGroupByDistance(map,baseDataDicService) ;
+        return listMap;
+    }
+
+    public static class AssembleGroupByDistance<T> {
+        private T t;
+        public LinkedHashMap<String, List<T>> getGroupByDistance(Map<T, String> map, BaseDataDicService baseDataDicService) {
+            LinkedHashMap<String, List<T>> listMap = Maps.newLinkedHashMap() ;
+            if (!map.isEmpty()) {
+                map.entrySet().stream().forEach(entry -> {
+                    String key = entry.getValue();
+                    if (NumberUtils.isNumber(entry.getValue())) {
+                        key = baseDataDicService.getNameById(entry.getValue());
+                    }
+                    key = StreamUtils.getNumber(key);
+                    List<T> integerList = listMap.get(key);
+                    if (CollectionUtils.isEmpty(integerList)) {
+                        integerList = Lists.newArrayList();
+                    }
+                    integerList.add(entry.getKey());
+                    if (StringUtils.isNumeric(key)) {
+                        listMap.put(key, integerList);
+                    }
+                });
+            }
+            return listMap;
+        }
     }
 
     /**

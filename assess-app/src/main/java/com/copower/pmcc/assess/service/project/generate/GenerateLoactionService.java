@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.copower.pmcc.assess.common.MyEntry;
 import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -164,7 +166,7 @@ public class GenerateLoactionService {
     /**
      * 外部基础设施
      *
-     * @param judgeObjects
+     * @param basicApply
      * @return
      * @throws Exception
      */
@@ -346,54 +348,30 @@ public class GenerateLoactionService {
         if (basicApply == null) {
             return null;
         }
-        StringBuilder contentBuilder = new StringBuilder();
         BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = basicExamineHandle.getBasicMatchingTrafficList();
-        //公交
-        List<BasicMatchingTrafficVo> transitList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
-            if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TRANSIT.getName()) && basicMatchingTrafficVo.getDistance() != null) {
-                return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
-        //地铁
-        List<BasicMatchingTrafficVo> metroList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
-            if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.METRO.getName()) && basicMatchingTrafficVo.getDistance() != null) {
-                return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(transitList)) {
-            transitList = Arrays.asList(transitList.get(0));
-            for (int i = 0; i < transitList.size(); i++) {
-                BasicMatchingTrafficVo basicMatchingTrafficVo = transitList.get(i);
-                String distance = generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName());
-                if ("0".equals(distance)) {
-                    contentBuilder.append("附近");
-                } else {
-                    contentBuilder.append("距");
-                    contentBuilder.append(basicMatchingTrafficVo.getName());
-                    contentBuilder.append(String.format("大约%s米", generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName())));
+        List<MyEntry<String, Integer>>  transitEntry = new ArrayList<>() ;
+        List<MyEntry<String, Integer>>  metroEntry = new ArrayList<>() ;
+        if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)){
+            Iterator<BasicMatchingTrafficVo> iterator = basicMatchingTrafficList.iterator();
+            while (iterator.hasNext()){
+                BasicMatchingTrafficVo basicMatchingTrafficVo = iterator.next();
+                //公交
+                if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TRANSIT.getName()) && basicMatchingTrafficVo.getDistance() != null) {
+                    transitEntry.add(new MyEntry<>(String.format("线路%s",basicMatchingTrafficVo.getTheLine()),basicMatchingTrafficVo.getDistance())) ;
                 }
-                contentBuilder.append("有").append("线路").append(basicMatchingTrafficVo.getTheLine()).append("；");
-
+                //地铁
+                if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.METRO.getName()) && basicMatchingTrafficVo.getDistance() != null) {
+                    metroEntry.add(new MyEntry<>(String.format("线路%s",basicMatchingTrafficVo.getTheLine()),basicMatchingTrafficVo.getDistance())) ;
+                }
             }
         }
-        if (CollectionUtils.isNotEmpty(metroList)) {
-            for (int i = 0; i < metroList.size(); i++) {
-                BasicMatchingTrafficVo basicMatchingTrafficVo = metroList.get(i);
-                String distance = generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName());
-                if ("0".equals(distance)) {
-                    contentBuilder.append("附近");
-                } else {
-                    contentBuilder.append("距");
-                    contentBuilder.append(basicMatchingTrafficVo.getName());
-                    contentBuilder.append(String.format("大约%s米", generateCommonMethod.getNumber(basicMatchingTrafficVo.getDistanceName())));
-                }
-                contentBuilder.append("有").append("线路").append(basicMatchingTrafficVo.getTheLine()).append("；");
-            }
+        LinkedHashMap<String, List<String>> transitMap = assembleDistanceMap(transitEntry);
+        LinkedHashMap<String, List<String>> metroMap = assembleDistanceMap(metroEntry);
+        if (!metroMap.isEmpty()){
+            metroMap.forEach((s, stringList) -> transitMap.put(s,stringList));
         }
-        String value = contentBuilder.toString();
+        String value = getDistanceDec("", transitMap);
         return value;
     }
 
@@ -538,40 +516,64 @@ public class GenerateLoactionService {
         if (basicApply == null) {
             return null;
         }
+        BiConsumer<LinkedHashMap<String, List<String>>, LinkedHashMap<String, List<String>>> biConsumer = (((linkedHashMap, hashMap) -> {
+            if (hashMap == null || hashMap.isEmpty()) {
+                return;
+            }
+            Iterator<Map.Entry<String, List<String>>> iterator = hashMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, List<String>> entry = iterator.next();
+                linkedHashMap.put(entry.getKey(), entry.getValue());
+            }
+        }));
         StringBuilder stringBuilder = new StringBuilder(8);
         BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = basicExamineHandle.getBasicMatchingTrafficList();
         List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = basicExamineHandle.getBasicMatchingLeisurePlaceList();
         List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = basicExamineHandle.getBasicMatchingFinanceList();
         List<BasicMatchingMedical> basicMatchingMedicalList = basicExamineHandle.getBasicMatchingMedicalList();
+
+        LinkedHashMap<String, List<String>> listMap = Maps.newLinkedHashMap();
+
         if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
             //交通枢纽
             List<BasicMatchingTrafficVo> trafficVoList1 = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName())).collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(trafficVoList1)) {
-                stringBuilder.append(StringUtils.defaultString(this.getTrafficConditionsPrivate(Arrays.asList(trafficVoList1.get(0)), ExamineMatchingTrafficTypeEnum.TrafficHub, "", false)));
+                LinkedHashMap<String, List<String>> linkedHashMap = getTrafficConditionsCommonPrivate(Arrays.asList(trafficVoList1.get(0)), ExamineMatchingTrafficTypeEnum.TrafficHub, "", false);
+//                stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
+                biConsumer.accept(listMap, linkedHashMap);
             }
             //主要转换
             List<BasicMatchingTrafficVo> trafficVoList2 = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName())).collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(trafficVoList2)) {
-                stringBuilder.append(StringUtils.defaultString(this.getTrafficConditionsPrivate(Arrays.asList(trafficVoList2.get(0)), ExamineMatchingTrafficTypeEnum.MainConversion, "", false)));
+                LinkedHashMap<String, List<String>> linkedHashMap = getTrafficConditionsCommonPrivate(Arrays.asList(trafficVoList2.get(0)), ExamineMatchingTrafficTypeEnum.MainConversion, "", false);
+//                stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
+                biConsumer.accept(listMap, linkedHashMap);
             }
         }
         //购物商场
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
             List<BasicMatchingLeisurePlace> matchingLeisurePlaceList = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(matchingLeisurePlaceList)) {
-                stringBuilder.append(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(Arrays.asList(matchingLeisurePlaceList.get(0)), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "", false)));
+                LinkedHashMap<String, List<String>> linkedHashMap = getMatchingLeisurePlaceCommonPrivate(Arrays.asList(matchingLeisurePlaceList.get(0)), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "", false);
+//                stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
+                biConsumer.accept(listMap, linkedHashMap);
             }
         }
         //金融服务
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            stringBuilder.append(StringUtils.defaultString(getFinanceAndMedicalAndEducation(Arrays.asList(basicMatchingFinanceVoList.get(0)), null, null, "")));
+            LinkedHashMap<String, List<String>> linkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(Arrays.asList(basicMatchingFinanceVoList.get(0)), null, null, "");
+//            stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
+            biConsumer.accept(listMap, linkedHashMap);
         }
         //医疗
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            stringBuilder.append(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, Arrays.asList(basicMatchingMedicalList.get(0)), null, "")));
+            LinkedHashMap<String, List<String>> linkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(null, Arrays.asList(basicMatchingMedicalList.get(0)), null, "");
+//            stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
+            biConsumer.accept(listMap, linkedHashMap);
         }
-        String value = stringBuilder.toString();
+//        String value = stringBuilder.toString();
+        String value = StringUtils.defaultString(this.getDistanceDec("", listMap));
         return value;
     }
 
@@ -586,47 +588,48 @@ public class GenerateLoactionService {
         if (basicApply == null) {
             return null;
         }
-        List<String> stringArrayList = Lists.newArrayList();
+        BiConsumer<LinkedHashMap<String, List<String>>, LinkedHashMap<String, List<String>>> biConsumer = (((linkedHashMap, hashMap) -> {
+            if (hashMap == null || hashMap.isEmpty()) {
+                return;
+            }
+            Iterator<Map.Entry<String, List<String>>> iterator = hashMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, List<String>> entry = iterator.next();
+                linkedHashMap.put(entry.getKey(), entry.getValue());
+            }
+        }));
+        LinkedHashMap<String, List<String>> linkedHashMap = new LinkedHashMap<>() ;
         BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
         List<BasicMatchingFinanceVo> basicMatchingFinanceVoList = basicExamineHandle.getBasicMatchingFinanceList();
         List<BasicMatchingMedical> basicMatchingMedicalList = basicExamineHandle.getBasicMatchingMedicalList();
         List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = basicExamineHandle.getBasicMatchingLeisurePlaceList();
         List<BasicMatchingEducation> basicMatchingEducationList = basicExamineHandle.getBasicMatchingEducatioListn();
         if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-
-            List<BasicMatchingLeisurePlace> leisurePlaceListA = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(leisurePlaceListA)) {//购物商场
-                stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(leisurePlaceListA, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET,
-                        isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":") : "", false)));
-            }
-
-            List<BasicMatchingLeisurePlace> leisurePlaceListB = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getKey())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(leisurePlaceListB)) {//餐饮
-                stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(leisurePlaceListB, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT,
-                        isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":") : "", false)));
-            }
-
-            List<BasicMatchingLeisurePlace> leisurePlaceListC = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getKey())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(leisurePlaceListC)) {//休闲娱乐
-                stringArrayList.add(StringUtils.defaultString(this.getMatchingLeisurePlacePrivate(leisurePlaceListC, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION,
-                        isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":") : "", false)));
-            }
+            //购物商场
+            LinkedHashMap<String, List<String>> leisurePlaceMapA = getMatchingLeisurePlaceCommonPrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getName(), ":") : "", false);
+            biConsumer.accept(linkedHashMap , leisurePlaceMapA);
+            //餐饮
+            LinkedHashMap<String, List<String>> leisurePlaceMapB = getMatchingLeisurePlaceCommonPrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT, isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRESTAURANT.getName(), ":") : "", false);
+            biConsumer.accept(linkedHashMap , leisurePlaceMapB);
+            //休闲娱乐
+            LinkedHashMap<String, List<String>> leisurePlaceMapC = getMatchingLeisurePlaceCommonPrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION, isShowName ? String.format("%s%s", ExamineMatchingLeisurePlaceTypeEnum.MATCHINGRECREATION.getName(), ":") : "", false);
+            biConsumer.accept(linkedHashMap , leisurePlaceMapC);
         }
 
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {//金融服务
-            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(basicMatchingFinanceVoList, null,
-                    null, isShowName ? String.format("%s%s", "金融服务", ":") : "")));
+            LinkedHashMap<String, List<String>> stringListLinkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(basicMatchingFinanceVoList, null, null, isShowName ? String.format("%s%s", "金融服务", ":") : "");
+            biConsumer.accept(linkedHashMap , stringListLinkedHashMap);
         }
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {//医疗
-            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList,
-                    null, isShowName ? String.format("%s%s", "医疗", ":") : "")));
+            LinkedHashMap<String, List<String>> listLinkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(null, basicMatchingMedicalList, null, isShowName ? String.format("%s%s", "医疗", ":") : "");
+            biConsumer.accept(linkedHashMap , listLinkedHashMap);
         }
 
         if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {//教育
-            stringArrayList.add(StringUtils.defaultString(getFinanceAndMedicalAndEducation(null, null,
-                    basicMatchingEducationList, isShowName ? String.format("%s%s", "教育", ":") : "")));
+            LinkedHashMap<String, List<String>> stringListLinkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(null, null, basicMatchingEducationList, isShowName ? String.format("%s%s", "教育", ":") : "");
+            biConsumer.accept(linkedHashMap , stringListLinkedHashMap);
         }
-        return stringArrayList;
+        return Arrays.asList(getDistanceDec("", linkedHashMap));
     }
 
 
@@ -774,6 +777,7 @@ public class GenerateLoactionService {
         return "";
     }
 
+
     /**
      * 教育 医疗 金融 距离信息
      *
@@ -783,8 +787,24 @@ public class GenerateLoactionService {
      * @return
      */
     public String getFinanceAndMedicalAndEducation(List<BasicMatchingFinanceVo> basicMatchingFinanceVoList, List<BasicMatchingMedical> basicMatchingMedicalList, List<BasicMatchingEducation> basicMatchingEducationList, String title) {
+        LinkedHashMap<String, List<String>> listMap = getFinanceAndMedicalAndEducationCommonPrivate(basicMatchingFinanceVoList, basicMatchingMedicalList, basicMatchingEducationList, title);
+        if (!listMap.isEmpty()) {
+            return this.getDistanceDec(title, listMap);
+        }
+        return null;
+    }
+
+    /**
+     * 教育 医疗 金融 距离信息
+     *
+     * @param basicMatchingFinanceVoList
+     * @param basicMatchingMedicalList
+     * @param basicMatchingEducationList
+     * @return
+     */
+    public LinkedHashMap<String, List<String>> getFinanceAndMedicalAndEducationCommonPrivate(List<BasicMatchingFinanceVo> basicMatchingFinanceVoList, List<BasicMatchingMedical> basicMatchingMedicalList, List<BasicMatchingEducation> basicMatchingEducationList, String title) {
         Map<Integer, String> integerStringMap = Maps.newHashMap();
-        Map<String, List<String>> listMap = Maps.newHashMap();
+        LinkedHashMap<String, List<String>> listMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
             basicMatchingFinanceVoList.forEach(oo -> {
                 integerStringMap.put(oo.getId(), StringUtils.isNotBlank(oo.getDistance()) ? oo.getDistance() : "0");
@@ -797,7 +817,7 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                return this.getDistanceDec(title, listMap);
+                return listMap;
             }
         }
         if (CollectionUtils.isNotEmpty(basicMatchingEducationList)) {
@@ -815,7 +835,7 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                return this.getDistanceDec(title, listMap);
+                return listMap;
             }
         }
         if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
@@ -830,7 +850,7 @@ public class GenerateLoactionService {
                 });
             }
             if (!listMap.isEmpty()) {
-                return this.getDistanceDec(title, listMap);
+                return listMap;
             }
         }
         return null;
@@ -845,8 +865,25 @@ public class GenerateLoactionService {
      * @return
      */
     public String getMatchingLeisurePlacePrivate(List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum matchingLeisurePlaceTypeEnum, String title, boolean notFilter) {
+        LinkedHashMap<String, List<String>> listMap = getMatchingLeisurePlaceCommonPrivate(basicMatchingLeisurePlaceList, matchingLeisurePlaceTypeEnum, title, notFilter);
+        if (!listMap.isEmpty()) {
+            return this.getDistanceDec(title, listMap);
+        }
+        return null;
+    }
+
+
+    /**
+     * 休闲场所 包含-购物、娱乐、餐饮距离
+     *
+     * @param notFilter                     是否过滤
+     * @param basicMatchingLeisurePlaceList
+     * @param matchingLeisurePlaceTypeEnum
+     * @return
+     */
+    public LinkedHashMap<String, List<String>> getMatchingLeisurePlaceCommonPrivate(List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum matchingLeisurePlaceTypeEnum, String title, boolean notFilter) {
         Map<Integer, String> integerStringMap = Maps.newHashMap();
-        Map<String, List<String>> listMap = Maps.newHashMap();
+        LinkedHashMap<String, List<String>> listMap = Maps.newLinkedHashMap();
         basicMatchingLeisurePlaceList.stream().filter(oo -> {
             if (notFilter) {
                 return notFilter;
@@ -862,10 +899,7 @@ public class GenerateLoactionService {
                 listMap.put(entry.getKey(), stringList);
             });
         }
-        if (!listMap.isEmpty()) {
-            return this.getDistanceDec(title, listMap);
-        }
-        return null;
+        return listMap;
     }
 
     /**
@@ -877,25 +911,51 @@ public class GenerateLoactionService {
      * @return
      */
     public String getTrafficConditionsPrivate(List<BasicMatchingTrafficVo> basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum examineMatchingTrafficTypeEnum, String title, boolean notFilter) {
-        Map<Integer, String> integerStringMap = Maps.newHashMap();
-        Map<String, List<String>> listMap = Maps.newHashMap();
+        LinkedHashMap<String, List<String>> listMap = getTrafficConditionsCommonPrivate(basicMatchingTrafficList, examineMatchingTrafficTypeEnum, title, notFilter);
+        if (!listMap.isEmpty()) {
+            return this.getDistanceDec(title, listMap);
+        }
+        return "";
+    }
+
+    /**
+     * 交通条件距离
+     *
+     * @param basicMatchingTrafficList
+     * @param examineMatchingTrafficTypeEnum
+     * @param notFilter                      是否过滤
+     * @return
+     */
+    public LinkedHashMap<String, List<String>> getTrafficConditionsCommonPrivate(List<BasicMatchingTrafficVo> basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum examineMatchingTrafficTypeEnum, String title, boolean notFilter) {
+        List<MyEntry<String, Integer>> myEntryList = new ArrayList<>() ;
         basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
             if (notFilter) {
                 return notFilter;
             }
             return Objects.equal(basicMatchingTrafficVo.getType(), examineMatchingTrafficTypeEnum.getName());
         }).forEachOrdered(oo -> {
-            integerStringMap.put(oo.getId(), oo.getDistance() != null ? oo.getDistance().toString() : "0");
+            myEntryList.add(new MyEntry<>(oo.getName(),oo.getDistance())) ;
         });
-        Map<String, List<Integer>> useEntryMap = generateCommonMethod.getGroupByDistance(integerStringMap);
-        if (!useEntryMap.isEmpty()) {
-            useEntryMap.entrySet().stream().forEach(entry -> {
-                List<String> stringList = entry.getValue().stream().map(po -> basicMatchingTrafficList.stream().filter(oo -> po.intValue() == oo.getId().intValue()).findFirst().get().getName()).collect(Collectors.toList());
-                listMap.put(entry.getKey(), stringList);
-            });
+        return assembleDistanceMap(myEntryList);
+    }
+
+    public LinkedHashMap<String, List<String>> assembleDistanceMap(List<MyEntry<String, Integer>> myEntryList) {
+        LinkedHashMap<String, String> stringMap = Maps.newLinkedHashMap() ;
+        if (CollectionUtils.isNotEmpty(myEntryList)) {
+            Iterator<MyEntry<String, Integer>> iterator = myEntryList.iterator();
+            while (iterator.hasNext()) {
+                MyEntry<String, Integer> myEntry = iterator.next();
+                stringMap.put(myEntry.getKey(), myEntry.getValue() != null ? myEntry.getValue().toString() : "0");
+            }
         }
-        if (!listMap.isEmpty()) {
-            return this.getDistanceDec(title, listMap);
+        LinkedHashMap<String, List<String>> useEntryMap = generateCommonMethod.getGroupByDistanceToString(stringMap);
+        return useEntryMap;
+    }
+
+    public String assembleMapToValue(List<MyEntry<String, Integer>> myEntryList, String title) {
+        Map<String, List<String>> useEntryMap = assembleDistanceMap(myEntryList);
+        if (!useEntryMap.isEmpty()) {
+            return getDistanceDec(title, useEntryMap);
         }
         return "";
     }

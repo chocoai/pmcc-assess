@@ -62,4 +62,12 @@ public class MyEntry<K, V> implements Map.Entry<K, V>, Serializable, Comparable,
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    @Override
+    public String toString() {
+        return "MyEntry{" +
+                "key=" + key +
+                ", value=" + value +
+                '}';
+    }
 }
