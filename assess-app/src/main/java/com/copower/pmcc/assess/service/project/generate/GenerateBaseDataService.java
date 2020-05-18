@@ -6084,7 +6084,7 @@ public class GenerateBaseDataService {
                 List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
                 if (!CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     //自动生成
-                    schemeReportFileService.makeJudgeObjectPosition(schemeJudgeObject.getDeclareRecordId());
+                    schemeReportFileService.makeJudgeObjectPosition(schemeJudgeObject.getId());
                     sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
                 }
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
