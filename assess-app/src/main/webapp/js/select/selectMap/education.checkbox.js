@@ -34,11 +34,11 @@
                                     AssessMatchingEducation.prototype.appendHtml(options);
                                 });
                             }else {
-                                AlertError("类型必须选择!") ;
+                                AlertError("提示","类型必须选择!") ;
                             }
                         }
                     } else {
-                        AlertError("无标记");
+                        AlertError("提示","无标记");
                     }
                 }
             }
@@ -76,9 +76,9 @@
                 html += "<div class='col-md-12'>";
                 html += '<div class="form-inline x-valid">';
                 html += "<span class='label label-primary'>" + '全选或全不选' + "</span>";
-                html += "<input type='checkbox' onclick='assessMatchingEducation.checkedFun(this,true)'>";
+                html += "<input name='radio' type='radio' onclick='assessMatchingEducation.checkedFun(this,true)'>";
                 html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-                html += "<input type='checkbox' onclick='assessMatchingEducation.checkedFun(this,false)'>";
+                html += "<input name='radio' type='radio' onclick='assessMatchingEducation.checkedFun(this,false)'>";
                 html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge'>记录max20</span>";
                 html += '</div>';
                 html += '</div>';
@@ -203,13 +203,13 @@
     AssessMatchingEducation.prototype.checkedFun = function (that, flag) {
         var form = $(that).closest('.form-horizontal');
         if (flag) {//全选或者全不选
-            var number = 1;
+            var number = 2;
             form.find(":checkbox").each(function (i, n) {
                 if ($(this).prop("checked")) {
                     number++;
                 }
             });
-            if (number == 1) {
+            if (number == 2) {
                 form.find(":checkbox").prop("checked", true);
             } else {
                 form.find(":checkbox").prop("checked", false);
