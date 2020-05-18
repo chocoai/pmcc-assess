@@ -37,53 +37,9 @@
                 <div class="row mt--2">
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header ">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        高德地图
-                                        <c:if test="${empty masterName}">
-                                            区块
-                                        </c:if>
-                                        <c:if test="${! empty masterName}">
-                                            ${masterName}
-                                        </c:if>
-                                        显示
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card">
                             <div class="card-body">
                                 <div class="form-horizontal">
-
-                                    <div class="row form-group">
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    type="button" onclick="drawPolygon.html2canvas(this) ;">
-											<span class="btn-label">
-												<i class="fa fa-mouse-pointer"></i>
-											</span>
-                                                地图截取
-                                            </button>
-                                            <%--<span class="label label-warning">请使用360极速浏览器或者谷歌浏览器或者火狐浏览器请不要使用遨游浏览器和IE浏览器</span>--%>
-                                        </div>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    data-value="2D"
-                                                    type="button" onclick="drawPolygon.switch3DMap(this) ;">
-											<span class="btn-label">
-												<i class="fas fa-recycle"></i>
-											</span>
-                                                3D或2D切换
-                                            </button>
-                                        </div>
-
-
-                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                            <input type="text" class="form-control input-full"
-                                                   placeholder="搜索...." name="mapSearchName" id="tipinput">
-                                        </div>
-                                    </div>
-
                                     <div class="row form-group">
                                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                             <div class="form-inline x-valid">
