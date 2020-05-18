@@ -19,6 +19,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
+import com.copower.pmcc.assess.service.data.DataSetUseFieldItemService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -94,9 +95,13 @@ public class MdMarketCompareService {
     @Autowired
     private MdBaseLandPriceService mdBaseLandPriceService;
     @Autowired
-    private PublicService publicService;
+    private DataSetUseFieldItemService dataSetUseFieldItemService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private MdMarketCompareService mdMarketCompareService;
 
     public MdMarketCompare getMdMarketCompare(Integer id) {
         return mdMarketCompareDao.getMarketCompareById(id);
@@ -108,54 +113,36 @@ public class MdMarketCompareService {
      *
      * @return
      */
-    public List<DataSetUseField> getSetUseFieldList(String fieldName) {
+    public List<DataSetUseField> getSetUseFieldList(String fieldName, String type, String category) {
         List<DataSetUseField> setUseFields = dataSetUseFieldService.getCacheSetUseFieldList(fieldName);
         List<DataSetUseField> fieldList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(setUseFields)) {
             for (DataSetUseField setUseField : setUseFields) {
+                if (StringUtils.isNotBlank(type)) {
+                    DataSetUseFieldItem dataSetUseFieldItem = dataSetUseFieldItemService.getDataSetUseFieldItem(setUseField.getId(), type, category);
+                    if (dataSetUseFieldItem != null) {
+                        setUseField.setName(dataSetUseFieldItem.getName());
+                    }
+                }
                 fieldList.add(setUseField);
-                getSubFieldList(fieldList, setUseField.getId());
+                getSubFieldList(fieldList, setUseField.getId(), type, category);
             }
         }
         return fieldList;
     }
 
-    private void getSubFieldList(List<DataSetUseField> fieldList, Integer pid) {
+    private void getSubFieldList(List<DataSetUseField> fieldList, Integer pid, String type, String category) {
         List<DataSetUseField> useFields = dataSetUseFieldService.getCacheSetUseFieldListByPid(pid);
         if (CollectionUtils.isEmpty(useFields)) return;
         for (DataSetUseField useField : useFields) {
-            fieldList.add(useField);
-            getSubFieldList(fieldList, useField.getId());
-        }
-    }
-
-    public List<DataSetUseField> getShowSetUseFieldList(AssessProjectTypeEnum projectTypeEnum) {
-        List<DataSetUseField> setUseFields = null;
-        List<DataSetUseField> fieldList = Lists.newArrayList();
-        switch (projectTypeEnum) {
-            case ASSESS_PROJECT_TYPE_HOUSE:
-                setUseFields = dataSetUseFieldService.getShowSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE);
-                break;
-            case ASSESS_PROJECT_TYPE_LAND:
-                setUseFields = dataSetUseFieldService.getShowSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND);
-                break;
-        }
-        if (CollectionUtils.isNotEmpty(setUseFields)) {
-            for (DataSetUseField setUseField : setUseFields) {
-                fieldList.add(setUseField);
-                getShowSubFieldList(fieldList, setUseField.getId());
+            if (StringUtils.isNotBlank(type)) {
+                DataSetUseFieldItem dataSetUseFieldItem = dataSetUseFieldItemService.getDataSetUseFieldItem(useField.getId(), type, category);
+                if (dataSetUseFieldItem != null) {
+                    useField.setName(dataSetUseFieldItem.getName());
+                }
             }
-        }
-        return fieldList;
-    }
-
-
-    private void getShowSubFieldList(List<DataSetUseField> fieldList, Integer pid) {
-        List<DataSetUseField> useFields = dataSetUseFieldService.getShowSetUseFieldListByPid(pid);
-        if (CollectionUtils.isEmpty(useFields)) return;
-        for (DataSetUseField useField : useFields) {
             fieldList.add(useField);
-            getShowSubFieldList(fieldList, useField.getId());
+            getSubFieldList(fieldList, useField.getId(), type, category);
         }
     }
 
@@ -173,9 +160,12 @@ public class MdMarketCompareService {
         //如果对象是合并的估价对象，则取该合并估价对象的标准估价对象
         if (schemeJudgeObject.getBisMerge() == Boolean.TRUE)
             schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
-
-        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
-        List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
+        List<DataSetUseField> setUseFieldList=null;
+        if(isLand){
+            setUseFieldList=getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
+        }else{
+            setUseFieldList= getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null);
+        }
         if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId() != 0) {
             setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
         } else {
@@ -298,8 +288,12 @@ public class MdMarketCompareService {
             schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
         BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
-        List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
+        List<DataSetUseField> setUseFieldList=null;
+        if(isLand){
+            setUseFieldList=getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
+        }else{
+            setUseFieldList= getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null);
+        }
         setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApply, mcId, setUseFieldList, isLand);
         mdCompareInitParamVo.setMcId(mcId);
         mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);
@@ -338,9 +332,12 @@ public class MdMarketCompareService {
         }
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
-        List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
-
+        List<DataSetUseField> setUseFieldList=null;
+        if(isLand){
+            setUseFieldList=getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
+        }else{
+            setUseFieldList= getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null);
+        }
         int i = 1;
         for (Integer planDetailsId : integers) {
             ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
@@ -538,8 +535,12 @@ public class MdMarketCompareService {
         if (schemeJudgeObject.getBisMerge() == Boolean.TRUE)
             schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
-        List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
+        List<DataSetUseField> setUseFieldList=null;
+        if(isLand){
+            setUseFieldList=getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
+        }else{
+            setUseFieldList= getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null);
+        }
         //修改查勘信息
         MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
         mdMarketCompareItem.setMcId(mcId);
@@ -599,5 +600,24 @@ public class MdMarketCompareService {
             }
         }
         return s;
+    }
+
+    /**
+     * 获取土地比较法字段
+     *
+     * @param applyId
+     * @return
+     */
+    public List<DataSetUseField> getLandFieldListByApplyId(Integer applyId) {
+        if (applyId == null) return null;
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+        if (basicApply != null) {
+            BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+            if (landCategoryInfo != null) {
+                List<DataSetUseField> fieldList = mdMarketCompareService.getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND, landCategoryInfo.getLandUseType(), landCategoryInfo.getLandUseCategory());
+                return fieldList;
+            }
+        }
+        return null;
     }
 }

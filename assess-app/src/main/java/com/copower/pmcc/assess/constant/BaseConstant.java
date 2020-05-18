@@ -27,8 +27,8 @@ public class BaseConstant {
 
     public static final String ASSESS_DATA_SET_USE_TYPE_HOUSE = "house";//房产
     public static final String ASSESS_DATA_SET_USE_TYPE_LAND = "land";//土地
-    public static final String ASSESS_DATA_SET_USE_FIELD_HOUSE = "set.use.type.house";//设定用途字段-住宅
-    public static final String ASSESS_DATA_SET_USE_FIELD_LAND = "set.use.type.land";//设定用途字段-住宅用地
+    public static final String ASSESS_DATA_SET_USE_FIELD_HOUSE = "set.use.type.house";//设定用途字段-房产
+    public static final String ASSESS_DATA_SET_USE_FIELD_LAND = "set.use.type.land";//设定用途字段-土地
     public static final String ASSESS_DATA_SET_USE_FIELD_LAND_AREA_FACTOR = "land.area.factor";
     public static final String ASSESS_DATA_SET_USE_FIELD_LAND_INDIVIDUAL_FACTOR = "land.individual.factor";
 

@@ -75,7 +75,7 @@ public class BasicStructureLandService implements BasicFormStructureInterface {
         }
         basicApplyBatch.setEstateId(basicEstate.getId());
         basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
-        //默认生成一条土地类型类别
+        //默认生成一条土地类型
 //        BasicEstateLandCategoryInfo categoryInfo = new BasicEstateLandCategoryInfo();
 //        categoryInfo.setLandId(basicEstateLandState.getId());
 //        categoryInfo.setCreator(commonService.thisUserAccount());

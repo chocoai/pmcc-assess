@@ -462,7 +462,7 @@ public class BasicEstateService extends BasicEntityAbstract {
                 }
             }
 
-            //土地类型类别
+            //土地类型
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELandUseTypeCategory.getVar());
             List<BasicEstateLandCategoryInfo> landUseCategorieVos = JSONObject.parseArray(jsonContent, BasicEstateLandCategoryInfo.class);
             if (!CollectionUtils.isEmpty(landUseCategorieVos)) {

@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
-import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.dto.output.method.MdCompareInitParamVo;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -41,6 +40,10 @@ public class MarketCompareController extends BaseController {
     private MdMarketCompareService mdMarketCompareService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
     @RequestMapping(value = "/index", name = "市场比较法测算")
     public ModelAndView index(Integer mcId, Integer judgeObjectId, Boolean isLand) {
@@ -58,12 +61,16 @@ public class MarketCompareController extends BaseController {
         if (marketCompare == null) {
             marketCompare = mdMarketCompareService.initExplore(judgeObject, isLand);
         }
-        String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
+        if(isLand){
+            modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getLandFieldListByApplyId(judgeObject.getBasicApplyId())));
+        }else{
+            modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null)));
+        }
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
         List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
         modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(CollectionUtils.isEmpty(standardJudgeList) ? Lists.newArrayList() : standardJudgeList));
         modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
-        modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getSetUseFieldList(setUseFieldType)));
+
         modelAndView.addObject("evaluationJSON", JSON.toJSONString(evaluationObject));
         modelAndView.addObject("casesJSON", JSON.toJSONString(mdMarketCompareService.getCaseListByMcId(marketCompare.getId())));
         modelAndView.addObject("mcId", marketCompare.getId());

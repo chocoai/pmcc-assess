@@ -502,7 +502,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
                     }
                 }
-                //土地类型类别
+                //土地类型
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_LANDCATEGORYINFO.getVar());
                 BasicEstateLandCategoryInfo landCategoryInfo = JSONObject.parseObject(jsonContent, BasicEstateLandCategoryInfo.class);
                 if (landCategoryInfo != null) {

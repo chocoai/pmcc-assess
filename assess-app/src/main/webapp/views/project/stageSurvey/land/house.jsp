@@ -34,7 +34,7 @@
                             <div class="card-body">
                                 <div class="x_content">
                                     <div class="card-header">
-                                        <div class="card-title">土地类型类别</div>
+                                        <div class="card-title">土地类型</div>
                                     </div>
                                     <%@include file="/views/project/stageSurvey/common/estateLandUseCategory.jsp" %>
                                 </div>

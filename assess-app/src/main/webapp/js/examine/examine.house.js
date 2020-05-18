@@ -329,7 +329,7 @@
 
         });
 
-        //土地类型类别
+        //土地类型
         houseCommon.landCategoryInfoForm.initForm(data.landCategoryInfo, function () {
             if (data.landCategoryInfo != null) {
                 AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_compatibility_rate, null, function (html, data) {

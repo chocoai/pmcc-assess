@@ -106,7 +106,7 @@ public class BasicEstateLandCategoryInfoService {
      * @return
      * @throws Exception
      */
-    public BasicEstateLandCategoryInfo getBasicEstateLandCategoryInfoById(Integer id) throws Exception {
+    public BasicEstateLandCategoryInfo getBasicEstateLandCategoryInfoById(Integer id) {
         return basicEstateLandCategoryInfoDao.getBasicEstateLandCategoryInfoById(id);
     }
 
@@ -117,7 +117,7 @@ public class BasicEstateLandCategoryInfoService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicEstateLandCategoryInfo(BasicEstateLandCategoryInfo basicEstateLandCategoryInfo, boolean updateNull) throws Exception {
+    public Integer saveAndUpdateBasicEstateLandCategoryInfo(BasicEstateLandCategoryInfo basicEstateLandCategoryInfo, boolean updateNull) {
         if(!StringUtils.isNotEmpty(basicEstateLandCategoryInfo.getLandLevelContentResult())){
             basicEstateLandCategoryInfo.setLandLevelContentResult(null);
         }

@@ -43,9 +43,9 @@ public class DataSetUseFieldItemService {
     private ErpAreaService erpAreaService;
 
     public boolean updateDataSetUseFieldItem(DataSetUseFieldItem oo, boolean updateNull) {
-        if (updateNull){
-            if (oo.getMasterId() == null || oo.getMasterId() == 0 ){
-                DataSetUseFieldItem item = getDataSetUseFieldItemById(oo.getId()) ;
+        if (updateNull) {
+            if (oo.getMasterId() == null || oo.getMasterId() == 0) {
+                DataSetUseFieldItem item = getDataSetUseFieldItemById(oo.getId());
                 oo.setMasterId(item.getMasterId());
             }
         }
@@ -112,8 +112,8 @@ public class DataSetUseFieldItemService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataSetUseFieldItem> loanBenchmarkInterestRates = getDataSetUseFieldItemListByQuery(query);
-        List<DataSetUseFieldItemVo> vos  = new ArrayList<>() ;
-        if (CollectionUtils.isNotEmpty(loanBenchmarkInterestRates)){
+        List<DataSetUseFieldItemVo> vos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(loanBenchmarkInterestRates)) {
             loanBenchmarkInterestRates.forEach(po -> vos.add(getDataSetUseFieldItemVo(po)));
         }
         vo.setTotal(page.getTotal());
@@ -134,15 +134,22 @@ public class DataSetUseFieldItemService {
         return dataSetUseFieldItemDao.getDataSetUseFieldItemListByExample(oo);
     }
 
-    public DataSetUseFieldItemVo getDataSetUseFieldItemVo(DataSetUseFieldItem oo){
-        if (oo == null){
+    public DataSetUseFieldItemVo getDataSetUseFieldItemVo(DataSetUseFieldItem oo) {
+        if (oo == null) {
             return null;
         }
         DataSetUseFieldItemVo vo = new DataSetUseFieldItemVo();
-        BeanUtils.copyProperties(oo,vo);
-
+        BeanUtils.copyProperties(oo, vo);
         return vo;
     }
 
+    public Integer getDataSetUseFieldItemCount(Integer masterId, String type, String category) {
+        if (masterId == null) return 0;
+        return dataSetUseFieldItemDao.getDataSetUseFieldItemCount(masterId, type, category);
+    }
 
+    public DataSetUseFieldItem getDataSetUseFieldItem(Integer masterId, String type, String category) {
+        if (masterId == null) return null;
+        return dataSetUseFieldItemDao.getDataSetUseFieldItem(masterId, type, category);
+    }
 }

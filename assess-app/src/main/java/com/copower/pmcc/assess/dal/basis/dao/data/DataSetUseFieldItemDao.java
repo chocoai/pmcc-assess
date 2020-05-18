@@ -4,6 +4,8 @@ import com.copower.pmcc.assess.dal.basis.entity.DataSetUseFieldItem;
 import com.copower.pmcc.assess.dal.basis.entity.DataSetUseFieldItemExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DataSetUseFieldItemMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -55,5 +57,27 @@ public class DataSetUseFieldItemDao {
         return mapper.selectByExample(example);
     }
 
+    public Integer getDataSetUseFieldItemCount(Integer masterId, String type, String category) {
+        DataSetUseFieldItemExample example = new DataSetUseFieldItemExample();
+        DataSetUseFieldItemExample.Criteria criteria = example.createCriteria();
+        criteria.andMasterIdEqualTo(masterId);
+        if (StringUtils.isNotBlank(type))
+            criteria.andTypeEqualTo(type);
+        if (StringUtils.isNotBlank(category))
+            criteria.andCategoryEqualTo(category);
+        return mapper.countByExample(example);
+    }
 
+    public DataSetUseFieldItem getDataSetUseFieldItem(Integer masterId, String type, String category) {
+        DataSetUseFieldItemExample example = new DataSetUseFieldItemExample();
+        DataSetUseFieldItemExample.Criteria criteria = example.createCriteria();
+        criteria.andMasterIdEqualTo(masterId);
+        if (StringUtils.isNotBlank(type))
+            criteria.andTypeEqualTo(type);
+        if (StringUtils.isNotBlank(category))
+            criteria.andCategoryEqualTo(category);
+        List<DataSetUseFieldItem> dataSetUseFieldItems = mapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(dataSetUseFieldItems)) return null;
+        return dataSetUseFieldItems.get(0);
+    }
 }

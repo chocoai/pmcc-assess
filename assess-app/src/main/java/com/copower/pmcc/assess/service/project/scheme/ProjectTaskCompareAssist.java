@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApplyDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
@@ -120,9 +121,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info, SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
         //市场比较法相关
         try {
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
             MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
-            List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()));
+            List<DataSetUseField> fieldList = mdMarketCompareService.getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE, null, null);
             MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
             List<MdMarketCompareItem> caseList = mdMarketCompareService.getCaseListByMcId(marketCompare.getId());
             if (judgeObject.getStandardJudgeId() != null) {

@@ -191,7 +191,7 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
         modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(), projectInfoVo.getProjectCategoryId()));
-        modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldsByType(BaseConstant.ASSESS_DATA_SET_USE_TYPE_HOUSE));
+        modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldsByType(projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId()).getKey()));
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
         modelAndView.addObject("valueTypes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
         modelAndView.addObject("entrustmentPurposes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE));//委托目的

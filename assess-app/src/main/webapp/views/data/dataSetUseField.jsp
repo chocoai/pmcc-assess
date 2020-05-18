@@ -452,10 +452,10 @@
 <div id="divDataSetUseFieldItemBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1" role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 75%;">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">${baseViewDto.currentMenu.name} 类型 从表</h4>
+                <h4 class="modal-title">比较法名称配置</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -467,18 +467,16 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-4 col-form-label">
+                                            <label class="col-sm-2 col-form-label">
                                                 类型<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-8">
+                                            <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <input type="text" name="type" list="typeDataList"
                                                            class="form-control form-control-sm" required>
-                                                    <datalist id="typeDataList">
-
-                                                    </datalist>
+                                                    <datalist id="typeDataList"></datalist>
                                                     <div class="input-group-prepend ">
                                                         <button class="btn btn-warning btn-sm"
                                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
@@ -492,17 +490,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-4 col-form-label">
-                                                类别<span class="symbol required"></span>
+                                            <label class="col-sm-2 col-form-label">
+                                                类别
                                             </label>
-                                            <div class="col-sm-8">
+                                            <div class="col-sm-10">
                                                 <div class="input-group">
-                                                    <input type="text" name="category" list="categoryDataList"
-                                                           class="form-control form-control-sm" required>
+                                                    <input type="text" name="category" list="categoryDataList" class="form-control form-control-sm">
                                                     <datalist id="categoryDataList">
-                                                    <option value="">请先选择类型</option>
+                                                        <option value="">请先选择类型</option>
                                                     </datalist>
                                                     <div class="input-group-prepend ">
                                                         <button class="btn btn-warning btn-sm"
@@ -517,13 +516,14 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-4">
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-4 col-form-label">
+                                            <label class="col-sm-2 col-form-label">
                                                 名称
                                             </label>
-                                            <div class="col-sm-8">
+                                            <div class="col-sm-10">
                                                 <input name="name"
                                                        class="form-control input-full"
                                                        placeholder="名称"/>
@@ -531,7 +531,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -545,7 +544,6 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -727,7 +725,7 @@
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
                 str += '<button type="button" onclick="showDataSetUseFieldItemBoxList(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="子项关联类型数据">';
-                str += '<i class="fa fa-search"></i>';
+                str += '<i class="fa fa-align-justify"></i>';
                 str += '</button>';
                 str += '<button onclick="editSubSetUseField(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
