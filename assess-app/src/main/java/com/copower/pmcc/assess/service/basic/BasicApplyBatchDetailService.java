@@ -196,11 +196,6 @@ public class BasicApplyBatchDetailService {
         } else if (enumByKey.getKey().startsWith(BasicFormClassifyEnum.UNIT.getKey())) {
             BasicUnit unitData = basicUnitService.getBasicUnitById(basicApplyBatchDetail.getTableId());
             BasicUnit unit = unitData == null ? new BasicUnit() : unitData;
-            BasicBuilding basicBuilding = getBasicBuildingByBatchDetailId(basicApplyBatchDetail.getPid());
-            if (basicBuilding != null) {
-                unit.setBuildingId(basicBuilding.getId());
-                unit.setEstateId(basicBuilding.getEstateId());
-            }
             unit.setUnitNumber(basicApplyBatchDetail.getName());
             basicUnitService.saveAndUpdate(unit, false);
             basicApplyBatchDetail.setTableId(unit.getId());
@@ -302,6 +297,7 @@ public class BasicApplyBatchDetailService {
                 keyValueDtos.add(keyValueDto);
             }
             basicApply.setName(StringUtils.strip(stringBuilder.toString(), "/"));
+            basicApply.setAddress(basicApply.getName().replaceAll("^.*?/","").replaceAll("/",""));//资产清查使用
             basicApply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
         }
         basicApplyService.saveBasicApply(basicApply);
@@ -407,25 +403,6 @@ public class BasicApplyBatchDetailService {
                 return null;
             else
                 return getBasicEstateByBatchDetailId(applyBatchDetail.getPid());
-        }
-    }
-
-    /**
-     * 获取楼栋
-     *
-     * @param basicApplyBatchDetailId
-     * @return
-     */
-    public BasicBuildingVo getBasicBuildingByBatchDetailId(Integer basicApplyBatchDetailId) {
-        BasicApplyBatchDetail applyBatchDetail = getDataById(basicApplyBatchDetailId);
-        if (applyBatchDetail == null) return null;
-        if (FormatUtils.entityNameConvertToTableName(BasicBuilding.class).equalsIgnoreCase(applyBatchDetail.getTableName())) {
-            return basicBuildingService.getBasicBuildingVoById(applyBatchDetail.getTableId());
-        } else {
-            if (applyBatchDetail.getPid() == null || applyBatchDetail.getPid() <= 0)
-                return null;
-            else
-                return getBasicBuildingByBatchDetailId(applyBatchDetail.getPid());
         }
     }
 
