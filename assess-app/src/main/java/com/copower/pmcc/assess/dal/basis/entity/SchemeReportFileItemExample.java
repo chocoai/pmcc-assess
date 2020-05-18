@@ -225,63 +225,63 @@ public class SchemeReportFileItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIsNull() {
-            addCriterion("judge_object_id is null");
+        public Criteria andSchemeJudgeObjectIdIsNull() {
+            addCriterion("scheme_judge_object_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIsNotNull() {
-            addCriterion("judge_object_id is not null");
+        public Criteria andSchemeJudgeObjectIdIsNotNull() {
+            addCriterion("scheme_judge_object_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdEqualTo(Integer value) {
-            addCriterion("judge_object_id =", value, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdEqualTo(Integer value) {
+            addCriterion("scheme_judge_object_id =", value, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotEqualTo(Integer value) {
-            addCriterion("judge_object_id <>", value, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdNotEqualTo(Integer value) {
+            addCriterion("scheme_judge_object_id <>", value, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdGreaterThan(Integer value) {
-            addCriterion("judge_object_id >", value, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdGreaterThan(Integer value) {
+            addCriterion("scheme_judge_object_id >", value, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("judge_object_id >=", value, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("scheme_judge_object_id >=", value, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdLessThan(Integer value) {
-            addCriterion("judge_object_id <", value, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdLessThan(Integer value) {
+            addCriterion("scheme_judge_object_id <", value, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdLessThanOrEqualTo(Integer value) {
-            addCriterion("judge_object_id <=", value, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdLessThanOrEqualTo(Integer value) {
+            addCriterion("scheme_judge_object_id <=", value, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdIn(List<Integer> values) {
-            addCriterion("judge_object_id in", values, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdIn(List<Integer> values) {
+            addCriterion("scheme_judge_object_id in", values, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotIn(List<Integer> values) {
-            addCriterion("judge_object_id not in", values, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdNotIn(List<Integer> values) {
+            addCriterion("scheme_judge_object_id not in", values, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdBetween(Integer value1, Integer value2) {
-            addCriterion("judge_object_id between", value1, value2, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdBetween(Integer value1, Integer value2) {
+            addCriterion("scheme_judge_object_id between", value1, value2, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 
-        public Criteria andJudgeObjectIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("judge_object_id not between", value1, value2, "judgeObjectId");
+        public Criteria andSchemeJudgeObjectIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("scheme_judge_object_id not between", value1, value2, "schemeJudgeObjectId");
             return (Criteria) this;
         }
 

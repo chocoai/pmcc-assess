@@ -6081,11 +6081,11 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObjectList.size() > 1) {
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                 }
-                List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getDeclareRecordId());
+                List<SysAttachmentDto> sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
                 if (!CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     //自动生成
                     schemeReportFileService.makeJudgeObjectPosition(schemeJudgeObject.getDeclareRecordId());
-                    sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getDeclareRecordId());
+                    sysAttachmentDtoList = schemeReportFileService.getJudgeObjectPositionFileList(schemeJudgeObject.getId());
                 }
                 if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                     this.imgComposingByAttachmentDtoList(sysAttachmentDtoList, builder);
@@ -6105,7 +6105,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
-                List<SchemeReportFileItem> schemeReportFileItemList = schemeReportFileService.getReportListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+                List<SchemeReportFileItem> schemeReportFileItemList = schemeReportFileService.getReportListBySchemeJudgeObjectId(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeReportFileItemList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                     if (this.schemeJudgeObjectDeclareList.size() > 1) {
@@ -6206,7 +6206,7 @@ public class GenerateBaseDataService {
         //3.取得自定义的附件
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
-                List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(schemeJudgeObject.getDeclareRecordId());
+                List<SchemeReportFileCustom> reportFileCustomList = schemeReportFileService.getReportFileCustomList(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(reportFileCustomList)) {
                     List<SysAttachmentDto> fileList = Lists.newArrayList();
                     for (SchemeReportFileCustom schemeReportFileCustom : reportFileCustomList) {

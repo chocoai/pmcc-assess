@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileCustom;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem;
 import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +48,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/getLiveSituationAll", name = "获取查勘中所有的实况图片 ", method = RequestMethod.POST)
-    public HttpResult getLiveSituationAll(Integer declareRecordId) {
+    public HttpResult getLiveSituationAll(Integer schemeJudgeObjectId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationAll(declareRecordId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationAll(schemeJudgeObjectId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -58,9 +59,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/getLiveSituationByCertifyPart", name = "根据类型获取委估对象下实况图片 ", method = RequestMethod.POST)
-    public HttpResult getLiveSituationByCertifyPart(Integer certifyPart,Integer declareRecordId) {
+    public HttpResult getLiveSituationByCertifyPart(Integer certifyPart,Integer schemeJudgeObjectId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationByCertifyPart(certifyPart,declareRecordId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationByCertifyPart(certifyPart,schemeJudgeObjectId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -69,9 +70,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/correspondingSitePic", name = "获取对应位置查勘图片 ", method = RequestMethod.POST)
-    public HttpResult getLiveSituationAll(Integer declareRecordId,Integer certifyPartCategory) {
+    public HttpResult getLiveSituationAll(Integer schemeJudgeObjectId,Integer certifyPartCategory) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.correspondingSitePic(declareRecordId, certifyPartCategory));
+            return HttpResult.newCorrectResult(schemeReportFileService.correspondingSitePic(schemeJudgeObjectId, certifyPartCategory));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -79,10 +80,10 @@ public class SchemeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getListByDeclareRecordId", name = "获取实况图片", method = RequestMethod.POST)
-    public HttpResult getListByDeclareRecordId(Integer declareRecordId) {
+    @RequestMapping(value = "/getListBySchemeJudgeObjectId", name = "获取实况图片", method = RequestMethod.POST)
+    public HttpResult getListBySchemeJudgeObjectId(Integer schemeJudgeObjectId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getListByDeclareRecordId(declareRecordId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getListBySchemeJudgeObjectId(schemeJudgeObjectId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -125,9 +126,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/selectLiveSituation", name = "选择实况图片 ", method = RequestMethod.POST)
-    public HttpResult selectLiveSituation(Integer attachmentId, Integer declareRecordId, String fileName) {
+    public HttpResult selectLiveSituation(Integer attachmentId, Integer schemeJudgeObjectId, String fileName) {
         try {
-            schemeReportFileService.selectLiveSituation(attachmentId, declareRecordId, fileName);
+            schemeReportFileService.selectLiveSituation(attachmentId, schemeJudgeObjectId, fileName);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -162,9 +163,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/getReportFileCustomList", name = "获取自定义块 ", method = RequestMethod.POST)
-    public HttpResult getReportFileCustomList(Integer declareRecordId) {
+    public HttpResult getReportFileCustomList(Integer schemeJudgeObjectId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.getReportFileCustomList(declareRecordId));
+            return HttpResult.newCorrectResult(schemeReportFileService.getReportFileCustomList(schemeJudgeObjectId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
@@ -196,9 +197,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/affirmPictureTemplate", name = "确认模板 ", method = RequestMethod.POST)
-    public HttpResult affirmPictureTemplate(Integer masterId, Integer declareRecordId) {
+    public HttpResult affirmPictureTemplate(Integer masterId, Integer schemeJudgeObjectId) {
         try {
-            schemeReportFileService.affirmPictureTemplate(masterId, declareRecordId);
+            schemeReportFileService.affirmPictureTemplate(masterId, schemeJudgeObjectId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -208,9 +209,9 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/saveToTemplate", name = "确认模板 ", method = RequestMethod.POST)
-    public HttpResult saveToTemplate(String name, Integer declareRecordId) {
+    public HttpResult saveToTemplate(String name, Integer schemeJudgeObjectId) {
         try {
-            schemeReportFileService.saveToTemplate(name, declareRecordId);
+            schemeReportFileService.saveToTemplate(name, schemeJudgeObjectId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -221,12 +222,18 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/generateLiveSituation", name = "预览实况照片报告 ", method = RequestMethod.POST)
-    public HttpResult generateLiveSituation(Integer declareRecordId) {
+    public HttpResult generateLiveSituation(Integer schemeJudgeObjectId) {
         try {
-            return HttpResult.newCorrectResult(schemeReportFileService.generateLiveSituation(declareRecordId));
+            return HttpResult.newCorrectResult(schemeReportFileService.generateLiveSituation(schemeJudgeObjectId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/reloadSchemeJudgeObjectList", method = {RequestMethod.GET}, name = "获取项目完整并没合并估价对象")
+    public BootstrapTableVo reloadSchemeJudgeObjectList(Integer projectId, String name, String certName,String seat) {
+        return schemeReportFileService.reloadSchemeJudgeObjectListByQuery(projectId, name, certName, seat);
     }
 }

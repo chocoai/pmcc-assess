@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="judge_object_id" property="judgeObjectId" jdbcType="INTEGER" />
+    <result column="scheme_judge_object_id" property="schemeJudgeObjectId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="attachment_id" property="attachmentId" jdbcType="INTEGER" />
     <result column="file_name" property="fileName" jdbcType="VARCHAR" />
@@ -77,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_details_id, judge_object_id, type, attachment_id, file_name, sorting, remark, 
-    creator, gmt_created, gmt_modified, declare_record_id, certify_part, certify_part_category, 
+    id, plan_details_id, scheme_judge_object_id, type, attachment_id, file_name, sorting, 
+    remark, creator, gmt_created, gmt_modified, declare_record_id, certify_part, certify_part_category, 
     bis_enable
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItemExample" >
@@ -115,16 +115,18 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_scheme_report_file_item (plan_details_id, judge_object_id, type, 
-      attachment_id, file_name, sorting, 
-      remark, creator, gmt_created, 
-      gmt_modified, declare_record_id, certify_part, 
-      certify_part_category, bis_enable)
-    values (#{planDetailsId,jdbcType=INTEGER}, #{judgeObjectId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{attachmentId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
-      #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{declareRecordId,jdbcType=INTEGER}, #{certifyPart,jdbcType=INTEGER}, 
-      #{certifyPartCategory,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT})
+    insert into tb_scheme_report_file_item (plan_details_id, scheme_judge_object_id, 
+      type, attachment_id, file_name, 
+      sorting, remark, creator, 
+      gmt_created, gmt_modified, declare_record_id, 
+      certify_part, certify_part_category, bis_enable
+      )
+    values (#{planDetailsId,jdbcType=INTEGER}, #{schemeJudgeObjectId,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{attachmentId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, 
+      #{sorting,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{declareRecordId,jdbcType=INTEGER}, 
+      #{certifyPart,jdbcType=INTEGER}, #{certifyPartCategory,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -135,8 +137,8 @@
       <if test="planDetailsId != null" >
         plan_details_id,
       </if>
-      <if test="judgeObjectId != null" >
-        judge_object_id,
+      <if test="schemeJudgeObjectId != null" >
+        scheme_judge_object_id,
       </if>
       <if test="type != null" >
         type,
@@ -179,8 +181,8 @@
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="judgeObjectId != null" >
-        #{judgeObjectId,jdbcType=INTEGER},
+      <if test="schemeJudgeObjectId != null" >
+        #{schemeJudgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
@@ -235,8 +237,8 @@
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="record.judgeObjectId != null" >
-        judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      <if test="record.schemeJudgeObjectId != null" >
+        scheme_judge_object_id = #{record.schemeJudgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
@@ -283,7 +285,7 @@
     update tb_scheme_report_file_item
     set id = #{record.id,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      scheme_judge_object_id = #{record.schemeJudgeObjectId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
       attachment_id = #{record.attachmentId,jdbcType=INTEGER},
       file_name = #{record.fileName,jdbcType=VARCHAR},
@@ -306,8 +308,8 @@
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="judgeObjectId != null" >
-        judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      <if test="schemeJudgeObjectId != null" >
+        scheme_judge_object_id = #{schemeJudgeObjectId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
@@ -351,7 +353,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeReportFileItem" >
     update tb_scheme_report_file_item
     set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      scheme_judge_object_id = #{schemeJudgeObjectId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},
       attachment_id = #{attachmentId,jdbcType=INTEGER},
       file_name = #{fileName,jdbcType=VARCHAR},

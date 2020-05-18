@@ -215,4 +215,24 @@ public class SchemeJudgeObjectDao {
         example.createCriteria().andPidEqualTo(pid);
         return mapper.countByExample(example);
     }
+
+    public List<SchemeJudgeObject> reloadSchemeJudgeObjectListByQuery(Integer projectId, String name, String certName,String seat) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        if(projectId!=null){
+            criteria.andProjectIdEqualTo(projectId);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
+        }
+        if (StringUtils.isNotBlank(seat)) {
+            criteria.andSeatLike(String.format("%%%s%%", seat));
+        }
+        if (StringUtils.isNotBlank(certName)) {
+            criteria.andCertNameLike(String.format("%%%s%%", certName));
+        }
+        criteria.andBisMergeEqualTo(false);
+        example.setOrderByClause("sorting,split_number");
+        return mapper.selectByExample(example);
+    }
 }

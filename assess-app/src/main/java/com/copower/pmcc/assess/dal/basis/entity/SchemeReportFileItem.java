@@ -7,7 +7,7 @@ public class SchemeReportFileItem {
 
     private Integer planDetailsId;
 
-    private Integer judgeObjectId;
+    private Integer schemeJudgeObjectId;
 
     private String type;
 
@@ -49,12 +49,12 @@ public class SchemeReportFileItem {
         this.planDetailsId = planDetailsId;
     }
 
-    public Integer getJudgeObjectId() {
-        return judgeObjectId;
+    public Integer getSchemeJudgeObjectId() {
+        return schemeJudgeObjectId;
     }
 
-    public void setJudgeObjectId(Integer judgeObjectId) {
-        this.judgeObjectId = judgeObjectId;
+    public void setSchemeJudgeObjectId(Integer schemeJudgeObjectId) {
+        this.schemeJudgeObjectId = schemeJudgeObjectId;
     }
 
     public String getType() {

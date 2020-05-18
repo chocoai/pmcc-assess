@@ -15,7 +15,7 @@ public class SchemeReportFileCustom {
 
     private Date gmtModified;
 
-    private Integer declareRecordId;
+    private Integer schemeJudgeObjectId;
 
     public Integer getId() {
         return id;
@@ -65,11 +65,11 @@ public class SchemeReportFileCustom {
         this.gmtModified = gmtModified;
     }
 
-    public Integer getDeclareRecordId() {
-        return declareRecordId;
+    public Integer getSchemeJudgeObjectId() {
+        return schemeJudgeObjectId;
     }
 
-    public void setDeclareRecordId(Integer declareRecordId) {
-        this.declareRecordId = declareRecordId;
+    public void setSchemeJudgeObjectId(Integer schemeJudgeObjectId) {
+        this.schemeJudgeObjectId = schemeJudgeObjectId;
     }
 }
