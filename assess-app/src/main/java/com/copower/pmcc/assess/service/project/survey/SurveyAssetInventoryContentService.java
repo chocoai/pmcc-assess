@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
@@ -68,7 +69,7 @@ public class SurveyAssetInventoryContentService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
+    private BasicBuildingService basicBuildingService;
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -279,7 +280,7 @@ public class SurveyAssetInventoryContentService {
             List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
             if(CollectionUtils.isNotEmpty(applyList)){
                 for (BasicApply basicApply : applyList) {
-                    BasicBuildingVo building = basicApplyBatchDetailService.getBasicBuildingByBatchDetailId(basicApply.getBatchDetailId());
+                    BasicBuildingVo building =  basicBuildingService.getBasicBuildingByBasicApply(basicApply);
                     actualList.add(building.getStreetNumber()+basicApply.getAddress());
                 }
             }
@@ -297,7 +298,7 @@ public class SurveyAssetInventoryContentService {
                     List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(record.getId());
                     if (CollectionUtils.isNotEmpty(applyList)) {
                         for (BasicApply basicApply : applyList) {
-                            BasicBuildingVo building = basicApplyBatchDetailService.getBasicBuildingByBatchDetailId(basicApply.getBatchDetailId());
+                            BasicBuildingVo building =  basicBuildingService.getBasicBuildingByBasicApply(basicApply);
                             actualList.add(building.getStreetNumber()+basicApply.getAddress());
                         }
                     }
