@@ -49,57 +49,73 @@
                             <div class="card-body">
                                 <div class="row col-md-12">
                                     <div class="col-md-9">
+                                        <div class="row">
+                                            <div class=" col-md-12">
+                                                <button type="button" class="btn btn-sm btn-primary"
+                                                        onclick=" batchTreeTool.expandAll(true);">
+                                                    展开
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-primary"
+                                                        onclick=" batchTreeTool.expandAll(false);">
+                                                    收起
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-success normalTool"
+                                                        style="margin-left: 20px;"
+                                                        onclick="batchTreeTool.showAddModal()">
+                                                    新增
+                                                </button>
+                                                <button class="btn btn-sm btn-primary masterTool"
+                                                        onclick=" batchTreeTool.getAndEditDetail();">
+                                                    编辑
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-warning masterTool"
+                                                        onclick=" batchTreeTool.batchDeleteDetail();">
+                                                    批量删除
+                                                </button>
 
-                                        <button type="button" class="btn btn-sm btn-primary"
-                                                onclick=" batchTreeTool.expandAll(true);">
-                                            展开
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-primary"
-                                                onclick=" batchTreeTool.expandAll(false);">
-                                            收起
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-success normalTool"
-                                                style="margin-left: 20px;"
-                                                onclick="batchTreeTool.showAddModal()">
-                                            新增
-                                        </button>
-                                        <button class="btn btn-sm btn-primary masterTool"
-                                                onclick=" batchTreeTool.getAndEditDetail();">
-                                            编辑
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-warning masterTool"
-                                                onclick=" batchTreeTool.batchDeleteDetail();">
-                                            批量删除
-                                        </button>
+                                                <button type="button" style="margin-left: 20px;"
+                                                        class="btn btn-sm btn-primary fillInformation masterTool"
+                                                        onclick="batchTreeTool.fillInformation();">
+                                                    填写信息
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-primary fillInformation limitTool"
+                                                        onclick="batchTreeTool.checkInfo();">
+                                                    查看信息
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-warning copy"
+                                                        onclick="batchTreeTool.copy();">
+                                                    复制
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-warning paste masterTool"
+                                                        onclick="batchTreeTool.paste();">
+                                                    粘贴
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-warning masterTool"
+                                                        onclick="batchTreeTool.deepCopy();">
+                                                    深复制
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-warning masterTool"
+                                                        style="display: none"
+                                                        onclick="batchTreeTool.addToAlternative();">
+                                                    添加到备选案例
+                                                </button>
+                                            </div>
 
-                                        <button type="button" style="margin-left: 20px;"
-                                                class="btn btn-sm btn-primary fillInformation masterTool"
-                                                onclick="batchTreeTool.fillInformation();">
-                                            填写信息
-                                        </button>
-                                        <button type="button"
-                                                class="btn btn-sm btn-primary fillInformation limitTool"
-                                                onclick="batchTreeTool.checkInfo();">
-                                            查看信息
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-warning copy"
-                                                onclick="batchTreeTool.copy();">
-                                            复制
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-warning paste masterTool"
-                                                onclick="batchTreeTool.paste();">
-                                            粘贴
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-warning masterTool"
-                                                onclick="batchTreeTool.deepCopy();">
-                                            深复制
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-warning masterTool"
-                                                style="display: none"
-                                                onclick="batchTreeTool.addToAlternative();">
-                                            添加到备选案例
-                                        </button>
-                                        <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
+                                            <div class=" col-md-12">
+                                                <div class="row">
+                                                    <div class=" col-md-9">
+                                                        <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
+                                                    </div>
+
+                                                    <div class=" col-md-3">
+                                                        <%@include file="/views/project/stageSurvey/common/canvasQRcodeTree.jsp" %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                     <div class="col-md-3">
                                         <form id="basicBatchApplyFrm" class="form-horizontal">
