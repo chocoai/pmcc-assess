@@ -20,7 +20,6 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import javafx.application.Application;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +29,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -81,7 +75,7 @@ public class BaseQrcodeService extends BaseService {
     }
 
     public void createQrCode(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
-        try{
+        try {
             List<String> stringList = FormatUtils.transformString2List(basicApplyBatchDetail.getType(), BasicFormClassifyEnum.transform(false));
             BaseQrcode baseQrcode = new BaseQrcode();
             baseQrcode.setTableId(basicApplyBatchDetail.getTableId());
@@ -93,12 +87,12 @@ public class BaseQrcodeService extends BaseService {
             }
             StringBuilder stringBuilder = new StringBuilder(8);
             //这里在正式环境需要改变
-            ServletRequestAttributes attr=(ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request =attr.getRequest();
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = attr.getRequest();
             stringBuilder.append(IpUtils.serverPath(request)).append("/");
             stringBuilder.append(applicationConstant.getAppKey()).append("/basicApplyBatch/informationPhoneEdit").append("?");
             List<String> params = new ArrayList<>();
-            params.add(String.join("=", "tbType",baseQrcode.getType() ));
+            params.add(String.join("=", "tbType", baseQrcode.getType()));
             params.add(String.join("=", "tbId", baseQrcode.getTableId().toString()));
             params.add(String.join("=", "tableName", baseQrcode.getTableName()));
             if (basicApplyBatchDetail.getApplyBatchId() != null) {
@@ -113,8 +107,38 @@ public class BaseQrcodeService extends BaseService {
             baseQrcode.setQrcode(generateQRCode);
             baseQrcode.setCode(stringBuilder.toString());
             saveAndUpdateBaseQrcode(baseQrcode, false);
-        }catch (Exception ex){
-            log.error(ex.getMessage(),ex);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+        }
+    }
+
+    public void createQrCode(BasicApplyBatch basicApplyBatch) throws Exception {
+        if (basicApplyBatch == null || basicApplyBatch.getId() == null){
+            return;
+        }
+        try {
+            BaseQrcode baseQrcode = new BaseQrcode();
+            baseQrcode.setTableId(basicApplyBatch.getId());
+            baseQrcode.setTableName(FormatUtils.entityNameConvertToTableName(BasicApplyBatch.class));
+            List<BaseQrcode> baseQrcodeList = getBaseQrcodeList(basicApplyBatch.getId(), null, baseQrcode.getTableName());
+            if (CollectionUtils.isNotEmpty(baseQrcodeList)) {
+                return;
+            }
+            StringBuilder stringBuilder = new StringBuilder(8);
+            //这里在正式环境需要改变
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = attr.getRequest();
+            stringBuilder.append(IpUtils.serverPath(request)).append("/");
+            stringBuilder.append(applicationConstant.getAppKey()).append("/basicApplyBatch/informationPhoneTree").append("?");
+            List<String> params = new ArrayList<>();
+            params.add(String.join("=", "applyBatchId", basicApplyBatch.getId().toString()));
+            stringBuilder.append(StringUtils.join(params, "&"));
+            String generateQRCode = erpRpcToolsService.generateQRCode(stringBuilder.toString());
+            baseQrcode.setQrcode(generateQRCode);
+            baseQrcode.setCode(stringBuilder.toString());
+            saveAndUpdateBaseQrcode(baseQrcode, false);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
         }
     }
 
@@ -187,46 +211,6 @@ public class BaseQrcodeService extends BaseService {
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(baseQrcodeList) ? new ArrayList<BaseQrcode>(10) : baseQrcodeList);
         return vo;
-    }
-
-    public static List<Inet4Address> getLocalIp4AddressFromNetworkInterface() throws SocketException {
-        List<Inet4Address> addresses = new ArrayList<>(1);
-        Enumeration e = NetworkInterface.getNetworkInterfaces();
-        if (e == null) {
-            return addresses;
-        }
-        while (e.hasMoreElements()) {
-            NetworkInterface n = (NetworkInterface) e.nextElement();
-            if (!isValidInterface(n)) {
-                continue;
-            }
-            Enumeration ee = n.getInetAddresses();
-            while (ee.hasMoreElements()) {
-                InetAddress i = (InetAddress) ee.nextElement();
-                if (isValidAddress(i)) {
-                    addresses.add((Inet4Address) i);
-                }
-            }
-        }
-        return addresses;
-    }
-
-    /**
-     * 过滤回环网卡、点对点网卡、非活动网卡、虚拟网卡并要求网卡名字是eth或ens开头
-     *
-     * @param ni 网卡
-     * @return 如果满足要求则true，否则false
-     */
-    private static boolean isValidInterface(NetworkInterface ni) throws SocketException {
-        return !ni.isLoopback() && !ni.isPointToPoint() && ni.isUp() && !ni.isVirtual()
-                && (ni.getName().startsWith("eth") || ni.getName().startsWith("ens"));
-    }
-
-    /**
-     * 判断是否是IPv4，并且内网地址并过滤回环地址.
-     */
-    private static boolean isValidAddress(InetAddress address) {
-        return address instanceof Inet4Address && address.isSiteLocalAddress() && !address.isLoopbackAddress();
     }
 
 

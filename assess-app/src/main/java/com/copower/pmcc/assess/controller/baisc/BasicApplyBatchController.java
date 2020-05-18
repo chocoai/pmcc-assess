@@ -442,7 +442,7 @@ public class BasicApplyBatchController extends BaseController {
     @RequestMapping(value = "/batchSaveDeclareRecordId", name = "批量设置权证", method = {RequestMethod.POST})
     public HttpResult batchSaveDeclareRecordId(String ids, Integer declareRecordId, String declareRecordName) {
         try {
-            basicApplyBatchDetailService.batchSaveDeclareRecordId(ids,declareRecordId,declareRecordName);
+            basicApplyBatchDetailService.batchSaveDeclareRecordId(ids, declareRecordId, declareRecordName);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
@@ -508,7 +508,7 @@ public class BasicApplyBatchController extends BaseController {
         ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        if(caseStudyExtend.getId().equals(projectPhase.getId())||caseStudyLand.getId().equals(projectPhase.getId())){
+        if (caseStudyExtend.getId().equals(projectPhase.getId()) || caseStudyLand.getId().equals(projectPhase.getId())) {
             modelAndView.addObject("projectPhase", "caseStudyExtend");
         }
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
@@ -550,6 +550,22 @@ public class BasicApplyBatchController extends BaseController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/informationPhoneTree", name = "信息手机端树", method = RequestMethod.GET)
+    public ModelAndView informationPhoneTree(Integer applyBatchId) throws Exception {
+        String view = "/project/stageSurvey/taskSurveyExplorePhoneIndex";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
+        modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
+        modelAndView.addObject("userAccount", processControllerComponent.getThisUser());
+        if (basicApplyBatch.getId() != null && basicApplyBatch.getId() != 0) {
+            ProjectPlanDetails projectPlanDetailsById = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getId());
+            if (projectPlanDetailsById != null){
+                modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetailsById);
+            }
+        }
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/informationDetail", name = "信息详情", method = RequestMethod.GET)
     public ModelAndView informationDetail(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         BasicFormClassifyEnum estateTaggingTypeEnum = BasicFormClassifyEnum.getEnumByKey(basicFormClassifyParamDto.getTbType());
@@ -564,7 +580,7 @@ public class BasicApplyBatchController extends BaseController {
         ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        if(caseStudyExtend.getId().equals(projectPhase.getId())||caseStudyLand.getId().equals(projectPhase.getId())){
+        if (caseStudyExtend.getId().equals(projectPhase.getId()) || caseStudyLand.getId().equals(projectPhase.getId())) {
             detailsModelAndView.addObject("projectPhase", "caseStudyExtend");
         }
         return detailsModelAndView;

@@ -28,5 +28,15 @@ public class BaseQrCodeController {
         }
     }
 
+    @GetMapping(value = "/getBaseQrcodeList")
+    public HttpResult getBaseQrcodeList(Integer tableId, String type, String tableName) {
+        try {
+            return HttpResult.newCorrectResult(200,baseQrcodeService.getBaseQrcodeList(tableId, type, tableName));
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult(e.getMessage()) ;
+        }
+    }
+
 
 }
