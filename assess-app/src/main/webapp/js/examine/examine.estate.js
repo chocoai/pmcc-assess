@@ -229,7 +229,9 @@
             districtTarget: estateCommon.estateForm.find("select[name='district']"),
             provinceValue: data.estate.province,
             cityValue: data.estate.city,
-            districtValue: data.estate.district
+            districtValue: data.estate.district,
+            useDefaultText: true,
+            provinceDefaultText: '四川',
         });
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
             var target = $("#industrySupplyInfoContainer");

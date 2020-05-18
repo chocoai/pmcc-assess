@@ -694,16 +694,16 @@ commonColumn.houseRoomColumn = function () {
                 s += ";";
             }
             if (row.area) {
-                s += "面积(m²):"+row.area;
-                s += ";";
+                s += "面积:"+row.area;
+                s += "m²;";
             }
             if (row.layerHeight) {
-                s += "层高(m):"+row.layerHeight;
-                s += ";";
+                s += "层高:"+row.layerHeight;
+                s += "m;";
             }
             if (row.clearHeight) {
-                s += "净高(m):"+row.clearHeight;
-                s += ";";
+                s += "净高:"+row.clearHeight;
+                s += "m;";
             }
             return s;
         }

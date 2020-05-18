@@ -2414,55 +2414,55 @@ var houseRoom;
             var houseShape = $("#" + houseRoom.prototype.config().frm).find('select[name="houseShape"]').val();
             if (houseRoom.prototype.isNotBlank(tenementType) && houseRoom.prototype.isNotBlank(tenementType)) {
                 if (tenementType == '住宅' || tenementType == '办公') {
-                    if (houseShape == '规则') {
-                        $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").hide();
-                        $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").find("input").attr("disabled", true);
-                        $("#" + houseRoom.prototype.config().frm).find(".residence.rule").show();
-                        $("#" + houseRoom.prototype.config().frm).find(".residence.rule").find("input").attr("disabled", false);
-                    } else if (houseShape == '不规则') {
+                    if (houseShape == '不规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".residence.rule").hide();
                         $("#" + houseRoom.prototype.config().frm).find(".residence.rule").find("input").attr("disabled", true);
                         $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").show();
                         $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").find("input").attr("disabled", false);
+                    } else {
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.rule").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.rule").find("input").attr("disabled", false);
                     }
                 }
                 if (tenementType == '商铺' || tenementType == '商场') {
-                    if (houseShape == '规则') {
-                        $("#" + houseRoom.prototype.config().frm).find(".store.unruled").hide();
-                        $("#" + houseRoom.prototype.config().frm).find(".store.unruled").find("input").attr("disabled", true);
-                        $("#" + houseRoom.prototype.config().frm).find(".store.rule").show();
-                        $("#" + houseRoom.prototype.config().frm).find(".store.rule").find("input").attr("disabled", false);
-                    } else if (houseShape == '不规则') {
+                    if (houseShape == '不规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".store.rule").hide();
                         $("#" + houseRoom.prototype.config().frm).find(".store.rule").find("input").attr("disabled", true);
                         $("#" + houseRoom.prototype.config().frm).find(".store.unruled").show();
                         $("#" + houseRoom.prototype.config().frm).find(".store.unruled").find("input").attr("disabled", false);
+                    } else {
+                        $("#" + houseRoom.prototype.config().frm).find(".store.unruled").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".store.unruled").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".store.rule").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".store.rule").find("input").attr("disabled", false);
                     }
                 }
                 if (tenementType == '餐饮酒店') {
-                    if (houseShape == '规则') {
-                        $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").hide();
-                        $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").find("input").attr("disabled", true);
-                        $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").show();
-                        $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").find("input").attr("disabled", false);
-                    } else if (houseShape == '不规则') {
+                    if (houseShape == '不规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").hide();
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").find("input").attr("disabled", true);
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").show();
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").find("input").attr("disabled", false);
+                    } else {
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").find("input").attr("disabled", false);
                     }
                 }
                 if (tenementType == '生产') {
-                    if (houseShape == '规则') {
-                        $("#" + houseRoom.prototype.config().frm).find(".production.unruled").hide();
-                        $("#" + houseRoom.prototype.config().frm).find(".production.unruled").find("input").attr("disabled", true);
-                        $("#" + houseRoom.prototype.config().frm).find(".production.rule").show();
-                        $("#" + houseRoom.prototype.config().frm).find(".production.rule").find("input").attr("disabled", false);
-                    } else if (houseShape == '不规则') {
+                    if (houseShape == '不规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".production.rule").hide();
                         $("#" + houseRoom.prototype.config().frm).find(".production.rule").find("input").attr("disabled", true);
                         $("#" + houseRoom.prototype.config().frm).find(".production.unruled").show();
                         $("#" + houseRoom.prototype.config().frm).find(".production.unruled").find("input").attr("disabled", false);
+                    } else {
+                        $("#" + houseRoom.prototype.config().frm).find(".production.unruled").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".production.unruled").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".production.rule").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".production.rule").find("input").attr("disabled", false);
                     }
                 }
             }

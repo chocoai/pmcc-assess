@@ -311,9 +311,9 @@
                 AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineHouseTenementType, null, function (html, data) {
                     houseCommon.houseHuxingForm.find("#tenementTypeList").empty().html(html).trigger('change');
                 }, true);
-                AssessCommon.loadDataListHtml(AssessDicKey.examineCommonHouseOrientation, data.basicHouseHuxing.orientation, function (html, data) {
-                    houseCommon.houseHuxingForm.find("#huxing_orientation_data").empty().html(html).trigger('change');
-                }, true);
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, data.basicHouseHuxing.orientation, function (html, data) {
+                    houseCommon.houseHuxingForm.find("select.orientation").empty().html(html).trigger('change');
+                });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, data.basicHouseHuxing.spatialDistribution, function (html, data) {
                     houseCommon.houseHuxingForm.find("select.spatialDistribution").empty().html(html).trigger('change');
                 });

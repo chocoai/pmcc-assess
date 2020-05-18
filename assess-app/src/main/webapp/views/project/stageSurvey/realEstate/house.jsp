@@ -98,29 +98,21 @@
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
                                                         <div class="input-group">
-                                                            <input type="text" required="required"
-                                                                   name="reference" placeholder="参照物"
-                                                                   class="form-control form-control-sm"
-                                                                   list="huxing_reference_data"
-                                                                   value="${basicHouseHuxing.reference}">
-                                                            <datalist id="huxing_reference_data">
+                                                            <select class="form-control form-control-sm" required
+                                                                    name="reference">
                                                                 <option value="" selected="">-请选择-</option>
                                                                 <option value="入户门">入户门</option>
                                                                 <option value="客厅">客厅</option>
-                                                            </datalist>
-                                                            <input type="text" required="required"
-                                                                   name="orientation" placeholder="方位"
-                                                                   class="form-control form-control-sm"
-                                                                   list="huxing_orientation_data"
-                                                                   value="${basicHouseHuxing.orientation}">
-                                                            <datalist id="huxing_orientation_data">
+                                                            </select>
+                                                            <select class="form-control form-control-sm orientation" required
+                                                                    name="orientation">
+                                                            </select>
 
-                                                            </datalist>
                                                             <div class="input-group-prepend ">
                                                                 <button class="btn btn-warning btn-sm "
                                                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                                                         type="button"
-                                                                        onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                        onclick="$(this).closest('.input-group').find('select').val('');">
                                                                     清空
                                                                     <i class="fa "></i>
                                                                 </button>

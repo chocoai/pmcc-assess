@@ -124,9 +124,9 @@
                    onblur="estateLandCategoryInfo.onblur(this);">
         </td>
         <td>
-            <input placeholder="土地使用年限" data-rule-number="true" style="width: 50%"
+            <input placeholder="土地使用年限"  style="width: 50%" type="number"
                    name="landUseYear{id}" required data-name="landUseYear"
-                   class="form-control form-control-sm input-full " value="{landUseYear}" onblur="estateLandCategoryInfo.onblur(this);">
+                   class="form-control form-control-sm input-full x-valid" value="{landUseYear}" onblur="estateLandCategoryInfo.onblur(this);">
         </td>
         <td>
             <div class="input-group">

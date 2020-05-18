@@ -130,8 +130,16 @@
                                                         <div class='input-group'>
                                                             <input name='declareRecordId' id='declareRecordId' type='hidden'>
                                                             <input name='declareRecordName' id='declareRecordName'
-                                                                   class='form-control input-full' readonly
+                                                                   class='form-control form-control-sm' readonly
                                                                    onclick='declareRecordModeObj.init({callback:selectRecord,this_:this},true);'>
+                                                            <div class="input-group-prepend">
+                                                                <button class="btn btn-warning btn-sm "
+                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                        type="button"
+                                                                        onclick="declareRecordModeObj.init({callback:selectRecord,this_:this},true);">
+                                                                    选择
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -125,22 +125,14 @@
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <div class="input-group">
-                                                                        <input type="text" required="required"
-                                                                               name="reference" placeholder="参照物"
-                                                                               class="form-control form-control-sm"
-                                                                               list="build_reference_data"
-                                                                               value="${basicBuilding.reference}">
-                                                                        <datalist id="build_reference_data">
+                                                                        <select class="form-control form-control-sm" required
+                                                                                name="reference">
                                                                             <option value="" selected="">-请选择-</option>
                                                                             <option value="楼盘内">楼盘内</option>
                                                                             <option value="楼盘大门">楼盘大门</option>
-                                                                        </datalist>
-                                                                        <input type="text" required="required"
-                                                                               name="orientation" placeholder="方位"
-                                                                               class="form-control form-control-sm"
-                                                                               list="build_orientation_data"
-                                                                               value="${basicBuilding.orientation}">
-                                                                        <datalist id="build_orientation_data">
+                                                                        </select>
+                                                                        <select class="form-control form-control-sm" required
+                                                                                name="reference">
                                                                             <option value="" selected="">-请选择-</option>
                                                                             <option value="左面">左面</option>
                                                                             <option value="右面">右面</option>
@@ -155,23 +147,18 @@
                                                                             <option value="东北面">东北面</option>
                                                                             <option value="西南面">西南面</option>
                                                                             <option value="西北面">西北面</option>
-                                                                        </datalist>
+                                                                        </select>
+
                                                                         <div class="input-group-prepend ">
                                                                             <button class="btn btn-warning btn-sm "
                                                                                     style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                                                                     type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                                    onclick="$(this).closest('.input-group').find('select').val('');">
                                                                                 清空
                                                                                 <i class="fa "></i>
                                                                             </button>
                                                                         </div>
                                                                     </div>
-
-
-                                                                    <%--<input type="text" placeholder="楼栋所在位置"--%>
-                                                                    <%--name="location"--%>
-                                                                    <%--class="form-control input-full" required--%>
-                                                                    <%--value="${basicBuilding.location}">--%>
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     层高<span class="symbol required"></span>
