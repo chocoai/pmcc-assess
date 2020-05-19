@@ -163,16 +163,6 @@ public class ProjectPlanDetailsService {
         int successCount = 0;
         for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-            if (StringUtils.isNotEmpty(projectPhase.getServiceBean())) {
-                ProjectPlanDetailsDeleteInterface serviceBean = (ProjectPlanDetailsDeleteInterface) SpringContextUtils.getBean(projectPhase.getServiceBean());
-                //验证不通过则不执行
-                if (!serviceBean.beforeDeleteVerify(projectPlanDetails.getId())) {
-                    continue;
-                } else {
-                    serviceBean.afterDeleteExecute(projectPlanDetails.getId());
-                }
-            }
-
             if (projectPlanDetails.getStatus() == ProcessStatusEnum.FINISH.getName())
                 continue;
             if (projectPlanDetails.getBisStart() == Boolean.TRUE)
@@ -181,6 +171,10 @@ public class ProjectPlanDetailsService {
                 continue;
             bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(), projectPlanDetails.getId());
             projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
+            if (StringUtils.isNotEmpty(projectPhase.getServiceBean())) {
+                ProjectPlanDetailsDeleteInterface serviceBean = (ProjectPlanDetailsDeleteInterface) SpringContextUtils.getBean(projectPhase.getServiceBean());
+                serviceBean.afterDeleteExecute(projectPlanDetails.getId());
+            }
             successCount++;
         }
         if (successCount <= 0)
