@@ -712,6 +712,11 @@ public class BasicApplyBatchService {
             newBasicApplyBatch.setBisDelete(false);
             newBasicApplyBatch.setCreator(commonService.thisUserAccount());
             basicApplyBatchDao.addBasicApplyBatch(newBasicApplyBatch);
+            try {
+                baseQrcodeService.createQrCode(newBasicApplyBatch);
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
         }
 
     }

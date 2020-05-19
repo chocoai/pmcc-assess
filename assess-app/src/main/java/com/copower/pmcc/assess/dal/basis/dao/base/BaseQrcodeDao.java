@@ -52,7 +52,9 @@ public class BaseQrcodeDao {
         if (StringUtils.isNotBlank(tableName)) {
             criteria.andTableNameEqualTo(tableName);
         }
-        criteria.andTypeEqualTo(type);
+        if (StringUtils.isNotBlank(type)) {
+            criteria.andTypeEqualTo(type);
+        }
         return baseQrcodeMapper.selectByExample(example);
     }
 }

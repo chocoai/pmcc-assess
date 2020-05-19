@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
@@ -36,6 +37,8 @@ public class BasicStructureRealEstateService implements BasicFormStructureInterf
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BaseQrcodeService baseQrcodeService;
 
 
     @Override
@@ -89,6 +92,7 @@ public class BasicStructureRealEstateService implements BasicFormStructureInterf
         estateApplyBatchDetail.setExecutor(commonService.thisUserAccount());
         estateApplyBatchDetail.setType(formClassifyEnum.getKey());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
+        baseQrcodeService.createQrCode(basicApplyBatch);
         return basicApplyBatch;
     }
 }
