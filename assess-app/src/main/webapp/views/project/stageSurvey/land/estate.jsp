@@ -40,14 +40,14 @@
                                                     <span class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <select name="province"
-                                                            class="form-control input-full  province">
+                                                            class="form-control input-full search-select select2 province">
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1 control-label">市<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <select name="city"
-                                                            class="form-control input-full  city">
+                                                            class="form-control input-full search-select select2 city">
                                                     </select>
                                                 </div>
                                             </div>
