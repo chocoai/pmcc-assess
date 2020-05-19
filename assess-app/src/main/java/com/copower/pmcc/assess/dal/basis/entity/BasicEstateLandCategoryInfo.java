@@ -38,7 +38,7 @@ public class BasicEstateLandCategoryInfo {
 
     private Date developTime;
 
-    private String plotRatio;
+    private BigDecimal plotRatio;
 
     private String buildingDensity;
 
@@ -49,6 +49,8 @@ public class BasicEstateLandCategoryInfo {
     private String compatibilityRate;
 
     private String heightPermitted;
+
+    private String plotRatioRemark;
 
     public Integer getId() {
         return id;
@@ -186,12 +188,12 @@ public class BasicEstateLandCategoryInfo {
         this.developTime = developTime;
     }
 
-    public String getPlotRatio() {
+    public BigDecimal getPlotRatio() {
         return plotRatio;
     }
 
-    public void setPlotRatio(String plotRatio) {
-        this.plotRatio = plotRatio == null ? null : plotRatio.trim();
+    public void setPlotRatio(BigDecimal plotRatio) {
+        this.plotRatio = plotRatio;
     }
 
     public String getBuildingDensity() {
@@ -232,5 +234,13 @@ public class BasicEstateLandCategoryInfo {
 
     public void setHeightPermitted(String heightPermitted) {
         this.heightPermitted = heightPermitted == null ? null : heightPermitted.trim();
+    }
+
+    public String getPlotRatioRemark() {
+        return plotRatioRemark;
+    }
+
+    public void setPlotRatioRemark(String plotRatioRemark) {
+        this.plotRatioRemark = plotRatioRemark == null ? null : plotRatioRemark.trim();
     }
 }

@@ -700,8 +700,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TOPOGRAPHY.getKey(), generateCommonMethod.trimText(topography), dataSetUseField));
                             break;
                         case LAND_PLOT_RATIO://容积率
-                            String plotRatio = categoryInfo.getPlotRatio();
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), generateCommonMethod.trimText(plotRatio), dataSetUseField));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), generateCommonMethod.trimText(categoryInfo.getPlotRatio()==null?"":categoryInfo.getPlotRatio().toString()), dataSetUseField));
                             break;
                         case LAND_DEVELOPMENT_LEVEL://宗地开发程度
                             String developmentLevel = generateLandFactorService.getDevelopmentLevel(examineEstate);

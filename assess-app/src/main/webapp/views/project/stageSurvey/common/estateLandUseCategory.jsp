@@ -111,13 +111,13 @@
                             </div>
                             <label class="col-sm-1 control-label">容积率</label>
                             <div class="col-sm-3">
-                                <input type="text" placeholder="容积率" name="plotRatio"
+                                <input type="text" placeholder="容积率" name="plotRatio" data-rule-number="true"
                                        class="form-control input-full" value="${landCategoryInfo.plotRatio}">
                             </div>
-                            <label class="col-sm-1 control-label">建筑密度</label>
+                            <label class="col-sm-1 control-label">容积率说明</label>
                             <div class="col-sm-3">
-                                <input type="text" placeholder="建筑密度" name="buildingDensity"
-                                       class="form-control input-full" value="${landCategoryInfo.buildingDensity}">
+                                <input type="text" placeholder="容积率说明" name="plotRatioRemark"
+                                       class="form-control input-full" value="${landCategoryInfo.plotRatioRemark}">
                             </div>
                         </div>
                     </div>
@@ -125,6 +125,11 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">建筑密度</label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="建筑密度" name="buildingDensity"
+                                       class="form-control input-full" value="${landCategoryInfo.buildingDensity}">
+                            </div>
                             <label class="col-sm-1 control-label">绿地率</label>
                             <div class="col-sm-3">
                                 <input type="text" placeholder="绿化率" name="greeningRate"
@@ -143,17 +148,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <label class="col-sm-1 control-label">兼容比例</label>
-                            <div class="col-sm-3">
-                                <input type="text" placeholder="兼容比例" name="compatibilityRate"
-                                       class="form-control input-full" value="${landCategoryInfo.compatibilityRate}">
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">兼容比例</label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="兼容比例" name="compatibilityRate"
+                                       class="form-control input-full" value="${landCategoryInfo.compatibilityRate}">
+                            </div>
                             <label class="col-sm-1 control-label">建筑限高</label>
                             <div class="col-sm-3">
                                 <input type="text" placeholder="建筑限高" name="heightPermitted"

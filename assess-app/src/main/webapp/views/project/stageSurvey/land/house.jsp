@@ -223,11 +223,16 @@
 
     //保存数据信息
     function saveDataInfo() {
+        if (!houseCommon.houseForm.valid()) {
+            return false;
+        }
+        if (!houseCommon.houseTradingForm.valid()) {
+            return false;
+        }
+        if (!houseCommon.landCategoryInfoForm.valid()) {
+            return false;
+        }
         Loading.progressShow();
-        var item = {};
-        item.basicHouse = formSerializeArray(houseCommon.houseForm);
-        item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
-        item.basicDamagedDegree = damagedDegree.getFormData();
         var formData = JSON.stringify(examineCommon.getFormData());
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveDraft",

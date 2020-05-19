@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface BasicEstateLandCategoryInfoMapper {
-    int countByExample(BasicEstateLandCategoryInfoExample example);
+    long countByExample(BasicEstateLandCategoryInfoExample example);
 
     int deleteByExample(BasicEstateLandCategoryInfoExample example);
 
