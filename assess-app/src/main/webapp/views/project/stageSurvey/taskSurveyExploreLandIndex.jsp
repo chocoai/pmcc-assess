@@ -22,7 +22,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height" style="min-height: 300px;">
@@ -30,6 +29,10 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${projectPlanDetails.projectPhaseName}
+                                        <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
+                                                onclick="batchTreeTool.showAlternativeCaseModal();">
+                                            引用备选案例
+                                        </button>
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-sm"><span
@@ -128,7 +131,8 @@
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                         <div class='input-group'>
-                                                            <input name='declareRecordId' id='declareRecordId' type='hidden'>
+                                                            <input name='declareRecordId' id='declareRecordId'
+                                                                   type='hidden'>
                                                             <input name='declareRecordName' id='declareRecordName'
                                                                    class='form-control form-control-sm' readonly
                                                                    onclick='declareRecordModeObj.init({callback:selectRecord,this_:this},true);'>
@@ -163,13 +167,45 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">查勘楼盘</h4>
+                <h4 class="modal-title">备选案例</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered" id="basicAlternativeSurveyList">
-                </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="50" placeholder="名称"
+                                                       id="queryAlternativeName" class="form-control input-full">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <button type="button" class="btn btn-sm btn-info"
+                                                        onclick="batchTreeTool.loadAlternativeCaseList();">
+                                                    <span class="btn-label"><i class="fa fa-search"></i></span>
+                                                    查询
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="basicAlternativeCaseList">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
@@ -750,7 +786,6 @@
     }
 
 
-
     //全部展开或收起
     batchTreeTool.expandAll = function (flag) {
         zTreeObj.expandAll(flag);
@@ -890,5 +925,76 @@
                 }
             })
         });
+    }
+
+    //显示弹窗
+    batchTreeTool.showAlternativeCaseModal = function () {
+        batchTreeTool.loadAlternativeCaseList();
+        $('#reference_modal').modal();
+    }
+
+    //加载备选案例数据列表
+    batchTreeTool.loadAlternativeCaseList = function () {
+        var cols = [];
+        cols.push({field: 'name', title: '名称', width: '80%'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeCase(' + row.id + ')"><i class="fa fa-check"></i></button>';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="删除" onclick="batchTreeTool.deleteAlternativeCase(' + row.id + ')"><i class="fa fa-minus"></i></button>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#basicAlternativeCaseList").bootstrapTable('destroy');
+        TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
+            name: $('#queryAlternativeName').val(),
+            projectId:'${projectId}'
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    //引用备选案例
+    batchTreeTool.referenceAlternativeCase = function (id) {
+        notifyInfo('提示', '请耐心等待....');
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApplyBatch/deleteBatchAllById',
+            type: 'post',
+            data: {
+                applyBatchId: batchTreeTool.getApplyBatchId(),
+            },
+            dataType: 'json',
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    var data = {};
+                    data.id = id;
+                    data.projectId = "${projectInfo.id}";
+                    data.planDetailsId = "${projectPlanDetails.id}";
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/basicAlternativeCase/referenceDataById',
+                        type: 'post',
+                        data: data,
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.ret) {
+                                AlertSuccess('成功', '引用成功', function () {
+                                    window.location.href = window.location.href;
+                                })
+                            } else {
+                                AlertError('失败', '引用失败');
+                            }
+                        }
+                    })
+                }
+            }
+        })
     }
 </script>
