@@ -74,6 +74,11 @@ public class BaseQrcodeService extends BaseService {
         return getBaseQrcodeById(baseQrcodeList.get(0).getId());
     }
 
+    /**
+     * 生成查勘节点
+     * @param basicApplyBatchDetail
+     * @throws Exception
+     */
     public void createQrCode(BasicApplyBatchDetail basicApplyBatchDetail) throws Exception {
         try {
             List<String> stringList = FormatUtils.transformString2List(basicApplyBatchDetail.getType(), BasicFormClassifyEnum.transform(false));
@@ -112,6 +117,11 @@ public class BaseQrcodeService extends BaseService {
         }
     }
 
+    /**
+     * 生成查勘树
+     * @param basicApplyBatch
+     * @throws Exception
+     */
     public void createQrCode(BasicApplyBatch basicApplyBatch) throws Exception {
         if (basicApplyBatch == null || basicApplyBatch.getId() == null){
             return;

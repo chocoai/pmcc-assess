@@ -558,9 +558,15 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
         modelAndView.addObject("userAccount", processControllerComponent.getThisUser());
         if (basicApplyBatch.getId() != null && basicApplyBatch.getId() != 0) {
-            ProjectPlanDetails projectPlanDetailsById = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getId());
-            if (projectPlanDetailsById != null){
+            ProjectPlanDetails projectPlanDetailsById = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
+            if (projectPlanDetailsById != null) {
                 modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetailsById);
+            }
+            if (basicApplyBatch.getProjectId() != null && basicApplyBatch.getProjectId() != 0) {
+                ProjectInfo projectInfo = projectInfoService.getProjectInfoById(basicApplyBatch.getProjectId());
+                if (projectInfo != null) {
+                    modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
+                }
             }
         }
         return modelAndView;

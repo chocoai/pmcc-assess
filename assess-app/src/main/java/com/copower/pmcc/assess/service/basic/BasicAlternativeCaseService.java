@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dto.input.BasicAlternativeCaseDto;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -52,6 +53,8 @@ public class BasicAlternativeCaseService extends BaseService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private BaseQrcodeService baseQrcodeService;
 
     public Integer addBasicAlternativeCase(BasicAlternativeCase basicAlternativeCase) {
         String name = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicAlternativeCase.getBatchDetailId());
@@ -154,7 +157,17 @@ public class BasicAlternativeCaseService extends BaseService {
             newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());
             newApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
+            try {
+                baseQrcodeService.createQrCode(newApplyBatchDetail);
+            } catch (Exception e) {
+                writeExceptionInfo(e);
+            }
             pid = newApplyBatchDetail.getId();
+        }
+        try {
+            baseQrcodeService.createQrCode(newBasicApplyBatch);
+        } catch (Exception e) {
+            writeExceptionInfo(e);
         }
         return newBasicApplyBatch;
     }

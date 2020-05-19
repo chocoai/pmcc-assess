@@ -52,7 +52,7 @@
                                         <button type="button" style="margin-left: 20px;"
                                                 class="btn btn-sm btn-primary fillInformation masterTool"
                                                 onclick="batchTreeTool.fillInformation();">
-                                            填写信息
+                                            进入上传附件页面
                                         </button>
                                         <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
                                     </div>
@@ -87,78 +87,60 @@
 </body>
 
 </html>
-<script type="text/html" id="itemNameHtml">
-    <div class="row form-group append-item-name">
-        <div class="col-md-12">
-            <div class="form-inline x-valid">
-                <label class="col-sm-1 col-form-label">
-                    名称<span class="symbol required"></span>
-                </label>
-                <div class="col-sm-5">
-                    <input type="text" placeholder="名称" required="required"
-                           maxlength="100" name="name"
-                           class="form-control input-full">
-                </div>
-                <div class="col-sm-2">
-                    <button type="button" class="btn btn-warning btn-sm"
-                            onclick="$(this).closest('.form-group').remove();">－
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
+
 <script type="text/javascript">
     $(function () {
-        console.log('sdhsd'+'${basicApplyBatch.id}') ;
         if (${!empty basicApplyBatch}) {
-            batchTreeTool.ztreeInit(${basicApplyBatch.id});
+            batchTreeTool.loadTree();
         }
     });
 
 
 </script>
 <script type="text/javascript">
+    
+    var batchTreeTool = {} ;
 
-
-    var batchApply = undefined;
-    var setting = {
-        view: {
-            fontCss: function (treeId, treeNode) {
-                if (treeNode.executor != '${userAccount}') {
-                    return {color: "grey"};//灰色 业务规定的
-                } else {
-                    return {color: "black"};
-                }
-            }
-        },
-        data: {
-            key: {
-                name: "displayName"
-            },
-            simpleData: {
-                enable: true,
-                idKey: "id",
-                pIdKey: "pid",
-                rootPId: 0
-            }
-        },// 回调函数
-        callback: {
-            onClick: function (event, treeId, treeNode, clickFlag) {
-
-            }
+    batchTreeTool.handleJquery = function (obj) {
+        if (obj instanceof jQuery) {
+            return obj;
+        } else {
+            return $(obj.selector);
         }
     };
 
-    var batchTreeTool = function () {
-    };
+    batchTreeTool.loadTree = function () {
+        var setting = {
+            view: {
+                fontCss: function (treeId, treeNode) {
+                    if (treeNode.executor != '${userAccount}') {
+                        return {color: "grey"};//灰色 业务规定的
+                    } else {
+                        return {color: "black"};
+                    }
+                }
+            },
+            data: {
+                key: {
+                    name: "displayName"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid",
+                    rootPId: 0
+                }
+            },// 回调函数
+            callback: {
+                onClick: function (event, treeId, treeNode, clickFlag) {
 
-
-    //初始化tree
-    batchTreeTool.ztreeInit = function (basicApplyBatchId) {
+                }
+            }
+        };
+        var zTreeObj = null;
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {basicApplyBatchId: basicApplyBatchId},
+            data: {basicApplyBatchId: '${basicApplyBatch.id}'},
             type: 'get',
             dataType: "json",
             success: function (result) {
@@ -170,12 +152,14 @@
                 zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
             }
         })
-    };
+    } ;
+
 
 
 
     //全部展开或收起
     batchTreeTool.expandAll = function (flag) {
+        var zTreeObj = $.fn.zTree.getZTreeObj('ztree');
         zTreeObj.expandAll(flag);
     };
 
@@ -183,13 +167,17 @@
 
     //进入填写信息页面
     batchTreeTool.fillInformation = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
-        var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
-        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationEdit?';
+        var zTreeObj = $.fn.zTree.getZTreeObj('ztree');
+        var nodes = zTreeObj.getSelectedNodes();
+        if (nodes.length > 1) {
+            notifyInfo('提示', '只能选择一个节点');
+            return false;
+        }
+        var node = nodes[0];
+        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationPhoneEdit?';
         url += 'applyBatchId=' + node.applyBatchId;
-        url += '&formClassify=' + classify;
-        url += '&formType=' + formType;
+        url += '&formClassify=' + '${basicApplyBatch.classify}';
+        url += '&formType=' + '${basicApplyBatch.type}';
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
         url += '&planDetailsId=${projectPlanDetails.id}';
