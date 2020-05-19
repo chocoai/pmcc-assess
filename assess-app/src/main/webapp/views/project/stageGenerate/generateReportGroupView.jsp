@@ -106,10 +106,22 @@
                 <div class="card-title">
                        {name}
                 </div>
+
+
+
                 <div class="card-tools">
-                    <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
-                    </button>
+                    <%--<button class="btn  btn-link btn-primary btn-xs"><span--%>
+                            <%--class="fa fa-angle-down"></span>--%>
+                    <%--</button>--%>
+                        <button type="button" class="btn btn-sm btn-primary"
+                                onclick="reportGroupObj.editData(this ,'{id}') ;">
+                            <i class="fa fa-pen"></i>
+                        </button>
+
+                        <button class="btn btn-warning btn-sm" type="button"
+                                onclick="reportGroupObj.cleanHTMLData(this ,'{id}')"><span class="btn-label"><i
+                                class="fa fa-minus"></i></span>
+                        </button>
                 </div>
             </div>
         </div>
@@ -136,16 +148,6 @@
                                 <button class="btn-primary btn btn-sm" type="button"
                                         onclick="schemeJudgeObj.init({callback:reportGroupObj.selectJudgeObj,this_:this ,areaGroupId: '{areaGroupId}'});">
                                     选择估价对象
-                                </button>
-
-                                <button type="button" class="btn btn-sm btn-primary"
-                                        onclick="reportGroupObj.editData(this ,'{id}') ;">
-                                    <i class="fa fa-pen"></i>
-                                </button>
-
-                                <button class="btn btn-warning btn-sm" type="button"
-                                        onclick="reportGroupObj.cleanHTMLData(this ,'{id}')"><span class="btn-label"><i
-                                        class="fa fa-minus"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -631,11 +633,16 @@
                 info: JSON.stringify(data),
                 group: JSON.stringify(group)
             }, '/generateReport/generateReportAttachment', "post", function (data) {
-                getSchemeReportGeneration(data, function (info) {
-                    initFormSchemeReportGeneration(info, form, group.areaGroupId);
-                    reportGroupObj.init(data) ;
-                    notifySuccess("成功", '报告附件生成成功');
-                });
+                if (data){
+                    getSchemeReportGeneration(data, function (info) {
+                        initFormSchemeReportGeneration(info, form, group.areaGroupId);
+                        reportGroupObj.init(data) ;
+                        notifySuccess("成功", '报告附件生成成功');
+                    });
+                }
+                if (!data){
+                    notifyInfo("提示", '报告附件没有配置');
+                }
             });
         }) ;
     } ;

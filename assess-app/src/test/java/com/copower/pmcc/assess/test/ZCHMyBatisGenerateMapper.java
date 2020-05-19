@@ -27,11 +27,10 @@ public class ZCHMyBatisGenerateMapper {
 
         List<File> files = new ArrayList();
         findFiles(System.getProperty("user.dir"), "ZCHgeneratorConfig.xml", files);
-//        findFiles(System.getProperty("user.dir"), "ZCHgeneratorConfigCase.xml", files);
         if (CollectionUtils.isNotEmpty(files)) {
             for (File configFile: files) {
 
-                if (configFile.toString().contains("main") && configFile.toString().contains("resources")) {
+                if (configFile.toString().contains("resources")) {
                     System.out.println("MybatisGenerator XML is:" + configFile.toString());
 
                     List<String> warnings = Lists.newArrayList();
