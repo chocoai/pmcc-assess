@@ -25,6 +25,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FileUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -200,6 +201,9 @@ public class GenerateReportService {
                 continue;
             }
             List<SysAttachmentDto> dtoList = baseAttachmentService.getByField_tableId(baseReportField.getId(), null, FormatUtils.entityNameConvertToTableName(BaseReportField.class));
+            if (CollectionUtils.isEmpty(dtoList)){
+                throw new BusinessException("没有配置模板") ;
+            }
             String localPath = baseAttachmentService.downloadFtpFileToLocal(dtoList.get(0).getId());
             List<String> names = getReportEnums();
             ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));

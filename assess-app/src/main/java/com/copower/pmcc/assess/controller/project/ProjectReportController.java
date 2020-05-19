@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,12 +52,12 @@ public class ProjectReportController {
 //    }
 
     @PostMapping(value = "/generate", name = "生成报告")
-    public HttpResult generate(String ids, String group,String info) {
+    public HttpResult generate(String ids, String group, String info) {
         //生成报告信息
         try {
             GenerateReportInfo generateReportInfo = JSONObject.parseObject(info, GenerateReportInfo.class);
             GenerateReportGroup reportGroup = JSONObject.parseObject(group, GenerateReportGroup.class);
-            generateReportService.createReportWord(ids, generateReportInfo ,reportGroup);
+            generateReportService.createReportWord(ids, generateReportInfo, reportGroup);
             return HttpResult.newCorrectResult(200, generateReportInfo);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, error);
@@ -78,12 +79,17 @@ public class ProjectReportController {
     }
 
     @PostMapping(value = "/generateReportAttachment", name = "生成报告的附件")
-    public HttpResult generateReportAttachment(String ids, String group,String info) {
+    public HttpResult generateReportAttachment(String ids, String group, String info) {
         try {
             GenerateReportInfo generateReportInfo = JSONObject.parseObject(info, GenerateReportInfo.class);
             GenerateReportGroup reportGroup = JSONObject.parseObject(group, GenerateReportGroup.class);
-            generateReportService.generateReportAttachment(ids, generateReportInfo ,reportGroup);
-            return HttpResult.newCorrectResult(200, generateReportInfo);
+            try {
+                generateReportService.generateReportAttachment(ids, generateReportInfo, reportGroup);
+                return HttpResult.newCorrectResult(200, generateReportInfo);
+            } catch (BusinessException ex) {
+                //取模板错误  不需要抛出异常!
+                return HttpResult.newCorrectResult(200, null);
+            }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "生成报告的附件");
             return HttpResult.newErrorResult(500, e.getMessage());

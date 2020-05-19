@@ -392,6 +392,21 @@
         })
     } ;
 
+    reportGroupObj.fileShow2 = function(fieldsName, deleteFlag, id){
+        FileUtils.getFileShows({
+            target: fieldsName,
+            //showMode: 'table',
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.GenerateReportGroup,
+                tableId: id == undefined ? 0 : id ,
+            },
+            editFlag: false,
+            deleteFlag: false,
+            signatureFlag: false
+        })
+    } ;
+
     reportGroupObj.init = function (generationVo) {
         var reportInfoId = generationVo.id;
         var areaGroupId = generationVo.areaGroupId;
@@ -411,7 +426,7 @@
                         getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
                             $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
                                 reportGroupObj.fileShow(n + "" + areaGroupId+""+item.id, true, item.id);
-                                reportGroupObj.fileShow(n + "_Attachment" + areaGroupId+""+item.id, true, item.id);
+                                reportGroupObj.fileShow2(n + "_Attachment" + areaGroupId+""+item.id, true, item.id);
                             });
                         });
                     });
