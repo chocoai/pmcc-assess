@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.proxy.face.ProjectPlanDetailsDeleteInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
@@ -31,7 +32,6 @@ import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
-import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
@@ -41,6 +41,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -161,6 +162,17 @@ public class ProjectPlanDetailsService {
         List<ProjectPlanDetails> planDetailsList = getProjectPlanDetailsByIds(planDetailsIds);
         int successCount = 0;
         for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+            if (StringUtils.isNotEmpty(projectPhase.getServiceBean())) {
+                ProjectPlanDetailsDeleteInterface serviceBean = (ProjectPlanDetailsDeleteInterface) SpringContextUtils.getBean(projectPhase.getServiceBean());
+                //验证不通过则不执行
+                if (!serviceBean.beforeDeleteVerify(projectPlanDetails.getId())) {
+                    continue;
+                } else {
+                    serviceBean.afterDeleteExecute(projectPlanDetails.getId());
+                }
+            }
+
             if (projectPlanDetails.getStatus() == ProcessStatusEnum.FINISH.getName())
                 continue;
             if (projectPlanDetails.getBisStart() == Boolean.TRUE)

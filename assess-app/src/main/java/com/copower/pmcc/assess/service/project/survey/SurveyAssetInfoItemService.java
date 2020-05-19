@@ -228,5 +228,10 @@ public class SurveyAssetInfoItemService {
         return integerList;
     }
 
-
+    public List<SurveyAssetInfoItem> getItemsByAssetInfoId(Integer assetInfoId) {
+        SurveyAssetInfoItem query = new SurveyAssetInfoItem();
+        query.setAssetInfoId(assetInfoId);
+        List<SurveyAssetInfoItem> infoItems = getSurveyAssetInfoItemListByQuery(query);
+        return infoItems;
+    }
 }

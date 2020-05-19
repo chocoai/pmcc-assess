@@ -1285,6 +1285,76 @@ public class ProjectPhaseExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andServiceBeanIsNull() {
+            addCriterion("service_bean is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanIsNotNull() {
+            addCriterion("service_bean is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanEqualTo(String value) {
+            addCriterion("service_bean =", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanNotEqualTo(String value) {
+            addCriterion("service_bean <>", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanGreaterThan(String value) {
+            addCriterion("service_bean >", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanGreaterThanOrEqualTo(String value) {
+            addCriterion("service_bean >=", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanLessThan(String value) {
+            addCriterion("service_bean <", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanLessThanOrEqualTo(String value) {
+            addCriterion("service_bean <=", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanLike(String value) {
+            addCriterion("service_bean like", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanNotLike(String value) {
+            addCriterion("service_bean not like", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanIn(List<String> values) {
+            addCriterion("service_bean in", values, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanNotIn(List<String> values) {
+            addCriterion("service_bean not in", values, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanBetween(String value1, String value2) {
+            addCriterion("service_bean between", value1, value2, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanNotBetween(String value1, String value2) {
+            addCriterion("service_bean not between", value1, value2, "serviceBean");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -21,6 +21,7 @@
     <result column="bis_can_return" property="bisCanReturn" jdbcType="BIT" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="service_bean" property="serviceBean" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -83,7 +84,7 @@
   <sql id="Base_Column_List" >
     id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, assets_setting_id, 
     project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, bis_wait, 
-    bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified
+    bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified, service_bean
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" >
     select
@@ -124,15 +125,15 @@
       project_phase_name, phase_time, phase_form, 
       box_name, phase_key, phase_sort, 
       bis_wait, bis_enable, bis_use_box, 
-      bis_can_return, gmt_created, gmt_modified
-      )
+      bis_can_return, gmt_created, gmt_modified, 
+      service_bean)
     values (#{pid,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
       #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{assetsSettingId,jdbcType=INTEGER}, 
       #{projectPhaseName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, 
       #{boxName,jdbcType=VARCHAR}, #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, 
       #{bisWait,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, 
-      #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{serviceBean,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -194,6 +195,9 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="serviceBean != null" >
+        service_bean,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="pid != null" >
@@ -249,6 +253,9 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceBean != null" >
+        #{serviceBean,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -318,6 +325,9 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.serviceBean != null" >
+        service_bean = #{record.serviceBean,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -343,7 +353,8 @@
       bis_use_box = #{record.bisUseBox,jdbcType=BIT},
       bis_can_return = #{record.bisCanReturn,jdbcType=BIT},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      service_bean = #{record.serviceBean,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -405,6 +416,9 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="serviceBean != null" >
+        service_bean = #{serviceBean,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -427,7 +441,8 @@
       bis_use_box = #{bisUseBox,jdbcType=BIT},
       bis_can_return = #{bisCanReturn,jdbcType=BIT},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      service_bean = #{serviceBean,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
