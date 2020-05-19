@@ -320,6 +320,35 @@
                                                             name="topographicTerrain">
                                                     </select>
                                                 </div>
+                                                <label class="col-sm-1">土地开发程度</label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full developmentDegree"
+                                                            name="developmentDegree">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">土地利用现状</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="未开发，已开发完成投入使用，部分开发"
+                                                           name="presentSituationLandUse"
+                                                           value="${basicEstateLandState.presentSituationLandUse}">
+                                                </div>
+                                                <label class="col-sm-1 developmentDegreeContent">土地开发程度备注</label>
+                                                <div class="col-sm-3 developmentDegreeContent">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="土地开发程度备注"
+                                                           name="developmentDegreeRemark"
+                                                           value="${basicEstateLandState.developmentDegreeRemark}">
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div id="developmentDegreeContentContainer"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

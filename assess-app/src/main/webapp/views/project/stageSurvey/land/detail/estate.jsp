@@ -236,10 +236,10 @@
                                                     <label class="form-control input-full"
                                                            name="landArea">${basicEstateLandState.landArea}${basicEstateLandState.landAreaUnit}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">土地形状</label>
+                                                <label class="col-sm-1 control-label">地形</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
-                                                           name="shapeStateName">${basicEstateLandState.planenessName}</label>
+                                                           name="planenessName">${basicEstateLandState.planenessName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -252,6 +252,35 @@
                                                     <label class="form-control input-full"
                                                            name="topographicTerrainName">${basicEstateLandState.topographicTerrainName}</label>
                                                 </div>
+                                                <label class="col-sm-1 control-label">土地开发程度</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="developmentDegreeName">${basicEstateLandState.developmentDegreeName}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">土地利用现状</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="presentSituationLandUse">${basicEstateLandState.presentSituationLandUse}</label>
+                                                </div>
+                                                <c:if test="${basicEstateLandState.developmentDegreeName == '熟地'}">
+                                                    <div class="col-sm-4 control-label">
+                                                        <label class="form-control input-full"
+                                                               name="developmentDegreeContentName">${basicEstateLandState.developmentDegreeContentName}</label>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="${basicEstateLandState.developmentDegreeName != '熟地'}">
+                                                    <label class="col-sm-1 control-label">土地开发程度备注</label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full"
+                                                               name="developmentDegreeRemark">${basicEstateLandState.developmentDegreeRemark}</label>
+                                                    </div>
+                                                </c:if>
                                             </div>
                                         </div>
                                     </div>
