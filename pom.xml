@@ -23,7 +23,7 @@
         <!-- dependency version properties -->
         <org.apache.httpcomponents.fluent-hc.version>4.3.6</org.apache.httpcomponents.fluent-hc.version>
         <org.springframework.version>4.3.10.RELEASE</org.springframework.version>
-        <org.mybatis.mybatis.version>3.4.1</org.mybatis.mybatis.version>
+        <org.mybatis.mybatis.version>3.4.6</org.mybatis.mybatis.version>
         <org.mybatis.mybatis-spring.version>1.3.0</org.mybatis.mybatis-spring.version>
 
         <commons-configuration.version>1.5</commons-configuration.version>

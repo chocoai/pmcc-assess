@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DataHousePriceIndexDetailExample {
+    /**
+     * tb_data_house_price_index_detail
+     */
     protected String orderByClause;
 
+    /**
+     * tb_data_house_price_index_detail
+     */
     protected boolean distinct;
 
+    /**
+     * tb_data_house_price_index_detail
+     */
     protected List<Criteria> oredCriteria;
 
     public DataHousePriceIndexDetailExample() {
@@ -65,6 +74,9 @@ public class DataHousePriceIndexDetailExample {
         distinct = false;
     }
 
+    /**
+     * tb_data_house_price_index_detail
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -724,6 +736,9 @@ public class DataHousePriceIndexDetailExample {
         }
     }
 
+    /**
+     * tb_data_house_price_index_detail
+     */
     public static class Criterion {
         private String condition;
 

@@ -1,37 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataHousePriceIndexDetailMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="house_price_id" property="housePriceId" jdbcType="INTEGER" />
-    <result column="index_number" property="indexNumber" jdbcType="DECIMAL" />
-    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
-    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="unit_premium" property="unitPremium" jdbcType="DECIMAL" />
-    <result column="floor_premium" property="floorPremium" jdbcType="DECIMAL" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DataHousePriceIndexDetailMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="house_price_id" jdbcType="INTEGER" property="housePriceId" />
+    <result column="index_number" jdbcType="DECIMAL" property="indexNumber" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="unit_premium" jdbcType="DECIMAL" property="unitPremium" />
+    <result column="floor_premium" jdbcType="DECIMAL" property="floorPremium" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -42,25 +42,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -71,42 +71,42 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, house_price_id, index_number, start_date, end_date, creator, gmt_created, gmt_modified, 
     unit_premium, floor_premium
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_data_house_price_index_detail
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_data_house_price_index_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_data_house_price_index_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample">
     delete from tb_data_house_price_index_detail
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_house_price_index_detail (house_price_id, index_number, start_date, 
@@ -118,115 +118,145 @@
       #{gmtModified,jdbcType=TIMESTAMP}, #{unitPremium,jdbcType=DECIMAL}, #{floorPremium,jdbcType=DECIMAL}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_house_price_index_detail
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="housePriceId != null" >
-        house_price_id,
-      </if>
-      <if test="indexNumber != null" >
-        index_number,
-      </if>
-      <if test="startDate != null" >
-        start_date,
-      </if>
-      <if test="endDate != null" >
-        end_date,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-      <if test="unitPremium != null" >
-        unit_premium,
-      </if>
-      <if test="floorPremium != null" >
-        floor_premium,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="housePriceId != null" >
-        #{housePriceId,jdbcType=INTEGER},
-      </if>
-      <if test="indexNumber != null" >
-        #{indexNumber,jdbcType=DECIMAL},
-      </if>
-      <if test="startDate != null" >
-        #{startDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endDate != null" >
-        #{endDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="unitPremium != null" >
-        #{unitPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="floorPremium != null" >
-        #{floorPremium,jdbcType=DECIMAL},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.housePriceId != null">
+            house_price_id,
+          </if>
+          <if test="record.indexNumber != null">
+            index_number,
+          </if>
+          <if test="record.startDate != null">
+            start_date,
+          </if>
+          <if test="record.endDate != null">
+            end_date,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+          <if test="record.unitPremium != null">
+            unit_premium,
+          </if>
+          <if test="record.floorPremium != null">
+            floor_premium,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.housePriceId != null">
+            #{record.housePriceId,jdbcType=INTEGER},
+          </if>
+          <if test="record.indexNumber != null">
+            #{record.indexNumber,jdbcType=DECIMAL},
+          </if>
+          <if test="record.startDate != null">
+            #{record.startDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.endDate != null">
+            #{record.endDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.unitPremium != null">
+            #{record.unitPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floorPremium != null">
+            #{record.floorPremium,jdbcType=DECIMAL},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample" resultType="java.lang.Long">
     select count(*) from tb_data_house_price_index_detail
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_data_house_price_index_detail
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.housePriceId != null" >
-        house_price_id = #{record.housePriceId,jdbcType=INTEGER},
-      </if>
-      <if test="record.indexNumber != null" >
-        index_number = #{record.indexNumber,jdbcType=DECIMAL},
-      </if>
-      <if test="record.startDate != null" >
-        start_date = #{record.startDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.endDate != null" >
-        end_date = #{record.endDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.unitPremium != null" >
-        unit_premium = #{record.unitPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="record.floorPremium != null" >
-        floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
-      </if>
-    </set>
-    <if test="_parameter != null" >
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.housePriceId != null">
+            house_price_id = #{record.housePriceId,jdbcType=INTEGER},
+          </if>
+          <if test="record.indexNumber != null">
+            index_number = #{record.indexNumber,jdbcType=DECIMAL},
+          </if>
+          <if test="record.startDate != null">
+            start_date = #{record.startDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.endDate != null">
+            end_date = #{record.endDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.unitPremium != null">
+            unit_premium = #{record.unitPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floorPremium != null">
+            floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_data_house_price_index_detail
     set id = #{record.id,jdbcType=INTEGER},
       house_price_id = #{record.housePriceId,jdbcType=INTEGER},
@@ -238,44 +268,54 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       unit_premium = #{record.unitPremium,jdbcType=DECIMAL},
       floor_premium = #{record.floorPremium,jdbcType=DECIMAL}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
+  <update id="updateByPrimaryKeySelective" parameterType="map">
     update tb_data_house_price_index_detail
-    <set >
-      <if test="housePriceId != null" >
-        house_price_id = #{housePriceId,jdbcType=INTEGER},
-      </if>
-      <if test="indexNumber != null" >
-        index_number = #{indexNumber,jdbcType=DECIMAL},
-      </if>
-      <if test="startDate != null" >
-        start_date = #{startDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endDate != null" >
-        end_date = #{endDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="unitPremium != null" >
-        unit_premium = #{unitPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="floorPremium != null" >
-        floor_premium = #{floorPremium,jdbcType=DECIMAL},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.housePriceId != null">
+            house_price_id = #{record.housePriceId,jdbcType=INTEGER},
+          </if>
+          <if test="record.indexNumber != null">
+            index_number = #{record.indexNumber,jdbcType=DECIMAL},
+          </if>
+          <if test="record.startDate != null">
+            start_date = #{record.startDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.endDate != null">
+            end_date = #{record.endDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.unitPremium != null">
+            unit_premium = #{record.unitPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floorPremium != null">
+            floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail">
     update tb_data_house_price_index_detail
     set house_price_id = #{housePriceId,jdbcType=INTEGER},
       index_number = #{indexNumber,jdbcType=DECIMAL},
@@ -288,4 +328,57 @@
       floor_premium = #{floorPremium,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_data_house_price_index_detail
+    (house_price_id, index_number, start_date, end_date, creator, gmt_created, gmt_modified, 
+      unit_premium, floor_premium)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.housePriceId,jdbcType=INTEGER}, #{item.indexNumber,jdbcType=DECIMAL}, #{item.startDate,jdbcType=TIMESTAMP}, 
+        #{item.endDate,jdbcType=TIMESTAMP}, #{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, 
+        #{item.gmtModified,jdbcType=TIMESTAMP}, #{item.unitPremium,jdbcType=DECIMAL}, #{item.floorPremium,jdbcType=DECIMAL}
+        )
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_data_house_price_index_detail (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'house_price_id'.toString() == column.value">
+          #{item.housePriceId,jdbcType=INTEGER}
+        </if>
+        <if test="'index_number'.toString() == column.value">
+          #{item.indexNumber,jdbcType=DECIMAL}
+        </if>
+        <if test="'start_date'.toString() == column.value">
+          #{item.startDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'end_date'.toString() == column.value">
+          #{item.endDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'unit_premium'.toString() == column.value">
+          #{item.unitPremium,jdbcType=DECIMAL}
+        </if>
+        <if test="'floor_premium'.toString() == column.value">
+          #{item.floorPremium,jdbcType=DECIMAL}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>

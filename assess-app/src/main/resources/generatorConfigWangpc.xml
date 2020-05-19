@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+            location="D:\Java\tools\lib\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
+
+    <context id="ticket-pms">
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.SelectiveEnhancedPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <!-- 数据Model属性对应Column获取插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin">
+            <property name="allowMultiQueries" value="false"/>
+        </plugin>
+
+        <commentGenerator type="com.copower.pmcc.assess.test.MyCommentGenerator">
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess?serverTimezone=Asia/Shanghai"
+                        userId="root" password="123456">
+
+            <property name="useInformationSchema" value="true"></property>
+            <property name="remarks" value="true"></property>
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!-- entity 位置-->
+        <javaModelGenerator targetPackage="com.copower.pmcc.assess.dal.basis.entity"
+                            targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- mapper xml 位置 -->
+        <sqlMapGenerator targetPackage="mybatis.basis"
+                         targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\resources\">
+        </sqlMapGenerator>
+
+        <!--mapper 接口位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.copower.pmcc.assess.dal.basis.mapper"
+                             targetProject="D:\IdeaProjects\pmcc-assess\assess-app\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 具体表 -->
+        <table tableName="tb_data_house_price_index_detail" domainObjectName="DataHousePriceIndexDetail">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <!--<table tableName="tb_report_provider" domainObjectName="ReportProvider">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
+
+        <!--<table tableName="tb_sys_menu" domainObjectName="SysMenu">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
+
+        <!--<table tableName="tb_sys_parameter" domainObjectName="SysParameter">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
+
+        <!--<table tableName="tb_request_log" domainObjectName="RequestLog">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
+
+        <!-- <table tableName="tb_sys_attachment_keep" domainObjectName="SysAttachmentKeep">
+             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+         </table>-->
+
+
+
+    </context>
+
+</generatorConfiguration>

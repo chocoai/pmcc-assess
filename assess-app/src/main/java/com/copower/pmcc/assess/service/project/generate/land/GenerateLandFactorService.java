@@ -36,10 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @deprecated 土地报告获取一些数据
- * Created by kings on 2019-5-17.
- */
 @Service
 public class GenerateLandFactorService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -213,27 +209,23 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getPlanningCondition(BasicEstate basicEstate) throws Exception {
+    public String getPlanningCondition(BasicEstateLandCategoryInfo categoryInfo) {
         StringBuilder stringBuilder = new StringBuilder();
-        BasicEstateLandState landState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
-        List<BasicEstateLandCategoryInfo> categoryInfos = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
-        if (CollectionUtils.isEmpty(categoryInfos)) return null;
-        for (BasicEstateLandCategoryInfo categoryInfo : categoryInfos) {
-            if (StringUtils.isNotEmpty(landState.getPlotRatio())) {
-                stringBuilder.append(String.format("容积率:%s", landState.getPlotRatio()));
-            }
-            if (StringUtils.isNotEmpty(landState.getBuildingDensity())) {
-                stringBuilder.append(String.format("建筑密度:%s", landState.getBuildingDensity()));
-            }
-            if (StringUtils.isNotEmpty(landState.getGreenSpaceRate())) {
-                stringBuilder.append(String.format("绿地率:%s", landState.getGreenSpaceRate()));
-            }
-            if (StringUtils.isNotEmpty(landState.getCompatibleRatio())) {
-                stringBuilder.append(String.format("兼容比:%s", landState.getCompatibleRatio()));
-            }
-            if (landState.getBuildingHeightLimit() != null) {
-                stringBuilder.append(String.format("建筑高度:%s", landState.getBuildingHeightLimit().toString()));
-            }
+        if (categoryInfo == null) return "";
+        if (StringUtils.isNotEmpty(categoryInfo.getPlotRatio())) {
+            stringBuilder.append(String.format("容积率:%s,", categoryInfo.getPlotRatio()));
+        }
+        if (StringUtils.isNotEmpty(categoryInfo.getBuildingDensity())) {
+            stringBuilder.append(String.format("建筑密度:%s,", categoryInfo.getBuildingDensity()));
+        }
+        if (StringUtils.isNotEmpty(categoryInfo.getGreeningRate())) {
+            stringBuilder.append(String.format("绿地率:%s,", categoryInfo.getGreeningRate()));
+        }
+        if (StringUtils.isNotEmpty(categoryInfo.getCompatibilityRate())) {
+            stringBuilder.append(String.format("兼容比:%s,", categoryInfo.getCompatibilityRate()));
+        }
+        if (categoryInfo.getHeightPermitted() != null) {
+            stringBuilder.append(String.format("建筑高度:%s", categoryInfo.getHeightPermitted()));
         }
         return stringBuilder.toString();
     }
@@ -247,15 +239,15 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getArea(List<SchemeJudgeObject> judgeObjectList) {
-        Map<Integer, String> map = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(String.format("证载面积%s平方米，", schemeJudgeObject.getFloorArea()));
-            stringBuilder.append(String.format("评估面积%s平方米", schemeJudgeObject.getEvaluationArea()));
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
+    public String getArea(BasicEstate basicEstate, SchemeJudgeObject schemeJudgeObject) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (basicEstate != null && basicEstate.getCoverAnArea() != null) {
+            stringBuilder.append(String.format("证载面积%s平方米，", basicEstate.getCoverAnArea()));
         }
-        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        if (schemeJudgeObject != null && schemeJudgeObject.getEvaluationArea() != null) {
+            stringBuilder.append(String.format("评估面积%s平方米", schemeJudgeObject.getEvaluationArea()));
+        }
+        return StringUtils.strip(stringBuilder.toString(), ",");
     }
 
     /**
@@ -263,15 +255,15 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getUse(List<SchemeJudgeObject> judgeObjectList) {
-        Map<Integer, String> map = Maps.newHashMap();
-        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(String.format("证载用途%s，", schemeJudgeObject.getLandCertUse()));
-            stringBuilder.append(String.format("实际用途%s", schemeJudgeObject.getLandPracticalUse()));
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
+    public String getUse(BasicEstateLandCategoryInfo categoryInfo, SchemeJudgeObject schemeJudgeObject) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (categoryInfo != null && categoryInfo.getLandUseType() != null) {
+            stringBuilder.append(String.format("%s，", categoryInfo.getLandUseType()));
         }
-        return generateCommonMethod.judgeEachDesc(map, "", "。", false);
+        if (schemeJudgeObject != null && schemeJudgeObject.getSetUse() != null) {
+            stringBuilder.append(String.format("%s,", dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse()).getName()));
+        }
+        return StringUtils.strip(stringBuilder.toString(), ",");
     }
 
     /**
@@ -336,13 +328,12 @@ public class GenerateLandFactorService {
     public String getDevelopmentLevel(BasicEstate basicEstate) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         BasicEstateLandStateVo landState = basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId()));
-        if (StringUtils.isNotBlank(landState.getInfrastructureCompletenessName()) || StringUtils.isNotBlank(landState.getDevelopmentDegreeName())) {
-            stringBuilder.append("截止估价基准日，根据估价人员现场查看，估价对象宗地内，");
-            if (StringUtils.isNotBlank(landState.getInfrastructureCompletenessName()))
-                stringBuilder.append(String.format("基础设施%s，", landState.getInfrastructureCompletenessName()));
+        if (landState == null) return "";
+        if (StringUtils.isNotBlank(landState.getInfrastructureCompletenessName()))
+            stringBuilder.append(String.format("基础设施%s，", landState.getInfrastructureCompletenessName()));
+        if (StringUtils.isNotBlank(landState.getDevelopmentDegreeName()))
             stringBuilder.append(String.format("%s", landState.getDevelopmentDegreeName()));
-        }
-        return stringBuilder.toString();
+        return StringUtils.strip(stringBuilder.toString(), ",");
     }
 
     /**
@@ -370,10 +361,8 @@ public class GenerateLandFactorService {
     public String getRightCondition(SchemeJudgeObject schemeJudgeObject) {
         StringBuilder stringBuilder = new StringBuilder();
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        if ("国用".equals(declareRecord.getLandRightType()))
-            stringBuilder.append("国有");
-        if ("集用".equals(declareRecord.getLandRightType()))
-            stringBuilder.append("集体");
+        if (StringUtils.isNotBlank(declareRecord.getLandRightType()))
+            stringBuilder.append(declareRecord.getLandRightType()).append(",");
         stringBuilder.append(declareRecord.getLandRightNature()).append(declareRecord.getLandCertUse());
         stringBuilder.append("用途开发用地");
         return stringBuilder.toString();
@@ -387,16 +376,8 @@ public class GenerateLandFactorService {
     public String getOther(SchemeJudgeObject schemeJudgeObject) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("宗地最有效利用方式为");
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        if ("国用".equals(declareRecord.getLandRightType()))
-            stringBuilder.append("国有");
-        if ("集用".equals(declareRecord.getLandRightType()))
-            stringBuilder.append("集体");
         if (schemeJudgeObject.getBestUse() != null)
             stringBuilder.append(dataBestUseDescriptionService.getBestUseDescriptionById(schemeJudgeObject.getBestUse()).getName());
-        if (schemeJudgeObject.getSetUse() != null)
-            stringBuilder.append(dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse()).getName());
-        stringBuilder.append("用途开发用地");
         return stringBuilder.toString();
     }
 }

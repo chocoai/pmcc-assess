@@ -647,6 +647,10 @@ public class BasicHouseService extends BasicEntityAbstract {
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
 
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//土地类型sql
+
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
 
             BasicHouseRoom basicHouseRoom = new BasicHouseRoom();

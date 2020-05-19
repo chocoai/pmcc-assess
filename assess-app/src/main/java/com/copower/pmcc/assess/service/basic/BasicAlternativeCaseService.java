@@ -154,6 +154,11 @@ public class BasicAlternativeCaseService extends BaseService {
             newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());
             newApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
+            try {
+                basicApplyBatchDetailService.insertBasicApply(newApplyBatchDetail,planDetailsId);
+            } catch (Exception e) {
+                log.error(e.getMessage(),e);
+            }
             pid = newApplyBatchDetail.getId();
         }
         return newBasicApplyBatch;

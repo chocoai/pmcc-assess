@@ -160,11 +160,11 @@ public class MdMarketCompareService {
         //如果对象是合并的估价对象，则取该合并估价对象的标准估价对象
         if (schemeJudgeObject.getBisMerge() == Boolean.TRUE)
             schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
-        List<DataSetUseField> setUseFieldList=null;
-        if(isLand){
-            setUseFieldList=getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
-        }else{
-            setUseFieldList= getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null);
+        List<DataSetUseField> setUseFieldList = null;
+        if (isLand) {
+            setUseFieldList = getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
+        } else {
+            setUseFieldList = getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE, null, null);
         }
         if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId() != 0) {
             setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
@@ -192,9 +192,11 @@ public class MdMarketCompareService {
         mdMarketCompareItem.setCreator(commonService.thisUserAccount());
         mdMarketCompareItem.setPlanDetailsId(basicApply.getPlanDetailsId());
         mdMarketCompareItem.setBasicApplyId(basicApply.getId());
-        mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
-        if (isLand) {//如果是土地比较法 则需额外处理 年期修正系数与容积率修正系数
+        if (isLand) {
+            mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getLandCompareInfo(schemeJudgeObject, basicApply, setUseFieldList, false));
             setCoefficient(areaGroup, schemeJudgeObject, mdMarketCompareItem, basicApply, false);
+        } else {
+            mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
         }
         //获取成新率相关参数
         setResidueRatioParam(mdMarketCompareItem, basicApply, areaGroup.getValueTimePoint());
@@ -288,11 +290,11 @@ public class MdMarketCompareService {
             schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
         BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-        List<DataSetUseField> setUseFieldList=null;
-        if(isLand){
-            setUseFieldList=getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
-        }else{
-            setUseFieldList= getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null);
+        List<DataSetUseField> setUseFieldList = null;
+        if (isLand) {
+            setUseFieldList = getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
+        } else {
+            setUseFieldList = getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE, null, null);
         }
         setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApply, mcId, setUseFieldList, isLand);
         mdCompareInitParamVo.setMcId(mcId);
@@ -332,11 +334,11 @@ public class MdMarketCompareService {
         }
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-        List<DataSetUseField> setUseFieldList=null;
-        if(isLand){
-            setUseFieldList=getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
-        }else{
-            setUseFieldList= getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null);
+        List<DataSetUseField> setUseFieldList = null;
+        if (isLand) {
+            setUseFieldList = getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
+        } else {
+            setUseFieldList = getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE, null, null);
         }
         int i = 1;
         for (Integer planDetailsId : integers) {
@@ -350,9 +352,11 @@ public class MdMarketCompareService {
             mdMarketCompareItem.setCreator(commonService.thisUserAccount());
             mdMarketCompareItem.setMustAdjustPrice(false);
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
-            mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, true));
             if (isLand) {//在估价对象中获取法定年限与剩余年限，如果未获取到则无年期修正系数
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getLandCompareInfo(schemeJudgeObject, basicApply, setUseFieldList, true));
                 setCoefficient(areaGroup, schemeJudgeObject, mdMarketCompareItem, basicApply, true);
+            } else {
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, true));
             }
             setResidueRatioParam(mdMarketCompareItem, basicApply, areaGroup.getValueTimePoint());//获取成新率相关参数
             mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
@@ -535,11 +539,11 @@ public class MdMarketCompareService {
         if (schemeJudgeObject.getBisMerge() == Boolean.TRUE)
             schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-        List<DataSetUseField> setUseFieldList=null;
-        if(isLand){
-            setUseFieldList=getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
-        }else{
-            setUseFieldList= getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null);
+        List<DataSetUseField> setUseFieldList = null;
+        if (isLand) {
+            setUseFieldList = getLandFieldListByApplyId(schemeJudgeObject.getBasicApplyId());
+        } else {
+            setUseFieldList = getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE, null, null);
         }
         //修改查勘信息
         MdMarketCompareItem mdMarketCompareItem = new MdMarketCompareItem();
@@ -549,7 +553,11 @@ public class MdMarketCompareService {
         if (CollectionUtils.isNotEmpty(marketCompareItemList)) {
             mdMarketCompareItem = marketCompareItemList.get(0);
             BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(mdMarketCompareItem.getPlanDetailsId());
-            mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
+            if (isLand) {
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getLandCompareInfo(schemeJudgeObject, basicApply, setUseFieldList, false));
+            } else {
+                mdMarketCompareItem.setJsonContent(mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, false));
+            }
             mdMarketCompareItemDao.updateMarketCompareItem(mdMarketCompareItem);
         }
 
@@ -562,7 +570,12 @@ public class MdMarketCompareService {
             for (MdMarketCompareItem caseItem : marketCompareItemCaseList) {
                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(caseItem.getPlanDetailsId());
                 BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
-                String newData = mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, true);
+                String newData = null;
+                if (isLand) {
+                    newData = mdMarketCompareFieldService.getLandCompareInfo(schemeJudgeObject, basicApply, setUseFieldList, true);
+                } else {
+                    newData = mdMarketCompareFieldService.getCompareInfo(areaGroup, schemeJudgeObject, basicApply, setUseFieldList, true);
+                }
                 List<MarketCompareItemDto> newDataList = JSON.parseArray(newData, MarketCompareItemDto.class);
                 List<MarketCompareItemDto> oldDataList = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 //分值不改变
@@ -578,7 +591,6 @@ public class MdMarketCompareService {
                 mdMarketCompareItemDao.updateMarketCompareItem(caseItem);
             }
         }
-
 
         MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
         mdCompareInitParamVo.setMcId(mcId);
