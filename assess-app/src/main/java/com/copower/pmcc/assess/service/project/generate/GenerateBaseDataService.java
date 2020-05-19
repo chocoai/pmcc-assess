@@ -2000,6 +2000,9 @@ public class GenerateBaseDataService {
         generateCommonMethod.settingBuildingTable(builder);
         LinkedList<Double> doubleLinkedList = Lists.newLinkedList(Lists.newArrayList(20d, 100d, 30d, 30d, 30d, 50d, 55d));
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
+            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(StreamUtils.distinctByKey(o -> o.getDeclareRecordId())).collect(Collectors.toList());
+        }
         LinkedList<String> linkedLists = new LinkedList<String>();
         final String nullValue = "";
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
@@ -2101,6 +2104,9 @@ public class GenerateBaseDataService {
         final int colMax = 13;
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)){
+            schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(StreamUtils.distinctByKey(o -> o.getDeclareRecordId())).collect(Collectors.toList());
+        }
         Iterator<SchemeJudgeObject> objectIterator = schemeJudgeObjectList.iterator();
         while (objectIterator.hasNext()) {
             SchemeJudgeObject schemeJudgeObject = objectIterator.next();
@@ -2125,10 +2131,8 @@ public class GenerateBaseDataService {
             documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(name, keyValueDtoList));
 //            AsposeUtils.insertCell(name,documentBuilder) ;
             for (int i = 0; i < colMax - 1; i++) {
-                linkedLists.add("");
+                documentBuilder.insertCell();
             }
-            AsposeUtils.insertCell(documentBuilder, linkedLists);
-            linkedLists.clear();
             mergeCellModelList.add(new MergeCellModel(0, 0, 0, 12));
             documentBuilder.endRow();
 
@@ -4198,11 +4202,12 @@ public class GenerateBaseDataService {
             return;
         }
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        if (isLabelJudgeObjectShowName) {
-            linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
-        } else {
-            linkedLists.add(String.join("", schemeJudgeObject.getNumber(), "号"));
-        }
+//        if (isLabelJudgeObjectShowName) {
+//            linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
+//        } else {
+//            linkedLists.add(String.join("", schemeJudgeObject.getNumber(), "号"));
+//        }
+        linkedLists.add(schemeJudgeObject.getName());
         if (seat) {
             if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {//1
                 linkedLists.add(declareRecord.getSeat());
