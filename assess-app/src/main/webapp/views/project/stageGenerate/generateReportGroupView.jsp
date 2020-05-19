@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%@include file="/views/project/tool/selectSchemeJudgeTool.jsp" %>
+
 
 
 <div id="divBoxGenerateReportGroup" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
@@ -72,6 +72,11 @@
                                                 <i class="fa fa-minus"></i>
                                                 移除
                                             </button>
+
+                                                <button class="btn-primary btn btn-sm" type="button"
+                                                        onclick="schemeJudgeObj.init({callback:reportGroupObj.selectJudgeObj,this_:this ,areaGroupId: $(this).closest('form').find('[name=areaGroupId]').val()});">
+                                    选择估价对象
+                                </button>
                                                 </span>
                                             <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                                                 <table class="table table-bordered"
@@ -110,18 +115,10 @@
 
 
                 <div class="card-tools">
-                    <%--<button class="btn  btn-link btn-primary btn-xs"><span--%>
-                            <%--class="fa fa-angle-down"></span>--%>
-                    <%--</button>--%>
-                        <button type="button" class="btn btn-sm btn-primary"
-                                onclick="reportGroupObj.editData(this ,'{id}') ;">
-                            <i class="fa fa-pen"></i>
-                        </button>
+                    <button class="btn  btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
 
-                        <button class="btn btn-warning btn-sm" type="button"
-                                onclick="reportGroupObj.cleanHTMLData(this ,'{id}')"><span class="btn-label"><i
-                                class="fa fa-minus"></i></span>
-                        </button>
                 </div>
             </div>
         </div>
@@ -144,10 +141,14 @@
                             <label class="col-sm-1 control-label">操作</label>
 
                             <div class="col-sm-7">
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="reportGroupObj.editData(this ,'{id}') ;">
+                                    <i class="fa fa-pen"></i>
+                                </button>
 
-                                <button class="btn-primary btn btn-sm" type="button"
-                                        onclick="schemeJudgeObj.init({callback:reportGroupObj.selectJudgeObj,this_:this ,areaGroupId: '{areaGroupId}'});">
-                                    选择估价对象
+                                <button class="btn btn-warning btn-sm" type="button"
+                                        onclick="reportGroupObj.cleanHTMLData(this ,'{id}')"><span class="btn-label"><i
+                                        class="fa fa-minus"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -233,7 +234,7 @@
 
 
 </script>
-
+<%@include file="/views/project/tool/selectSchemeJudgeTool.jsp" %>
 <div>
     <input type="hidden" id="reportGroupObjJson" value='${el:toJsonString(generationVos)}'>
 </div>
@@ -464,8 +465,8 @@
     reportGroupObj.loadGenerateReportItemList = function (masterId) {
         var table = reportGroupObj.handleJquery(reportGroupObj.reportItemList);
         var cols = [];
-        cols.push({field: 'name', title: '委估对象名称', width: "35%"});
-        cols.push({field: 'number', title: '委估对象编号', width: "35%"});
+        cols.push({field: 'name', title: '委估对象名称', width: "45%"});
+        // cols.push({field: 'number', title: '委估对象编号', width: "35%"});
         table.bootstrapTable('destroy');
         TableInit(table, "${pageContext.request.contextPath}/generateReportItem/getBootstrapTableVo", cols, {masterId: masterId}, {
             method: "get",
