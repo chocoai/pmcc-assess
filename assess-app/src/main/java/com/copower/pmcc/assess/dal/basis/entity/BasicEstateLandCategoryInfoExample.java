@@ -1196,62 +1196,52 @@ public class BasicEstateLandCategoryInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioEqualTo(String value) {
+        public Criteria andPlotRatioEqualTo(BigDecimal value) {
             addCriterion("plot_ratio =", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotEqualTo(String value) {
+        public Criteria andPlotRatioNotEqualTo(BigDecimal value) {
             addCriterion("plot_ratio <>", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioGreaterThan(String value) {
+        public Criteria andPlotRatioGreaterThan(BigDecimal value) {
             addCriterion("plot_ratio >", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioGreaterThanOrEqualTo(String value) {
+        public Criteria andPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("plot_ratio >=", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioLessThan(String value) {
+        public Criteria andPlotRatioLessThan(BigDecimal value) {
             addCriterion("plot_ratio <", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioLessThanOrEqualTo(String value) {
+        public Criteria andPlotRatioLessThanOrEqualTo(BigDecimal value) {
             addCriterion("plot_ratio <=", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioLike(String value) {
-            addCriterion("plot_ratio like", value, "plotRatio");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlotRatioNotLike(String value) {
-            addCriterion("plot_ratio not like", value, "plotRatio");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlotRatioIn(List<String> values) {
+        public Criteria andPlotRatioIn(List<BigDecimal> values) {
             addCriterion("plot_ratio in", values, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotIn(List<String> values) {
+        public Criteria andPlotRatioNotIn(List<BigDecimal> values) {
             addCriterion("plot_ratio not in", values, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioBetween(String value1, String value2) {
+        public Criteria andPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("plot_ratio between", value1, value2, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotBetween(String value1, String value2) {
+        public Criteria andPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("plot_ratio not between", value1, value2, "plotRatio");
             return (Criteria) this;
         }
@@ -1603,6 +1593,76 @@ public class BasicEstateLandCategoryInfoExample {
 
         public Criteria andHeightPermittedNotBetween(String value1, String value2) {
             addCriterion("height_permitted not between", value1, value2, "heightPermitted");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkIsNull() {
+            addCriterion("plot_ratio_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkIsNotNull() {
+            addCriterion("plot_ratio_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkEqualTo(String value) {
+            addCriterion("plot_ratio_remark =", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkNotEqualTo(String value) {
+            addCriterion("plot_ratio_remark <>", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkGreaterThan(String value) {
+            addCriterion("plot_ratio_remark >", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_remark >=", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkLessThan(String value) {
+            addCriterion("plot_ratio_remark <", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkLessThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_remark <=", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkLike(String value) {
+            addCriterion("plot_ratio_remark like", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkNotLike(String value) {
+            addCriterion("plot_ratio_remark not like", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkIn(List<String> values) {
+            addCriterion("plot_ratio_remark in", values, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkNotIn(List<String> values) {
+            addCriterion("plot_ratio_remark not in", values, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkBetween(String value1, String value2) {
+            addCriterion("plot_ratio_remark between", value1, value2, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkNotBetween(String value1, String value2) {
+            addCriterion("plot_ratio_remark not between", value1, value2, "plotRatioRemark");
             return (Criteria) this;
         }
     }

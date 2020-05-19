@@ -71,9 +71,9 @@
                                 <label type="text" name="plotRatio"
                                        class="form-control input-full"></label>
                             </div>
-                            <label class="col-sm-1 control-label">建筑密度</label>
+                            <label class="col-sm-1 control-label">容积率说明</label>
                             <div class="col-sm-3">
-                                <label type="text" name="buildingDensity"
+                                <label type="text" name="plotRatioRemark"
                                        class="form-control input-full"></label>
                             </div>
                         </div>
@@ -82,6 +82,11 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">建筑密度</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="buildingDensity"
+                                       class="form-control input-full"></label>
+                            </div>
                             <label class="col-sm-1 control-label">绿地率</label>
                             <div class="col-sm-3">
                                 <label type="text" name="greeningRate"
@@ -92,17 +97,17 @@
                                 <label type="text" name="compatibilityType"
                                        class="form-control input-full"></label>
                             </div>
-                            <label class="col-sm-1 control-label">兼容比例</label>
-                            <div class="col-sm-3">
-                                <label type="text" name="compatibilityRate"
-                                       class="form-control input-full"></label>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">兼容比例</label>
+                            <div class="col-sm-3">
+                                <label type="text" name="compatibilityRate"
+                                       class="form-control input-full"></label>
+                            </div>
                             <label class="col-sm-1 control-label">建筑限高</label>
                             <div class="col-sm-3">
                                 <label type="text" name="heightPermitted"

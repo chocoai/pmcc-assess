@@ -674,7 +674,12 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLANNING_CONDITION.getKey(), generateCommonMethod.trimText(planningCondition), dataSetUseField));
                             break;
                         case LAND_AREA://面积
-                            String area = generateLandFactorService.getArea(examineEstate, judgeObject);
+                            String area = "";
+                            if (isCase) {
+                                area = String.format("占地面积%s平方米，", examineEstate.getCoverAnArea());
+                            } else {
+                                area = String.format("评估面积%s平方米", judgeObject.getEvaluationArea());
+                            }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_AREA.getKey(), area, dataSetUseField));
                             break;
                         case LAND_USE://用途
@@ -695,8 +700,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TOPOGRAPHY.getKey(), generateCommonMethod.trimText(topography), dataSetUseField));
                             break;
                         case LAND_PLOT_RATIO://容积率
-                            String plotRatio = categoryInfo.getPlotRatio();
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), generateCommonMethod.trimText(plotRatio), dataSetUseField));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), generateCommonMethod.trimText(categoryInfo.getPlotRatio()==null?"":categoryInfo.getPlotRatio().toString()), dataSetUseField));
                             break;
                         case LAND_DEVELOPMENT_LEVEL://宗地开发程度
                             String developmentLevel = generateLandFactorService.getDevelopmentLevel(examineEstate);

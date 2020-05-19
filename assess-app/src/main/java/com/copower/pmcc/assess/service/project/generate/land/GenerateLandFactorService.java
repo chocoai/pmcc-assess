@@ -212,7 +212,7 @@ public class GenerateLandFactorService {
     public String getPlanningCondition(BasicEstateLandCategoryInfo categoryInfo) {
         StringBuilder stringBuilder = new StringBuilder();
         if (categoryInfo == null) return "";
-        if (StringUtils.isNotEmpty(categoryInfo.getPlotRatio())) {
+        if (categoryInfo.getPlotRatio() !=null) {
             stringBuilder.append(String.format("容积率:%s,", categoryInfo.getPlotRatio()));
         }
         if (StringUtils.isNotEmpty(categoryInfo.getBuildingDensity())) {
