@@ -50,42 +50,28 @@
                                         </div>
                                     </form>
                                 </div>
+
+
                                 <div class="x_content">
-                                    <div class="col-md-12">
-                                        <div class="card full-height">
-                                            <div class="card-header ">
-                                                <div class="card-head-row">
-                                                    <div class="card-title">
-                                                        房间
-                                                    </div>
-                                                    <div class="card-tools">
-                                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                                class="fa fa-angle-down"></span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body" >
-                                                <form class="form-horizontal">
-                                                    <table class="table table-bordered" id="HouseRoomList">
-                                                        <!-- cerare document add ajax data-->
-                                                    </table>
-                                                </form>
-                                            </div>
-                                        </div>
+                                    <div class="x_title">
+                                        <h3>
+                                            房间
+                                        </h3>
+                                        <div class="clearfix"></div>
                                     </div>
+                                    <form class="form-horizontal">
+                                        <div class="col-sm-12 col-md-12">
+                                            <table class="table table-bordered" id="HouseRoomList" cellspacing="10">
+                                                <!-- cerare document add ajax data-->
+                                            </table>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-                        <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                                关闭
-                            </button>
-                        </div>
-                    </div>
+                    <%@include file="/views/project/stageSurvey/common/canvasQRcodePagination.jsp" %>
                 </div>
             </div>
         </div>

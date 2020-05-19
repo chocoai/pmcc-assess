@@ -48,26 +48,30 @@
         fileDiv.empty();
         var houseFileHtml = '';
         AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
-            var divLength = Math.ceil(resultData.length/3);
-            for (var j = 0; j < divLength; j++) {
+
+            var groupIndex= 2;//分成2个一组
+            var result = [];
+            for(var k=0,len=resultData.length;k<len;k+=groupIndex){
+                result.push(resultData.slice(k,k+groupIndex));
+            }
+            $.each(result , function (i,data) {
                 houseFileHtml += '<div class="row form-group">';
                 houseFileHtml += '<div class="col-md-12">';
                 houseFileHtml += '<div class="form-inline x-valid">';
-                var length = (j+1)*3>resultData.length?resultData.length:(j+1)*3;
-                for (var i = j*3; i < length; i++) {
-                    houseFileHtml += '<label class="col-sm-1">'+resultData[i].name+'</label>';
-                    houseFileHtml += '<div class="col-sm-3">';
+                $.each(data,function (j,item) {
+                    houseFileHtml += '<label class="col-sm-1 col-md-2">'+item.name+'</label>';
+                    houseFileHtml += '<div class="col-sm-5 col-md-4">';
                     if (bisDetail != false) {
-                        houseFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
+                        houseFileHtml += '<input id="' + item.fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
                     }
-                    houseFileHtml += '<div id="_' + resultData[i].fieldName + '"></div>';
+                    houseFileHtml += '<div id="_' + item.fieldName + '"></div>';
                     houseFileHtml += '</div>';
-                    houseCommon.houseFileControlIdArray.push(resultData[i].fieldName);
-                }
+                    houseCommon.houseFileControlIdArray.push(item.fieldName);
+                }) ;
                 houseFileHtml += "</div>";
                 houseFileHtml += "</div>";
                 houseFileHtml += "</div>";
-            }
+            }) ;
 
         }, false);
         fileDiv.append(houseFileHtml);
