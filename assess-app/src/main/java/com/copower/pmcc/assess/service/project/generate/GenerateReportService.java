@@ -369,12 +369,12 @@ public class GenerateReportService {
         //重新拿号
         if (Objects.equal(reportGroup.getSymbolOperation(), ReportSymbolOperationEnum.RESET.getKey())) {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
-            ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(generateReportInfo.getProjectId(), generateReportInfo.getAreaGroupId(), assessProjectType, reportType.getId());
+            ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(generateReportInfo.getProjectId(), generateReportInfo.getAreaGroupId(),reportGroup.getId(), assessProjectType, reportType.getId());
             if (numberRecord != null) {
                 numberRecord.setBisDelete(true);
                 projectNumberRecordService.updateProjectNumberRecord(numberRecord);
                 //将已经老旧的文号替换为最新的文号
-                SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfoVo, generateReportInfo.getAreaGroupId(), assessProjectType, reportType.getId(), false);
+                SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfoVo, generateReportInfo.getAreaGroupId(),reportGroup.getId(), assessProjectType, reportType.getId(), false);
                 String value = symbolListDto.getSymbol();
                 AsposeUtils.replaceText(dir, numberRecord.getNumberValue(), value);
                 //替换编号

@@ -24,6 +24,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.*;
+import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -84,10 +85,11 @@ public class ProjectNumberRecordService {
      * @param reportType
      * @return
      */
-    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
+    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId,Integer groupId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
         ProjectNumberRecord where = new ProjectNumberRecord();
         where.setProjectId(projectId);
         where.setAreaId(areaId);
+        where.setGroupId(groupId);
         where.setAssessProjectType(assessProjectTypeEnum.getKey());
         where.setReportType(reportType);
         where.setBisDelete(false);
@@ -140,10 +142,6 @@ public class ProjectNumberRecordService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public SysSymbolListDto getReportNumber(ProjectInfo projectInfo, Integer areaId, AssessProjectTypeEnum assessProjectType, Integer reportType, Boolean isMustTakeNew) throws BusinessException {
-        return getReportNumber(projectInfo,areaId,0,assessProjectType,reportType,isMustTakeNew);
-    }
-
     public SysSymbolListDto getReportNumber(ProjectInfo projectInfo, Integer areaId,Integer groupId, AssessProjectTypeEnum assessProjectType, Integer reportType, Boolean isMustTakeNew) throws BusinessException {
         //1.根据文号规则走号
         //2.生成报告号之后将其存储
@@ -228,14 +226,12 @@ public class ProjectNumberRecordService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         AssessProjectTypeEnum assessProjectTypeEnum = null;
         for (AssessProjectTypeEnum typeEnum : AssessProjectTypeEnum.values()) {
-            if (!com.google.common.base.Objects.equal(assessProjectType, typeEnum.getKey())) {
+            if (!Objects.equal(assessProjectType, typeEnum.getKey())) {
                 continue;
             }
-
-
             assessProjectTypeEnum = typeEnum;
         }
-        return getReportNumber(projectInfo, areaId, assessProjectTypeEnum, reportType, false);
+        return getReportNumber(projectInfo, areaId,0, assessProjectTypeEnum, reportType, false);
     }
 
 

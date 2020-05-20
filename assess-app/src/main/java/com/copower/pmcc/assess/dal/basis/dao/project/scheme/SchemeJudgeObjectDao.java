@@ -66,7 +66,7 @@ public class SchemeJudgeObjectDao {
 
     public List<SchemeJudgeObject> getSchemeJudgeObjectListAll(String name,String certName, String seat,String ownership,Integer areaGroupId,List<Integer> ids) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
-        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(false);
+        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria().andBisMergeEqualTo(false);
         if(areaGroupId!=null){
             criteria.andAreaGroupIdEqualTo(areaGroupId);
         }

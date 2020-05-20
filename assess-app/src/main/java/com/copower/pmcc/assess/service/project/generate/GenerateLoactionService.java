@@ -129,6 +129,7 @@ public class GenerateLoactionService {
      */
     public String getEnvironmentalScience(BasicApplyBatch basicApply, EnvironmentalScienceEnum scienceEnum) {
         StringBuilder builder = new StringBuilder(8);
+
         BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
         List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = basicExamineHandle.getBasicMatchingEnvironmentList();
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(scienceEnum.getKey());

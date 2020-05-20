@@ -304,7 +304,7 @@ public class BasicApplyBatchService {
 
 
     public BasicApplyBatch getBasicApplyBatchById(Integer id) {
-        if(id==null) return null;
+        if (id == null) return null;
         return basicApplyBatchDao.getBasicApplyBatchById(id);
     }
 
@@ -715,10 +715,9 @@ public class BasicApplyBatchService {
             try {
                 baseQrcodeService.createQrCode(newBasicApplyBatch);
             } catch (Exception e) {
-                logger.error(e.getMessage(),e);
+                logger.error(e.getMessage(), e);
             }
         }
-
     }
 
     /**
@@ -804,10 +803,20 @@ public class BasicApplyBatchService {
                         }
                     }
                 }
-
             }
         }
-
         return basicApplyBatch;
+    }
+
+    /**
+     * 获取源basicApplyBatch数据
+     * @param planDetailsId
+     * @return
+     */
+    public BasicApplyBatch getBasicApplyBatchSourceByPlanDetailsId(Integer planDetailsId) {
+        BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchByPlanDetailsId(planDetailsId);
+        if (basicApplyBatch == null) return null;
+        if (basicApplyBatch.getReferenceApplyBatchId() == null) return basicApplyBatch;
+        return basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatch.getReferenceApplyBatchId());
     }
 }

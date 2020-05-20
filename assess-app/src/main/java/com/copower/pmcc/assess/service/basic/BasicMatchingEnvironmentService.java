@@ -123,6 +123,7 @@ public class BasicMatchingEnvironmentService {
     }
 
     public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentVos(Integer estateId) {
+        if (estateId == null) return null;
         BasicMatchingEnvironment where = new BasicMatchingEnvironment();
         where.setEstateId(estateId);
         return LangUtils.transform(basicMatchingEnvironmentDao.basicMatchingEnvironmentList(where), o -> getBasicMatchingEnvironmentVo(o));

@@ -140,7 +140,6 @@ public class BasicApplyBatchDao {
         if (planDetailsId!=null) {
             criteria.andPlanDetailsIdEqualTo(planDetailsId);
         }
-        criteria.andReferenceApplyBatchIdIsNull();
         criteria.andBisDeleteEqualTo(false);
         example.setOrderByClause("id desc");
         List<BasicApplyBatch> basicApplyBatchs = basicApplyBatchMapper.selectByExample(example);

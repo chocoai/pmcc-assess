@@ -21,7 +21,7 @@
                                     <div class="card-title">
                                         ${judgeObject.name}
                                         <small>(${judgeObject.evaluationArea}㎡)
-                                            <button type="button" href="javascript://;" class="btn btn-xs btn-warning"
+                                            <button type="button" href="javascript://;" class="btn btn-md btn-info"
                                                     onclick="surePrice.initSurePriceItem('${projectPlanDetails.judgeObjectId}',true)">
                                                 初始化
                                             </button>
