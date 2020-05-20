@@ -171,7 +171,7 @@ public class GenerateBaseDataService {
     public String getWordNumber() {
         try {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId, assessProjectType, this.reportType.getId(), false);
+            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId,reportGroup.getId(), assessProjectType, this.reportType.getId(), false);
             String number = symbolListDto.getSymbol();
             if (StringUtils.isNotBlank(number)) {
                 return number;
