@@ -99,29 +99,31 @@
     $(document).ready(function () {
         var html = "";
         try {
-            canvasQRcode.ajaxServerFun({tableId:'${applyBatch.id}' ,tableName:AssessDBKey.BasicApplyBatch }, '/baseQrCode/getBaseQrcodeList', "get", function (dataAll) {
-                var data = null;
-                if (dataAll && dataAll.length >= 1){
-                    data = dataAll[0] ;
-                }
-                if (!data) {
-                    return false;
-                }
-                if (!data.code) {
-                    return false;
-                }
-                var qrcode = new QRCode(document.getElementById(canvasQRcode.targetId), {
-                    width: 150,
-                    height: 150
-                });
-                try {
-                    //二维码 canvas 生成
-                    qrcode.makeCode(data.code);
-                    console.log(data.code) ;
-                } catch (ex) {
-                    console.log(ex) ;
-                }
-            })
+            if ('${applyBatch}' ) {
+                canvasQRcode.ajaxServerFun({tableId:'${applyBatch.id}' ,tableName:AssessDBKey.BasicApplyBatch }, '/baseQrCode/getBaseQrcodeList', "get", function (dataAll) {
+                    var data = null;
+                    if (dataAll && dataAll.length >= 1){
+                        data = dataAll[0] ;
+                    }
+                    if (!data) {
+                        return false;
+                    }
+                    if (!data.code) {
+                        return false;
+                    }
+                    var qrcode = new QRCode(document.getElementById(canvasQRcode.targetId), {
+                        width: 150,
+                        height: 150
+                    });
+                    try {
+                        //二维码 canvas 生成
+                        qrcode.makeCode(data.code);
+                        console.log(data.code) ;
+                    } catch (ex) {
+                        console.log(ex) ;
+                    }
+                })
+            }
         } catch (e) {
             console.log(e) ;
         }
