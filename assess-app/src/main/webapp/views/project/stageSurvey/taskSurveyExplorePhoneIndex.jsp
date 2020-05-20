@@ -39,7 +39,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row col-md-12">
-                                    <div class="col-md-9">
+                                    <div class="col-md-12">
 
                                         <button type="button" class="btn btn-sm btn-primary"
                                                 onclick=" batchTreeTool.expandAll(true);">
@@ -49,16 +49,21 @@
                                                 onclick=" batchTreeTool.expandAll(false);">
                                             收起
                                         </button>
+
+                                    </div>
+
+                                    <div class="col-md-9">
+                                        <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
+                                    </div>
+
+                                    <div class="col-md-3">
                                         <button type="button" style="margin-left: 20px;"
                                                 class="btn btn-sm btn-primary fillInformation masterTool"
                                                 onclick="batchTreeTool.fillInformation();">
                                             进入上传附件页面
                                         </button>
-                                        <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
                                     </div>
-                                    <div class="col-md-3">
 
-                                    </div>
                                 </div>
                             </div>
                         </div>
