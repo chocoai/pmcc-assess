@@ -1549,7 +1549,7 @@ public class Test {
                         columnValue = columnValue.replace(column,String.format("'%s'",objectToString(map.get(column))));
                     }
                 }
-                String insertSql = MessageFormat.format("INSERT into {0}({1}) VALUES ({2})", tableName, columnString,columnValue);
+                String insertSql = MessageFormat.format("INSERT into {0}({1}) VALUES ({2});", tableName, columnString,columnValue);
                 sqlBuilder.append("\r\n");
                 sqlBuilder.append(insertSql);
             }
