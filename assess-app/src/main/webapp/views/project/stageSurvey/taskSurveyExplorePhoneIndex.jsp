@@ -17,10 +17,10 @@
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <%@include file="/views/share/form_head.jsp" %>
-            <div class="page-inner mt--5">
+            <%--<%@include file="/views/share/form_head.jsp" %>--%>
+            <div class="page-inner">
                 <div class="row mt--2">
-                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%--<%@include file="/views/share/project/projectInfoSimple.jsp" %>--%>
 
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
@@ -30,11 +30,11 @@
                                     <div class="card-title">
                                         查勘附件
                                     </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-sm"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
+                                    <%--<div class="card-tools">--%>
+                                        <%--<button class="btn  btn-link btn-primary btn-sm"><span--%>
+                                                <%--class="fa fa-angle-down"></span>--%>
+                                        <%--</button>--%>
+                                    <%--</div>--%>
                                 </div>
                             </div>
                             <div class="card-body">
