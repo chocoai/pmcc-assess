@@ -225,66 +225,103 @@ public class GenerateCommonMethod {
         if (CollectionUtils.isEmpty(schemeJudgeObjectList)) return listLinkedHashMap;
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getBasicApplyId()));
         if (CollectionUtils.isEmpty(basicApplyList)) return listLinkedHashMap;
-        Map<Integer, List<SchemeJudgeObject>> basicApplyListMap = new HashMap<>();
         //去除重复
         basicApplyList = basicApplyList.stream().filter(StreamUtils.distinctByKey(o -> o.getId())).collect(Collectors.toList());
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            if (schemeJudgeObject.getBasicApplyId() == null || schemeJudgeObject.getBasicApplyId() == 0) {
-                continue;
+        LinkedHashMap<Integer, BasicEstate> linkedHashMap = new LinkedHashMap<>();
+        for (BasicApply basicApply : basicApplyList) {
+            linkedHashMap.put(basicApply.getId(), getBasicEstateByBasicApply(basicApply));
+        }
+        List<BasicEstate> basicEstateList = linkedHashMap.values().stream().collect(Collectors.toList());
+        //将LinkedHashMap<BasicApply, BasicEstate> 变为 LinkedHashMap<BasicEstate, List<BasicApply>>
+        LinkedHashMap<Integer, List<Integer>> estateListLinkedHashMap = new LinkedHashMap<>();
+        if (!linkedHashMap.isEmpty()) {
+            Iterator<Map.Entry<Integer, BasicEstate>> iterator = linkedHashMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Integer, BasicEstate> estateEntry = iterator.next();
+                if (estateEntry.getValue() == null) {
+                    continue;
+                }
+                if (estateListLinkedHashMap.containsKey(estateEntry.getValue().getId())) {
+                    estateListLinkedHashMap.get(estateEntry.getValue().getId()).add(estateEntry.getKey());
+                } else {
+                    estateListLinkedHashMap.put(estateEntry.getValue().getId(), Lists.newArrayList(estateEntry.getKey()));
+                }
             }
-            if (basicApplyListMap.containsKey(schemeJudgeObject.getBasicApplyId())) {
-                basicApplyListMap.get(schemeJudgeObject.getBasicApplyId()).add(schemeJudgeObject);
-            } else {
-                List<SchemeJudgeObject> schemeJudgeObjects = new ArrayList<>();
-                schemeJudgeObjects.add(schemeJudgeObject);
-                basicApplyListMap.put(schemeJudgeObject.getBasicApplyId(), schemeJudgeObjects);
+        }
+        LinkedHashMap<Integer, List<SchemeJudgeObject>> listLinkedHashMap2 = Maps.newLinkedHashMap();
+        //将LinkedHashMap<BasicEstate, List<BasicApply>> 变为 LinkedHashMap<BasicEstate, List<SchemeJudgeObject>>
+        if (!estateListLinkedHashMap.isEmpty()) {
+            Iterator<Map.Entry<Integer, List<Integer>>> iterator = estateListLinkedHashMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Integer, List<Integer>> estateListEntry = iterator.next();
+                if (CollectionUtils.isEmpty(estateListEntry.getValue())) {
+                    continue;
+                }
+                List<SchemeJudgeObject> judgeObjectList = new ArrayList<>();
+                Iterator<SchemeJudgeObject> objectIterator = schemeJudgeObjectList.iterator();
+                while (objectIterator.hasNext()) {
+                    SchemeJudgeObject judgeObject = objectIterator.next();
+                    if (judgeObject.getBasicApplyId() == null || judgeObject.getBasicApplyId() == 0) {
+                        continue;
+                    }
+                    if (estateListEntry.getValue().contains(judgeObject.getBasicApplyId())) {
+                        judgeObjectList.add(judgeObject);
+                    }
+                }
+                if (CollectionUtils.isEmpty(judgeObjectList)) {
+                    continue;
+                }
+                if (listLinkedHashMap2.containsKey(estateListEntry.getKey())) {
+                    listLinkedHashMap2.get(estateListEntry.getKey()).addAll(judgeObjectList);
+                } else {
+                    listLinkedHashMap2.put(estateListEntry.getKey(), judgeObjectList);
+                }
+            }
+        }
+        if (!listLinkedHashMap2.isEmpty()) {
+            Iterator<Map.Entry<Integer, List<SchemeJudgeObject>>> iterator = listLinkedHashMap2.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Integer, List<SchemeJudgeObject>> entry = iterator.next();
+                listLinkedHashMap.put(basicEstateList.stream().filter(basicEstate -> Objects.equal(basicEstate.getId(), entry.getKey())).findFirst().get(), entry.getValue());
+            }
+        }
+        return listLinkedHashMap;
+    }
+
+    public BasicEstate getBasicEstateByBasicApply(BasicApply basicApply) {
+        BasicEstate basicEstate = null;
+        if (basicApply.getBasicEstateId() != null && basicApply.getBasicEstateId() != 0) {
+            basicEstate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
+        }
+        if (basicApply.getApplyBatchId() != null && basicApply.getApplyBatchId() != 0) {
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApply.getApplyBatchId());
+            if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
+                basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+            }
+        }
+        if (basicApply.getBatchDetailId() != null && basicApply.getBatchDetailId() != 0) {
+            BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApply.getBatchDetailId());
+            if (basicApplyBatchDetail != null) {
+                if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
+                    basicEstate = basicEstateService.getBasicEstateById(basicApplyBatchDetail.getTableId());
+                }
+                if (basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0) {
+                    BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
+                    if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
+                        basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+                    }
+                }
+                //如果 basicEstate 还为null
+                if (basicEstate == null && basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0) {
+                    BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
+                    if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
+                        basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+                    }
+                }
             }
         }
 
-        if (basicApplyListMap.isEmpty()) {
-            return listLinkedHashMap;
-        }
-        Iterator<Map.Entry<Integer, List<SchemeJudgeObject>>> iterator = basicApplyListMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Integer, List<SchemeJudgeObject>> integerListEntry = iterator.next();
-            BasicApply basicApply = basicApplyList.stream().filter(apply -> Objects.equal(apply.getId(), integerListEntry.getKey())).findFirst().get();
-            BasicEstate basicEstate = null;
-            if (basicApply.getBasicEstateId() != null && basicApply.getBasicEstateId() != 0) {
-                basicEstate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
-            }
-            if (basicApply.getApplyBatchId() != null && basicApply.getApplyBatchId() != 0) {
-                BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApply.getApplyBatchId());
-                if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
-                    basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
-                }
-            }
-            if (basicApply.getBatchDetailId() != null && basicApply.getBatchDetailId() != 0) {
-                BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApply.getBatchDetailId());
-                if (basicApplyBatchDetail != null) {
-                    if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
-                        basicEstate = basicEstateService.getBasicEstateById(basicApplyBatchDetail.getTableId());
-                    }
-                    if (basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0) {
-                        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
-                        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
-                            basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
-                        }
-                    }
-                    //如果 basicEstate 还为null
-                    if (basicEstate == null && basicApplyBatchDetail.getApplyBatchId() != null && basicApplyBatchDetail.getApplyBatchId() != 0) {
-                        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
-                        if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null && basicApplyBatch.getEstateId() != 0) {
-                            basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
-                        }
-                    }
-                }
-            }
-            if (basicEstate == null) {
-                continue;
-            }
-            listLinkedHashMap.put(basicEstate, integerListEntry.getValue());
-        }
-        return listLinkedHashMap;
+        return basicEstate;
     }
 
 
@@ -361,21 +398,51 @@ public class GenerateCommonMethod {
     }
 
     public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject) {
+        String spliter = "-";
         StringBuilder stringBuilder = new StringBuilder(8);
+        String baseName = "号";
         if (schemeJudgeObject == null) {
             return "";
         }
-        if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
-            Integer num = this.parseIntJudgeNumber(schemeJudgeObject.getNumber());
-            String val = this.convertNumber(Lists.newArrayList(num));
-            stringBuilder.append(val);
-            stringBuilder.append("号");
+        List<String> stringList = FormatUtils.transformString2List(schemeJudgeObject.getNumber(), ",");
+        //单独一个估价对象  拆分情况
+        if (stringList.size() == 1 && schemeJudgeObject.getBisSplit() != null && schemeJudgeObject.getBisSplit().booleanValue() && schemeJudgeObject.getSplitNumber() != null) {
+            stringList.clear();
+            stringList.add(String.join(spliter, schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber().toString()));
         }
-        if (StringUtils.isEmpty(stringBuilder.toString())) {
-            if (StringUtils.isNotBlank(schemeJudgeObject.getName())) {
-                stringBuilder.append(schemeJudgeObject.getName());
+        //1:如果全部是数字并且是连续的数字那么我们合并描述
+
+        //检测是否全部是数字
+        if (StreamUtils.checkNumberList(stringList)) {
+            List<Integer> integerList = LangUtils.transform(stringList, (s) -> Integer.valueOf(s));
+            //检测是否连续
+            if (StreamUtils.continuous(integerList)) {
+                stringBuilder.append(convertNumber(integerList)).append(baseName);
+            } else {
+                //全是数字,但是不是全部连续,我们暂时用同样的方式处理  , 以后这里可能会变化
+                stringBuilder.append(convertNumber(integerList)).append(baseName);
             }
+            return stringBuilder.toString();
         }
+        //字符串存在非数字 , 可能存在拆分后合并情况
+        LinkedList<String> stringLinkedList = new LinkedList<>();
+        for (String number : stringList) {
+            List<String> string2List = FormatUtils.transformString2List(number, spliter);
+            LinkedList<String> splits = new LinkedList<>();
+            for (int i = 0; i < string2List.size(); i++) {
+                if (i == 0) {
+                    if (NumberUtils.isNumber(string2List.get(0))) {
+                        splits.add(convertNumber(Lists.newArrayList(Integer.parseInt(string2List.get(0)))));
+                    }else {
+                        splits.add(string2List.get(0)) ;
+                    }
+                } else {
+                    splits.add(string2List.get(i));
+                }
+            }
+            stringLinkedList.add(StringUtils.join(splits, spliter));
+        }
+        stringBuilder.append(StringUtils.join(stringLinkedList, ",")).append(baseName);
         return stringBuilder.toString();
     }
 
@@ -423,7 +490,7 @@ public class GenerateCommonMethod {
         if (checkSchemeJudgeObjectNumberOverloadTwenty(integerList)) {
             return getSchemeJudgeObjectShowName(schemeJudgeObject);
         } else {
-            return String.join("", parseIntJudgeNumber(schemeJudgeObject.getNumber()).toString(), "号");
+            return schemeJudgeObject.getName();
         }
     }
 
@@ -1286,8 +1353,8 @@ public class GenerateCommonMethod {
      * @return (距离, List < id >)
      */
     public LinkedHashMap<String, List<Integer>> getGroupByDistance(Map<Integer, String> map) {
-        AssembleGroupByDistance<Integer> assembleGroupByDistance = new AssembleGroupByDistance<>() ;
-        LinkedHashMap<String, List<Integer>> listMap = assembleGroupByDistance.getGroupByDistance(map,baseDataDicService) ;
+        AssembleGroupByDistance<Integer> assembleGroupByDistance = new AssembleGroupByDistance<>();
+        LinkedHashMap<String, List<Integer>> listMap = assembleGroupByDistance.getGroupByDistance(map, baseDataDicService);
         return listMap;
     }
 
@@ -1298,15 +1365,16 @@ public class GenerateCommonMethod {
      * @return (距离, List < name >)
      */
     public LinkedHashMap<String, List<String>> getGroupByDistanceToString(Map<String, String> map) {
-        AssembleGroupByDistance<String> assembleGroupByDistance = new AssembleGroupByDistance<>() ;
-        LinkedHashMap<String, List<String>> listMap = assembleGroupByDistance.getGroupByDistance(map,baseDataDicService) ;
+        AssembleGroupByDistance<String> assembleGroupByDistance = new AssembleGroupByDistance<>();
+        LinkedHashMap<String, List<String>> listMap = assembleGroupByDistance.getGroupByDistance(map, baseDataDicService);
         return listMap;
     }
 
     public static class AssembleGroupByDistance<T> {
         private T t;
+
         public LinkedHashMap<String, List<T>> getGroupByDistance(Map<T, String> map, BaseDataDicService baseDataDicService) {
-            LinkedHashMap<String, List<T>> listMap = Maps.newLinkedHashMap() ;
+            LinkedHashMap<String, List<T>> listMap = Maps.newLinkedHashMap();
             if (!map.isEmpty()) {
                 map.entrySet().stream().forEach(entry -> {
                     String key = entry.getValue();
