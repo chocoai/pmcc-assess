@@ -97,29 +97,45 @@
 
 
     $(document).ready(function () {
-        var html = "";
+        var url = window.location.href ;
+        url = url.replace(/informationEdit/g, 'informationPhoneEdit');
+
+
+
+        var qrcode = new QRCode(document.getElementById(canvasQRcode.targetId), {
+            width: 150,
+            height: 150
+        });
         try {
-            canvasQRcode.ajaxServerFun({tableId:'${tbId}' ,type:'${tbType}'}, '/baseQrCode/toImgQRCodePath', "get", function (data) {
-                if (!data) {
-                    return false;
-                }
-                if (!data.code) {
-                    return false;
-                }
-                var qrcode = new QRCode(document.getElementById(canvasQRcode.targetId), {
-                    width: 150,
-                    height: 150
-                });
-                try {
-                    //二维码 canvas 生成
-                    qrcode.makeCode(data.code);
-                    console.log(data.code) ;
-                } catch (ex) {
-                    console.log(ex) ;
-                }
-            })
-        } catch (e) {
-            console.log(e) ;
+            //二维码 canvas 生成
+            qrcode.makeCode(url);
+            console.log(url) ;
+        } catch (ex) {
+            console.log(ex) ;
         }
+        <%--var html = "";--%>
+        <%--try {--%>
+            <%--canvasQRcode.ajaxServerFun({tableId:'${tbId}' ,type:'${tbType}'}, '/baseQrCode/toImgQRCodePath', "get", function (data) {--%>
+                <%--if (!data) {--%>
+                    <%--return false;--%>
+                <%--}--%>
+                <%--if (!data.code) {--%>
+                    <%--return false;--%>
+                <%--}--%>
+                <%--var qrcode = new QRCode(document.getElementById(canvasQRcode.targetId), {--%>
+                    <%--width: 150,--%>
+                    <%--height: 150--%>
+                <%--});--%>
+                <%--try {--%>
+                    <%--//二维码 canvas 生成--%>
+                    <%--qrcode.makeCode(data.code);--%>
+                    <%--console.log(data.code) ;--%>
+                <%--} catch (ex) {--%>
+                    <%--console.log(ex) ;--%>
+                <%--}--%>
+            <%--})--%>
+        <%--} catch (e) {--%>
+            <%--console.log(e) ;--%>
+        <%--}--%>
     });
 </script>

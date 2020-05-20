@@ -597,6 +597,11 @@
                 zTreeObj.selectNode(rootNode);
                 zTreeObj.expandAll(true);
                 zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
+                try {
+                    canvasQRcode.loadImg(basicApplyBatchId) ;
+                } catch (e) {
+                    console.log(e) ;
+                }
             }
         })
     }

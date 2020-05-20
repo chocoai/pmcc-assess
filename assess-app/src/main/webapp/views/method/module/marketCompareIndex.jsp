@@ -259,6 +259,7 @@
 
 
         var marketCompare = {};
+        var marketCompare = {};
         //初始化 1.初始化表格的标题 2.初始化表格内容
         marketCompare.isPass = true;
         marketCompare.isLand = false;
@@ -301,7 +302,7 @@
             marketCompare.projectId = defaluts.projectId;
             marketCompare.mcId = defaluts.mcId;
             marketCompare.areaId = defaluts.areaId;
-            marketCompare.isLand = defaluts.isLand == 'true' ? true : false;
+            marketCompare.isLand = (defaluts.isLand == 'true' || defaluts.isLand == true) ? true : false;
             marketCompare.evaluation = defaluts.evaluation;
             marketCompare.standardJudges = defaluts.standardJudges;
             marketCompare.judgeObjectId = defaluts.judgeObjectId;
@@ -311,9 +312,7 @@
             marketCompare.initResult(defaluts);
 
             $("#cbxScore,#cbxRatio").each(function () {
-                if ($(this).prop('checked')) {
-                    $(this).trigger('click');
-                }
+                $(this).trigger('click').trigger('click');
             })
             //分值背影颜色设置
             $("#tb_md_mc_item_list").find('[data-name="score"] a').each(function () {
@@ -571,13 +570,13 @@
                         var evaluationAnnual = annualTr.find('td[data-item-id=' + evaluationItemId + ']').find('span').text();
                         var caseAnnual = annualTr.find('td[data-item-id=' + item + ']').text();
                         if (AssessCommon.isNumber(evaluationAnnual) && AssessCommon.isNumber(caseAnnual)) {
-                            specificPrice = parseFloat(caseAnnual) / parseFloat(evaluationAnnual) * specificPrice;
+                            specificPrice = parseFloat(evaluationAnnual) / parseFloat(caseAnnual) * specificPrice;
                         }
                         var volumeRatioTr = table.find('tr[data-name="volumeRatioCoefficient"]');
                         var evaluationVolumeRatio = volumeRatioTr.find('td[data-item-id=' + evaluationItemId + ']').text();
                         var caseVolumeRatio = volumeRatioTr.find('td[data-item-id=' + item + ']').text();
                         if (AssessCommon.isNumber(evaluationVolumeRatio) && AssessCommon.isNumber(caseVolumeRatio)) {
-                            specificPrice = parseFloat(caseVolumeRatio) / parseFloat(evaluationVolumeRatio) * specificPrice;
+                            specificPrice = parseFloat(evaluationVolumeRatio) / parseFloat(caseVolumeRatio) * specificPrice;
                         }
                     } else {
                         var situationTr = table.find('tr[data-group="trading.transaction.situation"][data-name="ratio"]');
@@ -1121,6 +1120,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         notifySuccess('成功', "刷新成功！");
+                        console.log(JSON.stringify(marketCompare));
                         marketCompare.init({
                             projectId: marketCompare.projectId,
                             mcId: result.data.mcId,

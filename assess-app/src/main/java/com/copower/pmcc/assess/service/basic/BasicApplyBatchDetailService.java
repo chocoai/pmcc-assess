@@ -275,7 +275,7 @@ public class BasicApplyBatchDetailService {
         if(CollectionUtils.isNotEmpty(basicEstateLandCategoryInfoList)){
             basicApply.setLandCategoryId(basicEstateLandCategoryInfoList.get(0).getId());
         }
-
+        basicApply.setApplyBatchId(houseBasicApplyBatchDetail.getApplyBatchId());
         basicApply.setDeclareRecordId(houseBasicApplyBatchDetail.getDeclareRecordId());
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
         if (basicHouse != null)

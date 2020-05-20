@@ -1,9 +1,10 @@
 package com.copower.pmcc.assess.common;
 
+import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -45,6 +46,45 @@ public final class StreamUtils {
         Matcher m = p.matcher(text);
         String s = m.replaceAll("").trim();
         return StringUtils.isNotBlank(s) ? s : "0";
+    }
+
+    /**
+     * 判断一串数字是否连续
+     * @param list
+     * @return
+     */
+    public static boolean continuous(List<Integer> list){
+        Collections.sort(list);
+        List<Integer> listTo = new ArrayList<>(list) ;
+        Collections.sort(listTo);
+        int i = 0;
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()){
+            Integer integer = iterator.next();
+            Integer value = Integer.valueOf(listTo.get(i)) ;
+            if (!Objects.equal(value,integer)){
+                return false ;
+            }
+            i++;
+        }
+        return true ;
+    }
+
+    /**
+     * 判断一串字符串是否全部是数字
+     * @param stringList
+     * @return
+     */
+    public static boolean checkNumberList(List<String> stringList){
+        int k = 0;
+        Iterator<String> iterator = stringList.iterator();
+        while (iterator.hasNext()){
+            String value = iterator.next();
+            if (!NumberUtils.isNumber(value)){
+                k ++;
+            }
+        }
+        return k == 0;
     }
 
 }

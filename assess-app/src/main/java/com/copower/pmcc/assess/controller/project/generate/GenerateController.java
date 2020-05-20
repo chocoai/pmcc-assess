@@ -62,9 +62,9 @@ public class GenerateController {
 
     @ResponseBody
     @RequestMapping(value = "/reGetDocumentNumber", name = "重新拿号", method = RequestMethod.POST)
-    public HttpResult reGetDocumentNumber(Integer projectId, Integer areaId, Integer reportType) {
+    public HttpResult reGetDocumentNumber(Integer projectId, Integer areaId, Integer groupId, Integer reportType) {
         try {
-            generateService.reGetDocumentNumber(projectId, areaId, reportType);
+            generateService.reGetDocumentNumber(projectId, areaId, groupId, reportType);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return HttpResult.newErrorResult("重新拿号异常");
