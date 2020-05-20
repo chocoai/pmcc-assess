@@ -423,7 +423,9 @@
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
                 var node = zTreeObj.getSelectedNodes()[0];
-                $("#tree_value").val(node.id);
+                if (node){
+                    $("#tree_value").val(node.id);
+                }
                 loadTemplateTableList();
             }
         }
@@ -437,6 +439,7 @@
             type: 'get',
             dataType: "json",
             success: function (result) {
+                console.log(result) ;
                 zTreeObj = $.fn.zTree.init($("#ztree"), setting, result.data);
                 //展开第一级，选中根节点
                 var rootNode = zTreeObj.getNodes()[0];
