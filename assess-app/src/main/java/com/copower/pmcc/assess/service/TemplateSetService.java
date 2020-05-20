@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/5/21
  * @time: 14:59
  */
@@ -26,10 +26,14 @@ public class TemplateSetService {
     @Autowired
     private PublicService publicService;
 
-    public List<ZtreeDto> getCrmTree() {
+    public Object getCrmTree() {
         CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
         crmCustomerDto.setCompanyId(publicService.getCurrentCompany().getCompanyId());
         List<CrmCustomerDto> customerList = crmRpcCustomerService.getCustomerList(crmCustomerDto);
+
+        if (CollectionUtils.isNotEmpty(customerList)) {
+            return customerList;
+        }
 
         List<ZtreeDto> treeDtos = new ArrayList<>();
 
@@ -48,8 +52,8 @@ public class TemplateSetService {
             treeDtos.add(ztreeDto);
             List<CrmTreeDto> crmTreeChildeDto = getCrmTreeChildeDto(item.getId(), customerList);
 
-            if(CollectionUtils.isNotEmpty(crmTreeChildeDto)){
-                for (CrmTreeDto item2: crmTreeChildeDto) {
+            if (CollectionUtils.isNotEmpty(crmTreeChildeDto)) {
+                for (CrmTreeDto item2 : crmTreeChildeDto) {
                     ZtreeDto ztreeDto2 = new ZtreeDto();
                     ztreeDto2.setId(item2.getId());
                     ztreeDto2.setPid(item2.getpId());
@@ -63,7 +67,9 @@ public class TemplateSetService {
 
         return treeDtos;
 
-    };
+    }
+
+    ;
 
     private List<CrmTreeDto> getCrmTreeChildeDto(Integer pid, List<CrmCustomerDto> crmCustomerDtos) {
         List<CrmTreeDto> crmTreeDtos = new ArrayList<>();
@@ -76,9 +82,9 @@ public class TemplateSetService {
                 crmTreeDto.setText(item.getName());
                 crmTreeDto.setpId(item.getPid());
                 List<CrmTreeDto> crmTreeChildeDto = getCrmTreeChildeDto(item.getId(), crmCustomerDtos);
-                if(crmTreeChildeDto.size()>0) {
+                if (crmTreeChildeDto.size() > 0) {
                     crmTreeDto.setNodes(crmTreeChildeDto);
-                    crmTreeChildeDto.forEach(o-> crmTreeDtos.add(o));
+                    crmTreeChildeDto.forEach(o -> crmTreeDtos.add(o));
                 }
                 crmTreeDtos.add(crmTreeDto);
             }

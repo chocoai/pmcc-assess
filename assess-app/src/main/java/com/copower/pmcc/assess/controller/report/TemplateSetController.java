@@ -63,9 +63,9 @@ public class TemplateSetController {
     @RequestMapping(value = "/queryCustomerTree", name = "取得客户树", method = RequestMethod.GET)
     public HttpResult queryCustomerTree() {
         try {
-            List<ZtreeDto> crmTree = templateSetService.getCrmTree();
-            return HttpResult.newCorrectResult(crmTree);
+            return HttpResult.newCorrectResult(templateSetService.getCrmTree());
         } catch (Exception e) {
+            String ex = e.getMessage() ;
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
