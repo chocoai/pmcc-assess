@@ -418,9 +418,9 @@
     reportGroupObj.selectJudgeObj = function (_this, id) {
         var ids = id.split(",");
         var arr = [];
-        var group = $(_this).closest(".form-group");
-        var masterId = group.find("[data-name=id]").val();
-        var areaGroupId = group.find("[data-name=areaGroupId]").val();
+        var frm = $(_this).closest("form");
+        var masterId = frm.find("[name=id]").val();
+        var areaGroupId = frm.find("[name=areaGroupId]").val();
         var form = $("#groupForm"+areaGroupId);
         var dataInfo = formSerializeArray(form);
         $.each(ids, function (k, judgeObjectId) {
@@ -432,6 +432,7 @@
                 reportGroupObj.saveAndUpdateGenerateReportItemArray(arr, function () {
                     notifySuccess("成功", "估价对象选择成功!");
                     reportGroupObj.init(dataInfo);
+                    reportGroupObj.handleJquery(reportGroupObj.reportItemList).bootstrapTable('refresh');
                 });
             }else {
                 var tempArr = [] ;
