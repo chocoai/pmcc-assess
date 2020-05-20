@@ -1267,4 +1267,60 @@
             $(_this).closest('.form-group').after(html);
         }
     }
+
+    //显示弹窗
+    batchTreeTool.showAlternativeSurveyModal = function () {
+        batchTreeTool.loadAlternativeSurveyList();
+        $('#reference_modal').modal();
+    }
+
+    //加载备选案例数据列表
+    batchTreeTool.loadAlternativeSurveyList = function () {
+        var cols = [];
+        cols.push({field: 'name', title: '名称', width: '80%'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeSurvey(' + row.applyBatchId + ')"><i class="fa fa-check"></i></button>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#basicAlternativeSurveyList").bootstrapTable('destroy');
+        TableInit($("#basicAlternativeSurveyList"), "${pageContext.request.contextPath}/basicApplyBatch/getBasicAlternativeSurveyList", cols, {
+            name: $('#queryAlternativeName').val(),
+            planDetailsId: "${projectPlanDetails.id}"
+        }, {
+            pagination: false,
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    //引用备选案例
+    batchTreeTool.referenceAlternativeSurvey = function (referenceId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/referenceEstate",
+            data: {
+                referenceId: referenceId,
+                basicApplyBatchId: batchTreeTool.getApplyBatchId(),
+                planDetailsId: "${projectPlanDetails.id}"
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    AlertSuccess('成功', '引用成功', function () {
+                        window.location.href = window.location.href;
+                    })
+                } else {
+                    AlertError('失败', '引用失败');
+                }
+            }
+        })
+    }
 </script>
