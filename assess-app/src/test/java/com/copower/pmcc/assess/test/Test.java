@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomDdlTableMapper;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetLandTransactionDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetResultAnnouncementDao;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
+import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -28,6 +30,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -40,6 +43,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.*;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -65,6 +69,10 @@ public class Test {
     private NetLandTransactionDao netLandTransactionDao;
     @Autowired
     private NetResultAnnouncementDao netResultAnnouncementDao;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private CustomDdlTableMapper customDdlTableMapper;
 
 
     @org.junit.Test
@@ -1500,5 +1508,59 @@ public class Test {
             throw e;
         }
         return result;
+    }
+
+
+    @org.junit.Test
+    public void generateAssessmentItemSql() {
+        String sql = getAssessmentItemSql("tb_assessment_item", 520, 2479,568,2750);
+        System.out.print(sql);
+    }
+
+    private String getAssessmentItemSql(String tableName, Integer sourceBoxId, Integer sourceActivitiId,Integer targetBoxId, Integer targetActivitiId) {
+        String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='pmcc_bpm'", tableName);
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
+        //1.去除id,gmt_created,gmt_modified
+        for (Map<String, Object> map : mapList) {
+            if (map.get("column_name").equals("id")) {
+                mapList.remove(map);break;
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map<String, Object> map : mapList) {
+            stringBuilder.append(map.get("column_name")).append(",");
+        }
+        String columnString = stringBuilder.toString();
+        columnString = columnString.replaceAll(",$", "");
+        //box_id,box_re_activiti_id
+        List<String> columnList = FormatUtils.transformString2List(columnString);
+        //获取数据
+        String dataListSql = String.format("select * from pmcc_bpm.tb_assessment_item where box_id='%s' and box_re_activiti_id='%s'", sourceBoxId,sourceActivitiId);
+        List<Map> mapLists = customDdlTableMapper.customTableSelect(dataListSql);
+        StringBuilder sqlBuilder = new StringBuilder();
+        if(CollectionUtils.isNotEmpty(mapLists)){
+            String columnValue = columnString;
+            columnValue = columnValue.replace("box_id", String.valueOf(targetBoxId)).replace("box_re_activiti_id", String.valueOf(targetActivitiId));
+            for (Map map : mapLists) {
+                for(String column:columnList){
+                    if(column.equals("item_valid")){
+                        columnValue = columnValue.replace(column,objectToString(map.get(column)));
+                    }else{
+                        columnValue = columnValue.replace(column,String.format("'%s'",objectToString(map.get(column))));
+                    }
+                }
+                String insertSql = MessageFormat.format("INSERT into {0}({1}) VALUES ({2});", tableName, columnString,columnValue);
+                sqlBuilder.append("\r\n");
+                sqlBuilder.append(insertSql);
+            }
+
+        }
+
+        return sqlBuilder.toString();
+    }
+
+    private String objectToString(Object obj) {
+        if (obj == null) return "";
+        return StringUtils.defaultString(String.valueOf(obj));
     }
 }
