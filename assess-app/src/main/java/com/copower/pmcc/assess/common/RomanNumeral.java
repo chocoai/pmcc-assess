@@ -6,6 +6,8 @@ package com.copower.pmcc.assess.common;
  * @description:
  */
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,14 +69,14 @@ public class RomanNumeral {
      * @return
      */
     public static Integer intValueChinaWord(String romanStr){
-        if (romanStr.isEmpty()) {
+        if (StringUtils.isBlank(romanStr)) {
             throw new IllegalArgumentException("非法的罗马数字格式");
         }
         Map<String,Integer> map = new HashMap<String,Integer>(0);
         map.put("Ⅰ",1);
         map.put("Ⅱ",2);
         map.put("Ⅲ",3);
-        map.put("IV",4);
+        map.put("Ⅳ",4);
         map.put("Ⅴ",5);
         map.put("Ⅵ",6);
         map.put("Ⅶ",7);
@@ -159,6 +161,7 @@ public class RomanNumeral {
     }
 
     /**
+     * 数字  转 罗马
      * @param numberal 只支持1-3999的数字转换
      * @return
      */
@@ -209,7 +212,6 @@ public class RomanNumeral {
             place *= 10;
         }
         return stringValue;
-
     }
 
 

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
+import com.copower.pmcc.assess.common.RomanNumeral;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailAchievementDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -94,6 +95,21 @@ public class DataLandLevelDetailAchievementService {
         Integer pid = 0;
         for (int i = 0; i < stringList.size(); i++) {
             String name = stringList.get(i);
+            if (StringUtils.isNotBlank(name)) {
+                if (name.length() == 1) {
+                    Integer integer = RomanNumeral.intValueChinaWord(name);
+                    if (integer != null) {
+                        String stringValue = null;
+                        try {
+                            stringValue = RomanNumeral.stringValue(integer);
+                        } catch (Exception e) {
+                        }
+                        if (StringUtils.isNotBlank(stringValue)) {
+                            name = stringValue;
+                        }
+                    }
+                }
+            }
             query = new DataLandLevelDetail();
             if (i == 0) {
                 query.setLandLevelId(landLevelId);
@@ -274,8 +290,8 @@ public class DataLandLevelDetailAchievementService {
                 } else {
                     atomicInteger.incrementAndGet();
                 }
-                if (StringUtils.isBlank(landAchievement.getReamark())){
-                    if (landAchievement !=null){
+                if (StringUtils.isBlank(landAchievement.getReamark())) {
+                    if (landAchievement != null) {
 
                     }
                 }
@@ -446,20 +462,20 @@ public class DataLandLevelDetailAchievementService {
             oo.setCreator(commonService.thisUserAccount());
             return dataLandLevelDetailAchievementDao.saveDataLandLevelDetailAchievement(oo);
         } else {
-            return updateDataLandLevelDetailAchievement(oo,true);
+            return updateDataLandLevelDetailAchievement(oo, true);
         }
     }
 
-    public boolean updateDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo, boolean updateNull){
-        if (updateNull){
-            DataLandLevelDetailAchievement dataLandLevelDetailAchievement = getDataLandLevelDetailAchievementById(oo.getId()) ;
-            if (oo.getLevelDetailId() == null ){
+    public boolean updateDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo, boolean updateNull) {
+        if (updateNull) {
+            DataLandLevelDetailAchievement dataLandLevelDetailAchievement = getDataLandLevelDetailAchievementById(oo.getId());
+            if (oo.getLevelDetailId() == null) {
                 oo.setLevelDetailId(dataLandLevelDetailAchievement.getLevelDetailId());
             }
-            if (oo.getAchievement() == null ){
+            if (oo.getAchievement() == null) {
                 oo.setAchievement(dataLandLevelDetailAchievement.getAchievement());
             }
-            if (oo.getGrade() == null ){
+            if (oo.getGrade() == null) {
                 oo.setGrade(dataLandLevelDetailAchievement.getGrade());
             }
             if (StringUtils.isBlank(oo.getCreator())) {
@@ -474,11 +490,11 @@ public class DataLandLevelDetailAchievementService {
 //            if (StringUtils.isBlank(oo.getClassification())) {
 //                oo.setClassification(dataLandLevelDetailAchievement.getClassification());
 //            }
-            if (oo.getGmtCreated() == null){
+            if (oo.getGmtCreated() == null) {
                 oo.setGmtCreated(dataLandLevelDetailAchievement.getGmtCreated());
             }
         }
-        return dataLandLevelDetailAchievementDao.updateDataLandLevelDetailAchievement(oo, updateNull) ;
+        return dataLandLevelDetailAchievementDao.updateDataLandLevelDetailAchievement(oo, updateNull);
     }
 
     public boolean deleteDataLandLevelDetailAchievement(Integer id) {
@@ -728,22 +744,22 @@ public class DataLandLevelDetailAchievementService {
             shape1.setLineStyle(HSSFSimpleShape.LINESTYLE_DASHGEL);
 
         }));
-        BiConsumer<HSSFWorkbook,String> biConsumer = new BiConsumer<HSSFWorkbook, String>() {
+        BiConsumer<HSSFWorkbook, String> biConsumer = new BiConsumer<HSSFWorkbook, String>() {
             @Override
             public void accept(HSSFWorkbook sheets, String s) {
-                String name = String.join("-", sheetName, s) ;
+                String name = String.join("-", sheetName, s);
                 HSSFSheet sheet = wb.getSheet(name);
-                if (sheet != null){
+                if (sheet != null) {
                     return;
                 }
                 HSSFSheet wbSheet = wb.createSheet(name);
                 baseDataDicBiConsumer.accept(wbSheet, null);
             }
-        } ;
+        };
         try {
-            if (StringUtils.isNotBlank(sheetName)){
-                biConsumer.accept(wb,FACTOR);
-                biConsumer.accept(wb,COEFFICIENT);
+            if (StringUtils.isNotBlank(sheetName)) {
+                biConsumer.accept(wb, FACTOR);
+                biConsumer.accept(wb, COEFFICIENT);
             }
         } catch (Exception e) {
             String ex = e.getMessage();
