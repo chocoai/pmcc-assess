@@ -201,7 +201,7 @@
                                                                 </div>
                                                                 <label class="col-sm-1">面积(m²)</label>
                                                                 <div class="col-sm-3">
-                                                                    <input type="text" placeholder="面积" name="area"
+                                                                    <input type="number" placeholder="面积" name="area"
                                                                            data-rule-number="true"
                                                                            class="form-control input-full"
                                                                            value="${basicHouse.area}">
@@ -401,7 +401,7 @@
                                                     租金增长比率<span class="symbol required"></span>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" data-rule-number='true'
+                                                    <input type="number" data-rule-number='true'
                                                            class="form-control input-full"
                                                            name="rentGrowthRate"
                                                            placeholder="租金增长比率(请输入数字)" required="required">
@@ -441,7 +441,7 @@
                                                     分期支付利息<span class="symbol required"></span>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" data-rule-number='true'
+                                                    <input type="number" data-rule-number='true'
                                                            class="form-control input-full"
                                                            name="instalmentInterest"
                                                            placeholder="分期支付利息(请输入数字)" required="required">
@@ -582,7 +582,7 @@
                                                 公共
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="common"
+                                                <input type="number" placeholder="个数" name="common"
                                                        data-rule-number='true'
                                                        class="form-control input-full">
                                             </div>
@@ -590,7 +590,7 @@
                                                 独立
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="independent"
+                                                <input type="number" placeholder="个数" name="independent"
                                                        data-rule-number='true'
                                                        class="form-control input-full">
                                             </div>
@@ -598,7 +598,7 @@
                                                 公用
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="public"
+                                                <input type="number" placeholder="个数" name="public"
                                                        data-rule-number='true'
                                                        class="form-control input-full">
                                             </div>

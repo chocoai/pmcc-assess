@@ -146,7 +146,7 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">占地面积(平方米)</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" data-rule-maxlength="100"
+                                                    <input type="number" data-rule-maxlength="100"
                                                            data-rule-number='true'
                                                            placeholder="占地面积(请输入数字)" name="coverAnArea"
                                                            class="form-control input-full"
@@ -161,7 +161,7 @@
 
                                                 <label class="col-sm-1 control-label">均价</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
+                                                    <input type="number" data-rule-maxlength="100" data-rule-number='true'
                                                            placeholder="均价(请输入数字)" name="averagePrice"
                                                            class="form-control input-full"
                                                            value="${basicEstate.averagePrice}">
@@ -297,7 +297,7 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">土地面积</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" class="form-control input-full"
+                                                    <input type="number" class="form-control input-full"
                                                            data-rule-number='true'
                                                            placeholder="土地面积(请输入数字)" name="landArea"
                                                            value="${basicEstateLandState.landArea}">

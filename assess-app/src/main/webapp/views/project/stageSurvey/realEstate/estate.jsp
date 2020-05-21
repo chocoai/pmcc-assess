@@ -49,13 +49,13 @@
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <select name="city"
-                                                            class="form-control input-full   city">
+                                                            class="form-control input-full search-select select2  city">
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1">县</label>
                                                 <div class="col-sm-3">
                                                     <select name="district"
-                                                            class="form-control input-full   district">
+                                                            class="form-control input-full search-select select2  district">
                                                     </select>
                                                 </div>
                                             </div>
@@ -165,7 +165,7 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">占地面积(平方米)</label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" data-rule-maxlength="100"
+                                                    <input type="number" data-rule-maxlength="100"
                                                            data-rule-number='true'
                                                            placeholder="占地面积(请输入数字)" name="coverAnArea"
                                                            class="form-control input-full"
@@ -195,7 +195,7 @@
                                                 <label class="col-sm-1">总楼栋数<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" data-rule-maxlength="100"
+                                                    <input type="number" data-rule-maxlength="100"
                                                            data-rule-number='true'
                                                            placeholder="总楼栋数(请输入数字)" name="buildingNumber"
                                                            required
@@ -390,7 +390,7 @@
                                                                 <option value="平方米" selected="selected">平方米</option>
                                                                 <option value="亩">亩</option>
                                                             </select>
-                                                            <input type="text" class="form-control form-control-sm"
+                                                            <input type="number" class="form-control form-control-sm"
                                                                    data-rule-number='true' required
                                                                    placeholder="土地面积(请输入数字)" name="landArea"
                                                                    value="${basicEstateLandState.landArea}">
@@ -491,7 +491,7 @@
                                                     <div style="display: none">
                                                         <label class="col-sm-1">投资强度（万元/亩）</label>
                                                         <div class="col-sm-3">
-                                                            <input type="text" class="form-control input-full"
+                                                            <input type="number" class="form-control input-full"
                                                                    data-rule-number='true'
                                                                    placeholder="投资强度（万元/亩） 数字"
                                                                    name="investmentIntensity"
@@ -501,7 +501,7 @@
                                                     <div style="display: none">
                                                         <label class="col-sm-1">建筑限高</label>
                                                         <div class="col-sm-3">
-                                                            <input type="text" class="form-control input-full"
+                                                            <input type="number" class="form-control input-full"
                                                                    data-rule-number='true'
                                                                    placeholder="建筑限高(数字)" name="buildingHeightLimit"
                                                                    value="${basicEstateLandState.buildingHeightLimit}">
