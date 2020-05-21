@@ -5,16 +5,13 @@ import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineCommonQuoteFieldEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
-import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -35,7 +32,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BasicApplyBatchDetailService {
@@ -73,8 +69,6 @@ public class BasicApplyBatchDetailService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicCommonQuoteFieldInfoService basicCommonQuoteFieldInfoService;
-    @Autowired
-    private BaseQrcodeService baseQrcodeService;
     @Autowired
     private BasicEstateStreetInfoService basicEstateStreetInfoService;
     @Autowired
@@ -250,7 +244,6 @@ public class BasicApplyBatchDetailService {
         }
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
         this.insertBasicApply(basicApplyBatchDetail, planDetailsId); //存入basicApply
-        baseQrcodeService.createQrCode(basicApplyBatchDetail);
         return basicApplyBatchDetail;
     }
 
