@@ -142,8 +142,9 @@ public class BaseReportService {
         }
         BaseReportTemplate template = null;
         if (StringUtils.isNotBlank(unitInformationVo.getuUseUnit())) {
-            CrmCustomerRelationDto customerRelationDto = crmRpcCustomerService.getCrmCustomerRelationList(Integer.valueOf(unitInformationVo.getuUseUnit()));
-            template = getReportTemplate(projectInfo, customerRelationDto.getPid(), reportType);
+            CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(unitInformationVo.getuUseUnit()));
+            if (customer != null)
+                template = getReportTemplate(projectInfo, customer.getPid(), reportType);
         }
         if (template == null) {
             template = getCompanyTemplate(projectInfo, reportType);

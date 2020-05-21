@@ -59,11 +59,9 @@ public class BasicHouseController {
         String view = "project/stageSurvey/realEstate/detail/house";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(id);
-        if (basicHouseVo != null) {
-            modelAndView.addObject(StringUtils.uncapitalize(BasicHouse.class.getSimpleName()), basicHouseVo);
-            BasicHouseTradingVo basicHouseTradingVo = basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicHouseVo.getId()));
-            modelAndView.addObject(StringUtils.uncapitalize(BasicHouseTrading.class.getSimpleName()), basicHouseTradingVo);
-        }
+        modelAndView.addObject(StringUtils.uncapitalize(BasicHouse.class.getSimpleName()), basicHouseVo);
+        BasicHouseTradingVo basicHouseTradingVo = basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicHouseVo.getId()));
+        modelAndView.addObject(StringUtils.uncapitalize(BasicHouseTrading.class.getSimpleName()), basicHouseTradingVo);
         return modelAndView;
     }
 
