@@ -1091,7 +1091,6 @@
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
-        url += '&tableName=' + node.tableName;
         url += '&planDetailsId=${projectPlanDetails.id}';
         openWin(url, function () {
         })

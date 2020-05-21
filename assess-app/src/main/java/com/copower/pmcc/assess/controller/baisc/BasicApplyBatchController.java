@@ -507,9 +507,11 @@ public class BasicApplyBatchController extends BaseController {
         ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
         ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-        if (caseStudyExtend.getId().equals(projectPhase.getId()) || caseStudyLand.getId().equals(projectPhase.getId())) {
-            modelAndView.addObject("projectPhase", "caseStudyExtend");
+        if(projectPlanDetails!=null) {
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+            if (caseStudyExtend.getId().equals(projectPhase.getId()) || caseStudyLand.getId().equals(projectPhase.getId())) {
+                modelAndView.addObject("projectPhase", "caseStudyExtend");
+            }
         }
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());

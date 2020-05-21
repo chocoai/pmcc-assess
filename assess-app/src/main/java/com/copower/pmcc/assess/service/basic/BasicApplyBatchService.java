@@ -137,7 +137,12 @@ public class BasicApplyBatchService {
                     }
                 }
             }
-            ztreeDto.setType(item.getType());
+            if(StringUtils.isNotEmpty(item.getType())){
+                ztreeDto.setType(item.getType());
+            }else{
+                BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(item.getTableName());
+                ztreeDto.setType(anEnum.getKey());
+            }
             ztreeDto.setCreator(item.getCreator());
             ztreeDto.setExecutor(item.getExecutor());
             ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));

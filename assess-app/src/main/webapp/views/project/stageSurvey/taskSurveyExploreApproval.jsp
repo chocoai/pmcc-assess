@@ -198,7 +198,6 @@
         var data = formSerializeArray(frm);
         data.tbType = treeNode.type;
         data.tbId = treeNode.tableId;
-        data.tableName = treeNode.tableName;
         data.applyBatchId = treeNode.applyBatchId;
 
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?' + parseParam(data));

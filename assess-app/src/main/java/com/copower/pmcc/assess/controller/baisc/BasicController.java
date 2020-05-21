@@ -3,17 +3,18 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
+import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseCaseSummaryVo;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
-import com.copower.pmcc.assess.service.basic.BasicHouseCaseSummaryService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,8 @@ public class BasicController {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private SurveyCommonService surveyCommonService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     @RequestMapping(value = "/areaCaseMap", name = "案例地图", method = {RequestMethod.GET})
     public ModelAndView areaEstateCaseMap() {
@@ -143,5 +146,31 @@ public class BasicController {
             logger.error(e.getMessage(), e);
         }
         return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/geBasicFormClassifyParamDto", method = {RequestMethod.GET}, name = "通过参数信息")
+    public HttpResult geBasicFormClassifyParamDto(Integer houseId) {
+        try {
+            BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId);
+            if (basicApplyBatchDetail != null) {
+                BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
+                BasicFormClassifyParamDto basicFormClassifyParamDto = new BasicFormClassifyParamDto();
+                basicFormClassifyParamDto.setFormClassify(applyBatch.getClassify());
+                basicFormClassifyParamDto.setFormType(applyBatch.getType());
+                if (StringUtils.isNotEmpty(basicApplyBatchDetail.getType())) {
+                    basicFormClassifyParamDto.setTbType(basicApplyBatchDetail.getType());
+                } else {
+                    BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(basicApplyBatchDetail.getTableName());
+                    basicFormClassifyParamDto.setTbType(anEnum.getKey());
+                }
+                basicFormClassifyParamDto.setTbId(houseId);
+                basicFormClassifyParamDto.setApplyBatchId(applyBatch.getId());
+                return HttpResult.newCorrectResult(basicFormClassifyParamDto);
+            }
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(String.format("异常! %s", e.getMessage()));
+        }
+        return HttpResult.newCorrectResult();
     }
 }

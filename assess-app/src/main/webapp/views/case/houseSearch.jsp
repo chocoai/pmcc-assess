@@ -312,9 +312,34 @@
     var houseFrm = $("#frmCaseBaseHouse");
 
     houseSearch.findHouse = function (id) {
-        var href = "${pageContext.request.contextPath}/basicHouse/detailView";
-        href += "?id=" + id;
-        window.open(href, "");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basic/geBasicFormClassifyParamDto",
+            type: "get",
+            dataType: "json",
+            data: {
+                houseId:id
+            },
+            success: function (result) {
+                if (result.ret) {
+                    var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
+                    url += 'applyBatchId=' + result.data.applyBatchId;
+                    url += '&formClassify=' + result.data.formClassify;
+                    url += '&formType=' + result.data.formType;
+                    url += '&tbId=' + result.data.tbId;
+                    url += '&tbType=' + result.data.tbType;
+                    window.open(url, "");
+                }
+                else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        })
+
+
+
     };
 
     //清空查询条件
