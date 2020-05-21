@@ -260,19 +260,19 @@ public class DataLandLevelDetailService {
             if (target.getGmtCreated() == null){
                 target.setGmtCreated(source.getGmtCreated());
             }
-            if (target.getMainStreet() == null){
-                target.setMainStreet(source.getMainStreet());
-            }
+//            if (target.getMainStreet() == null){
+//                target.setMainStreet(source.getMainStreet());
+//            }
 
-            if (target.getPrice() == null ) {
-                target.setPrice(source.getPrice());
-            }
-            if (target.getFloorPrice() == null ) {
-                target.setFloorPrice(source.getFloorPrice());
-            }
-            if (target.getMuPrice() == null ) {
-                target.setMuPrice(source.getMuPrice());
-            }
+//            if (target.getPrice() == null ) {
+//                target.setPrice(source.getPrice());
+//            }
+//            if (target.getFloorPrice() == null ) {
+//                target.setFloorPrice(source.getFloorPrice());
+//            }
+//            if (target.getMuPrice() == null ) {
+//                target.setMuPrice(source.getMuPrice());
+//            }
         }
         return dataLandLevelDetailDao.updateDataLandLevelDetail(target, updateNull);
     }

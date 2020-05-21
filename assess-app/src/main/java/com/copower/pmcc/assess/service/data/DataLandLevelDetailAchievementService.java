@@ -465,15 +465,15 @@ public class DataLandLevelDetailAchievementService {
             if (StringUtils.isBlank(oo.getCreator())) {
                 oo.setCreator(dataLandLevelDetailAchievement.getCreator());
             }
-            if (StringUtils.isBlank(oo.getCategory())) {
-                oo.setCategory(dataLandLevelDetailAchievement.getCategory());
-            }
+//            if (StringUtils.isBlank(oo.getCategory())) {
+//                oo.setCategory(dataLandLevelDetailAchievement.getCategory());
+//            }
             if (oo.getType() == null) {
                 oo.setType(dataLandLevelDetailAchievement.getType());
             }
-            if (StringUtils.isBlank(oo.getClassification())) {
-                oo.setClassification(dataLandLevelDetailAchievement.getClassification());
-            }
+//            if (StringUtils.isBlank(oo.getClassification())) {
+//                oo.setClassification(dataLandLevelDetailAchievement.getClassification());
+//            }
             if (oo.getGmtCreated() == null){
                 oo.setGmtCreated(dataLandLevelDetailAchievement.getGmtCreated());
             }

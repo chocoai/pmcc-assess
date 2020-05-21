@@ -331,9 +331,9 @@ public class DataLandLevelService {
             if (StringUtils.isBlank(target.getProcessInsId())) {
                 target.setProcessInsId(source.getProcessInsId());
             }
-            if (StringUtils.isBlank(target.getWordSymbol())) {
-                target.setWordSymbol(source.getWordSymbol());
-            }
+//            if (StringUtils.isBlank(target.getWordSymbol())) {
+//                target.setWordSymbol(source.getWordSymbol());
+//            }
             updateDataLandLevel(target,true);
         }
     }
