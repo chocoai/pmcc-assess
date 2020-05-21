@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.common.enums.basic.BasicFormStructureEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -18,10 +17,8 @@ import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
-import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
-import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -31,20 +28,17 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -111,8 +105,7 @@ public class BasicApplyBatchService {
     private CustomBasicAppBatchMapper customBasicAppBatchMapper;
     @Autowired
     private PublicBasicService publicBasicService;
-    @Autowired
-    private BaseQrcodeService baseQrcodeService;
+
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -712,11 +705,6 @@ public class BasicApplyBatchService {
             newBasicApplyBatch.setBisDelete(false);
             newBasicApplyBatch.setCreator(commonService.thisUserAccount());
             basicApplyBatchDao.addBasicApplyBatch(newBasicApplyBatch);
-            try {
-                baseQrcodeService.createQrCode(newBasicApplyBatch);
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-            }
         }
     }
 
