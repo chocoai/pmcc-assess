@@ -7,6 +7,8 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdBaseLandPriceDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -38,13 +40,15 @@ public class MdBaseLandPriceService {
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private DeclareRecordService declareRecordService;
+    private BasicEstateService basicEstateService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataHousePriceIndexDao dataHousePriceIndexDao;
     @Autowired
     private DataHousePriceIndexDetailDao dataHousePriceIndexDetailDao;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     public List<MdBaseLandPrice> getObjectList(MdBaseLandPrice mdBaseLandPrice) {
         return mdBaseLandPriceDao.getObjectList(mdBaseLandPrice);
@@ -113,15 +117,18 @@ public class MdBaseLandPriceService {
         StringBuilder s = new StringBuilder();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObjectId);
         ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(schemeJudgeObject.getProjectId());
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+
+        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+
         //评估基准日
         Date valuationDate = projectInfoById.getValuationDate();
         //找到评估基准日对应的土地因素
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
         List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
+        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict(), dataDic.getId());
         if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
+            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), null, dataDic.getId());
         }
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
             DataHousePriceIndex housePriceIndex = dataHouseIndexList.get(0);

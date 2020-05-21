@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
@@ -43,7 +44,7 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
-    private SurveyCommonService surveyCommonService;
+    private BasicApplyService basicApplyService;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
@@ -152,7 +153,8 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         modelAndView.addObject("judgeObject", schemeJudgeObject);
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+
         if (basicApply == null) {
             return;
         }
@@ -160,14 +162,22 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         if (basicEstate == null) {
             return;
         }
-        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        BasicEstateLandCategoryInfo categoryInfo = null;
+        if(basicApply.getLandCategoryId()!=null){
+            categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+        }else{
+            List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
+            categoryInfo = categoryInfoList.get(0);
+            BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+            modelAndView.addObject("volumetricRate", landStateByEstateId.getPlotRatio());
+        }
 
-        List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
-        if (CollectionUtils.isNotEmpty(categoryInfoList)) {
-            modelAndView.addObject("landFactorTotalScore", categoryInfoList.get(0).getLandFactorTotalScore());
-            modelAndView.addObject("landLevelContent", categoryInfoList.get(0).getLandLevelContentResult());
-            modelAndView.addObject("levelDetailId", categoryInfoList.get(0).getLandLevel());
-            DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfoList.get(0).getLandLevel());
+
+        if (categoryInfo!=null) {
+            modelAndView.addObject("landFactorTotalScore",categoryInfo.getLandFactorTotalScore());
+            modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
+            modelAndView.addObject("levelDetailId",categoryInfo.getLandLevel());
+            DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
             if(levelDetail!=null){
                 modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
                 //基准地价
@@ -185,15 +195,9 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
                 }
                 modelAndView.addObject("volumeFractionAmend", volumeFractionAmend);
                 modelAndView.addObject("hasVolumeFractionAmendId", hasVolumeFractionAmendData.getId());
+                modelAndView.addObject("volumetricRate", categoryInfo.getPlotRatio());
             }
 
-            //容积率
-            String plotRatio = landStateByEstateId.getPlotRatio();
-            if(StringUtils.isNotEmpty(plotRatio)){
-                modelAndView.addObject("volumetricRate", plotRatio);
-            }else{
-                modelAndView.addObject("volumetricRate", categoryInfoList.get(0).getPlotRatio());
-            }
         }
 
         //期日修正系数

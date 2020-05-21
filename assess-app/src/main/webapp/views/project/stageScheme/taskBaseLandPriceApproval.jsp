@@ -30,60 +30,37 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="col-md-12">
-                                    <div class="card full-height">
-                                        <div class="card-header collapse-link">
-                                            <div class="card-head-row">
-                                                <div class="card-title">
-                                                    土地指数
-                                                </div>
-                                                <div class="card-tools">
-                                                    <button class="btn  btn-link btn-primary btn-xs"><span
-                                                            class="fa fa-angle-down"></span>
-                                                    </button>
+                                <div class="row col-md-12">
+                                    <div class="col-md-6">
+                                        <div class="x_title">
+                                            土地指数
+                                        </div>
+                                        <form class="form-horizontal">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <table class="table table-bordered"
+                                                           id="indexDetailTable">
+                                                        <!-- cerare document add ajax data-->
+                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <form class="form-horizontal">
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <table class="table table-bordered" id="indexDetailTable">
-                                                            <!-- cerare document add ajax data-->
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                        </form>
 
-                                <div class="col-md-12">
-                                    <div class="card full-height">
-                                        <div class="card-header collapse-link">
-                                            <div class="card-head-row">
-                                                <div class="card-title">
-                                                    容积率修正系数表
-                                                </div>
-                                                <div class="card-tools">
-                                                    <button class="btn  btn-link btn-primary btn-xs"><span
-                                                            class="fa fa-angle-down"></span>
-                                                    </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="x_title">
+                                            容积率修正系数表
+                                        </div>
+                                        <form class="form-horizontal">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <table class="table table-bordered"
+                                                           id="volumetricRateDetailTable">
+                                                        <!-- cerare document add ajax data-->
+                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <form class="form-horizontal">
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <table class="table table-bordered"
-                                                               id="volumetricRateDetailTable">
-                                                            <!-- cerare document add ajax data-->
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
 
