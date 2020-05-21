@@ -390,9 +390,13 @@
                 <input type="hidden" name="levelDetailId">
                 <form class="form-horizontal">
                     <div class="row form-group">
-                        <div class="col-md-2">
+                        <div class="col-md-7">
                             <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" onclick="landLevel.showDataLandDetailAchievement(this);">
                                 <span class="btn-label"><i class="fa fa-plus"></i></span>新增
+                            </button>
+
+                            <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button" onclick="landLevel.deleteDataLandDetailAchievementBatch()">
+                                <span class="btn-label"><i class="fa fa-minus"></i></span>删除
                             </button>
                         </div>
                     </div>
@@ -542,6 +546,12 @@
 											</span>
                                 新增
                             </button>
+
+                            <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button" onclick="landLevel.deleteCorrectionCoefficientVolumeRatioBatch()">
+                                <span class="btn-label"><i class="fa fa-minus"></i></span>删除
+                            </button>
+
+
                             <table class="table table-bordered"
                                    id="dataAllocationCorrectionCoefficientVolumeRatioDetailTable">
                                 <!-- cerare document add ajax data-->
