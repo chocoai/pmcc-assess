@@ -46,7 +46,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -306,21 +305,36 @@ public class DataLandLevelService {
         }
     }
 
-    public void saveAndUpdateDataLandLevel(DataLandLevel dataLandLevel) {
-        if (dataLandLevel.getId() == null) {
-            dataLandLevel.setCreator(commonService.thisUserAccount());
-            dataLandLevel.setStatus(ProjectStatusEnum.DRAFT.getKey());
-            dataLandLevelDao.addDataLandLevel(dataLandLevel);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class), dataLandLevel.getId());
+    public void saveAndUpdateDataLandLevel(DataLandLevel target) {
+        if (target.getId() == null) {
+            target.setCreator(commonService.thisUserAccount());
+            target.setStatus(ProjectStatusEnum.DRAFT.getKey());
+            dataLandLevelDao.addDataLandLevel(target);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DataLandLevel.class), target.getId());
         } else {
-            DataLandLevel landLevel = getDataLandLevelById(dataLandLevel.getId()) ;
-            if (StringUtils.isBlank(dataLandLevel.getCreator())) {
-                dataLandLevel.setCreator(landLevel.getCreator());
+            DataLandLevel source = getDataLandLevelById(target.getId()) ;
+            if (StringUtils.isBlank(target.getCreator())) {
+                target.setCreator(source.getCreator());
             }
-            if (dataLandLevel.getGmtCreated() == null){
-                dataLandLevel.setGmtCreated(landLevel.getGmtCreated());
+            if (target.getGmtCreated() == null){
+                target.setGmtCreated(source.getGmtCreated());
             }
-            updateDataLandLevel(dataLandLevel ,true);
+            if (StringUtils.isBlank(target.getProvince())) {
+                target.setProvince(source.getProvince());
+            }
+            if (StringUtils.isBlank(target.getCity())) {
+                target.setCity(source.getCity());
+            }
+            if (StringUtils.isBlank(target.getDistrict())) {
+                target.setDistrict(source.getDistrict());
+            }
+            if (StringUtils.isBlank(target.getProcessInsId())) {
+                target.setProcessInsId(source.getProcessInsId());
+            }
+//            if (StringUtils.isBlank(target.getWordSymbol())) {
+//                target.setWordSymbol(source.getWordSymbol());
+//            }
+            updateDataLandLevel(target,true);
         }
     }
 

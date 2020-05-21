@@ -94,7 +94,7 @@
                                                                     土地使用年限
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="土地使用年限(数字)"
+                                                                    <input type="number" placeholder="土地使用年限(数字)"
                                                                            data-rule-number='true'
                                                                            name="landUseYear"
                                                                            class="form-control input-full"
@@ -174,7 +174,7 @@
                                                                     建筑高度
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="建筑高度(数字)"
+                                                                    <input type="number" placeholder="建筑高度(数字)"
                                                                            data-rule-number='true'
                                                                            name="buildingHeight"
                                                                            class="form-control input-full"
@@ -191,7 +191,7 @@
                                                                     建筑面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="建筑面积(数字)"
+                                                                    <input type="number" placeholder="建筑面积(数字)"
                                                                            data-rule-number='true'
                                                                            name="buildingArea"
                                                                            class="form-control input-full"
@@ -201,7 +201,7 @@
                                                                     占地面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="占地面积(数字)"
+                                                                    <input type="number" placeholder="占地面积(数字)"
                                                                            data-rule-number='true'
                                                                            name="coverAnArea"
                                                                            class="form-control input-full"
@@ -359,7 +359,7 @@
                                                                     物业费(平方米)<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="物业费(数字)"
+                                                                    <input type="number" placeholder="物业费(数字)"
                                                                            name="propertyFee" data-rule-number='true'
                                                                            required
                                                                            class="form-control input-full"
@@ -375,7 +375,7 @@
                                                                     配套公共设施使用费
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="配套公共设施使用费(数字)"
+                                                                    <input type="number" placeholder="配套公共设施使用费(数字)"
                                                                            name="facilitiesUseFee"
                                                                            data-rule-number='true'
                                                                            class="form-control input-full"

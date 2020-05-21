@@ -34,63 +34,39 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="col-md-12">
-                                    <div class="card full-height">
-                                        <div class="card-header collapse-link">
-                                            <div class="card-head-row">
-                                                <div class="card-title">
-                                                    土地指数
-                                                </div>
-                                                <div class="card-tools">
-                                                    <button class="btn  btn-link btn-primary btn-xs"><span
-                                                            class="fa fa-angle-down"></span>
-                                                    </button>
+                                <div class="row col-md-12">
+                                    <div class="col-md-6">
+                                        <div class="x_title">
+                                            土地指数
+                                        </div>
+                                        <form class="form-horizontal">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <table class="table table-bordered"
+                                                           id="indexDetailTable">
+                                                        <!-- cerare document add ajax data-->
+                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <form class="form-horizontal">
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <table class="table table-bordered" id="indexDetailTable">
-                                                            <!-- cerare document add ajax data-->
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                        </form>
 
-                                <div class="col-md-12">
-                                    <div class="card full-height">
-                                        <div class="card-header collapse-link">
-                                            <div class="card-head-row">
-                                                <div class="card-title">
-                                                    容积率修正系数表
-                                                </div>
-                                                <div class="card-tools">
-                                                    <button class="btn  btn-link btn-primary btn-xs"><span
-                                                            class="fa fa-angle-down"></span>
-                                                    </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="x_title">
+                                            容积率修正系数表
+                                        </div>
+                                        <form class="form-horizontal">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <table class="table table-bordered"
+                                                           id="volumetricRateDetailTable">
+                                                        <!-- cerare document add ajax data-->
+                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <form class="form-horizontal">
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <table class="table table-bordered"
-                                                               id="volumetricRateDetailTable">
-                                                            <!-- cerare document add ajax data-->
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
-
                                 <div class="col-md-12">
                                     <div class="card full-height">
                                         <div class="card-header collapse-link">
@@ -526,14 +502,14 @@
         }
         var formData = formParams("master");
         formData.rewardRate = AssessCommon.pointToPercent(formData.rewardRate);
-        formData.dateAmend = $.trim($("#dateAmend").text())?$("#dateAmend").text():'';
-        formData.periodAmend = $.trim($("#periodAmend").text())?$("#periodAmend").text():'';
-        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").text())?$("#volumeFractionAmend").text():'';
-        formData.parcelPrice = $.trim($("#parcelPrice").text())?$("#parcelPrice").text():'';
-        formData.parcelBhouPrice = $.trim($("#parcelBhouPrice").text())?$("#parcelBhouPrice").text():'';
-        formData.parcelTotalPrice = $.trim($("#parcelTotalPrice").text())?$("#parcelTotalPrice").text():'';
-        formData.floorPremium = $.trim($("#floorPremium").text())?$("#floorPremium").text():'';
-        formData.correctionDifference = $.trim($("#correctionDifference").text())?$("#correctionDifference").text():'';
+        formData.dateAmend = $.trim($("#dateAmend").text()) ? $("#dateAmend").text() : '';
+        formData.periodAmend = $.trim($("#periodAmend").text()) ? $("#periodAmend").text() : '';
+        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").text()) ? $("#volumeFractionAmend").text() : '';
+        formData.parcelPrice = $.trim($("#parcelPrice").text()) ? $("#parcelPrice").text() : '';
+        formData.parcelBhouPrice = $.trim($("#parcelBhouPrice").text()) ? $("#parcelBhouPrice").text() : '';
+        formData.parcelTotalPrice = $.trim($("#parcelTotalPrice").text()) ? $("#parcelTotalPrice").text() : '';
+        formData.floorPremium = $.trim($("#floorPremium").text()) ? $("#floorPremium").text() : '';
+        formData.correctionDifference = $.trim($("#correctionDifference").text()) ? $("#correctionDifference").text() : '';
         formData.areaAndSeveralAmend = AssessCommon.percentToPoint($("#areaAndSeveralAmend").val());
         formData.landLevelContent = $("#landLevelContent").val();
 
@@ -721,8 +697,8 @@
 
     //因素条件说明及修正系数
     function getLandLevelTabContent() {
-        if(!'${landLevelId}'&&!'${levelDetailId}'){
-            notifyInfo("提示","未关联土地级别");
+        if (!'${landLevelId}' && !'${levelDetailId}') {
+            notifyInfo("提示", "未关联土地级别");
             return false;
         }
         FileUtils.getFileShows({
@@ -768,11 +744,11 @@
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     var landLevelTypeName = item.typeName;
-                    if(item.classification){
-                        landLevelTypeName+="/"+item.classification;
+                    if (item.classification) {
+                        landLevelTypeName += "/" + item.classification;
                     }
-                    if(item.categoryName){
-                        landLevelTypeName+="/"+item.categoryName;
+                    if (item.categoryName) {
+                        landLevelTypeName += "/" + item.categoryName;
                     }
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     var text = "";
@@ -816,11 +792,11 @@
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     var landLevelTypeName = item.typeName;
-                    if(item.classification){
-                        landLevelTypeName+="/"+item.classification;
+                    if (item.classification) {
+                        landLevelTypeName += "/" + item.classification;
                     }
-                    if(item.categoryName){
-                        landLevelTypeName+="/"+item.categoryName;
+                    if (item.categoryName) {
+                        landLevelTypeName += "/" + item.categoryName;
                     }
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     var text = "";

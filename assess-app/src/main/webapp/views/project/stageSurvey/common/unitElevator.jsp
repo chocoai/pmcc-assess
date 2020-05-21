@@ -101,7 +101,7 @@
                                             电梯数量<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="电梯数量(数字)" data-rule-number='true'
+                                            <input type="number" placeholder="电梯数量(数字)" data-rule-number='true'
                                                    name="number" class="form-control input-full" required="required">
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@
                                             准载人数
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="准载人数(数字)" data-rule-number='true'
+                                            <input type="number" placeholder="准载人数(数字)" data-rule-number='true'
                                                    name="quasiLoadNumber" class="form-control input-full" >
                                         </div>
                                     </div>
@@ -127,7 +127,7 @@
                                             准载重量
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="准载重量(数字)" data-rule-number='true'
+                                            <input type="number" placeholder="准载重量(数字)" data-rule-number='true'
                                                    name="quasiLoadWeight" class="form-control input-full" >
                                         </div>
                                     </div>

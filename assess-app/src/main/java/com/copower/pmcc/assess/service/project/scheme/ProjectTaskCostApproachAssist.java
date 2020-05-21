@@ -170,13 +170,13 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         } catch (Exception e) {
             logger.error(String.format("没有获取到数据 ==> %s", e.getMessage()));
         }
-        if(basicEstate!=null){
-            List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
-            if(CollectionUtils.isNotEmpty(categoryInfoList)){
-                modelAndView.addObject("landFactorTotalScore", categoryInfoList.get(0).getLandFactorTotalScore());
-                modelAndView.addObject("landLevelContent", categoryInfoList.get(0).getLandLevelContentResult());
-                modelAndView.addObject("levelDetailId", categoryInfoList.get(0).getLandLevel());
-                DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfoList.get(0).getLandLevel());
+        if(basicApply.getLandCategoryId()!=null){
+            BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+            if(categoryInfo!=null){
+                modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());
+                modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
+                modelAndView.addObject("levelDetailId", categoryInfo.getLandLevel());
+                DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
                 if(levelDetail!=null){
                     modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
                 }

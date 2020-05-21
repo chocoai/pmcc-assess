@@ -111,7 +111,7 @@
                                                 使用面积(m²)<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" data-rule-number="true" placeholder="使用面积" required
+                                                <input type="number" data-rule-number="true" placeholder="使用面积" required
                                                        name="area" class="form-control input-full">
                                             </div>
                                         </div>
@@ -125,7 +125,7 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <div class="input-group">
-                                                    <input type="text" data-rule-number="true" placeholder="层高"
+                                                    <input type="number" data-rule-number="true" placeholder="层高"
                                                            name="layerHeight" class="form-control form-control-sm">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-warning btn-sm dropdown-toggle"
@@ -142,7 +142,7 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <div class="input-group">
-                                                    <input type="text" placeholder="净高" name="clearHeight"
+                                                    <input type="number" placeholder="净高" name="clearHeight"
                                                            data-rule-number="true" class="form-control form-control-sm">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-warning btn-sm dropdown-toggle"

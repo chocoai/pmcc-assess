@@ -1,8 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.ExcelImportUtils;
-import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.StreamUtils;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -36,9 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -224,35 +219,66 @@ public class DataLandLevelDetailService {
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
-    public void saveAndUpdateDataLandLevelDetail(DataLandLevelDetail dataLandLevelDetail) {
-        if (dataLandLevelDetail == null) return;
-        List<DataLandLevelDetail> dataLandLevelDetailList = getDataLandLevelDetailList(dataLandLevelDetail);
+    public void saveAndUpdateDataLandLevelDetail(DataLandLevelDetail target) {
+        if (target == null) return;
+        List<DataLandLevelDetail> dataLandLevelDetailList = getDataLandLevelDetailList(target);
         if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
             return;
         }
-        if (dataLandLevelDetail.getId() == null || dataLandLevelDetail.getId() <= 0) {
-            dataLandLevelDetail.setCreator(commonService.thisUserAccount());
-            dataLandLevelDetailDao.addDataLandLevelDetail(dataLandLevelDetail);
+        if (target.getId() == null || target.getId() <= 0) {
+            target.setCreator(commonService.thisUserAccount());
+            dataLandLevelDetailDao.addDataLandLevelDetail(target);
         } else {
-            DataLandLevelDetail detail = getCacheDataLandLevelDetail(dataLandLevelDetail.getId());
-            if (dataLandLevelDetail.getPid() == null ) {
-                dataLandLevelDetail.setPid(detail.getPid());
-            }
-            if (dataLandLevelDetail.getLandLevelId() == null ) {
-                dataLandLevelDetail.setLandLevelId(detail.getLandLevelId());
-            }
-            if (StringUtils.isBlank(dataLandLevelDetail.getCreator())) {
-                dataLandLevelDetail.setCreator(detail.getCreator());
-            }
-            if (dataLandLevelDetail.getGmtCreated() == null){
-                dataLandLevelDetail.setGmtCreated(detail.getGmtCreated());
-            }
-            updateDataLandLevelDetail(dataLandLevelDetail,true) ;
+            updateDataLandLevelDetail(target,true) ;
         }
     }
 
-    public boolean updateDataLandLevelDetail(DataLandLevelDetail oo, boolean updateNull) {
-        return dataLandLevelDetailDao.updateDataLandLevelDetail(oo, updateNull);
+    public boolean updateDataLandLevelDetail(DataLandLevelDetail target, boolean updateNull) {
+        if (updateNull){
+            DataLandLevelDetail source = getCacheDataLandLevelDetail(target.getId());
+            if (target.getPid() == null ) {
+                target.setPid(source.getPid());
+            }
+            if (target.getLandLevelId() == null ) {
+                target.setLandLevelId(source.getLandLevelId());
+            }
+            if (StringUtils.isBlank(target.getCreator())) {
+                target.setCreator(source.getCreator());
+            }
+            if (StringUtils.isBlank(target.getClassify())) {
+                target.setClassify(source.getClassify());
+            }
+            if (StringUtils.isBlank(target.getType())) {
+                target.setType(source.getType());
+            }
+            if (StringUtils.isBlank(target.getCategory())) {
+                target.setCategory(source.getCategory());
+            }
+            if (StringUtils.isBlank(target.getName())) {
+                target.setName(source.getName());
+            }
+            if (target.getGmtCreated() == null){
+                target.setGmtCreated(source.getGmtCreated());
+            }
+//            if (target.getMainStreet() == null){
+//                target.setMainStreet(source.getMainStreet());
+//            }
+
+//            if (target.getPrice() == null ) {
+//                target.setPrice(source.getPrice());
+//            }
+//            if (target.getFloorPrice() == null ) {
+//                target.setFloorPrice(source.getFloorPrice());
+//            }
+//            if (target.getMuPrice() == null ) {
+//                target.setMuPrice(source.getMuPrice());
+//            }
+        }
+        return dataLandLevelDetailDao.updateDataLandLevelDetail(target, updateNull);
+    }
+
+    public boolean updateDataLandLevelDetail(DataLandLevelDetail oo){
+        return updateDataLandLevelDetail(oo, false);
     }
 
     public void clearNodeChildDataLandLevelDetail(String id) {

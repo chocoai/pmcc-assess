@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailVolumeService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author: zch
@@ -60,12 +62,11 @@ public class DataLandLevelDetailVolumeController {
     }
 
     @DeleteMapping(value = "/delete/{id}", name = "restful delete")
-    public HttpResult delete(@PathVariable Integer id) {
+    public HttpResult delete(@PathVariable String id) {
         try {
-            if (id != null && id != 0) {
-                DataLandLevelDetailVolume coefficientVolumeRatioDetail = new DataLandLevelDetailVolume();
-                coefficientVolumeRatioDetail.setId(id);
-                volumeRatioDetailService.deleteDataLandLevelDetailVolume(id);
+            List<Integer> integerList = FormatUtils.transformString2Integer(id);
+            for (Integer integer:integerList){
+                volumeRatioDetailService.deleteDataLandLevelDetailVolume(integer);
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);

@@ -689,8 +689,8 @@ commonColumn.houseRoomColumn = function () {
                 s += "房间形状:"+row.houseShape;
                 s += ";";
             }
-            if (row.houseShape) {
-                s += "形状说明:"+row.houseShape;
+            if (row.shapeRemark) {
+                s += "形状说明:"+row.shapeRemark;
                 s += ";";
             }
             if (row.area) {
