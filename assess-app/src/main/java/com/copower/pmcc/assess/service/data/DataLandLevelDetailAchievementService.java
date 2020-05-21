@@ -679,7 +679,7 @@ public class DataLandLevelDetailAchievementService {
     }
 
 
-    public void downloadDataLandDetailAchievementFile(String sheetName, Integer id, HSSFWorkbook wb, CellStyle style) throws Exception {
+    public void downloadDataLandDetailAchievementFile(final String sheetName, Integer id, HSSFWorkbook wb, CellStyle style) throws Exception {
         BiConsumer<HSSFSheet, Integer> baseDataDicBiConsumer = (((sheet, integer) -> {
             for (int i = 0; i < 3; i++) {
                 Row row = sheet.createRow(i);
@@ -728,10 +728,28 @@ public class DataLandLevelDetailAchievementService {
             shape1.setLineStyle(HSSFSimpleShape.LINESTYLE_DASHGEL);
 
         }));
-        HSSFSheet wbSheet = wb.createSheet(String.join("-", sheetName, FACTOR));
-        baseDataDicBiConsumer.accept(wbSheet, null);
-        wbSheet = wb.createSheet(String.join("-", sheetName, COEFFICIENT));
-        baseDataDicBiConsumer.accept(wbSheet, null);
+        BiConsumer<HSSFWorkbook,String> biConsumer = new BiConsumer<HSSFWorkbook, String>() {
+            @Override
+            public void accept(HSSFWorkbook sheets, String s) {
+                String name = String.join("-", sheetName, s) ;
+                HSSFSheet sheet = wb.getSheet(name);
+                if (sheet != null){
+                    return;
+                }
+                HSSFSheet wbSheet = wb.createSheet(name);
+                baseDataDicBiConsumer.accept(wbSheet, null);
+            }
+        } ;
+        try {
+            if (StringUtils.isNotBlank(sheetName)){
+                biConsumer.accept(wb,FACTOR);
+                biConsumer.accept(wb,COEFFICIENT);
+            }
+        } catch (Exception e) {
+            String ex = e.getMessage();
+
+            throw e;
+        }
     }
 
 }

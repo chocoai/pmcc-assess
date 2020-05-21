@@ -34,6 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -229,17 +231,17 @@ public class DataLandLevelDetailService {
             target.setCreator(commonService.thisUserAccount());
             dataLandLevelDetailDao.addDataLandLevelDetail(target);
         } else {
-            updateDataLandLevelDetail(target,true) ;
+            updateDataLandLevelDetail(target, true);
         }
     }
 
     public boolean updateDataLandLevelDetail(DataLandLevelDetail target, boolean updateNull) {
-        if (updateNull){
+        if (updateNull) {
             DataLandLevelDetail source = getCacheDataLandLevelDetail(target.getId());
-            if (target.getPid() == null ) {
+            if (target.getPid() == null) {
                 target.setPid(source.getPid());
             }
-            if (target.getLandLevelId() == null ) {
+            if (target.getLandLevelId() == null) {
                 target.setLandLevelId(source.getLandLevelId());
             }
             if (StringUtils.isBlank(target.getCreator())) {
@@ -257,7 +259,7 @@ public class DataLandLevelDetailService {
             if (StringUtils.isBlank(target.getName())) {
                 target.setName(source.getName());
             }
-            if (target.getGmtCreated() == null){
+            if (target.getGmtCreated() == null) {
                 target.setGmtCreated(source.getGmtCreated());
             }
 //            if (target.getMainStreet() == null){
@@ -277,7 +279,7 @@ public class DataLandLevelDetailService {
         return dataLandLevelDetailDao.updateDataLandLevelDetail(target, updateNull);
     }
 
-    public boolean updateDataLandLevelDetail(DataLandLevelDetail oo){
+    public boolean updateDataLandLevelDetail(DataLandLevelDetail oo) {
         return updateDataLandLevelDetail(oo, false);
     }
 
@@ -309,13 +311,23 @@ public class DataLandLevelDetailService {
         settingRecursiveData(dataLandLevelDetailList, detailList);
         //最后去重 根据对象id
         List<DataLandLevelDetail> collect = detailList.stream().filter(StreamUtils.distinctByKey(o -> o.getId())).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(collect)){
+            Iterator<DataLandLevelDetail> iterator = collect.iterator();
+            while (iterator.hasNext()){
+                DataLandLevelDetail levelDetail = iterator.next();
+                if (StringUtils.isNotBlank(levelDetail.getName())){
+                    continue;
+                }
+                levelDetail.setName(getCacheNameById(levelDetail.getId()));
+            }
+        }
         Ordering<DataLandLevelDetail> ordering = Ordering.from(new Comparator<DataLandLevelDetail>() {
             @Override
             public int compare(DataLandLevelDetail o1, DataLandLevelDetail o2) {
                 return o1.getId().compareTo(o2.getId());
             }
         });
-        Collections.sort(collect,ordering);
+        Collections.sort(collect, ordering);
         return collect;
     }
 
@@ -350,34 +362,35 @@ public class DataLandLevelDetailService {
             return dataLandLevelDetail.getName();
         }
         String name = StringUtils.EMPTY;
-        BaseDataDic baseDataDic = null;
-        if (dataLandLevelDetail.getType() != null && NumberUtils.isNumber(dataLandLevelDetail.getType())) {
-            baseDataDic = baseDataDicService.getCacheDataDicById(Integer.parseInt(dataLandLevelDetail.getType()));
-            if (baseDataDic == null) return null;
-            name = baseDataDic.getName();
-        }
-        if (dataLandLevelDetail.getPid() > 0) {
-            dataLandLevelDetail = getCacheDataLandLevelDetail(dataLandLevelDetail.getPid());
-            if (NumberUtils.isNumber(dataLandLevelDetail.getClassify())) {
-                baseDataDic = baseDataDicService.getCacheDataDicById(Integer.parseInt(dataLandLevelDetail.getClassify()));
-            }
-            if (baseDataDic != null) {
-                name = baseDataDic.getName() + "/" + name;
-            }
-            if (StringUtils.isBlank(name)) {
-                if (NumberUtils.isNumber(dataLandLevelDetail.getCategory())) {
-                    baseDataDic = baseDataDicService.getCacheDataDicById(Integer.parseInt(dataLandLevelDetail.getCategory()));
+        BiFunction<DataLandLevelDetail, String, String> biConsumer = new BiFunction<DataLandLevelDetail, String, String>() {
+            @Override
+            public String apply(DataLandLevelDetail dataLandLevelDetail, String s) {
+                String name = s;
+                if (StringUtils.isBlank(name)) {
+                    if (NumberUtils.isNumber(dataLandLevelDetail.getClassify())) {
+                        name = baseDataDicService.getNameById(dataLandLevelDetail.getClassify());
+                    }
                 }
+                if (StringUtils.isBlank(name)) {
+                    if (NumberUtils.isNumber(dataLandLevelDetail.getType())) {
+                        name = baseDataDicService.getNameById(dataLandLevelDetail.getType());
+                    }
+                }
+                if (StringUtils.isBlank(name)) {
+                    if (NumberUtils.isNumber(dataLandLevelDetail.getCategory())) {
+                        name = baseDataDicService.getNameById(dataLandLevelDetail.getCategory());
+                    }
+                }
+                return name;
             }
-            if (baseDataDic != null) {
-                name = baseDataDic.getName() + "/" + name;
-            }
-            if (StringUtils.isBlank(name) && StringUtils.isNotBlank(dataLandLevelDetail.getCategory())) {
-                name = dataLandLevelDetail.getCategory();
-            }
-        }
+        };
+
+
+        //解决老数据问题
+        name = biConsumer.apply(dataLandLevelDetail,name) ;
         return name;
     }
+
 
     /**
      * 缓存中获取

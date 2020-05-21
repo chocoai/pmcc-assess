@@ -863,10 +863,12 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
             AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
                 console.log(landRightNatureData.name)
                 if (landRightNatureData.name == "划拨") {
-                    frm.find("input[name='useEndDate']").parent().parent().hide();
+                    frm.find("input[name='useEndDate']").parent().hide();
+                    frm.find("input[name='useEndDate']").parent().prev().hide();
                     frm.find("input[name='useStartDate']").attr("required", true);
                 } else {
-                    frm.find("input[name='useEndDate']").parent().parent().show();
+                    frm.find("input[name='useEndDate']").parent().show();
+                    frm.find("input[name='useEndDate']").parent().prev().show();
                     frm.find("input[name='useStartDate']").attr("required", false);
                 }
             });
