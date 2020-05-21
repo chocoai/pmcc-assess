@@ -5,13 +5,12 @@ import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
-import com.copower.pmcc.assess.dto.input.CrmTreeDto;
-import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.service.TemplateSetService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.BaseReportService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.ZtreeDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +62,9 @@ public class TemplateSetController {
     @RequestMapping(value = "/queryCustomerTree", name = "取得客户树", method = RequestMethod.GET)
     public HttpResult queryCustomerTree() {
         try {
-            return HttpResult.newCorrectResult(templateSetService.getCrmTree());
+            List<ZtreeDto> crmTree = templateSetService.getCrmTree();
+            return HttpResult.newCorrectResult(crmTree);
         } catch (Exception e) {
-            String ex = e.getMessage() ;
             return HttpResult.newErrorResult(e.getMessage());
         }
     }

@@ -182,8 +182,8 @@ public class BasicHouseController {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
-            List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
-            BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true,ignoreList);
+            List<String> ignoreList = Lists.newArrayList("estateId", "buildingId", "unitId");
+            BasicHouse basicHouse = (BasicHouse) basicHouseService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
             Map<String, Object> objectMap = basicHouseService.getBasicHouseMapById(basicHouse.getId());
             return HttpResult.newCorrectResult(objectMap);
         } catch (Exception e) {
@@ -196,8 +196,8 @@ public class BasicHouseController {
     @RequestMapping(value = "/quoteCaseHouse", name = "引用案列数据", method = {RequestMethod.GET})
     public HttpResult quoteCaseHouse(Integer sourceId, Integer targetId) {
         try {
-            List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
-            BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntityIgnore(sourceId, targetId, true,ignoreList);
+            List<String> ignoreList = Lists.newArrayList("estateId", "buildingId", "unitId");
+            BasicHouse basicHouse = (BasicHouse) basicHouseService.copyBasicEntityIgnore(sourceId, targetId, true, ignoreList);
             basicHouse.setQuoteId(sourceId);
             basicHouse.setBisCase(false);
             basicHouseService.saveAndUpdate(basicHouse, false);

@@ -127,7 +127,7 @@
                                                     租金增长比率<span class="symbol required"></span>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" data-rule-number='true'
+                                                    <input type="number" data-rule-number='true'
                                                            class="form-control input-full"
                                                            name="rentGrowthRate"
                                                            placeholder="租金增长比率(请输入数字)" required="required">
@@ -167,7 +167,7 @@
                                                     分期支付利息<span class="symbol required"></span>
                                                 </label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" data-rule-number='true'
+                                                    <input type="number" data-rule-number='true'
                                                            class="form-control input-full"
                                                            name="instalmentInterest"
                                                            placeholder="分期支付利息(请输入数字)" required="required">

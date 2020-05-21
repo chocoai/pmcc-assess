@@ -83,7 +83,7 @@
                                                                     首层位置<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="首层位置(数字)"
+                                                                    <input type="number" placeholder="首层位置(数字)"
                                                                            data-rule-number='true' required
                                                                            name="firstFloor"
                                                                            class="form-control input-full"
@@ -93,7 +93,7 @@
                                                                     最高层<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="最高层(数字)"
+                                                                    <input type="number" placeholder="最高层(数字)"
                                                                            data-rule-number='true' required
                                                                            name="maxFloor"
                                                                            class="form-control input-full"
@@ -120,7 +120,7 @@
                                                                     建筑面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="建筑面积(数字)"
+                                                                    <input type="number" placeholder="建筑面积(数字)"
                                                                            data-rule-number='true'
                                                                            name="buildingArea"
                                                                            class="form-control input-full"
@@ -130,7 +130,7 @@
                                                                     物业费(平方米)<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="物业费(数字)"
+                                                                    <input type="number" placeholder="物业费(数字)"
                                                                            name="propertyFee" data-rule-number='true'
                                                                            required
                                                                            class="form-control input-full"

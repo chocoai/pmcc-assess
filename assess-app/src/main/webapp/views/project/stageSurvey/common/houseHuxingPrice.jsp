@@ -88,7 +88,7 @@
                                                 面积
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="面积" name="area" data-rule-number='true'
+                                                <input type="number" placeholder="面积" name="area" data-rule-number='true'
                                                        class="form-control input-full">
                                             </div>
                                         </div>
