@@ -523,6 +523,7 @@ function zTreeOnClick(event, treeId, treeNode) {
     landLevel.getDataLandLevelDetailById(treeNode.id, function (data) {
         landLevel.initLandLevelDetailBaseForm(form, data);
     });
+    zTree.checkAllNodes(false);
     zTree.checkNode(treeNode, true, true);
 }
 
@@ -778,6 +779,21 @@ landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function 
     }, "delete");
 };
 
+landLevel.deleteCorrectionCoefficientVolumeRatioBatch = function () {
+    var rows = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        notifyInfo('提示', "请勾选要删除的数据");
+        return false;
+    }
+    var ids = [];
+    $.each(rows, function (i, item) {
+        ids.push(item.id);
+    });
+    landLevel.ajaxServerFun({_method: "DELETE"}, '/dataLandLevelDetailVolume/delete/' + ids.join(","), "post", function () {
+        landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('refresh');
+    }, "delete");
+};
+
 landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag) {
     var target = $('#ajaxFileUploadLandLevelDetailCoefficientVolumeRatio');
     var levelDetailId = "";
@@ -858,7 +874,7 @@ landLevel.showDataHousePriceIndexDetailList = function (levelDetailId) {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    });
+    },true);
 };
 //------容积率 method end--------//
 
@@ -904,6 +920,21 @@ landLevel.deleteDataLandDetailAchievement = function (index) {
     }, "delete");
 };
 
+landLevel.deleteDataLandDetailAchievementBatch = function () {
+    var rows = landLevel.config.achievementTable.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        notifyInfo('提示', "请勾选要删除的数据");
+        return false;
+    }
+    var ids = [];
+    $.each(rows, function (i, item) {
+        ids.push(item.id);
+    });
+    landLevel.ajaxServerFun({_method: "DELETE"}, '/dataLandLevelDetailAchievement/delete/' + ids.join(","), "post", function () {
+        landLevel.config.achievementTable.bootstrapTable('refresh');
+    }, "delete");
+};
+
 landLevel.downloadDataLandDetailAchievementFile = function (this_) {
     //AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseAchievementTemplate)
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
@@ -912,11 +943,11 @@ landLevel.downloadDataLandDetailAchievementFile = function (this_) {
         notifyInfo('提示', '至少勾选一个节点');
         return false;
     }
-    var ids = [] ;
-    $.each(nodes,function (j,node) {
-        ids.push(node.id) ;
-    }) ;
-    landLevel.ajaxServerFun({id:ids.join(",")}, "/dataLandLevelDetailAchievement/downloadDataLandDetailAchievementFile", "post", function (fileId) {
+    var ids = [];
+    $.each(nodes, function (j, node) {
+        ids.push(node.id);
+    });
+    landLevel.ajaxServerFun({id: ids.join(",")}, "/dataLandLevelDetailAchievement/downloadDataLandDetailAchievementFile", "post", function (fileId) {
         FileUtils.downAttachments(fileId);
         FileUtils.deleteFile({attachmentId: fileId});
     });
@@ -999,7 +1030,7 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    });
+    }, true);
 };
 
 //土地级别详情从表 土地因素 保存或者更新

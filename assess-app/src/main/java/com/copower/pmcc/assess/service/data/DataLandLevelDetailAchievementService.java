@@ -446,21 +446,38 @@ public class DataLandLevelDetailAchievementService {
             oo.setCreator(commonService.thisUserAccount());
             return dataLandLevelDetailAchievementDao.saveDataLandLevelDetailAchievement(oo);
         } else {
-            DataLandLevelDetailAchievement dataLandLevelDetailAchievement = getDataLandLevelDetailAchievementById(oo.getId()) ;
-            if (oo.getLevelDetailId() == null ){
-                oo.setLevelDetailId(dataLandLevelDetailAchievement.getLevelDetailId());
-            }
-            if (StringUtils.isBlank(oo.getCreator())) {
-                oo.setCreator(dataLandLevelDetailAchievement.getCreator());
-            }
-            if (oo.getGmtCreated() == null){
-                oo.setGmtCreated(dataLandLevelDetailAchievement.getGmtCreated());
-            }
             return updateDataLandLevelDetailAchievement(oo,true);
         }
     }
 
     public boolean updateDataLandLevelDetailAchievement(DataLandLevelDetailAchievement oo, boolean updateNull){
+        if (updateNull){
+            DataLandLevelDetailAchievement dataLandLevelDetailAchievement = getDataLandLevelDetailAchievementById(oo.getId()) ;
+            if (oo.getLevelDetailId() == null ){
+                oo.setLevelDetailId(dataLandLevelDetailAchievement.getLevelDetailId());
+            }
+            if (oo.getAchievement() == null ){
+                oo.setAchievement(dataLandLevelDetailAchievement.getAchievement());
+            }
+            if (oo.getGrade() == null ){
+                oo.setGrade(dataLandLevelDetailAchievement.getGrade());
+            }
+            if (StringUtils.isBlank(oo.getCreator())) {
+                oo.setCreator(dataLandLevelDetailAchievement.getCreator());
+            }
+//            if (StringUtils.isBlank(oo.getCategory())) {
+//                oo.setCategory(dataLandLevelDetailAchievement.getCategory());
+//            }
+            if (oo.getType() == null) {
+                oo.setType(dataLandLevelDetailAchievement.getType());
+            }
+//            if (StringUtils.isBlank(oo.getClassification())) {
+//                oo.setClassification(dataLandLevelDetailAchievement.getClassification());
+//            }
+            if (oo.getGmtCreated() == null){
+                oo.setGmtCreated(dataLandLevelDetailAchievement.getGmtCreated());
+            }
+        }
         return dataLandLevelDetailAchievementDao.updateDataLandLevelDetailAchievement(oo, updateNull) ;
     }
 

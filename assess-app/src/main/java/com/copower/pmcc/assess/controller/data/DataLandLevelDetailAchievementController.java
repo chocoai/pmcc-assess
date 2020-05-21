@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailAchievementService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -35,9 +37,13 @@ public class DataLandLevelDetailAchievementController {
     }
 
     @DeleteMapping(value = "/delete/{id}", name = "restful delete")
-    public HttpResult delete(@PathVariable Integer id) {
+    public HttpResult delete(@PathVariable String id) {
         try {
-            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.deleteDataLandLevelDetailAchievement(id));
+            List<Integer> integerList = FormatUtils.transformString2Integer(id);
+            for (Integer integer:integerList){
+                LandLevelDetailAchievementService.deleteDataLandLevelDetailAchievement(integer) ;
+            }
+            return HttpResult.newCorrectResult(true);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);

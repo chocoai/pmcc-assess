@@ -140,9 +140,21 @@ public class DataLandLevelDetailVolumeService {
             oo.setCreator(commonService.thisUserAccount());
             return dataLandDetailAchievementDao.saveDataLandLevelDetailVolume(oo);
         } else {
+            return updateDataLandLevelDetailVolume(oo,true);
+        }
+    }
+
+    public boolean updateDataLandLevelDetailVolume(DataLandLevelDetailVolume oo, boolean updateNull){
+        if (updateNull){
             DataLandLevelDetailVolume dataLandLevelDetailVolume = getDataLandLevelDetailVolumeById(oo.getId()) ;
             if (oo.getLevelDetailId() == null){
                 oo.setLevelDetailId(dataLandLevelDetailVolume.getLevelDetailId());
+            }
+            if (oo.getPlotRatio() == null){
+                oo.setPlotRatio(dataLandLevelDetailVolume.getPlotRatio());
+            }
+            if (oo.getCorrectionFactor() == null){
+                oo.setCorrectionFactor(dataLandLevelDetailVolume.getCorrectionFactor());
             }
             if (StringUtils.isBlank(oo.getCreator())) {
                 oo.setCreator(dataLandLevelDetailVolume.getCreator());
@@ -150,11 +162,7 @@ public class DataLandLevelDetailVolumeService {
             if (oo.getGmtCreated() == null){
                 oo.setGmtCreated(dataLandLevelDetailVolume.getGmtCreated());
             }
-            return updateDataLandLevelDetailVolume(oo,true);
         }
-    }
-
-    public boolean updateDataLandLevelDetailVolume(DataLandLevelDetailVolume oo, boolean updateNull){
         return dataLandDetailAchievementDao.updateDataLandLevelDetailVolume(oo, updateNull) ;
     }
 
