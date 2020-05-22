@@ -912,12 +912,17 @@
             };
             initParcelSettingData(data);
 
-            if ('${apply}' == 'apply') {
+            if(!'${master.landLevelContent}'){
                 $("#landLevelContent").val('${landLevelContent}');
+            }
+            if(!'${master.plotRatioElementAmend}'){
                 $("#plotRatioElementAmend").val(AssessCommon.pointToPercent('${landFactorTotalScore}'));
-            } else {
+            }else {
                 $("#plotRatioElementAmend").val(AssessCommon.pointToPercent('${master.plotRatioElementAmend}'));
             }
+
+
+
         }
 
     })

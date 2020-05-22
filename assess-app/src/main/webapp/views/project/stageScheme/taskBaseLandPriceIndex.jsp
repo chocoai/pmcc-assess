@@ -529,14 +529,22 @@
         showVolumetricRateDetailList(${hasVolumeFractionAmendId});
         //因素条件说明及修正系数
         //getLevelDetailId()
-        if ('${apply}' == 'apply') {
+        if(!'${master.areaAndSeveralAmend}'){
             $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${landFactorTotalScore}'));
-            $("#landLevelContent").val('${landLevelContent}');
-            $("#standardPremium").val(getSomePlaces(parseFloat('${standardPremium}'), 2));
-            $("#legalAge").val(getSomePlaces(parseFloat('${legalAge}'), 2));
-            $("#volumetricRate").val(getSomePlaces(parseFloat('${volumetricRate}'), 2));
-        } else {
+        }else{
             $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${master.areaAndSeveralAmend}'));
+        }
+        if(!'${master.landLevelContent}'){
+            $("#landLevelContent").val('${landLevelContent}');
+        }
+        if(!'${master.standardPremium}'){
+            $("#standardPremium").val(getSomePlaces(parseFloat('${standardPremium}'), 2));
+        }
+        if(!'${master.legalAge}'){
+            $("#legalAge").val(getSomePlaces(parseFloat('${legalAge}'), 2));
+        }
+        if(!'${master.volumetricRate}'){
+            $("#volumetricRate").val(getSomePlaces(parseFloat('${volumetricRate}'), 2));
         }
 
         getPeriodAmend();
