@@ -28,6 +28,7 @@ import com.copower.pmcc.assess.dto.output.data.DataPropertyVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -142,6 +143,10 @@ public class GenerateBaseDataService {
     private SurveyCommonService surveyCommonService;
     private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
     private GenerateReportGroupService generateReportGroupService;
+    private DeclareBuildingConstructionPermitService declareBuildingConstructionPermitService;
+    private DeclareBuildingPermitService declareBuildingPermitService;
+    private DeclareLandUsePermitService declareLandUsePermitService;
+    private DeclarePreSalePermitService declarePreSalePermitService;
 
     /**
      * 构造器必须传入的参数
@@ -171,7 +176,7 @@ public class GenerateBaseDataService {
     public String getWordNumber() {
         try {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId,reportGroup.getId(), assessProjectType, this.reportType.getId(), false);
+            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId, reportGroup.getId(), assessProjectType, this.reportType.getId(), false);
             String number = symbolListDto.getSymbol();
             if (StringUtils.isNotBlank(number)) {
                 return number;
@@ -2054,28 +2059,33 @@ public class GenerateBaseDataService {
     }
 
     public List<DeclareRealtyCheckList> getEquityStatusObjectSheetCheckListHelp(DeclareRecord declareRecord) {
-        DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
-        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
-            center.setType(DeclareRealtyHouseCert.class.getSimpleName());
-            center.setHouseId(declareRecord.getDataTableId());
-        }
-        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
-            center.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
-            center.setRealEstateId(declareRecord.getDataTableId());
-        }
-        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
-            center.setType(DeclareRealtyLandCert.class.getSimpleName());
-            center.setLandId(declareRecord.getDataTableId());
-        }
-        if (StringUtils.isBlank(center.getType())) {
-            return new ArrayList<>();
-        }
-        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(center);
-        if (CollectionUtils.isNotEmpty(centerList)) {
-            return declareRealtyCheckListService.getDeclareRealtyCheckLists(centerList.get(0).getId());
-        } else {
-            return new ArrayList<>();
-        }
+        List<Integer> dataIds = declareBuildEngineeringAndEquipmentCenterService.getDataIds(declareRecord, DeclareRealtyCheckList.class);
+        return CollectionUtils.isNotEmpty(dataIds) ? declareRealtyCheckListService.getDeclareRealtyCheckListByIds(dataIds) : new ArrayList<>();
+    }
+
+    public List<DeclareBuildingConstructionPermit> getEquityStatusObjectSheetDeclareBuildingConstructionPermit(DeclareRecord declareRecord) {
+        List<Integer> dataIds = declareBuildEngineeringAndEquipmentCenterService.getDataIds(declareRecord, DeclareBuildingConstructionPermit.class);
+        return CollectionUtils.isNotEmpty(dataIds) ? declareBuildingConstructionPermitService.getDataIds(dataIds) : new ArrayList<>();
+    }
+
+    public List<DeclareBuildingPermit> getEquityStatusObjectSheetDeclareDeclareBuildingPermit(DeclareRecord declareRecord) {
+        List<Integer> dataIds = declareBuildEngineeringAndEquipmentCenterService.getDataIds(declareRecord, DeclareBuildingPermit.class);
+        return CollectionUtils.isNotEmpty(dataIds) ? declareBuildingPermitService.getDataIds(dataIds) : new ArrayList<>();
+    }
+
+    public List<DeclareLandUsePermit> getEquityStatusObjectSheetDeclareLandUsePermit(DeclareRecord declareRecord) {
+        List<Integer> dataIds = declareBuildEngineeringAndEquipmentCenterService.getDataIds(declareRecord, DeclareLandUsePermit.class);
+        return CollectionUtils.isNotEmpty(dataIds) ? declareLandUsePermitService.getDataIds(dataIds) : new ArrayList<>();
+    }
+
+    public List<DeclarePreSalePermit> getEquityStatusObjectSheetDeclarePreSalePermit(DeclareRecord declareRecord) {
+        List<Integer> dataIds = declareBuildEngineeringAndEquipmentCenterService.getDataIds(declareRecord, DeclarePreSalePermit.class);
+        return CollectionUtils.isNotEmpty(dataIds) ? declarePreSalePermitService.getDataIds(dataIds) : new ArrayList<>();
+    }
+
+    public List<DeclareRealtyLandCert> getEquityStatusObjectSheetDeclareRealtyLandCert(DeclareRecord declareRecord) {
+        List<Integer> dataIds = declareBuildEngineeringAndEquipmentCenterService.getDataIds(declareRecord, DeclareRealtyLandCert.class);
+        return CollectionUtils.isNotEmpty(dataIds) ? declareRealtyLandCertService.getDataIds(dataIds) : new ArrayList<>();
     }
 
     /**
@@ -2089,20 +2099,7 @@ public class GenerateBaseDataService {
         generateCommonMethod.settingBuildingTable(documentBuilder);
         //设置表格样式
         //设置具体宽度自动适应
-        PreferredWidth preferredWidth = PreferredWidth.AUTO;
-        documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-        documentBuilder.getCellFormat().setPreferredWidth(preferredWidth);
-        documentBuilder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-        documentBuilder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
-        documentBuilder.getCellFormat().setHorizontalMerge(CellVerticalAlignment.CENTER);
-        documentBuilder.getCellFormat().setTopPadding(0);
-        documentBuilder.getCellFormat().setBottomPadding(0);
-        documentBuilder.getCellFormat().setLeftPadding(0);
-        documentBuilder.getCellFormat().setRightPadding(0);
-
-        LinkedList<String> linkedLists = new LinkedList<String>();
-        final int colMax = 13;
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        AsposeUtils.setDefaultTable(documentBuilder);
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             schemeJudgeObjectList = schemeJudgeObjectList.stream().filter(StreamUtils.distinctByKey(o -> o.getDeclareRecordId())).collect(Collectors.toList());
@@ -2110,7 +2107,6 @@ public class GenerateBaseDataService {
         Iterator<SchemeJudgeObject> objectIterator = schemeJudgeObjectList.iterator();
         while (objectIterator.hasNext()) {
             SchemeJudgeObject schemeJudgeObject = objectIterator.next();
-            Table table = documentBuilder.startTable();
             if (schemeJudgeObject.getDeclareRecordId() == null) {
                 continue;
             }
@@ -2121,113 +2117,398 @@ public class GenerateBaseDataService {
             if (schemeJudgeObjectList.size() > 1) {
                 documentBuilder.writeln(StringUtils.repeat(ControlChar.PARAGRAPH_BREAK_CHAR, 1) + generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList) + "权属明细清单");
             }
-            String sysAreaName = erpAreaService.getSysAreaName(StringUtils.isNotBlank(declareRecord.getDistrict()) ? declareRecord.getDistrict() : declareRecord.getCity());
-            String name = sysAreaName + "不动产登记中心不动产登记明细清单";
-
-            //第一行
-            documentBuilder.insertCell();
-            List<KeyValueDto> keyValueDtoList = AsposeUtils.getKeyValueDtoList();
-            keyValueDtoList.add(new KeyValueDto("font-weight", "bold"));
-            documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(name, keyValueDtoList));
-//            AsposeUtils.insertCell(name,documentBuilder) ;
-            for (int i = 0; i < colMax - 1; i++) {
-                documentBuilder.insertCell();
-            }
-            mergeCellModelList.add(new MergeCellModel(0, 0, 0, 12));
-            documentBuilder.endRow();
-
-            //第二行
-            linkedLists.addAll(Arrays.asList("权利人", "", "", "", "", "不动产权证号", "", "", "", "", "", "业务件号", ""));
-            AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
-            linkedLists.clear();
-            mergeCellModelList.add(new MergeCellModel(1, 0, 1, 4));
-            mergeCellModelList.add(new MergeCellModel(1, 5, 1, 10));
-            mergeCellModelList.add(new MergeCellModel(1, 11, 1, 12));
-
-            //第三行
-            linkedLists.addAll(Arrays.asList(declareRecord.getOwnership(), "", "", "", "", declareRecord.getName(), "", "", "", "", "", "", ""));
-            AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
-            linkedLists.clear();
-            mergeCellModelList.add(new MergeCellModel(2, 0, 2, 4));
-            mergeCellModelList.add(new MergeCellModel(2, 5, 2, 10));
-            mergeCellModelList.add(new MergeCellModel(2, 11, 2, 12));
-
-            //第四行
-            linkedLists.addAll(Arrays.asList("不动产自然状况", "", "", "", "", "", "", "", "", "", "", "", ""));
-            AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
-            linkedLists.clear();
-            mergeCellModelList.add(new MergeCellModel(3, 0, 3, 12));
-
-            //第五行
-            linkedLists.addAll(Arrays.asList("不动产单元号", "所在区", "街道", "门牌号", "附号", "栋号", "单元", "楼层", "房号", "用途", "结构", "房屋建筑面积（㎡）", "分摊建筑面积（㎡）"));
-            AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
-            linkedLists.clear();
-
-            //清单行
-            List<DeclareRealtyCheckList> checkListList = getEquityStatusObjectSheetCheckListHelp(declareRecord);
-            List<BigDecimal> areas = new ArrayList<>(checkListList.size());
-            if (CollectionUtils.isNotEmpty(checkListList)) {
-                Iterator<DeclareRealtyCheckList> iterator = checkListList.iterator();
-                while (iterator.hasNext()) {
-                    DeclareRealtyCheckList checkList = iterator.next();
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getRealEstateUnitNumber()) ? checkList.getRealEstateUnitNumber() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getDistrict()) ? checkList.getDistrict() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getStreetNumber()) ? checkList.getStreetNumber() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getHouseNumber()) ? checkList.getHouseNumber() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getAttachedNumber()) ? checkList.getAttachedNumber() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getBuildingNumber()) ? checkList.getBuildingNumber() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getUnit()) ? checkList.getUnit() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getFloor()) ? checkList.getFloor() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getRoomNumber()) ? checkList.getRoomNumber() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getCertUse()) ? checkList.getCertUse() : "");
-                    linkedLists.add(StringUtils.isNotEmpty(checkList.getHousingStructure()) ? checkList.getHousingStructure() : "");
-                    if (checkList.getFloorArea() != null) {
-                        linkedLists.add(ArithmeticUtils.getBigDecimalString(checkList.getFloorArea()));
-                        areas.add(checkList.getFloorArea());
-                    } else {
-                        linkedLists.add("");
-                    }
-                    if (checkList.getApportionmentArea() != null) {
-                        linkedLists.add(ArithmeticUtils.getBigDecimalString(checkList.getApportionmentArea()));
-                    } else {
-                        linkedLists.add("");
-                    }
-                    AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
-                    linkedLists.clear();
-                }
-            }
-            //统计行
-            BigDecimal bigDecimal = ArithmeticUtils.add(areas);
-            linkedLists.addAll(Arrays.asList("总套数（套/间）", "", String.valueOf(checkListList.size()), "", "", "", "总面积", "", "", "", "", ArithmeticUtils.round(bigDecimal.toString(), 2), ""));
-            AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
-            linkedLists.clear();
-            mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 0, 5 + checkListList.size(), 1));
-            mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 2, 5 + checkListList.size(), 5));
-            mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 6, 5 + checkListList.size(), 10));
-            mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 11, 5 + checkListList.size(), 12));
-
-            //打印 行
-            linkedLists.addAll(Arrays.asList("打印人", "", "", "", "", "填发单位", "", sysAreaName + "不动产登记中心", "", "", "", "打印日期", ""));//后面维护人员可以使用  ， 线上环境注释掉
-            AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
-            linkedLists.clear();
-            mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 0, 6 + checkListList.size(), 1));
-            mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 2, 6 + checkListList.size(), 4));
-            mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 5, 6 + checkListList.size(), 6));
-            mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 7, 6 + checkListList.size(), 10));
-
-            //debug行
-            if (false) {
-                linkedLists.addAll(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));//后面维护人员可以使用  ， 线上环境注释掉
-                AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
-                linkedLists.clear();
-            }
-
-            AsposeUtils.mergeCellTable(mergeCellModelList, table);
-            documentBuilder.endTable();
+            writeDeclareRealtyCheckListTable(declareRecord, documentBuilder);
+            writeDeclareBuildingConstructionPermitTable(declareRecord, documentBuilder);
+            writeDeclareDeclareBuildingPermitTable(declareRecord, documentBuilder);
+            writeDeclareLandUsePermitTable(declareRecord, documentBuilder);
+            writeDeclarePreSalePermitTable(declareRecord, documentBuilder);
+            writeDeclareRealtyLandCertTable(declareRecord, documentBuilder);
         }
         String localPath = getLocalPath();
         AsposeUtils.saveWord(localPath, doc);
         return localPath;
+    }
+
+    /**
+     * 建筑工程施工许可证
+     *
+     * @param declareRecord
+     * @param documentBuilder
+     * @throws Exception
+     */
+    private void writeDeclareBuildingConstructionPermitTable(DeclareRecord declareRecord, DocumentBuilder documentBuilder) throws Exception {
+        List<DeclareBuildingConstructionPermit> lists = getEquityStatusObjectSheetDeclareBuildingConstructionPermit(declareRecord);
+        if (CollectionUtils.isEmpty(lists)) {
+            return;
+        }
+        AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml("建筑工程施工许可证", AsposeUtils.getKeyValueDtoList()));
+        LinkedList<String> linkedLists = new LinkedList<String>();
+        LinkedList<String> titles = new LinkedList<String>();
+        titles.add("证书编号");
+        titles.add("发证机关");
+        titles.add("日期");
+        titles.add("建设单位（个人）");
+        titles.add("建设项目名称");
+        titles.add("建设地址");
+        titles.add("建设规模");
+        titles.add("勘察单位");
+        titles.add("设计单位");
+        titles.add("施工单位");
+        titles.add("监理单位");
+        titles.add("勘察单位项目负责人");
+        titles.add("设计单位项目负责人");
+        titles.add("施工单位项目负责人");
+        titles.add("总监理工程师");
+        titles.add("合同工期");
+        titles.add("备注");
+        final int colMax = titles.size();
+        Table table = documentBuilder.startTable();
+        AsposeUtils.writeWordTitle(documentBuilder, titles);
+        if (CollectionUtils.isNotEmpty(lists)) {
+            Iterator<DeclareBuildingConstructionPermit> iterator = lists.iterator();
+            while (iterator.hasNext()) {
+                DeclareBuildingConstructionPermit target = iterator.next();
+                linkedLists.add(AsposeUtils.getValue(target.getCertificateNumber()));
+                linkedLists.add(AsposeUtils.getValue(target.getIssuingOrgan()));
+                linkedLists.add(AsposeUtils.getValue(target.getDate()));
+                linkedLists.add(AsposeUtils.getValue(target.getBuildUnit()));
+                linkedLists.add(AsposeUtils.getValue(target.getName()));
+                linkedLists.add(AsposeUtils.getValue(target.getBuildAddress()));
+                linkedLists.add(AsposeUtils.getValue(target.getScaleConstruction()));
+                linkedLists.add(AsposeUtils.getValue(target.getReconnaissanceUnit()));
+                linkedLists.add(AsposeUtils.getValue(target.getDesignUnit()));
+                linkedLists.add(AsposeUtils.getValue(target.getConstructionControlUnit()));
+                linkedLists.add(AsposeUtils.getValue(target.getReconnaissanceUnitPerson()));
+                linkedLists.add(AsposeUtils.getValue(target.getDesignUnitPerson()));
+                linkedLists.add(AsposeUtils.getValue(target.getConstructionUnitPerson()));
+                linkedLists.add(AsposeUtils.getValue(target.getChiefEngineerConstructionInspection()));
+                linkedLists.add(AsposeUtils.getValue(target.getContractPeriod()));
+                linkedLists.add(AsposeUtils.getValue(target.getRemark()));
+                AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+                linkedLists.clear();
+            }
+        }
+        documentBuilder.endTable();
+    }
+
+    /**
+     * 建设工程规划许可证
+     *
+     * @param declareRecord
+     * @param documentBuilder
+     * @throws Exception
+     */
+    private void writeDeclareDeclareBuildingPermitTable(DeclareRecord declareRecord, DocumentBuilder documentBuilder) throws Exception {
+        List<DeclareBuildingPermit> lists = getEquityStatusObjectSheetDeclareDeclareBuildingPermit(declareRecord);
+        if (CollectionUtils.isEmpty(lists)) {
+            return;
+        }
+        AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml("建设工程规划许可证", AsposeUtils.getKeyValueDtoList()));
+        LinkedList<String> linkedLists = new LinkedList<String>();
+        LinkedList<String> titles = new LinkedList<String>();
+        titles.add("证书编号");
+        titles.add("发证机关");
+        titles.add("日期");
+        titles.add("建设单位（个人）");
+        titles.add("建设项目名称");
+        titles.add("建设位置");
+        titles.add("建设规模");
+        titles.add("备注");
+        final int colMax = titles.size();
+        Table table = documentBuilder.startTable();
+        AsposeUtils.writeWordTitle(documentBuilder, titles);
+        if (CollectionUtils.isNotEmpty(lists)) {
+            Iterator<DeclareBuildingPermit> iterator = lists.iterator();
+            while (iterator.hasNext()) {
+                DeclareBuildingPermit target = iterator.next();
+                linkedLists.add(AsposeUtils.getValue(target.getCertificateNumber()));
+                linkedLists.add(AsposeUtils.getValue(target.getIssuingOrgan()));
+                linkedLists.add(AsposeUtils.getValue(target.getDate()));
+                linkedLists.add(AsposeUtils.getValue(target.getUnit()));
+                linkedLists.add(AsposeUtils.getValue(target.getName()));
+                linkedLists.add(AsposeUtils.getValue(target.getLocation()));
+                linkedLists.add(AsposeUtils.getValue(target.getScaleConstruction()));
+                linkedLists.add(AsposeUtils.getValue(target.getRemark()));
+                AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+                linkedLists.clear();
+            }
+        }
+        documentBuilder.endTable();
+    }
+
+    /**
+     * 建设用地规划许可证
+     *
+     * @param declareRecord
+     * @param documentBuilder
+     * @throws Exception
+     */
+    private void writeDeclareLandUsePermitTable(DeclareRecord declareRecord, DocumentBuilder documentBuilder) throws Exception {
+        List<DeclareLandUsePermit> lists = getEquityStatusObjectSheetDeclareLandUsePermit(declareRecord);
+        if (CollectionUtils.isEmpty(lists)) {
+            return;
+        }
+        AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml("建设用地规划许可证", AsposeUtils.getKeyValueDtoList()));
+        LinkedList<String> linkedLists = new LinkedList<String>();
+        LinkedList<String> titles = new LinkedList<String>();
+        titles.add("证书编号");
+        titles.add("发证机关");
+        titles.add("日期");
+        titles.add("用地单位");
+        titles.add("用地项目名称");
+        titles.add("用地位置");
+        titles.add("用地性质");
+        titles.add("用地面积");
+        titles.add("建设规模");
+        titles.add("备注");
+        final int colMax = titles.size();
+        Table table = documentBuilder.startTable();
+        AsposeUtils.writeWordTitle(documentBuilder, titles);
+        if (CollectionUtils.isNotEmpty(lists)) {
+            Iterator<DeclareLandUsePermit> iterator = lists.iterator();
+            while (iterator.hasNext()) {
+                DeclareLandUsePermit target = iterator.next();
+                linkedLists.add(AsposeUtils.getValue(target.getCertificateNumber()));
+                linkedLists.add(AsposeUtils.getValue(target.getIssuingOrgan()));
+                linkedLists.add(AsposeUtils.getValue(target.getDate()));
+                linkedLists.add(AsposeUtils.getValue(target.getUnit()));
+                linkedLists.add(AsposeUtils.getValue(target.getName()));
+                linkedLists.add(AsposeUtils.getValue(target.getLocation()));
+                linkedLists.add(AsposeUtils.getValue(target.getNature()));
+                linkedLists.add(AsposeUtils.getValue(target.getArea()));
+                linkedLists.add(AsposeUtils.getValue(target.getScaleConstruction()));
+                linkedLists.add(AsposeUtils.getValue(target.getRemark()));
+                AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+                linkedLists.clear();
+            }
+        }
+        documentBuilder.endTable();
+    }
+
+    /**
+     * 商品房预售许可证
+     *
+     * @param declareRecord
+     * @param documentBuilder
+     * @throws Exception
+     */
+    private void writeDeclarePreSalePermitTable(DeclareRecord declareRecord, DocumentBuilder documentBuilder) throws Exception {
+        List<DeclarePreSalePermit> lists = getEquityStatusObjectSheetDeclarePreSalePermit(declareRecord);
+        if (CollectionUtils.isEmpty(lists)) {
+            return;
+        }
+        AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml("商品房预售许可证", AsposeUtils.getKeyValueDtoList()));
+        LinkedList<String> linkedLists = new LinkedList<String>();
+        LinkedList<String> titles = new LinkedList<String>();
+        titles.add("证书编号");
+        titles.add("发证机关");
+        titles.add("售房单位");
+        titles.add("法定代表人");
+        titles.add("项目坐落");
+        titles.add("项目名称");
+        titles.add("预售面积");
+        titles.add("预售范围");
+        titles.add("房屋用途");
+        titles.add("建筑结构");
+        titles.add("预售款监管信息");
+        titles.add("日期");
+        titles.add("在建工程抵押情况");
+        titles.add("备注");
+        final int colMax = titles.size();
+        Table table = documentBuilder.startTable();
+        AsposeUtils.writeWordTitle(documentBuilder, titles);
+        if (CollectionUtils.isNotEmpty(lists)) {
+            Iterator<DeclarePreSalePermit> iterator = lists.iterator();
+            while (iterator.hasNext()) {
+                DeclarePreSalePermit target = iterator.next();
+                linkedLists.add(AsposeUtils.getValue(target.getCertificateNumber()));
+                linkedLists.add(AsposeUtils.getValue(target.getIssuingOrgan()));
+                linkedLists.add(AsposeUtils.getValue(target.getSalesUnit()));
+                linkedLists.add(AsposeUtils.getValue(target.getLegalRepresentative()));
+                linkedLists.add(AsposeUtils.getValue(target.getBeLocated()));
+                linkedLists.add(AsposeUtils.getValue(target.getName()));
+                linkedLists.add(AsposeUtils.getValue(target.getPreSaleArea()));
+                linkedLists.add(AsposeUtils.getValue(target.getPreSaleScope()));
+                linkedLists.add(AsposeUtils.getValue(target.getHousingUse()));
+                linkedLists.add(AsposeUtils.getValue(target.getBuildingStructure()));
+                linkedLists.add(AsposeUtils.getValue(target.getDate()));
+                linkedLists.add(AsposeUtils.getValue(target.getMortgageSituation()));
+                linkedLists.add(AsposeUtils.getValue(target.getRemark()));
+                AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+                linkedLists.clear();
+            }
+        }
+        documentBuilder.endTable();
+    }
+
+    /**
+     * 土地证
+     *
+     * @param declareRecord
+     * @param documentBuilder
+     * @throws Exception
+     */
+    private void writeDeclareRealtyLandCertTable(DeclareRecord declareRecord, DocumentBuilder documentBuilder) throws Exception {
+        List<DeclareRealtyLandCert> lists = getEquityStatusObjectSheetDeclareRealtyLandCert(declareRecord);
+        if (CollectionUtils.isEmpty(lists)) {
+            return;
+        }
+        AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml("土地证", AsposeUtils.getKeyValueDtoList()));
+        LinkedList<String> linkedLists = new LinkedList<String>();
+        LinkedList<String> titles = new LinkedList<String>();
+        titles.add("编号");
+        titles.add("区域");
+        titles.add("土地权证号");
+        titles.add("坐落");
+        titles.add("地号");
+        titles.add("图号");
+        titles.add("使用权面积");
+        titles.add("分摊面积");
+        titles.add("土地使用权人");
+        titles.add("共有情况");
+        titles.add("土地用途类型");
+        titles.add("土地用途类别");
+        titles.add("权利性质");
+        titles.add("登记机关");
+        final int colMax = titles.size();
+        Table table = documentBuilder.startTable();
+        AsposeUtils.writeWordTitle(documentBuilder, titles);
+        if (CollectionUtils.isNotEmpty(lists)) {
+            Iterator<DeclareRealtyLandCert> iterator = lists.iterator();
+            while (iterator.hasNext()) {
+                DeclareRealtyLandCert landCert = iterator.next();
+                DeclareRealtyLandCertVo target = declareRealtyLandCertService.getDeclareRealtyLandCertVo(landCert);
+                linkedLists.add(AsposeUtils.getValue(target.getAutoInitNumber()));
+                linkedLists.add(AsposeUtils.getValue(Arrays.asList(target.getProvinceName(), target.getCityName(), target.getDistrictName())));
+                linkedLists.add(AsposeUtils.getValue(target.getLandCertName()));
+                linkedLists.add(AsposeUtils.getValue(target.getBeLocated()));
+                linkedLists.add(AsposeUtils.getValue(target.getLandNumber()));
+                linkedLists.add(AsposeUtils.getValue(target.getGraphNumber()));
+                linkedLists.add(AsposeUtils.getValue(target.getUseRightArea()));
+                linkedLists.add(AsposeUtils.getValue(target.getApportionmentArea()));
+                linkedLists.add(AsposeUtils.getValue(target.getOwnership()));
+                linkedLists.add(AsposeUtils.getValue(target.getPublicSituationName()));
+                linkedLists.add(AsposeUtils.getValue(target.getCertUse()));
+                linkedLists.add(AsposeUtils.getValue(target.getCertUseCategory()));
+                linkedLists.add(AsposeUtils.getValue(target.getLandRightNatureName()));
+                linkedLists.add(AsposeUtils.getValue(target.getRegistrationAuthority()));
+                AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+                linkedLists.clear();
+            }
+        }
+        documentBuilder.endTable();
+    }
+
+    /**
+     * 不动产清单
+     *
+     * @param declareRecord
+     * @param documentBuilder
+     * @throws Exception
+     */
+    private void writeDeclareRealtyCheckListTable(DeclareRecord declareRecord, DocumentBuilder documentBuilder) throws Exception {
+        LinkedList<String> linkedLists = new LinkedList<String>();
+        //清单行
+        List<DeclareRealtyCheckList> checkListList = getEquityStatusObjectSheetCheckListHelp(declareRecord);
+        if (CollectionUtils.isEmpty(checkListList)) {
+            return;
+        }
+        AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml("不动产清单", AsposeUtils.getKeyValueDtoList()));
+        final int colMax = 13;
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        Table table = documentBuilder.startTable();
+        String sysAreaName = erpAreaService.getSysAreaName(StringUtils.isNotBlank(declareRecord.getDistrict()) ? declareRecord.getDistrict() : declareRecord.getCity());
+        String name = sysAreaName + "不动产登记中心不动产登记明细清单";
+
+        //第一行
+        documentBuilder.insertCell();
+        List<KeyValueDto> keyValueDtoList = AsposeUtils.getKeyValueDtoList();
+        keyValueDtoList.add(new KeyValueDto("font-weight", "bold"));
+        documentBuilder.insertHtml(AsposeUtils.getWarpCssHtml(name, keyValueDtoList));
+        for (int i = 0; i < colMax - 1; i++) {
+            documentBuilder.insertCell();
+        }
+        mergeCellModelList.add(new MergeCellModel(0, 0, 0, 12));
+        documentBuilder.endRow();
+
+        //第二行
+        linkedLists.addAll(Arrays.asList("权利人", "", "", "", "", "不动产权证号", "", "", "", "", "", "业务件号", ""));
+        AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+        linkedLists.clear();
+        mergeCellModelList.add(new MergeCellModel(1, 0, 1, 4));
+        mergeCellModelList.add(new MergeCellModel(1, 5, 1, 10));
+        mergeCellModelList.add(new MergeCellModel(1, 11, 1, 12));
+
+        //第三行
+        linkedLists.addAll(Arrays.asList(declareRecord.getOwnership(), "", "", "", "", declareRecord.getName(), "", "", "", "", "", "", ""));
+        AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+        linkedLists.clear();
+        mergeCellModelList.add(new MergeCellModel(2, 0, 2, 4));
+        mergeCellModelList.add(new MergeCellModel(2, 5, 2, 10));
+        mergeCellModelList.add(new MergeCellModel(2, 11, 2, 12));
+
+        //第四行
+        linkedLists.addAll(Arrays.asList("不动产自然状况", "", "", "", "", "", "", "", "", "", "", "", ""));
+        AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+        linkedLists.clear();
+        mergeCellModelList.add(new MergeCellModel(3, 0, 3, 12));
+
+        //第五行
+        linkedLists.addAll(Arrays.asList("不动产单元号", "所在区", "街道", "门牌号", "附号", "栋号", "单元", "楼层", "房号", "用途", "结构", "房屋建筑面积（㎡）", "分摊建筑面积（㎡）"));
+        AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+        linkedLists.clear();
+
+
+        List<BigDecimal> areas = new ArrayList<>(checkListList.size());
+        if (CollectionUtils.isNotEmpty(checkListList)) {
+            Iterator<DeclareRealtyCheckList> iterator = checkListList.iterator();
+            while (iterator.hasNext()) {
+                DeclareRealtyCheckList checkList = iterator.next();
+                linkedLists.add(AsposeUtils.getValue(checkList.getRealEstateUnitNumber()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getDistrict()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getStreetNumber()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getHouseNumber()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getAttachedNumber()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getBuildingNumber()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getUnit()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getFloor()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getRoomNumber()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getCertUse()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getHousingStructure()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getFloorArea()));
+                linkedLists.add(AsposeUtils.getValue(checkList.getApportionmentArea()));
+                AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+                linkedLists.clear();
+            }
+        }
+        //统计行
+        BigDecimal bigDecimal = ArithmeticUtils.add(areas);
+        linkedLists.addAll(Arrays.asList("总套数（套/间）", "", String.valueOf(checkListList.size()), "", "", "", "总面积", "", "", "", "", ArithmeticUtils.round(bigDecimal.toString(), 2), ""));
+        AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+        linkedLists.clear();
+        mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 0, 5 + checkListList.size(), 1));
+        mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 2, 5 + checkListList.size(), 5));
+        mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 6, 5 + checkListList.size(), 10));
+        mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 11, 5 + checkListList.size(), 12));
+
+        //打印 行
+        linkedLists.addAll(Arrays.asList("打印人", "", "", "", "", "填发单位", "", sysAreaName + "不动产登记中心", "", "", "", "打印日期", ""));//后面维护人员可以使用  ， 线上环境注释掉
+        AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+        linkedLists.clear();
+        mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 0, 6 + checkListList.size(), 1));
+        mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 2, 6 + checkListList.size(), 4));
+        mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 5, 6 + checkListList.size(), 6));
+        mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 7, 6 + checkListList.size(), 10));
+
+        //debug行
+        if (false) {
+            linkedLists.addAll(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));//后面维护人员可以使用  ， 线上环境注释掉
+            AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
+            linkedLists.clear();
+        }
+
+        AsposeUtils.mergeCellTable(mergeCellModelList, table);
+        documentBuilder.endTable();
     }
 
     public String getEquityStatusObjectNumber() {
@@ -3402,7 +3683,7 @@ public class GenerateBaseDataService {
                     mdDevelopmentItem = developmentPriceItems.get(0);
                 }
                 stringBuilder.delete(0, stringBuilder.toString().length());
-                if (mdCompare == null && mdIncomeItem == null && mdCostItem == null && mdDevelopmentItem == null){
+                if (mdCompare == null && mdIncomeItem == null && mdCostItem == null && mdDevelopmentItem == null) {
                     continue;
                 }
                 if (objectListMap.size() > 1) {
@@ -7067,6 +7348,11 @@ public class GenerateBaseDataService {
         this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
         this.basicHouseHuxingPriceService = SpringContextUtils.getBean(BasicHouseHuxingPriceService.class);
         this.generateReportGroupService = SpringContextUtils.getBean(GenerateReportGroupService.class);
+
+        this.declareBuildingConstructionPermitService = SpringContextUtils.getBean(DeclareBuildingConstructionPermitService.class);
+        this.declareBuildingPermitService = SpringContextUtils.getBean(DeclareBuildingPermitService.class);
+        this.declareLandUsePermitService = SpringContextUtils.getBean(DeclareLandUsePermitService.class);
+        this.declarePreSalePermitService = SpringContextUtils.getBean(DeclarePreSalePermitService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         if (areaGroup == null) {

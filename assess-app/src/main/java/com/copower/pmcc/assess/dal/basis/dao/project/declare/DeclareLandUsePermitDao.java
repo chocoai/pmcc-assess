@@ -72,6 +72,13 @@ public class DeclareLandUsePermitDao {
         criteria.andIdIsNotNull();
         return declareLandUsePermitMapper.selectByExample(example) ;
     }
+
+    public List<DeclareLandUsePermit> getDataIds(List<Integer> ids){
+        DeclareLandUsePermitExample example = new DeclareLandUsePermitExample();
+        DeclareLandUsePermitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        return declareLandUsePermitMapper.selectByExample(example) ;
+    }
     
     
 }

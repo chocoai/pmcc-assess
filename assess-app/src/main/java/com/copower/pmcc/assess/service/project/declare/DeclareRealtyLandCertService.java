@@ -606,4 +606,7 @@ public class DeclareRealtyLandCertService {
         }
     }
 
+    public List<DeclareRealtyLandCert> getDataIds(List<Integer> dataIds) {
+        return declareRealtyLandCertDao.getDataIds(dataIds) ;
+    }
 }
