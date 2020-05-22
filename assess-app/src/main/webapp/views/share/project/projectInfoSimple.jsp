@@ -13,6 +13,8 @@
                     <small><input type="button" id="btnViewProjectInfoMore" class="btn btn-success btn-sm"
                                   value="查看更多..."/>
                     </small>
+                    <small><a href="${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}" target="_blank" style="color: white;" class="btn btn-success btn-sm">项目中心</a>
+                    </small>
                     <small>${projectInfo.projectCategoryName}</small>
                 </div>
                 <div class="card-tools">

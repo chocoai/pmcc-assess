@@ -171,7 +171,7 @@ public class GenerateBaseDataService {
     public String getWordNumber() {
         try {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId,reportGroup.getId(), assessProjectType, this.reportType.getId(), false);
+            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId, reportGroup.getId(), assessProjectType, this.reportType.getId(), false);
             String number = symbolListDto.getSymbol();
             if (StringUtils.isNotBlank(number)) {
                 return number;
@@ -3402,7 +3402,7 @@ public class GenerateBaseDataService {
                     mdDevelopmentItem = developmentPriceItems.get(0);
                 }
                 stringBuilder.delete(0, stringBuilder.toString().length());
-                if (mdCompare == null && mdIncomeItem == null && mdCostItem == null && mdDevelopmentItem == null){
+                if (mdCompare == null && mdIncomeItem == null && mdCostItem == null && mdDevelopmentItem == null) {
                     continue;
                 }
                 if (objectListMap.size() > 1) {
@@ -4766,7 +4766,7 @@ public class GenerateBaseDataService {
                 case BankGeneralLocation:
                     if (StringUtils.isNotEmpty(declareRecord.getSeat())) {
                         stringBuilder.append("估价对象位于");
-                        stringBuilder.append(basicEstateVo.getCityName()).append(basicEstateVo.getDistrictName()).append(declareRecord.getSeat());
+                        stringBuilder.append(declareRecord.getSeat());
                         stringBuilder.append(",").append("地处").append(basicEstateVo.getCityName()).append(basicEstateVo.getDistrictName());
                     }
                     if (StringUtils.isNotEmpty(stringBuilder.toString())) {
@@ -4782,7 +4782,7 @@ public class GenerateBaseDataService {
                         stringBuilder.append(orientationName).append("朝向");
                     }
                     if (StringUtils.isNotEmpty(stringBuilder.toString())) {
-                        stringLinkedList.add(stringBuilder.toString());
+                        stringLinkedList.add(StringUtils.strip(stringBuilder.toString(), ","));
                     }
                     stringBuilder.delete(0, stringBuilder.toString().length());
                     Map<String, String> stringMap = Maps.newHashMap();
