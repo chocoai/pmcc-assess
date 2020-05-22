@@ -179,6 +179,7 @@
             return false;
         }
         var node = nodes[0];
+        console.log(node) ;
         var url = '${pageContext.request.contextPath}/basicApplyBatch/informationPhoneEdit?';
         url += 'applyBatchId=' + node.applyBatchId;
         url += '&formClassify=' + '${basicApplyBatch.classify}';

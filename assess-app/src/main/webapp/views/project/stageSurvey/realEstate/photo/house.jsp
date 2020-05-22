@@ -112,11 +112,11 @@
         <div class="col-sm-12 col-md-12">
             <div class="form-inline x-valid">
 
-                <div class="col-xs-12 col-sm-6  text-center" style="margin-top:15px;">
+                <div class="col-xs-6   text-center" style="margin-top:15px;">
                     {name} {fileViewName}
                 </div>
 
-                <div class="col-xs-12 col-sm-6   text-center" style="margin-top:15px;">
+                <div class="col-xs-6   text-center" style="margin-top:15px;">
                     操作: {html}
                 </div>
             </div>
