@@ -25,6 +25,7 @@
                             <div class="card-body">
                                 <div class="x_content">
                                     <form class="form-horizontal" id="basicBuildingFrm">
+                                        <input type="hidden" name="id" value="${basicBuilding.id}">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card-body">

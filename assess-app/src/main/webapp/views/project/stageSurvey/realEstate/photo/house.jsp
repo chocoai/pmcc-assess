@@ -9,7 +9,6 @@
 <body>
 
 
-
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -71,7 +70,6 @@
                                         <input type="hidden" name="id" value="${basicHouseTrading.id}">
 
 
-
                                         <div class="x_title">
                                             <div class="clearfix"></div>
                                         </div>
@@ -90,10 +88,8 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <form class="form-horizontal">
-                                        <div class="col-sm-12 col-md-12">
-                                            <table class="table table-bordered" id="HouseRoomList" cellspacing="10">
-                                                <!-- cerare document add ajax data-->
-                                            </table>
+                                        <div id="houseRoomToolDiv">
+
                                         </div>
                                     </form>
                                 </div>
@@ -108,8 +104,29 @@
     </div>
 </div>
 </body>
-</html>
 
+
+<script type="text/html" id="houseRoomHtmlModel">
+    <div class="form-group">
+
+        <div class="col-sm-12 col-md-12">
+            <div class="form-inline x-valid">
+
+                <div class="col-xs-12 col-sm-6  text-center" style="margin-top:15px;">
+                    {name} {fileViewName}
+                </div>
+
+                <div class="col-xs-12 col-sm-6   text-center" style="margin-top:15px;">
+                    操作: {html}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</script>
+
+
+</html>
 
 
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
@@ -131,6 +148,10 @@
 
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+
+
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;">
+
 <script type="text/javascript">
 
     var houseRoom;
@@ -162,7 +183,6 @@
                 var target = $(this_);
                 var fieldName = target.attr("data-fileid");
                 var id = target.attr("data-id");
-                var table = $("#" + houseRoom.prototype.config().table);
                 Loading.progressShow();
                 $.ajaxFileUpload({
                     type: "POST",
@@ -179,7 +199,7 @@
                     success: function (result) {
                         Loading.progressHide();
                         if (result.ret) {
-                            table.bootstrapTable('refresh');
+                            houseRoom.prototype.loadDataDicList();
                             notifySuccess("成功", "上传附件成功!");
                         } else {
                             if (result.errmsg) {
@@ -203,7 +223,6 @@
                 $("#" + fileId).trigger('click');
             },
             delFileObj: function (tableId) {
-                var table = $("#" + houseRoom.prototype.config().table);
                 AssessCommon.getSysAttachmentDtoList({
                     tableId: tableId,
                     tableName: AssessDBKey.BasicHouseRoom
@@ -219,33 +238,38 @@
                     AlertConfirm("是否确认删除当前附件", "删除相应的数据后将不可恢复", function (flag) {
                         AssessCommon.deleteAttachmentById(arr.join(","), function () {
                             notifySuccess("成功", "附件成功删除!");
-                            table.bootstrapTable('refresh');
+                            houseRoom.prototype.loadDataDicList();
                         });
                     });
                 });
             },
-            loadDataDicList: function () {
-                var table = $("#" + houseRoom.prototype.config().table);
-                var cols = [];
-                cols.push({
-                    field: 'name', title: '名称', formatter: function (value, row, index) {
-                        var s = "";
-                        if (row.name) {
-                            s += row.name;
+            getDataList: function (callback) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/basicHouseRoom/basicHouseRoomList",
+                    type: "get",
+                    dataType: "json",
+                    data: {houseId: houseCommon.getHouseId()},
+                    success: function (result) {
+                        if (result.ret) {
+                            if (callback) {
+                                callback(result.data);
+                            }
+                        } else {
+                            AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                         }
-                        if (row.creatorName) {
-                            s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
-                        }
-                        return s;
-                    },width: '35%'
+                    }
                 });
-                cols.push({field: 'fileViewName', title: '附件',width: '35%'});
-                AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineHouseRoomFilePart, '', function (html, resultData) {
-                    cols.push({
-                        field: 'id', title: '文件上传', formatter: function (value, row, index) {
-                            var str = '<div class="btn-margin">';
+            },
+            loadDataDicList: function () {
+                var target = $("#houseRoomToolDiv");
+                target.empty();
+                houseRoom.prototype.getDataList(function (result) {
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineHouseRoomFilePart, '', function (html, resultData) {
+                        $.each(result, function (k, row) {
+                            var html = $("#houseRoomHtmlModel").html();
+                            var str = "";
                             $.each(resultData, function (i, fileData) {
-                                str += "<input name='file' onchange='houseRoom.prototype.inputFile(this)' style='display: none' type='file' multiple='multiple' id='" + fileData.fieldName + row.id + "'" + "data-id='" + value + "'" + "data-fileId='" + fileData.fieldName + "'" + ">";
+                                str += "<input name='file' onchange='houseRoom.prototype.inputFile(this)' style='display: none' type='file' multiple='multiple' id='" + fileData.fieldName + row.id + "'" + "data-id='" + row.id + "'" + "data-fileId='" + fileData.fieldName + "'" + ">";
                                 str += '<button type="button" onclick="houseRoom.prototype.importEvent(' + "'" + fileData.fieldName + row.id + "'" + ')"  style="margin-left: 5px;"  class="btn btn-info btn-xs tooltips"  data-placement="bottom" data-original-title="上传附件">';
                                 str += '<i class="fa fa-cloud-upload-alt"></i>';
                                 str += '</button>';
@@ -254,26 +278,27 @@
                                 str += '<i class="fa fa-minus"></i>';
                                 str += '</button>';
                             });
-                            str += '</div>';
-                            return str;
-                        },width: '20%'
-                    });
-                    table.bootstrapTable('destroy');
-                    TableInit(table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-                        houseId: houseCommon.getHouseId()
-                    }, {
-                        showColumns: false,
-                        showRefresh: false,
-                        search: false,
-                        cardView:true, //卡片视图模式
-                        onLoadSuccess: function () {
-                            $('.tooltips').tooltip();
-                            table.find("tbody").find("tr").each(function () {
 
-                            }) ;
-                        }
-                    });
-                }, false);
+                            var s = "";
+                            if (row.name) {
+                                s += row.name;
+                            }
+                            if (row.creatorName) {
+                                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+                            }
+                            if (row.fileViewName) {
+                                html = html.replace(/{fileViewName}/g, row.fileViewName);
+                            } else {
+                                html = html.replace(/{fileViewName}/g, "");
+                            }
+                            html = html.replace(/{name}/g, s);
+                            html = html.replace(/{html}/g, str);
+
+                            target.append(html);
+
+                        });
+                    }, false);
+                });
             }
         };
 
@@ -283,7 +308,7 @@
 //        })
     })();
     $(function () {
-        houseCommon.initById('${basicHouse.id}' ,function () {
+        houseCommon.initById('${basicHouse.id}', function () {
             houseRoom.prototype.loadDataDicList();
         });
 
