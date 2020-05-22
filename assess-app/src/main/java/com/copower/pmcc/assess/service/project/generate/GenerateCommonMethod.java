@@ -406,7 +406,7 @@ public class GenerateCommonMethod {
         }
         List<String> stringList = FormatUtils.transformString2List(schemeJudgeObject.getNumber(), ",");
         //单独一个估价对象  拆分情况
-        if (stringList.size() == 1 && schemeJudgeObject.getBisSplit() != null && schemeJudgeObject.getBisSplit().booleanValue() && schemeJudgeObject.getSplitNumber() != null) {
+        if (stringList.size() == 1  && schemeJudgeObject.getSplitNumber() != null) {
             stringList.clear();
             stringList.add(String.join(spliter, schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber().toString()));
         }
