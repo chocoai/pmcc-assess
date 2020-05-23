@@ -174,7 +174,7 @@ public class DataBlockService {
         List<GenerateReportInfo> list = generateReportInfoService.generateReportGenerationList(new GenerateReportInfo());
         if (!CollectionUtils.isEmpty(list)) {
             for (GenerateReportInfo generateReportInfo : list) {
-                List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class), Lists.newArrayList(generateReportInfo.getId()));
+                List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(generateReportInfo.getId(),null,FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
                 if (!CollectionUtils.isEmpty(attachmentDtos)) {
                     GenerateReportGroup where = new GenerateReportGroup();
                     where.setReportInfoId(generateReportInfo.getId());
