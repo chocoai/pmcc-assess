@@ -1,43 +1,30 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
-import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomDecorateVo;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.PublicService;
-import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
-import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.basic.*;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupService;
+import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
+import com.copower.pmcc.assess.service.project.generate.GenerateReportItemService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -54,27 +41,13 @@ public class DataBlockService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private BasicEstateService basicEstateService;
+    private GenerateReportGroupService generateReportGroupService;
     @Autowired
-    private BasicEstateStreetInfoService basicEstateStreetInfoService;
+    private GenerateReportInfoService generateReportInfoService;
     @Autowired
-    private BasicHouseService basicHouseService;
+    private GenerateReportItemService generateReportItemService;
     @Autowired
-    private BasicUnitHuxingService basicUnitHuxingService;
-    @Autowired
-    private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
-    @Autowired
-    private BasicHouseRoomService basicHouseRoomService;
-    @Autowired
-    private BasicApplyBatchService basicApplyBatchService;
-    @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    @Autowired
-    private BasicApplyService basicApplyService;
-    @Autowired
-    private BasicApplyDao basicApplyDao;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -193,15 +166,41 @@ public class DataBlockService {
 
 
     public void updateOldData(Integer key) throws Exception {
-        BasicHouseRoomDecorate where = new BasicHouseRoomDecorate();
-        where.setHouseId(0);
-        List<BasicHouseRoomDecorate> houseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(where);
-        if(CollectionUtils.isNotEmpty(houseRoomDecorateList)){
-            for (BasicHouseRoomDecorate basicHouseRoomDecorate : houseRoomDecorateList) {
-                BasicHouseRoom basicHouseRoom = basicHouseRoomService.getBasicHouseRoomById(basicHouseRoomDecorate.getRoomId());
-                if(basicHouseRoom!=null){
-                    basicHouseRoomDecorate.setHouseId(basicHouseRoom.getHouseId());
-                    basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, false);
+        List<GenerateReportInfo> list = generateReportInfoService.generateReportGenerationList(new GenerateReportInfo());
+        if(!CollectionUtils.isEmpty(list)){
+            for (GenerateReportInfo generateReportInfo : list) {
+                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(generateReportInfo.getAreaGroupId());
+                StringBuilder fullName=new StringBuilder();
+                if(!CollectionUtils.isEmpty(judgeObjects)){
+                    for (SchemeJudgeObject judgeObject : judgeObjects) {
+                        fullName.append(judgeObject.getName()).append(",");
+                    }
+                }
+                GenerateReportGroup group=new GenerateReportGroup();
+                group.setProjectId(generateReportInfo.getProjectId());
+                group.setFullName(fullName.toString());
+                group.setName("组1");
+                group.setReportType("2026,117,119,118");
+                group.setReportTypeName("咨评报告,预评报告,技术报告,结果报告");
+                group.setAreaGroupId(generateReportInfo.getAreaGroupId());
+                group.setReportInfoId(generateReportInfo.getId());
+                group.setCreator("admin");
+                generateReportGroupService.saveAndUpdateGenerateReportGroup(group,false);
+
+                if(!CollectionUtils.isEmpty(judgeObjects)){
+                    for (SchemeJudgeObject judgeObject : judgeObjects) {
+                        GenerateReportItem item=new GenerateReportItem();
+                        item.setProjectId(judgeObject.getProjectId());
+                        item.setAreaGroupId(generateReportInfo.getAreaGroupId());
+                        item.setMasterId(group.getId());
+                        item.setGroupName(group.getName());
+                        item.setName(judgeObject.getName());
+                        item.setNumber(judgeObject.getNumber());
+                        item.setJudgeObjectId(judgeObject.getId());
+                        item.setDeclareRecordId(judgeObject.getDeclareRecordId());
+                        item.setCreator("admin");
+                        generateReportItemService.saveAndUpdateGenerateReportItem(item,false);
+                    }
                 }
             }
         }
