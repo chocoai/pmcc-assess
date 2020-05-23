@@ -4,14 +4,17 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportItemService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -48,6 +51,8 @@ public class DataBlockService {
     private GenerateReportItemService generateReportItemService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -167,39 +172,20 @@ public class DataBlockService {
 
     public void updateOldData(Integer key) throws Exception {
         List<GenerateReportInfo> list = generateReportInfoService.generateReportGenerationList(new GenerateReportInfo());
-        if(!CollectionUtils.isEmpty(list)){
+        if (!CollectionUtils.isEmpty(list)) {
             for (GenerateReportInfo generateReportInfo : list) {
-                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(generateReportInfo.getAreaGroupId());
-                StringBuilder fullName=new StringBuilder();
-                if(!CollectionUtils.isEmpty(judgeObjects)){
-                    for (SchemeJudgeObject judgeObject : judgeObjects) {
-                        fullName.append(judgeObject.getName()).append(",");
-                    }
-                }
-                GenerateReportGroup group=new GenerateReportGroup();
-                group.setProjectId(generateReportInfo.getProjectId());
-                group.setFullName(fullName.toString());
-                group.setName("组1");
-                group.setReportType("2026,117,119,118");
-                group.setReportTypeName("咨评报告,预评报告,技术报告,结果报告");
-                group.setAreaGroupId(generateReportInfo.getAreaGroupId());
-                group.setReportInfoId(generateReportInfo.getId());
-                group.setCreator("admin");
-                generateReportGroupService.saveAndUpdateGenerateReportGroup(group,false);
-
-                if(!CollectionUtils.isEmpty(judgeObjects)){
-                    for (SchemeJudgeObject judgeObject : judgeObjects) {
-                        GenerateReportItem item=new GenerateReportItem();
-                        item.setProjectId(judgeObject.getProjectId());
-                        item.setAreaGroupId(generateReportInfo.getAreaGroupId());
-                        item.setMasterId(group.getId());
-                        item.setGroupName(group.getName());
-                        item.setName(judgeObject.getName());
-                        item.setNumber(judgeObject.getNumber());
-                        item.setJudgeObjectId(judgeObject.getId());
-                        item.setDeclareRecordId(judgeObject.getDeclareRecordId());
-                        item.setCreator("admin");
-                        generateReportItemService.saveAndUpdateGenerateReportItem(item,false);
+                List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class), Lists.newArrayList(generateReportInfo.getId()));
+                if (!CollectionUtils.isEmpty(attachmentDtos)) {
+                    GenerateReportGroup where = new GenerateReportGroup();
+                    where.setReportInfoId(generateReportInfo.getId());
+                    List<GenerateReportGroup> groups = generateReportGroupService.getGenerateReportGroupListByQuery(where);
+                    if (!CollectionUtils.isEmpty(groups)) {
+                        for (SysAttachmentDto attachmentDto : attachmentDtos) {
+                            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGroup.class));
+                            attachmentDto.setTableId(groups.get(0).getId());
+                            attachmentDto.setFieldsName(attachmentDto.getFieldsName() + String.valueOf(attachmentDto.getTableId()));
+                            baseAttachmentService.updateAttachment(attachmentDto);
+                        }
                     }
                 }
             }
