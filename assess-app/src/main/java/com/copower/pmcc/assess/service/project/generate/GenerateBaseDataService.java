@@ -5732,7 +5732,17 @@ public class GenerateBaseDataService {
             generateCommonMethod.settingBuildingTable(documentBuilder);
             documentBuilder.getFont().setName("宋体");
             documentBuilder.getFont().setSize(12);
-            String huxingName = generateBaseExamineService.getBasicHouse().getHuxingName();
+            BasicHouseVo basicHouse = generateBaseExamineService.getBasicHouse();
+            String huxingName = "";
+            if (basicHouse != null) {
+                huxingName = basicHouse.getHuxingName();
+            }
+            if (basicHouse != null && basicHouse.getId() != null) {
+                BasicUnitHuxing huxingByHouseId = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
+                if (huxingByHouseId != null && StringUtils.isNotBlank(huxingByHouseId.getName())){
+                    huxingName = huxingByHouseId.getName();
+                }
+            }
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
             documentBuilder.startTable();
             //start
