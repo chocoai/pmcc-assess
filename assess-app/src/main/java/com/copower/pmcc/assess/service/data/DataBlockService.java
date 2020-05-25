@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -9,6 +10,7 @@ import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupServi
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportItemService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -48,11 +50,13 @@ public class DataBlockService {
     @Autowired
     private GenerateReportInfoService generateReportInfoService;
     @Autowired
-    private GenerateReportItemService generateReportItemService;
+    private SchemeReportFileItemDao schemeReportFileItemDao;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private SurveyCommonService surveyCommonService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -171,22 +175,15 @@ public class DataBlockService {
 
 
     public void updateOldData(Integer key) throws Exception {
-        List<GenerateReportInfo> list = generateReportInfoService.generateReportGenerationList(new GenerateReportInfo());
-        if (!CollectionUtils.isEmpty(list)) {
-            for (GenerateReportInfo generateReportInfo : list) {
-                List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getByField_tableId(generateReportInfo.getId(),null,FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
-                if (!CollectionUtils.isEmpty(attachmentDtos)) {
-                    GenerateReportGroup where = new GenerateReportGroup();
-                    where.setReportInfoId(generateReportInfo.getId());
-                    List<GenerateReportGroup> groups = generateReportGroupService.getGenerateReportGroupListByQuery(where);
-                    if (!CollectionUtils.isEmpty(groups)) {
-                        for (SysAttachmentDto attachmentDto : attachmentDtos) {
-                            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportGroup.class));
-                            attachmentDto.setTableId(groups.get(0).getId());
-                            attachmentDto.setFieldsName(attachmentDto.getFieldsName() + String.valueOf(attachmentDto.getTableId()));
-                            baseAttachmentService.updateAttachment(attachmentDto);
-                        }
-                    }
+        //将实况照片更新到估价对象上
+        //1.先读取实况照片中没有估价对象号的数据，根据权证取到其中一个估价对象，将估价对象id绑定上去
+        List<SchemeReportFileItem> items = schemeReportFileItemDao.getReportFileItemListWhereJudgeIdNull();
+        if(!CollectionUtils.isEmpty(items)){
+            for (SchemeReportFileItem item : items) {
+                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getListByDeclareIds(Lists.newArrayList(item.getDeclareRecordId()));
+                if(!CollectionUtils.isEmpty(judgeObjects)){
+                    item.setSchemeJudgeObjectId(judgeObjects.get(0).getId());
+                    schemeReportFileItemDao.updateReportFileItem(item);
                 }
             }
         }

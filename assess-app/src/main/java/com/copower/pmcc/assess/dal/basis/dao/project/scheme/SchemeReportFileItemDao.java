@@ -52,6 +52,14 @@ public class SchemeReportFileItemDao {
         return schemeReportFileItemMapper.selectByExample(example);
     }
 
+    public List<SchemeReportFileItem> getReportFileItemListWhereJudgeIdNull() {
+        SchemeReportFileItemExample example = new SchemeReportFileItemExample();
+        SchemeReportFileItemExample.Criteria criteria = example.createCriteria();
+        criteria.andSchemeJudgeObjectIdIsNull().andDeclareRecordIdIsNotNull();
+        example.setOrderByClause("sorting");
+        return schemeReportFileItemMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      *
