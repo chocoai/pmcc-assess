@@ -129,12 +129,12 @@
                                                     <label class="col-sm-1 control-label">证载用途</label>
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full"
-                                                               name="certUseName">${basicHouse.certUseName}</label>
+                                                               name="certUse">${basicHouse.certUse}</label>
                                                     </div>
                                                     <label class="col-sm-1 control-label">实际用途</label>
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full"
-                                                               name="practicalUseName">${basicHouse.practicalUseName}</label>
+                                                               name="practicalUse">${basicHouse.practicalUse}</label>
                                                     </div>
                                                 </div>
                                             </div>
