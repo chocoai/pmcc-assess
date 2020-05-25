@@ -666,7 +666,7 @@ landLevel.loadTree = function () {
             chkboxType: {"Y": "", "N": ""}//必须设为null ,这样可以真正意义上让复选框不影响父级和子级,哪个被点击了就勾选哪个
         },
         callback: {
-            onClick: zTreeOnClick
+            onClick: zTreeOnClick,
         },
         data: {
             key: {
@@ -755,7 +755,7 @@ landLevel.treeCheckAllNodes = function (_this) {
 landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function () {
     var box = landLevel.config.land_level_detail_modal;
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
-    var nodes = zTree.getSelectedNodes();
+    var nodes = zTree.getCheckedNodes(true);
     if (nodes.length != 1) {
         notifyInfo('提示', '请选择一个节点');
         return false;
@@ -801,7 +801,7 @@ landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag)
     if (flag) {
         var nodes = zTreeObj.getCheckedNodes(true);
         if (nodes.length != 1) {
-            notifyInfo('提示', '勾选一个');
+            notifyInfo('提示', '勾选至少一个节点');
             return false;
         }
         levelDetailId = nodes[0].id;
