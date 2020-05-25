@@ -2,7 +2,9 @@ package com.copower.pmcc.assess.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
+import com.copower.pmcc.assess.common.JSONChange;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
+import com.copower.pmcc.assess.dto.input.map.PolygonMapData;
 import com.copower.pmcc.assess.service.AdRpcQualificationsAppService;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -192,6 +194,22 @@ public class PublicController {
             List<String> stringList = FormatUtils.transformString2List(fieldsName, ",");
             for (String str : stringList) {
                 publicService.html2canvasNetDownloadUtils(canvasCode, tableId, tableName, str);
+            }
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+
+    @PostMapping(value = "/newHtml2canvasNetDownloadUtils", name = "高德地图 折线  转为正常图片  并且形成附件")
+    public HttpResult newHtml2canvasNetDownloadUtils(String canvasCode, Integer tableId, String tableName, String fieldsName) {
+        try {
+            List<PolygonMapData> polygonMapDataList = JSONObject.parseArray(canvasCode, PolygonMapData.class);
+            List<String> stringList = FormatUtils.transformString2List(fieldsName, ",");
+            for (String str : stringList) {
+                publicService.newHtml2canvasNetDownloadUtils(polygonMapDataList, tableId, tableName, str);
             }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {

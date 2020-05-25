@@ -549,6 +549,7 @@
     estateCommon.settingFileGeneralLayout = function (canvasCode) {
         //这里使用的是胡豪定义的动态数组附件
         var option = {canvasCode: canvasCode, tableId: estateCommon.getEstateId(), tableName: AssessDBKey.BasicEstate};
+        console.log(option) ;
         //三个同步方法
         var arr = [];
         var tempArr = [];
@@ -581,6 +582,7 @@
         });
         $.ajax({
             url: getContextPath() + '/public/html2canvasNetDownloadUtils',
+            // url: getContextPath() + '/public/newHtml2canvasNetDownloadUtils',//折线 url
             data: {
                 canvasCode: canvasCode,
                 tableId: estateCommon.getEstateId(),

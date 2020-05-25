@@ -634,6 +634,7 @@
     //layui 无法直接调用 drawPolygon.getFormData
     function getFormDrawPolygonData() {
         var data = drawPolygon.getFormData() ;
+        console.log(JSON.stringify(data)) ;
         return data;
     }
 
@@ -689,7 +690,9 @@
                 // drawPolygon.fileDownload(imgData);
                 if ('${callback}') {
                     var excuteString = 'if (parent && parent.${callback}) {';
+                    var dataResult = drawPolygon.getFormData() ;
                     excuteString += 'parent.${callback}(' + "'" + canvas.toDataURL('image/jpeg') + "'" + ')' + ';';
+                    <%--excuteString += 'parent.${callback}(' + "'" + JSON.stringify(dataResult) + "'" + ')' + ';';--%>
                     excuteString += '}';
                     try {
                         eval(excuteString);
