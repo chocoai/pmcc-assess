@@ -261,7 +261,7 @@
         }
     };
 
-    drawPolygon.loadMap = function (callback) {
+    drawPolygon.loadMap = function (callback , flagTitle) {
         //初始化地图对象，加载地图
         drawPolygon.map = new AMap.Map('toolMapHandleContainer', {
             resizeEnable: true,
@@ -287,20 +287,25 @@
                 });
             });
 
-            (function (tt) {
-                if (!tt) {
-                    //地图加载完成后要做的事
-                    drawPolygon.completeEvent();
-                    return false;
-                }
-                var item = [];
-                try {
-                    item = JSON.parse(tt);
-                } catch (e) {
-                }
-                drawPolygon.createOverlay(item);
-                drawPolygon.handleJquery(drawPolygon.tabDescription).trigger('click');
-            }('${formData}'));
+            if(flagTitle){
+                (function (tt) {
+                    if (!tt) {
+                        //地图加载完成后要做的事
+                        drawPolygon.completeEvent();
+                        return false;
+                    }
+                    var item = [];
+                    try {
+                        item = JSON.parse(tt);
+                    } catch (e) {
+                    }
+                    drawPolygon.createOverlay(item);
+                    drawPolygon.handleJquery(drawPolygon.tabDescription).trigger('click');
+                    var overlays = drawPolygon.map.getAllOverlays();
+                    console.log(overlays) ;
+                    console.log(item) ;
+                }('${formData}'));
+            }
 
             if (callback) {
                 callback();
@@ -335,6 +340,7 @@
      */
     drawPolygon.switch3DMap = function (_this) {
         var value = $(_this).attr("data-value");
+        var overlays = drawPolygon.map.getAllOverlays();
         if (value == '2D') {
             var layers = [
                 // 高德默认标准图层
@@ -350,11 +356,12 @@
             drawPolygon.map.setPitch(75, false, 1);
             $(_this).attr("data-value", "3D");
         } else {
-            var overlays = drawPolygon.map.getAllOverlays();
+            var polygons = drawPolygon.map.getAllOverlays('polygon');
+            var markers = drawPolygon.map.getAllOverlays('marker');
             drawPolygon.map.destroy();
             drawPolygon.loadMap(function () {
                 drawPolygon.map.add(overlays);
-            });
+            } ,false);
             $(_this).attr("data-value", "2D");
         }
     };
@@ -626,7 +633,8 @@
 
     //layui 无法直接调用 drawPolygon.getFormData
     function getFormDrawPolygonData() {
-        return drawPolygon.getFormData();
+        var data = drawPolygon.getFormData() ;
+        return data;
     }
 
     function getFormDrawCenterData() {
@@ -678,13 +686,14 @@
                 var imgData = canvas.toDataURL(type);//canvas转换为图片
                 // 加工image data，替换mime type，方便以后唤起浏览器下载
                 imgData = imgData.replace(drawPolygon.onFixType(type), 'image/octet-stream');
-                drawPolygon.fileDownload(imgData);
+                // drawPolygon.fileDownload(imgData);
                 if ('${callback}') {
                     var excuteString = 'if (parent && parent.${callback}) {';
                     excuteString += 'parent.${callback}(' + "'" + canvas.toDataURL('image/jpeg') + "'" + ')' + ';';
                     excuteString += '}';
                     try {
                         eval(excuteString);
+                        AlertSuccess("成功", "图片成功截取并且保存到楼盘总平面图");
                     } catch (e) {
                         console.log(excuteString);
                         console.log(e);
@@ -731,7 +740,7 @@
 
 
     $(document).ready(function () {
-        drawPolygon.loadMap();
+        drawPolygon.loadMap(null,true);
         var tt = '[{"path":[[116.40259,39.921129],[116.403571,39.92094],[116.403711,39.92117],[116.403679,39.921293]],"extData":{"title":[{"id":64,"pid":"56","lng":"116.403486","lat":"39.921162","name":"rjadjad"}]}},{"path":[[116.404408,39.921026],[116.404639,39.920347],[116.405728,39.921104]],"extData":{"title":[{"id":67,"pid":"61","lng":"116.404837","lat":"39.920845","name":"sdjsdjdjs"}]}}]';
 //        setInterval(function () {
 //            var str = JSON.stringify(drawPolygon.getFormData());
