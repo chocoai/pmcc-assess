@@ -386,7 +386,7 @@
                 tableName: AssessDBKey.GenerateReportGroup,
                 tableId: id == undefined ? 0 : id ,
             },
-            editFlag: false,
+            editFlag: true,
             deleteFlag: false,
             signatureFlag: '${activityCnName}'.indexOf("盖章") > -1
         })
@@ -401,7 +401,7 @@
                 tableName: AssessDBKey.GenerateReportGroup,
                 tableId: id == undefined ? 0 : id ,
             },
-            editFlag: false,
+            editFlag: true,
             deleteFlag: false,
             signatureFlag: false
         })

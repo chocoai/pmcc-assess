@@ -517,6 +517,7 @@
                                         <option value="洗浴间">洗浴间</option>
                                         <option value="厨房" data-desc="厨">厨房</option>
                                         <option value="阳台">阳台</option>
+                                        <option value="花园">花园</option>
                                         <option value="车库">车库</option>
                                         <option value="楼梯间">楼梯间</option>
                                         <option value="电梯间">电梯间</option>
