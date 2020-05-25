@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.input.map.PolygonMapData;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -31,6 +32,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
@@ -262,18 +265,68 @@ public class PublicService {
         baseAttachmentService.addAttachment(baseAttachment);
     }
 
-    public void html2canvasNetDownloadUtils(String canvasCode,Integer tableId ,String tableName,String fieldsName)throws Exception{
+    public void html2canvasNetDownloadUtils(String canvasCode, Integer tableId, String tableName, String fieldsName) throws Exception {
         final String BASE64_PREFIX = "data:image/jpeg;base64,";
         //这的jpg必须和页面一致
-        String imgFilePath  = org.apache.commons.io.FileUtils.getTempDirectoryPath()+UUID.randomUUID().toString().substring(1,7)+".jpg";
-        com.copower.pmcc.assess.common.FileUtils.base64ToImage(StringUtils.remove(canvasCode,BASE64_PREFIX), imgFilePath );
+        String imgFilePath = org.apache.commons.io.FileUtils.getTempDirectoryPath() + UUID.randomUUID().toString().substring(1, 7) + ".jpg";
+        com.copower.pmcc.assess.common.FileUtils.base64ToImage(StringUtils.remove(canvasCode, BASE64_PREFIX), imgFilePath);
         SysAttachmentDto baseAttachment = new SysAttachmentDto();
         baseAttachment.setTableId(tableId);
         baseAttachment.setTableName(tableName);
         baseAttachment.setFieldsName(fieldsName);
-        baseAttachmentService.importAjaxFileHandle(imgFilePath,baseAttachment);
+        baseAttachmentService.importAjaxFileHandle(imgFilePath, baseAttachment);
     }
 
+    /**
+     * 形成折线
+     *
+     * @param polygonMapDataList
+     * @param tableId
+     * @param tableName
+     * @param fieldsName
+     * @throws Exception
+     */
+    public void newHtml2canvasNetDownloadUtils(List<PolygonMapData> polygonMapDataList, Integer tableId, String tableName, String fieldsName) throws Exception {
+        if (CollectionUtils.isEmpty(polygonMapDataList)) {
+            return;
+        }
+        PolygonMapData polygonMapData = polygonMapDataList.get(0);
+        List<Double> doubleList = polygonMapData.getPath().get(0);
+        String surveyLocaltion = String.format("%s,%s", doubleList.get(0).toString(), doubleList.get(1).toString());
+        String localDir = baseAttachmentService.createTempDirPath(commonService.thisUserAccount());
+        String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
+        Iterator<PolygonMapData> iterator = polygonMapDataList.iterator();
+        //  https://restapi.amap.com/v3/staticmap?zoom=15&size=500*500&paths=10,0x0000ff,1,,:116.31604,39.96491;116.320816,39.966606;116.321785,39.966827;116.32361,39.966957&key=0d3f1144352d7e2b683e37dd3757156a
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("https://restapi.amap.com/v3/staticmap?zoom=15&size=500*500");
+        stringBuffer.append("&paths=");
+        while (iterator.hasNext()) {
+            LinkedList<String> linkedList = new LinkedList<>();
+            PolygonMapData mapData = iterator.next();
+            List<List<Double>> dataPath = mapData.getPath();
+            Iterator<List<Double>> listIterator = dataPath.iterator();
+            while (listIterator.hasNext()) {
+                List<Double> doubles = listIterator.next();
+                String value = StringUtils.join(doubles, ",");
+                linkedList.add(value);
+            }
+            String fillColor = mapData.getFillColor();
+            String v = StringUtils.join(linkedList, ";");
+            stringBuffer.append("10,").append("0x0000ff").append(",").append("1").append(",").append("").append(",").append(":").append(v);
+        }
+        stringBuffer.append("&key=").append(BaseConstant.MAP_WEB_SERVICE_KEY);
+        try {
+            NetDownloadUtils.download(stringBuffer.toString(), imageName, localDir);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        SysAttachmentDto baseAttachment = new SysAttachmentDto();
+        baseAttachment.setTableId(tableId);
+        baseAttachment.setTableName(tableName);
+        baseAttachment.setFieldsName(fieldsName);
+        String path = String.join(File.separator, localDir, imageName);
+        baseAttachmentService.importAjaxFileHandle(path, baseAttachment);
+    }
 
 
     /**
@@ -427,7 +480,7 @@ public class PublicService {
         sysProjectDto.setProjectDepartmentId(projectInfo.getDepartmentId());
         sysProjectDto.setAppKey(applicationConstant.getAppKey());
         sysProjectDto.setStatus(ProjectStatusEnum.NORMAL.getKey());
-        sysProjectDto.setProjectDetailsUrl(String.format("/projectCenter/projectInfo?projectId=%s",projectInfo.getId()));
+        sysProjectDto.setProjectDetailsUrl(String.format("/projectCenter/projectInfo?projectId=%s", projectInfo.getId()));
         projectInfo.setPublicProjectId(erpRpcProjectService.saveProject(sysProjectDto));
         projectInfoService.updateProjectInfo(projectInfo);
     }
@@ -547,6 +600,7 @@ public class PublicService {
 
     /**
      * 比较String
+     *
      * @param var1
      * @param var2
      * @return
