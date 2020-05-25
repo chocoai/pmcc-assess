@@ -453,6 +453,7 @@
             if (!landId) {
                 landId = data.id;
             }
+            table.find("tbody").empty() ;
             estateLandCategoryInfo.getBasicEstateStreetInfoList({landId: landId}, function (data) {
                 if (data.length >= 1) {
                     $.each(data, function (i, item) {

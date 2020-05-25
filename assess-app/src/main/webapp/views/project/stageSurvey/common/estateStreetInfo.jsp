@@ -223,6 +223,7 @@
     estateStreetInfoObj.init = function (estateId) {
         (function (table) {
             var frm = table.closest("form");
+            table.find("tbody").empty() ;
             var data = formSerializeArray(frm);
             if (! estateId){
                 estateId = data.id ;
