@@ -193,7 +193,7 @@
             resultMap="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseCaseSummaryMapper.BaseResultMap">
         select
         <include refid="Base_Column_ListCaseBaseHouse"/>
-        from tb_basic_house_case_summary where 1=1 and bis_newest = true
+        from tb_basic_house_case_summary where 1=1 and bis_newest = true and bis_from_self=FALSE
         <if test="basicHouseCaseSummary.blockName != null and basicHouseCaseSummary.blockName!=''">
             and block_name LIKE concat(concat('%',#{basicHouseCaseSummary.blockName}),'%')
         </if>
