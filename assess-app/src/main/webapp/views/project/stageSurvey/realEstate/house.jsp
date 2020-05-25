@@ -521,6 +521,9 @@
                                         <option value="楼梯间">楼梯间</option>
                                         <option value="电梯间">电梯间</option>
                                         <option value="过道">过道</option>
+                                        <option value="门厅">门厅</option>
+                                        <option value="大厅">大厅</option>
+                                        <option value="管理用房">管理用房</option>
                                     </select>
                                 </div>
                             </div>

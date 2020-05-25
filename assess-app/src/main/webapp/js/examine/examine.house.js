@@ -1038,7 +1038,7 @@
             html += '<option value="商间">商间</option>';
             html += '<option value="商区">商区</option>';
         }
-        if (tenementType == '餐饮酒店') {
+        if (tenementType == '餐饮'||tenementType == '酒店') {
             html += '<option value="住宿" data-child="标间(普通),标间(商务),标间(高级),单间(普通),单间(商务),单间(高级),套房(普通),套房(商务),套房(高级)">住宿</option>';
             html += '<option value="商业" data-child="会议室,会议厅,商务厅,影视厅">商业</option>';
             html += '<option value="餐饮" data-child="包间(普通),包间(标准),包间(豪华),餐饮大厅,共用餐区">餐饮</option>';
