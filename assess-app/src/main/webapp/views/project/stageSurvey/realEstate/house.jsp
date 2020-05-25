@@ -304,12 +304,7 @@
                                 </div>
 
                                 <div class="x_content">
-                                    <c:if test="${projectPhase eq 'caseStudyExtend'}">
-                                        <%@include file="/views/project/stageSurvey/common/houseTradingCase.jsp" %>
-                                    </c:if>
-                                    <c:if test="${projectPhase ne 'caseStudyExtend'}">
-                                        <%@include file="/views/project/stageSurvey/common/houseTradingSurvey.jsp" %>
-                                    </c:if>
+                                    <%@include file="/views/project/stageSurvey/common/houseTradingCase.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseRoom.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseRoomDecorate.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>

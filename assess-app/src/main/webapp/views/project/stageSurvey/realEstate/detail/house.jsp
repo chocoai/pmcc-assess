@@ -178,13 +178,7 @@
                                 </div>
 
                                 <div class="x_content">
-                                    <c:if test="${projectPhase eq 'caseStudyExtend'}">
-                                        <%@include file="/views/project/stageSurvey/commonDetail/houseTradingCase.jsp" %>
-                                    </c:if>
-                                    <c:if test="${projectPhase ne 'caseStudyExtend'}">
-                                        <%@include file="/views/project/stageSurvey/commonDetail/houseTradingSurvey.jsp" %>
-                                    </c:if>
-
+                                    <%@include file="/views/project/stageSurvey/commonDetail/houseTradingCase.jsp" %>
                                     <c:if test="${empty isHistory}">
                                         <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
                                         <%@include file="/views/project/stageSurvey/commonDetail/houseRoomDecorate.jsp" %>

@@ -204,18 +204,17 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">交易总价（元）</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"
+                                       name="tradingTotalPrice">${basicHouseTrading.tradingTotalPrice}</label>
+                            </div>
                             <label class="col-sm-1 control-label">交易时间</label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full dbdate"
                                        name="tradingTime"><fmt:formatDate
                                         value='${basicHouseTrading.tradingTime}'
                                         pattern='yyyy-MM-dd'/></label>
-                            </div>
-
-                            <label class="col-sm-1 control-label">交易总价（元）</label>
-                            <div class="col-sm-3">
-                                <label class="form-control input-full"
-                                       name="tradingTotalPrice">${basicHouseTrading.tradingTotalPrice}</label>
                             </div>
                         </div>
                     </div>
