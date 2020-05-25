@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
@@ -445,6 +446,13 @@ public class DataLandLevelDetailService {
         return getDataLandLevelDetailList(oo);
     }
 
+    public List<DataLandLevelDetail> getDataLandLevelDetailListByLandLevelId(Integer landLevelId) {
+        DataLandLevelDetail oo = new DataLandLevelDetail();
+        oo.setLandLevelId(landLevelId);
+        return getDataLandLevelDetailList(oo);
+    }
+
+
     //根据大类和级别获取数据
     public DataLandLevelDetail getDataByClassifyAndType(Integer landLevelId, String classify, String type) {
         List<DataLandLevelDetail> dataList = dataLandLevelDetailDao.getDataByClassifyAndType(landLevelId, classify, type);
@@ -465,16 +473,37 @@ public class DataLandLevelDetailService {
         return vo;
     }
 
-
-    //获取最上级明细
-    public DataLandLevelDetail getTopDetailLevelData(Integer dataLandLevelDetailId) {
-        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
-        if (dataLandLevelDetail == null) return null;
-        if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
-            return dataLandLevelDetail;
-        } else {
-            return getTopDetailLevelData(dataLandLevelDetail.getPid());
+    /**
+     * 获取完整名称
+     *
+     * @param dataLandLevelDetailId
+     * @return
+     */
+    public String getFullNameByBatchDetailId(Integer dataLandLevelDetailId) {
+        List<DataLandLevelDetail> list = Lists.newArrayList();
+        collectionParentItems(dataLandLevelDetailId, list);
+        if (CollectionUtils.isEmpty(list)) return null;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = list.size() - 1; i >= 0; i--) {
+            stringBuilder.append(list.get(i).getName()).append("/");
         }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 收集该节点的所有上级节点
+     *
+     * @param dataLandLevelDetailId
+     * @param list
+     */
+    public void collectionParentItems(Integer dataLandLevelDetailId, List<DataLandLevelDetail> list) {
+        if (list == null) return;
+        DataLandLevelDetail landLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
+        if (landLevelDetail == null) return;
+        list.add(landLevelDetail);
+        if (landLevelDetail.getPid() != null && landLevelDetail.getPid() > 0)
+            collectionParentItems(landLevelDetail.getPid(), list);
     }
 
     //获取有基准地价的父级(本身有则除外)

@@ -99,8 +99,11 @@ public class DataLandLevelDetailDao {
     }
 
     public List<DataLandLevelDetail> getDataLandLevelDetailList(DataLandLevelDetail oo) {
-        DataLandLevelDetailExample example = getExample(oo);
-        return dataLandLevelDetailMapper.selectByExample(example);
+        oo.setBisDelete(false);
+        DataLandLevelDetailExample example = new DataLandLevelDetailExample();
+        MybatisUtils.convertObj2Example(oo, example);
+        List<DataLandLevelDetail> dataLandLevelDetails = dataLandLevelDetailMapper.selectByExample(example);
+        return dataLandLevelDetails;
     }
 
     public List<DataLandLevelDetail> getByMasterIdInfo(List<Integer> integerList) {

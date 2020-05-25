@@ -750,13 +750,13 @@
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    //landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     var landLevelTypeName = item.typeName;
                     if (item.classification) {
                         landLevelTypeName += "/" + item.classification;
                     }
-                    if (item.categoryName) {
-                        landLevelTypeName += "/" + item.categoryName;
+                    if (item.category) {
+                        landLevelTypeName += "/" + item.category;
                     }
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     var text = "";
@@ -798,13 +798,13 @@
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
+                    //landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
                     var landLevelTypeName = item.typeName;
                     if (item.classification) {
                         landLevelTypeName += "/" + item.classification;
                     }
-                    if (item.categoryName) {
-                        landLevelTypeName += "/" + item.categoryName;
+                    if (item.category) {
+                        landLevelTypeName += "/" + item.category;
                     }
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     var text = "";

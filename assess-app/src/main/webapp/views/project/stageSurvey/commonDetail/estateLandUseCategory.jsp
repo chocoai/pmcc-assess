@@ -304,8 +304,8 @@
                     if(item.classification){
                         landLevelTypeName+="/"+item.classification;
                     }
-                    if(item.categoryName){
-                        landLevelTypeName+="/"+item.categoryName;
+                    if(item.category){
+                        landLevelTypeName+="/"+item.category;
                     }
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     var text = "";
