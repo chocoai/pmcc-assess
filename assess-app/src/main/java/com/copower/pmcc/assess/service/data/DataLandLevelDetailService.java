@@ -312,11 +312,11 @@ public class DataLandLevelDetailService {
         settingRecursiveData(dataLandLevelDetailList, detailList);
         //最后去重 根据对象id
         List<DataLandLevelDetail> collect = detailList.stream().filter(StreamUtils.distinctByKey(o -> o.getId())).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(collect)){
+        if (CollectionUtils.isNotEmpty(collect)) {
             Iterator<DataLandLevelDetail> iterator = collect.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 DataLandLevelDetail levelDetail = iterator.next();
-                if (StringUtils.isNotBlank(levelDetail.getName())){
+                if (StringUtils.isNotBlank(levelDetail.getName())) {
                     continue;
                 }
                 levelDetail.setName(getCacheNameById(levelDetail.getId()));
@@ -388,7 +388,7 @@ public class DataLandLevelDetailService {
 
 
         //解决老数据问题
-        name = biConsumer.apply(dataLandLevelDetail,name) ;
+        name = biConsumer.apply(dataLandLevelDetail, name);
         return name;
     }
 
@@ -504,6 +504,38 @@ public class DataLandLevelDetailService {
         list.add(landLevelDetail);
         if (landLevelDetail.getPid() != null && landLevelDetail.getPid() > 0)
             collectionParentItems(landLevelDetail.getPid(), list);
+    }
+
+
+    /**
+     * 收集该节点的所有子节点
+     *
+     * @param list
+     * @param pid
+     */
+    public void getBestLowItemsByPid(List<DataLandLevelDetail> list, Integer pid) {
+        List<DataLandLevelDetail> detailList = getDataLandLevelDetailListByPid(pid);
+        if (CollectionUtils.isNotEmpty(detailList)) {
+            for (DataLandLevelDetail item : detailList) {
+                getBestLowItemsByPid(list, item.getId());
+            }
+        } else {
+            DataLandLevelDetail singleObject = getDataLandLevelDetailById(pid);
+            list.add(singleObject);
+        }
+    }
+
+    /**
+     * 获取该节点最上级
+     *
+     * @param id
+     */
+    public DataLandLevelDetail getAncestorById(Integer id) {
+        DataLandLevelDetail levelDetail = getDataLandLevelDetailById(id);
+        if (levelDetail.getPid() == 0||levelDetail.getPid() == null) {
+            return levelDetail;
+        }
+        return getAncestorById(levelDetail.getPid());
     }
 
     //获取有基准地价的父级(本身有则除外)

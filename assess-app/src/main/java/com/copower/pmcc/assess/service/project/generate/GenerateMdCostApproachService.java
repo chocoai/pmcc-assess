@@ -9,8 +9,8 @@ import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.tool.ToolRewardRateEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldMdCostApproachEnum;
+import com.copower.pmcc.assess.common.enums.tool.ToolRewardRateEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -18,18 +18,20 @@ import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailAchievementVo;
 import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.tool.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
-import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailAchievementService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.tool.ToolRewardRateService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -75,7 +77,9 @@ public class GenerateMdCostApproachService implements Serializable {
     private BaseService baseService;
     private DataLandLevelDetailAchievementService dataLandLevelDetailAchievementService;
     private BasicEstateService basicEstateService;
-    private BasicEstateLandStateService basicEstateLandStateService;
+    private BasicApplyService basicApplyService;
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    private DataLandLevelDetailService dataLandLevelDetailService;
 
     public final String errorStr = "无";
 
@@ -703,16 +707,14 @@ public class GenerateMdCostApproachService implements Serializable {
         generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("土地级别类别", "土地级别类型", "优", "较优", "一般", "较劣", "劣")));
         //获取土地级别id
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
+
         //拿到土地因素数据
         DataLandLevelDetailAchievement dataLandLevelDetailAchievement = new DataLandLevelDetailAchievement();
-        dataLandLevelDetailAchievement.setLevelDetailId(landStateByEstateId.getLandLevel());
+        dataLandLevelDetailAchievement.setLevelDetailId(dataLandLevelDetail.getId());
         List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementList(dataLandLevelDetailAchievement);
         List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landLevelFilter2(dataLandLevelDetailAchievementVoList.stream().map(po -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
         Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landLevelFilter1(listList);
-
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
 
@@ -728,6 +730,19 @@ public class GenerateMdCostApproachService implements Serializable {
                     }
                     if (StringUtils.isNotEmpty(types.get(i).get(0).getTypeName())) {
                         linkedList.add(types.get(i).get(0).getTypeName());
+                    } else {
+                        linkedList.add(nullValue);
+                    }
+                    if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) || StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
+                        StringBuilder s = new StringBuilder();
+                        if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) && StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
+                            s.append(types.get(i).get(0).getClassification()).append("/").append(types.get(i).get(0).getCategory());
+                        } else if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification())) {
+                            s.append(types.get(i).get(0).getClassification());
+                        } else {
+                            s.append(types.get(i).get(0).getCategory());
+                        }
+                        linkedList.add(s.toString());
                     } else {
                         linkedList.add(nullValue);
                     }
@@ -774,14 +789,16 @@ public class GenerateMdCostApproachService implements Serializable {
         //土地级别类别	土地级别类型	土地级别等级	说明  分值
         generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("土地级别类别", "土地级别类型", "土地级别等级", "说明", "分值")));
         //地价因素修正数据
-        String landLevelContent = mdCostApproach.getLandLevelContent();
+        String landLevelContent = getMdCostApproach().getLandLevelContent();
         JSONArray objects = JSON.parseArray(landLevelContent);
         List<DataLandLevelDetailAchievementVo> filterVoList = new ArrayList<>();
-        if (objects.size() > 0) {
+        if (objects != null && objects.size() > 0) {
             for (int i = 0; i < objects.size(); i++) {
                 List<DataLandLevelDetailAchievementVo> vos = JSON.parseArray(JSON.toJSONString(objects.get(i)), DataLandLevelDetailAchievementVo.class);
                 for (DataLandLevelDetailAchievementVo item : vos) {
-
+                    if ("update".equals(item.getModelStr())) {
+                        filterVoList.add(item);
+                    }
                 }
             }
         }
@@ -806,14 +823,34 @@ public class GenerateMdCostApproachService implements Serializable {
                     } else {
                         linkedList.add(nullValue);
                     }
+
+
                     for (DataLandLevelDetailAchievementVo item : types.get(i)) {
+                        if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) || StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
+                            StringBuilder s = new StringBuilder();
+                            if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) && StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
+                                s.append(types.get(i).get(0).getClassification()).append("/").append(types.get(i).get(0).getCategory());
+                            } else if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification())) {
+                                s.append(types.get(i).get(0).getClassification());
+                            } else {
+                                s.append(types.get(i).get(0).getCategory());
+                            }
+                            linkedList.add(s.toString());
+                        } else {
+                            linkedList.add(nullValue);
+                        }
+                        if (StringUtils.isNotEmpty(item.getGradeName())) {
+                            linkedList.add(item.getGradeName());
+                        } else {
+                            linkedList.add(nullValue);
+                        }
                         if (StringUtils.isNotEmpty(item.getReamark())) {
                             linkedList.add(item.getReamark());
                         } else {
                             linkedList.add(nullValue);
                         }
                         if (item.getAchievement() != null) {
-                            linkedList.add(item.getAchievement().toString());
+                            linkedList.add(item.getAchievement().stripTrailingZeros().toString());
                         } else {
                             linkedList.add(nullValue);
                         }
@@ -885,7 +922,9 @@ public class GenerateMdCostApproachService implements Serializable {
         this.dataLandLevelDetailAchievementService = SpringContextUtils.getBean(DataLandLevelDetailAchievementService.class);
         this.mdCostApproachService = SpringContextUtils.getBean(MdCostApproachService.class);
         this.basicEstateService = SpringContextUtils.getBean(BasicEstateService.class);
-        this.basicEstateLandStateService = SpringContextUtils.getBean(BasicEstateLandStateService.class);
+        this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);
+        this.basicEstateLandCategoryInfoService = SpringContextUtils.getBean(BasicEstateLandCategoryInfoService.class);
+        this.dataLandLevelDetailService = SpringContextUtils.getBean(DataLandLevelDetailService.class);
     }
 
     private MdCostApproach getMdCostApproach() {
@@ -916,5 +955,14 @@ public class GenerateMdCostApproachService implements Serializable {
         return generateCommonMethod.getLocalPath();
     }
 
+    private DataLandLevelDetail getDataLandLevelDetail(SchemeJudgeObject schemeJudgeObject) {
+        DataLandLevelDetail dataLandLevelDetail = new DataLandLevelDetail();
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+        if (basicApply.getLandCategoryId() != null) {
+            BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+            dataLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landCategoryInfo.getLandLevel());
 
+        }
+        return dataLandLevelDetail;
+    }
 }
