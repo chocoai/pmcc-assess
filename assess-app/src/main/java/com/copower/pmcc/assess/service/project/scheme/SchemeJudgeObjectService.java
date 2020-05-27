@@ -166,28 +166,27 @@ public class SchemeJudgeObjectService {
         return LangUtils.transform(schemeJudgeObjectList, o -> getSchemeJudgeObjectVo(o));
     }
 
-    public BootstrapTableVo getJudgeObjectListByQuery(String name,String certName, String seat,String ownership,Integer areaGroupId){
+    public BootstrapTableVo getJudgeObjectListByQuery(String name, String certName, String seat, String ownership, Integer areaGroupId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getJudgeObjectListByQuery(name,certName,seat,ownership,areaGroupId,null);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getJudgeObjectListByQuery(name, certName, seat, ownership, areaGroupId, null);
         List<SchemeJudgeObjectVo> objectVoList = LangUtils.transform(schemeJudgeObjectList, o -> getSchemeJudgeObjectVo(o));
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(objectVoList) ? new ArrayList<SchemeJudgeObject>() : objectVoList);
         vo.setTotal(page.getTotal());
-        return vo ;
+        return vo;
     }
 
-    public BootstrapTableVo getSchemeJudgeObjectListAll(String name,String certName, String seat,String ownership,Integer areaGroupId){
+    public BootstrapTableVo getSchemeJudgeObjectListAll(String name, String certName, String seat, String ownership, Integer areaGroupId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectListAll(name,certName,seat,ownership,areaGroupId,null);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectDao.getSchemeJudgeObjectListAll(name, certName, seat, ownership, areaGroupId, null);
         List<SchemeJudgeObjectVo> objectVoList = LangUtils.transform(schemeJudgeObjectList, o -> getSchemeJudgeObjectVo(o));
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(objectVoList) ? new ArrayList<SchemeJudgeObject>() : objectVoList);
         vo.setTotal(page.getTotal());
-        return vo ;
+        return vo;
     }
-
 
 
     public List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId) {
@@ -452,8 +451,14 @@ public class SchemeJudgeObjectService {
         splitJudgeObject.setCertName(schemeJudgeObject.getCertName());
         splitJudgeObject.setOwnership(schemeJudgeObject.getOwnership());
         splitJudgeObject.setSeat(schemeJudgeObject.getSeat());
-        splitJudgeObject.setCertUse(schemeJudgeObject.getCertUse());
-        splitJudgeObject.setPracticalUse(schemeJudgeObject.getPracticalUse());
+        BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApplyId);
+        if (basicHouse != null) {
+            splitJudgeObject.setCertUse(basicHouse.getCertUse());
+            splitJudgeObject.setPracticalUse(basicHouse.getPracticalUse());
+        } else {
+            splitJudgeObject.setCertUse(schemeJudgeObject.getCertUse());
+            splitJudgeObject.setPracticalUse(schemeJudgeObject.getPracticalUse());
+        }
         splitJudgeObject.setLandCertUse(schemeJudgeObject.getLandCertUse());
         splitJudgeObject.setLandPracticalUse(schemeJudgeObject.getPracticalUse());
         splitJudgeObject.setLandUseEndDate(schemeJudgeObject.getLandUseEndDate());
