@@ -44,6 +44,7 @@ import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -52,7 +53,6 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -459,11 +459,14 @@ public class GenerateMdBaseLandPriceService {
 
 
                     for (DataLandLevelDetailAchievementVo item : types.get(i)) {
-                        if (StringUtils.isNotEmpty(item.getClassification()) || StringUtils.isNotEmpty(item.getCategory())) {
+                        if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) || StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
                             StringBuilder s = new StringBuilder();
-                            s.append(item.getClassification());
-                            if (StringUtils.isNotEmpty(item.getCategory())) {
-                                s.append("/").append(item.getCategory());
+                            if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) && StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
+                                s.append(types.get(i).get(0).getClassification()).append("/").append(types.get(i).get(0).getCategory());
+                            } else if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification())) {
+                                s.append(types.get(i).get(0).getClassification());
+                            } else {
+                                s.append(types.get(i).get(0).getCategory());
                             }
                             linkedList.add(s.toString());
                         } else {
@@ -523,7 +526,7 @@ public class GenerateMdBaseLandPriceService {
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
 
-        final String nullValue = "/";
+        final String nullValue = "";
         LinkedList<String> linkedList = Lists.newLinkedList();
         if (CollectionUtils.isNotEmpty(set)) {
             Integer endRowIndex = 0;
@@ -540,9 +543,12 @@ public class GenerateMdBaseLandPriceService {
                     }
                     if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) || StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
                         StringBuilder s = new StringBuilder();
-                        s.append(types.get(i).get(0).getClassification());
-                        if (StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
-                            s.append("/").append(types.get(i).get(0).getCategory());
+                        if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) && StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
+                            s.append(types.get(i).get(0).getClassification()).append("/").append(types.get(i).get(0).getCategory());
+                        } else if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification())) {
+                            s.append(types.get(i).get(0).getClassification());
+                        } else {
+                            s.append(types.get(i).get(0).getCategory());
                         }
                         linkedList.add(s.toString());
                     } else {
@@ -585,80 +591,6 @@ public class GenerateMdBaseLandPriceService {
         } else {
             builder.write("");
         }
-    }
-
-    /**
-     * 基准地价价格一览表
-     *
-     * @return
-     */
-    public String getBaseLandPriceSchedule() throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        String localPath = generateCommonMethod.getLocalPath();
-        //设置表格属性
-        generateCommonMethod.settingBuildingTable(builder);
-        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
-        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
-        DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(dataLandLevelDetail.getLandLevelId());
-        //对应区域下所有的土地级别
-        List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailListByLandLevelId(dataLandLevel.getId());
-        Map<Integer, Integer> map = countProperty(dataLandLevelDetailList);
-        List<Map.Entry<String, Integer>> list = new ArrayList(map.entrySet());
-        Collections.sort(list, (o1, o2) -> (o1.getValue() - o2.getValue()));
-        //需要合并的单元格
-        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        //最大级数
-        Integer maxValue = list.get(list.size() - 1).getValue();
-        Table table = builder.startTable();
-        builder.insertCell();
-        builder.insertCell();
-        for (int i = 1; i < maxValue; i++) {
-            builder.insertCell();
-            builder.write(intToRoman(i));
-        }
-        builder.endRow();
-        mergeCellModelList.add(new MergeCellModel(0, 0, 0, 1));
-        int firstCellRow = 1;
-        for (Integer key : map.keySet()) {
-            builder.insertCell();
-            builder.write(baseDataDicService.getNameById(key));
-            builder.insertCell();
-            builder.write("元/平方米");
-            for (int i = 1; i < maxValue; i++) {
-                builder.insertCell();
-                DataLandLevelDetail data = null;
-                data = dataLandLevelDetailService.getDataByClassifyAndType(dataLandLevel.getId(), key.toString(), String.valueOf(i));
-                if (data != null) {
-                    builder.write(data.getPrice().setScale(0, BigDecimal.ROUND_HALF_UP).toString());
-                } else {
-                    builder.write("");
-                }
-            }
-            builder.endRow();
-
-            builder.insertCell();
-            builder.write("");
-            builder.insertCell();
-            builder.write("万元/亩");
-            for (int i = 1; i < maxValue; i++) {
-                builder.insertCell();
-                DataLandLevelDetail data = dataLandLevelDetailService.getDataByClassifyAndType(dataLandLevel.getId(), key.toString(), String.valueOf(i));
-                if (data != null) {
-                    builder.write(data.getPrice().multiply(new BigDecimal("666.67")).divide(new BigDecimal("10000")).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
-                } else {
-                    builder.write("");
-                }
-
-            }
-            builder.endRow();
-            mergeCellModelList.add(new MergeCellModel(firstCellRow, 0, firstCellRow + 1, 0));
-            firstCellRow += 2;
-        }
-        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
-
-        doc.save(localPath);
-        return localPath;
     }
 
 
@@ -718,10 +650,8 @@ public class GenerateMdBaseLandPriceService {
         BigDecimal result = new BigDecimal("0.00");
         if (CollectionUtils.isNotEmpty(list)) {
             for (SchemeJudgeObject item : list) {
-                BasicApply basicApply = basicApplyService.getByBasicApplyId(item.getBasicApplyId());
-                BasicEstate estateByApplyId = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                if (estateByApplyId.getFloorArea() != null) {
-                    result = result.add(estateByApplyId.getFloorArea());
+                if (item.getFloorArea() != null) {
+                    result = result.add(item.getFloorArea());
                 }
             }
         }
@@ -975,22 +905,24 @@ public class GenerateMdBaseLandPriceService {
     /**
      * 统计类型
      */
-    public Map<Integer, Integer> countProperty(List<DataLandLevelDetail> dataLandLevelDetailList) {
-        Map<Integer, Integer> map = Maps.newHashMap();
-        for (DataLandLevelDetail user : dataLandLevelDetailList) {
-            if (map.containsKey(user.getClassify())) {
-                int i = map.get(user.getClassify());
-                i++;
-                map.remove(user.getClassify());
-                if (NumberUtils.isNumber(user.getClassify())) {
-                    map.put(Integer.parseInt(user.getClassify()), i);
+    public Map<Integer, List<DataLandLevelDetail>> countProperty(Integer pid) {
+        Map<Integer, List<DataLandLevelDetail>> map = Maps.newHashMap();
+        List<DataLandLevelDetail> sonList = Lists.newArrayList();
+        dataLandLevelDetailService.getBestLowItemsByPid(sonList, pid);
+        //向上找一级
+        List<Integer> transform = LangUtils.transform(sonList, o -> o.getPid());
+        //去重
+        List<Integer> result = transform.stream().distinct().collect(Collectors.toList());
+        result.forEach(o -> {
+            List<DataLandLevelDetail> list = dataLandLevelDetailService.getDataLandLevelDetailListByPid(o);
+            List<DataLandLevelDetail> filter = Lists.newArrayList();
+            list.forEach(p -> {
+                if (!CollectionUtils.isNotEmpty(dataLandLevelDetailService.getDataLandLevelDetailListByPid(p.getId()))) {
+                    filter.add(p);
                 }
-            } else {
-                if (NumberUtils.isNumber(user.getClassify())) {
-                    map.put(Integer.parseInt(user.getClassify()), 1);
-                }
-            }
-        }
+            });
+            map.put(o, filter);
+        });
         return map;
     }
 
@@ -1176,4 +1108,199 @@ public class GenerateMdBaseLandPriceService {
         return generateCommonMethod.getLocalPath();
     }
 
+    //基准地价价格一览表，只有一级的情况
+    public void getBaseLandPriceSchedule1(DocumentBuilder builder, Set<MergeCellModel> mergeCellModelList, List<DataLandLevelDetail> dataLandLevelDetailList) throws Exception {
+        final String nullValue = "";
+        builder.insertCell();
+        builder.write("区域");
+        builder.insertCell();
+        for (int i = 0; i < dataLandLevelDetailList.size(); i++) {
+            builder.insertCell();
+            builder.write(dataLandLevelDetailList.get(i).getName());
+        }
+        builder.endRow();
+        mergeCellModelList.add(new MergeCellModel(0, 0, 0, 1));
+        //元/㎡
+        builder.insertCell();
+        builder.write(getSchemeAreaGroup().getAreaName());
+        builder.insertCell();
+        builder.write("元/㎡");
+        for (int i = 0; i < dataLandLevelDetailList.size(); i++) {
+            builder.insertCell();
+            if (dataLandLevelDetailList.get(i).getPrice() != null) {
+                builder.write(dataLandLevelDetailList.get(i).getPrice().toString());
+            } else {
+                builder.write(nullValue);
+            }
+        }
+        builder.endRow();
+        //万元/亩
+        builder.insertCell();
+        builder.write(nullValue);
+        builder.insertCell();
+        builder.write("万元/亩");
+        for (int i = 0; i < dataLandLevelDetailList.size(); i++) {
+            builder.insertCell();
+            if (dataLandLevelDetailList.get(i).getMuPrice() != null) {
+                builder.write(dataLandLevelDetailList.get(i).getMuPrice().toString());
+            } else {
+                builder.write(nullValue);
+            }
+
+        }
+        builder.endRow();
+        //楼面地价(元/㎡)
+        builder.insertCell();
+        builder.write(nullValue);
+        builder.insertCell();
+        builder.write("楼面地价(元/㎡)");
+        for (int i = 0; i < dataLandLevelDetailList.size(); i++) {
+            builder.insertCell();
+            if (dataLandLevelDetailList.get(i).getFloorPrice() != null) {
+                builder.write(dataLandLevelDetailList.get(i).getFloorPrice().toString());
+            } else {
+                builder.write(nullValue);
+            }
+
+        }
+        builder.endRow();
+        mergeCellModelList.add(new MergeCellModel(1, 0, 3, 0));
+    }
+
+    //基准地价价格一览表，有子级的情况
+    public void getBaseLandPriceSchedule2(DocumentBuilder builder, Set<MergeCellModel> mergeCellModelList, Integer pid) throws Exception {
+        final String nullValue = "";
+        Map<Integer, List<DataLandLevelDetail>> countProperty = countProperty(pid);
+        List<Map.Entry<Integer, List<DataLandLevelDetail>>> list = new ArrayList(countProperty.entrySet());
+        Collections.sort(list, (o1, o2) -> (o2.getValue().size() - o1.getValue().size()));
+
+        int hangCellRow = 0;
+        DataLandLevelDetail parent = dataLandLevelDetailService.getDataLandLevelDetailById(pid);
+        for (Map.Entry<Integer, List<DataLandLevelDetail>> entry : list) {
+            builder.insertCell();
+            builder.write(parent.getName());
+            builder.insertCell();
+            builder.write("分类");
+            builder.insertCell();
+            builder.write(nullValue);
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                builder.insertCell();
+                builder.write(entry.getValue().get(i).getName());
+            }
+            builder.endRow();
+            mergeCellModelList.add(new MergeCellModel(hangCellRow * 4, 1, hangCellRow * 4, 2));
+
+            //元/㎡
+            builder.insertCell();
+            builder.write(parent.getName());
+            builder.insertCell();
+            String fullName = dataLandLevelDetailService.getFullNameByBatchDetailId(entry.getKey());
+            if (StringUtils.equals(fullName, parent.getName())) {
+                builder.write("元/㎡");
+            } else {
+                String middleName = fullName.replace(String.format("%s%s", parent.getName(), "/"), "");
+                if (StringUtils.isNotEmpty(middleName)) {
+                    builder.write(middleName);
+                } else {
+                    builder.write(nullValue);
+                }
+            }
+            builder.insertCell();
+            builder.write("元/㎡");
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                builder.insertCell();
+                if (entry.getValue().get(i).getPrice() != null) {
+                    builder.write(entry.getValue().get(i).getPrice().toString());
+                } else {
+                    builder.write(nullValue);
+                }
+            }
+            builder.endRow();
+            //万元/亩
+            builder.insertCell();
+            builder.write(nullValue);
+            builder.insertCell();
+            if (StringUtils.equals(fullName, parent.getName())) {
+                builder.write("万元/亩");
+            }
+            builder.insertCell();
+            builder.write("万元/亩");
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                builder.insertCell();
+                if (entry.getValue().get(i).getMuPrice() != null) {
+                    builder.write(entry.getValue().get(i).getMuPrice().toString());
+                } else {
+                    builder.write(nullValue);
+                }
+            }
+            builder.endRow();
+            //楼面地价(元/㎡)
+            builder.insertCell();
+            builder.write(nullValue);
+            builder.insertCell();
+            if (StringUtils.equals(fullName, parent.getName())) {
+                builder.write("楼面地价(元/㎡)");
+            }
+            builder.insertCell();
+            builder.write("楼面地价(元/㎡)");
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                builder.insertCell();
+                if (entry.getValue().get(i).getFloorPrice() != null) {
+                    builder.write(entry.getValue().get(i).getFloorPrice().toString());
+                } else {
+                    builder.write(nullValue);
+                }
+            }
+            builder.endRow();
+
+            if (StringUtils.equals(fullName, parent.getName())) {
+                mergeCellModelList.add(new MergeCellModel(1 + (hangCellRow) * 4, 2, 1 + (hangCellRow) * 4, 1));
+                mergeCellModelList.add(new MergeCellModel(2 + (hangCellRow) * 4, 2, 2 + (hangCellRow) * 4, 1));
+                mergeCellModelList.add(new MergeCellModel(3 + (hangCellRow) * 4, 2, 3 + (hangCellRow) * 4, 1));
+            } else {
+                mergeCellModelList.add(new MergeCellModel(1 + (hangCellRow) * 4, 1, 3 + (hangCellRow) * 4, 1));
+            }
+
+            hangCellRow++;
+
+        }
+
+        mergeCellModelList.add(new MergeCellModel(0, 0, countProperty.size() * 4 - 1, 0));
+    }
+
+    /**
+     * 基准地价价格一览表
+     *
+     * @return
+     */
+    public String getBaseLandPriceSchedule() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        String localPath = generateCommonMethod.getLocalPath();
+        //设置表格属性
+        generateCommonMethod.settingBuildingTable(builder);
+        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
+        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
+        if (dataLandLevelDetail == null) return localPath;
+        Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
+        Table table = builder.startTable();
+        DataLandLevelDetail ancestor = dataLandLevelDetailService.getAncestorById(dataLandLevelDetail.getId());
+        DataLandLevel dataLandLevel = dataLandLevelService.getDataLandLevelById(dataLandLevelDetail.getLandLevelId());
+        //对应区域下所有的土地级别
+        List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailListByLandLevelId(dataLandLevel.getId());
+        List<DataLandLevelDetail> childFilter = LangUtils.filter(dataLandLevelDetailList, o -> o.getPid() != 0);
+        List<DataLandLevelDetail> firstFilter = LangUtils.filter(dataLandLevelDetailList, o -> o.getPid() == 0);
+        if (CollectionUtils.isNotEmpty(childFilter)) {
+            //多级情况
+            getBaseLandPriceSchedule2(builder, mergeCellModelList, ancestor.getId());
+        } else {
+            //基准地价价格一览表，只有一级的情况
+            getBaseLandPriceSchedule1(builder, mergeCellModelList, firstFilter);
+        }
+        generateCommonMethod.mergeCellTable(mergeCellModelList, table);
+
+        doc.save(localPath);
+        return localPath;
+
+    }
 }
