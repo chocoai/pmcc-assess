@@ -355,7 +355,6 @@ public class DocumentSendService {
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         DocumentSend documentSend = new DocumentSend();
         documentSend.setProjectId(projectId);
-        documentSend.setStatus(ProcessStatusEnum.FINISH.getValue());
         List<DocumentSend> list = documentDao.getDocumentSendList(documentSend);
         List<DocumentSendVo> vos = LangUtils.transform(list, p -> getDocumentSendVo(p));
         vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(vos) ? new ArrayList<DocumentSendVo>() : vos);

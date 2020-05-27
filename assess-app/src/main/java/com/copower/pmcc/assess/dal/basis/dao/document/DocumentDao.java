@@ -34,6 +34,7 @@ public class DocumentDao {
         DocumentSendExample example = new DocumentSendExample();
         DocumentSendExample.Criteria criteria = example.createCriteria();
         MybatisUtils.convertObj2Criteria(documentSend, criteria);
+        criteria.andStatusIsNotNull();
         return documentSendMapper.selectByExampleWithBLOBs(example);
     }
 
