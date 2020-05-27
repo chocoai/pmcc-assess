@@ -3176,7 +3176,7 @@ public class GenerateBaseDataService {
             }
         }
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.trim(result, false)), true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result));
         AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
