@@ -15,20 +15,22 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -75,6 +77,8 @@ public class BasicApplyBatchDetailService {
     private BasicApplyDao basicApplyDao;
     @Autowired
     private BasicEstateLandCategoryInfoDao basicEstateLandCategoryInfoDao;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
 
     /**
      * 通过applyBatchId获取
@@ -265,7 +269,7 @@ public class BasicApplyBatchDetailService {
         BasicEstateLandCategoryInfo query = new BasicEstateLandCategoryInfo();
         query.setHouseId(houseBasicApplyBatchDetail.getTableId());
         List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfoList = basicEstateLandCategoryInfoDao.basicEstateLandCategoryInfoList(query);
-        if(CollectionUtils.isNotEmpty(basicEstateLandCategoryInfoList)){
+        if (CollectionUtils.isNotEmpty(basicEstateLandCategoryInfoList)) {
             basicApply.setLandCategoryId(basicEstateLandCategoryInfoList.get(0).getId());
         }
         basicApply.setApplyBatchId(houseBasicApplyBatchDetail.getApplyBatchId());
@@ -290,7 +294,7 @@ public class BasicApplyBatchDetailService {
                 keyValueDtos.add(keyValueDto);
             }
             basicApply.setName(StringUtils.strip(stringBuilder.toString(), "/"));
-            basicApply.setAddress(basicApply.getName().replaceAll("^.*?/","").replaceAll("/",""));//资产清查使用
+            basicApply.setAddress(basicApply.getName().replaceAll("^.*?/", "").replaceAll("/", ""));//资产清查使用
             basicApply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
         }
         basicApplyService.saveBasicApply(basicApply);
@@ -331,6 +335,22 @@ public class BasicApplyBatchDetailService {
         BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(id);
         List<BasicApplyBatchDetail> list = Lists.newArrayList();
         collectionChildBatchDetails(basicApplyBatchDetail, list);
+        List<BasicApplyBatchDetail> filter = LangUtils.filter(list, o -> o.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey()));
+        if (CollectionUtils.isNotEmpty(filter)) {
+            for (BasicApplyBatchDetail item : filter) {
+                //获取到basicApply
+                BasicApply basicApply = basicApplyService.getBasicApplyByHouseId(item.getTableId());
+                ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApply.getPlanDetailsId());
+                if (planDetails.getBisRestart()) {
+                    if (basicApply != null) {
+                        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getJudgeObjectByApplyId(basicApply.getId());
+                        if (judgeObject != null) {
+                            throw new BusinessException(String.format("%s%s", basicApply.getName(), "关联到估价对象，不允许删除"));
+                        }
+                    }
+                }
+            }
+        }
         for (BasicApplyBatchDetail applyBatchDetail : list) {
             BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(applyBatchDetail.getType());
             if (entityAbstract != null)
@@ -340,10 +360,11 @@ public class BasicApplyBatchDetailService {
         }
     }
 
-    public void batchDeleteBasicApplyBatchDetail(String ids) throws Exception{
+    @Transactional(rollbackFor = Exception.class)
+    public void batchDeleteBasicApplyBatchDetail(String ids) throws Exception {
         if (!StringUtils.isEmpty(ids)) {
             List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-            for(Integer id:integers){
+            for (Integer id : integers) {
                 deleteBasicApplyBatchDetail(id);
             }
         }

@@ -152,7 +152,7 @@ public class BasicApplyBatchController extends BaseController {
             return HttpResult.newCorrectResult(basicApplyBatch);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("初始化异常");
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -753,7 +753,7 @@ public class BasicApplyBatchController extends BaseController {
             return HttpResult.newCorrectResult(basicApplyBatch);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("初始化异常");
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 

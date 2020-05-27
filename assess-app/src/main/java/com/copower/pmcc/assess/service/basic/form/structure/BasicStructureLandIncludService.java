@@ -15,6 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class BasicStructureLandIncludService implements BasicFormStructureInterf
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BasicApplyBatch initBasicApplyBatch(BasicApplyBatch basicApplyBatch) throws Exception {
         if (basicApplyBatch == null) return null;

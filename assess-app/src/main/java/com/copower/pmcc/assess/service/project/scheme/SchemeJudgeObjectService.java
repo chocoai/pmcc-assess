@@ -1253,6 +1253,7 @@ public class SchemeJudgeObjectService {
         if (applyId == null) return null;
         SchemeJudgeObject where = new SchemeJudgeObject();
         where.setBasicApplyId(applyId);
+        where.setBisEnable(true);
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(where);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
         return judgeObjectList.get(0);
