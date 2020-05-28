@@ -147,6 +147,11 @@ public class InitiatePossessorService {
                 vo.setpEntrustmentUnitName(baseDataDicService.getNameById(Integer.valueOf(possessor.getpEntrustmentUnit())));
             }
         }
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(possessor.getpUnitProperties())) {
+            if (NumberUtils.isNumber(possessor.getpUnitProperties())) {
+                vo.setpUnitPropertiesName(baseDataDicService.getNameById(Integer.valueOf(possessor.getpUnitProperties())));
+            }
+        }
         return vo;
     }
 

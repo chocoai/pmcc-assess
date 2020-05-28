@@ -139,6 +139,11 @@ public class InitiateConsignorService {
                 vo.setCsEntrustmentUnitName(baseDataDicService.getNameById(Integer.valueOf(initiateConsignor.getCsEntrustmentUnit())));
             }
         }
+        if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())) {
+            if (NumberUtils.isNumber(initiateConsignor.getCsUnitProperties())) {
+                vo.setCsUnitPropertiesName(baseDataDicService.getNameById(Integer.valueOf(initiateConsignor.getCsUnitProperties())));
+            }
+        }
         return vo;
     }
 

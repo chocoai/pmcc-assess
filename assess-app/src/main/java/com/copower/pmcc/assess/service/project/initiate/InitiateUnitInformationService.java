@@ -178,6 +178,11 @@ public class InitiateUnitInformationService {
                 }
             }
         }
+        if (!StringUtils.isEmpty(unitInformation.getuUnitProperties())) {
+            if (NumberUtils.isNumber(unitInformation.getuUnitProperties())) {
+                vo.setuUnitPropertiesName(baseDataDicService.getNameById(Integer.valueOf(unitInformation.getuUnitProperties())));
+            }
+        }
         return vo;
     }
 
