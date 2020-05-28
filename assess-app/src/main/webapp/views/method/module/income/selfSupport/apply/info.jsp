@@ -127,6 +127,7 @@
                             </label>
                             <div class="col-sm-3">
                                 <div class="input-group">
+                                    <input type="hidden" name="rewardRateId" value="${mdIncome.rewardRateId}">
                                     <input type="text" required class="form-control x-percent" name="rewardRate"
                                            placeholder="报酬率"
                                            data-value="${mdIncome.rewardRate}" onblur="selfSupport.computePrice();">
@@ -1533,10 +1534,12 @@
 
     //获取报酬率
     selfSupport.getRewardRate = function (_this) {
-        rewardRateFunc.calculation(function (result) {
+        var rewardRateId = $(_this).closest('.input-group').find('[name=rewardRateId]').val();
+        rewardRateFunc.calculation(rewardRateId,function (result) {
             if (result) {
                 var element = $(_this).closest('.input-group').find(':text');
-                element.val(result);
+                element.val(result.resultValue);
+                $(_this).closest('.input-group').find('[name=rewardRateId]').val(result.id);
                 AssessCommon.elementParsePoint(element);
                 selfSupport.computeOperatingProfit();
             }
@@ -1592,6 +1595,7 @@
         formData.mdIncome.averageProfitRate = $("#frm_self_support").find('[name=averageProfitRate]').attr('data-value');
         formData.mdIncome.averageProfitRateRemark = $("#frm_self_support").find('[name=averageProfitRateRemark]').val();
         formData.mdIncome.rewardRate = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');
+        formData.mdIncome.rewardRateId = $("#frm_self_support").find('[name=rewardRateId]').val();
 
         formData.dateSectionList = [];
         $("#selfSupportResultBody").find('tr').each(function () {
@@ -1822,7 +1826,7 @@
             if (AssessCommon.isNumber(incomeTotal) && AssessCommon.isNumber(costTotal)) {
                 incomeTotal = parseFloat(incomeTotal);
                 costTotal = parseFloat(costTotal);
-                var operatingProfit = (incomeTotal * averageProfitRate).toFixed(2);
+                var operatingProfit = ((incomeTotal-costTotal) * averageProfitRate).toFixed(2);
                 $(this).find('[data-name=operatingProfit]').text(operatingProfit);
                 //净收益
                 var netProfit = incomeTotal - costTotal - operatingProfit;
