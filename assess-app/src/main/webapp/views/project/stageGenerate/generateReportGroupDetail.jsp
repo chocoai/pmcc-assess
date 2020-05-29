@@ -426,7 +426,7 @@
                         getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
                             $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
                                 reportGroupObj.fileShow(n + "" + areaGroupId+""+item.id, true, item.id);
-                                reportGroupObj.fileShow2(n + "_Attachment" + areaGroupId+""+item.id, true, item.id);
+                                reportGroupObj.fileShow(n + "_Attachment" + areaGroupId+""+item.id, true, item.id);
                             });
                         });
                     });
