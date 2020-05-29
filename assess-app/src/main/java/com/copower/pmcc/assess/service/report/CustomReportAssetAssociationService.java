@@ -4,8 +4,8 @@ import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
-import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportAppraiserAssociation;
-import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportAppraiserAssociationMapper;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportAssetAssociation;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportAssetAssociationMapper;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -51,7 +51,7 @@ import java.util.List;
  * Created by kings on 2019-1-14.
  */
 @Service
-public class CustomReportAppraiserAssociationService {
+public class CustomReportAssetAssociationService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -69,15 +69,15 @@ public class CustomReportAppraiserAssociationService {
     @Autowired
     private BaseService baseService;
     @Autowired
-    private CustomReportAppraiserAssociationMapper customReportAppraiserAssociationMapper;
+    private CustomReportAssetAssociationMapper customReportAssetAssociationMapper;
     @Autowired
     private ProjectNumberRecordDao projectNumberRecordDao;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
 
 
-    public BootstrapTableVo getCustomReportAppraiserAssociationList(String projectName, String numberValue, String unitName,
-                                                                    String queryStartDate, String queryEndDate,Integer limit,Integer offset) {
+    public BootstrapTableVo getCustomReportAssetAssociationList(String projectName, String numberValue, String unitName,
+                                                                String queryStartDate, String queryEndDate, Integer limit, Integer offset) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(offset, limit);
@@ -90,27 +90,27 @@ public class CustomReportAppraiserAssociationService {
             endDate = DateUtils.parse(queryEndDate);
             endDate = DateUtils.addDay(endDate, 1);
         }
-        List<CustomReportAppraiserAssociation> customNumberRecordList = null;
-        //房产
-        BaseProjectClassify projectCategory = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE);
+        List<CustomReportAssetAssociation> customNumberRecordList = null;
+        //资产
+        BaseProjectClassify projectCategory = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE);
         Integer projectCategoryId = projectCategory.getId();
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
         Integer resultId = resultReport.getId();
 
-        customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, projectCategoryId, resultId, numberValue, unitName, startDate, endDate);
+        customNumberRecordList = customReportAssetAssociationMapper.getCustomReportAssetAssociationList(projectName, projectCategoryId, resultId, numberValue, unitName, startDate, endDate);
 
-        List<CustomReportAppraiserAssociation> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportAppraiserAssociation(o));
+        List<CustomReportAssetAssociation> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportAssetAssociation(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportAppraiserAssociation>() : vos);
+        vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportAssetAssociation>() : vos);
         return vo;
     }
 
-    public CustomReportAppraiserAssociation getCustomReportAppraiserAssociation(CustomReportAppraiserAssociation data) {
+    public CustomReportAssetAssociation getCustomReportAssetAssociation(CustomReportAssetAssociation data) {
         if (data == null) {
             return null;
         }
-        CustomReportAppraiserAssociation vo = new CustomReportAppraiserAssociation();
+        CustomReportAssetAssociation vo = new CustomReportAssetAssociation();
         BeanUtils.copyProperties(data, vo);
 
         ProjectNumberRecord where = new ProjectNumberRecord();
@@ -211,27 +211,27 @@ public class CustomReportAppraiserAssociationService {
             endDate = DateUtils.parse(queryEndDate);
         }
 
-        List<CustomReportAppraiserAssociation> customNumberRecordList = null;
-        //房产
-        BaseProjectClassify projectCategory = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE);
+        List<CustomReportAssetAssociation> customNumberRecordList = null;
+        //资产
+        BaseProjectClassify projectCategory = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.COMPREHENSIVE_ASSETS_TYPE);
         Integer projectCategoryId = projectCategory.getId();
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
         Integer resultId = resultReport.getId();
 
-        customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, projectCategoryId, resultId, numberValue, unitName, startDate, endDate);
+        customNumberRecordList = customReportAssetAssociationMapper.getCustomReportAssetAssociationList(projectName, projectCategoryId, resultId, numberValue, unitName, startDate, endDate);
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {
             throw new BusinessException("没有获取到有效的数据");
         }
-        List<CustomReportAppraiserAssociation> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportAppraiserAssociation(o));
+        List<CustomReportAssetAssociation> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportAssetAssociation(o));
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
         Row row = sheet.createRow(0);
         //创建Excel标题
 
         String[] title = {"估价报告编号", "项目名称", "业务来源", "估价目的", "估价方法",
-                "估价作业开始日", "估价作业结束日", "估价时点", "土地面积（㎡）", "建筑面积（㎡）", "评估总值（万元）", "评估单价（元）", "估价对象位置",
+                "估价作业开始日", "估价作业结束日", "估价时点", "评估总值（万元）", "评估单价（元）", "估价对象位置",
                 "委托人", "委托人地址", "委托人邮编", "委托人电话",
                 "第一报告人", "第一报告人注册号", "参与报告人", "注册号", "收费"};
         for (int i = 0; i < title.length; i++) {
@@ -242,7 +242,7 @@ public class CustomReportAppraiserAssociationService {
 
         for (int i = 0; i < vos.size(); i++) {
             row = sheet.createRow(i + 1);
-            CustomReportAppraiserAssociation association = vos.get(i);
+            CustomReportAssetAssociation association = vos.get(i);
             row.createCell(0).setCellValue(association.getNumberValue()); // 估价报告编号
             row.createCell(1).setCellValue(association.getProjectName()); // 项目名称
             row.createCell(2).setCellValue(association.getServiceComeFromName()); // 业务来源
@@ -251,25 +251,23 @@ public class CustomReportAppraiserAssociationService {
             row.createCell(5).setCellValue(DateUtils.format(association.getInvestigationsStartDate(), DateUtils.DATE_PATTERN)); // 估价作业开始日
             row.createCell(6).setCellValue(DateUtils.format(association.getHomeWorkEndTime(), DateUtils.DATE_PATTERN)); // 估价作业结束日
             row.createCell(7).setCellValue(DateUtils.format(association.getValuationDate(), DateUtils.DATE_PATTERN)); // 估价时点
-            row.createCell(8).setCellValue(String.valueOf(association.getLandArea() == null ? "" : association.getLandArea())); // 土地面积
-            row.createCell(9).setCellValue(String.valueOf(association.getEvaluationArea() == null ? "" : association.getEvaluationArea())); // 建筑面积
-            row.createCell(10).setCellValue(String.valueOf(association.getAssessTotal() == null ? "" : association.getAssessTotal())); // 评估总值
-            row.createCell(11).setCellValue(String.valueOf(association.getPrice() == null ? "" : association.getPrice())); // 评估单价
-            row.createCell(12).setCellValue(association.getSeat()); // 估价对象位置
-            row.createCell(13).setCellValue(association.getConsignor()); // 委托人
-            row.createCell(14).setCellValue(association.getCsAddress()); // 委托人地址
-            row.createCell(15).setCellValue(association.getCsPostcode()); // 委托人邮编
-            row.createCell(16).setCellValue(association.getCsPhnoe()); // 委托人电话
-            row.createCell(17).setCellValue(association.getFirstAppraiser()); // 第一报告人
-            row.createCell(18).setCellValue(association.getFirstRegistrationNumber()); // 第一报告人注册号
-            row.createCell(19).setCellValue(association.getParticipationAppraiser()); // 参与报告人
-            row.createCell(20).setCellValue(association.getRegistrationNumber()); // 注册号
-            row.createCell(21).setCellValue(association.getContractPrice()); // 收费
+            row.createCell(8).setCellValue(String.valueOf(association.getAssessTotal() == null ? "" : association.getAssessTotal())); // 评估总值
+            row.createCell(9).setCellValue(String.valueOf(association.getPrice() == null ? "" : association.getPrice())); // 评估单价
+            row.createCell(10).setCellValue(association.getSeat()); // 估价对象位置
+            row.createCell(11).setCellValue(association.getConsignor()); // 委托人
+            row.createCell(12).setCellValue(association.getCsAddress()); // 委托人地址
+            row.createCell(13).setCellValue(association.getCsPostcode()); // 委托人邮编
+            row.createCell(14).setCellValue(association.getCsPhnoe()); // 委托人电话
+            row.createCell(15).setCellValue(association.getFirstAppraiser()); // 第一报告人
+            row.createCell(16).setCellValue(association.getFirstRegistrationNumber()); // 第一报告人注册号
+            row.createCell(17).setCellValue(association.getParticipationAppraiser()); // 参与报告人
+            row.createCell(18).setCellValue(association.getRegistrationNumber()); // 注册号
+            row.createCell(19).setCellValue(association.getContractPrice()); // 收费
         }
 
         OutputStream os = response.getOutputStream();
         try {
-            this.setResponseHeader(response, "中国房协报表.XLS");
+            this.setResponseHeader(response, "中国评协绩报表.XLS");
             wb.write(os);
 
         } catch (Exception e) {

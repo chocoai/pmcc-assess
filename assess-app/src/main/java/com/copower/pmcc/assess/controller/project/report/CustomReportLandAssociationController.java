@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.controller.project.report;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.report.CustomReportAppraiserAssociationService;
+import com.copower.pmcc.assess.service.report.CustomReportLandAssociationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.google.common.collect.Lists;
@@ -26,12 +26,12 @@ import java.util.List;
  * @Description:中国房地产估价师协会报表
  */
 @Controller
-@RequestMapping(value = "/customReportAppraiserAssociation")
-public class CustomReportAppraiserAssociationController {
+@RequestMapping(value = "/customReportLandAssociation")
+public class CustomReportLandAssociationController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private CustomReportAppraiserAssociationService customReportAppraiserAssociationService;
+    private CustomReportLandAssociationService customReportLandAssociationService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -39,19 +39,19 @@ public class CustomReportAppraiserAssociationController {
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
-        String view = "/report/customReportAppraiserAssociation";
+        String view = "/report/customReportLandAssociation";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        List<BaseDataDic> reportTypeList = Lists.newArrayList();
+
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getCustomReportAppraiserAssociationList", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getCustomReportAppraiserAssociationList(String projectName, String numberValue, String unitName,
+    @RequestMapping(value = "/getCustomReportLandAssociationList", method = {RequestMethod.GET}, name = "获取列表")
+    public BootstrapTableVo getCustomReportLandAssociationList(String projectName, String numberValue, String unitName,
                                                                     String queryStartDate, String queryEndDate,Integer limit,Integer offset) {
         BootstrapTableVo vo = null;
         try {
-            vo = customReportAppraiserAssociationService.getCustomReportAppraiserAssociationList(projectName, numberValue, unitName,
+            vo = customReportLandAssociationService.getCustomReportLandAssociationList(projectName, numberValue, unitName,
                     queryStartDate, queryEndDate,limit,offset);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -64,7 +64,7 @@ public class CustomReportAppraiserAssociationController {
     public void export(HttpServletRequest request, HttpServletResponse response, String projectName, String numberValue, String unitName,
                        String queryStartDate, String queryEndDate) throws Exception {
         try {
-            customReportAppraiserAssociationService.export(response, projectName, numberValue, unitName,
+            customReportLandAssociationService.export(response, projectName, numberValue, unitName,
                     queryStartDate, queryEndDate);
         } catch (Exception e) {
             e.printStackTrace();

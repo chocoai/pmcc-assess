@@ -60,7 +60,7 @@
                                                    data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
                                         </div>
                                         <button class="btn btn-info  btn-sm" type="button"style="margin-left: 10px"
-                                                onclick="ReportAppraiserAssociation.prototype.loadDataDicList()">
+                                                onclick="ReportAssetAssociation.prototype.loadDataDicList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
@@ -71,7 +71,7 @@
                                             重置
                                         </button>
                                         <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
-                                                onclick="ReportAppraiserAssociation.prototype.showModel()"
+                                                onclick="ReportAssetAssociation.prototype.showModel()"
                                                 data-toggle="modal" href="#divBox">
                                             <span class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
@@ -79,7 +79,7 @@
                                             上传附件
                                         </button>
                                         <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
-                                                onclick="ReportAppraiserAssociation.prototype.export()">
+                                                onclick="ReportAssetAssociation.prototype.export()">
                                             <span class="btn-label">
 												<i class="fa fa-cloud-download-alt"></i>
 											</span>
@@ -107,14 +107,14 @@
 
 <script type="text/javascript">
     $(function () {
-        ReportAppraiserAssociation.prototype.loadDataDicList();
+        ReportAssetAssociation.prototype.loadDataDicList();
     });
 
 
-    var ReportAppraiserAssociation = function () {
+    var ReportAssetAssociation = function () {
 
     };
-    ReportAppraiserAssociation.prototype = {
+    ReportAssetAssociation.prototype = {
         config: function () {
             var data = {};
             data.table = "tb_FatherList";
@@ -150,8 +150,6 @@
                     return formatDate(row.valuationDate, false);
                 }
             });
-            //cols.push({field: 'landArea', width: '5%', title: '土地面积'});
-            //cols.push({field: 'evaluationArea', width: '5%', title: '建筑面积'});
             cols.push({field: 'assessTotal', width: '5%', title: '评估总值'});
             cols.push({field: 'price', width: '5%', title: '评估单价'});
 
@@ -170,9 +168,10 @@
                     return formatDate(row.gmtCreated, false);
                 }
             });
-            $("#" + ReportAppraiserAssociation.prototype.config().table).bootstrapTable('destroy');
-            TableInit(ReportAppraiserAssociation.prototype.config().table, "${pageContext.request.contextPath}/customReportAppraiserAssociation/getCustomReportAppraiserAssociationList", cols, {
+            $("#" + ReportAssetAssociation.prototype.config().table).bootstrapTable('destroy');
+            TableInit(ReportAssetAssociation.prototype.config().table, "${pageContext.request.contextPath}/customReportAssetAssociation/getCustomReportAssetAssociationList", cols, {
                 projectName: $("#queryProjectName").val(),
+                reportType: $("#queryReportType").val(),
                 numberValue: $("#queryNumberValue").val(),
                 unitName: $("#queryUnitName").val(),
                 queryStartDate: $("#queryStartDate").val(),
@@ -202,17 +201,17 @@
             }
         },
         showModel: function () {
-            $("#" + ReportAppraiserAssociation.prototype.config().frm).clearAll();
-            ReportAppraiserAssociation.prototype.showFiles();
-            ReportAppraiserAssociation.prototype.uploadFiles();
-            $('#' + ReportAppraiserAssociation.prototype.config().box).modal("show");
+            $("#" + ReportAssetAssociation.prototype.config().frm).clearAll();
+            ReportAssetAssociation.prototype.showFiles();
+            ReportAssetAssociation.prototype.uploadFiles();
+            $('#' + ReportAssetAssociation.prototype.config().box).modal("show");
         },
         //加载附件
         showFiles: function () {
             FileUtils.getFileShows({
-                target: "customReportAppraiserAssociation",
+                target: "customReportAssetAssociation",
                 formData: {
-                    tableName: "customReportAppraiserAssociation",
+                    tableName: "customReportAssetAssociation",
                     tableId: 0
                 },
                 editFlag: true,
@@ -221,11 +220,11 @@
         },
         uploadFiles: function () {
             FileUtils.uploadFiles({
-                target: "customReportAppraiserAssociation",
+                target: "customReportAssetAssociation",
                 showFileList: false,
                 onUpload: function (file) {//上传之前触发
                     var formData = {
-                        tableName: "customReportAppraiserAssociation",
+                        tableName: "customReportAssetAssociation",
                         tableId: 0
                     };
                     return formData;
@@ -234,18 +233,20 @@
                 deleteFlag: true
             }, {
                 onUploadComplete: function () {
-                    ReportAppraiserAssociation.prototype.showFiles();
+                    ReportAssetAssociation.prototype.showFiles();
                 }
             });
         },
         export: function () {
             var projectName = $("#queryProjectName").val();
+            var reportType = $("#queryReportType").val();
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
             var queryStartDate = $("#queryStartDate").val();
             var queryEndDate = $("#queryEndDate").val();
-            var href = "${pageContext.request.contextPath}/customReportAppraiserAssociation/export";
+            var href = "${pageContext.request.contextPath}/customReportAssetAssociation/export";
             href += "?projectName=" + projectName;
+            href += "&reportType=" + reportType;
             href += "&numberValue=" + numberValue;
             href += "&unitName=" + unitName;
             href += "&queryStartDate=" + queryStartDate;
@@ -277,11 +278,11 @@
                                             附件
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input id="customReportAppraiserAssociation"
-                                                   name="customReportAppraiserAssociation"
+                                            <input id="customReportAssetAssociation"
+                                                   name="customReportAssetAssociation"
                                                    placeholder="上传附件" class="form-control input-full"
                                                    type="file">
-                                            <div id="_customReportAppraiserAssociation"></div>
+                                            <div id="_customReportAssetAssociation"></div>
                                         </div>
                                     </div>
                                 </div>
