@@ -203,13 +203,13 @@
                                             <td>
                                                 <label class="form-control input-full">${item.inventoryContentName}</label>
                                             </td>
+                                            <td>
+                                                <label class="form-control input-full">${item.registration}</label>
+                                            </td>
+                                            <td>
+                                                <label class="form-control input-full">${item.actual}</label>
+                                            </td>
                                             <c:if test="${item.areConsistent != '一致'}">
-                                                <td>
-                                                    <label class="form-control input-full">${item.registration}</label>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">${item.actual}</label>
-                                                </td>
                                                 <td>
                                                     <label class="form-control input-full">${item.differenceReason}</label>
                                                 </td>

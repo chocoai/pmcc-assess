@@ -217,8 +217,8 @@
                                                                        id="areConsistent${item.id}"
                                                                        onclick="survey.areConsistentEvent(this) ;"
                                                                        name="areConsistent${item.id}"
-                                                                       value="一致" ${item.areConsistent eq '一致'?'checked':''} ${empty item.areConsistent ?'checked':''}>
-                                                                <span class="form-check-sign">一致</span>
+                                                                       value="一致" >
+                                                                <span class="form-check-sign">一致4</span>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -229,7 +229,7 @@
                                                 <td>${item.inventoryContentName}</td>
 
                                                 <td>
-                                                    <div class="x-valid show-hide">
+                                                    <div class="x-valid">
                                                         <input type="text" data-rule-maxlength="50" placeholder="登记"
                                                                required
                                                                id="registration${item.id}"
@@ -241,7 +241,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <div class="x-valid show-hide">
+                                                    <div class="x-valid">
                                                         <input type="text" data-rule-maxlength="50" placeholder="实际"
                                                                required
                                                                id="actual${item.id}"
@@ -329,7 +329,7 @@
                                                     //清查内容附件上传和加载
                                                     survey.uploadFileCommon("${item.id}");
                                                     survey.showFileCommon("${item.id}");
-                                                    survey.initAgreement('#areConsistent${item.id}');
+                                                    survey.initAgreement('#areConsistent${item.id}','${item.areConsistent}');
                                                 })
                                             </script>
                                         </c:forEach>
@@ -866,17 +866,11 @@
     /**
      * 初始化
      */
-    survey.initAgreement = function (selector) {
+    survey.initAgreement = function (selector,areConsistent) {
         var tr = $(selector).closest('tr');
-        var registration = $.trim(tr.find('[name^=registration]').val());//登记
-        var actual = $.trim(tr.find('[name^=actual]').val());//实际
-        var num = 1;
-        if (actual && registration) {
-            if (actual != registration) {
-                num++;
-            }
-        }
-        if (num == 1) {
+        console.log(areConsistent+"====****")
+
+        if (areConsistent == "一致") {
             tr.find('.show-hide').hide();
             tr.find("input[type=checkbox]").prop('checked', true);
         } else {
