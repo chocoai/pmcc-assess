@@ -53,53 +53,13 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
-        //当楼盘为新增时
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processExecution.getProcessInstanceId());
+        updateBisCase(applyBatch);
         if (applyBatch.getCaseEstateId() == 0) {
             //当楼盘为新增时
             applyBatch.setBisCase(true);
             basicApplyBatchDao.updateInfo(applyBatch);
-            BasicEstate basicEstate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
-            basicEstate.setBisCase(true);
-            basicEstateDao.updateBasicEstate(basicEstate, false);
-            //楼栋
-            List<BasicApplyBatchDetail> details = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
-            List<BasicApplyBatchDetail> buildingList = LangUtils.filter(details, d -> d.getType().startsWith(BasicFormClassifyEnum.BUILDING.getKey()));
-            if (CollectionUtils.isNotEmpty(buildingList)) {
-                for (BasicApplyBatchDetail buildItem : buildingList) {
-                    BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingById(buildItem.getTableId());
-                    basicBuilding.setEstateId(basicEstate.getId());
-                    basicBuilding.setBisCase(true);
-                    basicBuildingDao.updateBasicBuilding(basicBuilding, false);
-                    //单元
-                    List<BasicApplyBatchDetail> unitList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(buildItem.getId(), applyBatch.getId());
-                    if (CollectionUtils.isNotEmpty(unitList)) {
-                        for (BasicApplyBatchDetail unitItem : unitList) {
-                            if (unitItem.getType().startsWith(BasicFormClassifyEnum.UNIT.getKey())) {
-                                BasicUnit basicUnit = basicUnitService.getBasicUnitById(unitItem.getTableId());
-                                basicUnit.setBuildingId(buildItem.getTableId());
-                                basicUnit.setBisCase(true);
-                                basicUnitDao.updateBasicUnit(basicUnit, false);
-                                //房屋
-                                List<BasicApplyBatchDetail> houseList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(unitItem.getId(), applyBatch.getId());
-                                if (CollectionUtils.isNotEmpty(houseList)) {
-                                    for (BasicApplyBatchDetail houseItem : houseList) {
-                                        if (houseItem.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
-                                            BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseItem.getTableId());
-                                            basicHouse.setUnitId(unitItem.getId());
-                                            basicHouse.setBisCase(true);
-                                            basicHouseDao.updateBasicHouse(basicHouse, false);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
         } else {
-            //案列新增或升级 过滤数据
             List<BasicApplyBatchDetail> details = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
             //升级数据
             List<BasicApplyBatchDetail> upgradelList = LangUtils.filter(details, d -> {
@@ -168,6 +128,46 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
         }
     }
 
+    public void updateBisCase(BasicApplyBatch applyBatch){
+        BasicEstate basicEstate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
+        basicEstate.setBisCase(true);
+        basicEstateDao.updateBasicEstate(basicEstate, false);
+        //楼栋
+        List<BasicApplyBatchDetail> details = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
+        List<BasicApplyBatchDetail> buildingList = LangUtils.filter(details, d -> d.getType().startsWith(BasicFormClassifyEnum.BUILDING.getKey()));
+        if (CollectionUtils.isNotEmpty(buildingList)) {
+            for (BasicApplyBatchDetail buildItem : buildingList) {
+                BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingById(buildItem.getTableId());
+                basicBuilding.setEstateId(basicEstate.getId());
+                basicBuilding.setBisCase(true);
+                basicBuildingDao.updateBasicBuilding(basicBuilding, false);
+                //单元
+                List<BasicApplyBatchDetail> unitList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(buildItem.getId(), applyBatch.getId());
+                if (CollectionUtils.isNotEmpty(unitList)) {
+                    for (BasicApplyBatchDetail unitItem : unitList) {
+                        if (unitItem.getType().startsWith(BasicFormClassifyEnum.UNIT.getKey())) {
+                            BasicUnit basicUnit = basicUnitService.getBasicUnitById(unitItem.getTableId());
+                            basicUnit.setBuildingId(buildItem.getTableId());
+                            basicUnit.setBisCase(true);
+                            basicUnitDao.updateBasicUnit(basicUnit, false);
+                            //房屋
+                            List<BasicApplyBatchDetail> houseList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(unitItem.getId(), applyBatch.getId());
+                            if (CollectionUtils.isNotEmpty(houseList)) {
+                                for (BasicApplyBatchDetail houseItem : houseList) {
+                                    if (houseItem.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                                        BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseItem.getTableId());
+                                        basicHouse.setUnitId(unitItem.getId());
+                                        basicHouse.setBisCase(true);
+                                        basicHouseDao.updateBasicHouse(basicHouse, false);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
 }
