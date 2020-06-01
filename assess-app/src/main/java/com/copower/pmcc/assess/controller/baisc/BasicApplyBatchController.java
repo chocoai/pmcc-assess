@@ -192,7 +192,7 @@ public class BasicApplyBatchController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/getCaseEstateZtreeDtos", method = RequestMethod.GET)
     public List<ZtreeDto> getCaseEstateZtreeDtos(Integer estateId) {
-        return basicApplyBatchService.getCacheEstateZtreeById(estateId);
+        return basicApplyBatchService.getEstateZtreeById(estateId);
     }
 
     @ResponseBody

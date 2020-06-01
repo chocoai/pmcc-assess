@@ -58,22 +58,22 @@
                                                 style="margin-left: 5px;"
                                                 onclick=" batchTreeTool.expandAll(false);">全部收起
                                         </button>
-                                        <span id="btnGroup" style="display: none;">
-                                                <button type="button" class="btn btn-sm btn-success baseTool"
-                                                        style="margin-left: 5px;"
+                                        <span id="btnGroup">
+                                                <button type="button" class="btn btn-sm btn-success addNode"
+                                                        style="margin-left: 5px;display: none;"
                                                         onclick="batchTreeTool.showAddModal()">新增</button>
-                                            <button type="button" class="btn btn-sm btn-warning"
-                                                    style="margin-left: 5px;"
+                                            <button type="button" class="btn btn-sm btn-warning limitTool"
+                                                    style="margin-left: 5px;display: none;"
                                                     onclick=" batchTreeTool.deleteDetail();">删除</button>
-                                            <button type="button" class="btn btn-sm btn-primary fillInformation"
-                                                    style="margin-left: 5px;"
+                                            <button type="button" class="btn btn-sm btn-primary limitTool"
+                                                    style="margin-left: 5px;display: none;"
                                                     onclick="batchTreeTool.fillInformation();">填写信息</button>
-                                            <button type="button" class="btn btn-sm btn-info copy"
-                                                    style="margin-left: 5px;"
-                                                    onclick="batchTreeTool.copy();">复制</button>
-                                            <button type="button" class="btn btn-sm btn-warning paste"
-                                                    style="margin-left: 5px;"
-                                                    onclick="batchTreeTool.paste();">粘贴</button>
+                                            <%--<button type="button" class="btn btn-sm btn-info addNode"--%>
+                                                    <%--style="margin-left: 5px;display: none;"--%>
+                                                    <%--onclick="batchTreeTool.copy();">复制</button>--%>
+                                            <%--<button type="button" class="btn btn-sm btn-warning pase"--%>
+                                                    <%--style="margin-left: 5px;display: none;"--%>
+                                                    <%--onclick="batchTreeTool.paste();">粘贴</button>--%>
                                             </span>
                                         <ul id="ztree" class="ztree"></ul>
                                     </div>
@@ -179,12 +179,12 @@
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1">名称<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
-                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoComplete(this)"
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称"
                                                        name="name" class="form-control input-full" required>
                                             </div>
                                             <label class="col-sm-1">表单类型<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
-                                                <select name='type' required onchange="batchTreeTool.typeChange(this)"
+                                                <select name='type' required
                                                         class='form-control input-full'></select>
                                             </div>
                                         </div>
@@ -232,7 +232,7 @@
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1">名称<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
-                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this)"
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称"
                                                        name="name" class="form-control input-full" required>
                                             </div>
                                         </div>
@@ -332,13 +332,13 @@
     //表单大类change
     function formClassifyChange() {
         var dataKey = getClassifyKey();
-        if (AssessDicKey.projectSurveyFormClassifyLandOnly == dataKey) {
-            $("#btnGroup").find('.btn').not('.fillInformation').hide();
-            $("#btnGroup").find('.btn.caseTool').hide();
-        } else {
-            $("#btnGroup").find('.btn').show();
-            $("#btnGroup").find('.btn.caseTool').hide();
-        }
+        // if (AssessDicKey.projectSurveyFormClassifyLandOnly == dataKey) {
+        //     $("#btnGroup").find('.btn').not('.fillInformation').hide();
+        //     $("#btnGroup").find('.btn.caseTool').hide();
+        // } else {
+        //     $("#btnGroup").find('.btn').show();
+        //     $("#btnGroup").find('.btn.caseTool').hide();
+        // }
         initBasicApplyBatchCase();
     }
 
@@ -408,6 +408,7 @@
                 enable: true,
                 idKey: "id",
                 pIdKey: "pid",
+                bisFromCase: "bisFromCase",
                 rootPId: 0
             }
         },// 回调函数
@@ -565,6 +566,7 @@
                         zTreeObj.removeNode(node);
                         if (parentNode) {
                             zTreeObj.selectNode(parentNode);
+                            batchTreeTool.showOperationBtn();
                         }
                     } else {
                         AlertError("失败", "删除失败：" + result.errmsg);
@@ -653,13 +655,15 @@
         zTreeObj.expandAll(flag);
     }
 
-    //查看信息链接
+    //点击事件
     batchTreeTool.showOperationBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node && node.tableId) {
-            $("#btnGroup").show();
+        if (node && node.bisFromCase==true) {
+            $("#btnGroup").find('.addNode').show();
+            $("#btnGroup").find('.limitTool').hide();
         } else {
-            $("#btnGroup").hide();
+            $("#btnGroup").find('.addNode').show();;
+            $("#btnGroup").find('.limitTool').show();
         }
     }
 
@@ -691,7 +695,7 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    batchTreeTool.showAddModal({id: result.data.id, tableName: result.data.tableName});
+                    batchTreeTool.ztreeInit(${applyBatch.id});
                 }
             }
         })

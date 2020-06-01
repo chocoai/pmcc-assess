@@ -251,7 +251,7 @@
             url += 'applyBatchId=' +  ${applyBatch.id};
             url += '&formClassify=' + classify;
             url += '&formType=' + formType;
-            url += '&tableId=' + node.tableId;
+            url += '&tbId=' + node.tableId;
             url += '&tbType=' + node.type;
             openWin(url, function () {
             })

@@ -67,7 +67,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicUnitService basicUnitService;
     @Autowired
-    private BasicEstateLandStateService basicEstateLandStateService;
+    private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
@@ -97,7 +97,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicEstateDao basicEstateDao;
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private BasicHouseDao basicHouseDao;
     @Autowired
     private DeclareRecordService declareRecordService;
     @Lazy
@@ -120,6 +120,7 @@ public class BasicApplyBatchService {
             ZtreeDto ztreeDto = new ZtreeDto();
             ztreeDto.setId(item.getId());
             ztreeDto.setName(item.getName());
+            ztreeDto.setBisFromCase(item.getBisFromCase());
             if (basicApplyBatch.getPlanDetailsId() == null) {
                 ztreeDto.setDisplayName(item.getDisplayName());
             } else {
@@ -127,8 +128,8 @@ public class BasicApplyBatchService {
             }
             ztreeDto.setPid(item.getPid());
             ztreeDto.setTableName(item.getTableName());
+            ztreeDto.setTableId(item.getTableId());
             if (item.getBisFromCase() == Boolean.FALSE) {
-                ztreeDto.setTableId(item.getTableId());
                 if (basicApplyBatch.getCaseEstateId() != null && basicApplyBatch.getCaseEstateId() > 0) {
                     if (item.getUpgradeTableId() != null && item.getUpgradeTableId() > 0) {
                         ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
@@ -185,71 +186,51 @@ public class BasicApplyBatchService {
      * @return
      */
     public List<ZtreeDto> getEstateZtreeById(Integer estateId) {
-        List<ZtreeDto> ztreeDtoList = Lists.newArrayList();
-        ZtreeDto ztreeDtoEstate = new ZtreeDto();
-        BasicEstate basicEstate = basicEstateService.getBasicEstateById(estateId);
-        if (basicEstate == null) return ztreeDtoList;
-        ztreeDtoEstate.setPid(0);
-        ztreeDtoEstate.setId(estateId);
-        ztreeDtoEstate.setName(basicEstate.getName());
-        ztreeDtoEstate.setDisplayName(ztreeDtoEstate.getName());
-        ztreeDtoEstate.setTableName(BasicFormClassifyEnum.ESTATE.getTableName());
-        ztreeDtoEstate.setTableId(estateId);
-        ztreeDtoEstate.setType(BasicFormClassifyEnum.ESTATE.getKey());
-        ztreeDtoList.add(ztreeDtoEstate);
-
-        BasicBuilding whereBasicBuilding = new BasicBuilding();
-        whereBasicBuilding.setEstateId(estateId);
-        whereBasicBuilding.setBisCase(true);
-        List<BasicBuilding> buildingList = basicBuildingService.getBasicBuildingList(whereBasicBuilding);
-        if (CollectionUtils.isEmpty(buildingList)) return ztreeDtoList;
-        for (BasicBuilding basicBuilding : buildingList) {
-            ZtreeDto ztreeDtoBuilding = new ZtreeDto();
-            ztreeDtoBuilding.setPid(ztreeDtoEstate.getId());
-            ztreeDtoBuilding.setId(basicBuilding.getId());
-            ztreeDtoBuilding.setName(basicBuilding.getBuildingNumber());
-            ztreeDtoBuilding.setDisplayName(ztreeDtoBuilding.getName());
-            ztreeDtoBuilding.setTableName(BasicFormClassifyEnum.BUILDING.getTableName());
-            ztreeDtoBuilding.setTableId(basicBuilding.getId());
-            ztreeDtoBuilding.setType(BasicFormClassifyEnum.BUILDING.getKey());
-            ztreeDtoList.add(ztreeDtoBuilding);
-
-            BasicUnit whereBasicUnit = new BasicUnit();
-            whereBasicUnit.setBuildingId(basicBuilding.getId());
-            whereBasicUnit.setBisCase(true);
-            List<BasicUnit> basicUnitList = basicUnitService.getBasicUnitList(whereBasicUnit);
-            if (CollectionUtils.isEmpty(basicUnitList)) continue;
-            for (BasicUnit basicUnit : basicUnitList) {
-                ZtreeDto ztreeDtoUnit = new ZtreeDto();
-                ztreeDtoUnit.setPid(ztreeDtoBuilding.getId());
-                ztreeDtoUnit.setId(basicUnit.getId());
-                ztreeDtoUnit.setName(basicUnit.getUnitNumber());
-                ztreeDtoUnit.setDisplayName(ztreeDtoUnit.getName());
-                ztreeDtoUnit.setTableName(BasicFormClassifyEnum.UNIT.getTableName());
-                ztreeDtoUnit.setTableId(basicUnit.getId());
-                ztreeDtoUnit.setType(BasicFormClassifyEnum.UNIT.getKey());
-                ztreeDtoList.add(ztreeDtoUnit);
-
-                BasicHouse whereBasicHouse = new BasicHouse();
-                whereBasicHouse.setUnitId(basicUnit.getId());
-                whereBasicHouse.setBisCase(true);
-                List<BasicHouse> basicHouseList = basicHouseService.getBasicHouseList(whereBasicHouse);
-                if (CollectionUtils.isEmpty(basicHouseList)) continue;
-                for (BasicHouse basicHouse : basicHouseList) {
-                    ZtreeDto ztreeDtoHouse = new ZtreeDto();
-                    ztreeDtoHouse.setPid(ztreeDtoUnit.getId());
-                    ztreeDtoHouse.setId(basicHouse.getId());
-                    ztreeDtoHouse.setName(basicHouse.getHouseNumber());
-                    ztreeDtoHouse.setDisplayName(ztreeDtoHouse.getName());
-                    ztreeDtoHouse.setTableName(BasicFormClassifyEnum.HOUSE.getTableName());
-                    ztreeDtoHouse.setTableId(basicHouse.getId());
-                    ztreeDtoHouse.setType(BasicFormClassifyEnum.HOUSE.getKey());
-                    ztreeDtoList.add(ztreeDtoHouse);
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByCaseEstateId(estateId);
+        List<ZtreeDto> treeDtos = new ArrayList<>();
+        if (basicApplyBatch == null) return treeDtos;
+        List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
+        if (CollectionUtils.isEmpty(basicApplyBatchDetails)) return treeDtos;
+        for (BasicApplyBatchDetail item : basicApplyBatchDetails) {
+            ZtreeDto ztreeDto = new ZtreeDto();
+            ztreeDto.setId(item.getId());
+            ztreeDto.setName(item.getName());
+            if (basicApplyBatch.getPlanDetailsId() == null) {
+                ztreeDto.setDisplayName(item.getDisplayName());
+            } else {
+                ztreeDto.setDisplayName(String.format("%s(%s)", item.getDisplayName(), publicService.getUserNameByAccount(item.getExecutor())));
+            }
+            ztreeDto.setPid(item.getPid());
+            ztreeDto.setTableName(item.getTableName());
+            if (item.getBisFromCase() == Boolean.FALSE) {
+                ztreeDto.setTableId(item.getTableId());
+                if (basicApplyBatch.getCaseEstateId() != null && basicApplyBatch.getCaseEstateId() > 0) {
+                    if (item.getUpgradeTableId() != null && item.getUpgradeTableId() > 0) {
+                        ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
+                    } else {
+                        ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+                    }
                 }
             }
+            if(StringUtils.isNotEmpty(item.getType())){
+                ztreeDto.setType(item.getType());
+            }else{
+                BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(item.getTableName());
+                ztreeDto.setType(anEnum.getKey());
+            }
+            ztreeDto.setCreator(item.getCreator());
+            ztreeDto.setExecutor(item.getExecutor());
+            ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
+            ztreeDto.setApplyBatchId(item.getApplyBatchId());
+            ztreeDto.setDeclareRecordId(item.getDeclareRecordId());
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(item.getDeclareRecordId());
+            if (declareRecord != null) {
+                ztreeDto.setDeclareRecordName(declareRecord.getName());
+            }
+            treeDtos.add(ztreeDto);
         }
 
-        return ztreeDtoList;
+        return treeDtos;
     }
 
     /**
@@ -270,7 +251,7 @@ public class BasicApplyBatchService {
         if (existEstateCase) {
             BasicEstate latestVersionEstate = basicEstateDao.getLatestVersionEstate(province, city, estateName);
             if (latestVersionEstate != null) {
-                basicApplyBatch.setBisCase(true);
+                //basicApplyBatch.setBisCase(true);
                 basicApplyBatch.setClassify(latestVersionEstate.getClassify());
                 basicApplyBatch.setType(latestVersionEstate.getType());
                 basicApplyBatch.setCaseEstateId(latestVersionEstate.getId());
@@ -286,7 +267,7 @@ public class BasicApplyBatchService {
         if (CollectionUtils.isEmpty(dataDicList)) return resultList;
         resultList = LangUtils.filter(dataDicList, o -> {
             return AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE.equals(o.getFieldName())
-                    || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(o.getFieldName())
+//                    || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(o.getFieldName())
                     || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(o.getFieldName());
         });
 
@@ -335,6 +316,17 @@ public class BasicApplyBatchService {
         BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
         basicApplyBatch.setEstateId(estateId);
         basicApplyBatch.setBisCase(false);
+        List<BasicApplyBatch> basicApplyBatches = basicApplyBatchDao.getInfoList(basicApplyBatch);
+        if (CollectionUtils.isNotEmpty(basicApplyBatches)) {
+            return basicApplyBatches.get(0);
+        }
+        return null;
+    }
+
+    public BasicApplyBatch getBasicApplyBatchByCaseEstateId(Integer estateId) {
+        BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
+        basicApplyBatch.setEstateId(estateId);
+        basicApplyBatch.setBisCase(true);
         List<BasicApplyBatch> basicApplyBatches = basicApplyBatchDao.getInfoList(basicApplyBatch);
         if (CollectionUtils.isNotEmpty(basicApplyBatches)) {
             return basicApplyBatches.get(0);
@@ -678,6 +670,7 @@ public class BasicApplyBatchService {
             if (o instanceof BasicHouse)
                 name = entityAbstract.getProperty(o, "houseNumber");
             applyBatchDetail.setName(String.valueOf(name));
+            applyBatchDetail.setType(ztreeDto.getType());
             applyBatchDetail.setDisplayName(String.valueOf(name));
             applyBatchDetail.setTableName(ztreeDto.getTableName());
             applyBatchDetail.setTableId((Integer) entityAbstract.getProperty(o, "id"));

@@ -96,6 +96,7 @@ public class BasicApplyBatchDetailService {
     public BasicApplyBatchDetail getBasicApplyBatchDetail(String tableName, Integer tableId) {
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableId(tableId);
+        basicApplyBatchDetail.setBisFromCase(false);
         basicApplyBatchDetail.setTableName(tableName);
         List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
         if (CollectionUtils.isNotEmpty(infoList))
@@ -340,9 +341,9 @@ public class BasicApplyBatchDetailService {
             for (BasicApplyBatchDetail item : filter) {
                 //获取到basicApply
                 BasicApply basicApply = basicApplyService.getBasicApplyByHouseId(item.getTableId());
-                ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApply.getPlanDetailsId());
-                if (planDetails.getBisRestart()) {
-                    if (basicApply != null) {
+                if (basicApply != null) {
+                    ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApply.getPlanDetailsId());
+                    if (planDetails != null && planDetails.getBisRestart()) {
                         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getJudgeObjectByApplyId(basicApply.getId());
                         if (judgeObject != null) {
                             throw new BusinessException(String.format("%s%s", basicApply.getName(), "关联到估价对象，不允许删除"));
@@ -540,6 +541,21 @@ public class BasicApplyBatchDetailService {
                 }
             }
 
+        }
+    }
+
+    //复制一个节点
+    public void copyNode(Integer sourcePid,Integer sourceApplyBatchId,Integer targetPid,Integer targetApplyBatchId){
+        List<BasicApplyBatchDetail> detailList = getBasicApplyBatchDetailByPid(sourcePid, sourceApplyBatchId);
+        if(CollectionUtils.isNotEmpty(detailList)){
+            for(BasicApplyBatchDetail source :detailList){
+                BasicApplyBatchDetail target = new BasicApplyBatchDetail();
+                BeanUtils.copyProperties(source,target);
+                target.setPid(targetPid);
+                target.setApplyBatchId(targetApplyBatchId);
+                basicApplyBatchDetailDao.addInfo(target);
+                copyNode(source.getId(),source.getApplyBatchId(),target.getId(),target.getApplyBatchId());
+            }
         }
     }
 }

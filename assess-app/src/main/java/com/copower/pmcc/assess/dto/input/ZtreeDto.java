@@ -26,6 +26,15 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private String declareRecordName;
     private Integer applyBatchId;
     private String icon;
+    private boolean bisFromCase;
+
+    public boolean isBisFromCase() {
+        return bisFromCase;
+    }
+
+    public void setBisFromCase(boolean bisFromCase) {
+        this.bisFromCase = bisFromCase;
+    }
 
     public Integer getApplyBatchId() {
         return applyBatchId;
