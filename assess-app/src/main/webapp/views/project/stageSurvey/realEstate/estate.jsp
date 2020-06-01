@@ -163,13 +163,20 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">占地面积(平方米)</label>
-                                                <div class="col-sm-3">
-                                                    <input type="number" data-rule-maxlength="100"
-                                                           data-rule-number='true'
-                                                           placeholder="占地面积(请输入数字)" name="coverAnArea"
-                                                           class="form-control input-full"
-                                                           value="${basicEstate.coverAnArea}">
+                                                <label class="col-sm-1">占地面积</label>
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="coverAnAreaUnit">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="平方米">平方米</option>
+                                                            <option value="亩">亩</option>
+                                                        </select>
+                                                        <input type="number" data-rule-maxlength="100"
+                                                               data-rule-number='true'
+                                                               placeholder="占地面积(请输入数字)" name="coverAnArea"
+                                                               class="form-control form-control-sm"
+                                                               value="${basicEstate.coverAnArea}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-sm-1">容积率</label>
                                                 <div class="col-sm-3">
@@ -254,7 +261,10 @@
                                                             required="required">
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-8">
+                                                <label class="col-sm-1">
+                                                    楼盘外设定
+                                                </label>
+                                                <div class="col-sm-7">
                                                     <div id="industrySupplyInfoContainer"></div>
                                                 </div>
                                             </div>
@@ -440,8 +450,22 @@
                                                                name="developmentDegreeRemark"
                                                                value="${basicEstateLandState.developmentDegreeRemark}">
                                                     </div>
-                                                    <div class="col-sm-4">
+                                                    <label class="col-sm-1 parcelSettingInner">
+                                                        楼盘内设定
+                                                    </label>
+                                                    <div class="col-sm-4 parcelSettingInner">
                                                         <div id="developmentDegreeContentContainer"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">宗地内现状</label>
+                                                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <textarea class="form-control input-full" name="currentSituation" required
+                                  placeholder="宗地内现状">${basicEstateLandState.currentSituation}</textarea>
                                                     </div>
                                                 </div>
                                             </div>

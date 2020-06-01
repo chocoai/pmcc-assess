@@ -100,6 +100,8 @@ public class BasicEstateLandState {
 
     private Date gmtModified;
 
+    private String currentSituation;
+
     public Integer getId() {
         return id;
     }
@@ -482,5 +484,13 @@ public class BasicEstateLandState {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getCurrentSituation() {
+        return currentSituation;
+    }
+
+    public void setCurrentSituation(String currentSituation) {
+        this.currentSituation = currentSituation == null ? null : currentSituation.trim();
     }
 }

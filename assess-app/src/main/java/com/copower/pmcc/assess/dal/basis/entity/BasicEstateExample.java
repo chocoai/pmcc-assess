@@ -3245,6 +3245,216 @@ public class BasicEstateExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andAveragePriceUnitIsNull() {
+            addCriterion("average_price_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitIsNotNull() {
+            addCriterion("average_price_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitEqualTo(String value) {
+            addCriterion("average_price_unit =", value, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitNotEqualTo(String value) {
+            addCriterion("average_price_unit <>", value, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitGreaterThan(String value) {
+            addCriterion("average_price_unit >", value, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitGreaterThanOrEqualTo(String value) {
+            addCriterion("average_price_unit >=", value, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitLessThan(String value) {
+            addCriterion("average_price_unit <", value, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitLessThanOrEqualTo(String value) {
+            addCriterion("average_price_unit <=", value, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitLike(String value) {
+            addCriterion("average_price_unit like", value, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitNotLike(String value) {
+            addCriterion("average_price_unit not like", value, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitIn(List<String> values) {
+            addCriterion("average_price_unit in", values, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitNotIn(List<String> values) {
+            addCriterion("average_price_unit not in", values, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitBetween(String value1, String value2) {
+            addCriterion("average_price_unit between", value1, value2, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andAveragePriceUnitNotBetween(String value1, String value2) {
+            addCriterion("average_price_unit not between", value1, value2, "averagePriceUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitIsNull() {
+            addCriterion("price_range_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitIsNotNull() {
+            addCriterion("price_range_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitEqualTo(String value) {
+            addCriterion("price_range_unit =", value, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitNotEqualTo(String value) {
+            addCriterion("price_range_unit <>", value, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitGreaterThan(String value) {
+            addCriterion("price_range_unit >", value, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitGreaterThanOrEqualTo(String value) {
+            addCriterion("price_range_unit >=", value, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitLessThan(String value) {
+            addCriterion("price_range_unit <", value, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitLessThanOrEqualTo(String value) {
+            addCriterion("price_range_unit <=", value, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitLike(String value) {
+            addCriterion("price_range_unit like", value, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitNotLike(String value) {
+            addCriterion("price_range_unit not like", value, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitIn(List<String> values) {
+            addCriterion("price_range_unit in", values, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitNotIn(List<String> values) {
+            addCriterion("price_range_unit not in", values, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitBetween(String value1, String value2) {
+            addCriterion("price_range_unit between", value1, value2, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceRangeUnitNotBetween(String value1, String value2) {
+            addCriterion("price_range_unit not between", value1, value2, "priceRangeUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitIsNull() {
+            addCriterion("cover_an_area_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitIsNotNull() {
+            addCriterion("cover_an_area_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitEqualTo(String value) {
+            addCriterion("cover_an_area_unit =", value, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitNotEqualTo(String value) {
+            addCriterion("cover_an_area_unit <>", value, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitGreaterThan(String value) {
+            addCriterion("cover_an_area_unit >", value, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitGreaterThanOrEqualTo(String value) {
+            addCriterion("cover_an_area_unit >=", value, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitLessThan(String value) {
+            addCriterion("cover_an_area_unit <", value, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitLessThanOrEqualTo(String value) {
+            addCriterion("cover_an_area_unit <=", value, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitLike(String value) {
+            addCriterion("cover_an_area_unit like", value, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitNotLike(String value) {
+            addCriterion("cover_an_area_unit not like", value, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitIn(List<String> values) {
+            addCriterion("cover_an_area_unit in", values, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitNotIn(List<String> values) {
+            addCriterion("cover_an_area_unit not in", values, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitBetween(String value1, String value2) {
+            addCriterion("cover_an_area_unit between", value1, value2, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverAnAreaUnitNotBetween(String value1, String value2) {
+            addCriterion("cover_an_area_unit not between", value1, value2, "coverAnAreaUnit");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

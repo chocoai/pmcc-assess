@@ -671,6 +671,9 @@
             } else {
                 houseCommon.houseTradingForm.find('.ExamineHouseTradingSell').hide();
                 houseCommon.houseTradingForm.find('.ExamineHouseTradingLease').hide();
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, basicHouseTrading.paymentMethod, function (html, data) {
+                    houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
+                });
             }
         });
 

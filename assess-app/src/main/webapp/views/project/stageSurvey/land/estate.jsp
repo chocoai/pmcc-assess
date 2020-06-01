@@ -144,13 +144,20 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">占地面积(平方米)</label>
-                                                <div class="col-sm-3">
-                                                    <input type="number" data-rule-maxlength="100"
-                                                           data-rule-number='true'
-                                                           placeholder="占地面积(请输入数字)" name="coverAnArea"
-                                                           class="form-control input-full"
-                                                           value="${basicEstate.coverAnArea}">
+                                                <label class="col-sm-1">占地面积</label>
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="coverAnAreaUnit">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="平方米">平方米</option>
+                                                            <option value="亩">亩</option>
+                                                        </select>
+                                                        <input type="number" data-rule-maxlength="100"
+                                                               data-rule-number='true'
+                                                               placeholder="占地面积(请输入数字)" name="coverAnArea"
+                                                               class="form-control form-control-sm"
+                                                               value="${basicEstate.coverAnArea}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-sm-1">土地权利人</label>
                                                 <div class="col-sm-3">
@@ -160,11 +167,18 @@
                                                 </div>
 
                                                 <label class="col-sm-1 control-label">均价</label>
-                                                <div class="col-sm-3">
-                                                    <input type="number" data-rule-maxlength="100" data-rule-number='true'
-                                                           placeholder="均价(请输入数字)" name="averagePrice"
-                                                           class="form-control input-full"
-                                                           value="${basicEstate.averagePrice}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="averagePriceUnit">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="元/平方米">元/平方米</option>
+                                                            <option value="万元/亩">万元/亩</option>
+                                                        </select>
+                                                        <input type="number" data-rule-maxlength="100" data-rule-number='true'
+                                                               placeholder="均价(请输入数字)" name="averagePrice"
+                                                               class="form-control-sm form-control"
+                                                               value="${basicEstate.averagePrice}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -173,10 +187,17 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">价格区间</label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" placeholder="价格区间"
-                                                           name="priceRange" class="form-control input-full"
-                                                           value="${basicEstate.priceRange}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="priceRangeUnit">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="元/平方米">元/平方米</option>
+                                                            <option value="万元/亩">万元/亩</option>
+                                                        </select>
+                                                        <input type="text" placeholder="价格区间"
+                                                               name="priceRange" class="form-control-sm form-control"
+                                                               value="${basicEstate.priceRange}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                                     取得时间
@@ -216,7 +237,10 @@
                                                             required="required">
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-8">
+                                                <label class="col-sm-1">
+                                                    宗地外设定
+                                                </label>
+                                                <div class="col-sm-7">
                                                     <div id="industrySupplyInfoContainer"></div>
                                                 </div>
                                             </div>
@@ -296,11 +320,17 @@
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">土地面积</label>
-                                                <div class="col-sm-3">
-                                                    <input type="number" class="form-control input-full"
-                                                           data-rule-number='true'
-                                                           placeholder="土地面积(请输入数字)" name="landArea"
-                                                           value="${basicEstateLandState.landArea}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="landAreaUnit">
+                                                            <option value="平方米" selected="selected">平方米</option>
+                                                            <option value="亩">亩</option>
+                                                        </select>
+                                                        <input type="number" class="form-control form-control-sm"
+                                                               data-rule-number='true'
+                                                               placeholder="土地面积(请输入数字)" name="landArea"
+                                                               value="${basicEstateLandState.landArea}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">地形</label>
                                                 <div class="col-sm-3">
@@ -346,13 +376,26 @@
                                                            name="developmentDegreeRemark"
                                                            value="${basicEstateLandState.developmentDegreeRemark}">
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <label class="col-sm-1 parcelSettingInner">
+                                                    宗地内设定
+                                                </label>
+                                                <div class="col-sm-7 parcelSettingInner">
                                                     <div id="developmentDegreeContentContainer"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">宗地内现状</label>
+                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <textarea class="form-control input-full" name="currentSituation" required
+                                  placeholder="宗地内现状">${basicEstateLandState.currentSituation}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
 
                                 <div class="x_content">

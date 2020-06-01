@@ -102,6 +102,12 @@ public class BasicEstate {
 
     private Date gmtModified;
 
+    private String averagePriceUnit;
+
+    private String priceRangeUnit;
+
+    private String coverAnAreaUnit;
+
     public Integer getId() {
         return id;
     }
@@ -492,5 +498,29 @@ public class BasicEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAveragePriceUnit() {
+        return averagePriceUnit;
+    }
+
+    public void setAveragePriceUnit(String averagePriceUnit) {
+        this.averagePriceUnit = averagePriceUnit == null ? null : averagePriceUnit.trim();
+    }
+
+    public String getPriceRangeUnit() {
+        return priceRangeUnit;
+    }
+
+    public void setPriceRangeUnit(String priceRangeUnit) {
+        this.priceRangeUnit = priceRangeUnit == null ? null : priceRangeUnit.trim();
+    }
+
+    public String getCoverAnAreaUnit() {
+        return coverAnAreaUnit;
+    }
+
+    public void setCoverAnAreaUnit(String coverAnAreaUnit) {
+        this.coverAnAreaUnit = coverAnAreaUnit == null ? null : coverAnAreaUnit.trim();
     }
 }

@@ -367,8 +367,10 @@
                     }
                 });
                 estateCommon.estateLandStateForm.find(".developmentDegreeContent").hide();
+                estateCommon.estateLandStateForm.find(".parcelSettingInner").show();
             } else {
                 estateCommon.estateLandStateForm.find(".developmentDegreeContent").show();
+                estateCommon.estateLandStateForm.find(".parcelSettingInner").hide();
             }
         });
 

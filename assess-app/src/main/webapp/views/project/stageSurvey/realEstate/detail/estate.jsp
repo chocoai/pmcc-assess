@@ -122,10 +122,10 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">占地面积(平方米)</label>
+                                                <label class="col-sm-1 control-label">占地面积</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="coverAnArea">${basicEstate.coverAnArea}</label>
+                                                    <label class="form-control input-full">
+                                                        ${basicEstate.coverAnArea}${basicEstate.coverAnAreaUnit}</label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">容积率</label>
                                                 <div class="col-sm-3">
@@ -196,7 +196,10 @@
                                                         <div class="col-sm-3">
                                                             <label class="form-control input-full">${basicEstate.infrastructureCompletenessName}</label>
                                                         </div>
-                                                        <div class="col-sm-8">
+                                                        <label class="col-sm-1">
+                                                            楼盘外设定
+                                                        </label>
+                                                        <div class="col-sm-7">
                                                             <label class="form-control input-full">${basicEstate.infrastructureName}</label>
                                                         </div>
                                                     </div>
@@ -303,8 +306,7 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">土地面积</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="landArea">${basicEstateLandState.landArea}${basicEstateLandState.landAreaUnit}</label>
+                                                    <label class="form-control input-full">${basicEstateLandState.landArea}${basicEstateLandState.landAreaUnit}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -340,7 +342,10 @@
                                                            name="presentSituationLandUse">${basicEstateLandState.presentSituationLandUse}</label>
                                                 </div>
                                                 <c:if test="${basicEstateLandState.developmentDegreeName == '熟地'}">
-                                                    <div class="col-sm-4 control-label">
+                                                    <label class="col-sm-1">
+                                                        楼盘内设定
+                                                    </label>
+                                                    <div class="col-sm-7">
                                                         <label class="form-control input-full"
                                                                name="developmentDegreeContentName">${basicEstateLandState.developmentDegreeContentName}</label>
                                                     </div>
@@ -352,6 +357,16 @@
                                                                name="developmentDegreeRemark">${basicEstateLandState.developmentDegreeRemark}</label>
                                                     </div>
                                                 </c:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">宗地内现状</label>
+                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                                    <label class="form-control input-full">${basicEstateLandState.currentSituation}</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
