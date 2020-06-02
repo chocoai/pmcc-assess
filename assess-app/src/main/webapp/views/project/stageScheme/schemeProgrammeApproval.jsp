@@ -463,6 +463,69 @@
                                 </div>
                             </div>
                         </div>
+                        <c:if test="${projectCategoryId eq 'landCategoryId'}">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            规划容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="planPlotRatio">{planPlotRatio}</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            实际容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="actualPlotRatio">{actualPlotRatio}</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            设定容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="setPlotRatio">{setPlotRatio}</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            宗地外实际开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="parcelOuterDevelopName">{parcelOuterDevelopName}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            宗地内实际开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="parcelInnerDevelopName">{parcelInnerDevelopName}</label>
+                                        </div>
+
+                                        <label class="col-sm-1 control-label">
+                                            宗地内设定开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="parcelSettingInnerDevelopName">{parcelSettingInnerDevelopName}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            宗地内现状
+                                        </label>
+                                        <div class="col-sm-11 x-valid">
+                                            <label class="form-control input-full" data-name="currentSituation">{currentSituation}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -537,6 +600,11 @@
                         html = html.replace(/{bestUseName}/g, item.bestUseName == undefined ? "" : item.bestUseName);
                         html = html.replace(/{mergeExplain}/g, item.mergeExplain == undefined ? "" : item.mergeExplain);
                         html = html.replace(/{splitExplain}/g, item.splitExplain == undefined ? "" : item.splitExplain);
+                        html = html.replace(/{currentSituation}/g, item.currentSituation == undefined ? "" : item.currentSituation);
+                        html = html.replace(/{parcelOuterDevelopName}/g, item.parcelOuterDevelopName == undefined ? "" : item.parcelOuterDevelopName);
+                        html = html.replace(/{parcelInnerDevelopName}/g, item.parcelInnerDevelopName == undefined ? "" : item.parcelInnerDevelopName);
+                        html = html.replace(/{parcelSettingInnerDevelopName}/g, item.parcelSettingInnerDevelopName == undefined ? "" : item.parcelSettingInnerDevelopName);
+
                         tbody.append(html);
                         //设值
                         var lastTr = tbody.find(".x_panel:last");

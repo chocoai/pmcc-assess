@@ -409,6 +409,18 @@ public class SchemeJudgeObjectService {
             if (basicApply != null)
                 schemeJudgeObjectVo.setSurveyObjectName(basicApply.getName());
         }
+        if (StringUtils.isNotEmpty(schemeJudgeObject.getParcelInnerDevelop())) {
+            List<String> stringList = Lists.newArrayList(schemeJudgeObject.getParcelInnerDevelop().split(",")).stream().map(s -> baseDataDicService.getNameById(s)).collect(Collectors.toList());
+            schemeJudgeObjectVo.setParcelInnerDevelopName(org.apache.commons.lang3.StringUtils.join(stringList, "、"));
+        }
+        if (StringUtils.isNotEmpty(schemeJudgeObject.getParcelOuterDevelop())) {
+            List<String> stringList = Lists.newArrayList(schemeJudgeObject.getParcelOuterDevelop().split(",")).stream().map(s -> baseDataDicService.getNameById(s)).collect(Collectors.toList());
+            schemeJudgeObjectVo.setParcelOuterDevelopName(org.apache.commons.lang3.StringUtils.join(stringList, "、"));
+        }
+        if (StringUtils.isNotEmpty(schemeJudgeObject.getParcelSettingInnerDevelop())) {
+            List<String> stringList = Lists.newArrayList(schemeJudgeObject.getParcelSettingInnerDevelop().split(",")).stream().map(s -> baseDataDicService.getNameById(s)).collect(Collectors.toList());
+            schemeJudgeObjectVo.setParcelSettingInnerDevelopName(org.apache.commons.lang3.StringUtils.join(stringList, "、"));
+        }
         return schemeJudgeObjectVo;
     }
 

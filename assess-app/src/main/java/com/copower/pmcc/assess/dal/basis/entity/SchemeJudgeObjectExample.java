@@ -3095,6 +3095,286 @@ public class SchemeJudgeObjectExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andParcelOuterDevelopIsNull() {
+            addCriterion("parcel_outer_develop is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopIsNotNull() {
+            addCriterion("parcel_outer_develop is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopEqualTo(String value) {
+            addCriterion("parcel_outer_develop =", value, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopNotEqualTo(String value) {
+            addCriterion("parcel_outer_develop <>", value, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopGreaterThan(String value) {
+            addCriterion("parcel_outer_develop >", value, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopGreaterThanOrEqualTo(String value) {
+            addCriterion("parcel_outer_develop >=", value, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopLessThan(String value) {
+            addCriterion("parcel_outer_develop <", value, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopLessThanOrEqualTo(String value) {
+            addCriterion("parcel_outer_develop <=", value, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopLike(String value) {
+            addCriterion("parcel_outer_develop like", value, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopNotLike(String value) {
+            addCriterion("parcel_outer_develop not like", value, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopIn(List<String> values) {
+            addCriterion("parcel_outer_develop in", values, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopNotIn(List<String> values) {
+            addCriterion("parcel_outer_develop not in", values, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopBetween(String value1, String value2) {
+            addCriterion("parcel_outer_develop between", value1, value2, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelOuterDevelopNotBetween(String value1, String value2) {
+            addCriterion("parcel_outer_develop not between", value1, value2, "parcelOuterDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopIsNull() {
+            addCriterion("parcel_inner_develop is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopIsNotNull() {
+            addCriterion("parcel_inner_develop is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopEqualTo(String value) {
+            addCriterion("parcel_inner_develop =", value, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopNotEqualTo(String value) {
+            addCriterion("parcel_inner_develop <>", value, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopGreaterThan(String value) {
+            addCriterion("parcel_inner_develop >", value, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopGreaterThanOrEqualTo(String value) {
+            addCriterion("parcel_inner_develop >=", value, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopLessThan(String value) {
+            addCriterion("parcel_inner_develop <", value, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopLessThanOrEqualTo(String value) {
+            addCriterion("parcel_inner_develop <=", value, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopLike(String value) {
+            addCriterion("parcel_inner_develop like", value, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopNotLike(String value) {
+            addCriterion("parcel_inner_develop not like", value, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopIn(List<String> values) {
+            addCriterion("parcel_inner_develop in", values, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopNotIn(List<String> values) {
+            addCriterion("parcel_inner_develop not in", values, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopBetween(String value1, String value2) {
+            addCriterion("parcel_inner_develop between", value1, value2, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelInnerDevelopNotBetween(String value1, String value2) {
+            addCriterion("parcel_inner_develop not between", value1, value2, "parcelInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopIsNull() {
+            addCriterion("parcel_setting_inner_develop is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopIsNotNull() {
+            addCriterion("parcel_setting_inner_develop is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopEqualTo(String value) {
+            addCriterion("parcel_setting_inner_develop =", value, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopNotEqualTo(String value) {
+            addCriterion("parcel_setting_inner_develop <>", value, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopGreaterThan(String value) {
+            addCriterion("parcel_setting_inner_develop >", value, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopGreaterThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_inner_develop >=", value, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopLessThan(String value) {
+            addCriterion("parcel_setting_inner_develop <", value, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopLessThanOrEqualTo(String value) {
+            addCriterion("parcel_setting_inner_develop <=", value, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopLike(String value) {
+            addCriterion("parcel_setting_inner_develop like", value, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopNotLike(String value) {
+            addCriterion("parcel_setting_inner_develop not like", value, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopIn(List<String> values) {
+            addCriterion("parcel_setting_inner_develop in", values, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopNotIn(List<String> values) {
+            addCriterion("parcel_setting_inner_develop not in", values, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopBetween(String value1, String value2) {
+            addCriterion("parcel_setting_inner_develop between", value1, value2, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelSettingInnerDevelopNotBetween(String value1, String value2) {
+            addCriterion("parcel_setting_inner_develop not between", value1, value2, "parcelSettingInnerDevelop");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationIsNull() {
+            addCriterion("current_situation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationIsNotNull() {
+            addCriterion("current_situation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationEqualTo(String value) {
+            addCriterion("current_situation =", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotEqualTo(String value) {
+            addCriterion("current_situation <>", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationGreaterThan(String value) {
+            addCriterion("current_situation >", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationGreaterThanOrEqualTo(String value) {
+            addCriterion("current_situation >=", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLessThan(String value) {
+            addCriterion("current_situation <", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLessThanOrEqualTo(String value) {
+            addCriterion("current_situation <=", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLike(String value) {
+            addCriterion("current_situation like", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotLike(String value) {
+            addCriterion("current_situation not like", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationIn(List<String> values) {
+            addCriterion("current_situation in", values, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotIn(List<String> values) {
+            addCriterion("current_situation not in", values, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationBetween(String value1, String value2) {
+            addCriterion("current_situation between", value1, value2, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotBetween(String value1, String value2) {
+            addCriterion("current_situation not between", value1, value2, "currentSituation");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

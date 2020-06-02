@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdEconomicIndicatorsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
@@ -11,12 +12,11 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -64,7 +64,7 @@ public class SchemeAreaGroupService {
     @Autowired
     private MdIncomeService mdIncomeService;
     @Autowired
-    private SurveyCommonService surveyCommonService;
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
@@ -76,7 +76,15 @@ public class SchemeAreaGroupService {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
     private BasicApplyService basicApplyService;
+    @Autowired
+    private MdEconomicIndicatorsDao mdEconomicIndicatorsDao;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -295,6 +303,9 @@ public class SchemeAreaGroupService {
         //根据查勘情况生成对应的估价对象，并将查勘applyid关联到估价对象上
         List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
         if (CollectionUtils.isEmpty(basicApplyList)) return;
+        //经济指标
+        DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = declareBuildEngineeringAndEquipmentCenterService.getDataByDeclareRecord(declareRecord.getId());
+        MdEconomicIndicators economicIndicators = mdEconomicIndicatorsDao.getEconomicIndicatorsById(equipmentCenter.getIndicatorId());
         SchemeJudgeObject splitSource = null;//拆分源对象
         for (int i = 0; i < basicApplyList.size(); i++) {
             BasicApply basicApply = basicApplyList.get(i);
@@ -304,11 +315,30 @@ public class SchemeAreaGroupService {
             schemeJudgeObject.setBuildingStatus(declareRecord.getBuildingStatus());
             schemeJudgeObject.setBasicApplyId(basicApply.getId());
             schemeJudgeObject.setEvaluationArea(basicApply.getArea());
+            if(economicIndicators!=null){
+                if(StringUtils.isNotEmpty(economicIndicators.getVolumetricRate())){
+                    schemeJudgeObject.setPlanPlotRatio(new BigDecimal(economicIndicators.getVolumetricRate()));
+                    schemeJudgeObject.setSetPlotRatio(new BigDecimal(economicIndicators.getVolumetricRate()));
+                }
+                schemeJudgeObject.setParcelSettingInnerDevelop(economicIndicators.getParcelSettingInner());
+            }
+
+            BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if(basicEstate!=null){
+                schemeJudgeObject.setParcelInnerDevelop(basicEstate.getInfrastructure());
+                BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+                schemeJudgeObject.setParcelOuterDevelop(estateLandState.getDevelopmentDegreeContent());
+                schemeJudgeObject.setCurrentSituation(estateLandState.getCurrentSituation());
+            }
 
             BasicHouse basicHouse = basicHouseService.getHouseByBasicApply(basicApply);
             if (basicHouse != null) {
                 schemeJudgeObject.setCertUse(basicHouse.getCertUse());
                 schemeJudgeObject.setPracticalUse(basicHouse.getPracticalUse());
+                BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
+                if(landCategoryInfo!=null){
+                    schemeJudgeObject.setActualPlotRatio(landCategoryInfo.getPlotRatio());
+                }
             }
             schemeJudgeObject.setNumber(String.valueOf(declareRecord.getNumber()));
             schemeJudgeObject.setCreator(commonService.thisUserAccount());

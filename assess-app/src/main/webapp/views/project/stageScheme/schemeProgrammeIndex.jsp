@@ -72,6 +72,14 @@
                                                             onclick="programme.generatorAreaGroup();">
                                                         生成方案数据
                                                     </button>
+                                                    <button type="button" class="btn btn-info  btn-sm"
+                                                            onclick="programme.addOrRemoveDeclareRecord(true);">
+                                                        上报告
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning  btn-sm"
+                                                            onclick="programme.addOrRemoveDeclareRecord(false);">
+                                                        移除
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -711,6 +719,71 @@
                                 </div>
                             </div>
                         </div>
+                        <c:if test="${projectCategoryId eq 'landCategoryId'}">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            规划容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="planPlotRatio">{planPlotRatio}</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            实际容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="actualPlotRatio">{actualPlotRatio}</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            设定容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <input class="form-control input-full" type="text" required
+                                                   name="setPlotRatio{id}" data-name="setPlotRatio"
+                                                   placeholder="设定容积率" value="{setPlotRatio}">
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            宗地外实际开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="parcelOuterDevelopName">{parcelOuterDevelopName}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            宗地内实际开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="parcelInnerDevelopName">{parcelInnerDevelopName}</label>
+                                        </div>
+
+                                        <label class="col-sm-1 control-label">
+                                            宗地内设定开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="parcelSettingInnerDevelopName">{parcelSettingInnerDevelopName}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            宗地内现状
+                                        </label>
+                                        <div class="col-sm-11 x-valid">
+                                            <label class="form-control input-full" data-name="currentSituation">{currentSituation}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -718,6 +791,9 @@
     </div>
 </script>
 </body>
+<%@include file="/views/method/module/economicIndicators.jsp" %>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         programme.loadDeclareRecordList();
@@ -808,6 +884,7 @@
             success: function (result) {
                 if (result.ret) {
                     $.each(result.data, function (i, item) {
+
                         var html = $("#judgeObjectHtml").html();
                         html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);
                         html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);
@@ -833,6 +910,10 @@
                         html = html.replace(/{setPlotRatio}/g, item.setPlotRatio == undefined ? "" : item.setPlotRatio);
                         html = html.replace(/{planPlotRatio}/g, item.planPlotRatio == undefined ? "" : item.planPlotRatio);
                         html = html.replace(/{actualPlotRatio}/g, item.actualPlotRatio == undefined ? "" : item.actualPlotRatio);
+                        html = html.replace(/{currentSituation}/g, item.currentSituation == undefined ? "" : item.currentSituation);
+                        html = html.replace(/{parcelOuterDevelopName}/g, item.parcelOuterDevelopName == undefined ? "" : item.parcelOuterDevelopName);
+                        html = html.replace(/{parcelInnerDevelopName}/g, item.parcelInnerDevelopName == undefined ? "" : item.parcelInnerDevelopName);
+                        html = html.replace(/{parcelSettingInnerDevelopName}/g, item.parcelSettingInnerDevelopName == undefined ? "" : item.parcelSettingInnerDevelopName);
 
                         html = html.replace(/{mergeExplain}/g, item.mergeExplain == undefined ? "" : item.mergeExplain);
                         html = html.replace(/{splitExplain}/g, item.splitExplain == undefined ? "" : item.splitExplain);
@@ -1504,8 +1585,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<button type="button" class="btn btn-xs btn-info tooltips" data-placement="top"  onclick="programme.addOrRemoveDeclareRecord(' + row.id + ',true);" >上报告</button>';
-                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;" data-placement="top"  onclick="programme.addOrRemoveDeclareRecord(' + row.id + ',false);" >移除</button>';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;" data-placement="top"  onclick="programme.showEconomicIndicators(' + row.id + ');" >经济指标</button>';
                 str += '</div>';
                 return str;
             }
@@ -1523,38 +1603,44 @@
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
             }
-        });
+        },true);
     };
 
     //添加或移除申报记录数据
-    programme.addOrRemoveDeclareRecord = function (id, bisPartIn) {
-        var idArray = [];
-        if (id) {
-            idArray.push(id);
+    programme.addOrRemoveDeclareRecord = function (bisPartIn) {
+        var rows = $("#tb_declare_record_list").bootstrapTable('getSelections');
+        if (rows && rows.length > 0) {
+            var idArray = [];
+            $.each(rows, function (i, item) {
+                idArray.push(item.id);
+            });
+            var ids = idArray.join(",");
+            $.ajax({
+                url: "${pageContext.request.contextPath}/declareRecord/addOrRemoveDeclareRecord",
+                type: "post",
+                dataType: "json",
+                data: {
+                    ids: ids,
+                    bisPartIn: bisPartIn
+                },
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        notifySuccess('成功',"操作成功");
+                        programme.loadDeclareRecordList();
+                    }
+                    else {
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }else{
+            notifyInfo('提示', "至少选择一个");
         }
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRecord/addOrRemoveDeclareRecord",
-            type: "post",
-            dataType: "json",
-            data: {
-                ids: idArray.join(),
-                bisPartIn: bisPartIn
-            },
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    notifySuccess('成功',"操作成功");
-                    programme.loadDeclareRecordList();
-                }
-                else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+
     }
 
     //生成方案数据
@@ -1728,6 +1814,44 @@
         })
         $("#judgeBatchSetModal").modal('hide');
     }
+
+
+    //经济指标show
+    programme.showEconomicIndicators = function (declareRecordId) {
+        $.ajax({
+            type: "get",
+            url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDataByDeclareRecord",
+            data: {declareRecordId: declareRecordId},
+            success: function (result) {
+                if (result.ret) {
+                    var economicId = result.data.indicatorId;
+                    var centerId = result.data.id;
+                    if (economicId) {
+                        economicIndicators.init({economicId: economicId});
+                    }else{
+                        economicIndicators.init({
+                            planDetailsId: result.data.planDetailsId,
+                            saveCallback: function (economicId) {//经济指标id更新到中间表
+                                if (centerId) {
+                                    declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: centerId});
+                                }
+                            },
+                            targetCallback: function () {
+                                economicIndicators.autoSummary(true);
+                            }
+                        });
+                    }
+                } else {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+
+    };
+
 </script>
 
 <script type="text/javascript">

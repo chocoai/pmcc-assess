@@ -112,4 +112,17 @@ public class DeclareBuildEngineeringAndEquipmentCenterController {
         }
     }
 
+    @RequestMapping(value = "/getDataByDeclareRecord", method = {RequestMethod.GET}, name = "获取中间表")
+    public HttpResult getDataByDeclareRecord(Integer declareRecordId) {
+        DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter = null;
+        try {
+            if (declareRecordId != null) {
+                declareBuildEngineeringAndEquipmentCenter = declareBuildEngineeringAndEquipmentCenterService.getDataByDeclareRecord(declareRecordId);
+            }
+        } catch (Exception e1) {
+            baseService.writeExceptionInfo(e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+        return HttpResult.newCorrectResult(declareBuildEngineeringAndEquipmentCenter);
+    }
 }

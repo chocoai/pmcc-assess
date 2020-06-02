@@ -15,6 +15,34 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
     private String standardNumber;//标准估价对象号
     private String surveyObjectName;//查勘对象名称
 
+    private String parcelOuterDevelopName;//宗地外实际开发程度
+    private String parcelInnerDevelopName;//宗地内实际开发程度
+    private String parcelSettingInnerDevelopName;//宗地内设定开发程度
+
+    public String getParcelOuterDevelopName() {
+        return parcelOuterDevelopName;
+    }
+
+    public void setParcelOuterDevelopName(String parcelOuterDevelopName) {
+        this.parcelOuterDevelopName = parcelOuterDevelopName;
+    }
+
+    public String getParcelInnerDevelopName() {
+        return parcelInnerDevelopName;
+    }
+
+    public void setParcelInnerDevelopName(String parcelInnerDevelopName) {
+        this.parcelInnerDevelopName = parcelInnerDevelopName;
+    }
+
+    public String getParcelSettingInnerDevelopName() {
+        return parcelSettingInnerDevelopName;
+    }
+
+    public void setParcelSettingInnerDevelopName(String parcelSettingInnerDevelopName) {
+        this.parcelSettingInnerDevelopName = parcelSettingInnerDevelopName;
+    }
+
     public String getTenementType() {
         return tenementType;
     }

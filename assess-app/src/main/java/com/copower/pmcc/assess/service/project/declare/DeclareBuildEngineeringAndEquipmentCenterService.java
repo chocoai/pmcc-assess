@@ -58,7 +58,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     @Autowired
     private BaseService baseService;
     @Autowired
-    private DeclareRealtyLandCertService declareRealtyLandCertService;
+    private DeclareRecordService declareRecordService;
 
     public Integer saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
         return saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(declareBuildEngineeringAndEquipmentCenter, false);
@@ -522,4 +522,28 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
         return arrayList;
     }
 
+
+    public DeclareBuildEngineeringAndEquipmentCenter getDataByDeclareRecord(Integer declareRecordId) {
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareRecordId);
+        DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+            center.setType(DeclareRealtyHouseCert.class.getSimpleName());
+            center.setHouseId(declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
+            center.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+            center.setRealEstateId(declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+            center.setType(DeclareRealtyLandCert.class.getSimpleName());
+            center.setLandId(declareRecord.getDataTableId());
+        }
+
+        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(center);
+        if (CollectionUtils.isNotEmpty(declareBuildEngineeringAndEquipmentCenterList)) {
+            return declareBuildEngineeringAndEquipmentCenterList.get(0);
+        }
+        return center;
+
+    }
 }

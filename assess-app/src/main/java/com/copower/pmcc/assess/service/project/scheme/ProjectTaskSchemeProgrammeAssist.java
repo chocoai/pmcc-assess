@@ -2,8 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
@@ -13,6 +12,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
@@ -74,6 +74,8 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -99,6 +101,11 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
+        //土地
+        BaseProjectClassify landCategoryId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
+        if(landCategoryId.getId().equals(projectInfoVo.getProjectCategoryId())){
+            modelAndView.addObject("projectCategoryId", "landCategoryId");
+        }
         return modelAndView;
     }
 
@@ -131,6 +138,11 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
+        //土地
+        BaseProjectClassify landCategoryId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
+        if(landCategoryId.getId().equals(projectInfoVo.getProjectCategoryId())){
+            modelAndView.addObject("projectCategoryId", "landCategoryId");
+        }
         return modelAndView;
     }
 
@@ -206,6 +218,11 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         modelAndView.addObject("valueDateExplain", valueDateExplain);
         if (StringUtils.isNotBlank(processInsId)) {
             modelAndView.addObject("processInsId", processInsId);
+        }
+        //土地
+        BaseProjectClassify landCategoryId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
+        if(landCategoryId.getId().equals(projectInfoVo.getProjectCategoryId())){
+            modelAndView.addObject("projectCategoryId", "landCategoryId");
         }
     }
 
