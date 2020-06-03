@@ -91,19 +91,29 @@
                                                         <input type="text" readonly="readonly"
                                                                class="form-control"
                                                                id="areaAndSeveralAmend">
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-info btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="getLandLevelTabContent();">土地因素
-                                                            </button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered" id="landLevelTableList">
+                                                <thead>
+                                                <tr>
+                                                    <th  width="10%">土地级别类型</th>
+                                                    <th  width="10%">土地级别类别</th>
+                                                    <th  width="10%">土地级别等级</th>
+                                                    <th  width="20%">说明</th>
+                                                    <th  width="10%">分值</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="landLevelTabContent">
 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -335,62 +345,13 @@
         </td>
     </tr>
 </script>
-<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 90%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">土地因素</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
 
-            <div class="modal-body">
-                <form class="form-horizontal" id="landLevelContentFrm">
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <div id="_select_land_level_file"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <table class="table table-striped table-bordered" id="landLevelTableList">
-                                <thead>
-                                <tr>
-                                    <th data-field="typeName" width="10%">土地级别类型</th>
-                                    <th data-field="landLevelTypeName" width="10%">土地级别类别</th>
-                                    <th data-field="gradeName" width="10%">土地级别等级</th>
-                                    <th data-field="reamark" width="20%">说明</th>
-                                    <th data-field="landFactorTotalScore" width="10%">分值</th>
-                                </tr>
-                                </thead>
-                                <tbody id="landLevelTabContent">
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/case/case.common.js?v=${assessVersion}"></script>
 <script type="application/javascript">
     function saveform() {
         saveApprovalform("");
+
     }
 
     $(function () {
@@ -398,7 +359,7 @@
         getLandIndexId();
         //容积率修正系数表
         showVolumetricRateDetailList('${hasVolumeFractionAmendId}');
-
+        getLandLevelTabContent();
         $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${master.areaAndSeveralAmend}'));
     });
 
@@ -495,7 +456,7 @@
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
-        $("#detailAchievementModal").modal();
+        //$("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
 
@@ -516,7 +477,7 @@
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{typeName}/g, item.typeName);
                     var landLevelTypeName = "";
                     if(item.classification){
-                        landLevelTypeName+="/"+item.classification;
+                        landLevelTypeName+=item.classification;
                     }
                     if(item.category){
                         landLevelTypeName+="/"+item.category;
