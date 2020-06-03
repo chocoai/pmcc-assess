@@ -1,15 +1,13 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.GenerateReportGroupDao;
-import com.copower.pmcc.assess.dal.basis.entity.GenerateReportGroup;
-import com.copower.pmcc.assess.dal.basis.entity.GenerateReportItem;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -43,7 +41,7 @@ public class GenerateReportGroupService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private BaseService baseService;
+    private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
     @Autowired
     private GenerateReportItemService generateReportItemService;
     @Autowired
@@ -251,5 +249,11 @@ public class GenerateReportGroupService {
         generateReportGroup.setFullName(name);
     }
 
-
+    //验证是否有变现分析税费
+    public void verifyLiquidationAnalysis(GenerateReportGroup generateReportGroup)throws BusinessException{
+        List<SchemeLiquidationAnalysisGroup> groupByAreaId = schemeLiquidationAnalysisService.getGroupByAreaId(generateReportGroup.getAreaGroupId(), generateReportGroup.getProjectId());
+        if(CollectionUtils.isEmpty(groupByAreaId)){
+            throw new BusinessException("该区域未填写变现分析税费");
+        }
+    }
 }

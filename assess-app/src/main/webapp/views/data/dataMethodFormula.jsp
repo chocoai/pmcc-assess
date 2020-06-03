@@ -119,6 +119,7 @@
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'methodType',width: '10%',  title: '方法'});
+            cols.push({field: 'methodKey',width: '10%',  title: 'key'});
             cols.push({field: 'formula',width: '40%',  title: '公式内容'});
             cols.push({field: 'relevantParameter',width: '40%',  title: '相关参数'});
             cols.push({
@@ -256,6 +257,16 @@
                                                         </c:forEach>
                                                     </c:if>
                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                Key<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="methodKey" class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>

@@ -79,6 +79,7 @@ public enum ReportFieldDevelopmentEnum {
     Development_infrastructureCost_FileName("假设法基础设施费文件名称"),//暂时不确定删除
     Development_constructionSubtotalContent("假设法建设成本内容"),//暂时不确定删除
     Development_SalesTaxAndAdditional("假设法增值税及附加"),//暂时不确定删除
+    Development_formula("假设法计算公式"),//暂时不确定删除
     ;
     private String name;
     private ReportFieldDevelopmentEnum(String name) {

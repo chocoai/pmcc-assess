@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DataHousePriceIndexDetailMapper {
-    long countByExample(DataHousePriceIndexDetailExample example);
+    int countByExample(DataHousePriceIndexDetailExample example);
 
     int deleteByExample(DataHousePriceIndexDetailExample example);
 

@@ -8,6 +8,7 @@ import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldMdIncomeSelfEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -21,7 +22,9 @@ import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeForecastVo;
 import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseCostVo;
+import com.copower.pmcc.assess.dto.output.method.MdIncomeLeaseVo;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.data.DataMethodFormulaService;
 import com.copower.pmcc.assess.service.tool.ToolRewardRateService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -74,7 +77,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
     private BaseAttachmentService baseAttachmentService;
     private DataSetUseFieldService dataSetUseFieldService;
     private MdIncomeDateSectionService mdIncomeDateSectionService;
-    private MdIncomeLeaseCostDao mdIncomeLeaseCostDao;
+    private DataMethodFormulaService dataMethodFormulaService;
     private ToolRewardRateService toolRewardRateService;
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private DeclareRecordService declareRecordService;
@@ -147,7 +150,10 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
         for (BookmarkAndRegexDto bookmarkAndRegex : bookmarkAndRegexDtoHashSet) {
             String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
             try {
-
+                //收益法公式
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeMethodFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeMethodFormula());
+                }
                 //收益法申报产权证类型
                 if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.PropertyRightCertificateIncomeLaw.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getPropertyRightCertificateIncomeLaw());
@@ -1205,6 +1211,16 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
         return String.valueOf(doubleList.stream().mapToDouble(Double::doubleValue).sum());
     }
 
+    /**
+     * 功能描述: 收益法公式
+     *
+     * @author: zch
+     * @date: 2019/2/28 16:37
+     */
+    private synchronized String getIncomeMethodFormula() throws Exception {
+        DataMethodFormula formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.INCOME_SELF_SUPPORT);
+        return formula.getFormula();
+    }
 
     /**
      * 功能描述: 收益法设定用途
@@ -1414,7 +1430,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
         this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.mdIncomeDateSectionService = SpringContextUtils.getBean(MdIncomeDateSectionService.class);
-        this.mdIncomeLeaseCostDao = SpringContextUtils.getBean(MdIncomeLeaseCostDao.class);
+        this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
         this.toolRewardRateService = SpringContextUtils.getBean(ToolRewardRateService.class);
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);

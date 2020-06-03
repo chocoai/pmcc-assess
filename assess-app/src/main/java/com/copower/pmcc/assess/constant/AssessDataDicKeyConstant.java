@@ -148,6 +148,18 @@ public class AssessDataDicKeyConstant {
     public static final String MD_BASE_LAND_PRICE = "md.base.land.price"; //基准地价修正法
     public static final String MD_COST_APPROACH = "md.cost.approach"; //成本逼近法
 
+    /**
+     * 评估方法公式
+     */
+    public static final String COMPARE_FORMULA = "compare.formula"; //市场比较法公式
+    public static final String INCOME_RENTIN_USE_COMPARE = "income.rentin.use.compare"; //收益法+比较法公式
+    public static final String INCOME_RENTIN_NOT_USE_COMPARE = "income.rentin.not.use.compare"; //收益法+不使用比较法公式
+    public static final String INCOME_SELF_SUPPORT = "income.self.support"; //收益法自营公式
+    public static final String COST_BUILDING = "cost.building"; //成本法建筑物公式
+    public static final String COST_ENGINEERING = "cost.engineering"; //成本法建筑物公式
+    public static final String HYPOTHESIS_DEVELOP_LAND = "hypothesis.develop.land"; //假设开发法土地公式
+    public static final String HYPOTHESIS_DEVELOP_ENGINEERING = "hypothesis.develop.engineering"; //假设开发法在建工程公式
+
     /*
      * 测算方法配置
      */

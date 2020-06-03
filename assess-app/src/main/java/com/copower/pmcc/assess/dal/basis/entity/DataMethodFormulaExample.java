@@ -554,6 +554,76 @@ public class DataMethodFormulaExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andMethodKeyIsNull() {
+            addCriterion("method_key is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyIsNotNull() {
+            addCriterion("method_key is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyEqualTo(String value) {
+            addCriterion("method_key =", value, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyNotEqualTo(String value) {
+            addCriterion("method_key <>", value, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyGreaterThan(String value) {
+            addCriterion("method_key >", value, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("method_key >=", value, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyLessThan(String value) {
+            addCriterion("method_key <", value, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyLessThanOrEqualTo(String value) {
+            addCriterion("method_key <=", value, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyLike(String value) {
+            addCriterion("method_key like", value, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyNotLike(String value) {
+            addCriterion("method_key not like", value, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyIn(List<String> values) {
+            addCriterion("method_key in", values, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyNotIn(List<String> values) {
+            addCriterion("method_key not in", values, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyBetween(String value1, String value2) {
+            addCriterion("method_key between", value1, value2, "methodKey");
+            return (Criteria) this;
+        }
+
+        public Criteria andMethodKeyNotBetween(String value1, String value2) {
+            addCriterion("method_key not between", value1, value2, "methodKey");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

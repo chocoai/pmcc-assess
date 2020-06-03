@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
 import com.copower.pmcc.assess.common.enums.method.EconomicIndicatorsItemEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldDevelopmentEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
@@ -18,6 +19,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.data.DataBuildingInstallCostService;
+import com.copower.pmcc.assess.service.data.DataMethodFormulaService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
@@ -61,7 +63,7 @@ public class GenerateMdDevelopmentService {
 
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private DeclareRecordService declareRecordService;
-    private BaseDataDicService baseDataDicService;
+    private DataMethodFormulaService dataMethodFormulaService;
     private SchemeAreaGroupService schemeAreaGroupService;
     private SchemeInfoService schemeInfoService;
     private GenerateCommonMethod generateCommonMethod;
@@ -82,7 +84,7 @@ public class GenerateMdDevelopmentService {
 
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
         this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
-        this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.schemeInfoService = SpringContextUtils.getBean(SchemeInfoService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
@@ -265,6 +267,17 @@ public class GenerateMdDevelopmentService {
         switch (key) {
             case Development_region: {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), schemeAreaGroup.getAreaName());
+                break;
+            }
+            case Development_formula: {
+                DataMethodFormula formula = new DataMethodFormula();
+                if(StringUtils.equals("1",target.getType())){
+                    formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.HYPOTHESIS_DEVELOP_LAND);
+                }
+                if(StringUtils.equals("2",target.getType())){
+                    formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.HYPOTHESIS_DEVELOP_ENGINEERING);
+                }
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), formula.getFormula());
                 break;
             }
             case Development_Land_SetUse: {

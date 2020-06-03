@@ -794,21 +794,16 @@ public class GenerateMdIncomeService implements Serializable {
      * @date: 2019/2/28 16:37
      */
     private synchronized String getIncomeMethodFormula() throws Exception {
-        String s = "";
-        BaseDataDic income = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
-        if (income != null) {
-            List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(income.getId());
-            if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
-                if (StringUtils.isNotBlank(dataMethodFormulaList.stream().findFirst().get().getFormula())) {
-                    if (leaseVoList.size() == 1) {
-                        s = dataMethodFormulaList.stream().findFirst().get().getFormula();
-                    } else {
-                        s = "V1+V2";
-                    }
+        DataMethodFormula formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.INCOME_RENTIN_NOT_USE_COMPARE);
+        List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList();
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            for (MdIncomeLeaseVo vo : leaseVoList) {
+                if (vo.getMcId() != null) {
+                    formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.INCOME_RENTIN_USE_COMPARE);
                 }
             }
         }
-        return s;
+        return StringUtils.isNotEmpty(formula.getFormula())?formula.getFormula():"";
     }
 
     /**

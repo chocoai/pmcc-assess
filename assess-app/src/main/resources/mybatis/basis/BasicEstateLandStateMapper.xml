@@ -490,7 +490,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" resultType="java.lang.Integer">
     select count(*) from tb_basic_estate_land_state
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />

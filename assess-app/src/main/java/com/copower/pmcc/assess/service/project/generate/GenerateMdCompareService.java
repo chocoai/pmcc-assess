@@ -1211,13 +1211,10 @@ public class GenerateMdCompareService {
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
         //获取比较法公式
-        DataMethodFormula formula = new DataMethodFormula();
-        BaseDataDic compareType = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
-        List<DataMethodFormula> formulaList = dataMethodFormulaService.getDataMethodFormulaList(compareType.getId());
-        if (CollectionUtils.isNotEmpty(formulaList)) {
-            formula = formulaList.get(0);
+        DataMethodFormula formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.COMPARE_FORMULA);
+        if(formula!=null){
+            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(formula.getFormula())), true);
         }
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(formula.getFormula())), true);
         doc.save(localPath);
         return localPath;
     }

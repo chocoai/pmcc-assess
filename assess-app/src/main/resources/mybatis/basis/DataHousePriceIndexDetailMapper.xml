@@ -202,7 +202,7 @@
       </otherwise>
     </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetailExample" resultType="java.lang.Integer">
     select count(*) from tb_data_house_price_index_detail
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />

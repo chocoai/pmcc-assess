@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldCostMethodEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
@@ -21,6 +22,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.data.DataBuildingInstallCostService;
+import com.copower.pmcc.assess.service.data.DataMethodFormulaService;
 import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdEconomicIndicatorsService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
@@ -79,6 +81,7 @@ public class GenerateMdCostService {
     private MdArchitecturalObjService mdArchitecturalObjService;
     private MdEconomicIndicatorsService mdEconomicIndicatorsService;
     private DataBuildingInstallCostService dataBuildingInstallCostService;
+    private DataMethodFormulaService dataMethodFormulaService;
     private ApplicationContext applicationContext;
 
 
@@ -425,6 +428,17 @@ public class GenerateMdCostService {
             break;
             case MarketCost_infrastructureCost: {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), ArithmeticUtils.round(target.getInfrastructureCost().toString(), 2));
+                break;
+            }
+            case MarketCost_formula: {
+                DataMethodFormula formula = new DataMethodFormula();
+                if(StringUtils.equals("1",mdCostVo.getType())){
+                    formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.COST_BUILDING);
+                }
+                if(StringUtils.equals("2",mdCostVo.getType())){
+                    formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.COST_ENGINEERING);
+                }
+                generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), formula.getFormula());
                 break;
             }
             case MarketCost_infrastructureMatchingCost: {
@@ -864,6 +878,7 @@ public class GenerateMdCostService {
         this.mdArchitecturalObjService = SpringContextUtils.getBean(MdArchitecturalObjService.class);
         this.mdEconomicIndicatorsService = SpringContextUtils.getBean(MdEconomicIndicatorsService.class);
         this.dataBuildingInstallCostService = SpringContextUtils.getBean(DataBuildingInstallCostService.class);
+        this.dataMethodFormulaService = SpringContextUtils.getBean(DataMethodFormulaService.class);
     }
 
 

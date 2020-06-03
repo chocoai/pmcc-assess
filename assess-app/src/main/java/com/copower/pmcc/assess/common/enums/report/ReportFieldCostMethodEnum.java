@@ -93,6 +93,7 @@ public enum ReportFieldCostMethodEnum implements Serializable {
     MarketCost_CompleteCostTotalValue("成本法完全成本计算值总计"),
     MarketCost_constructionAssessmentPriceCorrecting("成本法单价"),
     MarketCost_constructionAssessmentPriceCorrecting2("成本法现值单价"),
+    MarketCost_formula("成本法计算公式"),
 
     ;
     private String name;

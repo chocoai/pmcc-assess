@@ -804,8 +804,10 @@ public class GenerateLoactionService {
      */
     public String getFinanceAndMedicalAndEducation(List<BasicMatchingFinanceVo> basicMatchingFinanceVoList, List<BasicMatchingMedical> basicMatchingMedicalList, List<BasicMatchingEducation> basicMatchingEducationList, String title) {
         LinkedHashMap<String, List<String>> listMap = getFinanceAndMedicalAndEducationCommonPrivate(basicMatchingFinanceVoList, basicMatchingMedicalList, basicMatchingEducationList, title);
-        if (!listMap.isEmpty()) {
-            return this.getDistanceDec(title, listMap);
+        if(listMap!=null){
+            if (!listMap.isEmpty()) {
+                return this.getDistanceDec(title, listMap);
+            }
         }
         return null;
     }
