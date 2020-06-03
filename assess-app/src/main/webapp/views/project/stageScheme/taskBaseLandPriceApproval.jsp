@@ -498,12 +498,11 @@
 
             var index = 0; //起始行数
 
-            if(length <= 2){
+            if(length <= 1){
             }else{
                 for(var i=0;i < length ;i++){
                     var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
                     var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                    console.log(ford+"==="+behind);
                     if(ford == behind){
                         $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
                         mark = mark +1;

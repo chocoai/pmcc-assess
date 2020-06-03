@@ -99,16 +99,28 @@
                                                                class="form-control x-percent"
                                                                name="areaAndSeveralAmend"
                                                                id="areaAndSeveralAmend">
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-info btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="getLandLevelTabContent();">土地因素
-                                                            </button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered" id="landLevelTableList">
+                                                <thead>
+                                                <tr>
+                                                    <th width="10%">土地级别类型</th>
+                                                    <th width="10%">土地级别类别</th>
+                                                    <th width="10%">土地级别等级</th>
+                                                    <th width="20%">说明</th>
+                                                    <th width="10%">分值</th>
+                                                    <th width="5%"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="landLevelTabContent">
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </form>
@@ -402,6 +414,7 @@
         src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
+<%--
 <div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -462,6 +475,7 @@
         </div>
     </div>
 </div>
+--%>
 
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
@@ -486,12 +500,12 @@
             <input type="hidden" class="form-control input-full" name="dataLandLevelAchievement"
                    value="{dataLandLevelAchievement}">
             <input type="text" class="form-control input-full  x-percent" name="landFactorTotalScore"
-                   value="{landFactorTotalScore}">
+                   value="{landFactorTotalScore}" onblur="getAreaAndSeveralAmend();">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
         <td>
             <input class="btn btn-warning" type="button" value="X"
-                   onclick="caseCommon.landLevelEmpty(this)">
+                   onclick="landLevelEmpty(this)">
         </td>
     </tr>
 </script>
@@ -514,7 +528,7 @@
         formData.floorPremium = $.trim($("#floorPremium").text()) ? $("#floorPremium").text() : '';
         formData.correctionDifference = $.trim($("#correctionDifference").text()) ? $("#correctionDifference").text() : '';
         formData.areaAndSeveralAmend = AssessCommon.percentToPoint($("#areaAndSeveralAmend").val());
-        formData.landLevelContent = $("#landLevelContent").val();
+        formData.landLevelContent = getLandLevelContent();
 
 
         if ("${processInsId}" != "0") {
@@ -531,7 +545,7 @@
         //容积率修正系数表
         showVolumetricRateDetailList(${hasVolumeFractionAmendId});
         //因素条件说明及修正系数
-        //getLevelDetailId()
+        getLandLevelTabContent();
         if(!'${master.areaAndSeveralAmend}'){
             $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${landFactorTotalScore}'));
         }else{
@@ -741,7 +755,7 @@
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
-        $("#detailAchievementModal").modal();
+        //$("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
 
@@ -779,12 +793,11 @@
             var length = rows.length;// 获取当前表格中tr的个数
             var mark = 0; //要合并的单元格数
             var index = 0; //起始行数
-            if(length <= 2){
+            if(length <= 1){
             }else{
                 for(var i=0;i < length ;i++){
                     var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
                     var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                    console.log(ford+"==="+behind);
                     if(ford == behind){
                         $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
                         mark = mark +1;
@@ -806,7 +819,7 @@
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
-        $("#detailAchievementModal").modal();
+        //$("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
 
@@ -849,12 +862,11 @@
             var length = rows.length;// 获取当前表格中tr的个数
             var mark = 0; //要合并的单元格数
             var index = 0; //起始行数
-            if(length <= 2){
+            if(length <= 1){
             }else{
                 for(var i=0;i < length ;i++){
                     var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
                     var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                    console.log(ford+"==="+behind);
                     if(ford == behind){
                         $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
                         mark = mark +1;
@@ -871,11 +883,11 @@
 
 
     //计算区域及个别修正系数
-    function getAreaAndSeveralAmend(that) {
+    function getAreaAndSeveralAmend() {
         var landLevelContent = [];
         var landFactorTotalScoreResult = 0;
 
-        $("#landLevelContentFrm").find("input[name='landLevelContent']").each(function (i, n) {
+        $("#landLevelTableList").find("input[name='landLevelContent']").each(function (i, n) {
             var group = $(n).closest(".group");
             var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
             var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
@@ -894,18 +906,44 @@
             landLevelContent.push(dataObject);
         });
         if (landLevelContent.length >= 1) {
-            $("#landLevelContent").val(JSON.stringify(landLevelContent));
             $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent(landFactorTotalScoreResult));
         } else {
-            $("#landLevelContent").val('');
             $("#areaAndSeveralAmend").val('');
         }
-        $("#detailAchievementModal").modal('hide');
-
 
         //获取委估宗地单价（元/㎡）
         getParcelPrice();
         getPeriodAmend();
+    }
+
+    //删除呀
+    function landLevelEmpty(that) {
+        $(that).parent().parent().remove();
+        getAreaAndSeveralAmend();
+    };
+
+    function getLandLevelContent() {
+        var landLevelContent = [];
+
+        $("#landLevelTableList").find("input[name='landLevelContent']").each(function (i, n) {
+            var group = $(n).closest(".group");
+            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
+            var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
+            var obj = JSON.parse($(n).val());
+            var dataObject = [];
+            obj.forEach(function (value, index) {
+                if (value.id == dataLandLevelAchievement) {
+                    value.modelStr = "update";
+                    value.achievement = landFactorTotalScore;
+                } else {
+                    delete value.modelStr;
+                }
+                dataObject.push(value);
+            });
+            landLevelContent.push(dataObject);
+        });
+
+        return landLevelContent;
     }
 </script>
 

@@ -233,6 +233,25 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <table class="table table-bordered" id="landLevelTableList">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th width="10%">土地级别类型</th>
+                                                                    <th width="10%">土地级别类别</th>
+                                                                    <th width="10%">土地级别等级</th>
+                                                                    <th width="20%">说明</th>
+                                                                    <th width="10%">分值</th>
+                                                                    <th width="5%"></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="landLevelTabContent">
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
 
                                                 </form>
                                             </div>
@@ -755,6 +774,7 @@
         </div>
     </div>
 </div>
+<%--
 <div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -811,6 +831,7 @@
         </div>
     </div>
 </div>
+--%>
 
 
 <script type="text/html" id="landLevelTabContentBody">
@@ -834,12 +855,12 @@
             <input type="hidden" class="form-control input-full" name="dataLandLevelAchievement"
                    value="{dataLandLevelAchievement}">
             <input type="text" class="form-control input-full  x-percent" name="landFactorTotalScore"
-                   value="{landFactorTotalScore}">
+                   value="{landFactorTotalScore}" onblur="getPlotRatioElementAmend();">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
         <td>
             <input class="btn btn-warning" type="button" value="X"
-                   onclick="caseCommon.landLevelEmpty(this)">
+                   onclick="landLevelEmpty(this)">
         </td>
     </tr>
 </script>
@@ -883,7 +904,7 @@
         formData.landAcquisitionUnit = parseFloat($("#landAcquisitionUnit").text());
         formData.landProductionProfitUnit = parseFloat($("#landProductionProfitUnit").text());
         formData.landProductionInterestUnit = parseFloat($("#landProductionInterestUnit").text());
-        formData.landLevelContent = $("#landLevelContent").val();
+        formData.landLevelContent = getLandLevelContent();
         var costApproachTaxes = [];
         $.each($("#master").find("#tbodyContent").find("tr"), function (i, n) {
             var item = getApproachTaxesData($(n));
@@ -915,7 +936,7 @@
                 parcelSettingOuter: '${master.parcelSettingOuter}'
             };
             initParcelSettingData(data);
-
+            getLandLevelTabContent();
             if(!'${master.landLevelContent}'){
                 $("#landLevelContent").val('${landLevelContent}');
             }
@@ -1279,7 +1300,7 @@
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
-        $("#detailAchievementModal").modal();
+        //$("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
 
@@ -1317,12 +1338,11 @@
             var length = rows.length;// 获取当前表格中tr的个数
             var mark = 0; //要合并的单元格数
             var index = 0; //起始行数
-            if(length <= 2){
+            if(length <= 1){
             }else{
                 for(var i=0;i < length ;i++){
                     var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
                     var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                    console.log(ford+"==="+behind);
                     if(ford == behind){
                         $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
                         mark = mark +1;
@@ -1344,7 +1364,7 @@
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
-        $("#detailAchievementModal").modal();
+        //$("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
 
@@ -1387,12 +1407,11 @@
             var length = rows.length;// 获取当前表格中tr的个数
             var mark = 0; //要合并的单元格数
             var index = 0; //起始行数
-            if(length <= 2){
+            if(length <= 1){
             }else{
                 for(var i=0;i < length ;i++){
                     var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
                     var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                    console.log(ford+"==="+behind);
                     if(ford == behind){
                         $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
                         mark = mark +1;
@@ -1408,11 +1427,11 @@
     };
 
 
-    function getPlotRatioElementAmend(that) {
+    function getPlotRatioElementAmend() {
         var landLevelContent = [];
         var landFactorTotalScoreResult = 0;
 
-        $("#landLevelContentFrm").find("input[name='landLevelContent']").each(function (i, n) {
+        $("#landLevelTableList").find("input[name='landLevelContent']").each(function (i, n) {
             var group = $(n).closest(".group");
             var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
             var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
@@ -1431,18 +1450,44 @@
             landLevelContent.push(dataObject);
         });
         if (landLevelContent.length >= 1) {
-            $("#landLevelContent").val(JSON.stringify(landLevelContent));
             $("#plotRatioElementAmend").val(AssessCommon.pointToPercent(landFactorTotalScoreResult));
         } else {
-            $("#landLevelContent").val('');
             $("#plotRatioElementAmend").val('');
         }
-        $("#detailAchievementModal").modal('hide');
 
         //年期修正等
         getYearFixed();
     }
 
+    //删除呀
+    function landLevelEmpty(that) {
+        $(that).parent().parent().remove();
+        getPlotRatioElementAmend();
+    };
+
+    function getLandLevelContent() {
+        var landLevelContent = [];
+
+        $("#landLevelTableList").find("input[name='landLevelContent']").each(function (i, n) {
+            var group = $(n).closest(".group");
+            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
+            var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
+            var obj = JSON.parse($(n).val());
+            var dataObject = [];
+            obj.forEach(function (value, index) {
+                if (value.id == dataLandLevelAchievement) {
+                    value.modelStr = "update";
+                    value.achievement = landFactorTotalScore;
+                } else {
+                    delete value.modelStr;
+                }
+                dataObject.push(value);
+            });
+            landLevelContent.push(dataObject);
+        });
+
+        return landLevelContent;
+    }
 </script>
 <%--年平均产值--%>
 <script type="text/javascript">
@@ -1930,7 +1975,7 @@
             dataType: "json",
             data: {
                 formData: JSON.stringify(data),
-                farmlandArea, farmlandArea,
+                farmlandArea: farmlandArea,
                 ploughArea: ploughArea,
                 populationNumber: populationNumber
             },
