@@ -730,9 +730,9 @@
         var target = $("#landLevelTabContent");
         target.empty();
 
+        var rows = [];
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
-            var rows = [];
             $.each(dataA, function (i, obj) {
                 var item;
                 obj.forEach(function (value, index) {
@@ -762,30 +762,28 @@
                     target.append(landLevelBodyHtml);
                 }
             });
-            var length = rows.length;// 获取当前表格中tr的个数
 
-            var mark = 0; //要合并的单元格数
-
-            var index = 0; //起始行数
-
-            if(length <= 1){
-            }else{
-                for(var i=0;i < length ;i++){
-                    var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
-                    var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                    if(ford == behind){
-                        $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
-                        mark = mark +1;
-                    }else if(ford != behind){
-                        index = i-mark;
-                        $("#landLevelTableList tr:gt(0):eq("+index+") td:eq(0)").attr("rowspan",mark+1);//+1 操作标识，将当前的行加入到隐藏
-                        mark = 0;
-                        $("#landLevelTableList tr:gt(0):eq("+(parseInt(i))+") td:eq(0)").hide();
-                    }
-                }
-            }
 
         });
+        var length = rows.length;// 获取当前表格中tr的个数
+        var mark = 0; //要合并的单元格数
+        var index = 0; //起始行数
+        if(length <= 1){
+        }else{
+            for(var i=0;i < length ;i++){
+                var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
+                var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
+                if(ford == behind){
+                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
+                    mark = mark +1;
+                }else if(ford != behind){
+                    index = i-mark;
+                    $("#landLevelTableList tr:gt(0):eq("+index+") td:eq(0)").attr("rowspan",mark+1);//+1 操作标识，将当前的行加入到隐藏
+                    mark = 0;
+                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i))+") td:eq(0)").hide();
+                }
+            }
+        }
     };
 </script>
 <%--年平均产值--%>
