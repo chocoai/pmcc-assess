@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en" class="no-js">
 <head>
-    <title>楼盘</title>
+    <title>土地基本信息</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body>
@@ -17,7 +17,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        楼盘基本信息
+                                        土地基本信息
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span

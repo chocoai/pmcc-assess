@@ -16,8 +16,7 @@
                             <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        房屋交易信息
-
+                                        土地信息
                                     </div>
                                 </div>
                             </div>

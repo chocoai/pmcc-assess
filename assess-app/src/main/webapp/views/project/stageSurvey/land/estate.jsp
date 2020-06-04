@@ -17,7 +17,6 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         信息填写
-
                                         <button type="button" class="btn btn-sm btn-primary"
                                                 onclick="showHistoryModal();">历史记录
                                         </button>
@@ -32,7 +31,6 @@
                             <div class="card-body">
                                 <form class="form-horizontal" id="frm_estate">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
-                                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -67,9 +65,7 @@
                                                             <th style="width: 7%"></th>
                                                         </tr>
                                                         </thead>
-                                                        <tbody>
-
-                                                        </tbody>
+                                                        <tbody></tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -87,10 +83,14 @@
                                                                required="required"
                                                                name="name" class="form-control"
                                                                value="${basicEstate.name}">
-                                                        <span class="input-group-btn">
-                        <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
-                                class="fa fa-map-marker"></i> 标注</div>
-                        </span>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-info btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="stateCommon.mapMarker();">
+                                                                标注
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">地块方位</label>
@@ -224,7 +224,7 @@
                                     <div id="landEstateFile"></div>
 
                                     <div class="card-header">
-                                        <div class="card-category">基础设施情况</div>
+                                        <div class="card-category">宗地外</div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
@@ -238,7 +238,7 @@
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1">
-                                                    宗地外设定
+                                                    宗地外
                                                 </label>
                                                 <div class="col-sm-7">
                                                     <div id="industrySupplyInfoContainer"></div>
@@ -377,7 +377,7 @@
                                                            value="${basicEstateLandState.developmentDegreeRemark}">
                                                 </div>
                                                 <label class="col-sm-1 parcelSettingInner">
-                                                    宗地内设定
+                                                    宗地内
                                                 </label>
                                                 <div class="col-sm-7 parcelSettingInner">
                                                     <div id="developmentDegreeContentContainer"></div>
@@ -428,7 +428,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
 
                         <div class="card-body">

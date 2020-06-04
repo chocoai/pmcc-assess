@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -11,6 +12,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
@@ -208,7 +210,8 @@ public class SchemeAreaGroupService {
             }
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+        boolean isLand = AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equalsIgnoreCase(assessProjectType.getKey());
         //添加或清除估价对象 先找出上次已经生成的估价对象 再找出本次会参与生成的权证 最后确定其新增或删除
         if (CollectionUtils.isNotEmpty(newAreaGroups)) {//为新产生的区域添加数据
             for (SchemeAreaGroup areaGroup : newAreaGroups) {
@@ -237,7 +240,7 @@ public class SchemeAreaGroupService {
                     boolean isSameCity = StringUtils.equals(StringUtils.defaultString(declareRecord.getCity()), StringUtils.defaultString(areaGroup.getCity()));
                     boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(declareRecord.getDistrict()), StringUtils.defaultString(areaGroup.getDistrict()));
                     if (isSameProvince && isSameCity && isSameDistrict) {
-                        declareRecordToJudgeObject(declareRecord, areaGroup);
+                        declareRecordToJudgeObject(declareRecord, areaGroup,isLand);
                         declareRecordIterator.remove();
                     }
                 }
@@ -263,7 +266,7 @@ public class SchemeAreaGroupService {
                 Boolean isNeedReNumber = false;//是否需要重新编号
                 if (CollectionUtils.isNotEmpty(declareRecordList)) {//为权证添加估价对象
                     isNeedReNumber = true;
-                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup));
+                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup,isLand));
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
                     isNeedReNumber = true;
@@ -299,13 +302,16 @@ public class SchemeAreaGroupService {
      * @param areaGroup
      * @return
      */
-    private void declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup) {
+    private void declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup, Boolean isLand) {
         //根据查勘情况生成对应的估价对象，并将查勘applyid关联到估价对象上
         List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
         if (CollectionUtils.isEmpty(basicApplyList)) return;
         //经济指标
-        DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = declareBuildEngineeringAndEquipmentCenterService.getDataByDeclareRecord(declareRecord.getId());
-        MdEconomicIndicators economicIndicators = mdEconomicIndicatorsDao.getEconomicIndicatorsById(equipmentCenter.getIndicatorId());
+        MdEconomicIndicators economicIndicators = null;
+        if (isLand) {
+            DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = declareBuildEngineeringAndEquipmentCenterService.getDataByDeclareRecord(declareRecord.getId());
+            economicIndicators = mdEconomicIndicatorsDao.getEconomicIndicatorsById(equipmentCenter.getIndicatorId());
+        }
         SchemeJudgeObject splitSource = null;//拆分源对象
         for (int i = 0; i < basicApplyList.size(); i++) {
             BasicApply basicApply = basicApplyList.get(i);
@@ -315,8 +321,8 @@ public class SchemeAreaGroupService {
             schemeJudgeObject.setBuildingStatus(declareRecord.getBuildingStatus());
             schemeJudgeObject.setBasicApplyId(basicApply.getId());
             schemeJudgeObject.setEvaluationArea(basicApply.getArea());
-            if(economicIndicators!=null){
-                if(StringUtils.isNotEmpty(economicIndicators.getVolumetricRate())){
+            if (isLand && economicIndicators != null) {
+                if (StringUtils.isNotEmpty(economicIndicators.getVolumetricRate())) {
                     schemeJudgeObject.setPlanPlotRatio(new BigDecimal(economicIndicators.getVolumetricRate()));
                     schemeJudgeObject.setSetPlotRatio(new BigDecimal(economicIndicators.getVolumetricRate()));
                 }
@@ -324,7 +330,7 @@ public class SchemeAreaGroupService {
             }
 
             BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-            if(basicEstate!=null){
+            if (basicEstate != null) {
                 schemeJudgeObject.setParcelInnerDevelop(basicEstate.getInfrastructure());
                 BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
                 schemeJudgeObject.setParcelOuterDevelop(estateLandState.getDevelopmentDegreeContent());
@@ -336,7 +342,9 @@ public class SchemeAreaGroupService {
                 schemeJudgeObject.setCertUse(basicHouse.getCertUse());
                 schemeJudgeObject.setPracticalUse(basicHouse.getPracticalUse());
                 BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
-                if(landCategoryInfo!=null){
+                if (isLand&&landCategoryInfo != null) {
+                    schemeJudgeObject.setCertUse(declareRecord.getLandCertUse());
+                    schemeJudgeObject.setPracticalUse(landCategoryInfo.getLandUseType());
                     schemeJudgeObject.setActualPlotRatio(landCategoryInfo.getPlotRatio());
                 }
             }
