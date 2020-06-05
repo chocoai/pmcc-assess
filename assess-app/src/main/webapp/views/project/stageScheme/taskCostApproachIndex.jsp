@@ -779,7 +779,7 @@
         </td>
         <td>
             <select class="form-control input-full" name="landLevelGrade"
-                    onchange="caseCommon.landLevelHandle(this);">
+                    onchange="landLevelHandle(this);" onblur="getPlotRatioElementAmend();">
                 {landLevelGradeHTML}
             </select>
         </td>
@@ -1243,6 +1243,8 @@
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
                 var item = caseCommon.getLandLevelFilter(obj);
+                item.achievement=0;
+                item.grade='';
                 rows.push(item);
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
@@ -1421,6 +1423,28 @@
 
         return landLevelContent;
     }
+
+    //change 事件 随着等级变化页面展示不同内容
+    function landLevelHandle(that) {
+        var group = $(that).closest('.group');
+        var landLevelContent = group.find("input[name='landLevelContent']").val();
+        var obj = {};
+        try {
+            obj = JSON.parse(landLevelContent);
+        } catch (e) {
+        }
+        if (caseCommon.isNotBlankObject(obj)) {
+            AssessCommon.getDataDicInfo($(that).val(), function (item) {
+                obj.forEach(function (data, index) {
+                    if (data.gradeName == item.name) {
+                        group.find("input[name='landFactorTotalScore']").attr('data-value',data.achievement);
+                        group.find("input[name='landFactorTotalScore']").val(AssessCommon.pointToPercent(data.achievement));
+                        group.find("input[name='dataLandLevelAchievement']").val(data.id);
+                    }
+                });
+            });
+        }
+    };
 </script>
 <%--年平均产值--%>
 <script type="text/javascript">
