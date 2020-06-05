@@ -4505,6 +4505,66 @@ public class MdDevelopmentExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andLandAreaIsNull() {
+            addCriterion("land_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaIsNotNull() {
+            addCriterion("land_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaEqualTo(BigDecimal value) {
+            addCriterion("land_area =", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaNotEqualTo(BigDecimal value) {
+            addCriterion("land_area <>", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaGreaterThan(BigDecimal value) {
+            addCriterion("land_area >", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_area >=", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaLessThan(BigDecimal value) {
+            addCriterion("land_area <", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_area <=", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaIn(List<BigDecimal> values) {
+            addCriterion("land_area in", values, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaNotIn(List<BigDecimal> values) {
+            addCriterion("land_area not in", values, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_area between", value1, value2, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_area not between", value1, value2, "landArea");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
