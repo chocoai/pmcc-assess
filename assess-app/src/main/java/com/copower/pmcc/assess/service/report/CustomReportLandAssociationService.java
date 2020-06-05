@@ -112,9 +112,12 @@ public class CustomReportLandAssociationService {
         }
         CustomReportLandAssociation vo = new CustomReportLandAssociation();
         BeanUtils.copyProperties(data, vo);
-
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
         ProjectNumberRecord where = new ProjectNumberRecord();
         where.setBisDelete(false);
+        where.setReportType(resultId);
         where.setProjectId(data.getProjectId());
         List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
         StringBuilder numberStr = new StringBuilder();
