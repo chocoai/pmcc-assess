@@ -87,7 +87,7 @@
                                                             <button class="btn btn-info btn-sm "
                                                                     style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                                                     type="button"
-                                                                    onclick="stateCommon.mapMarker();">
+                                                                    onclick="estateCommon.mapMarker();">
                                                                 标注
                                                             </button>
                                                         </div>

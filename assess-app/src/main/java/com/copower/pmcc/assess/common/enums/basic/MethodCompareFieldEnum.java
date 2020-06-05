@@ -73,6 +73,9 @@ public enum MethodCompareFieldEnum {
     //土地相关-----------------------------------------------------------------------------------------------------------------------
     LAND_NAME("land.name", "地块名称"),//ps:地块名称
     LAND_TRADING_PRICE("land.trading.price", "交易价格"),//ps:土地-交易情况-交易价格
+    LAND_TRADING_TRANSACTION_SITUATION("land.trading.transaction.situation", "交易情况"),//ps:土地-交易情况
+    LAND_TRADING_TIME("land.trading.time", "交易时间"),//ps:土地-交易情况-交易时间
+    LAND_PRICE_CONNOTATION("land.price.connotation", "单价内涵"),//ps:土地-交易情况-单价内涵
     LAND_AREA_LOCATION("land.area.location", "区域位置"),//ps:区域位置
     LAND_AGGLOMERATION_DEGREE("land.agglomeration.degree", "产业聚集度"),//ps:产业聚集度
     LAND_TRAFFIC_CONDITIONS("land.traffic.conditions", "交通条件"),//ps:交通条件
