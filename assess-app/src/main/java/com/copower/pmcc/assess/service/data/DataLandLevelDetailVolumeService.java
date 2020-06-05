@@ -43,7 +43,7 @@ import java.util.List;
 public class DataLandLevelDetailVolumeService {
 
     @Autowired
-    private DataLandLevelDetailVolumeDao dataLandDetailAchievementDao; 
+    private DataLandLevelDetailVolumeDao dataLandDetailAchievementDao;
     @Autowired
     private DataLandLevelDetailService dataLandLevelDetailService;
     @Autowired
@@ -140,47 +140,47 @@ public class DataLandLevelDetailVolumeService {
             oo.setCreator(commonService.thisUserAccount());
             return dataLandDetailAchievementDao.saveDataLandLevelDetailVolume(oo);
         } else {
-            return updateDataLandLevelDetailVolume(oo,true);
+            return updateDataLandLevelDetailVolume(oo, true);
         }
     }
 
-    public boolean updateDataLandLevelDetailVolume(DataLandLevelDetailVolume oo, boolean updateNull){
-        if (updateNull){
-            DataLandLevelDetailVolume dataLandLevelDetailVolume = getDataLandLevelDetailVolumeById(oo.getId()) ;
-            if (oo.getLevelDetailId() == null){
+    public boolean updateDataLandLevelDetailVolume(DataLandLevelDetailVolume oo, boolean updateNull) {
+        if (updateNull) {
+            DataLandLevelDetailVolume dataLandLevelDetailVolume = getDataLandLevelDetailVolumeById(oo.getId());
+            if (oo.getLevelDetailId() == null) {
                 oo.setLevelDetailId(dataLandLevelDetailVolume.getLevelDetailId());
             }
-            if (oo.getPlotRatio() == null){
+            if (oo.getPlotRatio() == null) {
                 oo.setPlotRatio(dataLandLevelDetailVolume.getPlotRatio());
             }
-            if (oo.getCorrectionFactor() == null){
+            if (oo.getCorrectionFactor() == null) {
                 oo.setCorrectionFactor(dataLandLevelDetailVolume.getCorrectionFactor());
             }
             if (StringUtils.isBlank(oo.getCreator())) {
                 oo.setCreator(dataLandLevelDetailVolume.getCreator());
             }
-            if (oo.getGmtCreated() == null){
+            if (oo.getGmtCreated() == null) {
                 oo.setGmtCreated(dataLandLevelDetailVolume.getGmtCreated());
             }
         }
-        return dataLandDetailAchievementDao.updateDataLandLevelDetailVolume(oo, updateNull) ;
+        return dataLandDetailAchievementDao.updateDataLandLevelDetailVolume(oo, updateNull);
     }
 
     public boolean deleteDataLandLevelDetailVolume(Integer id) {
         return dataLandDetailAchievementDao.deleteDataLandLevelDetailVolume(id);
     }
 
-    public void clear(Integer id){
+    public void clear(Integer id) {
         DataLandLevelDetailVolume query = new DataLandLevelDetailVolume();
         query.setLevelDetailId(id);
         List<DataLandLevelDetailVolume> dataLandLevelDetailVolumeList = getDataLandLevelDetailVolumeList(query);
-        if (CollectionUtils.isEmpty(dataLandLevelDetailVolumeList)){
+        if (CollectionUtils.isEmpty(dataLandLevelDetailVolumeList)) {
             return;
         }
         Iterator<DataLandLevelDetailVolume> iterator = dataLandLevelDetailVolumeList.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             DataLandLevelDetailVolume next = iterator.next();
-            deleteDataLandLevelDetailVolume(next.getId()) ;
+            deleteDataLandLevelDetailVolume(next.getId());
         }
     }
 
@@ -216,14 +216,14 @@ public class DataLandLevelDetailVolumeService {
     }
 
     //根据配置获取容积率修正
-    public BigDecimal getAmendByVolumetricRate(BigDecimal volumeRate,Integer dataLandLevelDetailId) {
-        if(volumeRate==null) return null;
+    public BigDecimal getAmendByVolumetricRate(BigDecimal volumeRate, Integer dataLandLevelDetailId) {
+        if (volumeRate == null || dataLandLevelDetailId == null) return null;
         //没有配置则往上级找
         DataLandLevelDetail hasVolumeFractionAmendData = dataLandLevelDetailService.hasVolumeFractionAmendParent(dataLandLevelDetailId);
         DataLandLevelDetailVolume data = new DataLandLevelDetailVolume();
         data.setLevelDetailId(hasVolumeFractionAmendData.getId());
         List<DataLandLevelDetailVolume> detailList = getDataLandLevelDetailVolumeList(data);
-        if(!CollectionUtils.isNotEmpty(detailList)) return null;
+        if (!CollectionUtils.isNotEmpty(detailList)) return null;
         for (DataLandLevelDetailVolume detailItem : detailList) {
             //直接匹配
             if (detailItem.getPlotRatio() == null) continue;
@@ -232,7 +232,7 @@ public class DataLandLevelDetailVolumeService {
             }
         }
         //不能直接匹配
-        if(detailList.size()>2){
+        if (detailList.size() > 2) {
             return getAmend(detailList, volumeRate);
         }
         return null;

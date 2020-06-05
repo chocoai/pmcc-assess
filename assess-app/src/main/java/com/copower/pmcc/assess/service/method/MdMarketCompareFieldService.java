@@ -602,7 +602,7 @@ public class MdMarketCompareFieldService extends BaseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public String getLandCompareInfo(SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
+    public String getLandCompareInfo(SchemeAreaGroup areaGroup,SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             if (basicApply == null) return null;
@@ -648,6 +648,21 @@ public class MdMarketCompareFieldService extends BaseService {
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_PRICE.getKey(), String.valueOf(houseTrading.getTradingUnitPrice()), dataSetUseField));
                             else
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_PRICE.getKey(), null, dataSetUseField));
+                            break;
+                        case LAND_TRADING_TRANSACTION_SITUATION://交易情况
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_TRANSACTION_SITUATION.getKey(), baseDataDicService.getNameById(houseTrading.getTransactionSituation()), dataSetUseField, isCase));
+                            break;
+                        case LAND_TRADING_TIME://交易时间|市场状况
+                            if (isCase)
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_TIME.getKey(), DateUtils.formatDate(houseTrading.getTradingTime()), dataSetUseField, isCase));
+                            else
+                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_TIME.getKey(), DateUtils.formatDate(areaGroup.getValueTimePoint()), dataSetUseField, isCase));
+                            break;
+                        case LAND_PRICE_CONNOTATION://单价内涵
+                            String priceConnotationName = baseDataDicService.getNameById(houseTrading.getPriceConnotation());
+                            if ("其它".equals(priceConnotationName))
+                                priceConnotationName = houseTrading.getPriceConnotationUnit();
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PRICE_CONNOTATION.getKey(), priceConnotationName, dataSetUseField));
                             break;
                         case LAND_AREA_LOCATION://区域位置
                             String areaLocation = generateLandFactorService.getAreaLocation(examineEstate);
