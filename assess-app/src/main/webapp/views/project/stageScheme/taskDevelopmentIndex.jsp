@@ -701,6 +701,7 @@
         var frm = $(development.config.frm);
         frm.find("input[name='type']").val(value);
         if (value == 1) {
+            $(".showLandArea").show();
             var managementExpense = frm.find("input[placeholder='续建管理费率']");
             managementExpense.attr({placeholder: "管理费率"});
             managementExpense.closest(".form-group").find("label").first().text("管理费率");
@@ -718,6 +719,7 @@
             investmentProfitTax.closest(".form-group").find("label").first().text("投资利润率");
         }
         if (value == 2) {
+            $(".showLandArea").hide();
             var managementExpense = frm.find("input[placeholder='管理费率']");
             managementExpense.attr({placeholder: "续建管理费率"});
             managementExpense.closest(".form-group").find("label").first().text("续建管理费率");

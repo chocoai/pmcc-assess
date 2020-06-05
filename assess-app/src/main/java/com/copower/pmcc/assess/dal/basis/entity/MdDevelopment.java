@@ -142,6 +142,8 @@ public class MdDevelopment {
 
     private Date gmtModified;
 
+    private BigDecimal landArea;
+
     public Integer getId() {
         return id;
     }
@@ -692,5 +694,13 @@ public class MdDevelopment {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getLandArea() {
+        return landArea;
+    }
+
+    public void setLandArea(BigDecimal landArea) {
+        this.landArea = landArea;
     }
 }

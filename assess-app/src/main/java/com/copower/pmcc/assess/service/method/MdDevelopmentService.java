@@ -241,15 +241,19 @@ public class MdDevelopmentService {
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_total_saleableArea: {//f18
-                BigDecimal unsaleableBuildingArea = new BigDecimal(0) ;
-                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getSaleableArea()})) {
-                    return "";
+                if (Objects.equal(target.getType(), MdDevelopmentTypeEnum.developmentLand.getKey())) {
+                    return ArithmeticUtils.getBigDecimalString(target.getLandArea());
+                }else{
+                    BigDecimal unsaleableBuildingArea = new BigDecimal(0) ;
+                    if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getSaleableArea()})) {
+                        return "";
+                    }
+                    if (target.getUnsaleableBuildingArea() != null){
+                        unsaleableBuildingArea = new BigDecimal(target.getUnsaleableBuildingArea().toString()) ;
+                    }
+                    BigDecimal bigDecimal = ArithmeticUtils.addModel(target.getSaleableArea(), unsaleableBuildingArea, null, null);
+                    return ArithmeticUtils.getBigDecimalString(bigDecimal);
                 }
-                if (target.getUnsaleableBuildingArea() != null){
-                    unsaleableBuildingArea = new BigDecimal(target.getUnsaleableBuildingArea().toString()) ;
-                }
-                BigDecimal bigDecimal = ArithmeticUtils.addModel(target.getSaleableArea(), unsaleableBuildingArea, null, null);
-                return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_constructionInstallationEngineeringFee: {//d21 or e21
                 String f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
