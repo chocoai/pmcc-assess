@@ -707,7 +707,12 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_USE.getKey(), use, dataSetUseField));
                             break;
                         case LAND_TEMPORARY_ROAD_CONDITION://临街（路）状况
-                            String temporaryRoadCondition = generateLandFactorService.getTemporaryRoadCondition(Lists.newArrayList(judgeObject));
+                            String temporaryRoadCondition = null;
+                            if (isCase) {
+                                temporaryRoadCondition = generateLoactionService.getFaceStreetExtend(basicApply);
+                            } else {
+                                temporaryRoadCondition = generateLandFactorService.getTemporaryRoadCondition(Lists.newArrayList(judgeObject));
+                            }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TEMPORARY_ROAD_CONDITION.getKey(), generateCommonMethod.trimText(temporaryRoadCondition), dataSetUseField));
                             break;
                         case LAND_TOPOGRAPHY://形状、地质、地形、地势
