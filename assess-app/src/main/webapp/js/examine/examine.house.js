@@ -1005,10 +1005,14 @@
     //计算单价
     houseCommon.computeUnitPrice = function () {
         var area = houseCommon.houseForm.find('[name=area]').val();
+        if(!houseCommon.isNotBlank(area)){
+            area = houseCommon.houseTradingForm.find('[id=tempLandArea]').val();
+        }
         var tradingTotalPrice = houseCommon.houseTradingForm.find('[name=tradingTotalPrice]').val();
         if (AssessCommon.isNumber(area) && AssessCommon.isNumber(tradingTotalPrice)) {
             var tradingUnitPrice = parseFloat(tradingTotalPrice) / parseFloat(area);
             houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val(parseInt(tradingUnitPrice));
+            houseCommon.computePerMuPrice();
         }
     };
 

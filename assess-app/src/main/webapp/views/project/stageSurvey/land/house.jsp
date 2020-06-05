@@ -233,7 +233,9 @@
             return false;
         }
         Loading.progressShow();
-        var formData = JSON.stringify(examineCommon.getFormData());
+        var data = examineCommon.getFormData();
+        data.basicHouse.area = houseCommon.houseTradingForm.find('[id=tempLandArea]').val();
+        var formData = JSON.stringify(data);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveDraft",
             type: "post",
