@@ -735,7 +735,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_RIGHT_CONDITION.getKey(), generateCommonMethod.trimText(rightCondition), dataSetUseField));
                             break;
                         case LAND_OTHER://土地其它
-                            String other = generateLandFactorService.getOther(judgeObject);
+                            String other = "无";
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_OTHER.getKey(), generateCommonMethod.trimText(other), dataSetUseField));
                             break;
                         case Land_Annual_Coefficient:
