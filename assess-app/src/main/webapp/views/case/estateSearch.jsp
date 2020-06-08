@@ -44,8 +44,6 @@
                                         <div class="col-md-2 p-0">
                                             <input type="text" class="form-control input-full" name="search"/>
                                         </div>
-
-
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="baseFun.caseEstate.find()">
 											<span class="btn-label">
@@ -58,51 +56,6 @@
                                 <table class="table table-bordered" id="caseEstateTable">
                                     <!-- cerare document add ajax data-->
                                 </table>
-                            </div>
-
-                            <div style="display: none" class="card">
-                                <div class="card-header">
-                                    <div class="card-head-row">
-                                        <div class="card-title">楼栋信息</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <form class="form-horizontal" id="frmCaseBuild">
-                                        <input type="hidden" name="estateId">
-                                        <table class="table table-bordered" id="caseBuildTable">
-                                        </table>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div style="display: none" class="card">
-                                <div class="card-header">
-                                    <div class="card-head-row">
-                                        <div class="card-title">单元信息</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <form class="form-horizontal" id="frmCaseUnit">
-                                        <input type="hidden" name="buildingId">
-                                        <table class="table table-bordered" id="caseUnitTable">
-                                        </table>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div style="display: none" class="card">
-                                <div class="card-header">
-                                    <div class="card-head-row">
-                                        <div class="card-title">房屋信息</div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <form class="form-horizontal" id="frmCaseHouse">
-                                        <input type="hidden" name="unitId">
-                                        <table class="table table-bordered" id="caseHouseTable">
-                                        </table>
-                                    </form>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -201,21 +154,10 @@
                 estate = {search: null, city: null, district: null, province: null};
             }
             var cols = [];
-            cols.push({field: 'name', title: '名称'});
-            cols.push({
-                field: 'area', title: '区域', formatter: function (value, row, index) {
-                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-                }
-            });
-            cols.push({field: 'blockName', title: '版块'});
-            cols.push({field: 'averagePrice', title: '均价'});
-            cols.push({field: 'coverAnArea', title: '占地面积'});
-            cols.push({field: 'version', title: '版本'});
+            cols.push({field: 'estateName', title: '名称'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findData(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
                     str += '<button type="button" onclick="baseFun.caseEstate.findData(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
@@ -223,7 +165,7 @@
                 }
             });
             $("#" + baseFun.config.father.caseEstate.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/basicEstate/getCaseEstateVos", cols, {
+            TableInit(baseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/basicApplyBatch/getBasicApplyBatchList", cols, {
                 name: estate.search,
                 city: estate.city,
                 province: estate.province
@@ -234,10 +176,6 @@
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();
                 },
-                // onClickCell: function (field, value, row, element) {
-                //     baseFun.caseBuild.loadDataList(row.id);
-                //     $(element).closest('tr').css({"background-color": "powderblue"}).siblings().css({"background-color": ""});
-                // }
             });
 
         },

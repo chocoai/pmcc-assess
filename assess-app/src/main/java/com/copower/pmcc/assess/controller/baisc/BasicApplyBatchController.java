@@ -837,4 +837,10 @@ public class BasicApplyBatchController extends BaseController {
             return HttpResult.newErrorResult("异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicApplyBatchList", name = "获取楼盘案例数据", method = RequestMethod.GET)
+    public BootstrapTableVo getBasicApplyBatchList(String province,String city,String name) {
+        return  basicApplyBatchService.getBasicApplyBatchList(province,city,name);
+    }
 }

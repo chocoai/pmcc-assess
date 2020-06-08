@@ -180,5 +180,21 @@ public class BasicApplyBatchDao {
         return basicApplyBatchMapper.updateByPrimaryKeySelective(basicApplyBatch) > 0;
     }
 
-
+    public List<BasicApplyBatch> getListByEstate(String province, String city,String estateName) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (StringUtils.isNotBlank(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        if (StringUtils.isNotBlank(estateName)) {
+            criteria.andEstateNameLike(String.format("%s%s%s", "%", estateName, "%"));
+        }
+        criteria.andDraftFlagEqualTo(false).andBisCaseEqualTo(true);
+        criteria.andBisDeleteEqualTo(false);
+        example.setOrderByClause("id desc");
+        return basicApplyBatchMapper.selectByExample(example);
+    }
 }

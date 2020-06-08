@@ -608,6 +608,7 @@ public class BasicApplyBatchService {
             batchDetail.setPid(pid);
             batchDetail.setApplyBatchId(basicApplyBatchId);
             batchDetail.setName(needList.get(i).getName());
+            batchDetail.setType(needList.get(i).getType());
             batchDetail.setDisplayName(needList.get(i).getDisplayName());
             batchDetail.setTableId(needList.get(i).getTableId());
             batchDetail.setTableName(needList.get(i).getTableName());
@@ -788,14 +789,20 @@ public class BasicApplyBatchService {
     }
 
     /**
-     * 获取源basicApplyBatch数据
-     * @param planDetailsId
+     * 获取楼盘案例数据
+     * @param province
+     * @param city
+     * @param search
      * @return
      */
-    public BasicApplyBatch getBasicApplyBatchSourceByPlanDetailsId(Integer planDetailsId) {
-        BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchByPlanDetailsId(planDetailsId);
-        if (basicApplyBatch == null) return null;
-        if (basicApplyBatch.getReferenceApplyBatchId() == null) return basicApplyBatch;
-        return basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatch.getReferenceApplyBatchId());
+    public BootstrapTableVo getBasicApplyBatchList(String province,String city,String search) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicApplyBatch> basicAppBatchDraftList = basicApplyBatchDao.getListByEstate(province,city, search);
+        List<BasicApplyBatchVo> voList = LangUtils.transform(basicAppBatchDraftList, o -> getBasicApplyBatchVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(voList) ? new ArrayList<BasicApplyBatchVo>() : voList);
+        return vo;
     }
 }

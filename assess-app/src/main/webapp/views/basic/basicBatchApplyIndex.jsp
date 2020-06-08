@@ -640,13 +640,18 @@
     //点击事件
     batchTreeTool.showOperationBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node && node.bisFromCase == true) {
-            $("#btnGroup").find('.addNode').show();
-            $("#btnGroup").find('.limitTool').hide();
-        } else {
-            $("#btnGroup").find('.addNode').show();
-            ;
-            $("#btnGroup").find('.limitTool').show();
+        if (node) {
+            if (node.bisFromCase == true) {
+                $("#btnGroup").find('.addNode').show();
+                $("#btnGroup").find('.limitTool').hide();
+            } else {
+                if (node.displayName.indexOf('(升级)') > 0) {
+                    $("#btnGroup").find('.addNode').hide();
+                } else {
+                    $("#btnGroup").find('.addNode').show();
+                }
+                $("#btnGroup").find('.limitTool').show();
+            }
         }
     }
 

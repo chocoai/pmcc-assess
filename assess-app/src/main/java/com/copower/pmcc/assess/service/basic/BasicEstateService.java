@@ -449,6 +449,8 @@ public class BasicEstateService extends BasicEntityAbstract {
                 if (basicApplyBatch != null) {
                     basicApplyBatch.setEstateId(basicEstate.getId());
                     basicApplyBatch.setEstateName(basicEstate.getName());
+                    basicApplyBatch.setProvince(basicEstate.getProvince());
+                    basicApplyBatch.setCity(basicEstate.getCity());
                     basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
                 }
 

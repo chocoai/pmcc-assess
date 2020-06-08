@@ -129,10 +129,7 @@ public class BasicController {
         String view = "/case/caseDetail";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
-            BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
-            basicApplyBatch.setEstateId(estateId);
-            basicApplyBatch.setBisCase(true);
-            BasicApplyBatch caseData = basicApplyBatchService.getSingleData(basicApplyBatch);
+            BasicApplyBatch caseData = basicApplyBatchService.getBasicApplyBatchById(estateId);
             if (caseData != null) {
                 modelAndView.addObject("applyBatch", caseData);
             } else {
