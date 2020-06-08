@@ -660,18 +660,11 @@ public class BasicApplyBatchService {
         ArrayList<String> ignoreList = Lists.newArrayList("bisCase");
         if (ztreeDto != null) {
             applyBatchDetail.setUpgradeTableId(ztreeDto.getTableId());
-            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(ztreeDto.getTableName());
+            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(ztreeDto.getType());
             Object o = entityAbstract.copyBasicEntityIgnore(ztreeDto.getTableId(), null, true, ignoreList);
-            Object name = entityAbstract.getProperty(o, "name");
-            if (o instanceof BasicBuilding)
-                name = entityAbstract.getProperty(o, "buildingNumber");
-            if (o instanceof BasicUnit)
-                name = entityAbstract.getProperty(o, "unitNumber");
-            if (o instanceof BasicHouse)
-                name = entityAbstract.getProperty(o, "houseNumber");
-            applyBatchDetail.setName(String.valueOf(name));
+            applyBatchDetail.setName(ztreeDto.getName());
             applyBatchDetail.setType(ztreeDto.getType());
-            applyBatchDetail.setDisplayName(String.valueOf(name));
+            applyBatchDetail.setDisplayName(ztreeDto.getName());
             applyBatchDetail.setTableName(ztreeDto.getTableName());
             applyBatchDetail.setTableId((Integer) entityAbstract.getProperty(o, "id"));
         }

@@ -41,8 +41,6 @@
                                                            value="${basicBuilding.quoteId}">
                                                     <input type="hidden" name="estateId"
                                                            value="${basicBuilding.estateId}">
-                                                    <%@include
-                                                            file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
@@ -156,6 +154,7 @@
                             </div>
                         </div>
                     </div>
+                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
@@ -200,15 +199,6 @@
 <script type="text/javascript">
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');
-        $("#txt_building_search").apBuilding({
-            caseEstateId: function () {
-                return '${quoteId}';
-            },
-            onSelect: function (id, name) {
-                caseFun.caseBuild.showModel('${quoteId}', name);
-            }
-        });
-        buildingCommon.autocompleteStart();
     })
 
     //保存数据信息

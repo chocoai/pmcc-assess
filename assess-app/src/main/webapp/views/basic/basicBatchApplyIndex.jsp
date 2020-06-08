@@ -379,23 +379,6 @@
             }
         });
     }
-
-    function getTableType(tableName) {
-        switch (tableName) {
-            case "tb_basic_estate": {
-                return "estate";
-            }
-            case "tb_basic_building": {
-                return "building";
-            }
-            case "tb_basic_unit": {
-                return "unit";
-            }
-            case "tb_basic_house": {
-                return "house";
-            }
-        }
-    }
 </script>
 <script type="text/javascript">
     var zTreeObj, caseEstateZtreeObj;
@@ -482,7 +465,7 @@
             type: "get",
             dataType: "json",
             success: function (result) {
-                if (result.ret && result.data && result.data.length>0) {
+                if (result.ret && result.data && result.data.length > 0) {
 
                     var typeHtml = "<option value=''>--请选择--</option>";
                     $.each(result.data, function (i, item) {
@@ -521,7 +504,6 @@
                     if ('${applyBatch.caseEstateId > 0}' == 'true') {
                         batchTreeTool.ztreeInit(${applyBatch.id});
                     } else {
-                        var tableType = getTableType(result.data.tableName);
                         var node = zTreeObj.getSelectedNodes()[0];
                         zTreeObj.addNodes(node, {
                             id: result.data.id,
@@ -658,11 +640,12 @@
     //点击事件
     batchTreeTool.showOperationBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node && node.bisFromCase==true) {
+        if (node && node.bisFromCase == true) {
             $("#btnGroup").find('.addNode').show();
             $("#btnGroup").find('.limitTool').hide();
         } else {
-            $("#btnGroup").find('.addNode').show();;
+            $("#btnGroup").find('.addNode').show();
+            ;
             $("#btnGroup").find('.limitTool').show();
         }
     }
@@ -710,6 +693,9 @@
         }
         var nodeArray = [];
         batchTreeTool.getParentsNodeJson(node, nodeArray);
+        if (nodeArray.length <= 0) {
+            nodeArray.push(node);
+        }
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initCaseEstateZtree",
             data: {
@@ -724,7 +710,7 @@
                         url: "${pageContext.request.contextPath}/basicApplyBatch/upgradeCase",
                         data: {
                             nodeJson: JSON.stringify(node),
-                            pid: result.data.id,
+                            pid: node.pid == 0 ? 0 : result.data.id,
                             applyBatchId: '${applyBatch.id}'
                         },
                         type: "post",

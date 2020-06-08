@@ -78,7 +78,6 @@ public class BasicAlternativeCaseService extends BaseService {
     public BootstrapTableVo getBasicAlternativeCaseList(String name, String tbType, Integer projectId, Integer planDetailsId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         Integer projectCategoryId = null;
         if (projectId == null && planDetailsId != null) {
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
@@ -87,7 +86,8 @@ public class BasicAlternativeCaseService extends BaseService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         if (projectInfo != null)
             projectCategoryId = projectInfo.getProjectCategoryId();
-        List<BasicAlternativeCase> alternativeCases = basicAlternativeCaseDao.getBasicAlternativeCaseList(name, tbType, commonService.thisUserAccount(), projectCategoryId);
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicAlternativeCase> alternativeCases = basicAlternativeCaseDao.getBasicAlternativeCaseList(name, tbType, null, projectCategoryId);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(alternativeCases) ? new ArrayList<BasicAlternativeCase>() : alternativeCases);
         return vo;
