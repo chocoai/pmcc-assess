@@ -53,21 +53,23 @@ public class ProjectInfoChangeEvent extends BaseProcessEvent {
         projectChangeLogDao.modifyProjectChangeLog(costsProjectChangeLog);
 
         ProjectInfo projectInfo = JSON.parseObject(projectInfoChangeVo.getProjectInfo(), ProjectInfo.class);
-        projectInfoService.saveProjectInfo(projectInfo);
+        if(projectInfo!=null&&projectInfo.getId()!=null){
+            projectInfoService.saveProjectInfo(projectInfo);
 
-        InitiateConsignor initiateConsignor = JSON.parseObject(projectInfoChangeVo.getConsignor(), InitiateConsignor.class);
-        consignorService.saveAndUpdateInitiateConsignor(initiateConsignor);
-        InitiatePossessor initiatePossessor = JSON.parseObject(projectInfoChangeVo.getPossessor(), InitiatePossessor.class);
-        possessorService.saveAndUpdate(initiatePossessor);
-        InitiateUnitInformation initiateUnitInformation = JSON.parseObject(projectInfoChangeVo.getUnitInformation(), InitiateUnitInformation.class);
-        unitInformationService.saveAndUpdate(initiateUnitInformation);
-
-        //更新到erp中
-        Integer publicProjectId = projectInfo.getPublicProjectId();
-        if (publicProjectId != null) {
-            SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoById(publicProjectId);
-            sysProjectDto.setProjectName(projectInfo.getProjectName());
-            erpRpcProjectService.saveProject(sysProjectDto);
+            InitiateConsignor initiateConsignor = JSON.parseObject(projectInfoChangeVo.getConsignor(), InitiateConsignor.class);
+            consignorService.saveAndUpdateInitiateConsignor(initiateConsignor);
+            InitiatePossessor initiatePossessor = JSON.parseObject(projectInfoChangeVo.getPossessor(), InitiatePossessor.class);
+            possessorService.saveAndUpdate(initiatePossessor);
+            InitiateUnitInformation initiateUnitInformation = JSON.parseObject(projectInfoChangeVo.getUnitInformation(), InitiateUnitInformation.class);
+            unitInformationService.saveAndUpdate(initiateUnitInformation);
+            ProjectInfo info = projectInfoService.getProjectInfoById(projectInfo.getId());
+            //更新到erp中
+            Integer publicProjectId = info.getPublicProjectId();
+            if (publicProjectId != null) {
+                SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoById(publicProjectId);
+                sysProjectDto.setProjectName(projectInfo.getProjectName());
+                erpRpcProjectService.saveProject(sysProjectDto);
+            }
         }
     }
 }

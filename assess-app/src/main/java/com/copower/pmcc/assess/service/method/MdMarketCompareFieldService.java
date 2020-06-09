@@ -643,6 +643,22 @@ public class MdMarketCompareFieldService extends BaseService {
                         case LAND_NAME://地块名称
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_NAME.getKey(), examineEstate.getName(), dataSetUseField));
                             break;
+                        case LAND_SCOPE_PROPERTY://财产范围
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_SCOPE_PROPERTY.getKey(), baseDataDicService.getNameById(houseTrading.getScopeProperty()), dataSetUseField, isCase));
+                            break;
+                        case LAND_FINANCING_CONDITIONS://融资条件
+                            stringBuilder = new StringBuilder();
+                            stringBuilder.append(StringUtils.isBlank(houseTrading.getDownPaymentRatio()) ? "" : String.format("首付款比例%s；", houseTrading.getDownPaymentRatio()));
+                            stringBuilder.append(houseTrading.getLendingRate() == null ? "" : String.format("贷款利率%s；", houseTrading.getLendingRate()));
+                            stringBuilder.append(houseTrading.getLoanPeriod() == null ? "" : String.format("贷款期限%s；", houseTrading.getLoanPeriod()));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_FINANCING_CONDITIONS.getKey(), stringBuilder.toString(), dataSetUseField, isCase));
+                            break;
+                        case LAND_TAX_BURDEN://税费负担
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TAX_BURDEN.getKey(), baseDataDicService.getNameById(houseTrading.getTaxBurden()), dataSetUseField, isCase));
+                            break;
+                        case LAND_PAYMENT_METHOD://付款方式
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PAYMENT_METHOD.getKey(), baseDataDicService.getNameById(houseTrading.getPaymentMethod()), dataSetUseField, isCase));
+                            break;
                         case LAND_TRADING_PRICE://交易单价
                             if (houseTrading.getTradingUnitPrice() != null && isCase)
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_PRICE.getKey(), String.valueOf(houseTrading.getTradingUnitPrice()), dataSetUseField));
