@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dal.basis.dao.basic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
 import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCaseExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicAlternativeCaseMapper;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,10 @@ public class BasicAlternativeCaseDao {
             criteria.andNameLike(String.format("%s%s%s", "%", name, "%"));
         }
         if (StringUtils.isNotBlank(tbType)) {
-            criteria.andBusinessKeyLike(String.format("%s%s%s", "%", tbType, "%"));
+            criteria.andBusinessKeyEqualTo(tbType);
         }
         if (StringUtils.isNotBlank(creator)) {
-            criteria.andCreatorLike(String.format("%s%s%s", "%", creator, "%"));
+            criteria.andCreatorEqualTo(creator);
         }
         if (projectCategoryId!=null) {
             criteria.andProjectCategoryIdEqualTo(projectCategoryId);

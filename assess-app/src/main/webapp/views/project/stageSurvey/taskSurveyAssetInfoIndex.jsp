@@ -727,8 +727,7 @@
     assetInfo.loadSurveyAssetInfoItemBaseList = function (_this) {
         var options = {
             projectId: '${projectInfo.id}',
-            assetInfoId:${surveyAssetInfo.id},
-            creator: '${projectPlanDetails.executeUserAccount}'
+            assetInfoId:${surveyAssetInfo.id}
         };
         var data = {};
         if (_this) {

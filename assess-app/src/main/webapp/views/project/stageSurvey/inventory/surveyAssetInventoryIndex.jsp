@@ -895,6 +895,9 @@
             if (actual == registration) {
                 tr.find('.show-hide').hide();
                 tr.find("input[type=checkbox]").prop('checked', true);
+            }else{
+                tr.find('.show-hide').show();
+                tr.find("input[type=checkbox]").prop('checked', false);
             }
         }
     };
