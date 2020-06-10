@@ -36,7 +36,7 @@ public class GenerateReportGroupController {
     public HttpResult saveAndUpdateGenerateReportGroup(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
         try {
             GenerateReportGroup generateReportGroup = JSONObject.parseObject(formData,GenerateReportGroup.class) ;
-            generateReportGroupService.verifyLiquidationAnalysis(generateReportGroup);
+            //generateReportGroupService.verifyLiquidationAnalysis(generateReportGroup);
             generateReportGroupService.saveAndUpdateGenerateReportGroup(generateReportGroup, updateNull);
             return HttpResult.newCorrectResult(200, generateReportGroup);
         } catch (Exception e) {
