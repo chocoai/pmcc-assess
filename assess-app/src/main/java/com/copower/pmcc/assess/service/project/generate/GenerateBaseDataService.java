@@ -5739,7 +5739,7 @@ public class GenerateBaseDataService {
             }
             if (basicHouse != null && basicHouse.getId() != null) {
                 BasicUnitHuxing huxingByHouseId = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
-                if (huxingByHouseId != null && StringUtils.isNotBlank(huxingByHouseId.getName())){
+                if (huxingByHouseId != null && StringUtils.isNotBlank(huxingByHouseId.getName())) {
                     huxingName = huxingByHouseId.getName();
                 }
             }
@@ -6836,20 +6836,19 @@ public class GenerateBaseDataService {
                 if (linkedHashMap.size() > 1) {
                     buffer.append(String.format("%s、", i + 1));
                 }
+                BasicEstate basicEstate = entry.getKey();
+                String areaName = erpAreaService.getSysAreaName(StringUtils.defaultIfBlank(basicEstate.getDistrict(), basicEstate.getCity()));
                 List<DeclareRecord> recordList = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(entry.getValue(), o -> o.getDeclareRecordId()));
                 List<String> list = Lists.newArrayList();
                 if (CollectionUtils.isNotEmpty(recordList)) {
-                    if (StringUtils.isNotEmpty(recordList.stream().findFirst().get().getStreetNumber())) {
-                        buffer.append(recordList.stream().findFirst().get().getStreetNumber());
-                    }
                     for (DeclareRecord declareRecord : recordList) {
-                        if (StringUtils.isNotEmpty(declareRecord.getStreetNumber())) {
-                            list.add(declareRecord.getSeat().replace(declareRecord.getStreetNumber(), ""));
-                        } else {
-                            list.add(declareRecord.getSeat());
+                        String seat = declareRecord.getSeat();
+                        if (StringUtils.isNotBlank(areaName) && !seat.contains(areaName)) {
+                            seat = areaName + seat;
                         }
+                        list.add(seat);
                     }
-                    buffer.append(entry.getKey().getName()).append(publicService.fusinString(list, false));
+                    buffer.append(basicEstate.getName()).append(publicService.fusinString(list, false));
                 }
                 buffer.append(",");
                 Map<Integer, String> certUseMap = Maps.newHashMap();

@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateStreetInfoService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -49,7 +50,7 @@ public class GenerateLoactionService {
     @Autowired
     private BaseService baseService;
     @Autowired
-    private BasicUnitHuxingDao basicUnitHuxingDao;
+    private BasicEstateStreetInfoService basicEstateStreetInfoService;
 
 
     /**
@@ -61,8 +62,13 @@ public class GenerateLoactionService {
      */
     public String getSeat(BasicEstate basicEstate) {
         if (basicEstate == null) return null;
-        String value = String.format("%s%s", basicEstate.getStreetNumber(), basicEstate.getName());
-        return value;
+        BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+        basicEstateStreetInfo.setEstateId(basicEstate.getId());
+        List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
+        if (CollectionUtils.isNotEmpty(streetInfoList))
+            return String.format("%s%s", StringUtils.defaultString(streetInfoList.get(0).getStreetNumber()), basicEstate.getName());
+        else
+            return basicEstate.getName();
     }
 
 
@@ -374,9 +380,9 @@ public class GenerateLoactionService {
                 if (transitMap.containsKey(s)) {
                     transitMap.get(s).addAll(stringList);
                 } else {
-                    transitMap.put(s,CollectionUtils.isNotEmpty( stringList)? stringList:new ArrayList<>());
+                    transitMap.put(s, CollectionUtils.isNotEmpty(stringList) ? stringList : new ArrayList<>());
                 }
-                transitMap.put(s, stringList) ;
+                transitMap.put(s, stringList);
             });
         }
         String value = getDistanceDec("", transitMap);
@@ -534,7 +540,7 @@ public class GenerateLoactionService {
                 if (linkedHashMap.containsKey(entry.getKey())) {
                     linkedHashMap.get(entry.getKey()).addAll(entry.getValue());
                 } else {
-                    linkedHashMap.put(entry.getKey(),CollectionUtils.isNotEmpty( entry.getValue())? entry.getValue():new ArrayList<>());
+                    linkedHashMap.put(entry.getKey(), CollectionUtils.isNotEmpty(entry.getValue()) ? entry.getValue() : new ArrayList<>());
                 }
             }
         }));
@@ -610,7 +616,7 @@ public class GenerateLoactionService {
                 if (linkedHashMap.containsKey(entry.getKey())) {
                     linkedHashMap.get(entry.getKey()).addAll(entry.getValue());
                 } else {
-                    linkedHashMap.put(entry.getKey(),CollectionUtils.isNotEmpty( entry.getValue())? entry.getValue():new ArrayList<>());
+                    linkedHashMap.put(entry.getKey(), CollectionUtils.isNotEmpty(entry.getValue()) ? entry.getValue() : new ArrayList<>());
                 }
             }
         }));
@@ -804,7 +810,7 @@ public class GenerateLoactionService {
      */
     public String getFinanceAndMedicalAndEducation(List<BasicMatchingFinanceVo> basicMatchingFinanceVoList, List<BasicMatchingMedical> basicMatchingMedicalList, List<BasicMatchingEducation> basicMatchingEducationList, String title) {
         LinkedHashMap<String, List<String>> listMap = getFinanceAndMedicalAndEducationCommonPrivate(basicMatchingFinanceVoList, basicMatchingMedicalList, basicMatchingEducationList, title);
-        if(listMap!=null){
+        if (listMap != null) {
             if (!listMap.isEmpty()) {
                 return this.getDistanceDec(title, listMap);
             }
