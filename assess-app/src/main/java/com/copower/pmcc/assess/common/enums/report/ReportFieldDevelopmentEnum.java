@@ -65,6 +65,7 @@ public enum ReportFieldDevelopmentEnum {
     Development_Land_SetUse("假设法土地设定用途"),
     Development_SetUse("假设法设定用途"),
     Development_total_saleableArea("假设法总可售面积"),//f18
+    Development_Land_Area("假设法总土地面积"),
     Development_reconnaissanceDesignRate("假设法勘察设计和前期工程费率"),
     Development_constructionInstallationEngineeringFee("假设法建筑安装工程费"),
     Development_projectDevelopmentIncomeCorrectRate("假设法项目开发税及附加计算率"),

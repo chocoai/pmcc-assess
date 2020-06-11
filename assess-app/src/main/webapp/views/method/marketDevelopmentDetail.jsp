@@ -130,6 +130,18 @@
                     </div>
                 </div>
             </div>
+            <div class="row form-group">
+                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                    <div class="form-inline x-valid">
+                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                            移交面积(㎡)
+                        </label>
+                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                            <label class="form-control input-full">${mdDevelopment.transferArea}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="row form-group">
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">

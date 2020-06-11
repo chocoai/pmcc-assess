@@ -1406,6 +1406,66 @@ public class MdDevelopmentExample {
             return (Criteria) this;
         }
 
+        public Criteria andTransferAreaIsNull() {
+            addCriterion("transfer_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaIsNotNull() {
+            addCriterion("transfer_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaEqualTo(BigDecimal value) {
+            addCriterion("transfer_area =", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaNotEqualTo(BigDecimal value) {
+            addCriterion("transfer_area <>", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaGreaterThan(BigDecimal value) {
+            addCriterion("transfer_area >", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("transfer_area >=", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaLessThan(BigDecimal value) {
+            addCriterion("transfer_area <", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("transfer_area <=", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaIn(List<BigDecimal> values) {
+            addCriterion("transfer_area in", values, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaNotIn(List<BigDecimal> values) {
+            addCriterion("transfer_area not in", values, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("transfer_area between", value1, value2, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("transfer_area not between", value1, value2, "transferArea");
+            return (Criteria) this;
+        }
+
         public Criteria andReconnaissanceDesignIsNull() {
             addCriterion("reconnaissance_design is null");
             return (Criteria) this;
@@ -4183,76 +4243,6 @@ public class MdDevelopmentExample {
 
         public Criteria andDevelopmentDegreeRevisionExplainNotBetween(String value1, String value2) {
             addCriterion("development_degree_revision_explain not between", value1, value2, "developmentDegreeRevisionExplain");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIsNull() {
-            addCriterion("content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIsNotNull() {
-            addCriterion("content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentEqualTo(String value) {
-            addCriterion("content =", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotEqualTo(String value) {
-            addCriterion("content <>", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThan(String value) {
-            addCriterion("content >", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThanOrEqualTo(String value) {
-            addCriterion("content >=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThan(String value) {
-            addCriterion("content <", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThanOrEqualTo(String value) {
-            addCriterion("content <=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLike(String value) {
-            addCriterion("content like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotLike(String value) {
-            addCriterion("content not like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIn(List<String> values) {
-            addCriterion("content in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotIn(List<String> values) {
-            addCriterion("content not in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentBetween(String value1, String value2) {
-            addCriterion("content between", value1, value2, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotBetween(String value1, String value2) {
-            addCriterion("content not between", value1, value2, "content");
             return (Criteria) this;
         }
 
