@@ -643,7 +643,7 @@ commonColumn.unitElevatorColumn = function () {
     cols.push({field: 'brand', title: '电梯品牌'});
     cols.push({field: 'number', title: '电梯数量'});
     cols.push({field: 'quasiLoadNumber', title: '准载人数'});
-    cols.push({field: 'quasiLoadWeight', title: '准载重量'});
+    cols.push({field: 'quasiLoadWeight', title: '准载重量kg'});
     cols.push({field: 'runningSpeed', title: '运行速度'});
     cols.push({field: 'fileViewName', title: '附件'});
     return cols;

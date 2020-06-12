@@ -132,7 +132,7 @@
                                                                             <option value="楼盘大门">楼盘大门</option>
                                                                         </select>
                                                                         <select class="form-control form-control-sm" required
-                                                                                name="reference">
+                                                                                name="orientation">
                                                                             <option value="" selected="">-请选择-</option>
                                                                             <option value="左面">左面</option>
                                                                             <option value="右面">右面</option>

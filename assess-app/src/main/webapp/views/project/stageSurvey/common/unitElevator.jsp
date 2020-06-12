@@ -127,7 +127,7 @@
                                             准载重量
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="number" placeholder="准载重量(数字)" data-rule-number='true'
+                                            <input type="number" placeholder="准载重量kg(数字)" data-rule-number='true'
                                                    name="quasiLoadWeight" class="form-control input-full" >
                                         </div>
                                     </div>
