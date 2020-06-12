@@ -2,13 +2,17 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseTradingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingSell;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -36,6 +40,10 @@ public class BasicHouseTradingService {
     private CommonService commonService;
     @Autowired
     private BasicHouseTradingDao basicHouseTradingDao;
+    @Autowired
+    private BasicHouseTradingSellService basicHouseTradingSellService;
+    @Autowired
+    private BasicHouseTradingLeaseService basicHouseTradingLeaseService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -56,10 +64,11 @@ public class BasicHouseTradingService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull) throws Exception {
+    public BasicHouseTrading saveAndUpdateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull) throws Exception {
         if (basicHouseTrading.getId() == null || basicHouseTrading.getId().intValue() == 0) {
             basicHouseTrading.setCreator(commonService.thisUserAccount());
-            return basicHouseTradingDao.addBasicHouseTrading(basicHouseTrading);
+            basicHouseTradingDao.addBasicHouseTrading(basicHouseTrading);
+            return basicHouseTrading;
         } else {
             if (updateNull) {
                 BasicHouseTrading houseTrading = basicHouseTradingDao.getBasicHouseTradingById(basicHouseTrading.getId());
@@ -71,7 +80,7 @@ public class BasicHouseTradingService {
                 }
             }
             basicHouseTradingDao.updateBasicHouseTrading(basicHouseTrading, updateNull);
-            return basicHouseTrading.getId();
+            return basicHouseTrading;
         }
     }
 
@@ -115,6 +124,13 @@ public class BasicHouseTradingService {
         return tradings.get(0);
     }
 
+    public List<BasicHouseTrading> getTradingListByHouseId(Integer houseId) {
+        BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
+        basicHouseTrading.setHouseId(houseId);
+        return basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
+    }
+
+
     public BootstrapTableVo getBootstrapTableVo(BasicHouseTrading basicHouseTrading) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -147,4 +163,56 @@ public class BasicHouseTradingService {
         return vo;
     }
 
+
+    public List<BasicHouseTradingVo> basicHouseTradingVoList(BasicHouseTrading basicHouseTrading) throws Exception {
+        List<BasicHouseTrading> basicHouseTradings = basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
+        List<BasicHouseTradingVo> transform = LangUtils.transform(basicHouseTradings, o -> getBasicHouseTradingVo(o));
+        return transform;
+    }
+
+    //出租出售写入tradingId
+    public void fixOldData() throws Exception {
+        //出售
+        BasicHouseTradingSell basicHouseTradingSell = new BasicHouseTradingSell();
+        List<BasicHouseTradingSell> basicHouseTradingSells = basicHouseTradingSellService.basicHouseTradingSells(basicHouseTradingSell);
+        if (!CollectionUtils.isEmpty(basicHouseTradingSells)) {
+            for (BasicHouseTradingSell sell : basicHouseTradingSells) {
+                BasicHouseTrading trading = getTradingByHouseId(sell.getHouseId());
+                sell.setTradingId(trading.getId());
+                basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(sell, true);
+            }
+        }
+        //出租
+        BasicHouseTradingLease basicHouseTradingLease = new BasicHouseTradingLease();
+        List<BasicHouseTradingLease> basicHouseTradingLeases = basicHouseTradingLeaseService.basicHouseTradingLeaseList(basicHouseTradingLease);
+        if (!CollectionUtils.isEmpty(basicHouseTradingLeases)) {
+            for (BasicHouseTradingLease lease : basicHouseTradingLeases) {
+                BasicHouseTrading trading = getTradingByHouseId(lease.getHouseId());
+                lease.setTradingId(trading.getId());
+                basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(lease, true);
+            }
+        }
+    }
+
+    public void updateBisMark(BasicHouseTrading basicHouseTrading) throws Exception {
+        List<BasicHouseTrading> tradingList = getTradingListByHouseId(basicHouseTrading.getHouseId());
+        if (!CollectionUtils.isEmpty(tradingList)) {
+            if (basicHouseTrading.getBisMark() == true) {
+                for (BasicHouseTrading item : tradingList) {
+                    item.setBisMark(false);
+                    saveAndUpdateBasicHouseTrading(item, true);
+                }
+
+            } else {
+                List<BasicHouseTrading> filter = LangUtils.filter(tradingList, p -> {
+                    return p.getBisMark() == true&&!p.getId().equals(basicHouseTrading.getId());
+                });
+                if (CollectionUtils.isEmpty(filter)) {
+                    throw new BusinessException("失败，至少保证存在一个标识");
+                }
+            }
+            saveAndUpdateBasicHouseTrading(basicHouseTrading, true);
+        }
+
+    }
 }

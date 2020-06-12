@@ -279,7 +279,7 @@
         </div>
     </div>
 </div>
-
+<%@include file="/views/project/stageSurvey/common/houseTradingCase.jsp" %>
 <script type="application/javascript">
     //填充对应的数据
     function autocompleteData(data) {
@@ -297,6 +297,9 @@
 
         if ("house" == "${tbType}") {
             houseCommon.showHouseView(data);
+            if(${projectPhase eq 'caseStudyExtend'}) {
+                houseTrading.init();
+            }
         }
     }
 </script>
@@ -1287,6 +1290,9 @@
                     if (result.ret) {
                         if (result.data != null) {
                             houseCommon.initById(result.data.id);
+                            if(${projectPhase eq 'caseStudyExtend'}) {
+                                houseTrading.init();
+                            }
                             $('#' + caseFun.config.father.caseHouse.box()).modal('hide');
                         }
                     } else {

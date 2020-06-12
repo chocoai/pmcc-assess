@@ -80,6 +80,8 @@ public class BasicHouseTrading {
 
     private BigDecimal perMuPrice;
 
+    private Boolean bisMark;
+
     public Integer getId() {
         return id;
     }
@@ -382,5 +384,13 @@ public class BasicHouseTrading {
 
     public void setPerMuPrice(BigDecimal perMuPrice) {
         this.perMuPrice = perMuPrice;
+    }
+
+    public Boolean getBisMark() {
+        return bisMark;
+    }
+
+    public void setBisMark(Boolean bisMark) {
+        this.bisMark = bisMark;
     }
 }

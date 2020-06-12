@@ -1,36 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseTradingLeaseMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="rent_payment_time_start" property="rentPaymentTimeStart" jdbcType="TIMESTAMP" />
-    <result column="rent_payment_time_end" property="rentPaymentTimeEnd" jdbcType="TIMESTAMP" />
-    <result column="rent_growth_rate" property="rentGrowthRate" jdbcType="VARCHAR" />
-    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseTradingLeaseMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="house_id" jdbcType="INTEGER" property="houseId" />
+    <result column="rent_payment_time_start" jdbcType="TIMESTAMP" property="rentPaymentTimeStart" />
+    <result column="rent_payment_time_end" jdbcType="TIMESTAMP" property="rentPaymentTimeEnd" />
+    <result column="rent_growth_rate" jdbcType="VARCHAR" property="rentGrowthRate" />
+    <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="trading_id" jdbcType="INTEGER" property="tradingId" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -41,25 +42,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -70,153 +71,162 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, house_id, rent_payment_time_start, rent_payment_time_end, rent_growth_rate, bis_delete, 
-    creator, gmt_created, gmt_modified
+    creator, gmt_created, gmt_modified, trading_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLeaseExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLeaseExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_basic_house_trading_lease
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_basic_house_trading_lease
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_basic_house_trading_lease
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLeaseExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLeaseExample">
     delete from tb_basic_house_trading_lease
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_trading_lease (house_id, rent_payment_time_start, 
       rent_payment_time_end, rent_growth_rate, bis_delete, 
-      creator, gmt_created, gmt_modified
-      )
+      creator, gmt_created, gmt_modified, 
+      trading_id)
     values (#{houseId,jdbcType=INTEGER}, #{rentPaymentTimeStart,jdbcType=TIMESTAMP}, 
       #{rentPaymentTimeEnd,jdbcType=TIMESTAMP}, #{rentGrowthRate,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{tradingId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_trading_lease
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="houseId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="houseId != null">
         house_id,
       </if>
-      <if test="rentPaymentTimeStart != null" >
+      <if test="rentPaymentTimeStart != null">
         rent_payment_time_start,
       </if>
-      <if test="rentPaymentTimeEnd != null" >
+      <if test="rentPaymentTimeEnd != null">
         rent_payment_time_end,
       </if>
-      <if test="rentGrowthRate != null" >
+      <if test="rentGrowthRate != null">
         rent_growth_rate,
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         bis_delete,
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
+      <if test="tradingId != null">
+        trading_id,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="houseId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="houseId != null">
         #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="rentPaymentTimeStart != null" >
+      <if test="rentPaymentTimeStart != null">
         #{rentPaymentTimeStart,jdbcType=TIMESTAMP},
       </if>
-      <if test="rentPaymentTimeEnd != null" >
+      <if test="rentPaymentTimeEnd != null">
         #{rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="rentGrowthRate != null" >
+      <if test="rentGrowthRate != null">
         #{rentGrowthRate,jdbcType=VARCHAR},
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         #{bisDelete,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradingId != null">
+        #{tradingId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLeaseExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLeaseExample" resultType="java.lang.Long">
     select count(*) from tb_basic_house_trading_lease
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_basic_house_trading_lease
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.houseId != null" >
+      <if test="record.houseId != null">
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
-      <if test="record.rentPaymentTimeStart != null" >
+      <if test="record.rentPaymentTimeStart != null">
         rent_payment_time_start = #{record.rentPaymentTimeStart,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.rentPaymentTimeEnd != null" >
+      <if test="record.rentPaymentTimeEnd != null">
         rent_payment_time_end = #{record.rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.rentGrowthRate != null" >
+      <if test="record.rentGrowthRate != null">
         rent_growth_rate = #{record.rentGrowthRate,jdbcType=VARCHAR},
       </if>
-      <if test="record.bisDelete != null" >
+      <if test="record.bisDelete != null">
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.tradingId != null">
+        trading_id = #{record.tradingId,jdbcType=INTEGER},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_basic_house_trading_lease
     set id = #{record.id,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
@@ -226,42 +236,46 @@
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      trading_id = #{record.tradingId,jdbcType=INTEGER}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease">
     update tb_basic_house_trading_lease
-    <set >
-      <if test="houseId != null" >
+    <set>
+      <if test="houseId != null">
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="rentPaymentTimeStart != null" >
+      <if test="rentPaymentTimeStart != null">
         rent_payment_time_start = #{rentPaymentTimeStart,jdbcType=TIMESTAMP},
       </if>
-      <if test="rentPaymentTimeEnd != null" >
+      <if test="rentPaymentTimeEnd != null">
         rent_payment_time_end = #{rentPaymentTimeEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="rentGrowthRate != null" >
+      <if test="rentGrowthRate != null">
         rent_growth_rate = #{rentGrowthRate,jdbcType=VARCHAR},
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradingId != null">
+        trading_id = #{tradingId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingLease">
     update tb_basic_house_trading_lease
     set house_id = #{houseId,jdbcType=INTEGER},
       rent_payment_time_start = #{rentPaymentTimeStart,jdbcType=TIMESTAMP},
@@ -270,7 +284,8 @@
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      trading_id = #{tradingId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

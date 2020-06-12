@@ -105,14 +105,183 @@
                                        name="paymentMethodName">${basicHouseTrading.paymentMethodName}</label>
                             </div>
 
+                            <c:if test="${!empty basicHouseTrading.installmentInterestRate}">
+
+                                <label class="col-sm-1 control-label">分期支付利率</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="installmentInterestRate">${basicHouseTrading.installmentInterestRate}</label>
+                                </div>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+                <div class="x_title tradingCondition">融资条件</div>
+                <div class="row form-group tradingCondition">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">首付款比例</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"
+                                       name="downPaymentRatio">${basicHouseTrading.downPaymentRatio}</label>
+                            </div>
+
+                            <label class="col-sm-1 control-label">贷款利率</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"
+                                       name="lendingRate">${basicHouseTrading.lendingRate}</label>
+                            </div>
+                            <label class="col-sm-1 control-label">贷款期限</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"
+                                       name="loanPeriod">${basicHouseTrading.loanPeriod}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <c:if test="${basicHouseTrading.tradingTypeName=='出售'}">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">买方额外支付的税</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="buyerExtraTax">${basicHouseTrading.buyerExtraTax}</label>
+                                </div>
+                                <label class="col-sm-1 control-label">买方额外支付的费</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="buyerExtraFee">${basicHouseTrading.buyerExtraFee}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                    <table class="table table-bordered"
+                                           id="tableTradingSell"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${basicHouseTrading.tradingTypeName != '出售'}">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">承租方额外支付的税</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="rentingExtraTax">${basicHouseTrading.rentingExtraTax}</label>
+                                </div>
+                                <label class="col-sm-1 control-label">承租方额外支付的费</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="rentingExtraFee">${basicHouseTrading.rentingExtraFee}</label>
+                                </div>
+                                <label class="col-sm-1 control-label">押金（元）</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="deposit">${basicHouseTrading.deposit}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                    <table class="table table-bordered"
+                                           id="tableTradingLease"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">交易总价（元）</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"
+                                       name="tradingTotalPrice">${basicHouseTrading.tradingTotalPrice}</label>
+                            </div>
+                            <label class="col-sm-1 control-label">交易时间</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full dbdate"
+                                       name="tradingTime"><fmt:formatDate
+                                        value='${basicHouseTrading.tradingTime}'
+                                        pattern='yyyy-MM-dd'/></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">交易单价（元）</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"
+                                       name="tradingUnitPrice">${basicHouseTrading.tradingUnitPrice}</label>
+                            </div>
+
                             <label class="col-sm-1 control-label">单价内涵</label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full"
                                        name="priceConnotationName">${basicHouseTrading.priceConnotationName}</label>
                             </div>
+
+                            <c:if test="${not empty basicHouseTrading.priceConnotationUnit}">
+
+                                <label class="col-sm-1 control-label">单价单位</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="priceConnotationUnit"
+                                           id="priceConnotationUnit">${basicHouseTrading.priceConnotationUnit}</label>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                 </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">信息来源类型</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"
+                                       name="informationTypeName">${basicHouseTrading.informationTypeName}</label>
+                            </div>
+
+                            <c:if test="${basicHouseTrading.informationTypeName == '公开信息'}">
+
+                                <label class="col-sm-1 control-label">信息来源类别</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="informationCategoryName">${basicHouseTrading.informationCategoryName}</label>
+                                </div>
+
+                            </c:if>
+                            <c:if test="${basicHouseTrading.informationTypeName != '公开信息'}">
+
+                                <label class="col-sm-1 control-label">姓名</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="name">${basicHouseTrading.name}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label">电话</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="phone">${basicHouseTrading.phone}</label>
+                                </div>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+                <div id="houseTradingFilePart"></div>
             </form>
         </div>
     </div>

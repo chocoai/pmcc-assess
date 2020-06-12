@@ -12,6 +12,7 @@ import java.util.Date;
 public class BasicHouseTradingLeaseAndSellDto {
     private Integer id;
     private Integer houseId;
+    private Integer tradingId;
     private String tradingType;
 
     @DateTimeFormat( pattern = "yyyy-MM-dd" )
@@ -30,6 +31,14 @@ public class BasicHouseTradingLeaseAndSellDto {
 
     private Integer version;
     private String creator;
+
+    public Integer getTradingId() {
+        return tradingId;
+    }
+
+    public void setTradingId(Integer tradingId) {
+        this.tradingId = tradingId;
+    }
 
     public Integer getId() {
         return id;

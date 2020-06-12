@@ -1,65 +1,66 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseTradingMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
-    <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP" />
-    <result column="trading_type" property="tradingType" jdbcType="INTEGER" />
-    <result column="trading_total_price" property="tradingTotalPrice" jdbcType="DECIMAL" />
-    <result column="trading_unit_price" property="tradingUnitPrice" jdbcType="DECIMAL" />
-    <result column="buyer_extra_tax" property="buyerExtraTax" jdbcType="VARCHAR" />
-    <result column="buyer_extra_fee" property="buyerExtraFee" jdbcType="VARCHAR" />
-    <result column="renting_extra_tax" property="rentingExtraTax" jdbcType="VARCHAR" />
-    <result column="renting_extra_fee" property="rentingExtraFee" jdbcType="VARCHAR" />
-    <result column="description_type" property="descriptionType" jdbcType="INTEGER" />
-    <result column="description_content" property="descriptionContent" jdbcType="VARCHAR" />
-    <result column="installment_interest_rate" property="installmentInterestRate" jdbcType="VARCHAR" />
-    <result column="payment_method" property="paymentMethod" jdbcType="INTEGER" />
-    <result column="transaction_situation" property="transactionSituation" jdbcType="INTEGER" />
-    <result column="tax_burden" property="taxBurden" jdbcType="INTEGER" />
-    <result column="scope_property" property="scopeProperty" jdbcType="INTEGER" />
-    <result column="scope_include" property="scopeInclude" jdbcType="VARCHAR" />
-    <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
-    <result column="scope_property_explain" property="scopePropertyExplain" jdbcType="VARCHAR" />
-    <result column="down_payment_ratio" property="downPaymentRatio" jdbcType="VARCHAR" />
-    <result column="lending_rate" property="lendingRate" jdbcType="VARCHAR" />
-    <result column="loan_period" property="loanPeriod" jdbcType="INTEGER" />
-    <result column="deposit" property="deposit" jdbcType="VARCHAR" />
-    <result column="information_type" property="informationType" jdbcType="INTEGER" />
-    <result column="information_category" property="informationCategory" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="land_buyer_seller" property="landBuyerSeller" jdbcType="VARCHAR" />
-    <result column="price_type" property="priceType" jdbcType="INTEGER" />
-    <result column="price_connotation" property="priceConnotation" jdbcType="INTEGER" />
-    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="price_connotation_unit" property="priceConnotationUnit" jdbcType="VARCHAR" />
-    <result column="per_mu_price" property="perMuPrice" jdbcType="DECIMAL" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseTradingMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="apply_id" jdbcType="INTEGER" property="applyId" />
+    <result column="house_id" jdbcType="INTEGER" property="houseId" />
+    <result column="trading_time" jdbcType="TIMESTAMP" property="tradingTime" />
+    <result column="trading_type" jdbcType="INTEGER" property="tradingType" />
+    <result column="trading_total_price" jdbcType="DECIMAL" property="tradingTotalPrice" />
+    <result column="trading_unit_price" jdbcType="DECIMAL" property="tradingUnitPrice" />
+    <result column="buyer_extra_tax" jdbcType="VARCHAR" property="buyerExtraTax" />
+    <result column="buyer_extra_fee" jdbcType="VARCHAR" property="buyerExtraFee" />
+    <result column="renting_extra_tax" jdbcType="VARCHAR" property="rentingExtraTax" />
+    <result column="renting_extra_fee" jdbcType="VARCHAR" property="rentingExtraFee" />
+    <result column="description_type" jdbcType="INTEGER" property="descriptionType" />
+    <result column="description_content" jdbcType="VARCHAR" property="descriptionContent" />
+    <result column="installment_interest_rate" jdbcType="VARCHAR" property="installmentInterestRate" />
+    <result column="payment_method" jdbcType="INTEGER" property="paymentMethod" />
+    <result column="transaction_situation" jdbcType="INTEGER" property="transactionSituation" />
+    <result column="tax_burden" jdbcType="INTEGER" property="taxBurden" />
+    <result column="scope_property" jdbcType="INTEGER" property="scopeProperty" />
+    <result column="scope_include" jdbcType="VARCHAR" property="scopeInclude" />
+    <result column="scope_not_include" jdbcType="VARCHAR" property="scopeNotInclude" />
+    <result column="scope_property_explain" jdbcType="VARCHAR" property="scopePropertyExplain" />
+    <result column="down_payment_ratio" jdbcType="VARCHAR" property="downPaymentRatio" />
+    <result column="lending_rate" jdbcType="VARCHAR" property="lendingRate" />
+    <result column="loan_period" jdbcType="INTEGER" property="loanPeriod" />
+    <result column="deposit" jdbcType="VARCHAR" property="deposit" />
+    <result column="information_type" jdbcType="INTEGER" property="informationType" />
+    <result column="information_category" jdbcType="INTEGER" property="informationCategory" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="land_buyer_seller" jdbcType="VARCHAR" property="landBuyerSeller" />
+    <result column="price_type" jdbcType="INTEGER" property="priceType" />
+    <result column="price_connotation" jdbcType="INTEGER" property="priceConnotation" />
+    <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="price_connotation_unit" jdbcType="VARCHAR" property="priceConnotationUnit" />
+    <result column="per_mu_price" jdbcType="DECIMAL" property="perMuPrice" />
+    <result column="bis_mark" jdbcType="BIT" property="bisMark" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -70,25 +71,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -99,47 +100,47 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, apply_id, house_id, trading_time, trading_type, trading_total_price, trading_unit_price, 
     buyer_extra_tax, buyer_extra_fee, renting_extra_tax, renting_extra_fee, description_type, 
     description_content, installment_interest_rate, payment_method, transaction_situation, 
     tax_burden, scope_property, scope_include, scope_not_include, scope_property_explain, 
     down_payment_ratio, lending_rate, loan_period, deposit, information_type, information_category, 
     name, phone, land_buyer_seller, price_type, price_connotation, bis_delete, creator, 
-    gmt_created, gmt_modified, price_connotation_unit, per_mu_price
+    gmt_created, gmt_modified, price_connotation_unit, per_mu_price, bis_mark
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_basic_house_trading
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_basic_house_trading
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_basic_house_trading
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample">
     delete from tb_basic_house_trading
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_trading (apply_id, house_id, trading_time, 
@@ -154,7 +155,8 @@
       name, phone, land_buyer_seller, 
       price_type, price_connotation, bis_delete, 
       creator, gmt_created, gmt_modified, 
-      price_connotation_unit, per_mu_price)
+      price_connotation_unit, per_mu_price, bis_mark
+      )
     values (#{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
       #{tradingType,jdbcType=INTEGER}, #{tradingTotalPrice,jdbcType=DECIMAL}, #{tradingUnitPrice,jdbcType=DECIMAL}, 
       #{buyerExtraTax,jdbcType=VARCHAR}, #{buyerExtraFee,jdbcType=VARCHAR}, #{rentingExtraTax,jdbcType=VARCHAR}, 
@@ -167,369 +169,379 @@
       #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{landBuyerSeller,jdbcType=VARCHAR}, 
       #{priceType,jdbcType=INTEGER}, #{priceConnotation,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{priceConnotationUnit,jdbcType=VARCHAR}, #{perMuPrice,jdbcType=DECIMAL})
+      #{priceConnotationUnit,jdbcType=VARCHAR}, #{perMuPrice,jdbcType=DECIMAL}, #{bisMark,jdbcType=BIT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_trading
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="applyId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
         apply_id,
       </if>
-      <if test="houseId != null" >
+      <if test="houseId != null">
         house_id,
       </if>
-      <if test="tradingTime != null" >
+      <if test="tradingTime != null">
         trading_time,
       </if>
-      <if test="tradingType != null" >
+      <if test="tradingType != null">
         trading_type,
       </if>
-      <if test="tradingTotalPrice != null" >
+      <if test="tradingTotalPrice != null">
         trading_total_price,
       </if>
-      <if test="tradingUnitPrice != null" >
+      <if test="tradingUnitPrice != null">
         trading_unit_price,
       </if>
-      <if test="buyerExtraTax != null" >
+      <if test="buyerExtraTax != null">
         buyer_extra_tax,
       </if>
-      <if test="buyerExtraFee != null" >
+      <if test="buyerExtraFee != null">
         buyer_extra_fee,
       </if>
-      <if test="rentingExtraTax != null" >
+      <if test="rentingExtraTax != null">
         renting_extra_tax,
       </if>
-      <if test="rentingExtraFee != null" >
+      <if test="rentingExtraFee != null">
         renting_extra_fee,
       </if>
-      <if test="descriptionType != null" >
+      <if test="descriptionType != null">
         description_type,
       </if>
-      <if test="descriptionContent != null" >
+      <if test="descriptionContent != null">
         description_content,
       </if>
-      <if test="installmentInterestRate != null" >
+      <if test="installmentInterestRate != null">
         installment_interest_rate,
       </if>
-      <if test="paymentMethod != null" >
+      <if test="paymentMethod != null">
         payment_method,
       </if>
-      <if test="transactionSituation != null" >
+      <if test="transactionSituation != null">
         transaction_situation,
       </if>
-      <if test="taxBurden != null" >
+      <if test="taxBurden != null">
         tax_burden,
       </if>
-      <if test="scopeProperty != null" >
+      <if test="scopeProperty != null">
         scope_property,
       </if>
-      <if test="scopeInclude != null" >
+      <if test="scopeInclude != null">
         scope_include,
       </if>
-      <if test="scopeNotInclude != null" >
+      <if test="scopeNotInclude != null">
         scope_not_include,
       </if>
-      <if test="scopePropertyExplain != null" >
+      <if test="scopePropertyExplain != null">
         scope_property_explain,
       </if>
-      <if test="downPaymentRatio != null" >
+      <if test="downPaymentRatio != null">
         down_payment_ratio,
       </if>
-      <if test="lendingRate != null" >
+      <if test="lendingRate != null">
         lending_rate,
       </if>
-      <if test="loanPeriod != null" >
+      <if test="loanPeriod != null">
         loan_period,
       </if>
-      <if test="deposit != null" >
+      <if test="deposit != null">
         deposit,
       </if>
-      <if test="informationType != null" >
+      <if test="informationType != null">
         information_type,
       </if>
-      <if test="informationCategory != null" >
+      <if test="informationCategory != null">
         information_category,
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name,
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         phone,
       </if>
-      <if test="landBuyerSeller != null" >
+      <if test="landBuyerSeller != null">
         land_buyer_seller,
       </if>
-      <if test="priceType != null" >
+      <if test="priceType != null">
         price_type,
       </if>
-      <if test="priceConnotation != null" >
+      <if test="priceConnotation != null">
         price_connotation,
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         bis_delete,
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
-      <if test="priceConnotationUnit != null" >
+      <if test="priceConnotationUnit != null">
         price_connotation_unit,
       </if>
-      <if test="perMuPrice != null" >
+      <if test="perMuPrice != null">
         per_mu_price,
       </if>
+      <if test="bisMark != null">
+        bis_mark,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="applyId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
         #{applyId,jdbcType=INTEGER},
       </if>
-      <if test="houseId != null" >
+      <if test="houseId != null">
         #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="tradingTime != null" >
+      <if test="tradingTime != null">
         #{tradingTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="tradingType != null" >
+      <if test="tradingType != null">
         #{tradingType,jdbcType=INTEGER},
       </if>
-      <if test="tradingTotalPrice != null" >
+      <if test="tradingTotalPrice != null">
         #{tradingTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="tradingUnitPrice != null" >
+      <if test="tradingUnitPrice != null">
         #{tradingUnitPrice,jdbcType=DECIMAL},
       </if>
-      <if test="buyerExtraTax != null" >
+      <if test="buyerExtraTax != null">
         #{buyerExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="buyerExtraFee != null" >
+      <if test="buyerExtraFee != null">
         #{buyerExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="rentingExtraTax != null" >
+      <if test="rentingExtraTax != null">
         #{rentingExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="rentingExtraFee != null" >
+      <if test="rentingExtraFee != null">
         #{rentingExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="descriptionType != null" >
+      <if test="descriptionType != null">
         #{descriptionType,jdbcType=INTEGER},
       </if>
-      <if test="descriptionContent != null" >
+      <if test="descriptionContent != null">
         #{descriptionContent,jdbcType=VARCHAR},
       </if>
-      <if test="installmentInterestRate != null" >
+      <if test="installmentInterestRate != null">
         #{installmentInterestRate,jdbcType=VARCHAR},
       </if>
-      <if test="paymentMethod != null" >
+      <if test="paymentMethod != null">
         #{paymentMethod,jdbcType=INTEGER},
       </if>
-      <if test="transactionSituation != null" >
+      <if test="transactionSituation != null">
         #{transactionSituation,jdbcType=INTEGER},
       </if>
-      <if test="taxBurden != null" >
+      <if test="taxBurden != null">
         #{taxBurden,jdbcType=INTEGER},
       </if>
-      <if test="scopeProperty != null" >
+      <if test="scopeProperty != null">
         #{scopeProperty,jdbcType=INTEGER},
       </if>
-      <if test="scopeInclude != null" >
+      <if test="scopeInclude != null">
         #{scopeInclude,jdbcType=VARCHAR},
       </if>
-      <if test="scopeNotInclude != null" >
+      <if test="scopeNotInclude != null">
         #{scopeNotInclude,jdbcType=VARCHAR},
       </if>
-      <if test="scopePropertyExplain != null" >
+      <if test="scopePropertyExplain != null">
         #{scopePropertyExplain,jdbcType=VARCHAR},
       </if>
-      <if test="downPaymentRatio != null" >
+      <if test="downPaymentRatio != null">
         #{downPaymentRatio,jdbcType=VARCHAR},
       </if>
-      <if test="lendingRate != null" >
+      <if test="lendingRate != null">
         #{lendingRate,jdbcType=VARCHAR},
       </if>
-      <if test="loanPeriod != null" >
+      <if test="loanPeriod != null">
         #{loanPeriod,jdbcType=INTEGER},
       </if>
-      <if test="deposit != null" >
+      <if test="deposit != null">
         #{deposit,jdbcType=VARCHAR},
       </if>
-      <if test="informationType != null" >
+      <if test="informationType != null">
         #{informationType,jdbcType=INTEGER},
       </if>
-      <if test="informationCategory != null" >
+      <if test="informationCategory != null">
         #{informationCategory,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="landBuyerSeller != null" >
+      <if test="landBuyerSeller != null">
         #{landBuyerSeller,jdbcType=VARCHAR},
       </if>
-      <if test="priceType != null" >
+      <if test="priceType != null">
         #{priceType,jdbcType=INTEGER},
       </if>
-      <if test="priceConnotation != null" >
+      <if test="priceConnotation != null">
         #{priceConnotation,jdbcType=INTEGER},
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         #{bisDelete,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="priceConnotationUnit != null" >
+      <if test="priceConnotationUnit != null">
         #{priceConnotationUnit,jdbcType=VARCHAR},
       </if>
-      <if test="perMuPrice != null" >
+      <if test="perMuPrice != null">
         #{perMuPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="bisMark != null">
+        #{bisMark,jdbcType=BIT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" resultType="java.lang.Long">
     select count(*) from tb_basic_house_trading
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_basic_house_trading
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.applyId != null" >
+      <if test="record.applyId != null">
         apply_id = #{record.applyId,jdbcType=INTEGER},
       </if>
-      <if test="record.houseId != null" >
+      <if test="record.houseId != null">
         house_id = #{record.houseId,jdbcType=INTEGER},
       </if>
-      <if test="record.tradingTime != null" >
+      <if test="record.tradingTime != null">
         trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.tradingType != null" >
+      <if test="record.tradingType != null">
         trading_type = #{record.tradingType,jdbcType=INTEGER},
       </if>
-      <if test="record.tradingTotalPrice != null" >
+      <if test="record.tradingTotalPrice != null">
         trading_total_price = #{record.tradingTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.tradingUnitPrice != null" >
+      <if test="record.tradingUnitPrice != null">
         trading_unit_price = #{record.tradingUnitPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.buyerExtraTax != null" >
+      <if test="record.buyerExtraTax != null">
         buyer_extra_tax = #{record.buyerExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="record.buyerExtraFee != null" >
+      <if test="record.buyerExtraFee != null">
         buyer_extra_fee = #{record.buyerExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="record.rentingExtraTax != null" >
+      <if test="record.rentingExtraTax != null">
         renting_extra_tax = #{record.rentingExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="record.rentingExtraFee != null" >
+      <if test="record.rentingExtraFee != null">
         renting_extra_fee = #{record.rentingExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="record.descriptionType != null" >
+      <if test="record.descriptionType != null">
         description_type = #{record.descriptionType,jdbcType=INTEGER},
       </if>
-      <if test="record.descriptionContent != null" >
+      <if test="record.descriptionContent != null">
         description_content = #{record.descriptionContent,jdbcType=VARCHAR},
       </if>
-      <if test="record.installmentInterestRate != null" >
+      <if test="record.installmentInterestRate != null">
         installment_interest_rate = #{record.installmentInterestRate,jdbcType=VARCHAR},
       </if>
-      <if test="record.paymentMethod != null" >
+      <if test="record.paymentMethod != null">
         payment_method = #{record.paymentMethod,jdbcType=INTEGER},
       </if>
-      <if test="record.transactionSituation != null" >
+      <if test="record.transactionSituation != null">
         transaction_situation = #{record.transactionSituation,jdbcType=INTEGER},
       </if>
-      <if test="record.taxBurden != null" >
+      <if test="record.taxBurden != null">
         tax_burden = #{record.taxBurden,jdbcType=INTEGER},
       </if>
-      <if test="record.scopeProperty != null" >
+      <if test="record.scopeProperty != null">
         scope_property = #{record.scopeProperty,jdbcType=INTEGER},
       </if>
-      <if test="record.scopeInclude != null" >
+      <if test="record.scopeInclude != null">
         scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
       </if>
-      <if test="record.scopeNotInclude != null" >
+      <if test="record.scopeNotInclude != null">
         scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
       </if>
-      <if test="record.scopePropertyExplain != null" >
+      <if test="record.scopePropertyExplain != null">
         scope_property_explain = #{record.scopePropertyExplain,jdbcType=VARCHAR},
       </if>
-      <if test="record.downPaymentRatio != null" >
+      <if test="record.downPaymentRatio != null">
         down_payment_ratio = #{record.downPaymentRatio,jdbcType=VARCHAR},
       </if>
-      <if test="record.lendingRate != null" >
+      <if test="record.lendingRate != null">
         lending_rate = #{record.lendingRate,jdbcType=VARCHAR},
       </if>
-      <if test="record.loanPeriod != null" >
+      <if test="record.loanPeriod != null">
         loan_period = #{record.loanPeriod,jdbcType=INTEGER},
       </if>
-      <if test="record.deposit != null" >
+      <if test="record.deposit != null">
         deposit = #{record.deposit,jdbcType=VARCHAR},
       </if>
-      <if test="record.informationType != null" >
+      <if test="record.informationType != null">
         information_type = #{record.informationType,jdbcType=INTEGER},
       </if>
-      <if test="record.informationCategory != null" >
+      <if test="record.informationCategory != null">
         information_category = #{record.informationCategory,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
+      <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.phone != null" >
+      <if test="record.phone != null">
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
-      <if test="record.landBuyerSeller != null" >
+      <if test="record.landBuyerSeller != null">
         land_buyer_seller = #{record.landBuyerSeller,jdbcType=VARCHAR},
       </if>
-      <if test="record.priceType != null" >
+      <if test="record.priceType != null">
         price_type = #{record.priceType,jdbcType=INTEGER},
       </if>
-      <if test="record.priceConnotation != null" >
+      <if test="record.priceConnotation != null">
         price_connotation = #{record.priceConnotation,jdbcType=INTEGER},
       </if>
-      <if test="record.bisDelete != null" >
+      <if test="record.bisDelete != null">
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.priceConnotationUnit != null" >
+      <if test="record.priceConnotationUnit != null">
         price_connotation_unit = #{record.priceConnotationUnit,jdbcType=VARCHAR},
       </if>
-      <if test="record.perMuPrice != null" >
+      <if test="record.perMuPrice != null">
         per_mu_price = #{record.perMuPrice,jdbcType=DECIMAL},
       </if>
+      <if test="record.bisMark != null">
+        bis_mark = #{record.bisMark,jdbcType=BIT},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_basic_house_trading
     set id = #{record.id,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
@@ -568,129 +580,133 @@
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       price_connotation_unit = #{record.priceConnotationUnit,jdbcType=VARCHAR},
-      per_mu_price = #{record.perMuPrice,jdbcType=DECIMAL}
-    <if test="_parameter != null" >
+      per_mu_price = #{record.perMuPrice,jdbcType=DECIMAL},
+      bis_mark = #{record.bisMark,jdbcType=BIT}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading">
     update tb_basic_house_trading
-    <set >
-      <if test="applyId != null" >
+    <set>
+      <if test="applyId != null">
         apply_id = #{applyId,jdbcType=INTEGER},
       </if>
-      <if test="houseId != null" >
+      <if test="houseId != null">
         house_id = #{houseId,jdbcType=INTEGER},
       </if>
-      <if test="tradingTime != null" >
+      <if test="tradingTime != null">
         trading_time = #{tradingTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="tradingType != null" >
+      <if test="tradingType != null">
         trading_type = #{tradingType,jdbcType=INTEGER},
       </if>
-      <if test="tradingTotalPrice != null" >
+      <if test="tradingTotalPrice != null">
         trading_total_price = #{tradingTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="tradingUnitPrice != null" >
+      <if test="tradingUnitPrice != null">
         trading_unit_price = #{tradingUnitPrice,jdbcType=DECIMAL},
       </if>
-      <if test="buyerExtraTax != null" >
+      <if test="buyerExtraTax != null">
         buyer_extra_tax = #{buyerExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="buyerExtraFee != null" >
+      <if test="buyerExtraFee != null">
         buyer_extra_fee = #{buyerExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="rentingExtraTax != null" >
+      <if test="rentingExtraTax != null">
         renting_extra_tax = #{rentingExtraTax,jdbcType=VARCHAR},
       </if>
-      <if test="rentingExtraFee != null" >
+      <if test="rentingExtraFee != null">
         renting_extra_fee = #{rentingExtraFee,jdbcType=VARCHAR},
       </if>
-      <if test="descriptionType != null" >
+      <if test="descriptionType != null">
         description_type = #{descriptionType,jdbcType=INTEGER},
       </if>
-      <if test="descriptionContent != null" >
+      <if test="descriptionContent != null">
         description_content = #{descriptionContent,jdbcType=VARCHAR},
       </if>
-      <if test="installmentInterestRate != null" >
+      <if test="installmentInterestRate != null">
         installment_interest_rate = #{installmentInterestRate,jdbcType=VARCHAR},
       </if>
-      <if test="paymentMethod != null" >
+      <if test="paymentMethod != null">
         payment_method = #{paymentMethod,jdbcType=INTEGER},
       </if>
-      <if test="transactionSituation != null" >
+      <if test="transactionSituation != null">
         transaction_situation = #{transactionSituation,jdbcType=INTEGER},
       </if>
-      <if test="taxBurden != null" >
+      <if test="taxBurden != null">
         tax_burden = #{taxBurden,jdbcType=INTEGER},
       </if>
-      <if test="scopeProperty != null" >
+      <if test="scopeProperty != null">
         scope_property = #{scopeProperty,jdbcType=INTEGER},
       </if>
-      <if test="scopeInclude != null" >
+      <if test="scopeInclude != null">
         scope_include = #{scopeInclude,jdbcType=VARCHAR},
       </if>
-      <if test="scopeNotInclude != null" >
+      <if test="scopeNotInclude != null">
         scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
       </if>
-      <if test="scopePropertyExplain != null" >
+      <if test="scopePropertyExplain != null">
         scope_property_explain = #{scopePropertyExplain,jdbcType=VARCHAR},
       </if>
-      <if test="downPaymentRatio != null" >
+      <if test="downPaymentRatio != null">
         down_payment_ratio = #{downPaymentRatio,jdbcType=VARCHAR},
       </if>
-      <if test="lendingRate != null" >
+      <if test="lendingRate != null">
         lending_rate = #{lendingRate,jdbcType=VARCHAR},
       </if>
-      <if test="loanPeriod != null" >
+      <if test="loanPeriod != null">
         loan_period = #{loanPeriod,jdbcType=INTEGER},
       </if>
-      <if test="deposit != null" >
+      <if test="deposit != null">
         deposit = #{deposit,jdbcType=VARCHAR},
       </if>
-      <if test="informationType != null" >
+      <if test="informationType != null">
         information_type = #{informationType,jdbcType=INTEGER},
       </if>
-      <if test="informationCategory != null" >
+      <if test="informationCategory != null">
         information_category = #{informationCategory,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="landBuyerSeller != null" >
+      <if test="landBuyerSeller != null">
         land_buyer_seller = #{landBuyerSeller,jdbcType=VARCHAR},
       </if>
-      <if test="priceType != null" >
+      <if test="priceType != null">
         price_type = #{priceType,jdbcType=INTEGER},
       </if>
-      <if test="priceConnotation != null" >
+      <if test="priceConnotation != null">
         price_connotation = #{priceConnotation,jdbcType=INTEGER},
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="priceConnotationUnit != null" >
+      <if test="priceConnotationUnit != null">
         price_connotation_unit = #{priceConnotationUnit,jdbcType=VARCHAR},
       </if>
-      <if test="perMuPrice != null" >
+      <if test="perMuPrice != null">
         per_mu_price = #{perMuPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="bisMark != null">
+        bis_mark = #{bisMark,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading">
     update tb_basic_house_trading
     set apply_id = #{applyId,jdbcType=INTEGER},
       house_id = #{houseId,jdbcType=INTEGER},
@@ -728,7 +744,8 @@
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       price_connotation_unit = #{priceConnotationUnit,jdbcType=VARCHAR},
-      per_mu_price = #{perMuPrice,jdbcType=DECIMAL}
+      per_mu_price = #{perMuPrice,jdbcType=DECIMAL},
+      bis_mark = #{bisMark,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

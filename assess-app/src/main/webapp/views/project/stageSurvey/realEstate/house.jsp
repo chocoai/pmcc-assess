@@ -53,7 +53,10 @@
                                                                    value="${basicHouseHuxing.tenementType}"
                                                                    class="form-control">
                                                             <div class="input-group-append">
-                                                                <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                                <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                        type="button" data-toggle="dropdown"
+                                                                        aria-haspopup="true" aria-expanded="false">选择
+                                                                </button>
                                                                 <div class="dropdown-menu" id="tenementTypeList">
                                                                 </div>
                                                             </div>
@@ -104,7 +107,8 @@
                                                                 <option value="入户门">入户门</option>
                                                                 <option value="客厅">客厅</option>
                                                             </select>
-                                                            <select class="form-control form-control-sm orientation" required
+                                                            <select class="form-control form-control-sm orientation"
+                                                                    required
                                                                     name="orientation">
                                                             </select>
 
@@ -230,7 +234,11 @@
                                                                                class="form-control form-control-sm">
 
                                                                         <div class="input-group-append">
-                                                                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                                            <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                                    type="button" data-toggle="dropdown"
+                                                                                    aria-haspopup="true"
+                                                                                    aria-expanded="false">选择
+                                                                            </button>
                                                                             <div class="dropdown-menu" id="certUseList">
                                                                             </div>
                                                                         </div>
@@ -245,8 +253,13 @@
                                                                                value="${basicHouse.practicalUse}"
                                                                                class="form-control">
                                                                         <div class="input-group-append">
-                                                                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
-                                                                            <div class="dropdown-menu" id="practicalUseList">
+                                                                            <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                                    type="button" data-toggle="dropdown"
+                                                                                    aria-haspopup="true"
+                                                                                    aria-expanded="false">选择
+                                                                            </button>
+                                                                            <div class="dropdown-menu"
+                                                                                 id="practicalUseList">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -302,9 +315,29 @@
                                         </div>
                                     </form>
                                 </div>
-
-                                <div class="x_content">
+                                <c:if test="${projectPhase eq 'caseStudyExtend'}">
+                                    <div class="x_title">
+                                        <h3>
+                                            交易信息
+                                            <small>
+                                                <button class="btn btn-sm btn-success" style="margin-left: 5px"
+                                                        type="button" onclick="houseTrading.appendHtml(false)">
+                                                <span class="btn-label"><i
+                                                        class="fa fa-plus"></i>
+                                                </span>
+                                                    添加分组
+                                                </button>
+                                            </small>
+                                        </h3>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div id="basicHouseTradingAppend"></div>
                                     <%@include file="/views/project/stageSurvey/common/houseTradingCase.jsp" %>
+                                </c:if>
+                                <div class="x_content">
+                                    <c:if test="${projectPhase ne 'caseStudyExtend'}">
+                                        <%@include file="/views/project/stageSurvey/common/houseTradingSurvey.jsp" %>
+                                    </c:if>
                                     <%@include file="/views/project/stageSurvey/common/houseRoom.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseRoomDecorate.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
@@ -347,122 +380,6 @@
 </html>
 <%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
 <%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
-<div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">&times;</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-
-            <div class="modal-body">
-                <form id="frmTradingLeaseAndSell" class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <input type="hidden" name="type" class="type">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <!--lease -->
-                                <div class="lease">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2">
-                                                    租金支付时间起<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <input required="required" placeholder="租金支付时间起"
-                                                           name="rentPaymentTimeStart" data-date-format="yyyy-mm-dd"
-                                                           class="form-control input-full date-picker dbdate">
-                                                </div>
-                                                <label class="col-sm-2">
-                                                    租金支付时间止<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <input required="required" placeholder="租金支付时间起"
-                                                           name="rentPaymentTimeEnd" data-date-format="yyyy-mm-dd"
-                                                           class="form-control input-full date-picker dbdate">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2">
-                                                    租金增长比率<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <input type="number" data-rule-number='true'
-                                                           class="form-control input-full"
-                                                           name="rentGrowthRate"
-                                                           placeholder="租金增长比率(请输入数字)" required="required">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--sell -->
-                                <div class="sell">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2">
-                                                    分期支付时间起<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <input required="required" placeholder="分期支付时间起"
-                                                           name="instalmentPeriodStart" data-date-format="yyyy-mm-dd"
-                                                           class="form-control input-full date-picker dbdate">
-                                                </div>
-                                                <label class="col-sm-2">
-                                                    分期支付时间起止<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <input required="required" placeholder="分期支付时间起止"
-                                                           name="instalmentPeriodEnd" data-date-format="yyyy-mm-dd"
-                                                           class="form-control input-full date-picker dbdate">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2">
-                                                    分期支付利息<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <input type="number" data-rule-number='true'
-                                                           class="form-control input-full"
-                                                           name="instalmentInterest"
-                                                           placeholder="分期支付利息(请输入数字)" required="required">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.saveTradingSellAndLease()">
-                    保存
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
 <div id="divBoxHouseHuxing" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -644,16 +561,28 @@
                 caseFun.caseHouse.showModel('${quoteId}', name);
             }
         });
+        if(${projectPhase eq 'caseStudyExtend'}){
+            houseTrading.init();
+        }
     })
 
     //保存数据信息
     function saveDataInfo() {
         Loading.progressShow();
-        var item = {};
-        item.basicHouse = formSerializeArray(houseCommon.houseForm);
-        item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
-        item.basicDamagedDegree = damagedDegree.getFormData();
-        var formData = JSON.stringify(examineCommon.getFormData());
+        var data = examineCommon.getFormData();
+        data.basicHouseTradingGroups = [];
+
+        var forms = $("#basicHouseTradingAppend").find("form");
+        $.each(forms, function (i, n) {
+            var text = $(n).attr("id");
+            if (text.indexOf(houseTrading.basicHouseTradingFrm) != -1) {
+                var item = formParams(text);
+                data.basicHouseTradingGroups.push(item);
+            }
+        });
+
+        var formData = JSON.stringify(data);
+
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveDraft",
             type: "post",

@@ -94,4 +94,10 @@ public class BasicHouseTradingLeaseService {
         return basicHouseTradingLeaseDao.basicHouseTradingLeaseList(basicHouseTradingLease);
     }
 
+
+    public List<BasicHouseTradingLease> basicHouseTradingLeaseListByTradingId(Integer tradingId)throws Exception{
+        BasicHouseTradingLease basicHouseTradingLease = new BasicHouseTradingLease();
+        basicHouseTradingLease.setTradingId(tradingId);
+        return basicHouseTradingLeaseDao.basicHouseTradingLeaseList(basicHouseTradingLease);
+    }
 }

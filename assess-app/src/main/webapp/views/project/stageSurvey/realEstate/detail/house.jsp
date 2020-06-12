@@ -176,9 +176,31 @@
                                         <div id="houseFilePart"></div>
                                     </form>
                                 </div>
+                                <c:if test="${projectPhase eq 'caseStudyExtend'}">
+                                    <div class="x_title">
+                                        <h3>
+                                            交易信息
+                                            <small>
+                                                <button class="btn btn-sm btn-success" style="margin-left: 5px"
+                                                        type="button" onclick="houseTrading.appendHtml(false)">
+                                                <span class="btn-label"><i
+                                                        class="fa fa-plus"></i>
+                                                </span>
+                                                    添加分组
+                                                </button>
+                                            </small>
+                                        </h3>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div id="basicHouseTradingAppend"></div>
+                                    <%@include file="/views/project/stageSurvey/commonDetail/houseTradingCase.jsp" %>
+                                </c:if>
 
                                 <div class="x_content">
-                                    <%@include file="/views/project/stageSurvey/commonDetail/houseTradingCase.jsp" %>
+                                    <c:if test="${projectPhase ne 'caseStudyExtend'}">
+                                        <%@include file="/views/project/stageSurvey/commonDetail/houseTradingSurvey.jsp" %>
+                                    </c:if>
+
                                     <c:if test="${empty isHistory}">
                                         <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
                                         <%@include file="/views/project/stageSurvey/commonDetail/houseRoomDecorate.jsp" %>
@@ -230,6 +252,9 @@
 <script>
     $(function () {
         houseCommon.initDetailById('${basicHouse.id}', '', false);
+        if(${projectPhase eq 'caseStudyExtend'}){
+            houseTrading.init();
+        }
     })
 </script>
 </html>

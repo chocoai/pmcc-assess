@@ -24,7 +24,6 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -80,7 +79,9 @@ public class BasicHouseService extends BasicEntityAbstract {
     @Autowired
     private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
-    private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
+    private BasicHouseTradingSellService basicHouseTradingSellService;
+    @Autowired
+    private BasicHouseTradingLeaseService basicHouseTradingLeaseService;
     @Autowired
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
@@ -246,6 +247,7 @@ public class BasicHouseService extends BasicEntityAbstract {
     public void clearInvalidChildData(Integer houseId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where house_id=%s;";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), houseId));
@@ -493,6 +495,14 @@ public class BasicHouseService extends BasicEntityAbstract {
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
                     }
                 }
+                //案例交易信息
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING_GROUPS.getVar());
+                List<BasicHouseTrading> basicTradingList = JSONObject.parseArray(jsonContent, BasicHouseTrading.class);
+                if (CollectionUtils.isNotEmpty(basicTradingList)) {
+                    for(BasicHouseTrading item:basicTradingList){
+                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(item, true);
+                    }
+                }
                 //土地类型
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_LANDCATEGORYINFO.getVar());
                 BasicEstateLandCategoryInfo landCategoryInfo = JSONObject.parseObject(jsonContent, BasicEstateLandCategoryInfo.class);
@@ -571,23 +581,7 @@ public class BasicHouseService extends BasicEntityAbstract {
             basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(targetBasicHouseHuxing, true);
         }
 
-        BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceId);
-        if (sourceBasicHouseTrading != null) {
-            BasicHouseTrading targetBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(targetBasicHouse.getId());
-            if (targetBasicHouseTrading == null) {
-                targetBasicHouseTrading = new BasicHouseTrading();
-                BeanUtils.copyProperties(sourceBasicHouseTrading, targetBasicHouseTrading);
-                targetBasicHouseTrading.setId(null);
-                targetBasicHouseTrading.setHouseId(targetBasicHouse.getId());
-                targetBasicHouseTrading.setCreator(commonService.thisUserAccount());
-                targetBasicHouseTrading.setGmtCreated(null);
-                targetBasicHouseTrading.setGmtModified(null);
-            } else {
-                BeanUtils.copyProperties(sourceBasicHouseTrading, targetBasicHouseTrading, "id");
-                targetBasicHouseTrading.setHouseId(targetBasicHouse.getId());
-            }
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(targetBasicHouseTrading, true);
-        }
+
         if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetId);
 
@@ -595,6 +589,44 @@ public class BasicHouseService extends BasicEntityAbstract {
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
             where.setTableId(targetId);
             baseAttachmentService.deleteAttachmentByDto(where);
+        }
+        List<BasicHouseTrading> sourceBasicHouseTradingList = basicHouseTradingService.getTradingListByHouseId(sourceId);
+        if (CollectionUtils.isNotEmpty(sourceBasicHouseTradingList)) {
+            for(BasicHouseTrading source:sourceBasicHouseTradingList){
+                BasicHouseTrading targetBasicHouseTrading = new BasicHouseTrading();
+                BeanUtils.copyProperties(source, targetBasicHouseTrading);
+                targetBasicHouseTrading.setId(null);
+                targetBasicHouseTrading.setHouseId(targetBasicHouse.getId());
+                basicHouseTradingService.saveAndUpdateBasicHouseTrading(targetBasicHouseTrading, true);
+                //出售
+                List<BasicHouseTradingSell> basicHouseTradingSells = basicHouseTradingSellService.basicHouseTradingSellsGetByTradingId(source.getId());
+                if(CollectionUtils.isNotEmpty(basicHouseTradingSells)){
+                    for(BasicHouseTradingSell sellSource:basicHouseTradingSells){
+                        BasicHouseTradingSell targetSell = new BasicHouseTradingSell();
+                        BeanUtils.copyProperties(sellSource,targetSell);
+                        targetSell.setId(null);
+                        targetSell.setHouseId(targetBasicHouse.getId());
+                        targetSell.setTradingId(targetBasicHouseTrading.getId());
+                        basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(targetSell,true);
+                    }
+
+                }
+                //出租
+                List<BasicHouseTradingLease> basicHouseTradingLeases = basicHouseTradingLeaseService.basicHouseTradingLeaseListByTradingId(source.getId());
+                if(CollectionUtils.isNotEmpty(basicHouseTradingLeases)){
+                    for(BasicHouseTradingLease leaseSource:basicHouseTradingLeases){
+                        BasicHouseTradingLease targetLease = new BasicHouseTradingLease();
+                        BeanUtils.copyProperties(leaseSource,targetLease);
+                        targetLease.setId(null);
+                        targetLease.setHouseId(targetBasicHouse.getId());
+                        targetLease.setTradingId(targetBasicHouseTrading.getId());
+                        basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(targetLease,true);
+                    }
+
+                }
+                //附件拷贝
+                baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), source.getId(), targetBasicHouseTrading.getId());
+            }
         }
         baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouse.class), sourceId, targetBasicHouse.getId());
         if (containChild) {
@@ -606,13 +638,6 @@ public class BasicHouseService extends BasicEntityAbstract {
             synchronousDataDto.setFieldDefaultValue(map);
             synchronousDataDto.setWhereSql("house_id=" + sourceId);
             synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出售sql
-
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出租sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class));
