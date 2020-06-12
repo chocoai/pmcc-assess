@@ -489,7 +489,8 @@
     //楼盘标注
     estateCommon.mapMarker = function (readonly) {
         var option = {name: estateCommon.getEstateName(), type: 'estate', tableId: estateCommon.getEstateId()};
-        var contentUrl = getContextPath() + '/map/drawPolygon?callback=estateCommon.settingFileGeneralLayout&masterName=楼盘标注&estateName=' + estateCommon.getEstateName();
+        var cityName = estateCommon.estateForm.find("select[name='city']").find('option:selected').text();
+        var contentUrl = getContextPath() + '/map/drawPolygon?callback=estateCommon.settingFileGeneralLayout&cityName='+cityName+'&estateName=' + estateCommon.getEstateName();
         if (readonly != true) {
             contentUrl += '&apply=true';
         } else {

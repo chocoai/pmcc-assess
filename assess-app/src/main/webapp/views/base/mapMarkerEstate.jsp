@@ -25,7 +25,7 @@
         </tr>
         <tr>
             <td>
-                <button  onclick="switch3DMap(false,this)">切换3D</button>
+                <button onclick="switch3DMap(false,this)">切换3D</button>
                 <button style="display: none" onclick="switch3DMap(true,this)">切换普通地图</button>
             </td>
         </tr>
@@ -46,15 +46,23 @@
     var map = new AMap.Map("container", {resizeEnable: true, zoom: 19});
     //输入提示
     var autoOptions = {
+        city: "成都",
         input: "tipinput"
     };
     var auto = new AMap.Autocomplete(autoOptions);
     var placeSearch = new AMap.PlaceSearch({});
-    searchByName('${estateName}','${center}');
+    searchByName('${estateName}', '${center}');
 
     //根据名称查询
-    function searchByName(name,string) {
-        if(name){
+    function searchByName(name, point) {
+        if (point) {
+            try {
+                var center = JSON.parse(point);
+                map.setCenter([center.key, center.value]); //设置地图中心点
+            } catch (e) {
+                console.log(e);
+            }
+        } else if (name) {
             placeSearch.search(name, function (status, result) {
                 if (result.info == 'OK') {
                     if (result.poiList.pois.length > 0) {
@@ -64,25 +72,17 @@
                 }
             })
         }
-        if (string){
-            try {
-                var center = JSON.parse(string) ;
-                map.setCenter([center.key,center.value]); //设置地图中心点
-            } catch (e) {
-                console.log(e) ;
-            }
-        }
     }
 
     //注册监听，当选中某条记录时会触发
     AMap.event.addListener(auto, "select", function (e) {
         placeSearch.setCity(e.poi.adcode);
-        searchByName(e.poi.name,null);
+        searchByName(e.poi.name, null);
     });
 
     //地图点击事件
     map.on('click', function (e) {
-        if('${click}'){
+        if ('${click}') {
             var excuteString = 'if (parent && parent.${click}) {';
             excuteString += 'parent.${click}(e.lnglat.getLng(), e.lnglat.getLat());}';
             eval(excuteString);
@@ -94,7 +94,7 @@
     //加载所有标注信息
     function loadMarkerList(taggingArray) {
         map.remove(markerArray);
-        markerArray = [] ;
+        markerArray = [];
         if (taggingArray && taggingArray.length > 0) {
             var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
             for (var i = 0; i < taggingArray.length; i++) {
@@ -114,8 +114,8 @@
         }
     }
 
-    function switch3DMap(flag , that) {
-        if (!flag){
+    function switch3DMap(flag, that) {
+        if (!flag) {
             map = new AMap.Map('container', {
                 resizeEnable: true,
                 viewMode: '3D',
@@ -138,32 +138,32 @@
             });
         }
 
-        if (flag){
+        if (flag) {
             map = new AMap.Map("container", {resizeEnable: true, zoom: 19});
         }
 
-        var taggingArray = [] ;
-        if (markerArray.length >= 1){
-            markerArray.forEach(function (n,i) {
-               if (n.C){
-                   if (n.C.position){
-                       taggingArray.push(n.C.position) ;
-                   }
-               }
-            }) ;
-        }
-        if (taggingArray.length >= 1){
-            loadMarkerList(taggingArray) ;
-        }
-        if (that){
-            var text = $(that).text() ;
-            $(that).closest("td").find("button").each(function (i,btn) {
-                if (text == $(btn).text()){
-                    $(btn).hide() ;
-                }else {
-                    $(btn).show() ;
+        var taggingArray = [];
+        if (markerArray.length >= 1) {
+            markerArray.forEach(function (n, i) {
+                if (n.C) {
+                    if (n.C.position) {
+                        taggingArray.push(n.C.position);
+                    }
                 }
-            }) ;
+            });
+        }
+        if (taggingArray.length >= 1) {
+            loadMarkerList(taggingArray);
+        }
+        if (that) {
+            var text = $(that).text();
+            $(that).closest("td").find("button").each(function (i, btn) {
+                if (text == $(btn).text()) {
+                    $(btn).hide();
+                } else {
+                    $(btn).show();
+                }
+            });
         }
 
         // 地图 加载完成
@@ -171,7 +171,7 @@
             //地图点击事件
             //地图点击事件
             map.on('click', function (e) {
-                if('${click}'){
+                if ('${click}') {
                     var excuteString = 'if (parent && parent.${click}) {';
                     excuteString += 'parent.${click}(e.lnglat.getLng(), e.lnglat.getLat());}';
                     eval(excuteString);

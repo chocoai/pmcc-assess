@@ -102,7 +102,7 @@ public class MapController {
     }
 
     @RequestMapping(value = "/drawPolygon", name = "地图多边形标注 地图着色备注")
-    public ModelAndView drawPolygon(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String masterName, String callback, String estateName, String formData, Integer taggingId) {
+    public ModelAndView drawPolygon(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String cityName, String callback, String estateName, String formData, Integer taggingId) {
         ModelAndView modelAndView = new ModelAndView();
         BasicEstateTagging basicEstateTagging = null;
         if (taggingId != null && taggingId != 0) {
@@ -126,8 +126,8 @@ public class MapController {
                 modelAndView.addObject("basicEstateTagging", JSONObject.toJSONString(basicEstateTagging));
             }
         }
-        if (StringUtils.isNotBlank(masterName)) {
-            modelAndView.addObject("masterName", masterName);
+        if (StringUtils.isNotBlank(cityName)) {
+            modelAndView.addObject("cityName", cityName);
         }
         if (StringUtils.isNotBlank(callback)) {
             modelAndView.addObject("callback", callback);

@@ -267,13 +267,12 @@
             resizeEnable: true,
             rotateEnable: true,
             zoom: 24,
+            city: "${cityName}",
             viewMode: "2D",
             center: [116.403322, 39.920255]
         });
         // 地图 加载完成 load
         drawPolygon.map.on("complete", function () {
-
-
             //输入提示
             var tipIds = ["tipinputDescription", "tipinput"];
             $.each(tipIds, function (m, input) {

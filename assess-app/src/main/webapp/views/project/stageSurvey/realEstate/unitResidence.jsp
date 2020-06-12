@@ -53,12 +53,14 @@
                                                                                name="unitNumber" class="form-control"
                                                                                value="${basicUnit.unitNumber}"
                                                                                id="txt_Unit_search">
-                                                                        <span class="input-group-btn">
-                            <input type="hidden" name="mapId" value="${basicUnit.mapId}">
-                             <div onclick="unitCommon.mapMarker(false);" class="btn btn-info">
-                                 <i class="fa fa-map-marker"></i> 标注
-                             </div>
-                        </span>
+                                                                        <div class="input-group-prepend">
+                                                                            <button class="btn btn-info btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="unitCommon.mapMarker(false);">
+                                                                                标注
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <label class="col-sm-1">梯户比<span
@@ -102,7 +104,9 @@
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
                                     onclick="window.close()">关闭
                             </button>
-                            <button type="button" class="btn btn-warning" style="margin-left: 10px;" onclick="saveDataInfo();">保存</button>
+                            <button type="button" class="btn btn-warning" style="margin-left: 10px;"
+                                    onclick="saveDataInfo();">保存
+                            </button>
                         </div>
                     </div>
                     <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>

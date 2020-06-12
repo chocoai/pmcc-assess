@@ -43,7 +43,7 @@
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">名称<span
+                                                                <label class="col-sm-1">名称1<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-sm-3">
                                                                     <div class="input-group">
@@ -55,11 +55,6 @@
                                                                                id="txt_Unit_search">
                                                                         <input type="hidden" name="mapId"
                                                                                value="${basicUnit.mapId}">
-                                                                        <%--<span class="input-group-btn">--%>
-                                                                        <%--<div onclick="unitCommon.mapMarker(false);" class="btn btn-info">--%>
-                                                                        <%--<i class="fa fa-map-marker"></i> 标注--%>
-                                                                        <%--</div>--%>
-                                                                        <%--</span>--%>
                                                                         <div class="input-group-prepend">
                                                                             <button class="btn btn-info btn-sm "
                                                                                     style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
