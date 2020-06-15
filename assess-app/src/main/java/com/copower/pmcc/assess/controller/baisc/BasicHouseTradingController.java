@@ -45,6 +45,9 @@ public class BasicHouseTradingController {
     public HttpResult saveAndUpdateBasicHouseTrading(String formData){
         try {
             BasicHouseTrading basicHouseTrading = JSONObject.parseObject(formData,BasicHouseTrading.class) ;
+            if(basicHouseTrading.getBisMark()==null){
+                basicHouseTrading.setBisMark(false);
+            }
             return HttpResult.newCorrectResult(basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading,true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s",e.getMessage()),e);

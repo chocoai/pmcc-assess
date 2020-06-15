@@ -283,22 +283,26 @@
 <script type="application/javascript">
     //填充对应的数据
     function autocompleteData(data) {
-        if ("estate" == "${tbType}") {
+        if ("${tbType}".indexOf("estate")!=-1) {
             estateCommon.initById(data.id);
         }
 
-        if ("building" == "${tbType}") {
+        if ("${tbType}".indexOf("building")!=-1) {
             buildingCommon.showBuildingView(data);
         }
 
-        if ("unit" == "${tbType}") {
+        if ("${tbType}".indexOf("unit")!=-1) {
             unitCommon.showUnitView(data);
         }
 
-        if ("house" == "${tbType}") {
+        if ("${tbType}".indexOf("house")!=-1) {
             houseCommon.showHouseView(data);
             if(${projectPhase eq 'caseStudyExtend'}) {
-                houseTrading.init();
+                if("house.land" == "${tbType}"){
+                    houseLandTrading.init();
+                }else{
+                    houseTrading.init();
+                }
             }
         }
     }

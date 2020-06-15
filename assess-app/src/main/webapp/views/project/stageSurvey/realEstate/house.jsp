@@ -577,6 +577,7 @@
             var text = $(n).attr("id");
             if (text.indexOf(houseTrading.basicHouseTradingFrm) != -1) {
                 var item = formParams(text);
+                item.bisMark = $(this).closest('.col-md-12').find("input[name='bisMark']").prop("checked");
                 data.basicHouseTradingGroups.push(item);
             }
         });

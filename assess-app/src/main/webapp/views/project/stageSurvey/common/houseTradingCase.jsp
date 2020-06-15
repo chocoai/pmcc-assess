@@ -22,7 +22,7 @@
 
                             <div class="form-check" style="margin-left: 5px">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" id="bisMark"
+                                    <input class="form-check-input" type="checkbox" name="bisMark"
                                            value="true"
                                            onclick="houseTrading.updateBisMark('basicHouseTradingFrm_number',this)"
                                            checked="checked">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="display: none">
                 <form class="form-horizontal" id="basicHouseTradingFrm_number">
                     <input type="hidden" name="id" value="_number">
                     <input type="hidden" name="houseId" value="${basicHouse.id}">
@@ -558,6 +558,7 @@
                         html = html.replace(/_number/g, number).replace(/{index}/g, index + 1);
                         $("#" + houseTrading.basicHouseTradingAppend).append(html);
                         houseTrading.initBasicHouseTradingForm(result.data, number);
+                        DatepickerUtils.parse();
                     }
                 },
                 error: function (result) {
@@ -613,8 +614,7 @@
                 houseTrading.fileUpload(item, number);
                 houseTrading.fileShow(item, number, true);
             });
-
-            $("#" + houseTradingFormId).closest('.col-md-12').find("#bisMark").prop("checked", data.bisMark);
+            $("#" + houseTradingFormId).closest('.col-md-12').find("input[name='bisMark']").prop("checked", data.bisMark);
         }
     };
 
@@ -857,6 +857,8 @@
         if (flag) {
             //单个保存
             var data = formParams(_this);
+            data.bisMark=$("#"+_this).closest('.col-md-12').find("input[name='bisMark']").prop("checked");
+
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicHouseTrading/saveAndUpdateBasicHouseTrading",
                 type: "post",
@@ -987,7 +989,7 @@
                     $.each(forms, function (i, n) {
                         var text = $(n).attr("id");
                         if (text.indexOf(houseTrading.basicHouseTradingFrm) != -1 && text != _form) {
-                            $(this).closest('.col-md-12').find("#bisMark").prop("checked", false);
+                            $(this).closest('.col-md-12').find("input[name='bisMark']").prop("checked", false);
                         }
                     });
                     notifySuccess("成功", "设置成功");

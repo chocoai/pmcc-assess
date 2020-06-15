@@ -8,7 +8,16 @@
             <div class="card-header">
                 <div class="card-head-row">
                     <div class="card-title">
+                        <div class="form-inline">
                         交易信息（{index}）
+                        <div class="form-check" style="margin-left: 5px">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="bisMark"
+                                       checked="checked">
+                                <span class="form-check-sign">标准</span>
+                            </label>
+                        </div>
+                        </div>
                     </div>
                     <div class="card-tools collapse-link">
                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -17,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="display: none">
                 <form class="form-horizontal" id="basicHouseTradingFrm_number">
                     <input type="hidden" name="id" value="_number">
                     <div class="row form-group">
@@ -487,6 +496,8 @@
             $.each(houseTrading.houseFileControlIdArray, function (i, item) {
                 houseTrading.fileShow(item, number);
             });
+            $("#" + houseTradingFormId).closest('.col-md-12').find("input[name='bisMark']").prop("checked", data.bisMark);
+
         }
     };
 

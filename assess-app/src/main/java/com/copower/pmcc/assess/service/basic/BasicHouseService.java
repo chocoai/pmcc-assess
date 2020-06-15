@@ -492,6 +492,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                     if (houseTradingOld != null) {
                         basicTrading.setId(houseTradingOld.getId());
                         basicTrading.setHouseId(houseId);
+                        basicTrading.setBisMark(true);
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
                     }
                 }
@@ -502,7 +503,16 @@ public class BasicHouseService extends BasicEntityAbstract {
                     for(BasicHouseTrading item:basicTradingList){
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(item, true);
                     }
+                    //默认设置第一条的标识
+                    List<BasicHouseTrading> filter = LangUtils.filter(basicTradingList, p -> {
+                        return p.getBisMark() == true;
+                    });
+                    if(!CollectionUtils.isNotEmpty(filter)){
+                        basicTradingList.get(0).setBisMark(true);
+                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTradingList.get(0), true);
+                    }
                 }
+
                 //土地类型
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_LANDCATEGORYINFO.getVar());
                 BasicEstateLandCategoryInfo landCategoryInfo = JSONObject.parseObject(jsonContent, BasicEstateLandCategoryInfo.class);

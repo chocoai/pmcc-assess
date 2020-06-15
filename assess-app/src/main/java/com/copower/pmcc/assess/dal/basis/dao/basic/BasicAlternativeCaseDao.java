@@ -59,7 +59,7 @@ public class BasicAlternativeCaseDao {
             criteria.andNameLike(String.format("%s%s%s", "%", name, "%"));
         }
         if (StringUtils.isNotBlank(tbType)) {
-            criteria.andBusinessKeyEqualTo(tbType);
+            criteria.andBusinessKeyLike(String.format("%s%s%s", "%", tbType, "%"));
         }
         if (StringUtils.isNotBlank(creator)) {
             criteria.andCreatorEqualTo(creator);
