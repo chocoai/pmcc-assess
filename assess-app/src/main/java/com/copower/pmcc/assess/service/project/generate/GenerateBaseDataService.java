@@ -6781,8 +6781,8 @@ public class GenerateBaseDataService {
                 BigDecimal apportionmentArea = null;
                 if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
                     DeclareRealtyRealEstateCert declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(declareRecord.getDataTableId());
-                    if (declareRealtyRealEstateCert != null && declareRealtyRealEstateCert.getApportionmentArea() != null) {
-                        apportionmentArea = declareRealtyRealEstateCert.getApportionmentArea();
+                    if (declareRealtyRealEstateCert != null && declareRealtyRealEstateCert.getUseRightArea() != null) {
+                        apportionmentArea = declareRealtyRealEstateCert.getUseRightArea();
                     }
                 }
                 if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
