@@ -13,7 +13,7 @@
                         <div class="form-check" style="margin-left: 5px">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" name="bisMark"
-                                       checked="checked">
+                                       checked="checked" disabled="disabled">
                                 <span class="form-check-sign">标准</span>
                             </label>
                         </div>
