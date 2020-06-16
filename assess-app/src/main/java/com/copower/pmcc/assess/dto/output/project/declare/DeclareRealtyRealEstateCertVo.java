@@ -25,8 +25,17 @@ public class DeclareRealtyRealEstateCertVo extends DeclareRealtyRealEstateCert {
     private String landCertUseCategoryName;
     private String landRightTypeName;
     private String landRightNatureName ;
+    private String acquisitionTypeName ;
 
     private Integer centerId;
+
+    public String getAcquisitionTypeName() {
+        return acquisitionTypeName;
+    }
+
+    public void setAcquisitionTypeName(String acquisitionTypeName) {
+        this.acquisitionTypeName = acquisitionTypeName;
+    }
 
     public String getNatureName() {
         return natureName;

@@ -277,6 +277,7 @@ public class DeclareRealtyRealEstateCertService {
         if (declareRealtyRealEstateCert.getUseStartDate() != null) {
             vo.setUseStartDateFmt(DateUtils.format(declareRealtyRealEstateCert.getUseStartDate(), DateUtils.DATE_CHINESE_PATTERN));
         }
+        vo.setAcquisitionTypeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getAcquisitionType()));
 //        if (declareRealtyRealEstateCert.getHouseCertUseCategory() != null) {
 //            vo.setHouseCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));
 //        }

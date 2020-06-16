@@ -118,6 +118,7 @@ AssessDicKey.projectDeclareCommonSituation = "project.declare.common.situation";
 AssessDicKey.projectDeclareLandCertificateType = "project.declare.land.certificate.type";//土地证类型
 AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//权利性质
 AssessDicKey.projectDeclareRoomType = "project.declare.room.type";//房屋性质
+AssessDicKey.projectDeclareAcquisitionType = "project.declare.acquisition.type";//土地取得方式
 
 //基础数据
 AssessDicKey.DATA_LAND_LEVEL_CLASSIFY = "data.land.level.classify";//土地级别类型

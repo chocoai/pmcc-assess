@@ -237,10 +237,10 @@
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         var box = $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box);
         AssessCommon.getDataDicInfo(item.landCertGetQuestion, function (dicData) {
-            box.find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
+            box.find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId3).remove();
             box.find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId2).remove();
             if (dicData.fieldName == AssessDicKey.projectDeclareCertificate_YES) {
-                box.find(".card-body").prepend(commonDeclareApprovalModel.realEstateCert.getHtml());
+                box.find(".card-body").prepend(commonDeclareApprovalModel.realEstateCert.getHtml3());
             }
             if (dicData.fieldName == AssessDicKey.projectDeclareCertificate_NO) {
                 box.find(".card-body").prepend(commonDeclareApprovalModel.realEstateCert.getHtml2());

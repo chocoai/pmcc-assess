@@ -648,8 +648,8 @@ declareCommon.initHouse = function (item, form, fileArr, callback, bisDetail) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         frm.find("select[name='nature']").empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landAcquisition, function (html, data) {
-        frm.find("select[name='landAcquisition']").empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareAcquisitionType, item.landAcquisition, function (html, data) {
+        frm.find("select.acquisitionType").empty().html(html).trigger('change');
     });
     frm.find("input[name='certUse']").off('change').on('change', function () {
         AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility, $(this).val(), item.certUseCategory, function (html, data) {
@@ -826,9 +826,13 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
     AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, item.landCertUse, function (html, data) {
         frm.find("#landCertUseList").empty().html(html).trigger('change');
         frm.find("#landCertUseList2").empty().html(html).trigger('change');
+        frm.find("#landCertUseList3").empty().html(html).trigger('change');
     }, true);
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.landRightType, function (html, data) {
         frm.find("select[name='landRightType']").empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareAcquisitionType, item.acquisitionType, function (html, data) {
+        frm.find("select.acquisitionType").empty().html(html).trigger('change');
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
@@ -839,11 +843,13 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
     AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, item.houseCertUse, function (html, data) {
         frm.find("#realHouseUseList").empty().html(html).trigger('change');
         frm.find("#realHouseUseList2").empty().html(html).trigger('change');
+        frm.find("#realHouseUseList3").empty().html(html).trigger('change');
     }, true);
     frm.find("input[name='houseCertUse']").off('change').on('change', function () {
         AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility, $(this).val(), item.houseCertUseCategory, function (html, data) {
             frm.find("#houseCertUseCategoryList1").empty().html(html).trigger('change');
             frm.find("#houseCertUseCategoryList2").empty().html(html).trigger('change');
+            frm.find("#houseCertUseCategoryList3").empty().html(html).trigger('change');
         });
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
@@ -854,6 +860,7 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
         AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), item.landCertUseCategory, function (html, data) {
             frm.find("#landCertUseCategoryList").empty().html(html).trigger('change');
             frm.find("#landCertUseCategoryList2").empty().html(html).trigger('change');
+            frm.find("#landCertUseCategoryList3").empty().html(html).trigger('change');
         });
     });
     //绑定变更事件

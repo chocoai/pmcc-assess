@@ -40,8 +40,10 @@
         realEstateCert: {
             id: "declareModelRealEstateCert",
             id2: "declareModelRealEstateCert2",
+            id3: "declareModelRealEstateCert3",
             handleId: "declareModelHandleRealEstateCert",
             handleId2: "declareModelHandleRealEstateCert2",
+            handleId3: "declareModelHandleRealEstateCert3",
             name: "不动产证"
         },
         civilEngineering: {
@@ -91,6 +93,9 @@
         },
         getHtml2: function () {
             return $("#" + commonDeclareApprovalModel.config.realEstateCert.id2).html();
+        },
+        getHtml3: function () {
+            return $("#" + commonDeclareApprovalModel.config.realEstateCert.id3).html();
         }
     };
 
@@ -486,7 +491,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <label type="text"
-                               placeholder="登记机关" name="landAcquisitionName" class="form-control input-full"></label>
+                               name="landAcquisitionName" class="form-control input-full"></label>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         登记机关<span class="symbol required"></span>
@@ -1207,7 +1212,7 @@
                         土地取得方式
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <label type="text" placeholder="土地取得方式" name="acquisitionType" class="form-control input-full"
+                        <label type="text" placeholder="土地取得方式" name="acquisitionTypeName" class="form-control input-full"
                                data-rule-maxlength="100"></label>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
@@ -2715,6 +2720,458 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <label  name="floorCount" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="declareModelRealEstateCert3" type="text/html" data-title="土地不动产证（有权证）label">
+    <div id="declareModelHandleRealEstateCert3">
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        省
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label class="form-control input-full" name="provinceName"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        市
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label class="form-control input-full" name="cityName"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        县
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label class="form-control input-full" name="districtName"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                        不动产权证号<span
+                            class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                        <label type="text" placeholder="不动产权证号" name="certName" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        所在地
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="所在地" name="location" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        编号
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label name="number" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        年份
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label data-rule-number='true' name="year" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        不动产单元号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="不动产单元号" name="realEstateUnitNumber" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房屋所有权人
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="房屋所有权人" name="ownership" class="form-control input-full"
+                               required="required"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        共有情况
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="publicSituationName" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        共有情况说明
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="publicSituationRemark" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        登记日期
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input placeholder="登记日期"
+                               name="registrationTime" data-date-format="yyyy-mm-dd"
+                               class="form-control input-full" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        街道号
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text" required
+                               placeholder="街道号" name="streetNumber" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        附号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="附号(数字)" name="attachedNumber" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        栋号
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text" required
+                               placeholder="栋号" name="buildingNumber" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        单元
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="单元(数字)" name="unit" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        楼层
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="楼层" name="floor" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房号
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text" placeholder="房号" name="roomNumber" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                        坐落<span
+                            class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                        <label type="text" placeholder="坐落" name="beLocated" class="form-control input-full"
+                               required="required"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        土地取得方式
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text" placeholder="土地取得方式" name="acquisitionTypeName" class="form-control input-full"
+                               data-rule-maxlength="100"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        土地取得价格
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text" placeholder="土地取得价格" name="acquisitionPrice" class="form-control input-full"
+                               data-rule-maxlength="100"
+                               data-rule-number='true'></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        土地用途类型
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text" name="landCertUse"
+                               class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        土地用途类别
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text" name="landCertUseCategory"
+                               class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        土地权利性质
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label name="landRightNatureName" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        共用宗地面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="共用宗地面积(数字)" name="useRightArea" class="form-control input-full"
+                               data-rule-maxlength="100" data-rule-number='true'></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        权利类型
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label name="landRightTypeName" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        土地分摊面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="土地分摊面积(数字)" name="landApportionArea" class="form-control input-full"
+                               data-rule-maxlength="100"
+                               data-rule-number='true'></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        土地使用年限起
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input placeholder="土地使用年限起"
+                               name="useStartDate" data-date-format="yyyy-mm-dd"
+                               class="form-control input-full " readonly="readonly">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        土地使用年限止
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input placeholder="土地使用年限止"
+                               name="useEndDate" data-date-format="yyyy-mm-dd"
+                               class="form-control input-full " readonly="readonly">
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        登记机关
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="登记机关" name="registrationAuthority" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                        记事(土地)
+                    </label>
+                    <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                        <label placeholder="记事" name="memo" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+            color="#6f5499" size="10"/>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房屋结构
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="房屋结构" name="housingStructure" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房屋用途类型
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               name="houseCertUse" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房屋用途类别
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               name="houseCertUseCategory" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房屋性质
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               name="natureName" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        证载面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="证载面积(数字)" name="evidenceArea" class="form-control input-full"
+                               data-rule-maxlength="100"
+                               data-rule-number='true'></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        套内面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="套内面积(数字)" name="innerArea" class="form-control input-full"
+                               data-rule-maxlength="100"
+                               data-rule-number='true'></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        公摊面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="公摊面积(数字)" name="apportionmentArea" class="form-control input-full"
+                               data-rule-maxlength="100" data-rule-number='true'></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        其它(房屋)
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="其它" name="other" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        附记其它
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text"
+                               placeholder="附记其它" name="otherNote" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        总层数
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label type="text" placeholder="总层数" name="floorCount" class="form-control input-full"></label>
                     </div>
                 </div>
             </div>
