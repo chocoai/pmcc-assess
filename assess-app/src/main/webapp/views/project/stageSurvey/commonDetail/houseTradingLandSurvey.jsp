@@ -213,6 +213,11 @@
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline x-valid">
+                    <label class="col-sm-1 control-label">成本</label>
+                    <div class="col-sm-3">
+                        <label class="form-control input-full"
+                               name="cost">${basicHouseTrading.cost}</label>
+                    </div>
                     <label class="col-sm-1 control-label">交易单价（元）</label>
                     <div class="col-sm-3">
                         <label class="form-control input-full"

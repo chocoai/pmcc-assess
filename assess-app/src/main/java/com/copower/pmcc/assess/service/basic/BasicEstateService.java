@@ -209,6 +209,9 @@ public class BasicEstateService extends BasicEntityAbstract {
         vo.setSupplyHeatingName(baseDataDicService.getNameById(basicEstate.getSupplyHeating()));
         vo.setSupplyCommunicationName(baseDataDicService.getNameById(basicEstate.getSupplyCommunication()));
         vo.setSupplyRoadName(baseDataDicService.getNameById(basicEstate.getSupplyRoad()));
+        vo.setAcquisitionTypeName(baseDataDicService.getNameById(basicEstate.getAcquisitionType()));
+        vo.setLandRightNatureName(baseDataDicService.getNameById(basicEstate.getLandRightNature()));
+        vo.setLandRightTypeName(baseDataDicService.getNameById(basicEstate.getLandRightType()));
         if (NumberUtils.isNumber(basicEstate.getDeveloper())) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(Integer.parseInt(basicEstate.getDeveloper()));
             if (dataDeveloper != null) {

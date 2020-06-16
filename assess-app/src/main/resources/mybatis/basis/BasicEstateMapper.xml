@@ -54,6 +54,10 @@
     <result column="average_price_unit" jdbcType="VARCHAR" property="averagePriceUnit" />
     <result column="price_range_unit" jdbcType="VARCHAR" property="priceRangeUnit" />
     <result column="cover_an_area_unit" jdbcType="VARCHAR" property="coverAnAreaUnit" />
+    <result column="acquisition_type" jdbcType="VARCHAR" property="acquisitionType" />
+    <result column="land_right_nature" jdbcType="VARCHAR" property="landRightNature" />
+    <result column="land_right_type" jdbcType="VARCHAR" property="landRightType" />
+    <result column="regional_planning" jdbcType="VARCHAR" property="regionalPlanning" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -121,7 +125,8 @@
     supply_power, supply_communication, supply_road, supply_water, drain_water, supply_gas, 
     infrastructure, infrastructure_completeness, location_describe, display_case_id, 
     map_id, relevance_id, version, bis_case, bis_enable, bis_delete, creator, gmt_created, 
-    gmt_modified, average_price_unit, price_range_unit, cover_an_area_unit
+    gmt_modified, average_price_unit, price_range_unit, cover_an_area_unit, acquisition_type, 
+    land_right_nature, land_right_type, regional_planning
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample" resultMap="BaseResultMap">
     select
@@ -174,7 +179,8 @@
       version, bis_case, bis_enable, 
       bis_delete, creator, gmt_created, 
       gmt_modified, average_price_unit, price_range_unit, 
-      cover_an_area_unit)
+      cover_an_area_unit, acquisition_type, land_right_nature, 
+      land_right_type, regional_planning)
     values (#{applyId,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, #{classify,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
       #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, 
@@ -192,7 +198,8 @@
       #{version,jdbcType=INTEGER}, #{bisCase,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
       #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{averagePriceUnit,jdbcType=VARCHAR}, #{priceRangeUnit,jdbcType=VARCHAR}, 
-      #{coverAnAreaUnit,jdbcType=VARCHAR})
+      #{coverAnAreaUnit,jdbcType=VARCHAR}, #{acquisitionType,jdbcType=VARCHAR}, #{landRightNature,jdbcType=VARCHAR}, 
+      #{landRightType,jdbcType=VARCHAR}, #{regionalPlanning,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstate">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -353,6 +360,18 @@
       <if test="coverAnAreaUnit != null">
         cover_an_area_unit,
       </if>
+      <if test="acquisitionType != null">
+        acquisition_type,
+      </if>
+      <if test="landRightNature != null">
+        land_right_nature,
+      </if>
+      <if test="landRightType != null">
+        land_right_type,
+      </if>
+      <if test="regionalPlanning != null">
+        regional_planning,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="applyId != null">
@@ -507,6 +526,18 @@
       </if>
       <if test="coverAnAreaUnit != null">
         #{coverAnAreaUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="acquisitionType != null">
+        #{acquisitionType,jdbcType=VARCHAR},
+      </if>
+      <if test="landRightNature != null">
+        #{landRightNature,jdbcType=VARCHAR},
+      </if>
+      <if test="landRightType != null">
+        #{landRightType,jdbcType=VARCHAR},
+      </if>
+      <if test="regionalPlanning != null">
+        #{regionalPlanning,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -675,6 +706,18 @@
       <if test="record.coverAnAreaUnit != null">
         cover_an_area_unit = #{record.coverAnAreaUnit,jdbcType=VARCHAR},
       </if>
+      <if test="record.acquisitionType != null">
+        acquisition_type = #{record.acquisitionType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landRightNature != null">
+        land_right_nature = #{record.landRightNature,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landRightType != null">
+        land_right_type = #{record.landRightType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionalPlanning != null">
+        regional_planning = #{record.regionalPlanning,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -733,7 +776,11 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       average_price_unit = #{record.averagePriceUnit,jdbcType=VARCHAR},
       price_range_unit = #{record.priceRangeUnit,jdbcType=VARCHAR},
-      cover_an_area_unit = #{record.coverAnAreaUnit,jdbcType=VARCHAR}
+      cover_an_area_unit = #{record.coverAnAreaUnit,jdbcType=VARCHAR},
+      acquisition_type = #{record.acquisitionType,jdbcType=VARCHAR},
+      land_right_nature = #{record.landRightNature,jdbcType=VARCHAR},
+      land_right_type = #{record.landRightType,jdbcType=VARCHAR},
+      regional_planning = #{record.regionalPlanning,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -894,6 +941,18 @@
       <if test="coverAnAreaUnit != null">
         cover_an_area_unit = #{coverAnAreaUnit,jdbcType=VARCHAR},
       </if>
+      <if test="acquisitionType != null">
+        acquisition_type = #{acquisitionType,jdbcType=VARCHAR},
+      </if>
+      <if test="landRightNature != null">
+        land_right_nature = #{landRightNature,jdbcType=VARCHAR},
+      </if>
+      <if test="landRightType != null">
+        land_right_type = #{landRightType,jdbcType=VARCHAR},
+      </if>
+      <if test="regionalPlanning != null">
+        regional_planning = #{regionalPlanning,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -949,7 +1008,11 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       average_price_unit = #{averagePriceUnit,jdbcType=VARCHAR},
       price_range_unit = #{priceRangeUnit,jdbcType=VARCHAR},
-      cover_an_area_unit = #{coverAnAreaUnit,jdbcType=VARCHAR}
+      cover_an_area_unit = #{coverAnAreaUnit,jdbcType=VARCHAR},
+      acquisition_type = #{acquisitionType,jdbcType=VARCHAR},
+      land_right_nature = #{landRightNature,jdbcType=VARCHAR},
+      land_right_type = #{landRightType,jdbcType=VARCHAR},
+      regional_planning = #{regionalPlanning,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

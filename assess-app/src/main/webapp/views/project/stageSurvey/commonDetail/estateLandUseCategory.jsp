@@ -45,11 +45,16 @@
                                 <label name="acquisitionTime" data-date-format="yyyy-mm-dd"
                                        class="form-control input-full date-picker dbdate"></label>
                             </div>
-                            <label class="col-sm-1 control-label">土地使用年限</label>
+                            <label class="col-sm-1 control-label">土地终止日期</label>
                             <div class="col-sm-3">
-                                <label type="text" name="landUseYear"
-                                       class="form-control input-full"></label>
+                                <label name="terminationData" data-date-format="yyyy-mm-dd"
+                                       class="form-control input-full date-picker dbdate"></label>
                             </div>
+                            <%--<label class="col-sm-1 control-label">土地使用年限</label>--%>
+                            <%--<div class="col-sm-3">--%>
+                                <%--<label type="text" name="landUseYear"--%>
+                                       <%--class="form-control input-full"></label>--%>
+                            <%--</div>--%>
                             <label class="col-sm-1 control-label">土地形状</label>
                             <div class="col-sm-3">
                                 <label type="text" name="landShape"

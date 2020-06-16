@@ -52,6 +52,8 @@ public class BasicEstateLandCategoryInfo {
 
     private String plotRatioRemark;
 
+    private Date terminationData;
+
     public Integer getId() {
         return id;
     }
@@ -242,5 +244,13 @@ public class BasicEstateLandCategoryInfo {
 
     public void setPlotRatioRemark(String plotRatioRemark) {
         this.plotRatioRemark = plotRatioRemark == null ? null : plotRatioRemark.trim();
+    }
+
+    public Date getTerminationData() {
+        return terminationData;
+    }
+
+    public void setTerminationData(Date terminationData) {
+        this.terminationData = terminationData;
     }
 }

@@ -288,6 +288,15 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_infrastructureCompleteness, data.estate.infrastructureCompleteness, function (html, data) {
             estateCommon.estateForm.find("select[name='infrastructureCompleteness']").empty().html(html).trigger('change');
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareAcquisitionType, data.estate.acquisitionType, function (html, data) {
+            estateCommon.estateForm.find("select.acquisitionType").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, data.estate.landRightNature, function (html, data) {
+            estateCommon.estateForm.find("select[name='landRightNature']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, data.estate.landRightType, function (html, data) {
+            estateCommon.estateForm.find("select[name='landRightType']").empty().html(html).trigger('change');
+        });
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
             estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
             estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id, bisDetail);

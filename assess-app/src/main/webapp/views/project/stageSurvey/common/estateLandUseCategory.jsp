@@ -86,12 +86,18 @@
                                        placeholder="土地取得时间"
                                        class="form-control input-full date-picker dbdate">
                             </div>
-                            <label class="col-sm-1 control-label">土地使用年限</label>
+                            <label class="col-sm-1 control-label">土地终止日期</label>
                             <div class="col-sm-3">
-                                <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                       name="landUseYear" class="form-control input-full"
-                                       placeholder="土地使用年限" value="${landCategoryInfo.landUseYear}">
+                                <input name="terminationData" data-date-format="yyyy-mm-dd"
+                                       placeholder="土地取得时间"
+                                       class="form-control input-full date-picker dbdate">
                             </div>
+                            <%--<label class="col-sm-1 control-label">土地使用年限</label>--%>
+                            <%--<div class="col-sm-3">--%>
+                                <%--<input type="text" data-rule-number="true" data-rule-maxlength="50"--%>
+                                       <%--name="landUseYear" class="form-control input-full"--%>
+                                       <%--placeholder="土地使用年限" value="${landCategoryInfo.landUseYear}">--%>
+                            <%--</div>--%>
                             <label class="col-sm-1 control-label">土地形状</label>
                             <div class="col-sm-3">
                                 <input type="text" name="landShape" class="form-control input-full"

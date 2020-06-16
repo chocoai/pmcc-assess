@@ -26,6 +26,7 @@
     <result column="compatibility_rate" jdbcType="VARCHAR" property="compatibilityRate" />
     <result column="height_permitted" jdbcType="VARCHAR" property="heightPermitted" />
     <result column="plot_ratio_remark" jdbcType="VARCHAR" property="plotRatioRemark" />
+    <result column="termination_data" jdbcType="TIMESTAMP" property="terminationData" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -90,7 +91,7 @@
     land_factor_total_score, land_level_content_result, land_level, land_level_name, 
     bis_delete, creator, gmt_created, gmt_modified, land_shape, develop_time, plot_ratio, 
     building_density, greening_rate, compatibility_type, compatibility_rate, height_permitted, 
-    plot_ratio_remark
+    plot_ratio_remark, termination_data
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfoExample" resultMap="BaseResultMap">
     select
@@ -133,8 +134,8 @@
       creator, gmt_created, gmt_modified, 
       land_shape, develop_time, plot_ratio, 
       building_density, greening_rate, compatibility_type, 
-      compatibility_rate, height_permitted, plot_ratio_remark
-      )
+      compatibility_rate, height_permitted, plot_ratio_remark, 
+      termination_data)
     values (#{landId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{landUseType,jdbcType=VARCHAR}, 
       #{landUseCategory,jdbcType=VARCHAR}, #{acquisitionTime,jdbcType=TIMESTAMP}, #{landUseYear,jdbcType=DECIMAL}, 
       #{landFactorTotalScore,jdbcType=DECIMAL}, #{landLevelContentResult,jdbcType=VARCHAR}, 
@@ -142,8 +143,8 @@
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{landShape,jdbcType=VARCHAR}, #{developTime,jdbcType=TIMESTAMP}, #{plotRatio,jdbcType=DECIMAL}, 
       #{buildingDensity,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, #{compatibilityType,jdbcType=VARCHAR}, 
-      #{compatibilityRate,jdbcType=VARCHAR}, #{heightPermitted,jdbcType=VARCHAR}, #{plotRatioRemark,jdbcType=VARCHAR}
-      )
+      #{compatibilityRate,jdbcType=VARCHAR}, #{heightPermitted,jdbcType=VARCHAR}, #{plotRatioRemark,jdbcType=VARCHAR}, 
+      #{terminationData,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -220,6 +221,9 @@
       <if test="plotRatioRemark != null">
         plot_ratio_remark,
       </if>
+      <if test="terminationData != null">
+        termination_data,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="landId != null">
@@ -291,9 +295,12 @@
       <if test="plotRatioRemark != null">
         #{plotRatioRemark,jdbcType=VARCHAR},
       </if>
+      <if test="terminationData != null">
+        #{terminationData,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfoExample" resultType="java.lang.Integer">
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfoExample" resultType="java.lang.Long">
     select count(*) from tb_basic_estate_land_category_info
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -374,6 +381,9 @@
       <if test="record.plotRatioRemark != null">
         plot_ratio_remark = #{record.plotRatioRemark,jdbcType=VARCHAR},
       </if>
+      <if test="record.terminationData != null">
+        termination_data = #{record.terminationData,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -404,7 +414,8 @@
       compatibility_type = #{record.compatibilityType,jdbcType=VARCHAR},
       compatibility_rate = #{record.compatibilityRate,jdbcType=VARCHAR},
       height_permitted = #{record.heightPermitted,jdbcType=VARCHAR},
-      plot_ratio_remark = #{record.plotRatioRemark,jdbcType=VARCHAR}
+      plot_ratio_remark = #{record.plotRatioRemark,jdbcType=VARCHAR},
+      termination_data = #{record.terminationData,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -481,6 +492,9 @@
       <if test="plotRatioRemark != null">
         plot_ratio_remark = #{plotRatioRemark,jdbcType=VARCHAR},
       </if>
+      <if test="terminationData != null">
+        termination_data = #{terminationData,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -508,7 +522,8 @@
       compatibility_type = #{compatibilityType,jdbcType=VARCHAR},
       compatibility_rate = #{compatibilityRate,jdbcType=VARCHAR},
       height_permitted = #{heightPermitted,jdbcType=VARCHAR},
-      plot_ratio_remark = #{plotRatioRemark,jdbcType=VARCHAR}
+      plot_ratio_remark = #{plotRatioRemark,jdbcType=VARCHAR},
+      termination_data = #{terminationData,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

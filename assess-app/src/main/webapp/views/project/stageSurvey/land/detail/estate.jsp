@@ -89,22 +89,39 @@
                                                     <label class="form-control input-full"
                                                            name="positionName">${basicEstate.positionName}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">基础版块<span
-                                                        class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">区域规划</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
-                                                           name="blockName">${basicEstate.blockName}</label>
+                                                           name="regionalPlanning">${basicEstate.regionalPlanning}</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%--<div class="row form-group">--%>
+                                        <%--<div class="col-md-12">--%>
+                                            <%--<div class="form-inline x-valid">--%>
+                                                <%--<label class="col-sm-1 control-label">基础版块描述<span--%>
+                                                        <%--class="symbol required"></span></label>--%>
+                                                <%--<div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">--%>
+                                                    <%--<label class="form-control input-full">${basicEstate.blockDescription}</label>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">基础版块描述<span
-                                                        class="symbol required"></span></label>
-                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                                                    <label class="form-control input-full">${basicEstate.blockDescription}</label>
+                                                <label class="col-sm-1">土地取得方式</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${basicEstate.acquisitionTypeName}</label>
+                                                </div>
+                                                <label class="col-sm-1">土地权利性质</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${basicEstate.landRightNatureName}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">权利类型</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${basicEstate.landRightTypeName}</label>
                                                 </div>
                                             </div>
                                         </div>

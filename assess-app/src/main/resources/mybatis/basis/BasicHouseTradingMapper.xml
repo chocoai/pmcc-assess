@@ -41,6 +41,7 @@
     <result column="price_connotation_unit" jdbcType="VARCHAR" property="priceConnotationUnit" />
     <result column="per_mu_price" jdbcType="DECIMAL" property="perMuPrice" />
     <result column="bis_mark" jdbcType="BIT" property="bisMark" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -107,7 +108,7 @@
     tax_burden, scope_property, scope_include, scope_not_include, scope_property_explain, 
     down_payment_ratio, lending_rate, loan_period, deposit, information_type, information_category, 
     name, phone, land_buyer_seller, price_type, price_connotation, bis_delete, creator, 
-    gmt_created, gmt_modified, price_connotation_unit, per_mu_price, bis_mark
+    gmt_created, gmt_modified, price_connotation_unit, per_mu_price, bis_mark, cost
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" resultMap="BaseResultMap">
     select
@@ -155,8 +156,8 @@
       name, phone, land_buyer_seller, 
       price_type, price_connotation, bis_delete, 
       creator, gmt_created, gmt_modified, 
-      price_connotation_unit, per_mu_price, bis_mark
-      )
+      price_connotation_unit, per_mu_price, bis_mark, 
+      cost)
     values (#{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
       #{tradingType,jdbcType=INTEGER}, #{tradingTotalPrice,jdbcType=DECIMAL}, #{tradingUnitPrice,jdbcType=DECIMAL}, 
       #{buyerExtraTax,jdbcType=VARCHAR}, #{buyerExtraFee,jdbcType=VARCHAR}, #{rentingExtraTax,jdbcType=VARCHAR}, 
@@ -169,8 +170,8 @@
       #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{landBuyerSeller,jdbcType=VARCHAR}, 
       #{priceType,jdbcType=INTEGER}, #{priceConnotation,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{priceConnotationUnit,jdbcType=VARCHAR}, #{perMuPrice,jdbcType=DECIMAL}, #{bisMark,jdbcType=BIT}
-      )
+      #{priceConnotationUnit,jdbcType=VARCHAR}, #{perMuPrice,jdbcType=DECIMAL}, #{bisMark,jdbcType=BIT}, 
+      #{cost,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -292,6 +293,9 @@
       <if test="bisMark != null">
         bis_mark,
       </if>
+      <if test="cost != null">
+        cost,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="applyId != null">
@@ -407,6 +411,9 @@
       </if>
       <if test="bisMark != null">
         #{bisMark,jdbcType=BIT},
+      </if>
+      <if test="cost != null">
+        #{cost,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -536,6 +543,9 @@
       <if test="record.bisMark != null">
         bis_mark = #{record.bisMark,jdbcType=BIT},
       </if>
+      <if test="record.cost != null">
+        cost = #{record.cost,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -581,7 +591,8 @@
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       price_connotation_unit = #{record.priceConnotationUnit,jdbcType=VARCHAR},
       per_mu_price = #{record.perMuPrice,jdbcType=DECIMAL},
-      bis_mark = #{record.bisMark,jdbcType=BIT}
+      bis_mark = #{record.bisMark,jdbcType=BIT},
+      cost = #{record.cost,jdbcType=DECIMAL}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -703,6 +714,9 @@
       <if test="bisMark != null">
         bis_mark = #{bisMark,jdbcType=BIT},
       </if>
+      <if test="cost != null">
+        cost = #{cost,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -745,7 +759,8 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       price_connotation_unit = #{priceConnotationUnit,jdbcType=VARCHAR},
       per_mu_price = #{perMuPrice,jdbcType=DECIMAL},
-      bis_mark = #{bisMark,jdbcType=BIT}
+      bis_mark = #{bisMark,jdbcType=BIT},
+      cost = #{cost,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

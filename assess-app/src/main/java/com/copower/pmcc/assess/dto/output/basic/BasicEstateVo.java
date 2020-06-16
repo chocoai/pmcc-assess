@@ -29,6 +29,33 @@ public class BasicEstateVo extends BasicEstate {
     private String infrastructureName;
     private String infrastructureCompletenessName;
     private String creatorName;
+    private String acquisitionTypeName;
+    private String landRightNatureName;
+    private String landRightTypeName;
+
+    public String getAcquisitionTypeName() {
+        return acquisitionTypeName;
+    }
+
+    public void setAcquisitionTypeName(String acquisitionTypeName) {
+        this.acquisitionTypeName = acquisitionTypeName;
+    }
+
+    public String getLandRightNatureName() {
+        return landRightNatureName;
+    }
+
+    public void setLandRightNatureName(String landRightNatureName) {
+        this.landRightNatureName = landRightNatureName;
+    }
+
+    public String getLandRightTypeName() {
+        return landRightTypeName;
+    }
+
+    public void setLandRightTypeName(String landRightTypeName) {
+        this.landRightTypeName = landRightTypeName;
+    }
 
     public String getProvinceName() {
         return provinceName;

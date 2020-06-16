@@ -1665,6 +1665,66 @@ public class BasicEstateLandCategoryInfoExample {
             addCriterion("plot_ratio_remark not between", value1, value2, "plotRatioRemark");
             return (Criteria) this;
         }
+
+        public Criteria andTerminationDataIsNull() {
+            addCriterion("termination_data is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataIsNotNull() {
+            addCriterion("termination_data is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataEqualTo(Date value) {
+            addCriterion("termination_data =", value, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataNotEqualTo(Date value) {
+            addCriterion("termination_data <>", value, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataGreaterThan(Date value) {
+            addCriterion("termination_data >", value, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataGreaterThanOrEqualTo(Date value) {
+            addCriterion("termination_data >=", value, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataLessThan(Date value) {
+            addCriterion("termination_data <", value, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataLessThanOrEqualTo(Date value) {
+            addCriterion("termination_data <=", value, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataIn(List<Date> values) {
+            addCriterion("termination_data in", values, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataNotIn(List<Date> values) {
+            addCriterion("termination_data not in", values, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataBetween(Date value1, Date value2) {
+            addCriterion("termination_data between", value1, value2, "terminationData");
+            return (Criteria) this;
+        }
+
+        public Criteria andTerminationDataNotBetween(Date value1, Date value2) {
+            addCriterion("termination_data not between", value1, value2, "terminationData");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

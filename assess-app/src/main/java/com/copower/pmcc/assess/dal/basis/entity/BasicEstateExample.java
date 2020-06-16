@@ -3455,6 +3455,286 @@ public class BasicEstateExample {
             addCriterion("cover_an_area_unit not between", value1, value2, "coverAnAreaUnit");
             return (Criteria) this;
         }
+
+        public Criteria andAcquisitionTypeIsNull() {
+            addCriterion("acquisition_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeIsNotNull() {
+            addCriterion("acquisition_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeEqualTo(String value) {
+            addCriterion("acquisition_type =", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeNotEqualTo(String value) {
+            addCriterion("acquisition_type <>", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeGreaterThan(String value) {
+            addCriterion("acquisition_type >", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("acquisition_type >=", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeLessThan(String value) {
+            addCriterion("acquisition_type <", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeLessThanOrEqualTo(String value) {
+            addCriterion("acquisition_type <=", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeLike(String value) {
+            addCriterion("acquisition_type like", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeNotLike(String value) {
+            addCriterion("acquisition_type not like", value, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeIn(List<String> values) {
+            addCriterion("acquisition_type in", values, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeNotIn(List<String> values) {
+            addCriterion("acquisition_type not in", values, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeBetween(String value1, String value2) {
+            addCriterion("acquisition_type between", value1, value2, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTypeNotBetween(String value1, String value2) {
+            addCriterion("acquisition_type not between", value1, value2, "acquisitionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureIsNull() {
+            addCriterion("land_right_nature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureIsNotNull() {
+            addCriterion("land_right_nature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureEqualTo(String value) {
+            addCriterion("land_right_nature =", value, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureNotEqualTo(String value) {
+            addCriterion("land_right_nature <>", value, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureGreaterThan(String value) {
+            addCriterion("land_right_nature >", value, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureGreaterThanOrEqualTo(String value) {
+            addCriterion("land_right_nature >=", value, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureLessThan(String value) {
+            addCriterion("land_right_nature <", value, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureLessThanOrEqualTo(String value) {
+            addCriterion("land_right_nature <=", value, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureLike(String value) {
+            addCriterion("land_right_nature like", value, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureNotLike(String value) {
+            addCriterion("land_right_nature not like", value, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureIn(List<String> values) {
+            addCriterion("land_right_nature in", values, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureNotIn(List<String> values) {
+            addCriterion("land_right_nature not in", values, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureBetween(String value1, String value2) {
+            addCriterion("land_right_nature between", value1, value2, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightNatureNotBetween(String value1, String value2) {
+            addCriterion("land_right_nature not between", value1, value2, "landRightNature");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeIsNull() {
+            addCriterion("land_right_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeIsNotNull() {
+            addCriterion("land_right_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeEqualTo(String value) {
+            addCriterion("land_right_type =", value, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeNotEqualTo(String value) {
+            addCriterion("land_right_type <>", value, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeGreaterThan(String value) {
+            addCriterion("land_right_type >", value, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("land_right_type >=", value, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeLessThan(String value) {
+            addCriterion("land_right_type <", value, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeLessThanOrEqualTo(String value) {
+            addCriterion("land_right_type <=", value, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeLike(String value) {
+            addCriterion("land_right_type like", value, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeNotLike(String value) {
+            addCriterion("land_right_type not like", value, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeIn(List<String> values) {
+            addCriterion("land_right_type in", values, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeNotIn(List<String> values) {
+            addCriterion("land_right_type not in", values, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeBetween(String value1, String value2) {
+            addCriterion("land_right_type between", value1, value2, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandRightTypeNotBetween(String value1, String value2) {
+            addCriterion("land_right_type not between", value1, value2, "landRightType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningIsNull() {
+            addCriterion("regional_planning is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningIsNotNull() {
+            addCriterion("regional_planning is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningEqualTo(String value) {
+            addCriterion("regional_planning =", value, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningNotEqualTo(String value) {
+            addCriterion("regional_planning <>", value, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningGreaterThan(String value) {
+            addCriterion("regional_planning >", value, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningGreaterThanOrEqualTo(String value) {
+            addCriterion("regional_planning >=", value, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningLessThan(String value) {
+            addCriterion("regional_planning <", value, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningLessThanOrEqualTo(String value) {
+            addCriterion("regional_planning <=", value, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningLike(String value) {
+            addCriterion("regional_planning like", value, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningNotLike(String value) {
+            addCriterion("regional_planning not like", value, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningIn(List<String> values) {
+            addCriterion("regional_planning in", values, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningNotIn(List<String> values) {
+            addCriterion("regional_planning not in", values, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningBetween(String value1, String value2) {
+            addCriterion("regional_planning between", value1, value2, "regionalPlanning");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionalPlanningNotBetween(String value1, String value2) {
+            addCriterion("regional_planning not between", value1, value2, "regionalPlanning");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -99,48 +99,58 @@
                                                             class="form-control input-full search-select position select2">
                                                     </select>
                                                 </div>
-                                                <label class="col-sm-1 control-label">基础版块<span
-                                                        class="symbol required"></span></label>
+                                                <label class="col-sm-1">区域规划</label>
                                                 <div class="col-sm-3">
-                                                    <div class="input-group">
-                                                        <input type="hidden" name="blockId"
-                                                               value="${basicEstate.blockId}">
-                                                        <input type="text"
-                                                               onchange="$(this).closest('.input-group').find('[name=blockId]').val('0');"
-                                                               placeholder="基础版块" class="form-control" name="blockName"
-                                                               value="${basicEstate.blockName}">
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-warning btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                清空
-                                                            </button>
-                                                        </div>
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-primary btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="estateCommon.blockSelect(this);">选择
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    <input type="text" placeholder="区域规划" name="regionalPlanning"
+                                                           class="form-control input-full"
+                                                           value="${basicEstate.regionalPlanning}">
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
+                                    <%--<div class="row form-group">--%>
+                                        <%--<div class="col-md-12">--%>
+                                            <%--<div class="form-inline x-valid">--%>
+                                                <%--<label class="col-sm-1 control-label">基础版块描述<span--%>
+                                                        <%--class="symbol required"></span></label>--%>
+                                                <%--<div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">--%>
+                        <%--<textarea class="form-control input-full" name="blockDescription" id="blockDescription" required--%>
+                                  <%--placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">基础版块描述<span
-                                                        class="symbol required"></span></label>
-                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <textarea class="form-control input-full" name="blockDescription" id="blockDescription" required
-                                  placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                    土地取得方式
+                                                </label>
+                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                    <select name="acquisitionType"
+                                                            class="form-control input-full search-select select2 acquisitionType">
+                                                    </select>
+                                                </div>
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                    土地权利性质
+                                                </label>
+                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                    <select name="landRightNature"
+                                                            class="form-control input-full search-select select2 landRightNature">
+                                                    </select>
+                                                </div>
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                    权利类型
+                                                </label>
+                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                    <select name="landRightType" class="form-control input-full search-select select2 landRightType">
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
