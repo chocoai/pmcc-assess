@@ -492,7 +492,7 @@ public class ProjectInfoService {
             return projectInfoVo;
         }
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
-        projectInfoVo.setServiceComeFromName(bidBaseDataDicService.getNameById(projectInfoVo.getServiceComeFrom()));
+        projectInfoVo.setServiceComeFromName(bidBaseDataDicService.getNameById(projectInfoVo.getServiceComeFrom()));//业务来源
         if (StringUtils.isNotEmpty(projectInfo.getContractId()) && StringUtils.isNotEmpty(projectInfo.getContractId())) {
             List<String> contractIds = FormatUtils.transformString2List(projectInfo.getContractId());
             List<String> contractName = FormatUtils.transformString2List(projectInfo.getContractName());
@@ -522,14 +522,10 @@ public class ProjectInfoService {
                 projectInfoVo.setProjectCategoryName(projectClassify.getName());
             }
         }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustPurpose())) {
-            //委托目的
-            projectInfoVo.setEntrustPurposeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getName());
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustAimType())) {
-            //委托目的类别
-            projectInfoVo.setEntrustAimTypeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getEntrustAimType()).getName());
-        }
+
+
+        projectInfoVo.setEntrustPurposeName(bidBaseDataDicService.getNameById(projectInfo.getEntrustPurpose()));//委托目的
+        projectInfoVo.setEntrustAimTypeName(bidBaseDataDicService.getNameById(projectInfo.getEntrustAimType())); //委托目的类别
         if (StringUtils.isNotBlank(projectInfo.getProvince())) {
             //省
             projectInfoVo.setProvinceName(erpAreaService.getSysAreaName(projectInfo.getProvince()));
@@ -542,21 +538,14 @@ public class ProjectInfoService {
             //县
             projectInfoVo.setDistrictName(erpAreaService.getSysAreaName(projectInfo.getDistrict()));
         }
-        //紧急程度
-        if (projectInfo.getUrgency() != null) {
-            projectInfoVo.setUrgencyName(bidBaseDataDicService.getNameById(projectInfo.getUrgency()));
-        }
-        projectInfoVo.setLoanTypeName(bidBaseDataDicService.getNameById(projectInfo.getLoanType()));
+
+        projectInfoVo.setUrgencyName(bidBaseDataDicService.getNameById(projectInfo.getUrgency()));//紧急程度
+        projectInfoVo.setLoanTypeName(bidBaseDataDicService.getNameById(projectInfo.getLoanType()));//贷款类型
         if (projectInfo.getDepartmentId() != null) {
             projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
         }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getValueType())) {
-            //价值类型
-            projectInfoVo.setValueTypeName(bidBaseDataDicService.getNameById(projectInfo.getValueType()));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getPropertyScope())) {
-            projectInfoVo.setPropertyScopeName(bidBaseDataDicService.getNameById(projectInfo.getPropertyScope()));
-        }
+        projectInfoVo.setValueTypeName(bidBaseDataDicService.getNameById(projectInfo.getValueType()));
+        projectInfoVo.setPropertyScopeName(bidBaseDataDicService.getNameById(projectInfo.getPropertyScope()));
 
         if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {
             InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());

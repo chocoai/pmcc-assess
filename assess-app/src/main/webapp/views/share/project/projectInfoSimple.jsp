@@ -183,7 +183,7 @@
                                 业务来源
                             </label>
                             <div class="col-sm-3 x-valid">
-                                <label class="form-control input-full">${projectInfo.serviceComeFrom}</label>
+                                <label class="form-control input-full">${projectInfo.serviceComeFromName}</label>
                             </div>
                             <label class="col-sm-1 col-form-label">
                                 业务来源说明
