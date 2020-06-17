@@ -138,9 +138,9 @@ public class BasicApplyBatchService {
                     }
                 }
             }
-            if(StringUtils.isNotEmpty(item.getType())){
+            if (StringUtils.isNotEmpty(item.getType())) {
                 ztreeDto.setType(item.getType());
-            }else{
+            } else {
                 BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(item.getTableName());
                 ztreeDto.setType(anEnum.getKey());
             }
@@ -212,9 +212,9 @@ public class BasicApplyBatchService {
                     }
                 }
             }
-            if(StringUtils.isNotEmpty(item.getType())){
+            if (StringUtils.isNotEmpty(item.getType())) {
                 ztreeDto.setType(item.getType());
-            }else{
+            } else {
                 BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(item.getTableName());
                 ztreeDto.setType(anEnum.getKey());
             }
@@ -790,16 +790,17 @@ public class BasicApplyBatchService {
 
     /**
      * 获取楼盘案例数据
+     *
      * @param province
      * @param city
      * @param search
      * @return
      */
-    public BootstrapTableVo getBasicApplyBatchList(String province,String city,String search) {
+    public BootstrapTableVo getBasicApplyBatchList(String province, String city, String search) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicApplyBatch> basicAppBatchDraftList = basicApplyBatchDao.getListByEstate(province,city, search);
+        List<BasicApplyBatch> basicAppBatchDraftList = basicApplyBatchDao.getListByEstate(province, city, search);
         List<BasicApplyBatchVo> voList = LangUtils.transform(basicAppBatchDraftList, o -> getBasicApplyBatchVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(voList) ? new ArrayList<BasicApplyBatchVo>() : voList);
@@ -808,35 +809,70 @@ public class BasicApplyBatchService {
 
     /**
      * 根据区域+楼盘名称查询案例中的楼盘
+     *
      * @param province
      * @param city
      * @param estateName
      * @return
      */
-    public BasicApplyBatch getCaseBasicApplyBatch(String province,String city,String estateName){
-
-        return null;
+    public BasicApplyBatch getCaseBasicApplyBatch(String province, String city, String estateName) {
+        BasicApplyBatch where = new BasicApplyBatch();
+        where.setProvince(province);
+        where.setCity(city);
+        where.setEstateName(estateName);
+        where.setBisDelete(false);
+        where.setBisCase(true);
+        BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatch(where);
+        return basicApplyBatch;
     }
 
     /**
-     * 获取案例下的
+     * 获取案例下同类型节点数据（确定该节点是否为升级数据）
+     *
      * @param source
      * @param caseApplyBatchId
      * @return
      */
-    public BasicApplyBatchDetail getCaseBasicApplyBatchDetail(BasicApplyBatchDetail source,Integer caseApplyBatchId){
-
+    public BasicApplyBatchDetail getCaseBasicApplyBatchDetail(BasicApplyBatchDetail source, Integer caseApplyBatchId) {
+        if (source == null || caseApplyBatchId == null) return null;
+        List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(source.getType(), caseApplyBatchId, null, true);
+        if (CollectionUtils.isEmpty(list)) return null;
+        for (BasicApplyBatchDetail basicApplyBatchDetail : list) {
+            if (compareParentName(source, basicApplyBatchDetail)) return basicApplyBatchDetail;
+        }
         return null;
+    }
+
+    /**
+     * 递归比较父级节点的名称是否完全一致
+     *
+     * @param source
+     * @param caseTarget
+     * @return
+     */
+    public Boolean compareParentName(BasicApplyBatchDetail source, BasicApplyBatchDetail caseTarget) {
+        if (source == null || caseTarget == null) return false;
+        if (source.getName().equals(caseTarget.getName())) {
+            if (source.getPid() <= 0 && caseTarget.getPid() <= 0) return true;
+            BasicApplyBatchDetail sourceParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
+            BasicApplyBatchDetail caseTargetParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
+            if (compareParentName(sourceParent, caseTargetParent) == Boolean.FALSE) return false;
+        }
+        return false;
     }
 
     /**
      * 获取案例上级
+     *
      * @param source
      * @param caseApplyBatchId
      * @return
      */
-    public BasicApplyBatchDetail getCaseParentBasicApplyBatchDetail(BasicApplyBatchDetail source,Integer caseApplyBatchId){
-
-        return null;
+    public BasicApplyBatchDetail getCaseParentBasicApplyBatchDetail(BasicApplyBatchDetail source, Integer caseApplyBatchId) {
+        if (source == null || caseApplyBatchId == null) return null;
+        BasicApplyBatchDetail batchDetailParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
+        List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(batchDetailParent.getType(), caseApplyBatchId, null, true);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
     }
 }

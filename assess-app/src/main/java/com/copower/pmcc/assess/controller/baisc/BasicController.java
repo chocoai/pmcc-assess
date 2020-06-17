@@ -130,13 +130,7 @@ public class BasicController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
             BasicApplyBatch caseData = basicApplyBatchService.getBasicApplyBatchById(estateId);
-            if (caseData != null) {
-                modelAndView.addObject("applyBatch", caseData);
-            } else {
-                //创建树结构
-                BasicApplyBatch applyBatch = basicApplyBatchService.generateTree(estateId);
-                modelAndView.addObject("applyBatch", applyBatch);
-            }
+            modelAndView.addObject("applyBatch", caseData);
             modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
             modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         } catch (Exception e) {
