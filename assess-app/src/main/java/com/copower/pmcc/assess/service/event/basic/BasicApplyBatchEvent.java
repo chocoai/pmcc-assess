@@ -141,6 +141,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
         if(CollectionUtils.isNotEmpty(tradingList)){
             for(BasicHouseTrading trading:tradingList){
                 BasicHouseCaseSummary summary = new BasicHouseCaseSummary();
+                summary.setCaseHouseId(basicHouse.getId());
                 summary.setProvince(basicEstate.getProvince());
                 summary.setCity(basicEstate.getCity());
                 summary.setDistrict(basicEstate.getDistrict());
@@ -156,6 +157,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                 summary.setArea(basicHouse.getArea());
                 summary.setEstateName(basicEstate.getName());
                 summary.setVersion(1);
+                summary.setBisFromSelf(true);
                 //summary.setDealType(trading.getPaymentMethod());
                 basicHouseCaseSummaryService.addBaseHouseSummary(summary);
             }
