@@ -828,4 +828,15 @@ public class BasicApplyBatchService {
 
         return null;
     }
+
+    /**
+     * 获取案例上级
+     * @param source
+     * @param caseApplyBatchId
+     * @return
+     */
+    public BasicApplyBatchDetail getCaseParentBasicApplyBatchDetail(BasicApplyBatchDetail source,Integer caseApplyBatchId){
+
+        return null;
+    }
 }
