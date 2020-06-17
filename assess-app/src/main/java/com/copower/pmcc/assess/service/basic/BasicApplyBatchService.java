@@ -805,4 +805,27 @@ public class BasicApplyBatchService {
         vo.setRows(CollectionUtils.isEmpty(voList) ? new ArrayList<BasicApplyBatchVo>() : voList);
         return vo;
     }
+
+    /**
+     * 根据区域+楼盘名称查询案例中的楼盘
+     * @param province
+     * @param city
+     * @param estateName
+     * @return
+     */
+    public BasicApplyBatch getCaseBasicApplyBatch(String province,String city,String estateName){
+
+        return null;
+    }
+
+    /**
+     * 获取案例下的
+     * @param source
+     * @param caseApplyBatchId
+     * @return
+     */
+    public BasicApplyBatchDetail getCaseBasicApplyBatchDetail(BasicApplyBatchDetail source,Integer caseApplyBatchId){
+
+        return null;
+    }
 }
