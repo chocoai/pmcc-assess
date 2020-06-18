@@ -862,7 +862,7 @@ public class BasicApplyBatchService {
             booleanList.add(true);
             if (source.getPid() <= 0 && caseTarget.getPid() <= 0) return;
             BasicApplyBatchDetail sourceParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
-            BasicApplyBatchDetail caseTargetParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
+            BasicApplyBatchDetail caseTargetParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(caseTarget.getPid());
             compareParentName(sourceParent, caseTargetParent, booleanList);
         }
     }

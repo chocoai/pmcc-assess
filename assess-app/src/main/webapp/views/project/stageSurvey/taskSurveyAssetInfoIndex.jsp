@@ -952,20 +952,21 @@
         if (item.groupId) {
             AlertError("已经被添加到组中不可作为单独事项去清查了", "假如作为单独事项来做清查业务  那么请从组中移除添加的这个认领权证");
         } else {
+            assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "unit", item.id, item.name);
             //验证权证是否填写了查勘，可清查
-            $.ajax({
-                url: '${pageContext.request.contextPath}/surveyAssetInventory/canInventory',
-                type: 'post',
-                data: {assetInfoItemId: id},
-                dataType: 'json',
-                success: function (result) {
-                    if (result.ret && result.data) {
-                        assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "unit", item.id, item.name);
-                    } else {
-                        notifyInfo("提示", "请先填写查勘信息后，才可进行清查");
-                    }
-                }
-            })
+            <%--$.ajax({--%>
+            <%--    url: '${pageContext.request.contextPath}/surveyAssetInventory/canInventory',--%>
+            <%--    type: 'post',--%>
+            <%--    data: {assetInfoItemId: id},--%>
+            <%--    dataType: 'json',--%>
+            <%--    success: function (result) {--%>
+            <%--        if (result.ret && result.data) {--%>
+            <%--            assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "unit", item.id, item.name);--%>
+            <%--        } else {--%>
+            <%--            notifyInfo("提示", "请先填写查勘信息后，才可进行清查");--%>
+            <%--        }--%>
+            <%--    }--%>
+            <%--})--%>
         }
     };
 
