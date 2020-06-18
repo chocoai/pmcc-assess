@@ -864,6 +864,8 @@ public class BasicApplyBatchService {
             BasicApplyBatchDetail sourceParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
             BasicApplyBatchDetail caseTargetParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(caseTarget.getPid());
             compareParentName(sourceParent, caseTargetParent, booleanList);
+        } else {
+            booleanList.add(false);
         }
     }
 
@@ -877,8 +879,16 @@ public class BasicApplyBatchService {
     public BasicApplyBatchDetail getCaseParentBasicApplyBatchDetail(BasicApplyBatchDetail source, Integer caseApplyBatchId) {
         if (source == null || caseApplyBatchId == null) return null;
         BasicApplyBatchDetail batchDetailParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
-        List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(batchDetailParent.getType(), caseApplyBatchId, null, true);
-        if (CollectionUtils.isEmpty(list)) return null;
-        return list.get(0);
+        List<BasicApplyBatchDetail> detailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByName(batchDetailParent.getType(), batchDetailParent.getName(), caseApplyBatchId);
+        if(CollectionUtils.isEmpty(detailList)) return null;
+        if(detailList.size()==1) return detailList.get(0);
+        for (BasicApplyBatchDetail basicApplyBatchDetail : detailList) {
+            List<Boolean> booleanList = Lists.newArrayList();
+            compareParentName(batchDetailParent, basicApplyBatchDetail, booleanList);
+            if (LangUtils.filter(booleanList, o -> o.booleanValue() == Boolean.FALSE).size() <= 0) {
+                return basicApplyBatchDetail;
+            }
+        }
+        return null;
     }
 }

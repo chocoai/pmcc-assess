@@ -325,6 +325,14 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getBasicApplyBatchDetailListByTypes(types, applyBatchId, pid);
     }
 
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailByName(String type, String name, Integer applyBatchId) {
+        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+        basicApplyBatchDetail.setType(type);
+        basicApplyBatchDetail.setName(name);
+        basicApplyBatchDetail.setApplyBatchId(applyBatchId);
+        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+    }
+
 
     /**
      * 删除
