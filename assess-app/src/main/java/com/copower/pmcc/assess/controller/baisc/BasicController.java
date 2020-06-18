@@ -141,9 +141,9 @@ public class BasicController {
 
     @ResponseBody
     @RequestMapping(value = "/geBasicFormClassifyParamDto", method = {RequestMethod.GET}, name = "通过参数信息")
-    public HttpResult geBasicFormClassifyParamDto(Integer houseId) {
+    public HttpResult geBasicFormClassifyParamDto(Integer detailId) {
         try {
-            BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId);
+            BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(detailId);
             if (basicApplyBatchDetail != null) {
                 BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
                 BasicFormClassifyParamDto basicFormClassifyParamDto = new BasicFormClassifyParamDto();
@@ -155,7 +155,7 @@ public class BasicController {
                     BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(basicApplyBatchDetail.getTableName());
                     basicFormClassifyParamDto.setTbType(anEnum.getKey());
                 }
-                basicFormClassifyParamDto.setTbId(houseId);
+                basicFormClassifyParamDto.setTbId(basicApplyBatchDetail.getTableId());
                 basicFormClassifyParamDto.setApplyBatchId(applyBatch.getId());
                 return HttpResult.newCorrectResult(basicFormClassifyParamDto);
             }

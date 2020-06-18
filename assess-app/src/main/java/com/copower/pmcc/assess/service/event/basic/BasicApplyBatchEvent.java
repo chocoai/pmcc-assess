@@ -71,8 +71,8 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                         anAbstract.saveAndUpdate(entity, false);
                     }
                     //summary表处理
-                    if(source.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())){
-                        houseWriteToSummary(source,applyBatch);
+                    if (source.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                        houseWriteToSummary(source, applyBatch);
                     }
                 }
             }
@@ -93,7 +93,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                             Object upgradeEntity = upgradeupgradeAbstract.getBasicEntityById(source.getTableId());
                             if (upgradeEntity != null) {
                                 upgradeupgradeAbstract.setProperty(upgradeEntity, "bisCase", true);
-                                upgradeupgradeAbstract.setProperty(upgradeEntity, "version", (Integer) (version == null ? 1 : version) + 1);
+                                upgradeupgradeAbstract.setProperty(upgradeEntity, "version", (Integer) (version == null ? 0 : version) + 1);
                                 upgradeupgradeAbstract.saveAndUpdate(upgradeEntity, false);
 
                                 caseBasicApplyBatchDetail.setTableId((Integer) upgradeupgradeAbstract.getProperty(upgradeEntity, "id"));
@@ -105,7 +105,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                             BasicApplyBatchDetail caseParentBasicApplyBatchDetail = basicApplyBatchService.getCaseParentBasicApplyBatchDetail(source, caseBasicApplyBatch.getId());
                             if (caseParentBasicApplyBatchDetail != null) {
                                 BasicApplyBatchDetail newDetail = new BasicApplyBatchDetail();
-                                BeanUtils.copyProperties(source, newDetail,"id");
+                                BeanUtils.copyProperties(source, newDetail, "id");
                                 newDetail.setApplyBatchId(caseBasicApplyBatch.getId());
                                 newDetail.setPid(caseParentBasicApplyBatchDetail.getId());
                                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(newDetail);
@@ -119,8 +119,8 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                             }
                         }
                         //summary表处理
-                        if(source.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())){
-                            houseWriteToSummary(source,applyBatch);
+                        if (source.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                            houseWriteToSummary(source, applyBatch);
                         }
                     }
 
@@ -130,47 +130,49 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
     }
 
     //写入summary
-    public void houseWriteToSummary(BasicApplyBatchDetail house,BasicApplyBatch applyBatch){
+    public void houseWriteToSummary(BasicApplyBatchDetail house, BasicApplyBatch applyBatch) {
         //准备需要的数据
         BasicEstate basicEstate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(house.getTableId());
+        if (basicHouse == null) return;
         BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
-        cleanSummary(basicHouse.getId());
+        cleanSummary(house.getId());
 
         List<BasicHouseTrading> tradingList = basicHouseTradingService.getTradingListByHouseId(basicHouse.getId());
-        if(CollectionUtils.isNotEmpty(tradingList)){
-            for(BasicHouseTrading trading:tradingList){
+        if (CollectionUtils.isNotEmpty(tradingList)) {
+            for (BasicHouseTrading trading : tradingList) {
                 BasicHouseCaseSummary summary = new BasicHouseCaseSummary();
-                summary.setCaseHouseId(basicHouse.getId());
+                summary.setCaseHouseId(house.getId());
                 summary.setProvince(basicEstate.getProvince());
                 summary.setCity(basicEstate.getCity());
                 summary.setDistrict(basicEstate.getDistrict());
                 summary.setBlockName(basicEstate.getBlockName());
                 summary.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(house.getId()));
                 summary.setStreet(basicEstate.getStreet());
-                summary.setPracticalUse(Integer.valueOf(basicHouse.getPracticalUse()));
                 summary.setTradingType(trading.getTradingType());
                 summary.setTradingTime(trading.getTradingTime());
                 summary.setTradingUnitPrice(trading.getTradingUnitPrice());
-                summary.setHouseType(landCategoryInfo.getLandUseType());
-                summary.setHouseCategory(landCategoryInfo.getLandUseCategory());
+                if (landCategoryInfo != null) {
+                    summary.setHouseType(landCategoryInfo.getLandUseType());
+                    summary.setHouseCategory(landCategoryInfo.getLandUseCategory());
+                }
                 summary.setArea(basicHouse.getArea());
                 summary.setEstateName(basicEstate.getName());
                 summary.setVersion(1);
                 summary.setBisFromSelf(true);
-                //summary.setDealType(trading.getPaymentMethod());
+                summary.setBisNewest(true);
                 basicHouseCaseSummaryService.addBaseHouseSummary(summary);
             }
         }
     }
 
-    public void cleanSummary(Integer houseId){
+    public void cleanSummary(Integer houseId) {
         BasicHouseCaseSummary where = new BasicHouseCaseSummary();
         where.setCaseHouseId(houseId);
         where.setBisFromSelf(true);
         List<BasicHouseCaseSummary> caseSummaryList = basicHouseCaseSummaryService.getBaseHouseSummaryList(where);
-        if(CollectionUtils.isNotEmpty(caseSummaryList)){
-            for(BasicHouseCaseSummary item:caseSummaryList){
+        if (CollectionUtils.isNotEmpty(caseSummaryList)) {
+            for (BasicHouseCaseSummary item : caseSummaryList) {
                 basicHouseCaseSummaryService.deleteBaseHouseSummaryById(item.getId());
             }
         }

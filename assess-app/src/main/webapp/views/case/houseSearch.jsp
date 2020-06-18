@@ -317,7 +317,7 @@
             type: "get",
             dataType: "json",
             data: {
-                houseId:id
+                detailId:id
             },
             success: function (result) {
                 if (result.ret) {

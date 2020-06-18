@@ -251,7 +251,6 @@ public class BasicApplyBatchService {
         if (existEstateCase) {
             BasicEstate latestVersionEstate = basicEstateDao.getLatestVersionEstate(province, city, estateName);
             if (latestVersionEstate != null) {
-                //basicApplyBatch.setBisCase(true);
                 basicApplyBatch.setClassify(latestVersionEstate.getClassify());
                 basicApplyBatch.setType(latestVersionEstate.getType());
                 basicApplyBatch.setCaseEstateId(latestVersionEstate.getId());
@@ -838,7 +837,11 @@ public class BasicApplyBatchService {
         List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(source.getType(), caseApplyBatchId, null, true);
         if (CollectionUtils.isEmpty(list)) return null;
         for (BasicApplyBatchDetail basicApplyBatchDetail : list) {
-            if (compareParentName(source, basicApplyBatchDetail)) return basicApplyBatchDetail;
+            List<Boolean> booleanList = Lists.newArrayList();
+            compareParentName(source, basicApplyBatchDetail, booleanList);
+            if (LangUtils.filter(booleanList, o -> o.booleanValue() == Boolean.FALSE).size() <= 0) {
+                return basicApplyBatchDetail;
+            }
         }
         return null;
     }
@@ -850,15 +853,18 @@ public class BasicApplyBatchService {
      * @param caseTarget
      * @return
      */
-    public Boolean compareParentName(BasicApplyBatchDetail source, BasicApplyBatchDetail caseTarget) {
-        if (source == null || caseTarget == null) return false;
+    public void compareParentName(BasicApplyBatchDetail source, BasicApplyBatchDetail caseTarget, List<Boolean> booleanList) {
+        if (source == null || caseTarget == null) {
+            booleanList.add(false);
+            return;
+        }
         if (source.getName().equals(caseTarget.getName())) {
-            if (source.getPid() <= 0 && caseTarget.getPid() <= 0) return true;
+            booleanList.add(true);
+            if (source.getPid() <= 0 && caseTarget.getPid() <= 0) return;
             BasicApplyBatchDetail sourceParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
             BasicApplyBatchDetail caseTargetParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
-            if (compareParentName(sourceParent, caseTargetParent) == Boolean.FALSE) return false;
+            compareParentName(sourceParent, caseTargetParent, booleanList);
         }
-        return false;
     }
 
     /**
