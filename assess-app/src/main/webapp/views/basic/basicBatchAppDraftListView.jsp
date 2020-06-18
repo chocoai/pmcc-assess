@@ -206,8 +206,10 @@
     dataObjFun.openModal = function () {
         $("#" + dataObjFun.config.father.frm()).clearAll();
         AssessCommon.initAreaInfo({
+            useDefaultText: true,
+            provinceDefaultText: '四川',
             provinceTarget: $("#province"),
-            cityTarget: $("#city"),
+            cityTarget: $("#city")
         });
         $("#" + dataObjFun.config.father.box()).modal("show");
     };

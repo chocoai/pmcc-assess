@@ -38,12 +38,14 @@
                                                 <div class="col-sm-3">
                                                     <div class="input-group">
                                                         <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
-                                                        <span class="input-group-btn">
-                            <input type="hidden" name="mapId" value="${basicBuilding.mapId}">
-                             <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info">
-                                 <i class="fa fa-map-marker"></i> 标注
-                             </div>
-                        </span>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-info btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="buildingCommon.mapMarker(true);">
+                                                                标注
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">

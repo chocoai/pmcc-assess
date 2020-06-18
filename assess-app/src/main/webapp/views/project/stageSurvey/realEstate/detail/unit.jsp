@@ -37,16 +37,14 @@
                                                     <div class="input-group">
                                                         <label class="form-control "
                                                                name="unitNumber">${basicUnit.unitNumber}</label>
-                                                        <span class="input-group-btn">
-                             <c:if test="${empty isApplyBatch}">
-                            <div onclick="unitCommon.mapMarker(true);" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                             </c:if>
-                              <c:if test="${isApplyBatch eq 'show'}">
-                            <div onclick="unitCommon.mapMarker2(true,${tableId});" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                              </c:if>
-                        </span>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-info btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="unitCommon.mapMarker(true);">
+                                                                标注
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">户型数</label>

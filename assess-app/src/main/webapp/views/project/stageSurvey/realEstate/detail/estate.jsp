@@ -59,17 +59,14 @@
                                                     <div class="input-group">
                                                         <label class="form-control"
                                                                name="name">${basicEstate.name}</label>
-                                                        <span class="input-group-btn">
-                            <input type="hidden" name="mapId" value="${basicEstate.mapId}">
-                             <div onclick="estateCommon.mapMarker(true);" class="btn btn-info">
-                                 <i class="fa fa-map-marker"></i> 标注
-                             </div>
-                        </span>
-
-                                                        <span class="input-group-btn" style="display: none">
-                            <div onclick="estateCommon.mapLandMarker(true)" class="btn btn-info"><i
-                                    class="fa fa-map-marker"></i> 标注</div>
-                        </span>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-info btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="estateCommon.mapMarker(true);">
+                                                                标注
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">楼盘方位</label>

@@ -43,7 +43,7 @@
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">名称1<span
+                                                                <label class="col-sm-1">名称<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-sm-3">
                                                                     <div class="input-group">
