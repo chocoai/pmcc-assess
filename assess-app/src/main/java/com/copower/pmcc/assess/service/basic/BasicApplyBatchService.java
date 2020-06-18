@@ -109,7 +109,15 @@ public class BasicApplyBatchService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public List<ZtreeDto> getZtreeDto(Integer basicApplyBatchId) throws Exception {
+    /**
+     * 初始化树形结构
+     *
+     * @param basicApplyBatchId
+     * @param showTag           是否显示新增或升级提示
+     * @param bisDetail         查看明细
+     * @return
+     */
+    public List<ZtreeDto> getZtreeDto(Integer basicApplyBatchId, Boolean showTag, Boolean bisDetail) throws Exception {
         List<ZtreeDto> treeDtos = new ArrayList<>();
         if (basicApplyBatchId == null) return treeDtos;
         BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(basicApplyBatchId);
@@ -129,15 +137,35 @@ public class BasicApplyBatchService {
             ztreeDto.setPid(item.getPid());
             ztreeDto.setTableName(item.getTableName());
             ztreeDto.setTableId(item.getTableId());
-            if (item.getBisFromCase() == Boolean.FALSE) {
-                if (basicApplyBatch.getCaseEstateId() != null && basicApplyBatch.getCaseEstateId() > 0) {
-                    if (item.getUpgradeTableId() != null && item.getUpgradeTableId() > 0) {
-                        ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
-                    } else {
-                        ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+            if (showTag == true) {
+                BasicApplyBatch caseBasicApplyBatch = getCaseBasicApplyBatch(basicApplyBatch.getProvince(), basicApplyBatch.getCity(), basicApplyBatch.getEstateName());
+                if (caseBasicApplyBatch == null) {
+                    ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+                } else {
+                    BasicApplyBatchDetail caseBasicApplyBatchDetail = getCaseBasicApplyBatchDetail(item, caseBasicApplyBatch.getId());
+                    if (item.getBisFromCase() != true) {
+                        if (caseBasicApplyBatchDetail == null) {
+                            ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+                        } else {
+                            ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
+                        }
+                    }
+
+                }
+                if (bisDetail == true) {
+                    if (item.getBisFromCase() != true) {
+                        BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(item.getType());
+                        Object entity = anAbstract.getBasicEntityById(item.getTableId());
+                        Object version = anAbstract.getProperty(entity, "version");
+                        if ((Integer) (version == null ? 1 : version) == 1) {
+                            ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+                        } else {
+                            ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
+                        }
                     }
                 }
             }
+
             if (StringUtils.isNotEmpty(item.getType())) {
                 ztreeDto.setType(item.getType());
             } else {
@@ -480,6 +508,55 @@ public class BasicApplyBatchService {
             applyBatch.setProcessInsId(processUserDto.getProcessInsId());
             applyBatch.setStatus(ProjectStatusEnum.RUNING.getKey());
             basicApplyBatchDao.updateInfo(applyBatch);
+        } catch (Exception e) {
+            logger.error(String.format("流程发起失败: %s", e.getMessage()), e);
+            throw e;
+        }
+        return processUserDto;
+    }
+
+    /**
+     * 查勘案例申请流程发起
+     *
+     * @param sourceApplyBatchId
+     * @param detailIds
+     * @return
+     * @throws Exception
+     */
+    public ProcessUserDto processSurveySubmit(Integer sourceApplyBatchId, String detailIds) throws Exception {
+        if (sourceApplyBatchId == null || sourceApplyBatchId == 0) return null;
+        BasicApplyBatch sourceApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(sourceApplyBatchId);
+        BasicApplyBatch targetApplyBatch = new BasicApplyBatch();
+        BeanUtils.copyProperties(sourceApplyBatch, targetApplyBatch, "referenceApplyBatchId", "planDetailsId");
+        ProcessUserDto processUserDto = null;
+        ProcessInfo processInfo = new ProcessInfo();
+        //流程描述
+        BasicEstate basicEstate = basicEstateService.getBasicEstateById(sourceApplyBatch.getEstateId());
+        processInfo.setFolio(String.format("%s%s", "批量申请_", basicEstate.getName()));
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(BasicApplyBatch.class));
+        processInfo.setBoxId(boxReDto.getId());
+        processInfo.setProcessName(boxReDto.getProcessName());
+        processInfo.setGroupName(boxReDto.getGroupName());
+        processInfo.setProcessEventExecutor(BasicApplyBatchEvent.class);
+        processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getKey());
+        processInfo.setProcessEventExecutorName(BasicApplyBatchEvent.class.getSimpleName());
+        processInfo.setTableId(sourceApplyBatchId);
+        try {
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
+            //applyBatch.setDraftFlag(false);
+            targetApplyBatch.setProcessInsId(processUserDto.getProcessInsId());
+            targetApplyBatch.setStatus(ProjectStatusEnum.RUNING.getKey());
+            basicApplyBatchDao.addBasicApplyBatch(targetApplyBatch);
+            if (!StringUtils.isEmpty(detailIds)) {
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(detailIds));
+                for (Integer id : integers) {
+                    List<BasicApplyBatchDetail> list = Lists.newArrayList();
+                    basicApplyBatchDetailService.collectionParentBatchDetails(id, list);
+                    basicApplyBatchDetailService.copyNodeStructure(list, targetApplyBatch.getId(), sourceApplyBatch, FormatUtils.transformString2List(detailIds));
+                }
+            }
         } catch (Exception e) {
             logger.error(String.format("流程发起失败: %s", e.getMessage()), e);
             throw e;
@@ -880,8 +957,8 @@ public class BasicApplyBatchService {
         if (source == null || caseApplyBatchId == null) return null;
         BasicApplyBatchDetail batchDetailParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
         List<BasicApplyBatchDetail> detailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByName(batchDetailParent.getType(), batchDetailParent.getName(), caseApplyBatchId);
-        if(CollectionUtils.isEmpty(detailList)) return null;
-        if(detailList.size()==1) return detailList.get(0);
+        if (CollectionUtils.isEmpty(detailList)) return null;
+        if (detailList.size() == 1) return detailList.get(0);
         for (BasicApplyBatchDetail basicApplyBatchDetail : detailList) {
             List<Boolean> booleanList = Lists.newArrayList();
             compareParentName(batchDetailParent, basicApplyBatchDetail, booleanList);

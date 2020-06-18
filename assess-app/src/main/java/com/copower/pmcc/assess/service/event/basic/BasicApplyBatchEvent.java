@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.event.basic;
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -127,6 +128,8 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                 }
             }
         }
+        applyBatch.setStatus(ProjectStatusEnum.FINISH.getKey());
+        basicApplyBatchDao.updateInfo(applyBatch);
     }
 
     //写入summary

@@ -46,13 +46,18 @@
                                         <button class="btn btn-sm btn-warning paste alternativeCase"
                                                 onclick="addToAlternative();">添加到备选案例
                                         </button>
+                                        <button class="btn btn-sm btn-success paste"
+                                                data-toggle="modal" href="#divBoxCase"
+                                                onclick="openCaseBox();">案例申请
+                                        </button>
                                         <ul id="ztree" class="ztree"></ul>
                                     </div>
                                     <div class="col-md-3">
                                         <form id="frmProjectCIP" class="form-horizontal">
                                             <input type="hidden" name="formClassify" value="${applyBatch.classify}">
                                             <input type="hidden" name="formType" value="${applyBatch.type}">
-                                            <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
+                                            <input type="hidden" name="planDetailsId"
+                                                   value="${applyBatch.planDetailsId}">
                                             <div class="row form-group">
                                                 <div class="col-md-12 form-inline">
                                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
@@ -120,7 +125,7 @@
                     </div>
 
                     <%@include file="/views/share/form_approval.jsp" %>
-                   <%-- <%@include file="/views/share/form_log.jsp" %>--%>
+                    <%-- <%@include file="/views/share/form_log.jsp" %>--%>
                 </div>
             </div>
         </div>
@@ -128,6 +133,40 @@
     </div>
 </div>
 </body>
+<div id="divBoxCase" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加或升级案例</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmCase" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <ul id="caseZtree" class="ztree" style="max-height: 260px;overflow: auto;"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="submitCase()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 <script type="application/javascript">
     function saveform() {
@@ -206,9 +245,9 @@
     //进入填写信息页面
     function fillInformation() {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node.executor != '${projectPlanDetails.executeUserAccount}'){
+        if (node.executor != '${projectPlanDetails.executeUserAccount}') {
             notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
-            return false ;
+            return false;
         }
         var frm = $("#frmProjectCIP");
         var data = formSerializeArray(frm);
@@ -263,13 +302,103 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功","添加成功");
+                    notifySuccess("成功", "添加成功");
                 }
                 else {
-                    AlertError("添加失败","失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("添加失败", "失败原因:" + result.errmsg, 1, null, null);
                 }
             }
         });
+    }
+
+
+</script>
+
+<script type="application/javascript">
+    var caseSetting = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: {"Y": "", "N": ""}//必须设为null ,这样可以真正意义上让复选框不影响父级和子级,哪个被点击了就勾选哪个
+        },
+        data: {
+            key: {
+                name: "displayName"
+            },
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pid",
+                rootPId: 0
+            }
+        }
+    };
+
+    function caseZtreeInit(basicApplyBatchId) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
+            data: {basicApplyBatchId: basicApplyBatchId},
+            type: 'get',
+            dataType: "json",
+            success: function (result) {
+                zTreeObj = $.fn.zTree.init($("#caseZtree"), caseSetting, result);
+                //展开第一级，选中根节点
+                var rootNode = zTreeObj.getNodes()[0];
+                zTreeObj.selectNode(rootNode);
+                zTreeObj.expandAll(true);
+            }
+        })
+    }
+
+
+    function openCaseBox() {
+        if (${!empty applyBatch}) {
+            if (${!empty applyBatch.referenceApplyBatchId}) {
+                caseZtreeInit(${applyBatch.referenceApplyBatchId});
+            } else {
+                caseZtreeInit(${applyBatch.id});
+            }
+        }
+        $('#divBoxCase').modal("show");
+    }
+
+    //申请案例提交
+    function submitCase() {
+        var sourceApplyBatchId = 0;
+
+        if (${!empty applyBatch.referenceApplyBatchId}) {
+            sourceApplyBatchId = '${applyBatch.referenceApplyBatchId}';
+        } else {
+            sourceApplyBatchId = '${applyBatch.id}';
+        }
+
+        var zTreeObj = $.fn.zTree.getZTreeObj($("#caseZtree").prop("id"));
+        var nodes = zTreeObj.getCheckedNodes(true);
+        if (nodes.length == 0) {
+            notifyInfo('提示', '勾选至少一个节点');
+            return false;
+        }
+        var ids = [];
+        $.each(nodes, function (i, node) {
+            ids.push(node.id);
+        });
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/basicApplyBatchSurveySubmit",
+            data: {
+                sourceApplyBatchId: sourceApplyBatchId,
+                detailIds: ids.join(",")
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess("成功", "申请成功");
+                    $('#divBoxCase').modal("hide");
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            }
+        })
     }
 </script>
 </html>

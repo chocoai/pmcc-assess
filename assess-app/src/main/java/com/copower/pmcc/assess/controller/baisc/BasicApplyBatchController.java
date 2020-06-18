@@ -180,8 +180,14 @@ public class BasicApplyBatchController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/getBatchApplyTree", method = RequestMethod.GET)
-    public List<ZtreeDto> getBatchApplyTree(Integer basicApplyBatchId) throws Exception {
-        return basicApplyBatchService.getZtreeDto(basicApplyBatchId);
+    public List<ZtreeDto> getBatchApplyTree(Integer basicApplyBatchId, Boolean showTag, Boolean bisDetail) throws Exception {
+        if (showTag == null) {
+            showTag = false;
+        }
+        if (bisDetail == null) {
+            bisDetail = false;
+        }
+        return basicApplyBatchService.getZtreeDto(basicApplyBatchId, showTag, bisDetail);
     }
 
     /**
@@ -226,6 +232,22 @@ public class BasicApplyBatchController extends BaseController {
         try {
             //发起流程
             basicApplyBatchService.processStartSubmit(id);
+        } catch (BusinessException e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("案例申请提交异常");
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/basicApplyBatchSurveySubmit", name = "查勘案例申请 提交", method = RequestMethod.POST)
+    public HttpResult basicApplyBatchSurveySubmit(Integer sourceApplyBatchId, String detailIds) {
+        try {
+            //发起流程
+            basicApplyBatchService.processSurveySubmit(sourceApplyBatchId, detailIds);
         } catch (BusinessException e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -364,7 +386,7 @@ public class BasicApplyBatchController extends BaseController {
     @RequestMapping(value = "/getTreeByPlanDetailsId", method = RequestMethod.GET)
     public List<ZtreeDto> getTreeByPlanDetailsId(Integer planDetailsId) throws Exception {
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId);
-        return basicApplyBatchService.getZtreeDto(applyBatch.getId());
+        return basicApplyBatchService.getZtreeDto(applyBatch.getId(), false, false);
     }
 
     @ResponseBody
@@ -507,7 +529,7 @@ public class BasicApplyBatchController extends BaseController {
         ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
         ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
-        if(projectPlanDetails!=null) {
+        if (projectPlanDetails != null) {
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
             if (caseStudyExtend.getId().equals(projectPhase.getId()) || caseStudyLand.getId().equals(projectPhase.getId())) {
                 modelAndView.addObject("projectPhase", "caseStudyExtend");
@@ -585,7 +607,7 @@ public class BasicApplyBatchController extends BaseController {
         ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
         ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
-        if(projectPlanDetails!=null){
+        if (projectPlanDetails != null) {
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
             if (projectPhase != null && (caseStudyExtend.getId().equals(projectPhase.getId()) || caseStudyLand.getId().equals(projectPhase.getId()))) {
                 detailsModelAndView.addObject("projectPhase", "caseStudyExtend");
@@ -840,7 +862,7 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicApplyBatchList", name = "获取楼盘案例数据", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicApplyBatchList(String province,String city,String name) {
-        return  basicApplyBatchService.getBasicApplyBatchList(province,city,name);
+    public BootstrapTableVo getBasicApplyBatchList(String province, String city, String name) {
+        return basicApplyBatchService.getBasicApplyBatchList(province, city, name);
     }
 }

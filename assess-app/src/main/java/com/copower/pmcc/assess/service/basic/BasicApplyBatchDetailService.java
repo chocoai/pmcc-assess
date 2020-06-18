@@ -553,17 +553,57 @@ public class BasicApplyBatchDetailService {
     }
 
     //复制一个节点
-    public void copyNode(Integer sourcePid,Integer sourceApplyBatchId,Integer targetPid,Integer targetApplyBatchId){
+    public void copyNode(Integer sourcePid, Integer sourceApplyBatchId, Integer targetPid, Integer targetApplyBatchId) {
         List<BasicApplyBatchDetail> detailList = getBasicApplyBatchDetailByPid(sourcePid, sourceApplyBatchId);
-        if(CollectionUtils.isNotEmpty(detailList)){
-            for(BasicApplyBatchDetail source :detailList){
+        if (CollectionUtils.isNotEmpty(detailList)) {
+            for (BasicApplyBatchDetail source : detailList) {
                 BasicApplyBatchDetail target = new BasicApplyBatchDetail();
-                BeanUtils.copyProperties(source,target);
+                BeanUtils.copyProperties(source, target);
                 target.setPid(targetPid);
                 target.setApplyBatchId(targetApplyBatchId);
                 basicApplyBatchDetailDao.addInfo(target);
-                copyNode(source.getId(),source.getApplyBatchId(),target.getId(),target.getApplyBatchId());
+                copyNode(source.getId(), source.getApplyBatchId(), target.getId(), target.getApplyBatchId());
             }
         }
+    }
+
+
+    public void copyNodeStructure(List<BasicApplyBatchDetail> list, Integer applyBatchId, BasicApplyBatch sourceApplyBatch, List<String> detailIds) {
+        BasicApplyBatch caseBasicApplyBatch = basicApplyBatchService.getCaseBasicApplyBatch(sourceApplyBatch.getProvince(), sourceApplyBatch.getCity(), sourceApplyBatch.getEstateName());
+
+        if (CollectionUtils.isNotEmpty(list)) {
+            List<BasicApplyBatchDetail> temp = Lists.newArrayList();
+            int j = 0;
+            for (int i = list.size() - 1; i >= 0; i--) {
+                BasicApplyBatchDetail source = list.get(i);
+                BasicApplyBatchDetail target = new BasicApplyBatchDetail();
+                BeanUtils.copyProperties(source, target, "id");
+                target.setApplyBatchId(applyBatchId);
+                if (i == list.size() - 1) {
+                    target.setPid(0);
+                } else {
+                    target.setPid(temp.get(j - 1).getId());
+                }
+                j++;
+                //判断哪些节点不处理
+                if (caseBasicApplyBatch != null) {
+                    BasicApplyBatchDetail caseBasicApplyBatchDetail = basicApplyBatchService.getCaseBasicApplyBatchDetail(source, caseBasicApplyBatch.getId());
+                    if (caseBasicApplyBatchDetail != null && !detailIds.contains(String.valueOf(source.getId()))) {
+                        target.setBisFromCase(true);
+                    }
+
+                }
+
+                if (CollectionUtils.isNotEmpty(getBasicApplyBatchDetailList(target))) {
+                    temp.add(getBasicApplyBatchDetailList(target).get(0));
+                    continue;
+                } else {
+                    basicApplyBatchDetailDao.addInfo(target);
+                    temp.add(target);
+                }
+
+            }
+        }
+
     }
 }
