@@ -53,7 +53,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void recordToCase(ProcessExecution processExecution) {
+    public void recordToCase(ProcessExecution processExecution)throws Exception {
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processExecution.getProcessInstanceId());
         BasicApplyBatch caseBasicApplyBatch = basicApplyBatchService.getCaseBasicApplyBatch(applyBatch.getProvince(), applyBatch.getCity(), applyBatch.getEstateName());
         List<BasicApplyBatchDetail> sourceDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
@@ -69,6 +69,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                     if (entity != null) {
                         anAbstract.setProperty(entity, "bisCase", true);
                         anAbstract.setProperty(entity, "version", 1);
+                        anAbstract.setProperty(entity, "applyId", source.getId());
                         anAbstract.saveAndUpdate(entity, false);
                     }
                     //summary表处理
@@ -89,16 +90,31 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                             BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(caseBasicApplyBatchDetail.getType());
                             Object entity = anAbstract.getBasicEntityById(caseBasicApplyBatchDetail.getTableId());
                             Object version = anAbstract.getProperty(entity, "version");
-                            //升级后对应表
-                            BasicEntityAbstract upgradeupgradeAbstract = publicBasicService.getServiceBeanByKey(source.getType());
-                            Object upgradeEntity = upgradeupgradeAbstract.getBasicEntityById(source.getTableId());
-                            if (upgradeEntity != null) {
-                                upgradeupgradeAbstract.setProperty(upgradeEntity, "bisCase", true);
-                                upgradeupgradeAbstract.setProperty(upgradeEntity, "version", (Integer) (version == null ? 0 : version) + 1);
-                                upgradeupgradeAbstract.saveAndUpdate(upgradeEntity, false);
+                            //查勘案例申请可能出现
+                            if(caseBasicApplyBatchDetail.getTableId().equals(source.getTableId())){
+                                Object object = anAbstract.copyBasicEntity(caseBasicApplyBatchDetail.getTableId(), null, true);
+                                if(object!=null){
+                                    anAbstract.setProperty(object, "bisCase", true);
+                                    anAbstract.setProperty(object, "version", (Integer) (version == null ? 0 : version) + 1);
+                                    anAbstract.setProperty(object, "applyId", caseBasicApplyBatchDetail.getId());
+                                    anAbstract.saveAndUpdate(object, false);
 
-                                caseBasicApplyBatchDetail.setTableId((Integer) upgradeupgradeAbstract.getProperty(upgradeEntity, "id"));
-                                basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
+                                    caseBasicApplyBatchDetail.setTableId((Integer) anAbstract.getProperty(object, "id"));
+                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
+                                }
+                            }else{
+                                //升级后对应表
+                                BasicEntityAbstract upgradeupgradeAbstract = publicBasicService.getServiceBeanByKey(source.getType());
+                                Object upgradeEntity = upgradeupgradeAbstract.getBasicEntityById(source.getTableId());
+                                if (upgradeEntity != null) {
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "bisCase", true);
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "version", (Integer) (version == null ? 0 : version) + 1);
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "applyId", caseBasicApplyBatchDetail.getId());
+                                    upgradeupgradeAbstract.saveAndUpdate(upgradeEntity, false);
+
+                                    caseBasicApplyBatchDetail.setTableId((Integer) upgradeupgradeAbstract.getProperty(upgradeEntity, "id"));
+                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
+                                }
                             }
 
                         } else {
@@ -115,6 +131,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                                 if (entity != null) {
                                     anAbstract.setProperty(entity, "bisCase", true);
                                     anAbstract.setProperty(entity, "version", 1);
+                                    anAbstract.setProperty(entity, "applyId", newDetail.getId());
                                     anAbstract.saveAndUpdate(entity, false);
                                 }
                             }

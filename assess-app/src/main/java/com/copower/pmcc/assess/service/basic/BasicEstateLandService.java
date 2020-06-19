@@ -87,6 +87,11 @@ public class BasicEstateLandService extends BasicEntityAbstract {
     }
 
     @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception {
+        return basicEstateService.getBasicEntityListByBatchDetailId(applyBatchDetailId);
+    }
+
+    @Override
     public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/land/photo/estate");
         modelAndView.addObject("basicEstate", basicEstateService.getBasicEstateById(basicFormClassifyParamDto.getTbId()));

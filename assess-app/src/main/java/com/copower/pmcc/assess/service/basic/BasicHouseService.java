@@ -459,19 +459,21 @@ public class BasicHouseService extends BasicEntityAbstract {
             }
 
             if (basicHouse != null) {
-                BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicHouse.getUnitId());
-                if (basicUnit != null)
-                    basicHouse.setFullName(basicUnit.getFullName() + basicHouse.getHouseNumber());
-                Integer houseId = saveAndUpdate(basicHouse, true);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
                     if(StringUtils.isNotEmpty(basicHouse.getHouseNumber())){
                         houseDetail.setName(basicHouse.getHouseNumber());
                         houseDetail.setDisplayName(basicHouse.getHouseNumber());
+                        houseDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseDetail.getId()));
                         basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
                     }
                     basicApplyBatchDetailService.insertBasicApply(houseDetail,planDetailsId);
+                    basicHouse.setApplyId(houseDetail.getId());
+                    basicHouse.setFullName(houseDetail.getFullName());
                 }
+
+                Integer houseId = saveAndUpdate(basicHouse, true);
+
                 //户型
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE_HUXING.getVar());
                 BasicUnitHuxing huxing = JSONObject.parseObject(jsonContent, BasicUnitHuxing.class);
@@ -792,6 +794,19 @@ public class BasicHouseService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
+    }
+
+    @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+        List<Object> objects = Lists.newArrayList();
+        BasicHouse basicHouse = new BasicHouse();
+        basicHouse.setApplyId(applyBatchDetailId);
+        basicHouse.setBisCase(true);
+        List<BasicHouse> basicHouseList = getBasicHouseList(basicHouse);
+        if(CollectionUtils.isNotEmpty(basicHouseList)){
+            basicHouseList.forEach(o->objects.add(o));
+        }
+        return objects;
     }
 
     @Override

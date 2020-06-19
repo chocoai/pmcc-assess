@@ -123,4 +123,16 @@ public class BasicApplyBatchDetailDao {
         basicApplyBatchDetail.setBisDelete(true);
         return basicApplyBatchDetailMapper.updateByPrimaryKeySelective(basicApplyBatchDetail) > 0;
     }
+
+    public List<BasicApplyBatchDetail> getQuoteDataList(Integer basicApplyBatchId, String type,String name) {
+        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        if (basicApplyBatchId != null)
+            criteria.andApplyBatchIdEqualTo(basicApplyBatchId);
+        if (StringUtils.isNotBlank(type))
+            criteria.andTypeEqualTo(type);
+        if (StringUtils.isNotBlank(name))
+            criteria.andFullNameLike(String.format("%s%s%s", "%", name, "%"));
+        return basicApplyBatchDetailMapper.selectByExample(example);
+    }
 }

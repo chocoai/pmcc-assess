@@ -95,15 +95,17 @@ public class BasicAlternativeCaseService extends BaseService {
 
     public BasicAlternativeCaseDto getBasicAlternativeCaseDto(Integer id) {
         BasicAlternativeCase basicAlternativeCase = this.getBasicAlternativeCaseById(id);
-        BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(basicAlternativeCase.getBusinessId());
+        BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(id);
         BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchDetail.getApplyBatchId());
         BasicAlternativeCaseDto basicAlternativeCaseDto = new BasicAlternativeCaseDto();
-        basicAlternativeCaseDto.setApplyBatchId(basicApplyBatch.getId());
-        basicAlternativeCaseDto.setFormClassify(basicApplyBatch.getClassify());
-        basicAlternativeCaseDto.setFormType(basicApplyBatch.getType());
+        if(basicApplyBatch!=null){
+            basicAlternativeCaseDto.setApplyBatchId(basicApplyBatch.getId());
+            basicAlternativeCaseDto.setFormClassify(basicApplyBatch.getClassify());
+            basicAlternativeCaseDto.setFormType(basicApplyBatch.getType());
+            basicAlternativeCaseDto.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
+        }
         basicAlternativeCaseDto.setTableId(applyBatchDetail.getTableId());
         basicAlternativeCaseDto.setTableName(applyBatchDetail.getTableName());
-        basicAlternativeCaseDto.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
         return basicAlternativeCaseDto;
     }
 

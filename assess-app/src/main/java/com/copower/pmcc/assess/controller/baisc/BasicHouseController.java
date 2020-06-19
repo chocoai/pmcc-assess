@@ -182,7 +182,7 @@ public class BasicHouseController {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
-            List<String> ignoreList = Lists.newArrayList("estateId", "buildingId", "unitId");
+            List<String> ignoreList = Lists.newArrayList("id","estateId", "buildingId", "unitId","applyId","version","bisCase","creator");
             BasicHouse basicHouse = (BasicHouse) basicHouseService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
             Map<String, Object> objectMap = basicHouseService.getBasicHouseMapById(basicHouse.getId());
             return HttpResult.newCorrectResult(objectMap);
@@ -194,12 +194,11 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseHouse", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseHouse(Integer sourceId, Integer targetId) {
+    public HttpResult quoteCaseHouse(Integer sourceApplyBatchDetailId, Integer targetId) {
         try {
-            List<String> ignoreList = Lists.newArrayList("estateId", "buildingId", "unitId");
-            BasicHouse basicHouse = (BasicHouse) basicHouseService.copyBasicEntityIgnore(sourceId, targetId, true, ignoreList);
-            basicHouse.setQuoteId(sourceId);
-            basicHouse.setBisCase(false);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(sourceApplyBatchDetailId);
+            List<String> ignoreList = Lists.newArrayList("id","estateId", "buildingId", "unitId","applyId","version","bisCase","creator");
+            BasicHouse basicHouse = (BasicHouse) basicHouseService.copyBasicEntityIgnore(batchDetail.getTableId(), targetId, true, ignoreList);
             basicHouseService.saveAndUpdate(basicHouse, false);
             return HttpResult.newCorrectResult(basicHouse);
         } catch (Exception e) {

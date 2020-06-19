@@ -77,6 +77,11 @@ public class BasicUnitLandIncludService extends BasicEntityAbstract {
     }
 
     @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception {
+        return basicUnitService.getBasicEntityListByBatchDetailId(applyBatchDetailId);
+    }
+
+    @Override
     public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         ModelAndView editModelAndView = basicUnitService.getEditModelAndView(basicFormClassifyParamDto);
         editModelAndView.setViewName("/project/stageSurvey/landIncludRealEstate/photo/unit");

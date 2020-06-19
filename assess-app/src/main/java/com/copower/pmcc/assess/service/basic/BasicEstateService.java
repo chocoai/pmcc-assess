@@ -429,24 +429,11 @@ public class BasicEstateService extends BasicEntityAbstract {
         }
 
         if (basicEstate != null) {
-            basicEstate.setClassify(oldBasicEstate.getClassify());
-            basicEstate.setType(oldBasicEstate.getType());
-            saveAndUpdate(basicEstate, true);
-
-            if (basicEstate.getId() != null) {
-                BasicEstateLandState basicEstateLandState = null;
-                String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());
-                basicEstateLandState = JSONObject.parseObject(string, BasicEstateLandState.class);
-                if (basicEstateLandState != null) {
-                    basicEstateLandState.setLandLevelContent(org.apache.commons.lang.StringUtils.isNotEmpty(basicEstateLandState.getLandLevelContent()) ? basicEstateLandState.getLandLevelContent() : null);
-                    basicEstateLandState.setEstateId(basicEstate.getId());
-                    basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, true);
-                }
-            }
             BasicApplyBatchDetail estateDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
             if (estateDetail != null) {
                 estateDetail.setName(basicEstate.getName());
                 estateDetail.setDisplayName(basicEstate.getName());
+                estateDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(estateDetail.getId()));
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateDetail);
                 BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(estateDetail.getApplyBatchId());
                 if (basicApplyBatch != null) {
@@ -465,7 +452,24 @@ public class BasicEstateService extends BasicEntityAbstract {
                     BigDecimal landUseYear = basicEstateLandCategoryInfos.get(0).getLandUseYear();
                     basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.LAND_USE_YEAR_ENUM, String.valueOf(landUseYear));
                 }
+                basicEstate.setApplyId(estateDetail.getId());
             }
+
+            basicEstate.setClassify(oldBasicEstate.getClassify());
+            basicEstate.setType(oldBasicEstate.getType());
+            saveAndUpdate(basicEstate, true);
+
+            if (basicEstate.getId() != null) {
+                BasicEstateLandState basicEstateLandState = null;
+                String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());
+                basicEstateLandState = JSONObject.parseObject(string, BasicEstateLandState.class);
+                if (basicEstateLandState != null) {
+                    basicEstateLandState.setLandLevelContent(org.apache.commons.lang.StringUtils.isNotEmpty(basicEstateLandState.getLandLevelContent()) ? basicEstateLandState.getLandLevelContent() : null);
+                    basicEstateLandState.setEstateId(basicEstate.getId());
+                    basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, true);
+                }
+            }
+
 
             //土地类型
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELandUseTypeCategory.getVar());
@@ -640,6 +644,19 @@ public class BasicEstateService extends BasicEntityAbstract {
         modelAndView.addObject("basicEstate", getBasicEstateVo(getBasicEstateById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
+    }
+
+    @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+        List<Object> objects = Lists.newArrayList();
+        BasicEstate basicEstate = new BasicEstate();
+        basicEstate.setApplyId(applyBatchDetailId);
+        basicEstate.setBisCase(true);
+        List<BasicEstate> basicEstateList = getBasicEstateList(basicEstate);
+        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(basicEstateList)){
+            basicEstateList.forEach(o->objects.add(o));
+        }
+        return objects;
     }
 
     @Override

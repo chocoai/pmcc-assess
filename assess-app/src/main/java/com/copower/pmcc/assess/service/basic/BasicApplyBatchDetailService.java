@@ -398,6 +398,11 @@ public class BasicApplyBatchDetailService {
         if (StringUtils.isNotEmpty(basicApplyBatchDetail.getCreator())) {
             vo.setCreatorName(publicService.getUserNameByAccount(basicApplyBatchDetail.getCreator()));
         }
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
+        if(applyBatch!=null){
+            vo.setFormClassify(applyBatch.getClassify());
+            vo.setFormType(applyBatch.getType());
+        }
         return vo;
     }
 

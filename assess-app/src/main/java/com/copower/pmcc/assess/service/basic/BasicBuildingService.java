@@ -386,16 +386,18 @@ public class BasicBuildingService extends BasicEntityAbstract {
             }
 
             if (basicBuilding != null) {
-                BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicBuilding.getEstateId());
-                if (basicEstate != null)
-                    basicBuilding.setFullName(basicEstate.getName() + basicBuilding.getBuildingNumber());
-                saveAndUpdate(basicBuilding, true);
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId());
                 if (buildingDetail != null) {
                     buildingDetail.setName(basicBuilding.getBuildingNumber());
                     buildingDetail.setDisplayName(basicBuilding.getBuildingNumber());
+                    buildingDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(buildingDetail.getId()));
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingDetail);
+                    basicBuilding.setApplyId(buildingDetail.getId());
+                    basicBuilding.setFullName(buildingDetail.getFullName());
                 }
+
+                saveAndUpdate(basicBuilding, true);
+
                 return basicBuilding.getId();
             }
         }
@@ -508,6 +510,19 @@ public class BasicBuildingService extends BasicEntityAbstract {
         BasicBuildingVo buildingVo = getBasicBuildingVoById(basicFormClassifyParamDto.getTbId());
         modelAndView.addObject("basicBuilding", buildingVo);
         return modelAndView;
+    }
+
+    @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+        List<Object> objects = Lists.newArrayList();
+        BasicBuilding basicBuilding = new BasicBuilding();
+        basicBuilding.setApplyId(applyBatchDetailId);
+        basicBuilding.setBisCase(true);
+        List<BasicBuilding> basicBuildingList = getBasicBuildingList(basicBuilding);
+        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(basicBuildingList)){
+            basicBuildingList.forEach(o->objects.add(o));
+        }
+        return objects;
     }
 
     @Override

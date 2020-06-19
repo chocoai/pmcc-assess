@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.controller.BaseController;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyDto;
@@ -69,7 +70,7 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BasicApplyService basicApplyService;
+    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
@@ -864,5 +865,43 @@ public class BasicApplyBatchController extends BaseController {
     @RequestMapping(value = "/getBasicApplyBatchList", name = "获取楼盘案例数据", method = RequestMethod.GET)
     public BootstrapTableVo getBasicApplyBatchList(String province, String city, String name) {
         return basicApplyBatchService.getBasicApplyBatchList(province, city, name);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getQuoteDataList", method = {RequestMethod.GET}, name = "获取案例引用数据")
+    public BootstrapTableVo getCaseBuildingList(Integer applyBatchId,String type,String name) throws Exception {
+        if (applyBatchId == null) return null;
+        BootstrapTableVo vo = null;
+        try {
+            vo = new BootstrapTableVo();
+            RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+            Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
+            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailDao.getQuoteDataList(basicEstate.getQuoteId(), type, name);
+            vo.setTotal(page.getTotal());
+            vo.setRows(org.springframework.util.CollectionUtils.isEmpty(batchDetailList) ? new ArrayList<BasicApplyBatchDetail>() : batchDetailList);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
+        }
+        return vo;
+    }
+
+    /**
+     * 获取
+     *
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getApplyBatchDetailByType", name = "获取", method = RequestMethod.GET)
+    public HttpResult getApplyBatchDetailByType(Integer id,String type,Integer applyBatchId) {
+        if(type.startsWith(BasicFormClassifyEnum.ESTATE.getKey())){
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicEstate.class), applyBatch.getEstateId());
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.getDataById(batchDetail.getId())));
+        }else{
+            return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.getDataById(id)));
+        }
     }
 }

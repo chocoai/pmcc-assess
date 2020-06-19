@@ -5,6 +5,24 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 public class BasicApplyBatchDetailVo extends BasicApplyBatchDetail {
     private String executorName;
     private String creatorName;
+    private Integer formType;
+    private Integer formClassify;
+
+    public Integer getFormType() {
+        return formType;
+    }
+
+    public void setFormType(Integer formType) {
+        this.formType = formType;
+    }
+
+    public Integer getFormClassify() {
+        return formClassify;
+    }
+
+    public void setFormClassify(Integer formClassify) {
+        this.formClassify = formClassify;
+    }
 
     public String getCreatorName() {
         return creatorName;

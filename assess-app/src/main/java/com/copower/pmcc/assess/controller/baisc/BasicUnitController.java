@@ -148,7 +148,7 @@ public class BasicUnitController {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
-            ArrayList<String> ignoreList = Lists.newArrayList("estateId", "buildingId");
+            ArrayList<String> ignoreList = Lists.newArrayList("id","estateId", "buildingId","version","bisCase","creator");
             BasicUnit basicUnit = (BasicUnit) basicUnitService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
             return HttpResult.newCorrectResult(basicUnit);
         } catch (Exception e) {
@@ -159,12 +159,11 @@ public class BasicUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseUnit", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseUnit(Integer sourceId, Integer targetId) {
+    public HttpResult quoteCaseUnit(Integer sourceApplyBatchDetailId, Integer targetId) {
         try {
-            ArrayList<String> ignoreList = Lists.newArrayList("estateId", "buildingId");
-            BasicUnit basicUnit = (BasicUnit) basicUnitService.copyBasicEntityIgnore(sourceId, targetId, true, ignoreList);
-            basicUnit.setQuoteId(sourceId);
-            basicUnit.setBisCase(false);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(sourceApplyBatchDetailId);
+            ArrayList<String> ignoreList = Lists.newArrayList("id","estateId", "buildingId","applyId","version","bisCase","creator");
+            BasicUnit basicUnit = (BasicUnit) basicUnitService.copyBasicEntityIgnore(batchDetail.getTableId(), targetId, true, ignoreList);
             basicUnitService.saveAndUpdate(basicUnit, false);
             return HttpResult.newCorrectResult(basicUnit);
         } catch (Exception e) {

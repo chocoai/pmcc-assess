@@ -88,6 +88,46 @@
     </div>
 </div>
 </body>
+
+<div id="divVersionBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">版本</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="frm_version">
+                    <input type="hidden" name="tbType">
+                    <input type="hidden" name="tbId">
+                    <input type="hidden" name="tableName">
+                    <input type="hidden" name="applyBatchId">
+                    <input type="hidden" name="formClassify" value="${applyBatch.classify}">
+                    <input type="hidden" name="formType" value="${applyBatch.type}">
+                    <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
+
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <table class="table table-bordered" id="table_dataList">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 </html>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
@@ -113,7 +153,7 @@
         // 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
-                informationDetail();
+                openVersionBox();
             }
         }
     };
@@ -135,17 +175,12 @@
         })
     }
 
-    //信息详情页面
-    function informationDetail(data) {
-        var treeNode = zTreeObj.getSelectedNodes()[0];
-        console.log(treeNode+'===')
-        var frm = $("#frmProjectCIP");
-        var data = formSerializeArray(frm);
-        data.tbType = treeNode.type;
-        data.tbId = treeNode.tableId;
-        data.tableName = treeNode.tableName;
-        data.applyBatchId = treeNode.applyBatchId;
 
+    //信息详情页面
+    function informationDetail(id) {
+        var frm = $("#frm_version");
+        var data = formSerializeArray(frm);
+        data.tbId = id;
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?' + parseParam(data));
     }
 
@@ -163,6 +198,44 @@
             arr.push(paramStr)
         }
         return arr.join("&");
+    };
+
+    function openVersionBox(){
+        var treeNode = zTreeObj.getSelectedNodes()[0];
+        var frm = $("#frmProjectCIP");
+        var data = formSerializeArray(frm);
+        data.tbType = treeNode.type;
+        data.tableName = treeNode.tableName;
+        data.applyBatchId = treeNode.applyBatchId;
+        showVersionList(treeNode.id);
+        $("#frm_version").clearAll().initForm(data);
+        $("#divVersionBox").modal("show");
+    }
+
+
+    function showVersionList(applyBatchDetailId) {
+        var cols = [];
+        cols.push({field: 'fullName', title: '名称'});
+        cols.push({field: 'version', title: '版本'});
+        cols.push({
+            field: 'id', title: '查看', formatter: function (value, row, index) {
+                var str = '<button type="button" onclick="informationDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                return str;
+            }
+        });
+        $("#table_dataList").bootstrapTable('destroy');
+        TableInit("table_dataList", "${pageContext.request.contextPath}/basic/getVersionList", cols, {
+            applyBatchDetailId: applyBatchDetailId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
     };
 </script>
 
