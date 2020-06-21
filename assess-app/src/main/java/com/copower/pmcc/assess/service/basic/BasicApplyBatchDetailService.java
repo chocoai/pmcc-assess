@@ -344,22 +344,6 @@ public class BasicApplyBatchDetailService {
         BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(id);
         List<BasicApplyBatchDetail> list = Lists.newArrayList();
         collectionChildBatchDetails(basicApplyBatchDetail, list);
-        List<BasicApplyBatchDetail> filter = LangUtils.filter(list, o -> o.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey()));
-        if (CollectionUtils.isNotEmpty(filter)) {
-            for (BasicApplyBatchDetail item : filter) {
-                //获取到basicApply
-                BasicApply basicApply = basicApplyService.getBasicApplyByHouseId(item.getTableId());
-                if (basicApply != null) {
-                    ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApply.getPlanDetailsId());
-                    if (planDetails != null && planDetails.getBisRestart()) {
-                        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getJudgeObjectByApplyId(basicApply.getId());
-                        if (judgeObject != null) {
-                            throw new BusinessException(String.format("%s%s", basicApply.getName(), "关联到估价对象，不允许删除"));
-                        }
-                    }
-                }
-            }
-        }
         for (BasicApplyBatchDetail applyBatchDetail : list) {
             BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(applyBatchDetail.getType());
             if (entityAbstract != null)

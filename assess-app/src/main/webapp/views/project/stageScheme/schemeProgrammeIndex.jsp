@@ -656,18 +656,50 @@
                                     <div class="col-sm-2 x-valid">
                                         <label class="form-control input-full" data-name="practicalUse">{practicalUse}</label>
                                     </div>
-                                    <label class="col-sm-1 control-label">
-                                        设定用途
-                                    </label>
-                                    <div class="col-sm-2 x-valid">
-                                        <select class="form-control input-full" required data-name="setUse" name="setUse{id}"
-                                                onchange="programme.saveProgrammeJudge(this);">
-                                            <option value="">--请选择--</option>
-                                            <c:forEach items="${setUseList}" var="setUse">
-                                                <option value="${setUse.id}">${setUse.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+                                    <c:choose>
+                                        <c:when test="${projectCategory eq 'land'}">
+                                            <label class="col-sm-1 control-label">
+                                                设定用途(类型)
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <select class="form-control input-full" required data-name="setUseClassify" name="setUseClassify{id}"
+                                                        onchange="programme.saveProgrammeJudge(this);programme.landUseTypeChange(this);">
+                                                    <option value="">--请选择--</option>
+                                                    <c:forEach items="${setUseList}" var="setUse">
+                                                        <option value="${setUse.id}">${setUse.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                设定用途(类别)
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <select class="form-control input-full" required data-name="setUse" name="setUse{id}"
+                                                        onchange="programme.saveProgrammeJudge(this);">
+                                                </select>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <label class="col-sm-1 control-label">
+                                                设定用途
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <select class="form-control input-full" required data-name="setUse" name="setUse{id}"
+                                                        onchange="programme.saveProgrammeJudge(this);">
+                                                    <option value="">--请选择--</option>
+                                                    <c:forEach items="${setUseList}" var="setUse">
+                                                        <option value="${setUse.id}">${setUse.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
                                     <label class="col-sm-1 control-label">
                                         最佳利用方式
                                     </label>
@@ -679,12 +711,6 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-md-12">
-                                <div class="form-inline">
                                     <label class="col-sm-1 control-label">
                                         证载面积
                                     </label>
@@ -700,26 +726,38 @@
                                                name="evaluationArea{id}" data-name="evaluationArea"
                                                placeholder="评估面积" value="{evaluationArea}">
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
                                     <label class="col-sm-1 control-label" data-name="mergeExplainContainer{id}" style="display: none;">
                                         合并对象说明
                                     </label>
-                                    <div class="col-sm-2 x-valid" data-name="mergeExplainContainer{id}" style="display: none;">
-                                        <input class="form-control input-full" type="text" required name="mergeExplain{id}"
-                                               onblur="programme.saveProgrammeJudge(this);"
-                                               data-name="mergeExplain" placeholder="合并对象说明" value="{mergeExplain}">
-                                    </div>
-                                    <label class="col-sm-1 control-label"  data-name="splitExplainContainer{id}" style="display: none;">
-                                        拆分对象说明
-                                    </label>
-                                    <div class="col-sm-2 x-valid"  data-name="splitExplainContainer{id}" style="display: none;">
-                                        <input class="form-control input-full" type="text" required name="splitExplain{id}"
-                                               onblur="programme.saveProgrammeJudge(this);"
-                                               data-name="splitExplain" placeholder="拆分对象说明" value="{splitExplain}">
+                                    <div class="col-sm-11 x-valid" data-name="mergeExplainContainer{id}" style="display: none;">
+                                        <textarea class="form-control input-full" type="text" required name="mergeExplain{id}"
+                                                  onblur="programme.saveProgrammeJudge(this);"
+                                                  data-name="mergeExplain" placeholder="合并对象说明" >{mergeExplain}</textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <c:if test="${projectCategoryId eq 'landCategoryId'}">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label"  data-name="splitExplainContainer{id}" style="display: none;">
+                                        拆分对象说明
+                                    </label>
+                                    <div class="col-sm-11 x-valid" data-name="splitExplainContainer{id}" style="display: none;">
+                                        <textarea class="form-control input-full" type="text" required name="splitExplain{id}"
+                                                  onblur="programme.saveProgrammeJudge(this);"
+                                                  data-name="splitExplain" placeholder="拆分对象说明">{splitExplain}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <c:if test="${projectCategory eq 'land'}">
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <div class="form-inline">
@@ -1849,7 +1887,15 @@
                 AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
+    };
 
+    programme.landUseTypeChange = function (this_) {
+        var content = $(this_).closest(".x_content");
+        var id = content.find("input[data-name=id]").val();
+        var value = content.find("input[data-name=setUseClassify]").val() ;
+        AssessCommon.getSonTextAppendDicList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
+            content.find("input[data-name=setUse]").empty().html(html).trigger('change');
+        });
     };
 
 </script>

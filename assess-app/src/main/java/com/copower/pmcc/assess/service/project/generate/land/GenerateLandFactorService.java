@@ -209,23 +209,11 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getPlanningCondition(BasicEstateLandCategoryInfo categoryInfo) {
+    public String getPlanningCondition(BasicEstate basicEstate) {
         StringBuilder stringBuilder = new StringBuilder();
-        if (categoryInfo == null) return "";
-        if (categoryInfo.getPlotRatio() !=null) {
-            stringBuilder.append(String.format("容积率:%s,", categoryInfo.getPlotRatio()));
-        }
-        if (StringUtils.isNotEmpty(categoryInfo.getBuildingDensity())) {
-            stringBuilder.append(String.format("建筑密度:%s,", categoryInfo.getBuildingDensity()));
-        }
-        if (StringUtils.isNotEmpty(categoryInfo.getGreeningRate())) {
-            stringBuilder.append(String.format("绿地率:%s,", categoryInfo.getGreeningRate()));
-        }
-        if (StringUtils.isNotEmpty(categoryInfo.getCompatibilityRate())) {
-            stringBuilder.append(String.format("兼容比:%s,", categoryInfo.getCompatibilityRate()));
-        }
-        if (categoryInfo.getHeightPermitted() != null) {
-            stringBuilder.append(String.format("建筑高度:%s", categoryInfo.getHeightPermitted()));
+        if (basicEstate == null) return "";
+        if (StringUtils.isNotBlank(basicEstate.getRegionalPlanning())) {
+            stringBuilder.append(basicEstate.getRegionalPlanning());
         }
         return stringBuilder.toString();
     }
@@ -276,15 +264,28 @@ public class GenerateLandFactorService {
     }
 
     /**
-     * 获取形状、地质、地形、地势
+     * 获取地形、地势
      *
      * @return
      */
     public String getTopography(BasicEstate basicEstate) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         BasicEstateLandStateVo landState = basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId()));
-        if (StringUtils.isNotBlank(landState.getShapeStateName()))
-            stringBuilder.append(landState.getShapeStateName());
+        if (StringUtils.isNotBlank(landState.getPlanenessName()))
+            stringBuilder.append(String.format("地形%s,", landState.getPlanenessName()));
+        if (StringUtils.isNotBlank(landState.getTopographicTerrainName()))
+            stringBuilder.append(String.format("%s,", landState.getTopographicTerrainName()));
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 获取地质
+     *
+     * @return
+     */
+    public String getGeology(BasicEstate basicEstate) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        BasicEstateLandStateVo landState = basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId()));
         if (StringUtils.isNotBlank(landState.getContaminatedName()))
             stringBuilder.append(String.format("土壤%s,", landState.getContaminatedName()));
         if (StringUtils.isNotBlank(landState.getPhName()))
@@ -293,10 +294,6 @@ public class GenerateLandFactorService {
             stringBuilder.append(String.format("稳定性%s,", landState.getHoldOnName()));
         if (StringUtils.isNotBlank(landState.getBearingCapacityName()))
             stringBuilder.append(String.format("承载力%s,", landState.getBearingCapacityName()));
-        if (StringUtils.isNotBlank(landState.getPlanenessName()))
-            stringBuilder.append(String.format("地形%s,", landState.getPlanenessName()));
-        if (StringUtils.isNotBlank(landState.getTopographicTerrainName()))
-            stringBuilder.append(String.format("%s,", landState.getTopographicTerrainName()));
         return stringBuilder.toString();
     }
 
@@ -329,28 +326,11 @@ public class GenerateLandFactorService {
         StringBuilder stringBuilder = new StringBuilder();
         BasicEstateLandStateVo landState = basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId()));
         if (landState == null) return "";
-        if (StringUtils.isNotBlank(landState.getInfrastructureCompletenessName()))
-            stringBuilder.append(String.format("基础设施%s，", landState.getInfrastructureCompletenessName()));
         if (StringUtils.isNotBlank(landState.getDevelopmentDegreeName()))
-            stringBuilder.append(String.format("%s", landState.getDevelopmentDegreeName()));
+            stringBuilder.append(String.format("%s;", landState.getDevelopmentDegreeName()));
+        if (StringUtils.isNotBlank(landState.getDevelopmentDegreeContentName()))
+            stringBuilder.append(String.format("%s", landState.getDevelopmentDegreeContentName()));
         return StringUtils.strip(stringBuilder.toString(), ",");
-    }
-
-    /**
-     * 获取使用年限
-     *
-     * @return
-     */
-    public String getUsefulLife(SchemeJudgeObject schemeJudgeObject) {
-        StringBuilder stringBuilder = new StringBuilder();
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        if (StringUtils.isNotBlank(declareRecord.getDataFromType()))
-            stringBuilder.append(String.format("根据委托方提供的%s原件或复印件记载，", declareRecord.getDataFromType()));
-        if (schemeJudgeObject.getLandUseEndDate() != null)
-            stringBuilder.append(String.format("土地使用权终止日期为%s，", DateUtils.formatDate(schemeJudgeObject.getLandUseEndDate())));
-        if (schemeJudgeObject.getLandRemainingYear() != null)
-            stringBuilder.append(String.format("自估价基准日起剩余使用年期为%s年，", schemeJudgeObject.getLandRemainingYear()));
-        return stringBuilder.toString();
     }
 
     /**
@@ -358,13 +338,15 @@ public class GenerateLandFactorService {
      *
      * @return
      */
-    public String getRightCondition(SchemeJudgeObject schemeJudgeObject) {
+    public String getRightCondition(BasicEstate basicEstate) {
         StringBuilder stringBuilder = new StringBuilder();
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        if (StringUtils.isNotBlank(declareRecord.getLandRightType()))
-            stringBuilder.append(declareRecord.getLandRightType()).append(",");
-        stringBuilder.append(declareRecord.getLandRightNature()).append(declareRecord.getLandCertUse());
-        stringBuilder.append("用途开发用地");
+        if (basicEstate == null) return "";
+        if (StringUtils.isNotBlank(basicEstate.getAcquisitionType()))
+            stringBuilder.append(String.format("土地取得方式:%s，", baseDataDicService.getNameById(basicEstate.getAcquisitionType())));
+        if (StringUtils.isNotBlank(basicEstate.getLandRightNature()))
+            stringBuilder.append(String.format("土地权利性质:%s，", baseDataDicService.getNameById(basicEstate.getLandRightNature())));
+        if (StringUtils.isNotBlank(basicEstate.getLandRightType()))
+            stringBuilder.append(String.format("权利类型:%s，", baseDataDicService.getNameById(basicEstate.getLandRightType())));
         return stringBuilder.toString();
     }
 

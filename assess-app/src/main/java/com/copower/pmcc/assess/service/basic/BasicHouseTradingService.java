@@ -116,9 +116,15 @@ public class BasicHouseTradingService {
         return basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
     }
 
+    /**
+     * 获取单个时，取的是标准交易信息
+     * @param houseId
+     * @return
+     */
     public BasicHouseTrading getTradingByHouseId(Integer houseId) {
         BasicHouseTrading basicHouseTrading = new BasicHouseTrading();
         basicHouseTrading.setHouseId(houseId);
+        basicHouseTrading.setBisMark(true);
         List<BasicHouseTrading> tradings = basicHouseTradingDao.basicHouseTradingList(basicHouseTrading);
         if (CollectionUtils.isEmpty(tradings)) return null;
         return tradings.get(0);

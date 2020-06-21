@@ -89,10 +89,12 @@ public enum MethodCompareFieldEnum {
     LAND_AREA("land.area", "面积"),//ps:面积
     LAND_USE("land.use", "用途"),//ps:用途
     LAND_TEMPORARY_ROAD_CONDITION("land.temporary.road.condition", "临街（路）状况"),//ps:临街（路）状况
-    LAND_TOPOGRAPHY("land.topography", "形状、地质、地形、地势"),//ps:形状、地质、地形、地势
+    LAND_SHAPE("land.shape", "形状"),//ps:形状
+    LAND_GEOLOGY("land.geology", "地质"),//ps:地质
+    LAND_TOPOGRAPHY("land.topography", "地形、地势"),//ps:形状、地质、地形、地势
     LAND_PLOT_RATIO("land.plot.ratio", "容积率"),//ps:容积率
     LAND_DEVELOPMENT_LEVEL("land.development.level", "宗地开发程度"),//ps:宗地开发程度
-    LAND_USEFUL_LIFE("land.useful.life", "使用年限"),//ps:使用年限
+    LAND_USEFUL_LIFE("land.useful.life", "剩余使用年限"),//ps:使用年限
     LAND_RIGHT_CONDITION("land.right.condition", "土地权利状况"),//ps:土地权利状况
     LAND_OTHER("land.other", "土地其它"),//ps:土地其它
     Land_Annual_Coefficient("annual.coefficient", "年期修正系数"),//ps:年期修正系数

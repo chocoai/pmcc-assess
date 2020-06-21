@@ -137,7 +137,7 @@
                                                             type="button"
                                                             onclick="assetInfo.selectClaimData(this) ;">
                                                         <span class="btn-label"><i
-                                                                class="fa fa-plus"></i></span>添加到认领的权证列表
+                                                                class="fa fa-plus"></i></span>认领
                                                     </button>
                                                 </div>
                                             </div>

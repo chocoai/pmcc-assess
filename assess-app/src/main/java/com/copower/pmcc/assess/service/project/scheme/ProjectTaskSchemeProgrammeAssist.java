@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -203,7 +205,14 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
         modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(), projectInfoVo.getProjectCategoryId()));
-        modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldsByType(projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId()).getKey()));
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(assessProjectType.getKey())){
+            modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldsByType(assessProjectType.getKey()));
+        }else  if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey())){
+            modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_LAND_USE));
+            modelAndView.addObject("projectCategory", "land");
+        }
+
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
         modelAndView.addObject("valueTypes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
         modelAndView.addObject("entrustmentPurposes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE));//委托目的
@@ -218,11 +227,6 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         modelAndView.addObject("valueDateExplain", valueDateExplain);
         if (StringUtils.isNotBlank(processInsId)) {
             modelAndView.addObject("processInsId", processInsId);
-        }
-        //土地
-        BaseProjectClassify landCategoryId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
-        if(landCategoryId.getId().equals(projectInfoVo.getProjectCategoryId())){
-            modelAndView.addObject("projectCategoryId", "landCategoryId");
         }
     }
 

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
@@ -402,6 +403,49 @@
                                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <textarea class="form-control input-full" name="currentSituation" required
                                   placeholder="宗地内现状">${basicEstateLandState.currentSituation}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header">
+                                        <div class="card-category">土壤</div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">污染<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full  "
+                                                            name="contaminated" required>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1">酸碱度<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full  "
+                                                            name="ph" required>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1">稳定性<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full  "
+                                                            name="holdOn" required>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">承载力<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full  "
+                                                            name="bearingCapacity" required>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

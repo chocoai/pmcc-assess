@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
@@ -64,7 +65,7 @@ public class MdMarketCompareFieldService extends BaseService {
     @Autowired
     private BasicBuildingFunctionService basicBuildingFunctionService;
     @Autowired
-    private BasicEstateSupplyService basicEstateSupplyService;
+    private PublicService publicService;
     @Autowired
     private BasicHouseEquipmentService basicHouseEquipmentService;
     @Autowired
@@ -602,7 +603,7 @@ public class MdMarketCompareFieldService extends BaseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public String getLandCompareInfo(SchemeAreaGroup areaGroup,SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
+    public String getLandCompareInfo(SchemeAreaGroup areaGroup, SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             if (basicApply == null) return null;
@@ -701,7 +702,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_ENVIRONMENT_CONDITION.getKey(), generateCommonMethod.trimText(environmentCondition), dataSetUseField));
                             break;
                         case LAND_PLANNING_CONDITION://规划条件
-                            String planningCondition = generateLandFactorService.getPlanningCondition(categoryInfo);
+                            String planningCondition = generateLandFactorService.getPlanningCondition(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLANNING_CONDITION.getKey(), generateCommonMethod.trimText(planningCondition), dataSetUseField));
                             break;
                         case LAND_AREA://面积
@@ -731,23 +732,38 @@ public class MdMarketCompareFieldService extends BaseService {
                             }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TEMPORARY_ROAD_CONDITION.getKey(), generateCommonMethod.trimText(temporaryRoadCondition), dataSetUseField));
                             break;
-                        case LAND_TOPOGRAPHY://形状、地质、地形、地势
+                        case LAND_SHAPE://形状
+                            String shape = categoryInfo.getLandShape();
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_SHAPE.getKey(), generateCommonMethod.trimText(shape), dataSetUseField));
+                            break;
+                        case LAND_GEOLOGY://地质
+                            String geology=generateLandFactorService.getGeology(examineEstate);
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_GEOLOGY.getKey(), generateCommonMethod.trimText(geology), dataSetUseField));
+                            break;
+                        case LAND_TOPOGRAPHY://地形、地势
                             String topography = generateLandFactorService.getTopography(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TOPOGRAPHY.getKey(), generateCommonMethod.trimText(topography), dataSetUseField));
                             break;
                         case LAND_PLOT_RATIO://容积率
-                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), generateCommonMethod.trimText(categoryInfo.getPlotRatio()==null?"":categoryInfo.getPlotRatio().toString()), dataSetUseField));
+                            list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_PLOT_RATIO.getKey(), generateCommonMethod.trimText(categoryInfo.getPlotRatio() == null ? "" : categoryInfo.getPlotRatio().toString()), dataSetUseField));
                             break;
                         case LAND_DEVELOPMENT_LEVEL://宗地开发程度
                             String developmentLevel = generateLandFactorService.getDevelopmentLevel(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_DEVELOPMENT_LEVEL.getKey(), generateCommonMethod.trimText(developmentLevel), dataSetUseField));
                             break;
-                        case LAND_USEFUL_LIFE://使用年限
-                            String usefulLife = String.valueOf(categoryInfo.getLandUseYear());
+                        case LAND_USEFUL_LIFE://剩余使用年限
+                            String usefulLife = null;
+                            if (isCase) {
+                                if (categoryInfo.getTerminationData() != null && categoryInfo.getAcquisitionTime() != null)
+                                    usefulLife = publicService.diffDateYear(categoryInfo.getTerminationData(), categoryInfo.getAcquisitionTime()).toString();
+                            } else {
+                                if (categoryInfo.getTerminationData() != null && areaGroup.getValueTimePoint() != null)
+                                    usefulLife = publicService.diffDateYear(categoryInfo.getTerminationData(), areaGroup.getValueTimePoint()).toString();
+                            }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_USEFUL_LIFE.getKey(), generateCommonMethod.trimText(usefulLife), dataSetUseField));
                             break;
                         case LAND_RIGHT_CONDITION://土地权利状况
-                            String rightCondition = generateLandFactorService.getRightCondition(judgeObject);
+                            String rightCondition = generateLandFactorService.getRightCondition(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_RIGHT_CONDITION.getKey(), generateCommonMethod.trimText(rightCondition), dataSetUseField));
                             break;
                         case LAND_OTHER://土地其它

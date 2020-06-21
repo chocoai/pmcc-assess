@@ -226,11 +226,9 @@ public class DeclarePublicService {
         //必填项
         List<String> requiredList = new ArrayList<>();
         boolean getQuestion = checkLandCertGetQuestion(target.getLandCertGetQuestion());
-//            requiredList.addAll(Arrays.asList("province","city","beLocated","landRightType","useStartDate"));
         if (getQuestion) {
             requiredList.addAll(Arrays.asList("autoInitNumber", "province", "city", "certName", "location", "number", "year", "ownership", "publicSituation", "beLocated", "houseCertUse", "houseCertUseCategory", "nature", "evidenceArea", "landCertUse", "landCertUseCategory",
                     "landRightNature", "landRightType"));
-//            requiredList.addAll(Arrays.asList("streetNumber", "buildingNumber", "roomNumber"));
         } else {
             requiredList.addAll(Arrays.asList("autoInitNumber", "province", "city", "publicSituation", "beLocated", "landCertUse",
                     "landRightNature", "landCertUseCategory", "landRightType", "useEndDate", "houseCertUse", "houseCertUseCategory", "evidenceArea"));
@@ -241,6 +239,7 @@ public class DeclarePublicService {
         baseMap.put("landRightType", baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type"));
         baseMap.put("landRightNature", baseDataDicService.getCacheDataDicList("project.declare.use.right.type"));
         baseMap.put("publicSituation", baseDataDicService.getCacheDataDicList("project.declare.common.situation"));
+        baseMap.put("acquisitionType", baseDataDicService.getCacheDataDicList("project.declare.acquisition.type"));
         boolean check = excelImportHelp(classArrayListMultimap, target, builder, row, baseMap, requiredList);
         if (target.getAutoInitNumber() == null || target.getAutoInitNumber() == 0){
             return false;

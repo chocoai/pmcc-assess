@@ -16,7 +16,8 @@
                                 <small>保存</small>
                             </button>
                             <button type="button" href="javascript://;" class="btn btn-sm btn-warning"
-                                    onclick="houseLandTrading.cleanHTMLData(this)" style="margin-left: 5px">
+                                    onclick="houseLandTrading.cleanHTMLData(this);"
+                                    style="margin-left: 5px">
                                 <small>移除</small>
                             </button>
 
@@ -24,7 +25,7 @@
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" name="bisMark"
                                            value="true"
-                                           onclick="houseLandTrading.updateBisMark('basicHouseTradingFrm_number',this)"
+                                           onclick="houseLandTrading.updateBisMark('basicHouseTradingFrm_number',this);"
                                            checked="checked">
                                     <span class="form-check-sign">设为标准</span>
                                 </label>
@@ -38,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body" style="display: none">
+            <div class="card-body">
                 <form class="form-horizontal" id="basicHouseTradingFrm_number">
                     <input type="hidden" name="id" value="_number">
                     <input type="hidden" name="houseId" value="${basicHouse.id}">
@@ -849,7 +850,7 @@
         if (flag) {
             //单个保存
             var data = formParams(_this);
-            data.bisMark=$("#"+_this).closest('.col-md-12').find("input[name='bisMark']").prop("checked");
+            data.bisMark = $("#" + _this).closest('.col-md-12').find("input[name='bisMark']").prop("checked");
 
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicHouseTrading/saveAndUpdateBasicHouseTrading",
@@ -859,8 +860,7 @@
                 success: function (result) {
                     if (result.ret) {
                         notifySuccess("成功", "保存成功");
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -985,8 +985,7 @@
                         }
                     });
                     notifySuccess("成功", "设置成功");
-                }
-                else {
+                } else {
                     AlertError("失败", "设置失败，失败原因:" + result.errmsg);
                     $(_this).prop("checked", true);
                 }

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
@@ -17,7 +18,6 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         信息填写
-
                                         <button type="button" class="btn btn-sm btn-primary"
                                                 onclick="showHistoryModal();">历史记录
                                         </button>
@@ -40,7 +40,16 @@
                                 </div>
                                 <div class="x_content">
                                     <div class="card-header">
-                                        <div class="card-title">交易信息</div>
+                                        <div class="card-title">
+                                            交易信息
+                                            <button class="btn btn-sm btn-success" style="margin-left: 5px"
+                                                    type="button" onclick="houseLandTrading.appendHtml(false)">
+                                                <span class="btn-label"><i
+                                                        class="fa fa-plus"></i>
+                                                </span>
+                                                添加交易信息
+                                            </button>
+                                        </div>
                                     </div>
                                     <form id="basicHouseFrm" class="form-horizontal">
                                         <input type="hidden" name="id" value="${basicHouse.id}">
@@ -49,27 +58,11 @@
                                 </div>
                                 <div class="x_content">
                                     <c:if test="${projectPhase eq 'caseStudyExtend'}">
-                                        <div class="x_title">
-                                            <h3>
-                                                交易信息
-                                                <small>
-                                                    <button class="btn btn-sm btn-success" style="margin-left: 5px"
-                                                            type="button" onclick="houseLandTrading.appendHtml(false)">
-                                                <span class="btn-label"><i
-                                                        class="fa fa-plus"></i>
-                                                </span>
-                                                        添加分组
-                                                    </button>
-                                                </small>
-                                            </h3>
-                                            <div class="clearfix"></div>
-                                        </div>
                                         <div id="basicHouseLandTradingAppend"></div>
                                         <%@include file="/views/project/stageSurvey/common/houseTradingLandCase.jsp" %>
                                     </c:if>
                                     <c:if test="${projectPhase ne 'caseStudyExtend'}">
-                                        <%@include
-                                                file="/views/project/stageSurvey/common/houseTradingLandSurvey.jsp" %>
+                                        <%@include file="/views/project/stageSurvey/common/houseTradingLandSurvey.jsp" %>
                                     </c:if>
                                     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
                                 </div>

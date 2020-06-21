@@ -419,6 +419,12 @@ public class PublicService {
     public BigDecimal diffDateYear(Date endDate, Date startDate) {
         if (startDate == null || endDate == null)
             throw new IllegalArgumentException();
+        Boolean isStartLarge = DateUtils.compareDate(startDate, endDate) > -1;
+        if (isStartLarge) {//开始时间比结束时间大，交换位置，将结果取负值
+            Date temp = startDate;
+            startDate = endDate;
+            endDate = temp;
+        }
 
         Integer year1 = DateUtils.getYear(startDate);
         Integer year2 = DateUtils.getYear(endDate);
@@ -439,7 +445,7 @@ public class PublicService {
         int days = DateUtils.diffDate(endDate, startDate) + 1;
         //相差年份
         BigDecimal distanceAge = new BigDecimal(days).divide(averageDay, 2, BigDecimal.ROUND_HALF_UP);
-        return distanceAge;
+        return isStartLarge ? new BigDecimal("0").subtract(distanceAge) : distanceAge;
     }
 
     /**

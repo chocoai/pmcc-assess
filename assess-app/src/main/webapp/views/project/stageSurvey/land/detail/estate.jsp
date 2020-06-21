@@ -316,6 +316,46 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="card-header">
+                                        <div class="card-category">土壤</div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">污染</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="contaminatedName">${basicEstateLandState.contaminatedName}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">酸碱度</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="phName">${basicEstateLandState.phName}</label>
+                                                </div>
+                                                <c:if test="${not empty basicEstateLandState.holdOnName}">
+
+                                                    <label class="col-sm-1 control-label">稳定性</label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full"
+                                                               name="holdOnName">${basicEstateLandState.holdOnName}</label>
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <c:if test="${not empty basicEstateLandState.bearingCapacityName}">
+                                                    <label class="col-sm-1 control-label">承载力</label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full"
+                                                               name="bearingCapacityName">${basicEstateLandState.bearingCapacityName}</label>
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>

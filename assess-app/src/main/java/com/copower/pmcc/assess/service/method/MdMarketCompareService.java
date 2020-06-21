@@ -92,7 +92,7 @@ public class MdMarketCompareService {
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
-    private BasicEstateService basicEstateService;
+    private PublicService publicService;
     @Autowired
     private MdBaseLandPriceService mdBaseLandPriceService;
     @Autowired
@@ -301,11 +301,12 @@ public class MdMarketCompareService {
         BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
         if (basicHouse != null && categoryInfo != null) {
             BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
-            BigDecimal legalAge = categoryInfo.getLandUseYear();
+            BigDecimal legalAge = null;
+            if (categoryInfo.getTerminationData() != null && categoryInfo.getAcquisitionTime() != null)
+                legalAge = publicService.diffDateYear(categoryInfo.getTerminationData(), categoryInfo.getAcquisitionTime());
             BigDecimal surplusYear = null;
-            if (isCase) { //计算剩余年限=使用年限-已使用年限 已使用年限=评估基准日-交易时间
-                int diffDays = DateUtils.diffDate(areaGroup.getValueTimePoint(), houseTrading.getTradingTime());
-                BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
+            if (isCase && legalAge != null) { //计算剩余年限=使用年限-已使用年限 已使用年限=评估基准日-交易时间
+                BigDecimal yearCount = publicService.diffDateYear(areaGroup.getValueTimePoint(), houseTrading.getTradingTime());
                 surplusYear = legalAge.subtract(yearCount);
             } else {//估价对象则直接取剩余年限
                 surplusYear = schemeJudgeObject.getLandRemainingYear();
