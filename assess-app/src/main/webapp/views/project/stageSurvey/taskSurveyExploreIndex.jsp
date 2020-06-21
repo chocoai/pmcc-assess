@@ -109,7 +109,8 @@
                                                     </div>
 
                                                     <div class=" col-md-3">
-                                                        <%@include file="/views/project/stageSurvey/common/canvasQRcodeTree.jsp" %>
+                                                        <%@include
+                                                                file="/views/project/stageSurvey/common/canvasQRcodeTree.jsp" %>
                                                     </div>
                                                 </div>
                                             </div>
@@ -598,9 +599,9 @@
                 zTreeObj.expandAll(true);
                 zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
                 try {
-                    canvasQRcode.loadImg(basicApplyBatchId) ;
+                    canvasQRcode.loadImg(basicApplyBatchId);
                 } catch (e) {
-                    console.log(e) ;
+                    console.log(e);
                 }
             }
         })
@@ -853,6 +854,7 @@
     batchTreeTool.batchDeleteDetail = function () {
         var zTreeObj = $.fn.zTree.getZTreeObj($("#ztree").prop("id"));
         var nodes = zTreeObj.getCheckedNodes(true);
+        nodes = nodes.length == 0 ? zTreeObj.getSelectedNodes() : nodes;
         if (nodes.length == 0) {
             notifyInfo('提示', '勾选至少一个节点');
             return false;
@@ -1191,6 +1193,7 @@
     function selectRecord(_this, id) {
         var zTreeObj = $.fn.zTree.getZTreeObj($("#ztree").prop("id"));
         var nodes = zTreeObj.getCheckedNodes(true);
+        nodes = nodes.length == 0 ? zTreeObj.getSelectedNodes() : nodes;
         if (nodes.length == 0) {
             notifyInfo('提示', '勾选至少一个节点');
             return false;

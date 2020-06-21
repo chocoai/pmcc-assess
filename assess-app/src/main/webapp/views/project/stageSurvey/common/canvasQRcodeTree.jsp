@@ -27,6 +27,7 @@
     canvasQRcode.targetId = "canvasQRcodeModel";
 
     canvasQRcode.loadImg = function(basicApplyBatchId){
+        $("#"+canvasQRcode.targetId).empty();
         var url = "${ipHostAddress}${pageContext.request.contextPath}/basicApplyBatch/informationPhoneTree?applyBatchId="+basicApplyBatchId ;
         var qrcode = new QRCode(document.getElementById(canvasQRcode.targetId), {
             width: 150,

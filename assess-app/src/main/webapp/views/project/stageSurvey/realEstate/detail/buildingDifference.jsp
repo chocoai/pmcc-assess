@@ -123,10 +123,7 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
-
 </body>
 <%@include file="/views/share/chksCommon.jsp" %>
 <script type="text/javascript"
