@@ -788,11 +788,14 @@
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');
         $("#txt_building_search").apBuilding({
-            caseEstateId: function () {
-                return '${quoteId}';
+            type: function () {
+                return '${tbType}';
+            },
+            applyBatchId: function () {
+                return '${basicApplyBatch.id}';
             },
             onSelect: function (id, name) {
-                caseFun.caseBuild.showModel('${quoteId}', name);
+                caseFun.caseBuild.showModel(id,name);
             }
         });
         buildingCommon.autocompleteStart();

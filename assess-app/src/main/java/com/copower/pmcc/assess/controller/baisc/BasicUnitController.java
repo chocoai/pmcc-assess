@@ -1,12 +1,10 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -38,7 +36,9 @@ public class BasicUnitController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    private BasicApplyBatchDao basicApplyBatchDao;
+    @Autowired
+    private BasicEstateService basicEstateService;
     @Autowired
     private BasicAlternativeCaseDao basicAlternativeCaseDao;
     @Autowired
@@ -133,10 +133,16 @@ public class BasicUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingId) {
+    public HttpResult autoCompleteCaseEstate(String unitNumber,String type, Integer applyBatchId) {
         try {
-            List<CustomCaseEntity> caseEntities = basicUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingId);
-            return HttpResult.newCorrectResult(caseEntities);
+            BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchId);
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+            if(basicEstate==null){
+                return HttpResult.newCorrectResult(null);
+            }else {
+                List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailDao.getQuoteDataList(basicEstate.getQuoteId(), type, unitNumber);
+                return HttpResult.newCorrectResult(batchDetailList);
+            }
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }

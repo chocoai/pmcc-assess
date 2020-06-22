@@ -6,7 +6,8 @@
             var defaults = {
                 offset: 0,
                 limit: 10,
-                caseEstateId: null,
+                applyBatchId: null,
+                type: null,
                 autoSelect: false,
                 onSelect: function (id, name) {
 
@@ -19,11 +20,17 @@
                 params.response = null;
             }
             params.source = function (request, response) {
-                var estateId;
-                if (typeof defaults.caseEstateId == 'function') {
-                    estateId = defaults.caseEstateId();
+                var applyBatchId;
+                if (typeof defaults.applyBatchId == 'function') {
+                    applyBatchId = defaults.applyBatchId();
                 } else {
-                    estateId = defaults.caseEstateId;
+                    applyBatchId = defaults.applyBatchId;
+                }
+                var type;
+                if (typeof defaults.type == 'function') {
+                    type = defaults.type();
+                } else {
+                    type = defaults.type;
                 }
                 $.ajax({
                     url: getContextPath() + "/basicBuilding/autoCompleteCaseBuilding",
@@ -33,7 +40,8 @@
                         offset: defaults.offset,
                         limit: defaults.limit,
                         buildingNumber: $(that).val(),
-                        estateId: estateId
+                        type: type,
+                        applyBatchId: applyBatchId
                     },
                     success: function (result) {
                         if (result.ret && result.data) {

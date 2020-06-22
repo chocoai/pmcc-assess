@@ -1,15 +1,12 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
-import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
-import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
@@ -45,7 +42,9 @@ public class BasicHouseController {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
     private BasicAlternativeCaseDao basicAlternativeCaseDao;
     @Autowired
@@ -167,10 +166,16 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseHouse", method = {RequestMethod.GET}, name = "房屋-- 信息自动补全")
-    public HttpResult autoCompleteCaseHouse(String houseNumber, Integer unitId) {
+    public HttpResult autoCompleteCaseHouse(String houseNumber,String type, Integer applyBatchId) {
         try {
-            List<CustomCaseEntity> caseEntities = basicHouseService.autoCompleteCaseHouse(houseNumber, unitId);
-            return HttpResult.newCorrectResult(caseEntities);
+            BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchId);
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+            if(basicEstate==null){
+                return HttpResult.newCorrectResult(null);
+            }else {
+                List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailDao.getQuoteDataList(basicEstate.getQuoteId(), type, houseNumber);
+                return HttpResult.newCorrectResult(batchDetailList);
+            }
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }

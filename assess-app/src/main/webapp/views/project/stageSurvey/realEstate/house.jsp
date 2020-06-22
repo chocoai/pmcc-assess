@@ -554,11 +554,14 @@
     $(function () {
         houseCommon.initById('${basicHouse.id}');
         $("#txt_House_search").apHouse({
-            caseUnitId: function () {
-                return '${quoteId}';
+            type: function () {
+                return '${tbType}';
+            },
+            applyBatchId: function () {
+                return '${basicApplyBatch.id}';
             },
             onSelect: function (id, name) {
-                caseFun.caseHouse.showModel('${quoteId}', name);
+                caseFun.caseHouse.showModel(id,name);
             }
         });
         if(${projectPhase eq 'caseStudyExtend'}){

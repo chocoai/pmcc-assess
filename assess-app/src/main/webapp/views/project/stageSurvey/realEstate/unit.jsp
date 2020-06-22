@@ -129,11 +129,14 @@
         unitCommon.initById('${basicUnit.id}');
 
         $("#txt_Unit_search").apUnit({
-            caseBuildingId: function () {
-                return '${quoteId}';
+            type: function () {
+                return '${tbType}';
+            },
+            applyBatchId: function () {
+                return '${basicApplyBatch.id}';
             },
             onSelect: function (id, name) {
-                caseFun.caseUnit.showModel('${quoteId}', name);
+                caseFun.caseUnit.showModel(id,name);
             }
         });
 
