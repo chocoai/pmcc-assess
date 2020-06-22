@@ -245,7 +245,7 @@
                         table.find("tbody").append(estateStreetInfoObj.replaceHtml(item));
                         estateStreetInfoObj.showFile(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
                         estateStreetInfoObj.fileUpload(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
-                        table.find('[name^=streetNumber]').apStreetName({
+                        table.find("[name='streetNumber" + item.id + "']").apStreetName({
                             getProvince: function () {
                                 return estateCommon.estateForm.find("select[name='province']").val();
                             },
