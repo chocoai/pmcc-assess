@@ -176,7 +176,7 @@ public class SchemeJudgeObjectDao {
         return mapper.selectByExample(example);
     }
 
-    public int getNotSetFunctionCount(Integer projectId) {
+    public long getNotSetFunctionCount(Integer projectId) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andBisEnableEqualTo(true).andBisSetFunctionEqualTo(false);
         return mapper.countByExample(example);
@@ -198,19 +198,19 @@ public class SchemeJudgeObjectDao {
         return Integer.valueOf(judgeObjects.get(0).getNumber());
     }
 
-    public int getCountByAreaGroupId(Integer areaGroupId){
+    public long getCountByAreaGroupId(Integer areaGroupId){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andAreaGroupIdEqualTo(areaGroupId);
         return mapper.countByExample(example);
     }
 
-    public int getCountBySplitFrom(Integer judgeObjectId){
+    public long getCountBySplitFrom(Integer judgeObjectId){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andSplitFromEqualTo(judgeObjectId);
         return mapper.countByExample(example);
     }
 
-    public int getCountByPid(Integer pid){
+    public long getCountByPid(Integer pid){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andPidEqualTo(pid);
         return mapper.countByExample(example);

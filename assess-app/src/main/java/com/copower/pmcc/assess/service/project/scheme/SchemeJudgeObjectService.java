@@ -384,10 +384,15 @@ public class SchemeJudgeObjectService {
     public SchemeJudgeObjectVo getSchemeJudgeObjectVo(SchemeJudgeObject schemeJudgeObject) {
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
-        if (schemeJudgeObject.getSetUse() != null) {
-            DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
-            if (setUseField != null)
-                schemeJudgeObjectVo.setSetUseName(setUseField.getName());
+        if(schemeJudgeObject.getSetUseClassify()!=null){
+            schemeJudgeObjectVo.setSetUseClassifyName(baseDataDicService.getNameById(schemeJudgeObject.getSetUseClassify()));
+            schemeJudgeObjectVo.setSetUseName(baseDataDicService.getNameById(schemeJudgeObject.getSetUse()));
+        }else{
+            if (schemeJudgeObject.getSetUse() != null) {
+                DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
+                if (setUseField != null)
+                    schemeJudgeObjectVo.setSetUseName(setUseField.getName());
+            }
         }
         if (schemeJudgeObject.getBestUse() != null) {
             DataBestUseDescription bestUseDescription = dataBestUseDescriptionService.getCacheBestUseDescriptionById(schemeJudgeObject.getBestUse());
@@ -475,9 +480,19 @@ public class SchemeJudgeObjectService {
         splitJudgeObject.setLandPracticalUse(schemeJudgeObject.getPracticalUse());
         splitJudgeObject.setLandUseEndDate(schemeJudgeObject.getLandUseEndDate());
         splitJudgeObject.setLandRemainingYear(schemeJudgeObject.getLandRemainingYear());
+        splitJudgeObject.setSetUseClassify(schemeJudgeObject.getSetUseClassify());
         splitJudgeObject.setSetUse(schemeJudgeObject.getSetUse());
         splitJudgeObject.setBestUse(schemeJudgeObject.getBestUse());
         splitJudgeObject.setFloorArea(schemeJudgeObject.getFloorArea());
+
+        splitJudgeObject.setPlanPlotRatio(schemeJudgeObject.getPlanPlotRatio());
+        splitJudgeObject.setActualPlotRatio(schemeJudgeObject.getActualPlotRatio());
+        splitJudgeObject.setSetPlotRatio(schemeJudgeObject.getSetPlotRatio());
+        splitJudgeObject.setParcelInnerDevelop(schemeJudgeObject.getParcelInnerDevelop());
+        splitJudgeObject.setParcelOuterDevelop(schemeJudgeObject.getParcelOuterDevelop());
+        splitJudgeObject.setParcelSettingInnerDevelop(schemeJudgeObject.getParcelSettingInnerDevelop());
+        splitJudgeObject.setCurrentSituation(schemeJudgeObject.getCurrentSituation());
+
         splitJudgeObject.setBisSplit(true);
         splitJudgeObject.setBisSetFunction(false);
         splitJudgeObject.setBisEnable(true);
@@ -753,7 +768,7 @@ public class SchemeJudgeObjectService {
         //1.验证数据的完整性与准确性，查看评估方法是否都已设置
         //2.清除该计划下的所有任务，保存方案数据
         //3.生成计划任务
-        int count = schemeJudgeObjectDao.getNotSetFunctionCount(projectId);
+        long count = schemeJudgeObjectDao.getNotSetFunctionCount(projectId);
         if (count > 0) {
             throw new BusinessException("还有委估对象未设置评估方法请检查");
         }

@@ -24,6 +24,7 @@
     <result column="land_use_end_date" jdbcType="TIMESTAMP" property="landUseEndDate" />
     <result column="land_legal_year" jdbcType="DECIMAL" property="landLegalYear" />
     <result column="land_remaining_year" jdbcType="DECIMAL" property="landRemainingYear" />
+    <result column="set_use_classify" jdbcType="INTEGER" property="setUseClassify" />
     <result column="set_use" jdbcType="INTEGER" property="setUse" />
     <result column="best_use" jdbcType="INTEGER" property="bestUse" />
     <result column="floor_area" jdbcType="DECIMAL" property="floorArea" />
@@ -116,9 +117,9 @@
     id, pid, project_id, area_group_id, original_area_group_id, declare_record_id, building_status, 
     basic_apply_id, number, original_number, split_number, name, cert_name, ownership, 
     seat, cert_use, practical_use, land_cert_use, land_practical_use, land_use_end_date, 
-    land_legal_year, land_remaining_year, set_use, best_use, floor_area, evaluation_area, 
-    price, factor, original_price, set_plot_ratio, plan_plot_ratio, actual_plot_ratio, 
-    standard_judge_id, standard_judge_explain, judge_function, not_applicable_reason, 
+    land_legal_year, land_remaining_year, set_use_classify, set_use, best_use, floor_area, 
+    evaluation_area, price, factor, original_price, set_plot_ratio, plan_plot_ratio, 
+    actual_plot_ratio, standard_judge_id, standard_judge_explain, judge_function, not_applicable_reason, 
     merge_explain, split_explain, split_from, bis_split, bis_merge, bis_enable, bis_set_function, 
     sorting, creator, gmt_created, gmt_modified, parcel_outer_develop, parcel_inner_develop, 
     parcel_setting_inner_develop, current_situation
@@ -164,17 +165,17 @@
       ownership, seat, cert_use, 
       practical_use, land_cert_use, land_practical_use, 
       land_use_end_date, land_legal_year, land_remaining_year, 
-      set_use, best_use, floor_area, 
-      evaluation_area, price, factor, 
-      original_price, set_plot_ratio, plan_plot_ratio, 
-      actual_plot_ratio, standard_judge_id, standard_judge_explain, 
-      judge_function, not_applicable_reason, merge_explain, 
-      split_explain, split_from, bis_split, 
-      bis_merge, bis_enable, bis_set_function, 
-      sorting, creator, gmt_created, 
-      gmt_modified, parcel_outer_develop, parcel_inner_develop, 
-      parcel_setting_inner_develop, current_situation
-      )
+      set_use_classify, set_use, best_use, 
+      floor_area, evaluation_area, price, 
+      factor, original_price, set_plot_ratio, 
+      plan_plot_ratio, actual_plot_ratio, standard_judge_id, 
+      standard_judge_explain, judge_function, not_applicable_reason, 
+      merge_explain, split_explain, split_from, 
+      bis_split, bis_merge, bis_enable, 
+      bis_set_function, sorting, creator, 
+      gmt_created, gmt_modified, parcel_outer_develop, 
+      parcel_inner_develop, parcel_setting_inner_develop, 
+      current_situation)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{buildingStatus,jdbcType=INTEGER}, 
       #{basicApplyId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{originalNumber,jdbcType=VARCHAR}, 
@@ -182,17 +183,17 @@
       #{ownership,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, 
       #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, #{landPracticalUse,jdbcType=VARCHAR}, 
       #{landUseEndDate,jdbcType=TIMESTAMP}, #{landLegalYear,jdbcType=DECIMAL}, #{landRemainingYear,jdbcType=DECIMAL}, 
-      #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, #{floorArea,jdbcType=DECIMAL}, 
-      #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{factor,jdbcType=VARCHAR}, 
-      #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, #{planPlotRatio,jdbcType=DECIMAL}, 
-      #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, #{standardJudgeExplain,jdbcType=VARCHAR}, 
-      #{judgeFunction,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, #{mergeExplain,jdbcType=VARCHAR}, 
-      #{splitExplain,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, #{bisSplit,jdbcType=BIT}, 
-      #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, 
-      #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{parcelOuterDevelop,jdbcType=VARCHAR}, #{parcelInnerDevelop,jdbcType=VARCHAR}, 
-      #{parcelSettingInnerDevelop,jdbcType=VARCHAR}, #{currentSituation,jdbcType=VARCHAR}
-      )
+      #{setUseClassify,jdbcType=INTEGER}, #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, 
+      #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
+      #{factor,jdbcType=VARCHAR}, #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, 
+      #{planPlotRatio,jdbcType=DECIMAL}, #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, 
+      #{standardJudgeExplain,jdbcType=VARCHAR}, #{judgeFunction,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
+      #{mergeExplain,jdbcType=VARCHAR}, #{splitExplain,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, 
+      #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{parcelOuterDevelop,jdbcType=VARCHAR}, 
+      #{parcelInnerDevelop,jdbcType=VARCHAR}, #{parcelSettingInnerDevelop,jdbcType=VARCHAR}, 
+      #{currentSituation,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -262,6 +263,9 @@
       </if>
       <if test="landRemainingYear != null">
         land_remaining_year,
+      </if>
+      <if test="setUseClassify != null">
+        set_use_classify,
       </if>
       <if test="setUse != null">
         set_use,
@@ -415,6 +419,9 @@
       <if test="landRemainingYear != null">
         #{landRemainingYear,jdbcType=DECIMAL},
       </if>
+      <if test="setUseClassify != null">
+        #{setUseClassify,jdbcType=INTEGER},
+      </if>
       <if test="setUse != null">
         #{setUse,jdbcType=INTEGER},
       </if>
@@ -504,7 +511,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" resultType="java.lang.Integer">
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" resultType="java.lang.Long">
     select count(*) from tb_scheme_judge_object
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -578,6 +585,9 @@
       </if>
       <if test="record.landRemainingYear != null">
         land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.setUseClassify != null">
+        set_use_classify = #{record.setUseClassify,jdbcType=INTEGER},
       </if>
       <if test="record.setUse != null">
         set_use = #{record.setUse,jdbcType=INTEGER},
@@ -695,6 +705,7 @@
       land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
       land_legal_year = #{record.landLegalYear,jdbcType=DECIMAL},
       land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
+      set_use_classify = #{record.setUseClassify,jdbcType=INTEGER},
       set_use = #{record.setUse,jdbcType=INTEGER},
       best_use = #{record.bestUse,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
@@ -793,6 +804,9 @@
       </if>
       <if test="landRemainingYear != null">
         land_remaining_year = #{landRemainingYear,jdbcType=DECIMAL},
+      </if>
+      <if test="setUseClassify != null">
+        set_use_classify = #{setUseClassify,jdbcType=INTEGER},
       </if>
       <if test="setUse != null">
         set_use = #{setUse,jdbcType=INTEGER},
@@ -907,6 +921,7 @@
       land_use_end_date = #{landUseEndDate,jdbcType=TIMESTAMP},
       land_legal_year = #{landLegalYear,jdbcType=DECIMAL},
       land_remaining_year = #{landRemainingYear,jdbcType=DECIMAL},
+      set_use_classify = #{setUseClassify,jdbcType=INTEGER},
       set_use = #{setUse,jdbcType=INTEGER},
       best_use = #{bestUse,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},

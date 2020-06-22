@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
  * Created by kings on 2018-10-9.
  */
 public class SchemeJudgeObjectVo extends SchemeJudgeObject {
+    private String setUseClassifyName;
     private String setUseName;
     private String bestUseName;
     private String floor;
@@ -18,6 +19,14 @@ public class SchemeJudgeObjectVo extends SchemeJudgeObject {
     private String parcelOuterDevelopName;//宗地外实际开发程度
     private String parcelInnerDevelopName;//宗地内实际开发程度
     private String parcelSettingInnerDevelopName;//宗地内设定开发程度
+
+    public String getSetUseClassifyName() {
+        return setUseClassifyName;
+    }
+
+    public void setSetUseClassifyName(String setUseClassifyName) {
+        this.setUseClassifyName = setUseClassifyName;
+    }
 
     public String getParcelOuterDevelopName() {
         return parcelOuterDevelopName;

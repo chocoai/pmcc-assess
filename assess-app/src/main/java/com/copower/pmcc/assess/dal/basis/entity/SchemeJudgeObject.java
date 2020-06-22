@@ -48,6 +48,8 @@ public class SchemeJudgeObject {
 
     private BigDecimal landRemainingYear;
 
+    private Integer setUseClassify;
+
     private Integer setUse;
 
     private Integer bestUse;
@@ -280,6 +282,14 @@ public class SchemeJudgeObject {
 
     public void setLandRemainingYear(BigDecimal landRemainingYear) {
         this.landRemainingYear = landRemainingYear;
+    }
+
+    public Integer getSetUseClassify() {
+        return setUseClassify;
+    }
+
+    public void setSetUseClassify(Integer setUseClassify) {
+        this.setUseClassify = setUseClassify;
     }
 
     public Integer getSetUse() {
