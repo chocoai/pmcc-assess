@@ -26,7 +26,7 @@ public class BasicApplyBatchDao {
      * @param estateName
      * @return
      */
-    public List<BasicApplyBatch> getCommitBasicApplyBatchListByName(String estateName,String userAccount, Boolean draftFlag) {
+    public List<BasicApplyBatch> getCommitBasicApplyBatchListByName(String estateName, String userAccount, Boolean draftFlag) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(estateName)) {
@@ -49,7 +49,7 @@ public class BasicApplyBatchDao {
      * @param estateName
      * @return
      */
-    public List<BasicApplyBatch> getDraftBasicApplyBatchListByName(String estateName,String userAccount, Boolean draftFlag) {
+    public List<BasicApplyBatch> getDraftBasicApplyBatchListByName(String estateName, String userAccount, Boolean draftFlag) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(estateName)) {
@@ -137,7 +137,7 @@ public class BasicApplyBatchDao {
     public BasicApplyBatch getBasicApplyBatchByPlanDetailsId(Integer planDetailsId) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
-        if (planDetailsId!=null) {
+        if (planDetailsId != null) {
             criteria.andPlanDetailsIdEqualTo(planDetailsId);
         }
         criteria.andBisDeleteEqualTo(false);
@@ -175,12 +175,12 @@ public class BasicApplyBatchDao {
      */
     public boolean deleteInfo(Integer id) {
         BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(id);
-        if(basicApplyBatch==null) return false;
+        if (basicApplyBatch == null) return false;
         basicApplyBatch.setBisDelete(true);
         return basicApplyBatchMapper.updateByPrimaryKeySelective(basicApplyBatch) > 0;
     }
 
-    public List<BasicApplyBatch> getListByEstate(String province, String city,String estateName) {
+    public List<BasicApplyBatch> getListByEstate(String province, String city, String estateName) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(province)) {

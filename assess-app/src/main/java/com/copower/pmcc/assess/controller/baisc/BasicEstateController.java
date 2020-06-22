@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
-import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
@@ -48,6 +48,8 @@ public class BasicEstateController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
+    private BasicApplyBatchDao basicApplyBatchDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -163,8 +165,9 @@ public class BasicEstateController {
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String name, String province, String city) {
         try {
-            List<CustomCaseEntity> caseEstateList = basicEstateService.autoCompleteCaseEstate(name, province, city);
-            return HttpResult.newCorrectResult(caseEstateList);
+            //List<CustomCaseEntity> caseEstateList = basicEstateService.autoCompleteCaseEstate(name, province, city);
+            List<BasicApplyBatch> applyBatchList = basicApplyBatchDao.getListByEstate(province, city, name);
+            return HttpResult.newCorrectResult(applyBatchList);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }
