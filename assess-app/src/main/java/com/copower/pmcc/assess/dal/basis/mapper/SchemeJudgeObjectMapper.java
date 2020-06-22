@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface SchemeJudgeObjectMapper {
-    int countByExample(SchemeJudgeObjectExample example);
+    long countByExample(SchemeJudgeObjectExample example);
 
     int deleteByExample(SchemeJudgeObjectExample example);
 

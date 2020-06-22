@@ -39,14 +39,16 @@
                                                     权证号
                                                 </label>
                                                 <div class="col-sm-2">
-                                                    <input type="text" data-rule-maxlength="50" placeholder="权证号" name="name"
+                                                    <input type="text" data-rule-maxlength="50" placeholder="权证号"
+                                                           name="name"
                                                            class="form-control input-full">
                                                 </div>
                                                 <label class="col-sm-1 control-label">
                                                     坐落
                                                 </label>
                                                 <div class="col-sm-2">
-                                                    <input type="text" data-rule-maxlength="50" placeholder="坐落" name="seat"
+                                                    <input type="text" data-rule-maxlength="50" placeholder="坐落"
+                                                           name="seat"
                                                            class="form-control input-full">
                                                 </div>
                                                 <label class="col-sm-1 control-label">
@@ -105,7 +107,8 @@
                                         <div class="card-title">
                                             <strong>${item.areaName}</strong>
                                             <c:if test="${item.bisMerge eq true}">
-                                                <button type="button" class="btn btn-md btn-warning btn-area-merge-cancel">
+                                                <button type="button"
+                                                        class="btn btn-md btn-warning btn-area-merge-cancel">
                                                     取消合并
                                                 </button>
                                             </c:if>
@@ -120,7 +123,8 @@
                                                 </c:if>
                                             </c:if>
                                             <c:if test="${item.bisSplit eq true}">
-                                                <button type="button" class="btn btn-md btn-warning btn-area-split-remove">
+                                                <button type="button"
+                                                        class="btn btn-md btn-warning btn-area-split-remove">
                                                     移除
                                                 </button>
                                             </c:if>
@@ -132,7 +136,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="x_content card-body " style="display: ${fn:length(areaGroups)<3?'block':'none'}">
+                                <div class="x_content card-body "
+                                     style="display: ${fn:length(areaGroups)<3?'block':'none'}">
                                     <form id="frmJudgeObject${item.id}" class="form-horizontal">
                                         <div class="row form-group">
                                             <div class="col-md-12">
@@ -149,11 +154,13 @@
                                                                 });
                                                             </script>
                                                         </c:if>
-                                                        <select name="entrustmentPurpose" class="form-control input-full"
+                                                        <select name="entrustmentPurpose"
+                                                                class="form-control input-full"
                                                                 required="required"
                                                                 onchange="programme.changeEntrustmentPurpose(this,null);">
                                                             <option value="">-请选择-</option>
-                                                            <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
+                                                            <c:forEach items="${entrustmentPurposes}"
+                                                                       var="entrustmentPurpose">
                                                                 <c:choose>
                                                                     <c:when test="${entrustmentPurpose.id eq item.entrustPurpose}">
                                                                         <option value="${entrustmentPurpose.id}"
@@ -182,7 +189,8 @@
                                                         委托目的描述<span class="symbol required"></span>
                                                     </label>
                                                     <div class="x-valid col-sm-2">
-                                                        <input type="text" name="remarkEntrustPurpose" required="required"
+                                                        <input type="text" name="remarkEntrustPurpose"
+                                                               required="required"
                                                                placeholder="委托目的描述" class="form-control input-full"
                                                                value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
                                                     </div>
@@ -218,7 +226,8 @@
                                                         价值类型<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-sm-2 x-valid">
-                                                        <select name="valueDefinition" class="form-control input-full" required>
+                                                        <select name="valueDefinition" class="form-control input-full"
+                                                                required>
                                                             <option value="">-请选择-</option>
                                                             <c:forEach items="${valueTypes}" var="valueDefinition">
                                                                 <c:choose>
@@ -256,7 +265,8 @@
                                                         价值类型描述<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-sm-11 x-valid">
-                                        <textarea class="form-control input-full" name="valueDefinitionDesc" placeholder="价值类型描述"
+                                        <textarea class="form-control input-full" name="valueDefinitionDesc"
+                                                  placeholder="价值类型描述"
                                                   required>${item.valueDefinitionDesc}</textarea>
                                                     </div>
                                                 </div>
@@ -289,46 +299,57 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10"/>
+                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                            color="#6f5499" size="10"/>
                                         <div class="judge-object-query">
                                             <div class="row form-group">
                                                 <div class="col-md-12">
                                                     <div class="form-inline">
                                                         <div class="col-sm-2">
-                                                            <input type="text" data-rule-maxlength="100" placeholder="估价对象号"
+                                                            <input type="text" data-rule-maxlength="100"
+                                                                   placeholder="估价对象号"
                                                                    name="number"
                                                                    class="form-control input-full">
                                                         </div>
                                                         <div class="col-sm-2">
-                                                            <input type="text" data-rule-maxlength="100" placeholder="所有权人"
+                                                            <input type="text" data-rule-maxlength="100"
+                                                                   placeholder="所有权人"
                                                                    name="ownership"
                                                                    class="form-control input-full">
                                                         </div>
                                                         <div class="col-sm-2">
-                                                            <input type="text" data-rule-maxlength="100" placeholder="坐落"
+                                                            <input type="text" data-rule-maxlength="100"
+                                                                   placeholder="坐落"
                                                                    name="seat"
                                                                    class="form-control input-full">
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                    style="margin-top: 5px;"
                                                                     onclick="programme.loadJudgeObjectList(this);">查询
                                                             </button>
-                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                    style="margin-top: 5px;"
                                                                     onclick="programme.selectAll(this);">全选
                                                             </button>
-                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                    style="margin-top: 5px;"
                                                                     onclick="programme.selectInvert(this);">反选
                                                             </button>
-                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                    style="margin-top: 5px;"
                                                                     onclick="programme.collectJudge(this);">收起
                                                             </button>
-                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                    style="margin-top: 5px;"
                                                                     onclick="programme.expandJudge(this);">展开
                                                             </button>
-                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                    style="margin-top: 5px;"
                                                                     onclick="programme.batchMerge(this);">批量合并
                                                             </button>
-                                                            <button type="button" class="btn btn-info btn-sm" style="margin-top: 5px;"
+                                                            <button type="button" class="btn btn-info btn-sm"
+                                                                    style="margin-top: 5px;"
                                                                     onclick="programme.showBatchSetModal(this);">批量设置
                                                             </button>
                                                         </div>
@@ -336,7 +357,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10"/>
+                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                            color="#6f5499" size="10"/>
                                         <div class="judge-object-content"></div>
                                     </form>
                                     <script type="text/javascript">
@@ -355,23 +377,28 @@
                         <div class="card x_panel">
                             <div class="card-body x_content">
                                 <div style="text-align: center;">
-                                    <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                    <button type="button" id="cancel_btn" class="btn btn-default"
+                                            onclick="window.close()">
                                         取消
                                     </button>
-                                    <button type="button" class="btn btn-warning" style="margin-left: 10px;" onclick="programme.saveProgrammeAll();">
+                                    <button type="button" class="btn btn-warning" style="margin-left: 10px;"
+                                            onclick="programme.saveProgrammeAll();">
                                         保存
                                     </button>
                                     <c:choose>
                                         <c:when test="${projectPhase.bisUseBox eq false}">
-                                            <button type="button" id="btn_submit" class="btn btn-success" style="margin-left: 10px;" onclick="submit(false);">
+                                            <button type="button" id="btn_submit" class="btn btn-success"
+                                                    style="margin-left: 10px;" onclick="submit(false);">
                                                 直接提交
                                             </button>
-                                            <button type="button" id="btn_submit" class="btn btn-primary" style="margin-left: 10px;" onclick="submit(true);">
+                                            <button type="button" id="btn_submit" class="btn btn-primary"
+                                                    style="margin-left: 10px;" onclick="submit(true);">
                                                 提交审批
                                             </button>
                                         </c:when>
                                         <c:otherwise>
-                                            <button type="button" id="btn_submit" class="btn btn-primary" style="margin-left: 10px;" onclick="submit();">
+                                            <button type="button" id="btn_submit" class="btn btn-primary"
+                                                    style="margin-left: 10px;" onclick="submit();">
                                                 提交
                                             </button>
                                         </c:otherwise>
@@ -482,20 +509,49 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <input type="hidden" name="areaId">
+                    <c:choose>
+                        <c:when test="${projectCategory eq 'land'}">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-2 control-label">
+                                            设定用途类型
+                                        </label>
+                                        <div class="col-sm-4 x-valid">
+                                            <select class="form-control input-full" name="setUseClassify">
+                                                <c:forEach items="${setUseList}" var="setUse">
+                                                    <option value="${setUse.id}">${setUse.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-2 control-label">
+                                            设定用途
+                                        </label>
+                                        <div class="col-sm-10 x-valid">
+                                            <select class="form-control input-full" name="setUse">
+                                                <option value="">--请选择--</option>
+                                                <c:forEach items="${setUseList}" var="setUse">
+                                                    <option value="${setUse.id}">${setUse.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                     <div class="row form-group">
                         <div class="col-md-12">
                             <div class="form-inline">
-                                <label class="col-sm-2 control-label">
-                                    设定用途
-                                </label>
-                                <div class="col-sm-4 x-valid">
-                                    <select class="form-control input-full" name="setUse">
-                                        <option value="">--请选择--</option>
-                                        <c:forEach items="${setUseList}" var="setUse">
-                                            <option value="${setUse.id}">${setUse.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
                                 <label class="col-sm-2 control-label">
                                     最佳利用方式
                                 </label>
@@ -576,20 +632,27 @@
                             <input type="checkbox">
                             <label style="word-break: break-all">{mergeNumber}</label>
                             <button type="button" href="javascript://" onclick="programme.splitJudge(this);"
-                               class="btn btn-md btn-info judge-split tooltips">拆分</button>
+                                    class="btn btn-md btn-info judge-split tooltips">拆分
+                            </button>
                             <button type="button" href="javascript://" onclick="programme.delSplitJudge(this);"
-                               class="btn btn-md btn-warning judge-remove tooltips">移除</button>
+                                    class="btn btn-md btn-warning judge-remove tooltips">移除
+                            </button>
                             <button type="button" href="javascript://" onclick="programme.mergeJudge(this);"
-                               class="btn btn-md btn-info judge-merge tooltips">合并</button>
+                                    class="btn btn-md btn-info judge-merge tooltips">合并
+                            </button>
                             <button type="button" href="javascript://" onclick="programme.mergeJudgeCancel(this);"
-                               class="btn btn-md btn-warning judge-merge-cancel tooltips">取消合并</button>
+                                    class="btn btn-md btn-warning judge-merge-cancel tooltips">取消合并
+                            </button>
                             <button type="button" href="javascript://" onclick="programme.mergeJudgeAdjustView(this);"
-                               class="btn btn-md btn-info judge-merge-cancel tooltips">调整合并</button>
+                                    class="btn btn-md btn-info judge-merge-cancel tooltips">调整合并
+                            </button>
                             <button type="button" href="javascript://"
-                               onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
-                               class="btn btn-md btn-info judge-relation-object tooltips">关联查勘</button>
+                                    onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
+                                    class="btn btn-md btn-info judge-relation-object tooltips">关联查勘
+                            </button>
                             <button type="button" href="javascript://" onclick="programmeMethod.setMethod(this);"
-                               class="btn btn-md btn-info judge-method tooltips">评估方法</button>
+                                    class="btn btn-md btn-info judge-method tooltips">评估方法
+                            </button>
                             <small></small>
                         </div>
                         <div class="card-tools">
@@ -622,7 +685,8 @@
                                         坐落
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control input-full" data-name="seat"><span>{seat}</span></label>
+                                        <label class="form-control input-full"
+                                               data-name="seat"><span>{seat}</span></label>
                                     </div>
                                     <label class="col-sm-1 control-label">
                                         终止日期
@@ -654,7 +718,8 @@
                                         实际用途
                                     </label>
                                     <div class="col-sm-2 x-valid">
-                                        <label class="form-control input-full" data-name="practicalUse">{practicalUse}</label>
+                                        <label class="form-control input-full"
+                                               data-name="practicalUse">{practicalUse}</label>
                                     </div>
                                     <c:choose>
                                         <c:when test="${projectCategory eq 'land'}">
@@ -662,7 +727,8 @@
                                                 设定用途(类型)
                                             </label>
                                             <div class="col-sm-2 x-valid">
-                                                <select class="form-control input-full" required data-name="setUseClassify" name="setUseClassify{id}"
+                                                <select class="form-control input-full" required
+                                                        data-name="setUseClassify" name="setUseClassify{id}"
                                                         onchange="programme.saveProgrammeJudge(this);programme.landUseTypeChange(this);">
                                                     <option value="">--请选择--</option>
                                                     <c:forEach items="${setUseList}" var="setUse">
@@ -674,7 +740,8 @@
                                                 设定用途(类别)
                                             </label>
                                             <div class="col-sm-2 x-valid">
-                                                <select class="form-control input-full" required data-name="setUse" name="setUse{id}"
+                                                <select class="form-control input-full" required data-name="setUse"
+                                                        name="setUse{id}"
                                                         onchange="programme.saveProgrammeJudge(this);">
                                                 </select>
                                             </div>
@@ -684,7 +751,8 @@
                                                 设定用途
                                             </label>
                                             <div class="col-sm-2 x-valid">
-                                                <select class="form-control input-full" required data-name="setUse" name="setUse{id}"
+                                                <select class="form-control input-full" required data-name="setUse"
+                                                        name="setUse{id}"
                                                         onchange="programme.saveProgrammeJudge(this);">
                                                     <option value="">--请选择--</option>
                                                     <c:forEach items="${setUseList}" var="setUse">
@@ -704,7 +772,8 @@
                                         最佳利用方式
                                     </label>
                                     <div class="col-sm-2 x-valid">
-                                        <select class="form-control input-full" required data-name="bestUse" name="bestUse{id}"
+                                        <select class="form-control input-full" required data-name="bestUse"
+                                                name="bestUse{id}"
                                                 onchange="programme.saveProgrammeJudge(this);">
                                             <c:forEach items="${bestUseList}" var="bestUse">
                                                 <option value="${bestUse.id}">${bestUse.name}</option>
@@ -721,8 +790,10 @@
                                         评估面积
                                     </label>
                                     <div class="col-sm-2 x-valid">
-                                        <input class="form-control input-full" type="text" required data-rule-number="true"
-                                               data-rule-range="[1,{floorArea}]" onblur="programme.saveProgrammeJudge(this);"
+                                        <input class="form-control input-full" type="text" required
+                                               data-rule-number="true"
+                                               data-rule-range="[1,{floorArea}]"
+                                               onblur="programme.saveProgrammeJudge(this);"
                                                name="evaluationArea{id}" data-name="evaluationArea"
                                                placeholder="评估面积" value="{evaluationArea}">
                                     </div>
@@ -732,13 +803,17 @@
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="form-inline">
-                                    <label class="col-sm-1 control-label" data-name="mergeExplainContainer{id}" style="display: none;">
+                                    <label class="col-sm-1 control-label" data-name="mergeExplainContainer{id}"
+                                           style="display: none;">
                                         合并对象说明
                                     </label>
-                                    <div class="col-sm-11 x-valid" data-name="mergeExplainContainer{id}" style="display: none;">
-                                        <textarea class="form-control input-full" type="text" required name="mergeExplain{id}"
+                                    <div class="col-sm-11 x-valid" data-name="mergeExplainContainer{id}"
+                                         style="display: none;">
+                                        <textarea class="form-control input-full" type="text" required
+                                                  name="mergeExplain{id}"
                                                   onblur="programme.saveProgrammeJudge(this);"
-                                                  data-name="mergeExplain" placeholder="合并对象说明" >{mergeExplain}</textarea>
+                                                  data-name="mergeExplain"
+                                                  placeholder="合并对象说明">{mergeExplain}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -746,13 +821,17 @@
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="form-inline">
-                                    <label class="col-sm-1 control-label"  data-name="splitExplainContainer{id}" style="display: none;">
+                                    <label class="col-sm-1 control-label" data-name="splitExplainContainer{id}"
+                                           style="display: none;">
                                         拆分对象说明
                                     </label>
-                                    <div class="col-sm-11 x-valid" data-name="splitExplainContainer{id}" style="display: none;">
-                                        <textarea class="form-control input-full" type="text" required name="splitExplain{id}"
+                                    <div class="col-sm-11 x-valid" data-name="splitExplainContainer{id}"
+                                         style="display: none;">
+                                        <textarea class="form-control input-full" type="text" required
+                                                  name="splitExplain{id}"
                                                   onblur="programme.saveProgrammeJudge(this);"
-                                                  data-name="splitExplain" placeholder="拆分对象说明">{splitExplain}</textarea>
+                                                  data-name="splitExplain"
+                                                  placeholder="拆分对象说明">{splitExplain}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -804,7 +883,8 @@
                                             宗地内设定开发程度
                                         </label>
                                         <div class="col-sm-2 x-valid">
-                                            <label class="form-control input-full" data-name="parcelSettingInnerDevelopName">{parcelSettingInnerDevelopName}</label>
+                                            <label class="form-control input-full"
+                                                   data-name="parcelSettingInnerDevelopName">{parcelSettingInnerDevelopName}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -962,6 +1042,11 @@
                         if (item.bestUse) {
                             lastTr.find('[data-name="bestUse"]').val(item.bestUse);
                         }
+                        lastTr.find('[data-name="setUseClassify"]').val(item.setUseClassify);
+                        if (item.setUseClassify) {
+                            programme.landUseTypeChange(lastTr.find('[data-name="setUse"]'), item.setUse);
+                        }
+
                         if (item.bisMerge) {
                             lastTr.find('[data-name=mergeExplainContainer' + item.id + ']').show();
                             lastTr.find('.card-title').find('.judge-split').remove();
@@ -974,12 +1059,12 @@
                         if (item.bisSetFunction) {
                             lastTr.find('.card-title').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }
-                        var desc='';
-                        if(item.standardNumber){
-                            desc+="【"+item.standardNumber+"号】";
+                        var desc = '';
+                        if (item.standardNumber) {
+                            desc += "【" + item.standardNumber + "号】";
                         }
-                        if(item.surveyObjectName){
-                            desc+="【"+item.surveyObjectName+"】";
+                        if (item.surveyObjectName) {
+                            desc += "【" + item.surveyObjectName + "】";
                         }
                         lastTr.find('.card-title').find('small').text(desc);
                     })
@@ -1035,7 +1120,7 @@
         var judgeObjectContent = $(_this).closest('.area_panel').find('.judge-object-content');
         var checkedBoxs = judgeObjectContent.find('input:checkbox:checked');
         if (checkedBoxs.length <= 0) {
-            notifyInfo('提示','请选择需要拆分到新区域的估价对象');
+            notifyInfo('提示', '请选择需要拆分到新区域的估价对象');
             return false;
         }
         var judgeObjectIdArray = [];
@@ -1108,7 +1193,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         })
@@ -1136,7 +1221,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         })
@@ -1149,7 +1234,7 @@
             title: '拆分个数',
         }, function (value, index, elem) {
             if (!AssessCommon.isNumber(value)) {
-                notifyInfo('提示',"只能填写数字");
+                notifyInfo('提示', "只能填写数字");
                 return;
             }
             $.ajax({
@@ -1171,7 +1256,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         });
@@ -1197,7 +1282,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -1229,7 +1314,7 @@
         var $panel = $(_this).closest('.x_panel');
         var judgeNumber = $(_this).closest('.card-title').find('label').text();
         if (!programme.valideJudge(_this)) {
-            notifyInfo('提示','请先完善估价对象' + judgeNumber + '信息');
+            notifyInfo('提示', '请先完善估价对象' + judgeNumber + '信息');
             return false;
         }
         var mergeNumber = $panel.find('[data-name="mergeNumber"]').val();
@@ -1286,7 +1371,7 @@
             }
         })
         if (!standardJudgeId) {
-            notifyInfo('提示','参与合并的估价对象中未设置标准房地产');
+            notifyInfo('提示', '参与合并的估价对象中未设置标准房地产');
             return false;
         }
         $.ajax({
@@ -1299,7 +1384,7 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess("成功",'委估对象合并成功');
+                    notifySuccess("成功", '委估对象合并成功');
                     layer.close(programme.config.judgePopIndex);
                     programme.loadJudgeObjectList(panel);
                 } else {
@@ -1325,14 +1410,14 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess("成功",'委估对象取消合并成功');
+                        notifySuccess("成功", '委估对象取消合并成功');
                         programme.loadJudgeObjectList($(_this).closest('.area_panel'));
                     } else {
                         AlertError(result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         })
@@ -1377,7 +1462,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -1417,7 +1502,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -1455,6 +1540,7 @@
         var $panel = $(_this).closest('.x_panel');
         var schemeJudgeObject = {};
         schemeJudgeObject.id = $panel.find('[data-name="id"]').val();
+        schemeJudgeObject.setUseClassify = $panel.find('[data-name="setUseClassify"]').val();
         schemeJudgeObject.setUse = $panel.find('[data-name="setUse"]').val();
         schemeJudgeObject.bestUse = $panel.find('[data-name="bestUse"]').val();
         schemeJudgeObject.setPlotRatio = $panel.find('[data-name="setPlotRatio"]').val();
@@ -1475,7 +1561,7 @@
                 //不做任何信息提示
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -1494,7 +1580,7 @@
                 //不做任何信息提示
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -1519,14 +1605,14 @@
                     if (callback) {
                         callback();
                     } else {
-                        notifySuccess("成功",'保存成功');
+                        notifySuccess("成功", '保存成功');
                     }
                 } else {
                     AlertError("保存成功失败:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -1641,7 +1727,7 @@
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
             }
-        },true);
+        }, true);
     };
 
     //添加或移除申报记录数据
@@ -1664,10 +1750,9 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess('成功',"操作成功");
+                        notifySuccess('成功', "操作成功");
                         programme.loadDeclareRecordList();
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1675,7 +1760,7 @@
                     AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
-        }else{
+        } else {
             notifyInfo('提示', "至少选择一个");
         }
 
@@ -1697,8 +1782,7 @@
                     AlertSuccess("成功", "数据生成成功", function () {
                         window.location.href = window.location.href;
                     })
-                }
-                else {
+                } else {
                     AlertError(result.errmsg);
                 }
             },
@@ -1712,7 +1796,7 @@
     programme.batchMerge = function (_this) {
         var checkedBoxs = $(_this).closest('.area_panel').find('input:checkbox:checked');
         if (checkedBoxs.length <= 0) {
-            notifyInfo('提示','请选择需要合并的估价对象');
+            notifyInfo('提示', '请选择需要合并的估价对象');
             return false;
         }
         checkedBoxs.each(function () {
@@ -1766,8 +1850,7 @@
                         tBody.append(html);
                     })
                     $('#loadSceneExploreBasicApplyModal').modal();
-                }
-                else {
+                } else {
                     AlertError(result.errmsg);
                 }
             },
@@ -1792,10 +1875,9 @@
             success: function (result) {
                 if (result.ret) {
                     $(document).find('[name=evaluationArea' + judgeId + ']').val(area);
-                    notifySuccess("成功",'关联成功');
+                    notifySuccess("成功", '关联成功');
                     $('#loadSceneExploreBasicApplyModal').modal('hide');
-                }
-                else {
+                } else {
                     AlertError(result.errmsg);
                 }
             },
@@ -1816,10 +1898,9 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess("成功",result.data);
+                    notifySuccess("成功", result.data);
                     programme.loadDeclareRecordList();
-                }
-                else {
+                } else {
                     AlertError(result.errmsg);
                 }
             },
@@ -1830,11 +1911,11 @@
     }
 
     //显示批量设置弹窗
-    programme.showBatchSetModal=function (_this) {
-        var areaId= $(_this).closest('.area_panel').find('[name="areaGroupId"]').val()
-        var checkedBoxs = $("#frmJudgeObject"+areaId).find('input:checkbox:checked');
-        if(checkedBoxs.length<=0){
-            notifyInfo('提示','请选择估价对象信息');
+    programme.showBatchSetModal = function (_this) {
+        var areaId = $(_this).closest('.area_panel').find('[name="areaGroupId"]').val()
+        var checkedBoxs = $("#frmJudgeObject" + areaId).find('input:checkbox:checked');
+        if (checkedBoxs.length <= 0) {
+            notifyInfo('提示', '请选择估价对象信息');
             return false;
         }
         $("#judgeBatchSetModal").find('[name=areaId]').val(areaId);
@@ -1842,11 +1923,12 @@
     }
 
     //批量设值
-    programme.batchSetValue=function (_this) {
-        var form=$(_this).closest('.modal').find('form');
-        var checkedBoxs = $("#frmJudgeObject"+form.find('[name="areaId"]').val()).find('input:checkbox:checked');
-        $.each(checkedBoxs,function (i,item) {
+    programme.batchSetValue = function (_this) {
+        var form = $(_this).closest('.modal').find('form');
+        var checkedBoxs = $("#frmJudgeObject" + form.find('[name="areaId"]').val()).find('input:checkbox:checked');
+        $.each(checkedBoxs, function (i, item) {
             var panel = $(item).closest('.x_panel');
+            panel.find('[data-name="setUseClassify"]').val(form.find('[name="setUseClassify"]').val()).trigger('change');
             panel.find('[data-name="setUse"]').val(form.find('[name="setUse"]').val()).trigger('change');
             panel.find('[data-name="bestUse"]').val(form.find('[name="bestUse"]').val()).trigger('change');
         })
@@ -1866,12 +1948,15 @@
                     var centerId = result.data.id;
                     if (economicId) {
                         economicIndicators.init({economicId: economicId});
-                    }else{
+                    } else {
                         economicIndicators.init({
                             planDetailsId: result.data.planDetailsId,
                             saveCallback: function (economicId) {//经济指标id更新到中间表
                                 if (centerId) {
-                                    declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: centerId});
+                                    declareCommon.declareBuildCenterSaveAndUpdate({
+                                        indicatorId: economicId,
+                                        id: centerId
+                                    });
                                 }
                             },
                             targetCallback: function () {
@@ -1880,21 +1965,22 @@
                         });
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
 
-    programme.landUseTypeChange = function (this_) {
+    //土地用途change
+    programme.landUseTypeChange = function (this_, setUse) {
         var content = $(this_).closest(".x_content");
-        var id = content.find("input[data-name=id]").val();
-        var value = content.find("input[data-name=setUseClassify]").val() ;
-        AssessCommon.getSonTextAppendDicList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
-            content.find("input[data-name=setUse]").empty().html(html).trigger('change');
+        var id = content.find("[data-name=id]").val();
+        var value = content.find("[data-name=setUseClassify]").val();
+        AssessCommon.loadDataDicByPid(value, setUse, function (html, data) {
+            content.find("[data-name=setUse]").empty().html(html).trigger('change');
         });
     };
 
@@ -1906,7 +1992,7 @@
     programmeMethod.setMethod = function (_this) {
         var judgeNumber = $(_this).closest('.card-title').find('label').text();
         if (!programme.valideJudge(_this)) {
-            notifyInfo('提示','请先完善估价对象' + judgeNumber + '信息');
+            notifyInfo('提示', '请先完善估价对象' + judgeNumber + '信息');
             return false;
         }
         programmeMethod.clear();
@@ -2047,7 +2133,7 @@
     //保存的数据
     programmeMethod.saveJudgeFunction = function () {
         if ($("#applicableTbody tr").length <= 0) {
-            notifyInfo('提示','还未选择适用的方法');
+            notifyInfo('提示', '还未选择适用的方法');
             return false;
         }
         if (!$("#frm_method_info").valid()) {
@@ -2062,11 +2148,11 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess("成功",'保存成功');
+                    notifySuccess("成功", '保存成功');
                     Loading.progressHide();
                     $("#modal_method_info").modal('hide');
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         })

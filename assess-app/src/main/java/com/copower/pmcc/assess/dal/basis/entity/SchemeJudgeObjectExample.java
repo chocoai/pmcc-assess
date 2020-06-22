@@ -1526,6 +1526,66 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andSetUseClassifyIsNull() {
+            addCriterion("set_use_classify is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyIsNotNull() {
+            addCriterion("set_use_classify is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyEqualTo(Integer value) {
+            addCriterion("set_use_classify =", value, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyNotEqualTo(Integer value) {
+            addCriterion("set_use_classify <>", value, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyGreaterThan(Integer value) {
+            addCriterion("set_use_classify >", value, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("set_use_classify >=", value, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyLessThan(Integer value) {
+            addCriterion("set_use_classify <", value, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyLessThanOrEqualTo(Integer value) {
+            addCriterion("set_use_classify <=", value, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyIn(List<Integer> values) {
+            addCriterion("set_use_classify in", values, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyNotIn(List<Integer> values) {
+            addCriterion("set_use_classify not in", values, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyBetween(Integer value1, Integer value2) {
+            addCriterion("set_use_classify between", value1, value2, "setUseClassify");
+            return (Criteria) this;
+        }
+
+        public Criteria andSetUseClassifyNotBetween(Integer value1, Integer value2) {
+            addCriterion("set_use_classify not between", value1, value2, "setUseClassify");
+            return (Criteria) this;
+        }
+
         public Criteria andSetUseIsNull() {
             addCriterion("set_use is null");
             return (Criteria) this;

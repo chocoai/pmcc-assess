@@ -104,9 +104,9 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
         //土地
-        BaseProjectClassify landCategoryId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
-        if(landCategoryId.getId().equals(projectInfoVo.getProjectCategoryId())){
-            modelAndView.addObject("projectCategoryId", "landCategoryId");
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey())){
+            modelAndView.addObject("projectCategory", "land");
         }
         return modelAndView;
     }
@@ -141,9 +141,9 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
         //土地
-        BaseProjectClassify landCategoryId = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
-        if(landCategoryId.getId().equals(projectInfoVo.getProjectCategoryId())){
-            modelAndView.addObject("projectCategoryId", "landCategoryId");
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey())){
+            modelAndView.addObject("projectCategory", "land");
         }
         return modelAndView;
     }
@@ -159,7 +159,7 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
             }
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
             ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-            int count = schemeJudgeObjectDao.getNotSetFunctionCount(projectInfo.getId());
+            long count = schemeJudgeObjectDao.getNotSetFunctionCount(projectInfo.getId());
             if (count > 0) {
                 throw new BusinessException("还有委估对象未设置评估方法请检查");
             }
@@ -209,7 +209,7 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(assessProjectType.getKey())){
             modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldsByType(assessProjectType.getKey()));
         }else  if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey())){
-            modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.ESTATE_LAND_USE));
+            modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_LAND_USE));
             modelAndView.addObject("projectCategory", "land");
         }
 
