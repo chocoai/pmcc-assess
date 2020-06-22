@@ -197,4 +197,23 @@ public class BasicApplyBatchDao {
         example.setOrderByClause("id desc");
         return basicApplyBatchMapper.selectByExample(example);
     }
+
+
+    public List<BasicApplyBatch> getListByRemark(String province, String city, String remark) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (StringUtils.isNotBlank(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        if (StringUtils.isNotBlank(remark)) {
+            criteria.andRemarkLike(String.format("%s%s%s", "%", remark, "%"));
+        }
+        criteria.andDraftFlagEqualTo(false).andBisCaseEqualTo(true);
+        criteria.andBisDeleteEqualTo(false);
+        example.setOrderByClause("id desc");
+        return basicApplyBatchMapper.selectByExample(example);
+    }
 }

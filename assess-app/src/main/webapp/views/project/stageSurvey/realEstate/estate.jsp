@@ -651,6 +651,7 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/streetInfo.case.js?v=${assessVersion}'></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete/developer.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"

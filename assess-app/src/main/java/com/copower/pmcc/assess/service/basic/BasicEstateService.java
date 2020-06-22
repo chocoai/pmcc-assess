@@ -108,6 +108,8 @@ public class BasicEstateService extends BasicEntityAbstract {
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
     private BasicCommonQuoteFieldInfoService basicCommonQuoteFieldInfoService;
+    @Autowired
+    private BasicEstateStreetInfoService basicEstateStreetInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -431,6 +433,8 @@ public class BasicEstateService extends BasicEntityAbstract {
         if (basicEstate != null) {
             BasicApplyBatchDetail estateDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
             if (estateDetail != null) {
+
+
                 estateDetail.setName(basicEstate.getName());
                 estateDetail.setDisplayName(basicEstate.getName());
                 estateDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(estateDetail.getId()));
@@ -441,6 +445,19 @@ public class BasicEstateService extends BasicEntityAbstract {
                     basicApplyBatch.setEstateName(basicEstate.getName());
                     basicApplyBatch.setProvince(basicEstate.getProvince());
                     basicApplyBatch.setCity(basicEstate.getCity());
+                    //街道号
+                    BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+                    basicEstateStreetInfo.setEstateId(basicEstate.getId());
+                    List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
+                    if(!CollectionUtils.isEmpty(streetInfoList)){
+                        List<String> strs = LangUtils.transform(streetInfoList, o -> o.getStreetNumber());
+                        if(!CollectionUtils.isEmpty(strs)){
+                            String remark = StringUtils.join(strs.toArray(), ",");
+                            basicApplyBatch.setRemark(remark);
+                        }
+                    }
+
+
                     basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
                 }
 

@@ -174,6 +174,17 @@
             table.find("tbody").append(html);
             estateStreetInfoObj.showFile(estateStreetInfoObj.fileId + id, AssessDBKey.BasicEstateStreetInfo, id);
             estateStreetInfoObj.fileUpload(estateStreetInfoObj.fileId + id, AssessDBKey.BasicEstateStreetInfo, id);
+            table.find("[name='streetNumber" + id + "']").apStreetName({
+                getProvince: function () {
+                    return estateCommon.estateForm.find("select[name='province']").val();
+                },
+                getCity: function () {
+                    return estateCommon.estateForm.find("select[name='city']").val();
+                },
+                onSelect: function (id, name) {
+                    caseFun.caseEstate.showModel(name);
+                }
+            });
         });
     };
 
@@ -234,6 +245,17 @@
                         table.find("tbody").append(estateStreetInfoObj.replaceHtml(item));
                         estateStreetInfoObj.showFile(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
                         estateStreetInfoObj.fileUpload(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
+                        table.find('[name^=streetNumber]').apStreetName({
+                            getProvince: function () {
+                                return estateCommon.estateForm.find("select[name='province']").val();
+                            },
+                            getCity: function () {
+                                return estateCommon.estateForm.find("select[name='city']").val();
+                            },
+                            onSelect: function (id, name) {
+                                caseFun.caseEstate.showModel(name);
+                            }
+                        });
                     });
                     setTimeout(function () {
                         var html = "" ;
