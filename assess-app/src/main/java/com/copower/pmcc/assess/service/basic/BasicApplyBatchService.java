@@ -72,7 +72,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
-    private BasicUnitHuxingService basicUnitHuxingService;
+    private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -90,7 +90,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
-    private BasicBuildingDao basicBuildingDao;
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
     private BasicUnitDao basicUnitDao;
     @Autowired
@@ -1019,6 +1019,152 @@ public class BasicApplyBatchService {
             pid = newApplyBatchDetail.getId();
         }
         return newBasicApplyBatch;
+    }
+
+    //写入案例数据
+    @Transactional(rollbackFor = Exception.class)
+    public void handleCaseData(BasicApplyBatch applyBatch)throws Exception {
+        BasicApplyBatch caseBasicApplyBatch = basicApplyBatchService.getCaseBasicApplyBatch(applyBatch.getProvince(), applyBatch.getCity(), applyBatch.getEstateName());
+        List<BasicApplyBatchDetail> sourceDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
+        //新增
+        if (caseBasicApplyBatch == null) {
+            applyBatch.setBisCase(true);
+            basicApplyBatchDao.updateInfo(applyBatch);
+            //将从数据也设置为案例数据
+            if (CollectionUtils.isNotEmpty(sourceDetails)) {
+                for (BasicApplyBatchDetail source : sourceDetails) {
+                    BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(source.getType());
+                    Object entity = anAbstract.getBasicEntityById(source.getTableId());
+                    if (entity != null) {
+                        anAbstract.setProperty(entity, "bisCase", true);
+                        anAbstract.setProperty(entity, "version", 1);
+                        anAbstract.setProperty(entity, "applyId", source.getId());
+                        anAbstract.saveAndUpdate(entity, false);
+                    }
+                    //summary表处理
+                    if (source.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                        houseWriteToSummary(source, applyBatch);
+                    }
+                }
+            }
+        } else {
+            //升级或新增节点
+            if (CollectionUtils.isNotEmpty(sourceDetails)) {
+                for (BasicApplyBatchDetail source : sourceDetails) {
+                    if (source.getBisFromCase() != true) {
+                        BasicApplyBatchDetail caseBasicApplyBatchDetail = basicApplyBatchService.getCaseBasicApplyBatchDetail(source, caseBasicApplyBatch.getId());
+                        //升级
+                        if (caseBasicApplyBatchDetail != null) {
+                            //原数据对应表
+                            BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(caseBasicApplyBatchDetail.getType());
+                            Object entity = anAbstract.getBasicEntityById(caseBasicApplyBatchDetail.getTableId());
+                            Object version = anAbstract.getProperty(entity, "version");
+                            //查勘案例申请可能出现
+                            if(caseBasicApplyBatchDetail.getTableId().equals(source.getTableId())){
+                                Object object = anAbstract.copyBasicEntity(caseBasicApplyBatchDetail.getTableId(), null, true);
+                                if(object!=null){
+                                    anAbstract.setProperty(object, "bisCase", true);
+                                    anAbstract.setProperty(object, "version", (Integer) (version == null ? 0 : version) + 1);
+                                    anAbstract.setProperty(object, "applyId", caseBasicApplyBatchDetail.getId());
+                                    anAbstract.saveAndUpdate(object, false);
+
+                                    caseBasicApplyBatchDetail.setTableId((Integer) anAbstract.getProperty(object, "id"));
+                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
+                                }
+                            }else{
+                                //升级后对应表
+                                BasicEntityAbstract upgradeupgradeAbstract = publicBasicService.getServiceBeanByKey(source.getType());
+                                Object upgradeEntity = upgradeupgradeAbstract.getBasicEntityById(source.getTableId());
+                                if (upgradeEntity != null) {
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "bisCase", true);
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "version", (Integer) (version == null ? 0 : version) + 1);
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "applyId", caseBasicApplyBatchDetail.getId());
+                                    upgradeupgradeAbstract.saveAndUpdate(upgradeEntity, false);
+
+                                    caseBasicApplyBatchDetail.setTableId((Integer) upgradeupgradeAbstract.getProperty(upgradeEntity, "id"));
+                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
+                                }
+                            }
+
+                        } else {
+                            //新增节点
+                            BasicApplyBatchDetail caseParentBasicApplyBatchDetail = basicApplyBatchService.getCaseParentBasicApplyBatchDetail(source, caseBasicApplyBatch.getId());
+                            if (caseParentBasicApplyBatchDetail != null) {
+                                BasicApplyBatchDetail newDetail = new BasicApplyBatchDetail();
+                                BeanUtils.copyProperties(source, newDetail, "id");
+                                newDetail.setApplyBatchId(caseBasicApplyBatch.getId());
+                                newDetail.setPid(caseParentBasicApplyBatchDetail.getId());
+                                basicApplyBatchDetailService.saveBasicApplyBatchDetail(newDetail);
+                                BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(newDetail.getType());
+                                Object entity = anAbstract.getBasicEntityById(newDetail.getTableId());
+                                if (entity != null) {
+                                    anAbstract.setProperty(entity, "bisCase", true);
+                                    anAbstract.setProperty(entity, "version", 1);
+                                    anAbstract.setProperty(entity, "applyId", newDetail.getId());
+                                    anAbstract.saveAndUpdate(entity, false);
+                                }
+                            }
+                        }
+                        //summary表处理
+                        if (source.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                            houseWriteToSummary(source, applyBatch);
+                        }
+                    }
+
+                }
+            }
+        }
+        applyBatch.setStatus(ProjectStatusEnum.FINISH.getKey());
+        basicApplyBatchDao.updateInfo(applyBatch);
+    }
+
+    //写入summary
+    public void houseWriteToSummary(BasicApplyBatchDetail house, BasicApplyBatch applyBatch) {
+        //准备需要的数据
+        BasicEstate basicEstate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
+        BasicHouse basicHouse = basicHouseService.getBasicHouseById(house.getTableId());
+        if (basicHouse == null) return;
+        BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
+        cleanSummary(house.getId());
+
+        List<BasicHouseTrading> tradingList = basicHouseTradingService.getTradingListByHouseId(basicHouse.getId());
+        if (CollectionUtils.isNotEmpty(tradingList)) {
+            for (BasicHouseTrading trading : tradingList) {
+                BasicHouseCaseSummary summary = new BasicHouseCaseSummary();
+                summary.setCaseHouseId(house.getId());
+                summary.setProvince(basicEstate.getProvince());
+                summary.setCity(basicEstate.getCity());
+                summary.setDistrict(basicEstate.getDistrict());
+                summary.setBlockName(basicEstate.getBlockName());
+                summary.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(house.getId()));
+                summary.setStreet(basicEstate.getStreet());
+                summary.setTradingType(trading.getTradingType());
+                summary.setTradingTime(trading.getTradingTime());
+                summary.setTradingUnitPrice(trading.getTradingUnitPrice());
+                if (landCategoryInfo != null) {
+                    summary.setHouseType(landCategoryInfo.getLandUseType());
+                    summary.setHouseCategory(landCategoryInfo.getLandUseCategory());
+                }
+                summary.setArea(basicHouse.getArea());
+                summary.setEstateName(basicEstate.getName());
+                summary.setVersion(1);
+                summary.setBisFromSelf(true);
+                summary.setBisNewest(true);
+                basicHouseCaseSummaryService.addBaseHouseSummary(summary);
+            }
+        }
+    }
+
+    public void cleanSummary(Integer houseId) {
+        BasicHouseCaseSummary where = new BasicHouseCaseSummary();
+        where.setCaseHouseId(houseId);
+        where.setBisFromSelf(true);
+        List<BasicHouseCaseSummary> caseSummaryList = basicHouseCaseSummaryService.getBaseHouseSummaryList(where);
+        if (CollectionUtils.isNotEmpty(caseSummaryList)) {
+            for (BasicHouseCaseSummary item : caseSummaryList) {
+                basicHouseCaseSummaryService.deleteBaseHouseSummaryById(item.getId());
+            }
+        }
     }
 
 }
