@@ -145,7 +145,7 @@
                     关闭
                 </button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="submitCase()">
-                    保存
+                    提交
                 </button>
             </div>
 
@@ -287,11 +287,22 @@
     function caseZtreeInit(basicApplyBatchId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {basicApplyBatchId: basicApplyBatchId},
+            data: {
+                basicApplyBatchId: basicApplyBatchId,
+                showTag: true
+            },
             type: 'get',
             dataType: "json",
             success: function (result) {
                 zTreeObj = $.fn.zTree.init($("#caseZtree"), caseSetting, result);
+                var nodesSys = zTreeObj.getNodes(); //可以获取所有的父节点
+                var nodesSysAll = zTreeObj.transformToArray(nodesSys); //获取树所有节点
+                for (var i = 0; i < nodesSysAll.length; i++) {
+                    if (nodesSysAll[i].displayName.indexOf('新增')!=-1) {
+                        nodesSysAll[i].checked = true;
+                        zTreeObj.updateNode(nodesSysAll[i]);
+                    }
+                }
                 //展开第一级，选中根节点
                 var rootNode = zTreeObj.getNodes()[0];
                 zTreeObj.selectNode(rootNode);

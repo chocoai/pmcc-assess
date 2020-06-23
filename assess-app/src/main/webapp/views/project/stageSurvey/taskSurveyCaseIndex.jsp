@@ -3,6 +3,14 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+    <style>
+        .ui-autocomplete {
+            z-index: 2147483647;
+        }
+    </style>
 </head>
 
 <body>
@@ -152,16 +160,17 @@
                     <div class="row form-group">
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
-                                <label class="col-sm-2">名称<span class="symbol required"></span></label>
-                                <div class="col-sm-4">
-                                    <input type="text" data-rule-maxlength="100" placeholder="名称"
-                                           name="name" class="form-control input-full" required>
-                                </div>
                                 <label class="col-sm-2">表单类型<span class="symbol required"></span></label>
                                 <div class="col-sm-4">
                                     <select name='type' required
                                             class='form-control input-full'></select>
                                 </div>
+                                <label class="col-sm-2">名称<span class="symbol required"></span></label>
+                                <div class="col-sm-4">
+                                    <input type="text" data-rule-maxlength="100" placeholder="名称"
+                                           id="txtBatchDetailName" name="name" class="form-control input-full" required>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -239,6 +248,12 @@
         if (${!empty applyBatch}) {
             batchTreeTool.ztreeInit(${applyBatch.id});
         }
+        $('#txtBatchDetailName').autocomplete({
+            source: function (request, response) {
+                response(batchTreeTool.getAutoCompleteData($('#txtBatchDetailName').closest('form').find('[name=type]').val(), $('#txtBatchDetailName').val()));
+            },
+            minLength: 1
+        });
     });
 
     //任务提交
@@ -616,4 +631,25 @@
             }
         })
     }
+
+    /**
+     * 自动填充数据
+     * @param type
+     * @returns {Array}
+     */
+    batchTreeTool.getAutoCompleteData = function (type, name) {
+        var availableTags = [];
+        if (type && type.indexOf('building') >= 0) {
+            var a = "栋", b = "幢", c = "楼";
+            availableTags.push(name + a);
+            availableTags.push(name + b);
+            availableTags.push(name + c);
+        }
+        if (type && type.indexOf('unit') >= 0) {
+            var d = "单元", e = "区";
+            availableTags.push(name + d);
+            availableTags.push(name + e);
+        }
+        return availableTags;
+    };
 </script>
