@@ -208,4 +208,16 @@ public class BasicController {
         }
         return vo;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteHouseCase", method = {RequestMethod.POST}, name = "引用数据")
+    public HttpResult quoteHouseCase(Integer id, Integer projectId, Integer planDetailsId) {
+        try {
+            BasicApplyBatch basicApplyBatch = basicHouseCaseSummaryService.referenceDataById(id, projectId, planDetailsId);
+            return HttpResult.newCorrectResult(basicApplyBatch);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult("引用数据异常!");
+        }
+    }
 }

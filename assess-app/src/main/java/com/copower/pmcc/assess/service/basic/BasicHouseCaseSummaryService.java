@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseCaseSummaryDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
@@ -64,7 +66,7 @@ public class BasicHouseCaseSummaryService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private PublicService publicService;
+    private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
@@ -424,4 +426,16 @@ public class BasicHouseCaseSummaryService {
         return statisticsDto;
     }
 
+    /**
+     * 引用数据
+     *
+     * @param id
+     * @return
+     */
+    public BasicApplyBatch referenceDataById(Integer id, Integer projectId, Integer planDetailsId) {
+        //通过id引用数据结构及关联的数据信息
+        BasicHouseCaseSummary houseCaseSummary = getBasicHouseCaseSummaryById(id);
+        if (houseCaseSummary == null) return null;
+        return basicApplyBatchService.referenceDataByDetailId(houseCaseSummary.getCaseHouseId(),projectId,planDetailsId);
+    }
 }

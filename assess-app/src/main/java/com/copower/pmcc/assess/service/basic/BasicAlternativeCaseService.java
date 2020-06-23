@@ -45,6 +45,8 @@ public class BasicAlternativeCaseService extends BaseService {
     @Autowired
     private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private PublicBasicService publicBasicService;
@@ -123,47 +125,7 @@ public class BasicAlternativeCaseService extends BaseService {
         //通过id引用数据结构及关联的数据信息
         BasicAlternativeCase basicAlternativeCase = getBasicAlternativeCaseById(id);
         if (basicAlternativeCase == null) return null;
-        List<BasicApplyBatchDetail> list = Lists.newArrayList();
-        basicApplyBatchDetailService.collectionParentBatchDetails(basicAlternativeCase.getBatchDetailId(), list);
-        if (CollectionUtils.isEmpty(list)) return null;
-        BasicApplyBatchDetail topBatchDetai = list.get(list.size() - 1);
-        BasicApplyBatch sourceApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(topBatchDetai.getApplyBatchId());
-        BasicApplyBatch newBasicApplyBatch = new BasicApplyBatch();
-        BeanUtils.copyProperties(sourceApplyBatch, newBasicApplyBatch, BaseConstant.ASSESS_IGNORE_ARRAY);
-        newBasicApplyBatch.setProjectId(projectId);
-        newBasicApplyBatch.setPlanDetailsId(planDetailsId);
-        newBasicApplyBatch.setDraftFlag(false);
-        newBasicApplyBatch.setBisDelete(false);
-        newBasicApplyBatch.setCreator(commonService.thisUserAccount());
-        basicApplyBatchDao.addBasicApplyBatch(newBasicApplyBatch);
-        Integer pid = 0;
-        for (int i = list.size() - 1; i >= 0; i--) {
-            BasicApplyBatchDetail sourceApplyBatchDetail = list.get(i);
-            BasicApplyBatchDetail newApplyBatchDetail = new BasicApplyBatchDetail();
-            newApplyBatchDetail.setPid(pid);
-            newApplyBatchDetail.setApplyBatchId(newBasicApplyBatch.getId());
-            newApplyBatchDetail.setTableName(sourceApplyBatchDetail.getTableName());
-            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(sourceApplyBatchDetail.getType());
-            try {
-                Object entity = entityAbstract.copyBasicEntity(sourceApplyBatchDetail.getTableId(), null, true);
-                Integer entityId = (Integer) entityAbstract.getProperty(entity, "id");
-                newApplyBatchDetail.setTableId(entityId);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
-            newApplyBatchDetail.setType(sourceApplyBatchDetail.getType());
-            newApplyBatchDetail.setName(sourceApplyBatchDetail.getName());
-            newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());
-            newApplyBatchDetail.setExecutor(commonService.thisUserAccount());
-            basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
-            try {
-                basicApplyBatchDetailService.insertBasicApply(newApplyBatchDetail,planDetailsId);
-            } catch (Exception e) {
-                log.error(e.getMessage(),e);
-            }
-            pid = newApplyBatchDetail.getId();
-        }
-        return newBasicApplyBatch;
+        return basicApplyBatchService.referenceDataByDetailId(basicAlternativeCase.getBatchDetailId(),projectId,planDetailsId);
     }
 
     public void writeProjectCategoryId() {
@@ -187,4 +149,6 @@ public class BasicAlternativeCaseService extends BaseService {
         }
 
     }
+
+
 }

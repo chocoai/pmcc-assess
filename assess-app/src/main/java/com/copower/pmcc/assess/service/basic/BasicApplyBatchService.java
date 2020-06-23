@@ -20,7 +20,6 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -50,10 +49,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BasicApplyBatchService {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
@@ -968,4 +969,56 @@ public class BasicApplyBatchService {
         }
         return null;
     }
+
+    /**
+     * 通过备选案例引用数据
+     *
+     * @param basicApplyBatchDetailId
+     * @return
+     */
+    public BasicApplyBatch referenceDataByDetailId(Integer basicApplyBatchDetailId, Integer projectId, Integer planDetailsId) {
+        if (basicApplyBatchDetailId == null) return null;
+        List<BasicApplyBatchDetail> list = Lists.newArrayList();
+        basicApplyBatchDetailService.collectionParentBatchDetails(basicApplyBatchDetailId, list);
+        if (CollectionUtils.isEmpty(list)) return null;
+        BasicApplyBatchDetail topBatchDetai = list.get(list.size() - 1);
+        BasicApplyBatch sourceApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(topBatchDetai.getApplyBatchId());
+        BasicApplyBatch newBasicApplyBatch = new BasicApplyBatch();
+        BeanUtils.copyProperties(sourceApplyBatch, newBasicApplyBatch, BaseConstant.ASSESS_IGNORE_ARRAY);
+        newBasicApplyBatch.setProjectId(projectId);
+        newBasicApplyBatch.setPlanDetailsId(planDetailsId);
+        newBasicApplyBatch.setDraftFlag(false);
+        newBasicApplyBatch.setBisDelete(false);
+        newBasicApplyBatch.setCreator(commonService.thisUserAccount());
+        basicApplyBatchDao.addBasicApplyBatch(newBasicApplyBatch);
+        Integer pid = 0;
+        for (int i = list.size() - 1; i >= 0; i--) {
+            BasicApplyBatchDetail sourceApplyBatchDetail = list.get(i);
+            BasicApplyBatchDetail newApplyBatchDetail = new BasicApplyBatchDetail();
+            newApplyBatchDetail.setPid(pid);
+            newApplyBatchDetail.setApplyBatchId(newBasicApplyBatch.getId());
+            newApplyBatchDetail.setTableName(sourceApplyBatchDetail.getTableName());
+            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(sourceApplyBatchDetail.getType());
+            try {
+                Object entity = entityAbstract.copyBasicEntity(sourceApplyBatchDetail.getTableId(), null, true);
+                Integer entityId = (Integer) entityAbstract.getProperty(entity, "id");
+                newApplyBatchDetail.setTableId(entityId);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+            newApplyBatchDetail.setType(sourceApplyBatchDetail.getType());
+            newApplyBatchDetail.setName(sourceApplyBatchDetail.getName());
+            newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());
+            newApplyBatchDetail.setExecutor(commonService.thisUserAccount());
+            basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
+            try {
+                basicApplyBatchDetailService.insertBasicApply(newApplyBatchDetail,planDetailsId);
+            } catch (Exception e) {
+                log.error(e.getMessage(),e);
+            }
+            pid = newApplyBatchDetail.getId();
+        }
+        return newBasicApplyBatch;
+    }
+
 }

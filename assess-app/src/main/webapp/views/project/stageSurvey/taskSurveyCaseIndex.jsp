@@ -34,6 +34,10 @@
                                                 onclick="batchTreeTool.showAlternativeCaseModal();">
                                             引用备选案例
                                         </button>
+                                        <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
+                                                onclick="showQuoteHouseCase();">
+                                            引用房屋案例
+                                        </button>
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-sm"><span
@@ -243,6 +247,7 @@
 </div>
 </body>
 </html>
+<%@include file="/views/project/stageSurvey/common/quoteHouseCase.jsp" %>
 <script type="text/javascript">
     $(function () {
         if (${!empty applyBatch}) {
@@ -329,6 +334,11 @@
                 }
             }
         });
+    }
+
+    //引用房屋案例
+    function showQuoteHouseCase() {
+        quoteHouseCase.openCaseListBox();
     }
 </script>
 <script type="text/javascript">
@@ -538,7 +548,7 @@
     }
 
     //删除备选案例
-    batchTreeTool.deleteAlternativeCase=function(id){
+    batchTreeTool.deleteAlternativeCase = function (id) {
         AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicAlternativeCase/deleteDataById",
@@ -551,11 +561,11 @@
                         batchTreeTool.loadAlternativeCaseList();
                     }
                     else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         })
@@ -583,7 +593,7 @@
         $("#basicAlternativeCaseList").bootstrapTable('destroy');
         TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
             name: $('#queryAlternativeName').val(),
-            projectId:'${projectId}'
+            projectId: '${projectId}'
         }, {
             showColumns: false,
             showRefresh: false,
@@ -596,7 +606,7 @@
 
     //引用备选案例
     batchTreeTool.referenceAlternativeCase = function (id) {
-        notifyInfo('提示','请耐心等待....');
+        notifyInfo('提示', '请耐心等待....');
         Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/deleteBatchAllById',
@@ -622,7 +632,7 @@
                                 AlertSuccess('成功', '引用成功', function () {
                                     window.location.href = window.location.href;
                                 })
-                            }else{
+                            } else {
                                 AlertError('失败', '引用失败');
                             }
                         }

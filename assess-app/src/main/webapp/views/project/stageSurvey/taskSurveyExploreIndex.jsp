@@ -38,6 +38,10 @@
                                                 onclick="batchTreeTool.showAlternativeCaseModal();">
                                             引用备选案例
                                         </button>
+                                            <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
+                                                    onclick="showQuoteHouseCase();">
+                                                引用房屋案例
+                                            </button>
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-sm"><span
@@ -409,6 +413,7 @@
 
 </html>
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
+<%@include file="/views/project/stageSurvey/common/quoteHouseCase.jsp" %>
 <script type="text/html" id="itemNameHtml">
     <div class="row form-group append-item-name">
         <div class="col-md-12">
@@ -538,6 +543,11 @@
                 }
             }
         });
+    }
+
+    //引用房屋案例
+    function showQuoteHouseCase() {
+        quoteHouseCase.openCaseListBox();
     }
 </script>
 <script type="text/javascript">
