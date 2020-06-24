@@ -249,13 +249,13 @@ public class Test {
         String basePath = "D:\\test\\land1";
         List<Map<String, String>> imglist = Lists.newArrayList();
         for (int i = 1; i <= 139; i++) {
-            if(i==41||i==42||i==43||i==44||i==45||i==127||i==128||i==129) continue;
+            if (i == 41 || i == 42 || i == 43 || i == 44 || i == 45 || i == 127 || i == 128 || i == 129) continue;
             Map<String, String> imgMap = Maps.newHashMap();
-            imgMap.put(basePath + "\\" + i  + "...jpg", "");
+            imgMap.put(basePath + "\\" + i + "...jpg", "");
             imglist.add(imgMap);
 
             imgMap = Maps.newHashMap();
-            imgMap.put(basePath + "\\" + i + "..jpg","");
+            imgMap.put(basePath + "\\" + i + "..jpg", "");
             imglist.add(imgMap);
 
             imgMap = Maps.newHashMap();
@@ -344,7 +344,7 @@ public class Test {
             Map<String, String> imgMap = Maps.newHashMap();
 
             imgMap = Maps.newHashMap();
-            imgMap.put(basePath + "\\" + i + "..jpg","");
+            imgMap.put(basePath + "\\" + i + "..jpg", "");
             imglist.add(imgMap);
 
             imgMap = Maps.newHashMap();
@@ -1098,6 +1098,7 @@ public class Test {
         }
 
     }
+
     public String getRealMoney(String price) throws Exception {
         NumberFormat format = NumberFormat.getInstance();
         if (StringUtil.isNotEmpty(price)) {
@@ -1463,11 +1464,11 @@ public class Test {
 
 
     /**
-     *  文档转图片
+     * 文档转图片
      * [url=home.php?mod=space&uid=952169]@Param[/url] inPath 传入文档地址
      */
     @org.junit.Test
-    public void doc2Img(){
+    public void doc2Img() {
         try {
 //            if (!getLicense()) {
 //                throw new Exception("com.aspose.words lic ERROR!");
@@ -1480,7 +1481,7 @@ public class Test {
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.PNG);
             int pageCount = doc.getPageCount();
             for (int i = 0; i < pageCount; i++) {
-                File file = new File("D:\\员工健康情况申报卡"+i+".png");
+                File file = new File("D:\\员工健康情况申报卡" + i + ".png");
 
                 FileOutputStream os = new FileOutputStream(file);
                 options.setPageIndex(i);
@@ -1513,17 +1514,18 @@ public class Test {
 
     @org.junit.Test
     public void generateAssessmentItemSql() {
-        String sql = getAssessmentItemSql("tb_assessment_item", 520, 2479,568,2750);
+        String sql = getAssessmentItemSql("tb_assessment_item", 520, 2479, 568, 2750);
         System.out.print(sql);
     }
 
-    private String getAssessmentItemSql(String tableName, Integer sourceBoxId, Integer sourceActivitiId,Integer targetBoxId, Integer targetActivitiId) {
+    private String getAssessmentItemSql(String tableName, Integer sourceBoxId, Integer sourceActivitiId, Integer targetBoxId, Integer targetActivitiId) {
         String sql = String.format("select column_name from information_schema.columns where table_name='%s' and table_schema='pmcc_bpm'", tableName);
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
         //1.去除id,gmt_created,gmt_modified
         for (Map<String, Object> map : mapList) {
             if (map.get("column_name").equals("id")) {
-                mapList.remove(map);break;
+                mapList.remove(map);
+                break;
             }
         }
         StringBuilder stringBuilder = new StringBuilder();
@@ -1535,21 +1537,21 @@ public class Test {
         //box_id,box_re_activiti_id
         List<String> columnList = FormatUtils.transformString2List(columnString);
         //获取数据
-        String dataListSql = String.format("select * from pmcc_bpm.tb_assessment_item where box_id='%s' and box_re_activiti_id='%s'", sourceBoxId,sourceActivitiId);
+        String dataListSql = String.format("select * from pmcc_bpm.tb_assessment_item where box_id='%s' and box_re_activiti_id='%s'", sourceBoxId, sourceActivitiId);
         List<Map> mapLists = customDdlTableMapper.customTableSelect(dataListSql);
         StringBuilder sqlBuilder = new StringBuilder();
-        if(CollectionUtils.isNotEmpty(mapLists)){
-            String columnValue = columnString;
-            columnValue = columnValue.replace("box_id", String.valueOf(targetBoxId)).replace("box_re_activiti_id", String.valueOf(targetActivitiId));
+        if (CollectionUtils.isNotEmpty(mapLists)) {
             for (Map map : mapLists) {
-                for(String column:columnList){
-                    if(column.equals("item_valid")){
-                        columnValue = columnValue.replace(column,objectToString(map.get(column)));
-                    }else{
-                        columnValue = columnValue.replace(column,String.format("'%s'",objectToString(map.get(column))));
+                String columnValue = new String();
+                columnValue = columnString.replace("box_id", String.valueOf(targetBoxId)).replace("box_re_activiti_id", String.valueOf(targetActivitiId));
+                for (String column : columnList) {
+                    if (column.equals("item_valid")) {
+                        columnValue = columnValue.replace(column, objectToString(map.get(column)));
+                    } else {
+                        columnValue = columnValue.replace(column, String.format("'%s'", objectToString(map.get(column))));
                     }
                 }
-                String insertSql = MessageFormat.format("INSERT into {0}({1}) VALUES ({2});", tableName, columnString,columnValue);
+                String insertSql = MessageFormat.format("INSERT into {0}({1}) VALUES ({2});", tableName, columnString, columnValue);
                 sqlBuilder.append("\r\n");
                 sqlBuilder.append(insertSql);
             }
