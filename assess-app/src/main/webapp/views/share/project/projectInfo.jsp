@@ -667,7 +667,7 @@
                 callback();
             }
         } else {
-            AlertError("失败","未选择单元");
+            AlertError("失败","无相关信息");
         }
     }
 
@@ -736,53 +736,3 @@
     </div>
 </div>
 
-<%--
-<div id="divBoxCRMContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">crm联系人</h3>
-            </div>
-            <form class="form-horizontal">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-
-                                <div class="row form-group">
-                                    <div class="form-inline x-valid">
-                                        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                            <input type="text" name="name" placeholder="联系人名字、电话"
-                                                   class="form-control input-full">
-                                        </div>
-                                    </div>
-                                    <div class="form-inline x-valid">
-                                        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                            <input type="button"
-                                                   onclick="findCRMContacts(this)"
-                                                   class="btn btn-success" value="查询">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <table class="table table-bordered" id="tb_ListCRMContacts">
-                                        <!-- cerare document add ajax data-->
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
---%>

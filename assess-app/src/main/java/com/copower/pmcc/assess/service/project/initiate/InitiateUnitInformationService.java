@@ -157,17 +157,12 @@ public class InitiateUnitInformationService {
         } catch (Exception e) {
             //crm 未知错误
             logger.error(e.getMessage(), e);
-            List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_INITIATE_UNIT_TYPE);
-            if (CollectionUtils.isNotEmpty(cacheDataDicList)) {
-                for (BaseDataDic baseDataDic : cacheDataDicList) {
-                    CrmBaseDataDicDto crmBaseDataDicDto = new CrmBaseDataDicDto();
-                    crmBaseDataDicDto.setId(baseDataDic.getId());
-                    crmBaseDataDicDto.setName(baseDataDic.getName());
-                    crmBaseDataDicDtos.add(crmBaseDataDicDto);
+            if (!StringUtils.isEmpty(unitInformation.getuUnitProperties())) {
+                if (NumberUtils.isNumber(unitInformation.getuUnitProperties())) {
+                    vo.setuUnitPropertiesName(baseDataDicService.getNameById(Integer.valueOf(unitInformation.getuUnitProperties())));
                 }
             }
         }
-
         if (!StringUtils.isEmpty(unitInformation.getuUnitProperties())) {
             if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
                 for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {
@@ -176,11 +171,6 @@ public class InitiateUnitInformationService {
                         break;
                     }
                 }
-            }
-        }
-        if (!StringUtils.isEmpty(unitInformation.getuUnitProperties())) {
-            if (NumberUtils.isNumber(unitInformation.getuUnitProperties())) {
-                vo.setuUnitPropertiesName(baseDataDicService.getNameById(Integer.valueOf(unitInformation.getuUnitProperties())));
             }
         }
         return vo;
