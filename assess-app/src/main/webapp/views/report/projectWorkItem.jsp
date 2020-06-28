@@ -36,13 +36,13 @@
                                         </div>
                                         <label class="col-md-1 col-form-label">阶段名称</label>
                                         <div class="col-md-2 p-0">
-                                            <input id="queryWorkStageName" name="queryWorkStageName" class="form-control"
+                                            <input id="queryWorkStageName" name="queryWorkStageName" class="form-control input-full"
                                                    placeholder="阶段名称"/>
                                         </div>
 
                                         <label class="col-md-1 col-form-label">事项名称</label>
                                         <div class="col-md-2 p-0">
-                                            <input id="queryPhaseName" name="queryPhaseName" class="form-control"
+                                            <input id="queryPhaseName" name="queryPhaseName" class="form-control input-full"
                                                    placeholder="事项名称"/>
                                         </div>
                                         <label class="col-md-1 col-form-label">项目经理</label>
@@ -50,7 +50,7 @@
                                             <input type="hidden" id="queryUserAccount" name="queryUserAccount">
                                             <input type="text" data-rule-maxlength="50" readonly
                                                    placeholder="项目经理" onclick="personSelect(this)"
-                                                   id="queryUserAccountName" name="queryUserAccountName" class="form-control">
+                                                   id="queryUserAccountName" name="queryUserAccountName" class="form-control input-full">
                                         </div>
                                     </div>
                                     <div class="form-group form-inline">
@@ -58,8 +58,20 @@
                                         <div class="col-md-2 p-0">
                                             <input type="hidden" id="queryExecuteUserAccount" name="queryExecuteUserAccount">
                                             <input type="text" data-rule-maxlength="50" readonly
-                                                   placeholder="项目经理" onclick="personSelect(this)"
-                                                   id="queryExecuteUserAccountName" name="queryExecuteUserAccountName" class="form-control">
+                                                   placeholder="责任人" onclick="personSelect(this)"
+                                                   id="queryExecuteUserAccountName" name="queryExecuteUserAccountName" class="form-control input-full">
+                                        </div>
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryStartTime" name="queryStartTime"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryEndTime" name="queryEndTime"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
                                         </div>
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="statisticsByCondition()">
@@ -97,7 +109,7 @@
     function statisticsByCondition() {
         var data = formParams("query_form");
         document.getElementById('report_iframe').src = "${pageContext.request.contextPath}/ureport/preview?_u=erp:projectWorkItem.ureport.xml&_i=1&_r=1&queryProjectName=" + data.queryProjectName + "&queryWorkStageName=" + data.queryWorkStageName +
-            "&queryPhaseName=" + data.queryPhaseName + "&queryUserAccount=" + data.queryUserAccount + "&queryExecuteUserAccount=" + data.queryExecuteUserAccount;
+            "&queryPhaseName=" + data.queryPhaseName + "&queryUserAccount=" + data.queryUserAccount + "&queryExecuteUserAccount=" + data.queryExecuteUserAccount+ "&queryStartTime=" + data.queryStartTime+ "&queryEndTime=" + data.queryEndTime;
     }
 
 
