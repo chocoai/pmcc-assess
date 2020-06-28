@@ -113,6 +113,11 @@ public final class ExcelImportUtils implements Serializable {
                                 if (typeDic != null) {
                                     value = typeDic.getId().toString();
                                     break;
+                                }else{
+                                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("与数据字典不匹配 {%s} ", value), required, stringBuilder);
+                                    if (isBreak) {
+                                        return false;
+                                    }
                                 }
                             }
                         }
