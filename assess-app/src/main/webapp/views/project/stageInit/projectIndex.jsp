@@ -135,6 +135,7 @@
     $(document).ready(function () {
         try {
             objProject.loadInit();
+            objProject.getProjectNumber('${projectInfo.projectMemberVo.userAccountManager}');
         } catch (e) {
             console.log(e);
         }
@@ -192,6 +193,8 @@
         var data = {};
         data.formData = JSON.stringify(objProject.getFormData());
         data.mustUseBox = mustUseBox;//注意这是是否发起流程标志,假如为false直接进入下一个阶段,如果为true那么会发起流程
+        data.bisAssign = $("#bisAssign").prop("checked");//注意这是是否分派标志
+
         var url = "${pageContext.request.contextPath}/projectInfo/projectApplySubmit";
         if ("${empty processInsId?"0":processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/projectInfo/projectEditSubmit";

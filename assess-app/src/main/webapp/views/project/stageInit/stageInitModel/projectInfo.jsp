@@ -142,6 +142,12 @@
                                         type="button" onclick="objProject.selectUserAccountManager(this);">选择
                                 </button>
                             </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-success btn-sm " id="lab_total"
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="objProject.checkProjectByAccount(this);">0个
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -213,11 +219,11 @@
                                    onclick="objProject.selectContract(this);"
                                    value="${projectInfo.contractName}">
 
-                            <label class="form-control" name="contractNameView" >
+                            <label class="form-control" name="contractNameView">
                                 <c:if test="${!empty projectInfo.contractList}">
                                     <c:forEach var="item" items="${projectInfo.contractList}">
                                         <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
-                                           target="_blank">${item.value}     </a>
+                                           target="_blank">${item.value} </a>
                                     </c:forEach>
                                 </c:if>
                             </label>
@@ -277,7 +283,6 @@
                 <div class="form-inline">
 
 
-
                     <label class="col-sm-1 col-form-label">
                         业务来源
                     </label>
@@ -293,6 +298,19 @@
                         <input name="serviceComeFromExplain" class="form-control input-full" placeholder="业务来源说明"
                                value="${projectInfo.serviceComeFromExplain}"/>
                     </div>
+                    <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
+                        <div class="col-sm-4">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox"
+                                           id="bisAssign"
+                                           name="bisAssign" value="true"
+                                           checked="checked">
+                                    <span class="form-check-sign">是否分派</span>
+                                </label>
+                            </div>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -326,3 +344,32 @@
     </form>
 </div>
 <script src="/pmcc-contract/js/cms_contract_utils.js?v=${assessVersion}"></script>
+<div id="checkProjectsBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">项目列表</h4>
+                <input type="hidden" name="housePriceId">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <table class="table table-bordered" id="getProjectByAccountList">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

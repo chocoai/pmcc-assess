@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.QueryProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
@@ -18,14 +20,9 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
-import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectMemberService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
+import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -33,12 +30,16 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,6 +47,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,11 +72,11 @@ public class ProjectInfoController {
     @Autowired
     private ProjectMemberService projectMemberService;
     @Autowired
-    private ProjectFollowService projectFollowService;
+    private ProjectInfoDao projectInfoDao;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
+    private ProjectCenterService projectCenterService;
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -172,9 +174,9 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/projectApplySubmit", name = "项目立项提交", method = RequestMethod.POST)
-    public HttpResult projectApplySubmit(String formData, Boolean bisNextUser, @RequestParam(defaultValue = "false") boolean mustUseBox) {
+    public HttpResult projectApplySubmit(String formData, Boolean bisNextUser, @RequestParam(defaultValue = "false") boolean mustUseBox, Boolean bisAssign) {
         try {
-            projectInfoService.projectApply(projectInfoService.format(formData), true, mustUseBox);
+            projectInfoService.projectApply(projectInfoService.format(formData), true, mustUseBox, bisAssign);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "项目立项");
@@ -187,7 +189,7 @@ public class ProjectInfoController {
     @RequestMapping(value = "/projectApplyDraft", name = "项目草稿", method = RequestMethod.POST)
     public HttpResult projectApplyDraft(String formData, Boolean bisNextUser, @RequestParam(defaultValue = "false") boolean mustUseBox) {
         try {
-            projectInfoService.projectApply(projectInfoService.format(formData), false, mustUseBox);
+            projectInfoService.projectApply(projectInfoService.format(formData), false, mustUseBox, false);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "项目草稿");
@@ -244,7 +246,7 @@ public class ProjectInfoController {
     }
 
     @RequestMapping(value = "/projectApprovalDetails", name = "项目审批详情")
-    public ModelAndView projectApprovalDetails(Integer boxId,String processInsId,String taskId) throws BpmException {
+    public ModelAndView projectApprovalDetails(Integer boxId, String processInsId, String taskId) throws BpmException {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectApproval", processInsId, boxId, "-1", "");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
         ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
@@ -401,4 +403,60 @@ public class ProjectInfoController {
             return HttpResult.newErrorResult("进入项目下个阶段");
         }
     }
+
+    @RequestMapping(value = "/assignTask", name = "项目分派页面")
+    public ModelAndView assignTask(Integer projectId) throws BpmException {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/assignTask");
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
+        modelAndView.addObject("projectInfo", vo);
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/assignTaskSubmit", name = "项目立项提交", method = RequestMethod.POST)
+    public HttpResult assignTaskSubmit(String formData, Boolean bisAssign) {
+        try {
+            projectInfoService.assignTaskSubmit(projectInfoService.format(formData), bisAssign);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "项目立项");
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectNumber", name = "根据人员获取项目个数", method = RequestMethod.GET)
+    public HttpResult getProjectNumber(String account) {
+        try {
+            if (StringUtils.isEmpty(account)) {
+                return HttpResult.newCorrectResult(0);
+            }
+            QueryProjectInfo queryProjectInfo = new QueryProjectInfo();
+            queryProjectInfo.setUserAccount(account);
+            queryProjectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
+            List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(queryProjectInfo);
+            return HttpResult.newCorrectResult(list.size());
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "根据人员获取项目个数");
+            return HttpResult.newErrorResult("获取项目个数异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectByAccount", name = "根据人员获取项目", method = RequestMethod.GET)
+    public BootstrapTableVo getProjectByAccount(String account) throws Exception {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        QueryProjectInfo queryProjectInfo = new QueryProjectInfo();
+        queryProjectInfo.setUserAccount(account);
+        queryProjectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
+        List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(queryProjectInfo);
+        List<ProjectInfoVo> projectInfoVos = projectCenterService.getProjectInfoVos(list);
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isNotEmpty(projectInfoVos) ? projectInfoVos : new ArrayList<ProjectInfoVo>());
+        return vo;
+    }
+
 }

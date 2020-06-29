@@ -90,6 +90,8 @@ public class ProjectInfo {
 
     private Date gmtModified;
 
+    private Boolean bisAssign;
+
     public Integer getId() {
         return id;
     }
@@ -432,5 +434,13 @@ public class ProjectInfo {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Boolean getBisAssign() {
+        return bisAssign;
+    }
+
+    public void setBisAssign(Boolean bisAssign) {
+        this.bisAssign = bisAssign;
     }
 }
