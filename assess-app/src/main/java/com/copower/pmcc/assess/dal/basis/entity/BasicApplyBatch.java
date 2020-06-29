@@ -13,6 +13,8 @@ public class BasicApplyBatch {
 
     private Integer referenceApplyBatchId;
 
+    private Integer caseApplyBatchId;
+
     private String province;
 
     private String city;
@@ -89,6 +91,14 @@ public class BasicApplyBatch {
 
     public void setReferenceApplyBatchId(Integer referenceApplyBatchId) {
         this.referenceApplyBatchId = referenceApplyBatchId;
+    }
+
+    public Integer getCaseApplyBatchId() {
+        return caseApplyBatchId;
+    }
+
+    public void setCaseApplyBatchId(Integer caseApplyBatchId) {
+        this.caseApplyBatchId = caseApplyBatchId;
     }
 
     public String getProvince() {

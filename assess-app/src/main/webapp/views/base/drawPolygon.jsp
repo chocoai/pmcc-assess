@@ -268,8 +268,7 @@
             rotateEnable: true,
             zoom: 24,
             city: "${cityName}",
-            viewMode: "2D",
-            center: [116.403322, 39.920255]
+            viewMode: "2D"
         });
         // 地图 加载完成 load
         drawPolygon.map.on("complete", function () {
@@ -743,12 +742,6 @@
 
     $(document).ready(function () {
         drawPolygon.loadMap(null,true);
-        var tt = '[{"path":[[116.40259,39.921129],[116.403571,39.92094],[116.403711,39.92117],[116.403679,39.921293]],"extData":{"title":[{"id":64,"pid":"56","lng":"116.403486","lat":"39.921162","name":"rjadjad"}]}},{"path":[[116.404408,39.921026],[116.404639,39.920347],[116.405728,39.921104]],"extData":{"title":[{"id":67,"pid":"61","lng":"116.404837","lat":"39.920845","name":"sdjsdjdjs"}]}}]';
-//        setInterval(function () {
-//            var str = JSON.stringify(drawPolygon.getFormData());
-//            console.log(str);
-////            drawPolygon.createOverlay(JSON.parse(tt));
-//        }, 8000);
     });
 
 

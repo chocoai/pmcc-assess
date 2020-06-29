@@ -364,7 +364,7 @@ public class ProjectPlanDetailsService {
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 
-            if (isMember && isOperable && ProjectStatusEnum.FINISH.getKey().equals(sysProjectEnum.getKey())) {
+            if (isMember && isOperable) {
                 if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
                     ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
                     if (projectPhase != null) {

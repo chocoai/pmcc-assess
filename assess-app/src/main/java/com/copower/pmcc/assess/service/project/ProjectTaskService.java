@@ -203,8 +203,13 @@ public class ProjectTaskService {
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetails.setBisRestart(false);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-            if (isReStart == Boolean.FALSE)
+            if (isReStart == Boolean.FALSE) {
                 projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
+                if (projectPlanService.isAllPlanFinish(projectInfo.getId())) {//当所有阶段都结束时，将项目状态置为完成
+                    projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
+                    projectInfoService.saveProjectInfo(projectInfo);
+                }
+            }
         }
         bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());
         projectMemberService.autoAddFinishTaskMember(projectPlanDetails);
@@ -234,7 +239,7 @@ public class ProjectTaskService {
         }
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
-            assessmentCommonService.createProjectTask(approvalModelDto,projectInfo,projectPlanDetails);
+            assessmentCommonService.createProjectTask(approvalModelDto, projectInfo, projectPlanDetails);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

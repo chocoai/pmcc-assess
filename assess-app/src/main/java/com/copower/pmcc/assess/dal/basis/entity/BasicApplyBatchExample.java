@@ -415,6 +415,66 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseApplyBatchIdIsNull() {
+            addCriterion("case_apply_batch_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdIsNotNull() {
+            addCriterion("case_apply_batch_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdEqualTo(Integer value) {
+            addCriterion("case_apply_batch_id =", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdNotEqualTo(Integer value) {
+            addCriterion("case_apply_batch_id <>", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdGreaterThan(Integer value) {
+            addCriterion("case_apply_batch_id >", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_apply_batch_id >=", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdLessThan(Integer value) {
+            addCriterion("case_apply_batch_id <", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_apply_batch_id <=", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdIn(List<Integer> values) {
+            addCriterion("case_apply_batch_id in", values, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdNotIn(List<Integer> values) {
+            addCriterion("case_apply_batch_id not in", values, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_apply_batch_id between", value1, value2, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_apply_batch_id not between", value1, value2, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
         public Criteria andProvinceIsNull() {
             addCriterion("province is null");
             return (Criteria) this;

@@ -197,25 +197,14 @@ public class BasicApplyBatchService {
         return null;
     }
 
-    public List<ZtreeDto> getCacheEstateZtreeById(Integer estateId) {
-        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_BASIC_BATCH_APPLY_ESTATE_ID, String.valueOf(estateId));
-        try {
-            List<ZtreeDto> sysProjectClassifys = LangUtils.listCache(rdsKey, estateId, ZtreeDto.class, input -> getEstateZtreeById(estateId));
-            return sysProjectClassifys;
-        } catch (Exception e) {
-            return getEstateZtreeById(estateId);
-        }
-
-    }
-
     /**
      * 获取楼盘树形结构
      *
-     * @param estateId
+     * @param caseBatchApplyId
      * @return
      */
-    public List<ZtreeDto> getEstateZtreeById(Integer estateId) {
-        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByCaseEstateId(estateId);
+    public List<ZtreeDto> getEstateZtreeById(Integer caseBatchApplyId) {
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(caseBatchApplyId);
         List<ZtreeDto> treeDtos = new ArrayList<>();
         if (basicApplyBatch == null) return treeDtos;
         List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
@@ -278,11 +267,12 @@ public class BasicApplyBatchService {
         basicApplyBatch.setBisDelete(false);
         Boolean existEstateCase = basicEstateService.isExistEstateCase(province, city, estateName);
         if (existEstateCase) {
-            BasicEstate latestVersionEstate = basicEstateDao.getLatestVersionEstate(province, city, estateName);
-            if (latestVersionEstate != null) {
-                basicApplyBatch.setClassify(latestVersionEstate.getClassify());
-                basicApplyBatch.setType(latestVersionEstate.getType());
-                basicApplyBatch.setCaseEstateId(latestVersionEstate.getId());
+            BasicApplyBatch caseBasicApplyBatch = getCaseBasicApplyBatch(province, city, estateName);
+            if (caseBasicApplyBatch != null) {
+                basicApplyBatch.setClassify(caseBasicApplyBatch.getClassify());
+                basicApplyBatch.setType(caseBasicApplyBatch.getType());
+                basicApplyBatch.setCaseEstateId(caseBasicApplyBatch.getEstateId());
+                basicApplyBatch.setCaseApplyBatchId(caseBasicApplyBatch.getId());
             }
         }
         saveBasicApplyBatch(basicApplyBatch);
@@ -344,17 +334,6 @@ public class BasicApplyBatchService {
         BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
         basicApplyBatch.setEstateId(estateId);
         basicApplyBatch.setBisCase(false);
-        List<BasicApplyBatch> basicApplyBatches = basicApplyBatchDao.getInfoList(basicApplyBatch);
-        if (CollectionUtils.isNotEmpty(basicApplyBatches)) {
-            return basicApplyBatches.get(0);
-        }
-        return null;
-    }
-
-    public BasicApplyBatch getBasicApplyBatchByCaseEstateId(Integer estateId) {
-        BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
-        basicApplyBatch.setEstateId(estateId);
-        basicApplyBatch.setBisCase(true);
         List<BasicApplyBatch> basicApplyBatches = basicApplyBatchDao.getInfoList(basicApplyBatch);
         if (CollectionUtils.isNotEmpty(basicApplyBatches)) {
             return basicApplyBatches.get(0);
@@ -1147,7 +1126,7 @@ public class BasicApplyBatchService {
                 }
                 summary.setArea(basicHouse.getArea());
                 summary.setEstateName(basicEstate.getName());
-                summary.setVersion(1);
+                summary.setVersion(basicHouse.getVersion());
                 summary.setBisFromSelf(true);
                 summary.setBisNewest(true);
                 basicHouseCaseSummaryService.addBaseHouseSummary(summary);

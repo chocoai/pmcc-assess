@@ -268,8 +268,8 @@
 <script type="text/javascript">
     $(function () {
         batchTreeTool.ztreeInit(${applyBatch.id});
-        if ('${applyBatch.caseEstateId > 0}' == 'true') {
-            batchTreeTool.caseEstateZtreeInit('${applyBatch.caseEstateId}');
+        if ('${applyBatch.caseApplyBatchId > 0}' == 'true') {
+            batchTreeTool.caseEstateZtreeInit('${applyBatch.caseApplyBatchId}');
         }
         $('#txtBatchDetailName').autocomplete({
             source: function (request, response) {
@@ -436,7 +436,10 @@
     batchTreeTool.ztreeInit = function (basicApplyBatchId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {basicApplyBatchId: basicApplyBatchId},
+            data: {
+                basicApplyBatchId: basicApplyBatchId,
+                showTag:true
+            },
             type: 'get',
             dataType: "json",
             success: function (result) {
@@ -451,11 +454,11 @@
     }
 
     //有案例数据时初始化tree
-    batchTreeTool.caseEstateZtreeInit = function (estateId) {
+    batchTreeTool.caseEstateZtreeInit = function (caseBatchApplyId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getCaseEstateZtreeDtos',
             data: {
-                estateId: estateId,
+                caseBatchApplyId: caseBatchApplyId
             },
             type: 'get',
             dataType: "json",

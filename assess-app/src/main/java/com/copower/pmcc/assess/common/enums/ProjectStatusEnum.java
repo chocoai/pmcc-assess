@@ -13,7 +13,7 @@ import java.util.List;
  * @time: 15:46
  */
 public enum ProjectStatusEnum {
-    PAUSEAPPLY("pauseapply", "暂停申请"),
+    PAUSE_APPLY("pauseapply", "暂停申请"),
     DRAFT("draft", "草稿"),
     PAUSE("pause", "暂停"),
     NONE("none", "无操作"),
@@ -22,6 +22,7 @@ public enum ProjectStatusEnum {
     NORMAL("normal", "正常"),
     CLOSE("close", "关闭"),
     FINISH("finish", "完成"),
+    FILED_AWAY("filed_away", "归档"),
     PLAN("planExecute", "安排计划"),
     TASK("task", "提交成果"),
     HANGUP("hangup", "挂起"),

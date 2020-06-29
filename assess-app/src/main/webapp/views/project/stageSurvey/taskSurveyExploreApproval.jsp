@@ -344,19 +344,19 @@
             type: 'get',
             dataType: "json",
             success: function (result) {
-                zTreeObj = $.fn.zTree.init($("#caseZtree"), caseSetting, result);
-                var nodesSys = zTreeObj.getNodes(); //可以获取所有的父节点
-                var nodesSysAll = zTreeObj.transformToArray(nodesSys); //获取树所有节点
+                var caseZTreeObj = $.fn.zTree.init($("#caseZtree"), caseSetting, result);
+                var nodesSys = caseZTreeObj.getNodes(); //可以获取所有的父节点
+                var nodesSysAll = caseZTreeObj.transformToArray(nodesSys); //获取树所有节点
                 for (var i = 0; i < nodesSysAll.length; i++) {
                     if (nodesSysAll[i].displayName.indexOf('新增')!=-1) {
                         nodesSysAll[i].checked = true;
-                        zTreeObj.updateNode(nodesSysAll[i]);
+                        caseZTreeObj.updateNode(nodesSysAll[i]);
                     }
                 }
                 //展开第一级，选中根节点
-                var rootNode = zTreeObj.getNodes()[0];
-                zTreeObj.selectNode(rootNode);
-                zTreeObj.expandAll(true);
+                var rootNode = caseZTreeObj.getNodes()[0];
+                caseZTreeObj.selectNode(rootNode);
+                caseZTreeObj.expandAll(true);
             }
         })
     }

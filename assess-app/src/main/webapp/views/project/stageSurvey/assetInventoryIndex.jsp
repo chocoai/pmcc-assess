@@ -198,7 +198,7 @@
                                                 <td>${item.inventoryContentName}</td>
                                                 <td>
                                                     <div class="x-valid">
-                                                        <input type="text" data-rule-maxlength="50" placeholder="登记"
+                                                        <input type="text" data-rule-maxlength="100" placeholder="登记"
                                                                required
                                                                id="registration${item.id}" onchange="isAgreement(this);"
                                                                name="registration${item.id}"
@@ -208,7 +208,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="x-valid">
-                                                        <input type="text" data-rule-maxlength="50" placeholder="实际"
+                                                        <input type="text" data-rule-maxlength="100" placeholder="实际"
                                                                required
                                                                id="actual${item.id}" onchange="isAgreement(this);"
                                                                name="actual${item.id}"
@@ -221,7 +221,7 @@
                                                 <td>
                                                     <div class="x-valid show-hide"
                                                          style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                        <input type="text" data-rule-maxlength="50" placeholder="差异原因"
+                                                        <input type="text" data-rule-maxlength="200" placeholder="差异原因"
                                                                required
                                                                id="differenceReason${item.id}"
                                                                name="differenceReason${item.id}"
@@ -232,7 +232,7 @@
                                                 <td>
                                                     <div class="x-valid show-hide"
                                                          style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                        <input type="text" data-rule-maxlength="50" placeholder="证明文件"
+                                                        <input type="text" data-rule-maxlength="100" placeholder="证明文件"
                                                                required
                                                                id="credential${item.id}" name="credential"
                                                                class="form-control input-full"
@@ -251,7 +251,7 @@
                                                 <td>
                                                     <div class="x-valid show-hide"
                                                          style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                        <input type="text" data-rule-maxlength="50" placeholder="证明人"
+                                                        <input type="text" data-rule-maxlength="100" placeholder="证明人"
                                                                required
                                                                id="voucher${item.id}" name="voucher${item.id}"
                                                                class="form-control input-full" value="${item.voucher}">

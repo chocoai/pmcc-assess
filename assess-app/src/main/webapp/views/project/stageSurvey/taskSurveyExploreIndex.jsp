@@ -551,8 +551,6 @@
     }
 </script>
 <script type="text/javascript">
-
-
     var batchApply = undefined;
     var setting = {
         check: {
