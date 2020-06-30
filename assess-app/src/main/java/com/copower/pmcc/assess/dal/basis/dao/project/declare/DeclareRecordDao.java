@@ -36,9 +36,9 @@ public class DeclareRecordDao {
         return mapper.selectByExample(example);
     }
 
-    public List<DeclareRecord> getDeclareRecordListByDataTableId(String dataTableName, Integer dataTableId, Integer projectId) {
+    public List<DeclareRecord> getDeclareRecordListByDataTableId(String dataTableName, Integer dataTableId) {
         DeclareRecordExample example = new DeclareRecordExample();
-        example.createCriteria().andProjectIdEqualTo(projectId).andDataTableIdEqualTo(dataTableId).andDataTableNameEqualTo(dataTableName);
+        example.createCriteria().andDataTableIdEqualTo(dataTableId).andDataTableNameEqualTo(dataTableName);
         example.setOrderByClause("number");
         return mapper.selectByExample(example);
     }

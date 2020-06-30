@@ -1152,26 +1152,17 @@ public class SchemeJudgeObjectService {
     /**
      * 重启申报阶段后根据申报记录id更新一下估价对象
      *
-     * @param declareRecordIds
+     * @param declareRecord
      * @param projectId
      */
-    public void reStartDeclareApplyByDeclareRecordId(List<Integer> declareRecordIds, Integer projectId) {
-        List<SchemeJudgeObject> schemeJudgeObjectList = getJudgeObjectListByProjectId(projectId);
-        if (CollectionUtils.isEmpty(schemeJudgeObjectList)) {
-            return;
-        }
-        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null) {
-                continue;
-            }
-            //确保属于更新的是重启后修改的申报数据
-            if (!declareRecordIds.contains(schemeJudgeObject.getDeclareRecordId())) {
-                continue;
-            }
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord == null) {
-                continue;
-            }
+    public void updateJudgeObjectDeclareInfo(DeclareRecord declareRecord, Integer projectId) {
+        if(declareRecord==null) return;
+        SchemeJudgeObject where=new SchemeJudgeObject();
+        where.setDeclareRecordId(declareRecord.getId());
+        where.setProjectId(projectId);
+        List<SchemeJudgeObject> judgeObjects = getJudgeObjectList(where);
+        if(CollectionUtils.isEmpty(judgeObjects)) return;
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjects) {
             schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
             schemeJudgeObject.setCertName(declareRecord.getName());
             schemeJudgeObject.setOwnership(declareRecord.getOwnership());
