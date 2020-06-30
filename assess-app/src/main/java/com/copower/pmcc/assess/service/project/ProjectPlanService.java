@@ -52,7 +52,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/1/29
  * @time: 9:17
  */
@@ -288,7 +288,7 @@ public class ProjectPlanService {
                 url = "/" + applicationConstant.getAppKey() + "/projectTaskAll/projectTaskAllIndex?planId=" + projectPlanResponsibility.getPlanId();
                 break;
             case DETAIL:
-                url = "/" + applicationConstant.getAppKey() + "/ProjectTask/projectTaskDetailsById?planDetailsId="+projectPlanResponsibility.getPlanDetailsId();
+                url = "/" + applicationConstant.getAppKey() + "/ProjectTask/projectTaskDetailsById?planDetailsId=" + projectPlanResponsibility.getPlanDetailsId();
                 break;
             default:
                 break;
@@ -437,5 +437,19 @@ public class ProjectPlanService {
         return list;
     }
 
-
+    /**
+     * @param projectId
+     * @return
+     */
+    public Boolean isAllPlanFinish(Integer projectId) {
+        if (projectId == null) return false;
+        List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
+        if (CollectionUtils.isEmpty(projectPlanList)) {
+            for (ProjectPlan projectPlan : projectPlanList) {
+                if (!ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(projectPlan.getStatus()))
+                    return false;
+            }
+        }
+        return true;
+    }
 }

@@ -738,7 +738,7 @@ public class ProjectInfoService {
     public boolean isProjectOperable(Integer projectId) {
         ProjectInfo projectInfo = getProjectInfoById(projectId);
         if (projectInfo == null) return false;
-        if (ProjectStatusEnum.FINISH.getKey().equals(projectInfo.getProjectStatus()))
+        if (ProjectStatusEnum.FILED_AWAY.getKey().equals(projectInfo.getProjectStatus()))
             return false;
         if (ProjectStatusEnum.CLOSE.getKey().equals(projectInfo.getProjectStatus()))
             return false;

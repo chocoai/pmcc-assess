@@ -84,7 +84,7 @@ public class ProjectPauseService {
         }
 
         ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectId);
-        projectInfo.setProjectStatus(ProjectStatusEnum.PAUSEAPPLY.getKey());
+        projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE_APPLY.getKey());
         if (!projectInfoDao.updateProjectInfo(projectInfo)) {
             throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
         }

@@ -7,6 +7,7 @@
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
     <result column="plan_details_id" jdbcType="INTEGER" property="planDetailsId" />
     <result column="reference_apply_batch_id" jdbcType="INTEGER" property="referenceApplyBatchId" />
+    <result column="case_apply_batch_id" jdbcType="INTEGER" property="caseApplyBatchId" />
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="classify" jdbcType="INTEGER" property="classify" />
@@ -86,10 +87,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, process_ins_id, project_id, plan_details_id, reference_apply_batch_id, province, 
-    city, classify, type, estate_id, estate_name, building_status, quote_id, base_type, 
-    show_tab, case_estate_id, status, draft_flag, bis_case, bis_delete, creator, gmt_created, 
-    gmt_modified, remark
+    id, process_ins_id, project_id, plan_details_id, reference_apply_batch_id, case_apply_batch_id, 
+    province, city, classify, type, estate_id, estate_name, building_status, quote_id, 
+    base_type, show_tab, case_estate_id, status, draft_flag, bis_case, bis_delete, creator, 
+    gmt_created, gmt_modified, remark
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchExample" resultMap="BaseResultMap">
     select
@@ -126,21 +127,23 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_apply_batch (process_ins_id, project_id, plan_details_id, 
-      reference_apply_batch_id, province, city, 
-      classify, type, estate_id, 
-      estate_name, building_status, quote_id, 
-      base_type, show_tab, case_estate_id, 
-      status, draft_flag, bis_case, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified, remark)
+      reference_apply_batch_id, case_apply_batch_id, 
+      province, city, classify, 
+      type, estate_id, estate_name, 
+      building_status, quote_id, base_type, 
+      show_tab, case_estate_id, status, 
+      draft_flag, bis_case, bis_delete, 
+      creator, gmt_created, gmt_modified, 
+      remark)
     values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
-      #{referenceApplyBatchId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{estateName,jdbcType=VARCHAR}, #{buildingStatus,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, 
-      #{baseType,jdbcType=VARCHAR}, #{showTab,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, 
-      #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, #{bisCase,jdbcType=BIT}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+      #{referenceApplyBatchId,jdbcType=INTEGER}, #{caseApplyBatchId,jdbcType=INTEGER}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
+      #{buildingStatus,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, 
+      #{showTab,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{draftFlag,jdbcType=BIT}, #{bisCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -159,6 +162,9 @@
       </if>
       <if test="referenceApplyBatchId != null">
         reference_apply_batch_id,
+      </if>
+      <if test="caseApplyBatchId != null">
+        case_apply_batch_id,
       </if>
       <if test="province != null">
         province,
@@ -230,6 +236,9 @@
       </if>
       <if test="referenceApplyBatchId != null">
         #{referenceApplyBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="caseApplyBatchId != null">
+        #{caseApplyBatchId,jdbcType=INTEGER},
       </if>
       <if test="province != null">
         #{province,jdbcType=VARCHAR},
@@ -314,6 +323,9 @@
       <if test="record.referenceApplyBatchId != null">
         reference_apply_batch_id = #{record.referenceApplyBatchId,jdbcType=INTEGER},
       </if>
+      <if test="record.caseApplyBatchId != null">
+        case_apply_batch_id = #{record.caseApplyBatchId,jdbcType=INTEGER},
+      </if>
       <if test="record.province != null">
         province = #{record.province,jdbcType=VARCHAR},
       </if>
@@ -383,6 +395,7 @@
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       reference_apply_batch_id = #{record.referenceApplyBatchId,jdbcType=INTEGER},
+      case_apply_batch_id = #{record.caseApplyBatchId,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       classify = #{record.classify,jdbcType=INTEGER},
@@ -420,6 +433,9 @@
       </if>
       <if test="referenceApplyBatchId != null">
         reference_apply_batch_id = #{referenceApplyBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="caseApplyBatchId != null">
+        case_apply_batch_id = #{caseApplyBatchId,jdbcType=INTEGER},
       </if>
       <if test="province != null">
         province = #{province,jdbcType=VARCHAR},
@@ -487,6 +503,7 @@
       project_id = #{projectId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       reference_apply_batch_id = #{referenceApplyBatchId,jdbcType=INTEGER},
+      case_apply_batch_id = #{caseApplyBatchId,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       classify = #{classify,jdbcType=INTEGER},
