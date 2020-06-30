@@ -7,8 +7,8 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertSer
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
-import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -25,9 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping(value = "/chksCustomerAssessmentPlanDetail")
 public class ChksCustomerAssessmentPlanDetailController {
-
-    @Autowired
-    private BaseService baseService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -39,7 +36,7 @@ public class ChksCustomerAssessmentPlanDetailController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ChksRpcAssessmentService chksRpcAssessmentService;
+    private ChksRpcAssessmentPerformanceService performanceService;
 
     @GetMapping(value = "/apply")
     public ModelAndView apply(Integer id) {
@@ -66,7 +63,7 @@ public class ChksCustomerAssessmentPlanDetailController {
         if (id == null) {
             return;
         }
-        AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = chksRpcAssessmentService.getAssessmentProjectPerformanceById(id) ;
+        AssessmentPerformanceDto assessmentProjectPerformanceDto = performanceService.getPerformanceById(id) ;
         if (assessmentProjectPerformanceDto == null) {
             return;
         }
@@ -85,7 +82,7 @@ public class ChksCustomerAssessmentPlanDetailController {
         }
         modelAndView.addObject("processInsId",assessmentProjectPerformanceDto.getProcessInsId());
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo()) ;
-        modelAndView.addObject(StringUtils.uncapitalize(AssessmentProjectPerformanceDto.class.getSimpleName()), assessmentProjectPerformanceDto);
+        modelAndView.addObject(StringUtils.uncapitalize(AssessmentPerformanceDto.class.getSimpleName()), assessmentProjectPerformanceDto);
 
     }
 }

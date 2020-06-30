@@ -8,8 +8,8 @@ import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
-import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -36,7 +36,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ChksRpcAssessmentService chksRpcAssessmentService;
+    private ChksRpcAssessmentPerformanceService performanceService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -45,8 +45,6 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private ProjectPlanService projectPlanService;
-    @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Override
     public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
@@ -101,7 +99,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
     }
 
     private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey, Integer spotActivityId) {
-        AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
         if (projectInfo != null) {
@@ -140,12 +138,12 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         if (spotActivityId != null) {
             dto.setSpotActivityId(spotActivityId);
         }
-        Integer id = chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
+        Integer id = performanceService.saveAndUpdatePerformanceDto(dto, true);
         if (id != null) {
             examineUrl = String.join("", examineUrl, "&", "assessmentPerformanceId=", id.toString());
             dto.setExamineUrl(examineUrl);
             dto.setId(id);
-            chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, false);
+            performanceService.saveAndUpdatePerformanceDto(dto, false);
         }
     }
 }

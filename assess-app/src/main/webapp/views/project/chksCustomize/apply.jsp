@@ -389,7 +389,7 @@
 
 </body>
 
-<%@include file="/views/share/chksCommon.jsp" %>
+<%@include file="/views/share/chks_common.jsp" %>
 
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 

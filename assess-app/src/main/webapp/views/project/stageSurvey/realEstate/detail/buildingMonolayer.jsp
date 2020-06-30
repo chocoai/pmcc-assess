@@ -348,7 +348,7 @@
 
 
 </body>
-<%@include file="/views/share/chksCommon.jsp" %>
+<%@include file="/views/share/chks_common.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"

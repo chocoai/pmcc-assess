@@ -409,23 +409,19 @@
     assessmentCommonHandle.saveAssessmentServer = function (data, callback) {
         jQuery.extend(data, {planDetailsId: '${projectPlanDetails.id}'});
         data.processInsId = '${processInsId}';
-        assessmentCommonHandle.ajaxServerMethod(data, "/chksAssessmentProjectPerformance/saveAssessmentServer", "post", callback, null);
+        assessmentCommonHandle.ajaxServerMethod(data, "/assessmentPerformance/saveAssessmentServer", "post", callback, null);
     };
 
     assessmentCommonHandle.updateAssessmentProjectPerformance = function (data, callback) {
-        assessmentCommonHandle.ajaxServerMethod({fomData: JSON.stringify(data)}, "/chksAssessmentProjectPerformance/updateAssessmentProjectPerformance", "post", callback, null);
-    };
-
-    assessmentCommonHandle.getAssessmentProjectPerformanceDtoList = function (query, callback) {
-        assessmentCommonHandle.ajaxServerMethod(query, "/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceDtoList", "get", callback, null);
+        assessmentCommonHandle.ajaxServerMethod({fomData: JSON.stringify(data)}, "/assessmentPerformance/updateAssessmentProjectPerformance", "post", callback, null);
     };
 
     assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList = function (id, callback) {
-        assessmentCommonHandle.ajaxServerMethod({performanceId: id}, "/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceDetailByPerformanceIdList", "get", callback, null);
+        assessmentCommonHandle.ajaxServerMethod({performanceId: id}, "/assessmentPerformance/getAssessmentProjectPerformanceDetailByPerformanceIdList", "get", callback, null);
     };
 
     assessmentCommonHandle.deleteResponsibilityById = function (id) {
-        assessmentCommonHandle.ajaxServerMethod({id: id}, "/chksAssessmentProjectPerformance/deleteResponsibilityById", "post", function () {
+        assessmentCommonHandle.ajaxServerMethod({id: id}, "/assessmentPerformance/deleteResponsibilityById", "post", function () {
             notifySuccess("成功", "任务删除成功");
             window.close();
 
@@ -542,19 +538,19 @@
     };
 
     assessmentCommonHandle.getActivityIdByUserAccountList = function (activityId, callback) {
-        assessmentCommonHandle.ajaxServerMethod({activityId: activityId}, "/chksAssessmentProjectPerformance/getActivityIdByUserAccountList", "get", callback, null);
+        assessmentCommonHandle.ajaxServerMethod({activityId: activityId}, "/assessmentPerformance/getActivityIdByUserAccountList", "get", callback, null);
     };
 
     assessmentCommonHandle.getAssessmentItemTemplate = function (query, callback) {
-        assessmentCommonHandle.ajaxServerMethod(query, "/chksAssessmentProjectPerformance/getAssessmentItemTemplate", "get", callback, null);
+        assessmentCommonHandle.ajaxServerMethod(query, "/assessmentPerformance/getAssessmentItemTemplate", "get", callback, null);
     };
 
     assessmentCommonHandle.deleteSpotAssessment = function (id, callback) {
-        assessmentCommonHandle.ajaxServerMethod({id: id}, "/chksAssessmentProjectPerformance/deleteAssessmentProjectPerformanceByIds", "post", callback, null);
+        assessmentCommonHandle.ajaxServerMethod({id: id}, "/assessmentPerformance/deleteAssessmentProjectPerformanceByIds", "post", callback, null);
     };
 
     assessmentCommonHandle.getAssessmentProjectPerformanceById = function (id, callback) {
-        assessmentCommonHandle.ajaxServerMethod({id: id}, "/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceById", "get", callback, null);
+        assessmentCommonHandle.ajaxServerMethod({id: id}, "/assessmentPerformance/getAssessmentProjectPerformanceById", "get", callback, null);
     };
 
     //拷贝
@@ -613,7 +609,7 @@
                 assessmentCommonHandle.ajaxServerFun({
                     copyId: copyId,
                     ids: idArray.join(",")
-                }, "/chksAssessmentProjectPerformance/pasteAll", "post", function (message) {
+                }, "/assessmentPerformance/pasteAll", "post", function (message) {
                     AlertSuccess("粘贴情况 ", message);
                     table.bootstrapTable('uncheckAll');
                     form.clearAll();
@@ -626,8 +622,8 @@
     /*
      考核列表
      */
-    assessmentCommonHandle.loadAssessmentQualityList = function (form) {
-        var table = $("#assessmentQualityTableList");
+    assessmentCommonHandle.loadAssessmentPerformanceList = function (form) {
+        var table = $("#assessmentPerformanceTableList");
         var cols = [];
         cols.push({
             field: 'ckeckbox',
@@ -717,7 +713,7 @@
             }
         };
         table.bootstrapTable('destroy');
-        TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getBootstrapTableVo", cols, query, method);
+        TableInit(table, "${pageContext.request.contextPath}/assessmentPerformance/getPerformanceList", cols, query, method);
     };
 
     /**
@@ -885,14 +881,14 @@
             ids += item.id + ',';
         })
         $.ajax({
-            url: '${pageContext.request.contextPath}/chksAssessmentProjectPerformance/batchSetFinish',
+            url: '${pageContext.request.contextPath}/assessmentPerformance/batchSetFinish',
             data: {ids: ids.replace(/,$/, '')},
             type: 'post',
             dataType: 'json',
             success: function (result) {
                 if (result.ret) {
                     notifySuccess('成功', '操作成功');
-                    assessmentCommonHandle.loadAssessmentQualityList($('#assessmentQualityForm'));
+                    assessmentCommonHandle.loadAssessmentPerformanceList($('#assessmentPerformanceForm'));
                 } else {
                     AlertError("失败", result.errmsg);
                 }
@@ -906,7 +902,7 @@
      * @param id
      */
     assessmentCommonHandle.openAssessmentProjectPerformanceBox = function (id) {
-        var target = $("#assessmentQualityTableList");
+        var target = $("#assessmentPerformanceTableList");
         var box = $("#divAssessmentProjectPerformanceBox");
         var table = $("#tableAssessmentProjectPerformanceBox").find("tbody");
         var itemA = target.bootstrapTable('getRowByUniqueId', id);
@@ -1053,7 +1049,7 @@
             }
         };
         $("#assessmentWorkHoursTableList").bootstrapTable('destroy');
-        TableInit($("#assessmentWorkHoursTableList"), "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getWorkingHoursList", cols, query, method);
+        TableInit($("#assessmentWorkHoursTableList"), "${pageContext.request.contextPath}/assessmentPerformance/getWorkingHoursList", cols, query, method);
     }
 
     //加载工时抽查列表数据
@@ -1090,7 +1086,7 @@
             }
         };
         $("#tbAssessmentWorkHoursSpotList").bootstrapTable('destroy');
-        TableInit($("#tbAssessmentWorkHoursSpotList"), "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getAssessmentProjectWorkHoursSpotListById", cols, query, method);
+        TableInit($("#tbAssessmentWorkHoursSpotList"), "${pageContext.request.contextPath}/assessmentPerformance/getWorkHoursSpotListById", cols, query, method);
     }
 
     assessmentCommonHandle.workingHoursSpotListModal = function (id, boxId, boxReActivitiId) {
@@ -1136,7 +1132,7 @@
             }
         };
         $("#tbAssessmentWorkHoursHistoryList").bootstrapTable('destroy');
-        TableInit($("#tbAssessmentWorkHoursHistoryList"), "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getAssessmentProjectWorkHoursHistoryList", cols, query, method);
+        TableInit($("#tbAssessmentWorkHoursHistoryList"), "${pageContext.request.contextPath}/assessmentPerformance/getAssessmentProjectWorkHoursHistoryList", cols, query, method);
     }
 
     assessmentCommonHandle.workingHoursHistoryListModal = function (processInsId, activityId) {
@@ -1172,7 +1168,7 @@
         var data = formSerializeArray($('#assessmentWorkHoursForm'));
         data.processInsId = '${processInsId}';
         $.ajax({
-            url: '${pageContext.request.contextPath}/chksAssessmentProjectPerformance/saveWorkingHours',
+            url: '${pageContext.request.contextPath}/assessmentPerformance/saveWorkingHours',
             data: data,
             type: 'post',
             dataType: 'json',

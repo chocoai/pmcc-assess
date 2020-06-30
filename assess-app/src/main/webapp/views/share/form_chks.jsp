@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%@include file="/views/share/chksCommon.jsp" %>
+<%@include file="/views/share/chks_common.jsp" %>
 
 <div class="col-md-12">
     <div class="card full-height">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="card-body" style="display: none">
-            <form id="assessmentQualityForm" class="form-horizontal">
+            <form id="assessmentPerformanceForm" class="form-horizontal">
                 <div class="row form-group">
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="form-inline x-valid">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
             </form>
-            <table class="table" id="assessmentQualityTableList">
+            <table class="table" id="assessmentPerformanceTableList">
             </table>
         </div>
     </div>
@@ -162,7 +162,7 @@
 
     /*初始化*/
     $(document).ready(function () {
-        assessmentCommonHandle.loadAssessmentQualityList();
+        assessmentCommonHandle.loadAssessmentPerformanceList();
         assessmentCommonHandle.loadAssessmentWorkHoursList();
     });
 

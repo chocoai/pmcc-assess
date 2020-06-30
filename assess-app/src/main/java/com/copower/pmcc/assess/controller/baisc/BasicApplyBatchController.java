@@ -15,10 +15,9 @@ import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.basic.*;
-import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
+import com.copower.pmcc.assess.service.chks.AssessmentPerformanceService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -28,9 +27,6 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
-import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -65,8 +61,6 @@ import java.util.List;
 @RequestMapping("/basicApplyBatch")
 public class BasicApplyBatchController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
-    private ChksRpcAssessmentService chksRpcAssessmentService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -104,7 +98,7 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    private AssessmentPerformanceService chksAssessmentProjectPerformanceService;
 
     //-----------------------------------------------案例批量申请
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
@@ -617,63 +611,6 @@ public class BasicApplyBatchController extends BaseController {
         return detailsModelAndView;
     }
 
-    /**
-     * 考核参数
-     *
-     * @param modelAndView
-     * @param planDetailsId
-     */
-    private void chksParams(ModelAndView modelAndView, Integer planDetailsId, Integer assessmentPerformanceId) {
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        BoxReDto boxReDto = chksAssessmentProjectPerformanceService.getBoxReDtoByProcessInsId(projectPlanDetails.getProcessInsId());
-        AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = chksRpcAssessmentService.getAssessmentProjectPerformanceById(assessmentPerformanceId);
-        modelAndView.addObject(StringUtils.uncapitalize(AssessmentProjectPerformanceDto.class.getSimpleName()), assessmentProjectPerformanceDto);
-        modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), boxReDto);
-        modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
-        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
-        //当前节点  可以查看的权限节点信息列表
-        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(assessmentProjectPerformanceDto.getBoxId(), assessmentProjectPerformanceDto.getActivityId()));
-    }
-
-    /**
-     * 设置参数
-     *
-     * @param modelAndView
-     * @param tableName
-     * @param tbType
-     * @param tableId
-     * @param applyBatchId
-     * @throws Exception
-     */
-    private void setViewParam(ModelAndView modelAndView, String tableName, String tbType, Integer tableId, Integer applyBatchId) throws Exception {
-        //楼盘表单
-        if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicEstate.class)) || Objects.equal(tbType, BasicFormClassifyEnum.ESTATE.getKey())) {
-            BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateById(tableId);
-            modelAndView.addObject(StringUtils.uncapitalize(BasicEstate.class.getSimpleName()), basicEstateVo);
-            modelAndView.addObject(StringUtils.uncapitalize(BasicEstateLandState.class.getSimpleName()), basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicEstateVo.getId())));
-        }
-        //楼栋表单
-        if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicBuilding.class)) || Objects.equal(tbType, BasicFormClassifyEnum.BUILDING.getKey())) {
-            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatchDetail.class.getSimpleName()), basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId));
-            modelAndView.addObject(StringUtils.uncapitalize(BasicBuilding.class.getSimpleName()), publicBasicService.getBasicBuildingById(tableId));
-        }
-        //单元表单
-        if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicUnit.class)) || Objects.equal(tbType, BasicFormClassifyEnum.UNIT.getKey())) {
-            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatchDetail.class.getSimpleName()), basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId));
-            modelAndView.addObject(StringUtils.uncapitalize(BasicUnit.class.getSimpleName()), publicBasicService.getBasicUnitById(tableId));
-        }
-        //房屋表单
-        if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicHouse.class)) || Objects.equal(tbType, BasicFormClassifyEnum.HOUSE.getKey())) {
-            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatchDetail.class.getSimpleName()), basicApplyBatchDetailService.getBasicApplyBatchDetail(tableName, tableId));
-            BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(tableId);
-            modelAndView.addObject(StringUtils.uncapitalize(BasicHouse.class.getSimpleName()), basicHouseVo);
-            modelAndView.addObject(StringUtils.uncapitalize(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicHouseVo.getId())));
-        }
-        if (applyBatchId != null) {
-            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
-            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
-        }
-    }
 
     @ResponseBody
     @RequestMapping(value = "/saveDraft", name = "保存楼盘等")

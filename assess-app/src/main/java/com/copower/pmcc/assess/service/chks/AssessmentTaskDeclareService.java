@@ -13,12 +13,11 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCe
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
-import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ChksRpcAssessmentService chksRpcAssessmentService;
+    private ChksRpcAssessmentPerformanceService performanceService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -51,8 +50,7 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
     @Autowired
     private ProjectPlanService projectPlanService;
-    @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+
     private final String applyUrl = "/chksCustomerAssessmentPlanDetail/apply";
 
     @Override
@@ -102,7 +100,7 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
     }
 
     private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String businessKey) {
-        AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
         if (projectInfo != null) {
@@ -136,11 +134,11 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
         dto.setExamineUrl(applyUrl);
-        Integer id = chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
+        Integer id = performanceService.saveAndUpdatePerformanceDto(dto, true);
         if (id != null) {
             dto.setExamineUrl(String.join("", applyUrl, "?id=", id.toString()));
             dto.setId(id);
-            chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, false);
+            performanceService.saveAndUpdatePerformanceDto(dto, false);
         }
     }
 }

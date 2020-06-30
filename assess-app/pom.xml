@@ -85,7 +85,7 @@
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>chks-api</artifactId>
-            <version>1.0.62</version>
+            <version>1.0.65</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.copower</groupId>

@@ -9,11 +9,10 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
-import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,20 +30,18 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ChksRpcAssessmentService chksRpcAssessmentService;
+    private ChksRpcAssessmentPerformanceService performanceService;
     @Autowired
     private CommonService commonService;
     @Autowired
     private ProjectPlanService projectPlanService;
-    @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Override
     public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
         if (boxRuDto == null) return;
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxRuDto.getBoxId());
-        AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
         if (projectInfo != null) {
@@ -75,6 +72,6 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
         }
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
-        chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
+        performanceService.saveAndUpdatePerformanceDto(dto, true);
     }
 }

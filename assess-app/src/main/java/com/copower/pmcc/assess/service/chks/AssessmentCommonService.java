@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.chks;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -14,7 +13,6 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
-import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,11 +28,14 @@ import java.util.List;
 @Service
 public class AssessmentCommonService {
     private final static Logger logger = LoggerFactory.getLogger(AssessmentCommonService.class);
-    public final static String BPM_ASSESSMENT_WORK_HOURS_KEY = "work.hours";
-    public final static String PROJECT_TASK_BUSINESS_KEY_PERFORMANCE = "assessment.performance";
-    public final static String PROJECT_TASK_BUSINESS_KEY_WORK_HOURS = "assessment.work.hours";
+    public final static String BPM_ASSESSMENT_PERFORMANCE_KEY = "performance";//质量考核
+    public final static String BPM_ASSESSMENT_WORK_HOURS_KEY = "work.hours";// 工时考核
+
+
+    public final static String PROJECT_TASK_BUSINESS_KEY_PERFORMANCE = "assessment.performance";//质量考核任务
+    public final static String PROJECT_TASK_BUSINESS_KEY_WORK_HOURS = "assessment.work.hours";//工时考核任务
     @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    private AssessmentPerformanceService chksAssessmentProjectPerformanceService;
     @Autowired
     private AssessmentWorkHoursService assessmentWorkHoursService;
     @Autowired
@@ -68,6 +69,7 @@ public class AssessmentCommonService {
         }
     }
 
+    //获取前一条审核日志
     private BoxApprovalLogVo getPreBoxApprovalLogVo(List<BoxApprovalLogVo> rows, String taskId) throws BpmException {
         if (CollectionUtils.isNotEmpty(rows)) {
             ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
