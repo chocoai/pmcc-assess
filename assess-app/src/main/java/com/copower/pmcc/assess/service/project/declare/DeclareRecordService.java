@@ -73,8 +73,11 @@ public class DeclareRecordService {
         return null;
     }
 
-    public List<DeclareRecord> getDeclareRecordListByDataTableId(String dataTableName, Integer dataTableId, Integer projectId) {
-        return declareRecordDao.getDeclareRecordListByDataTableId(dataTableName, dataTableId, projectId);
+    public DeclareRecord getDeclareRecordByDataTableId(String dataTableName, Integer dataTableId) {
+        if (StringUtils.isBlank(dataTableName) || dataTableId == null) return null;
+        List<DeclareRecord> recordList = declareRecordDao.getDeclareRecordListByDataTableId(dataTableName, dataTableId);
+        if (CollectionUtils.isEmpty(recordList)) return null;
+        return recordList.get(0);
     }
 
 
@@ -258,14 +261,8 @@ public class DeclareRecordService {
         return declareRecordDao.getDeclareRecordListByIds(ids);
     }
 
-    public void reStartDeclareApplyByDeclareRecordId(List<Integer> declareRecordIds, Integer projectId) {
-        if (CollectionUtils.isEmpty(declareRecordIds)) {
-            return;
-        }
-        if (projectId == null) {
-            return;
-        }
-        schemeJudgeObjectService.reStartDeclareApplyByDeclareRecordId(declareRecordIds, projectId);
+    public void updateJudgeObjectDeclareInfo(DeclareRecord declareRecord, Integer projectId) {
+        schemeJudgeObjectService.updateJudgeObjectDeclareInfo(declareRecord, projectId);
     }
 
     /**

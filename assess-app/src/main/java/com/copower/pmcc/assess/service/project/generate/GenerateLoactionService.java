@@ -558,38 +558,36 @@ public class GenerateLoactionService {
             List<BasicMatchingTrafficVo> trafficVoList1 = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.TrafficHub.getName())).collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(trafficVoList1)) {
                 LinkedHashMap<String, List<String>> linkedHashMap = getTrafficConditionsCommonPrivate(trafficVoList1, ExamineMatchingTrafficTypeEnum.TrafficHub, "", false);
-//                stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
                 biConsumer.accept(listMap, linkedHashMap);
             }
             //主要转换
             List<BasicMatchingTrafficVo> trafficVoList2 = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainConversion.getName())).collect(Collectors.toList());
             if (CollectionUtils.isNotEmpty(trafficVoList2)) {
                 LinkedHashMap<String, List<String>> linkedHashMap = getTrafficConditionsCommonPrivate(trafficVoList2, ExamineMatchingTrafficTypeEnum.MainConversion, "", false);
-//                stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
                 biConsumer.accept(listMap, linkedHashMap);
             }
         }
         //购物商场
-        if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
-            List<BasicMatchingLeisurePlace> matchingLeisurePlaceList = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(matchingLeisurePlaceList)) {
-                LinkedHashMap<String, List<String>> linkedHashMap = getMatchingLeisurePlaceCommonPrivate(Arrays.asList(matchingLeisurePlaceList.get(0)), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "", false);
+//        if (CollectionUtils.isNotEmpty(basicMatchingLeisurePlaceList)) {
+//            List<BasicMatchingLeisurePlace> matchingLeisurePlaceList = basicMatchingLeisurePlaceList.stream().filter(basicMatchingLeisurePlace -> Objects.equal(basicMatchingLeisurePlace.getType(), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET.getKey())).collect(Collectors.toList());
+//          if (CollectionUtils.isNotEmpty(matchingLeisurePlaceList)) {
+//                LinkedHashMap<String, List<String>> linkedHashMap = getMatchingLeisurePlaceCommonPrivate(Arrays.asList(matchingLeisurePlaceList.get(0)), ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "", false);
 //                stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
 //                biConsumer.accept(listMap, linkedHashMap);
-            }
-        }
+//            }
+//        }
         //金融服务
-        if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
-            LinkedHashMap<String, List<String>> linkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(Arrays.asList(basicMatchingFinanceVoList.get(0)), null, null, "");
+//       if (CollectionUtils.isNotEmpty(basicMatchingFinanceVoList)) {
+//            LinkedHashMap<String, List<String>> linkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(Arrays.asList(basicMatchingFinanceVoList.get(0)), null, null, "");
 //            stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
 //            biConsumer.accept(listMap, linkedHashMap);
-        }
+//        }
         //医疗
-        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
-            LinkedHashMap<String, List<String>> linkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(null, Arrays.asList(basicMatchingMedicalList.get(0)), null, "");
+//        if (CollectionUtils.isNotEmpty(basicMatchingMedicalList)) {
+//            LinkedHashMap<String, List<String>> linkedHashMap = getFinanceAndMedicalAndEducationCommonPrivate(null, Arrays.asList(basicMatchingMedicalList.get(0)), null, "");
 //            stringBuilder.append(StringUtils.defaultString(this.getDistanceDec("", linkedHashMap)));
 //            biConsumer.accept(listMap, linkedHashMap);
-        }
+//        }
 //        String value = stringBuilder.toString();
         String value = StringUtils.defaultString(this.getDistanceDec("", listMap));
         return value;
