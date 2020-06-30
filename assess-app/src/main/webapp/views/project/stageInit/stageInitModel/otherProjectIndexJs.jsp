@@ -820,19 +820,19 @@
             data: {account: account},
             success: function (result) {
                 if (result.ret) {
-                    $("#lab_total").text(result.data+"个");
+                    $("#lab_total").text(result.data + "个");
                 }
             }
         });
     };
 
     objProject.checkProjectByAccount = function (_this) {
-        var account = $(_this).closest('.input-group').find("input[name='userAccountManager']").val();
+        var account = $(_this).closest('form').find("input[name='userAccountManager']").val();
         objProject.getProjectByAccount(account);
         $("#checkProjectsBox").modal("show");
     };
 
-    objProject.getProjectByAccount = function(account) {
+    objProject.getProjectByAccount = function (account) {
         var cols = [];
         cols.push({
             field: 'projectName', title: '项目名称', width: '30%', formatter: function (value, row, index) {
@@ -878,7 +878,9 @@
         });
 
         $("#getProjectByAccountList").bootstrapTable('destroy');
-        TableInit("getProjectByAccountList", "${pageContext.request.contextPath}/projectInfo/getProjectByAccount", cols, {account: account}, {
+        TableInit("getProjectByAccountList", "${pageContext.request.contextPath}/projectInfo/getProjectByAccount", cols, {
+            account: account
+        }, {
             showColumns: false,
             showRefresh: false,
             search: false,

@@ -406,10 +406,12 @@ public class ProjectInfoController {
 
     @RequestMapping(value = "/assignTask", name = "项目分派页面")
     public ModelAndView assignTask(Integer projectId) throws BpmException {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/assignTask");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/projectInfoDetails");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", vo);
+        modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
+        modelAndView.addObject("isProjectAssign",true);
         return modelAndView;
     }
 
@@ -432,11 +434,13 @@ public class ProjectInfoController {
             if (StringUtils.isEmpty(account)) {
                 return HttpResult.newCorrectResult(0);
             }
+            RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+            Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
             QueryProjectInfo queryProjectInfo = new QueryProjectInfo();
-            queryProjectInfo.setUserAccount(account);
+            queryProjectInfo.setQueryManager(account);
             queryProjectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
-            List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(queryProjectInfo);
-            return HttpResult.newCorrectResult(list.size());
+            projectInfoDao.getProjectListByUserAccount(queryProjectInfo);
+            return HttpResult.newCorrectResult(page.getTotal());
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "根据人员获取项目个数");
             return HttpResult.newErrorResult("获取项目个数异常");
@@ -447,10 +451,11 @@ public class ProjectInfoController {
     @RequestMapping(value = "/getProjectByAccount", name = "根据人员获取项目", method = RequestMethod.GET)
     public BootstrapTableVo getProjectByAccount(String account) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
+        if (StringUtils.isBlank(account)) return vo;
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         QueryProjectInfo queryProjectInfo = new QueryProjectInfo();
-        queryProjectInfo.setUserAccount(account);
+        queryProjectInfo.setQueryManager(account);
         queryProjectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());
         List<ProjectInfo> list = projectInfoDao.getProjectListByUserAccount(queryProjectInfo);
         List<ProjectInfoVo> projectInfoVos = projectCenterService.getProjectInfoVos(list);

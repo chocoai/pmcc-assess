@@ -120,7 +120,9 @@
             <div class="col-md-12">
                 <div class="form-inline">
                     <label class="col-sm-1 col-form-label">
-                        项目经理<span class="symbol required"></span></label>
+                        项目负责人【<span id="lab_total" style="cursor: pointer;color: red;"
+                                   onclick="objProject.checkProjectByAccount(this);"></span>】
+                        <span class="symbol required"></span></label>
                     </label>
                     <div class="col-sm-3 x-valid">
                         <div class="input-group">
@@ -142,12 +144,17 @@
                                         type="button" onclick="objProject.selectUserAccountManager(this);">选择
                                 </button>
                             </div>
-                            <div class="input-group-prepend">
-                                <button class="btn btn-success btn-sm " id="lab_total"
-                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button" onclick="objProject.checkProjectByAccount(this);">0个
-                                </button>
-                            </div>
+                            <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
+                                <div class="input-group-prepend" style="margin-left: 10px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" id="bisAssign" name="bisAssign"
+                                                   value="true">
+                                            <span class="form-check-sign">下分</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
 
@@ -281,8 +288,6 @@
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline">
-
-
                     <label class="col-sm-1 col-form-label">
                         业务来源
                     </label>
@@ -298,19 +303,6 @@
                         <input name="serviceComeFromExplain" class="form-control input-full" placeholder="业务来源说明"
                                value="${projectInfo.serviceComeFromExplain}"/>
                     </div>
-                    <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
-                        <div class="col-sm-4">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox"
-                                           id="bisAssign"
-                                           name="bisAssign" value="true"
-                                           checked="checked">
-                                    <span class="form-check-sign">是否分派</span>
-                                </label>
-                            </div>
-                        </div>
-                    </c:if>
                 </div>
             </div>
         </div>

@@ -100,7 +100,7 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-1 col-form-label">项目经理</label>
+                            <label class="col-sm-1 col-form-label">项目负责人</label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.projectMemberVo.userAccountManagerName}</label>
                             </div>
