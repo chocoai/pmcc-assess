@@ -291,7 +291,7 @@
                                     <input type="text" placeholder="交易总价（元）"
                                            class="form-control input-full"
                                            name="tradingTotalPrice" required
-                                           onblur="houseCommon.computeUnitPrice();">
+                                           onblur="houseCommon.computeUnitPrice(this);">
                                 </div>
                             </div>
                         </div>

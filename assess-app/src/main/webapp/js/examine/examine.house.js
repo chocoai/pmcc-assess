@@ -1003,25 +1003,25 @@
     };
 
     //计算单价
-    houseCommon.computeUnitPrice = function () {
+    houseCommon.computeUnitPrice = function (_this) {
         var area = houseCommon.houseForm.find('[name=area]').val();
-        if(!houseCommon.isNotBlank(area)){
+        if(!area){
             area = houseCommon.houseTradingForm.find('[id=tempLandArea]').val();
         }
-        var tradingTotalPrice = houseCommon.houseTradingForm.find('[name=tradingTotalPrice]').val();
+        var tradingTotalPrice = $(_this).closest('form').find('[name=tradingTotalPrice]').val();
         if (AssessCommon.isNumber(area) && AssessCommon.isNumber(tradingTotalPrice)) {
             var tradingUnitPrice = parseFloat(tradingTotalPrice) / parseFloat(area);
-            houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val(parseInt(tradingUnitPrice));
-            houseCommon.computePerMuPrice();
+            $(_this).closest('form').find('[name=tradingUnitPrice]').val(parseInt(tradingUnitPrice));
+            houseCommon.computePerMuPrice(_this);
         }
     };
 
     //计算每亩单价
-    houseCommon.computePerMuPrice = function () {
-        var unitPrice = houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val();
+    houseCommon.computePerMuPrice = function (_this) {
+        var unitPrice = $(_this).closest('form').find('[name=tradingUnitPrice]').val();
         if (AssessCommon.isNumber(unitPrice)) {
             var value = (parseFloat(unitPrice) * AssessCommon.BHOU).toFixed(2);
-            houseCommon.houseTradingForm.find('[name=perMuPrice]').val(value);
+            $(_this).closest('form').find('[name=perMuPrice]').val(value);
         }
     };
 

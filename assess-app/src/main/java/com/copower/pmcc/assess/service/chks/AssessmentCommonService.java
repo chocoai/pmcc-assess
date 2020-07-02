@@ -28,16 +28,10 @@ import java.util.List;
 @Service
 public class AssessmentCommonService {
     private final static Logger logger = LoggerFactory.getLogger(AssessmentCommonService.class);
-    public final static String BPM_ASSESSMENT_PERFORMANCE_KEY = "performance";//质量考核
-    public final static String BPM_ASSESSMENT_WORK_HOURS_KEY = "work.hours";// 工时考核
 
-
-    public final static String PROJECT_TASK_BUSINESS_KEY_PERFORMANCE = "assessment.performance";//质量考核任务
-    public final static String PROJECT_TASK_BUSINESS_KEY_WORK_HOURS = "assessment.work.hours";//工时考核任务
+    public final static String PROJECT_TASK_BUSINESS_KEY_PERFORMANCE = "assessment.performance";//考核任务
     @Autowired
-    private AssessmentPerformanceService chksAssessmentProjectPerformanceService;
-    @Autowired
-    private AssessmentWorkHoursService assessmentWorkHoursService;
+    private AssessmentPerformanceService assessmentPerformanceService;
     @Autowired
     private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
     @Autowired
@@ -62,8 +56,7 @@ public class AssessmentCommonService {
             BoxApprovalLogVo approvalLogVo = getPreBoxApprovalLogVo(rows, taskId);
             if (approvalLogVo != null)
                 byExamineUser = approvalLogVo.getCreator();
-            chksAssessmentProjectPerformanceService.generateAssessmentTask(processInsId, boxId, taskId, byExamineUser, projectInfo, projectPlanDetails);
-            assessmentWorkHoursService.generateWorkHoursTask(processInsId, boxId, taskId, byExamineUser, projectInfo, projectPlanDetails);
+            assessmentPerformanceService.generatePerformanceTask(processInsId, boxId, taskId, byExamineUser, projectInfo, projectPlanDetails);
         } catch (Exception e) {
             logger.error("生成考核任务异常：" + e.getMessage(), e);
         }
@@ -88,8 +81,7 @@ public class AssessmentCommonService {
     @Transactional(rollbackFor = Exception.class)
     public void createProjectTask(ApprovalModelDto approvalModelDto, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         try {
-            chksAssessmentProjectPerformanceService.createAssessmentProjectTask(approvalModelDto, projectInfo, projectPlanDetails);
-            assessmentWorkHoursService.createAssessmentProjectTask(approvalModelDto, projectInfo, projectPlanDetails);
+            assessmentPerformanceService.createAssessmentProjectTask(approvalModelDto, projectInfo, projectPlanDetails);
         } catch (Exception e) {
             logger.error("审批生成待提交任务异常：" + e.getMessage(), e);
         }

@@ -133,7 +133,7 @@
         </div>
     </div>
     <c:if test="${boxReDto.bisLaunchCheck eq true}">
-        <%@include file="form_chks.jsp" %>
+        <%@include file="../chks/assessmentForm.jsp" %>
     </c:if>
     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
         <button class="btn btn-default " style="margin-left: 10px;" onclick="window.close()">
@@ -147,7 +147,7 @@
 </c:if>
 <c:if test="${flog=='details'}">
     <c:if test="${boxReDto.bisLaunchCheck eq true}">
-        <%@include file="form_chks.jsp" %>
+        <%@include file="/views/chks/assessmentForm.jsp" %>
     </c:if>
     <%@include file="/views/share/form_details.jsp" %>
 </c:if>

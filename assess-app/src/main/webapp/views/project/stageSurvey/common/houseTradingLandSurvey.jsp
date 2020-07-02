@@ -259,7 +259,7 @@
                     <input type="text" placeholder="面积" data-rule-number="true"
                            class="form-control input-full"
                            id="tempLandArea" required
-                           onblur="houseCommon.computeUnitPrice();"
+                           onblur="houseCommon.computeUnitPrice(this);"
                            value="${basicHouse.area}">
                 </div>
                 <label class="col-sm-1">交易时间<span
@@ -277,7 +277,7 @@
                     <input type="text" placeholder="交易总价（元）" data-rule-number="true"
                            class="form-control input-full"
                            name="tradingTotalPrice" required
-                           onblur="houseCommon.computeUnitPrice();"
+                           onblur="houseCommon.computeUnitPrice(this);"
                            value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>

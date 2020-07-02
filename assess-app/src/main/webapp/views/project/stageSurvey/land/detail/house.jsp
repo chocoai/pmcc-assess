@@ -77,7 +77,7 @@
     </div>
 </div>
 </body>
-<%@include file="/views/share/chks_common.jsp" %>
+<%@include file="/views/chks/assessmentCommon.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"

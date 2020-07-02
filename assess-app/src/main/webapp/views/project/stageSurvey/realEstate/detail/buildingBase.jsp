@@ -284,7 +284,7 @@
                             <%@include file="/views/project/stageSurvey/commonDetail/buildingMaintenance.jsp" %>
                         </c:if>
                     </c:if>
-                    <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
+                    <%@include file="/views/chks/assessmentSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -302,7 +302,7 @@
 
 
 </body>
-<%@include file="/views/share/chks_common.jsp" %>
+<%@include file="/views/chks/assessmentCommon.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"

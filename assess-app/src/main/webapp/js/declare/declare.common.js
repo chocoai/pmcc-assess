@@ -139,21 +139,6 @@ declareCommon.fileUpload = function (target, tableName, id, deleteFlag, fieldsNa
         },
         deleteFlag: deleteFlag
     });
-    // FileUtils.uploadFiles({
-    //     target: target,
-    //     disabledTarget: "btn_submit",
-    //     onUpload: function (file) {
-    //         var formData = {
-    //             fieldsName: target,
-    //             tableName: tableName,
-    //             tableId: id
-    //         };
-    //         return formData;
-    //     }, onUploadComplete: function (result, file) {
-    //
-    //     },
-    //     deleteFlag: true
-    // });
 };
 
 declareCommon.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
