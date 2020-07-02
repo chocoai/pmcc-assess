@@ -163,9 +163,6 @@ public class AssessmentPerformanceService {
             String byExaminePeople = assessmentPerformanceDto.getByExaminePeople();
             String examinePeople = assessmentPerformanceDto.getExaminePeople();
             BeanCopyHelp.copyPropertiesIgnoreNull(target, assessmentPerformanceDto);
-            if (assessmentPerformanceDto.getValidScore() == null) {
-                assessmentPerformanceDto.setValidScore(new BigDecimal(0));
-            }
             if (assessmentPerformanceDto.getExamineScore() == null) {
                 assessmentPerformanceDto.setExamineScore(new BigDecimal(0));
             }
@@ -590,7 +587,6 @@ public class AssessmentPerformanceService {
         spotPerformance.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
         spotPerformance.setExamineDate(DateUtils.now());
         spotPerformance.setExamineScore(total);
-        spotPerformance.setValidScore(total);
         spotPerformance.setRemarks(remark);
         spotPerformance.setBisEffective(true);
         spotPerformance.setCreated(DateUtils.now());

@@ -151,7 +151,6 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
             dto.setAssessmentType(assessmentTypeEnum.getValue());
             dto.setAssessmentKey(assessmentTypeEnum.getValue());
             dto.setCreator(commonService.thisUserAccount());
-            dto.setValidScore(new BigDecimal(0));
             Integer id = performanceService.saveAndUpdatePerformanceDto(dto, true);
 
             //更新考核地址

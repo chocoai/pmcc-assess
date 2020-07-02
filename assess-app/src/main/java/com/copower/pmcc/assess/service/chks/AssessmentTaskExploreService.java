@@ -128,14 +128,12 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                 }
             }
             dto.setCreator(commonService.thisUserAccount());
-            dto.setValidScore(new BigDecimal(0));
             dto.setSourceViewUrl(examineUrl);
             dto.setAssessmentType(assessmentTypeEnum.getValue());
             if (StringUtils.isNotBlank(assessmentKey)) {
                 String[] strings = assessmentKey.split(".");
                 dto.setAssessmentKey(strings.length > 0 ? strings[0] : assessmentKey);
             }
-            dto.setBusinessKey(businessKey);
             if (spotActivityId != null) {
                 dto.setSpotActivityId(spotActivityId);
             }

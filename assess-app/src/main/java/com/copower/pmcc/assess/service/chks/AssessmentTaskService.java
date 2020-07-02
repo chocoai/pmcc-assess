@@ -90,7 +90,6 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             dto.setAssessmentType(assessmentTypeEnum.getValue());
             dto.setAssessmentKey(assessmentTypeEnum.getValue());
             dto.setCreator(commonService.thisUserAccount());
-            dto.setValidScore(new BigDecimal(0));
             performanceService.saveAndUpdatePerformanceDto(dto, true);
         }
     }
