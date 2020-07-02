@@ -36,7 +36,7 @@
         <org.apache.velocity.version>1.7</org.apache.velocity.version>
         <org.apache.velocity.velocity-tools.version>2.0</org.apache.velocity.velocity-tools.version>
 
-    <mysql.connector.version>8.0.15</mysql.connector.version>
+    <mysql.connector.version>8.0.16</mysql.connector.version>
         <tomcat.jdbc.version>7.0.57</tomcat.jdbc.version>
 
         <org.slf4j.version>1.7.13</org.slf4j.version>
