@@ -224,9 +224,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%@include file="/views/chks/assessmentSurvey.jsp" %>
-
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">

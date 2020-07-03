@@ -363,7 +363,7 @@
                 remark: item.remark,
                 performanceId: performance.id,
                 name: performance.activityName,
-                assessmentDes: item.assessmentDes,
+                assessmentDes: item.content,
                 minScore: item.minScore,
                 maxScore: item.maxScore,
                 standardScore: item.standardScore
