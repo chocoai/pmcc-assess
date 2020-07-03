@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectPlanDetailsDeleteInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.assess.service.chks.AssessmentPerformanceService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -114,6 +115,8 @@ public class ProjectPlanDetailsService {
     private PublicService publicService;
     @Autowired
     private BpmRpcToolsService bpmRpcToolsService;
+    @Autowired
+    private AssessmentPerformanceService assessmentPerformanceService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -560,6 +563,10 @@ public class ProjectPlanDetailsService {
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return null;
         if (StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue())) {
+            //重启需删除该事项的考核相关任务
+            assessmentPerformanceService.clearAssessmentProjectPerformanceAll(projectPlanDetails.getProcessInsId());
+            bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());//关闭当前流程
+
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
             projectPlanDetails.setBisStart(false);
             projectPlanDetails.setProcessInsId("0");
@@ -591,6 +598,8 @@ public class ProjectPlanDetailsService {
             sysAttachmentDto.setTableId(returnId);
             erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
         }
+
+
         return getProjectPlanDetailsVo(projectPlanDetails);
     }
 

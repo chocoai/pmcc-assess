@@ -168,7 +168,6 @@ public class ProjectInfoController {
         modelAndView.addObject("projectInfo", vo);
         modelAndView.addObject("projectId", vo.getId());
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
-        assessmentCommonService.generateAssessmentTask(processInsId, boxId, taskId, projectInfo, null);
         return modelAndView;
     }
 

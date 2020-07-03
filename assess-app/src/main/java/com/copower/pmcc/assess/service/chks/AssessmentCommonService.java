@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.chks;
 
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
+import com.copower.pmcc.assess.dal.basis.entity.BaseParameter;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -13,6 +16,9 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -23,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,14 +49,28 @@ public class AssessmentCommonService {
     private CommonService commonService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private BaseParameterService baseParameterService;
 
 
     /**
-     * 进入审批页面时，生成质量考核任务，工时考核任务
+     * 进入审批页面时，生成考核任务
      */
     @Transactional(rollbackFor = Exception.class)
-    public void generateAssessmentTask(String processInsId, Integer boxId, String taskId, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws BpmException {
+    public void generateAssessmentTask(String processInsId, Integer boxId, String taskId, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         try {
+            //根据设定的参数确定是否生成考核任务
+            String generateDate = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_DATE);
+            String generateProjectId = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
+            if (StringUtils.isNotBlank(generateDate)) {
+                Date date = DateUtils.convertDate(generateDate);
+                if (DateUtils.compareDate(date, DateUtils.now()) > 0) return;
+            }
+            if (StringUtils.isNotBlank(generateProjectId)) {
+                List<Integer> list = FormatUtils.transformString2Integer(generateProjectId);
+                if (!list.contains(projectInfo.getId())) return;
+            }
+
             BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
             List<BoxApprovalLogVo> rows = tableVo.getRows();
             String byExamineUser = null;

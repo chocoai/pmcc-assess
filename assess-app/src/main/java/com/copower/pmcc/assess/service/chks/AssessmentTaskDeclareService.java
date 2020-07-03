@@ -150,12 +150,12 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
             }
             dto.setAssessmentType(assessmentTypeEnum.getValue());
             dto.setAssessmentKey(assessmentTypeEnum.getValue());
+            dto.setBisEffective(true);
             dto.setCreator(commonService.thisUserAccount());
             Integer id = performanceService.saveAndUpdatePerformanceDto(dto, true);
 
             //更新考核地址
-            dto.setExamineUrl("/assessmentDeclare/index?performanceId=" + id);
-            dto.setExamineDetailUrl("/assessmentDeclare/detail?performanceId=" + id);
+            dto.setSourceViewUrl("/assessmentDeclare/index?performanceId=" + id);
             dto.setId(id);
             performanceService.saveAndUpdatePerformanceDto(dto, false);
         }

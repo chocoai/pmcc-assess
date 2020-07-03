@@ -349,7 +349,7 @@ public class ProjectInfoService {
         //发起相应的流程
         String folio = "【立项审批】" + projectInfo.getProjectName();
         //取得复核模型
-        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT__FORM__TASK__PROCESS__KEY.getParameterKey());
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_FORM_TASK_PROCESS_KEY.getParameterKey());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ProcessInfo processInfo = new ProcessInfo();
         processInfo.setStartUser(projectInfo.getCreator());

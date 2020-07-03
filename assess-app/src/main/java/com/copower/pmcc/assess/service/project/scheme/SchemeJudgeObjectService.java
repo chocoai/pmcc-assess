@@ -783,7 +783,7 @@ public class SchemeJudgeObjectService {
             //发起相应的流程
             String folio = String.join("", "【方案审批】", projectPlan.getPlanName(), DateUtils.format(new Date(), DateUtils.DATETIME_MILL_SECOND));
             //取得复核模型
-            final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT__FORM__PROGRAMME__PROCESS__KEY.getParameterKey());
+            final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_FORM_PROGRAMME_PROCESS_KEY.getParameterKey());
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
             ProcessInfo processInfo = new ProcessInfo();
             processInfo.setStartUser(processControllerComponent.getThisUser());

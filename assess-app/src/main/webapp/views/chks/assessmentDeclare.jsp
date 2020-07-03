@@ -338,56 +338,10 @@
                             </div>
                         </div>
                     </div>
-                    <%--考核数据--%>
-                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        考核数据
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <form class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                            <div class="form-inline x-valid">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <table class="table table-bordered" id="chksTableList">
-                                                        <thead>
-                                                        <tr>
-                                                            <th width="3%">序号</th>
-                                                            <th width="50%">考核标准</th>
-                                                            <th width="10%">打分</th>
-                                                            <th width="10%">说明</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12" style="text-align: center;">
                         <button class="btn btn-default" type="button" onclick="window.close();">
                             关闭
                         </button>
-                        <c:if test="${assessmentReadonly ne true}">
-                            <button class="btn btn-primary" style="margin-left: 10px;" type="button" onclick="chksCustomer.saveAssessmentItem();">
-                                保存
-                            </button>
-                        </c:if>
                     </div>
                 </div>
             </div>
@@ -399,7 +353,6 @@
     </div>
 </div>
 </body>
-<%@include file="/views/chks/assessmentCommon.jsp" %>
 <script type="text/javascript">
     var chksCustomer = {};
 
@@ -417,51 +370,6 @@
 
     chksCustomer.declareRealtyRealEstateCertConfig = {
         newFileId: declareCommon.config.declareRealty.newFileId
-    };
-
-    chksCustomer.saveAssessmentItem = function () {
-        var form = $("#chksTableList").closest("form");
-        if (!form.valid()) {
-            return false;
-        }
-        var filterData = [];
-        var data = [];
-        var remarks = form.find("textarea[name=remarks]").val();
-        assessmentCommonHandle.getChksSonData(form, data);
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].actualScore) {
-                filterData.push(data[i]);
-            }
-        }
-        if (filterData.length == 0) {
-            notifyWarning("警告", "详情页考核需要填写全部数据!");
-            return false;
-        }
-        var parentData = {
-            id: '${assessmentPerformanceDto.id}',
-            remarks: remarks,
-            examineStatus: 'finish'
-        };
-        assessmentCommonHandle.saveAssessmentServer({
-            chksScore: JSON.stringify(filterData),
-            fomData: JSON.stringify(parentData),
-            processInsId: '${assessmentPerformanceDto.processInsId}'
-        }, function (data) {
-            AlertSuccess("成功", "考核成功", function () {
-                window.close();
-            });
-        });
-    };
-
-    chksCustomer.loadChksServerNew = function () {
-        var target = $("#chksTableList").find("tbody");
-        assessmentCommonHandle.getPerformanceDetailsByPerformanceId('${assessmentPerformanceDto.id}', function (performanceDetails) {
-            assessmentCommonHandle.writeAssessmentItemHtml(target, {
-                activityName: '${assessmentPerformanceDto.activityName}',
-                id: '${assessmentPerformanceDto.id}',
-                remarks: '${assessmentPerformanceDto.remarks}'
-            }, performanceDetails,'${assessmentReadonly}');
-        });
     };
 
     //权证信息初始化
@@ -625,7 +533,6 @@
     };
     $(document).ready(function () {
         chksCustomer.init();
-        chksCustomer.loadChksServerNew();
     });
 </script>
 </html>

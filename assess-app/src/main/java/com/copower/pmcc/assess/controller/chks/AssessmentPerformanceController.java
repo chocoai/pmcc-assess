@@ -89,7 +89,7 @@ public class AssessmentPerformanceController {
     }
 
     @PostMapping(value = "/saveAssessmentServer", name = "保存考核信息")
-    public HttpResult saveAssessmentServer(String fomData, String chksScore, String processInsId, Integer planDetailsId, Boolean isSpot) {
+    public HttpResult saveAssessmentServer(String fomData, String chksScore, String processInsId, Boolean isSpot) {
         try {
             AssessmentPerformanceDto performanceDto = JSONObject.parseObject(fomData, AssessmentPerformanceDto.class);
             List<AssessmentPerformanceDetailDto> detailDtoList = JSONObject.parseArray(chksScore, AssessmentPerformanceDetailDto.class);
@@ -97,10 +97,8 @@ public class AssessmentPerformanceController {
                 assessmentPerformanceService.saveSpotPerformance(performanceDto.getId(),performanceDto.getRemarks(),detailDtoList);
                 return HttpResult.newCorrectResult();
             } else {
-                Integer id = assessmentPerformanceService.saveAssessmentServer(performanceDto, detailDtoList, planDetailsId);
-                //清理ProjectTask任务，根据流程id
-                assessmentPerformanceService.clearAssessmentProjectTask(processInsId, commonService.thisUserAccount());
-                return HttpResult.newCorrectResult(id);
+                 assessmentPerformanceService.saveAssessmentServer(performanceDto, detailDtoList);
+                return HttpResult.newCorrectResult();
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "保存考核信息");

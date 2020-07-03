@@ -21,10 +21,8 @@ public enum BaseParameterEnum {
     PROJECTINITVIEWURL("project.init.view.url", "项目立项视图路径", "sys"),
     PROJECT_AUTOMATIC_GENERATE_CASE_KEY("project.automatic.generate.case.key", "自动处理案例", "sys"),
     CSR_PROJECT_APPLY_PROCESS_KEY("csr.project.apply.process.key", "债权项目立项流程key", "box"),
-
-    PROJECT__FORM__TASK__PROCESS__KEY("project.form.task.process.key", "项目立项审批流程key", "box"),
-
-    PROJECT__FORM__PROGRAMME__PROCESS__KEY("project.from.programme.process.key", "方案审批流程key", "box"),
+    PROJECT_FORM_TASK_PROCESS_KEY("project.form.task.process.key", "项目立项审批流程key", "box"),
+    PROJECT_FORM_PROGRAMME_PROCESS_KEY("project.from.programme.process.key", "方案审批流程key", "box"),
 
     PROJECT_APPLY_ASSIGN_PROCESS_KEY("project.apply.assign.process.key", "任务再分派流程key", "box"),
     PROJECT_INFORMATION_CHANGE_PROCESS_KEY("project.information.change.process.key", "项目信息变更流程key", "box"),
@@ -43,6 +41,9 @@ public enum BaseParameterEnum {
     PROJECT_TAKE_NUMBER_PROCESS_KEY("project.take.number.process.key", "项目拿号", "box"),
     PROJECT_COMMISSION_PROCESS_KEY("project.commission.process.key", "项目提成流程", "box"),
     PROJECT_PIGEONHOLE_PROCESS_KEY("project.pigeonhole.process.key", "项目归档流程", "box"),
+
+    ASSESSMENT_TASK_GENERATE_DATE("assessment.task.generate.date", "生成考核任务时间", "sys"),
+    ASSESSMENT_TASK_GENERATE_PROJECT_ID("assessment.task.generate.project.id", "生成考核任务项目id", "box"),
 
     NET_INFO_COMPLEMENT_PROCESS_KEY("net.info.complement.process.key", "拍卖信息补全", "box"),
     NET_INFO_UPGRADE_PROCESS_KEY("net.info.upgrade.process.key", "拍卖信息升级", "box"),

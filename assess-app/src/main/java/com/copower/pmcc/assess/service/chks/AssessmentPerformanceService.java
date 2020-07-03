@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -66,60 +67,69 @@ public class AssessmentPerformanceService {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
-    private PublicService publicService;
-    @Autowired
-    private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
-    @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private AssessmentCommonService assessmentCommonService;
 
     public BootstrapTableVo getPerformanceList(AssessmentPerformanceDto where, Integer boxId, String reActivityName, String flog) {
         //1.管理员与抽查组可查看所有质量考核数据
         //2.当前人只能查看排序比当前节点小的质量考核数据
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         List<Integer> activityList = Lists.newArrayList();
-        boolean spotGroupUser = assessmentCommonService.isSpotGroupUser(boxId, commonService.thisUserAccount());
-        if (!processControllerComponent.userIsAdmin(commonService.thisUserAccount()) && !spotGroupUser) {
-            List<BoxReActivityDto> activityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
-            if (CollectionUtils.isEmpty(activityDtos)) return bootstrapTableVo;
-            if ("approval".equals(flog)) {
-                BoxReActivityDto currActivity = bpmRpcBoxService.getBoxReActivityInfoByName(reActivityName, boxId);
-                if (currActivity != null) {
-                    for (BoxReActivityDto activityDto : activityDtos) {
-                        if (activityDto.getSortMultilevel() <= currActivity.getSortMultilevel())
-                            activityList.add(activityDto.getId());
+        List<BoxReActivityDto> activityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+        if (CollectionUtils.isEmpty(activityDtos)) return bootstrapTableVo;
+        Integer currMaxSorting = -1;
+        if (TaskHandleStateEnum.AGREE.getValue().equals(flog)) {
+            BoxReActivityDto currActivity = bpmRpcBoxService.getBoxReActivityInfoByName(reActivityName, boxId);
+            if (currActivity != null) {
+                if (currActivity.getBisViewChk() == Boolean.FALSE) {//如果该节点不具有查看考核的权限则直接返回
+                    return bootstrapTableVo;
+                }
+
+                for (BoxReActivityDto activityDto : activityDtos) {
+                    if (activityDto.getSortMultilevel() <= currActivity.getSortMultilevel()) {
+                        activityList.add(activityDto.getId());
+                        currMaxSorting = activityDto.getSortMultilevel() > currMaxSorting ? activityDto.getSortMultilevel() : currMaxSorting;
                     }
                 }
-            } else {//找出该人员在该流程中排序号最大的数据
-                Integer sorting = performanceService.getMaxSortingByProcessInsId(where.getProcessInsId(), commonService.thisUserAccount(), commonService.thisUserAccount());
-                for (BoxReActivityDto activityDto : activityDtos) {
-                    if (activityDto.getSortMultilevel() <= sorting)
-                        activityList.add(activityDto.getId());
+            }
+        } else {//找出该人员在该流程中排序号最大的数据
+            Integer sorting = performanceService.getMaxSortingByProcessInsId(where.getProcessInsId(), commonService.thisUserAccount(), commonService.thisUserAccount());
+            for (BoxReActivityDto activityDto : activityDtos) {
+                if (activityDto.getSortMultilevel() <= sorting) {
+                    activityList.add(activityDto.getId());
+                    currMaxSorting = activityDto.getSortMultilevel() > currMaxSorting ? activityDto.getSortMultilevel() : currMaxSorting;
                 }
             }
-            if (CollectionUtils.isEmpty(activityList)) return bootstrapTableVo;
         }
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         where.setActivityId(null);
         where.setSpotId(0);
         where.setAdjustId(0);
-        bootstrapTableVo = performanceService.getPerformanceDtoListByParam(where, activityList, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        if (processControllerComponent.userIsAdmin(commonService.thisUserAccount())) {//管理员可查看全部数据
+            bootstrapTableVo = performanceService.getPerformanceDtoListByParam(where, null, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        } else {
+            if (CollectionUtils.isEmpty(activityList)) return bootstrapTableVo;
+            bootstrapTableVo = performanceService.getPerformanceDtoListByParam(where, activityList, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        }
+
         List<AssessmentPerformanceDto> rows = bootstrapTableVo.getRows();
         if (CollectionUtils.isNotEmpty(rows)) {
-            BoxReActivityDto endActivity = bpmRpcBoxService.getEndActivityByBoxId(boxId);
-            List<Integer> spotBoxReActivityIds = assessmentCommonService.getSpotBoxReActivityIds(boxId);
             for (AssessmentPerformanceDto row : rows) {
-                row.setCanSpot(ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(row.getExamineStatus()) && spotBoxReActivityIds.contains(row.getActivityId()) && spotGroupUser);
-                row.setSpotActivityId(endActivity.getId());
+                if (row.getBisCounted() == Boolean.TRUE) continue;
+                //状态为运行中，审核页面时
+                if (ProcessStatusEnum.RUN.getValue().equalsIgnoreCase(row.getExamineStatus())) {
+                    Boolean approvlFill = TaskHandleStateEnum.AGREE.getValue().equals(flog) && (commonService.thisUserAccount().equalsIgnoreCase(row.getExaminePeople()) || StringUtils.isBlank(row.getExaminePeople()));
+                    Boolean detailFill = "details".equals(flog) && (commonService.thisUserAccount().equalsIgnoreCase(row.getExaminePeople()));
+                    row.setCanFill(approvlFill || detailFill);
+                }
+
+                //状态为结束，并且为当前人的下级节点数据可调整
+                if (ProcessStatusEnum.FINISH.getValue().equalsIgnoreCase(row.getExamineStatus()) && row.getSorting() <= currMaxSorting) {
+                    row.setCanAdjust(true);
+                }
             }
         }
         return bootstrapTableVo;
@@ -151,107 +161,32 @@ public class AssessmentPerformanceService {
      * @param assessmentPerformanceDto
      * @param detailDtoList
      */
-    public Integer saveAssessmentServer(AssessmentPerformanceDto assessmentPerformanceDto, List<AssessmentPerformanceDetailDto> detailDtoList, Integer planDetailsId) {
-        //修改情况  处理
-        if (assessmentPerformanceDto.getId() != null && assessmentPerformanceDto.getId() != 0) {
-            AssessmentPerformanceDto target = getPerformanceById(assessmentPerformanceDto.getId());
-            String remarks = assessmentPerformanceDto.getRemarks();
-            String examineStatus = assessmentPerformanceDto.getExamineStatus();
-            String examineUrl = assessmentPerformanceDto.getExamineUrl();
-            String tableName = assessmentPerformanceDto.getTableName();
-            Integer tableId = assessmentPerformanceDto.getTableId();
-            String byExaminePeople = assessmentPerformanceDto.getByExaminePeople();
-            String examinePeople = assessmentPerformanceDto.getExaminePeople();
-            BeanCopyHelp.copyPropertiesIgnoreNull(target, assessmentPerformanceDto);
-            if (assessmentPerformanceDto.getExamineScore() == null) {
-                assessmentPerformanceDto.setExamineScore(new BigDecimal(0));
-            }
-            if (StringUtils.isNotBlank(examineStatus)) {
-                assessmentPerformanceDto.setExamineStatus(examineStatus);
-            }
-            if (StringUtils.isNotBlank(remarks)) {
-                assessmentPerformanceDto.setRemarks(remarks);
-            }
-            if (StringUtils.isNotBlank(examineUrl)) {
-                assessmentPerformanceDto.setExamineUrl(examineUrl);
-            }
-            if (StringUtils.isNotBlank(tableName)) {
-                assessmentPerformanceDto.setTableName(tableName);
-            }
-            if (StringUtils.isNotBlank(examinePeople)) {
-                assessmentPerformanceDto.setExaminePeople(examinePeople);
-            }
-            if (StringUtils.isNotBlank(byExaminePeople)) {
-                assessmentPerformanceDto.setByExaminePeople(byExaminePeople);
-            }
-            if (tableId != null) {
-                assessmentPerformanceDto.setTableId(tableId);
+    public void saveAssessmentServer(AssessmentPerformanceDto assessmentPerformanceDto, List<AssessmentPerformanceDetailDto> detailDtoList) {
+        if (assessmentPerformanceDto == null || assessmentPerformanceDto.getId() == null) return;
+        AssessmentPerformanceDto target = getPerformanceById(assessmentPerformanceDto.getId());
+        if (target.getAdjustId() != null && target.getExamineScore() != null) {//调整数据保存时，先备份
+            AssessmentPerformanceDto adjustDto = new AssessmentPerformanceDto();
+            BeanUtils.copyProperties(target, adjustDto, BaseConstant.ASSESS_IGNORE_ARRAY);
+            adjustDto.setBisEffective(false);
+            adjustDto.setAdjustId(target.getId());
+            Integer adjustId = performanceService.saveAndUpdatePerformanceDto(adjustDto, true);
+            List<AssessmentPerformanceDetailDto> detailDtos = performanceService.getPerformanceDetailListByPerformanceId(target.getId());
+            if (CollectionUtils.isNotEmpty(detailDtos)) {
+                for (AssessmentPerformanceDetailDto detailDto : detailDtos) {
+                    detailDto.setId(null);
+                    detailDto.setPerformanceId(adjustId);
+                    performanceService.savePerformanceDetailDto(detailDto);
+                }
             }
         }
-        ProjectPlanDetails projectPlanDetails = null;
-        if (StringUtils.isNotBlank(assessmentPerformanceDto.getProcessInsId())) {
-            projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(assessmentPerformanceDto.getProcessInsId());
-        }
-        if (projectPlanDetails == null && planDetailsId != null) {
-            projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        }
-        return savePerformanceBase(assessmentPerformanceDto, detailDtoList, projectPlanDetails);
-    }
 
-    /**
-     * 抽取的保存考核信息
-     *
-     * @param projectPerformanceDto
-     * @param detailDtos
-     * @param projectPlanDetails
-     */
-    private Integer savePerformanceBase(AssessmentPerformanceDto projectPerformanceDto, List<AssessmentPerformanceDetailDto> detailDtos, ProjectPlanDetails projectPlanDetails) {
-        if (StringUtils.isBlank(projectPerformanceDto.getCreator())) {
-            projectPerformanceDto.setCreator(processControllerComponent.getThisUser());
-        }
-        if (StringUtils.isBlank(projectPerformanceDto.getExaminePeople())) {
-            projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
-        }
-        if (projectPerformanceDto.getExamineDate() == null) {
-            projectPerformanceDto.setExamineDate(new Date());
-        }
-        projectPerformanceDto.setAppKey(applicationConstant.getAppKey());
-        if (projectPerformanceDto.getSpotActivityId() == null || projectPerformanceDto.getSpotActivityId().intValue() < 0) {
-            projectPerformanceDto.setSpotActivityId(0);//抽查节点id
-        } else {
-            if (StringUtils.isEmpty(projectPerformanceDto.getActivityName())) {
-                BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(projectPerformanceDto.getSpotActivityId());
-                if (boxReActivityDto != null) {
-                    projectPerformanceDto.setActivityName(boxReActivityDto.getCnName());
-                }
-            }
-        }
-        if (projectPlanDetails != null) {
-            if (projectPerformanceDto.getPlanDetailsId() == null) {
-                projectPerformanceDto.setPlanDetailsId(projectPlanDetails.getId());
-            }
-            if (projectPerformanceDto.getPlanId() == null) {
-                projectPerformanceDto.setPlanId(projectPlanDetails.getPlanId());
-            }
-            if (StringUtils.isEmpty(projectPerformanceDto.getByExaminePeople())) {
-                if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
-                    projectPerformanceDto.setByExaminePeople(projectPlanDetails.getExecuteUserAccount());
-                }
-            }
-            ProjectInfo projectInfo = null;
-            if (projectPlanDetails.getProjectId() != null) {
-                if (projectPerformanceDto.getProjectId() == null) {
-                    projectPerformanceDto.setProjectId(projectPlanDetails.getProjectId());
-                }
-                projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-            }
-            if (StringUtils.isEmpty(projectPerformanceDto.getProjectName())) {
-                if (projectInfo != null) {
-                    projectPerformanceDto.setProjectName(projectInfo.getProjectName());
-                }
-            }
-        }
-        return performanceService.savePerformanceBase(projectPerformanceDto, detailDtos);
+        target.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
+        target.setExaminePeople(commonService.thisUserAccount());
+        target.setRemarks(assessmentPerformanceDto.getRemarks());
+        target.setExamineDate(DateUtils.now());
+        performanceService.savePerformanceBase(target, detailDtoList);
+        //清除任务
+        clearAssessmentProjectTask(target.getProcessInsId(), commonService.thisUserAccount());
     }
 
     /**
@@ -375,10 +310,10 @@ public class AssessmentPerformanceService {
                             stringBuilder.append("[").append(approvalModelDto.getWorkPhase()).append("]");
                         projectPlanResponsibility.setPlanDetailsName(stringBuilder.toString());
                         projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
-                        projectPlanResponsibility.setUserAccount(processControllerComponent.getThisUser());
+                        projectPlanResponsibility.setUserAccount(commonService.thisUserAccount());
                         projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
-                        projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
-                        projectPlanResponsibility.setConclusion(String.format("(考核)%s-%s", processControllerComponent.getThisUser(), approvalModelDto.getProcessInsId()));//
+                        projectPlanResponsibility.setCreator(commonService.thisUserAccount());
+                        projectPlanResponsibility.setConclusion(String.format("(考核)%s-%s", commonService.thisUserAccount(), approvalModelDto.getProcessInsId()));//
                         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
                         projectPlanResponsibility.setUrl(String.format("/%s%s?boxId=%s&processInsId=%s", applicationConstant.getAppKey(), boxReDto.getProcessDisplayUrl(), approvalModelDto.getBoxId(), approvalModelDto.getProcessInsId()));
                         bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
@@ -396,13 +331,7 @@ public class AssessmentPerformanceService {
                 if (CollectionUtils.isNotEmpty(performanceDtoList)) {
                     performanceDtoList.forEach(o -> performanceService.deletePerformanceByIds(LangUtils.transform(performanceDtoList, p -> p.getId())));
                 }
-                query = new AssessmentPerformanceDto();
-                query.setProcessInsId(approvalModelDto.getProcessInsId());
-                query.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
-                query.setExaminePeople(processControllerComponent.getThisUser());
-                List<AssessmentPerformanceDto> list = performanceService.getPerformancesByParam(query);
-                if (CollectionUtils.isEmpty(list))
-                    clearAssessmentProjectTask(approvalModelDto.getProcessInsId(), processControllerComponent.getThisUser());
+                clearAssessmentProjectTask(approvalModelDto.getProcessInsId(), commonService.thisUserAccount());
             }
         }
     }
@@ -414,9 +343,11 @@ public class AssessmentPerformanceService {
      * @param userAccount
      */
     public void clearAssessmentProjectTask(String processInsId, String userAccount) {
+        if (StringUtils.isBlank(processInsId) || StringUtils.isBlank(userAccount)) return;
         AssessmentPerformanceDto query = new AssessmentPerformanceDto();
         query.setProcessInsId(processInsId);
         query.setExaminePeople(userAccount);
+        query.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
         List<AssessmentPerformanceDto> performanceDtoList = performanceService.getPerformancesByParam(query);
         if (CollectionUtils.isEmpty(performanceDtoList)) {
             ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
@@ -436,6 +367,8 @@ public class AssessmentPerformanceService {
      * @param processInsId
      */
     public void clearAssessmentProjectPerformanceAll(String processInsId) {
+        if (StringUtils.isBlank(processInsId)) return;
+
         AssessmentPerformanceDto query = new AssessmentPerformanceDto();
         query.setProcessInsId(processInsId);
         List<AssessmentPerformanceDto> performanceDtoList = performanceService.getPerformancesByParam(query);
@@ -497,7 +430,7 @@ public class AssessmentPerformanceService {
         }
         projectPerformanceDto.setRemarks(copy.getRemarks());
         projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
-        saveAssessmentServer(projectPerformanceDto, performanceDetailDtos, projectPerformanceDto.getPlanDetailsId());
+        saveAssessmentServer(projectPerformanceDto, performanceDetailDtos);
         return true;
     }
 

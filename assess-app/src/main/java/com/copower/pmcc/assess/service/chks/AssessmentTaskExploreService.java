@@ -127,6 +127,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                     dto.setPlanName(projectPlanDetails.getProjectPhaseName());
                 }
             }
+            dto.setBisEffective(true);
             dto.setCreator(commonService.thisUserAccount());
             dto.setSourceViewUrl(examineUrl);
             dto.setAssessmentType(assessmentTypeEnum.getValue());
