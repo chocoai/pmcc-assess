@@ -72,6 +72,7 @@ public class BasicApplyService {
     public List<BasicApply> getListByDeclareRecordId(Integer declareRecordId) {
         BasicApply where = new BasicApply();
         where.setDeclareRecordId(declareRecordId);
+        where.setBisDelete(false);
         List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
         if (CollectionUtils.isEmpty(basicApplyList)) return null;
         return basicApplyList;

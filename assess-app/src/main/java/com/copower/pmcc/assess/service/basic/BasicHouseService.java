@@ -467,11 +467,9 @@ public class BasicHouseService extends BasicEntityAbstract {
                         houseDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseDetail.getId()));
                         basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
                     }
-                    basicApplyBatchDetailService.insertBasicApply(houseDetail,planDetailsId);
                     basicHouse.setApplyId(houseDetail.getId());
                     basicHouse.setFullName(houseDetail.getFullName());
                 }
-
                 Integer houseId = saveAndUpdate(basicHouse, true);
 
                 //户型
@@ -543,6 +541,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                     basicHouse.setNewDegree(newDegree);
                     saveAndUpdate(basicHouse, false);
                 }
+                basicApplyBatchDetailService.insertBasicApply(houseDetail,planDetailsId);//更新basicApply表中的信息
                 return basicHouse.getId();
             }
         }
