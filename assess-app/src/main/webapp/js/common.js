@@ -370,7 +370,7 @@ $(function () {
                         fieldName: key
                     },
                     success: function (result) {
-                        if (result.ret) {
+                        if (result.ret&&result.data) {
                             var retHtml = '';
                             if (initHtml == undefined || initHtml) {
                                 retHtml += '<option value="" selected>-请选择-</option>';
@@ -903,7 +903,7 @@ $(function () {
                         fieldName: key
                     },
                     success: function (result) {
-                        if (result.ret) {
+                        if (result.ret&&result.data) {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
                                 retHtml += '<option value="' + item.name + '"'
@@ -1003,7 +1003,7 @@ $(function () {
                         fieldName: key
                     },
                     success: function (result) {
-                        if (result.ret) {
+                        if (result.ret&&result.data) {
                             var retHtml = '';
                             $.each(result.data, function (i, item) {
                                 retHtml += '<a class="dropdown-item" onclick="AssessCommon.setValueBySelect(this)">'+item.name+'</a>';
@@ -1011,7 +1011,6 @@ $(function () {
                             if (callback) {
                                 callback(retHtml, result.data);
                             }
-
                         }
                     },
                     error: function (result) {

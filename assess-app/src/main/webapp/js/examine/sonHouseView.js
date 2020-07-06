@@ -1264,7 +1264,7 @@ var houseIntelligent;
                     fieldName: AssessDicKey.examine_house_lamps_lanterns
                 },
                 success: function (result) {
-                    if (result.ret) {
+                    if (result.ret&&result.data) {
                         var retHtml = '';
                         $.each(result.data, function (i, item) {
                             retHtml += '<option key="' + item.fieldName + '" title="' + item.remark + '" value="' + item.id + '"';
