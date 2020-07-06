@@ -444,11 +444,10 @@ public class ProjectPlanService {
     public Boolean isAllPlanFinish(Integer projectId) {
         if (projectId == null) return false;
         List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
-        if (CollectionUtils.isEmpty(projectPlanList)) {
-            for (ProjectPlan projectPlan : projectPlanList) {
-                if (!ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(projectPlan.getStatus()))
-                    return false;
-            }
+        if (CollectionUtils.isEmpty(projectPlanList)) return false;
+        for (ProjectPlan projectPlan : projectPlanList) {
+            if (!ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(projectPlan.getProjectStatus()))
+                return false;
         }
         return true;
     }
