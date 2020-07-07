@@ -92,54 +92,85 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             String businessKey = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicApplyBatchDetail.getId());
             saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getType(), StringUtils.join(linkedList, "&"), businessKey, null);
         }
+        //添加工时考核任务
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
+        dto.setProcessInsId(processInsId);
+        dto.setAppKey(applicationConstant.getAppKey());
+        if (projectInfo != null) {
+            dto.setProjectId(projectInfo.getId());
+            dto.setProjectName(projectInfo.getProjectName());
+        }
+        dto.setTaskId(taskId);
+        dto.setBoxId(boxReDto.getId());
+        dto.setActivityId(activityId);
+        if (activityDto != null) {
+            dto.setReActivityName(activityDto.getName());
+            dto.setActivityName(activityDto.getCnName());
+            dto.setSorting(activityDto.getSortMultilevel());
+            dto.setBusinessKey(activityDto.getCnName());
+        }
+        dto.setByExaminePeople(byExamineUser);
+        dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+        if (projectPlanDetails != null) {
+            dto.setPlanId(projectPlanDetails.getPlanId());
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+            } else {
+                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+            }
+            dto.setPlanDetailsId(projectPlanDetails.getId());
+        }
+        dto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
+        dto.setAssessmentKey(AssessmentTypeEnum.WORK_HOURS.getValue());
+        dto.setBisEffective(true);
+        dto.setCreator(commonService.thisUserAccount());
+        performanceService.saveAndUpdatePerformanceDto(dto, true);
     }
 
     private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey, Integer spotActivityId) {
-        for (AssessmentTypeEnum assessmentTypeEnum : AssessmentTypeEnum.values()) {
-            AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
-            dto.setProcessInsId(processInsId);
-            dto.setAppKey(applicationConstant.getAppKey());
-            if (projectInfo != null) {
-                dto.setProjectId(projectInfo.getId());
-                dto.setProjectName(projectInfo.getProjectName());
-            }
-            dto.setTaskId(taskId);
-            dto.setBoxId(boxReDto.getId());
-            BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
-            dto.setActivityId(activityId);
-            if (activityDto != null) {
-                dto.setReActivityName(activityDto.getName());
-                dto.setSorting(activityDto.getSortMultilevel());
-                dto.setActivityName(activityDto.getCnName());
-                dto.setBusinessKey(activityDto.getCnName() + "/" + businessKey);
-            }
-            dto.setByExaminePeople(byExamineUser);
-            dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
-            dto.setTableId(tableId);
-            dto.setTableName(tableName);
-            if (projectPlanDetails != null) {
-                dto.setPlanId(projectPlanDetails.getPlanId());
-                dto.setPlanDetailsId(projectPlanDetails.getId());
-                ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-                if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
-                    dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
-                } else {
-                    dto.setPlanName(projectPlanDetails.getProjectPhaseName());
-                }
-            }
-            dto.setBisEffective(true);
-            dto.setCreator(commonService.thisUserAccount());
-            dto.setSourceViewUrl(examineUrl);
-            dto.setAssessmentType(assessmentTypeEnum.getValue());
-            if (StringUtils.isNotBlank(assessmentKey)) {
-                String[] strings = assessmentKey.split(".");
-                dto.setAssessmentKey(strings.length > 0 ? strings[0] : assessmentKey);
-            }
-            if (spotActivityId != null) {
-                dto.setSpotActivityId(spotActivityId);
-            }
-            performanceService.saveAndUpdatePerformanceDto(dto, true);
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
+        dto.setProcessInsId(processInsId);
+        dto.setAppKey(applicationConstant.getAppKey());
+        if (projectInfo != null) {
+            dto.setProjectId(projectInfo.getId());
+            dto.setProjectName(projectInfo.getProjectName());
         }
+        dto.setTaskId(taskId);
+        dto.setBoxId(boxReDto.getId());
+        BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
+        dto.setActivityId(activityId);
+        if (activityDto != null) {
+            dto.setReActivityName(activityDto.getName());
+            dto.setSorting(activityDto.getSortMultilevel());
+            dto.setActivityName(activityDto.getCnName());
+            dto.setBusinessKey(activityDto.getCnName() + "/" + businessKey);
+        }
+        dto.setByExaminePeople(byExamineUser);
+        dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+        dto.setTableId(tableId);
+        dto.setTableName(tableName);
+        if (projectPlanDetails != null) {
+            dto.setPlanId(projectPlanDetails.getPlanId());
+            dto.setPlanDetailsId(projectPlanDetails.getId());
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+            } else {
+                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+            }
+        }
+        dto.setBisEffective(true);
+        dto.setCreator(commonService.thisUserAccount());
+        dto.setSourceViewUrl(examineUrl);
+        dto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
+        if (StringUtils.isNotBlank(assessmentKey)) {
+            String[] strings = assessmentKey.split(".");
+            dto.setAssessmentKey(strings.length > 0 ? strings[0] : assessmentKey);
+        }
+        if (spotActivityId != null) {
+            dto.setSpotActivityId(spotActivityId);
+        }
+        performanceService.saveAndUpdatePerformanceDto(dto, true);
     }
-
 }
