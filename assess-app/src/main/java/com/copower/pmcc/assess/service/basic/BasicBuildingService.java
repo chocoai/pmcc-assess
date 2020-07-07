@@ -168,7 +168,6 @@ public class BasicBuildingService extends BasicEntityAbstract {
         List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
         BasicBuildingVo vo = new BasicBuildingVo();
         //检查是否存在差异的楼栋数据，有则需将基础部分与差异部分写入vo中
-        BasicBuilding currBuildingDifference = null;
         for (KeyValueDto keyValueDto : keyValueDtos) {
             Boolean isBuilding = BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey());
             Boolean isBuildingBase = BasicFormClassifyEnum.BUILDING_BASE.getKey().equals(keyValueDto.getKey());
