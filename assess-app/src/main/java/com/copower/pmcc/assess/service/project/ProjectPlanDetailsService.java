@@ -565,6 +565,7 @@ public class ProjectPlanDetailsService {
         if (StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue())) {
             //重启需删除该事项的考核相关任务
             assessmentPerformanceService.clearAssessmentProjectPerformanceAll(projectPlanDetails.getProcessInsId());
+            if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId()) && !projectPlanDetails.getProcessInsId().equals("0"))
             bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());//关闭当前流程
 
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
