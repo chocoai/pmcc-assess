@@ -5550,7 +5550,7 @@ public class GenerateBaseDataService {
                 biConsumer.accept(biFunction.apply("电力通讯网络", generateHouseEntityService.getIntelligent(judgeObjects)), stringBuilder);
                 biConsumer.accept(biFunction.apply("供水", generateHouseEntityService.getHouseWater(judgeObjects)), stringBuilder);
                 biConsumer.accept(biFunction.apply("排水", generateHouseEntityService.getHouseWaterDrain(judgeObjects)), stringBuilder);
-                biConsumer.accept(biFunction.apply("房屋配套设备设施工", generateHouseEntityService.getMatchingEquipment(judgeObjects)), stringBuilder);
+                biConsumer.accept(biFunction.apply("房屋配套设备设施", generateHouseEntityService.getMatchingEquipment(judgeObjects)), stringBuilder);
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("11、建筑功能:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingFunction(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("12、新旧程度及维护使用情况")));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateHouseEntityService.getDamagedDegree(judgeObjects)));

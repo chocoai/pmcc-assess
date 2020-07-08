@@ -612,7 +612,7 @@ public class GenerateHouseEntityService {
     }
 
     /**
-     * 房屋配套设备设施工
+     * 房屋配套设备设施
      *
      * @param judgeObjectList
      * @return
