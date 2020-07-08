@@ -8,7 +8,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
-import com.copower.pmcc.assess.proxy.face.ProjectPlanDetailsDeleteInterface;
+import com.copower.pmcc.assess.proxy.face.ProjectPhaseInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
@@ -175,7 +175,7 @@ public class ProjectPlanDetailsService {
             bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(), projectPlanDetails.getId());
             projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
             if (StringUtils.isNotEmpty(projectPhase.getServiceBean())) {
-                ProjectPlanDetailsDeleteInterface serviceBean = (ProjectPlanDetailsDeleteInterface) SpringContextUtils.getBean(projectPhase.getServiceBean());
+                ProjectPhaseInterface serviceBean = (ProjectPhaseInterface) SpringContextUtils.getBean(projectPhase.getServiceBean());
                 serviceBean.afterDeleteExecute(projectPlanDetails.getId());
             }
             successCount++;

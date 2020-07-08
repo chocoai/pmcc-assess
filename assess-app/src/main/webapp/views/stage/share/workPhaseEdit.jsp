@@ -123,41 +123,37 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                自定义附件模板
+                                                工时考核<br/>最高工分
                                             </label>
                                             <div class="col-sm-10">
-                                                <select name="assetsSettingId" class="form-control input-full">
-                                                    <c:forEach items="${dataAssetsAppraisalDicList}" var="item">
-                                                        <option value="${item.id}">${item.name}</option>
-                                                    </c:forEach>
-                                                </select>
+                                                <input class="form-control input-full" name="assessmentMaxScore"
+                                                       data-rule-number="true" data-rule-maxlength="255"
+                                                       placeholder="工时考核最高工分">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                serviceBean
+                                                工作事项Bean
                                             </label>
                                             <div class="col-sm-10">
                                                 <input class="form-control input-full" name="serviceBean"
-                                                       data-rule-maxlength="255" placeholder="">
+                                                       data-rule-maxlength="255" placeholder="工作事项Bean">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
-
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisWait"
                                                                name="bisWait" value="true"
                                                                checked="checked">
-                                                        <span class="form-check-sign">允许挂起</span>
+                                                        <span class="form-check-sign">允许审核后置</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -165,7 +161,6 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
-
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">

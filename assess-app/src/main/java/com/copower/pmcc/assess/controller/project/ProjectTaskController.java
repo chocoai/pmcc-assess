@@ -112,7 +112,7 @@ public class ProjectTaskController extends BaseController {
             modelAndView.addObject("boxCnName", String.format("%s-成果提交", boxCnName.toString()));
         }
 
-        modelAndView.addObject("boxprocess Icon", "fa-flash");
+        modelAndView.addObject("boxprocessIcon", "fa-flash");
         modelAndView.addObject("currentStepName", "成果提交");
         modelAndView.addObject("currUserName", "管理员");
         modelAndView.addObject("projectFlog", "1");
@@ -177,6 +177,7 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
+        modelAndView.addObject("boxReDto", bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
         assessmentCommonService.generateAssessmentTask(processInsId, boxId, taskId, projectInfoVo, projectPlanDetails);//生成考核任务
         return modelAndView;
     }
@@ -277,13 +278,7 @@ public class ProjectTaskController extends BaseController {
                 }
             }
         }
-        //获取相应的考核项
-        if (boxId != null && boxId > 0) {
-            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-                setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(),modelAndView);
-            }
-        }
+        modelAndView.addObject("boxReDto", bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
         return modelAndView;
     }
 

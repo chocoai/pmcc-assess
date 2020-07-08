@@ -3,17 +3,23 @@ package com.copower.pmcc.assess.service.chks;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BaseParameter;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -29,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +58,12 @@ public class AssessmentCommonService {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private BaseParameterService baseParameterService;
-
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ChksRpcAssessmentPerformanceService performanceService;
 
     /**
      * 进入审批页面时，生成考核任务
@@ -106,6 +118,29 @@ public class AssessmentCommonService {
         } catch (Exception e) {
             logger.error("审批生成待提交任务异常：" + e.getMessage(), e);
         }
+    }
+
+    /**
+     * 检查是否超出事项的最大工时
+     *
+     * @return
+     */
+    public Boolean isExceedWorkHoursMaxScore(Integer planDetailsId,Integer boxId, BigDecimal currScore) {
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        if (projectPlanDetails == null) return false;
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+        if (boxReDto == null) return false;
+        BigDecimal maxScore = boxReDto.getWorkHoursMaxScore();
+        AssessmentPerformanceDto where = new AssessmentPerformanceDto();
+        where.setProjectId(projectPlanDetails.getProjectId());
+        where.setProjectPhaseId(projectPlanDetails.getId());
+        List<AssessmentPerformanceDto> dtoList = performanceService.getPerformancesByParam(where);
+        if (CollectionUtils.isEmpty(dtoList)) return false;
+        for (AssessmentPerformanceDto assessmentPerformanceDto : dtoList) {
+            currScore = currScore.add(assessmentPerformanceDto.getExamineScore());
+        }
+        if (currScore.compareTo(maxScore) > 0) return true;
+        return false;
     }
 
     /**

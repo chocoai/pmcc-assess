@@ -106,18 +106,6 @@ public class AssessmentPerformanceController {
         }
     }
 
-    @PostMapping(value = "/updatePerformanceDto", name = "考核主表数据修改")
-    public HttpResult updatePerformanceDto(String fomData, @RequestParam(defaultValue = "false") boolean updateNull) {
-        try {
-            AssessmentPerformanceDto assessmentProjectPerformanceDto = JSONObject.parseObject(fomData, AssessmentPerformanceDto.class);
-            assessmentPerformanceService.updatePerformanceDto(assessmentProjectPerformanceDto, updateNull);
-            return HttpResult.newCorrectResult(assessmentProjectPerformanceDto);
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e, "考核主表数据修改 出错");
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
     @PostMapping(value = "/pasteAll", name = "粘贴数据")
     public HttpResult pasteAll(Integer copyId, String ids) {
         try {

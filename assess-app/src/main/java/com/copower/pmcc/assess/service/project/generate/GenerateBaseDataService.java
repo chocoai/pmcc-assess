@@ -4532,7 +4532,12 @@ public class GenerateBaseDataService {
         }
         try {
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            linkedLists.add(generateBaseExamineService.getBasicBuilding().getFloorCount().toString());//4
+            BasicBuildingVo buildingVo = generateBaseExamineService.getBasicBuilding();
+            if(buildingVo.getCurrBuildingDifference()!=null){
+                linkedLists.add(buildingVo.getCurrBuildingDifference().getFloorCount().toString());//4
+            }else{
+                linkedLists.add(buildingVo.getMaxFloor().toString());//4
+            }
         } catch (Exception e) {
             linkedLists.add("0");
         }
@@ -4559,6 +4564,7 @@ public class GenerateBaseDataService {
                     }
                 }
             } catch (Exception e) {
+                logger.error(e.getMessage(),e);
             }
         }
         if (schemeJudgeObject.getPrice() != null) {//7

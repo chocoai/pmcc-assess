@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
+import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
@@ -117,6 +118,8 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
      */
     private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String businessKey) {
         for (AssessmentTypeEnum assessmentTypeEnum : AssessmentTypeEnum.values()) {
+            List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentTypeEnum.getValue());
+            if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
             AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
             dto.setProcessInsId(processInsId);
             dto.setAppKey(applicationConstant.getAppKey());

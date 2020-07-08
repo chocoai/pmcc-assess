@@ -45,19 +45,22 @@
                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                 <div class="input-group">
                                     <input type="hidden" name="byExaminePeople">
-                                    <input type="text" class="form-control" readonly="readonly" name="byExaminePeopleName"
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           name="byExaminePeopleName"
                                            onclick="assessmentCommonHandle.selectUserAccountMember(this);">
                                     <div class="input-group-prepend">
                                         <button class="btn btn-warning btn-sm "
                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                type="button"
+                                                onclick="$(this).closest('.input-group').find('input').val('');">
                                             清空
                                         </button>
                                     </div>
                                     <div class="input-group-prepend">
                                         <button class="btn btn-primary btn-sm "
                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button" onclick="assessmentCommonHandle.selectUserAccountMember(this);">选择
+                                                type="button"
+                                                onclick="assessmentCommonHandle.selectUserAccountMember(this);">选择
                                         </button>
                                     </div>
                                 </div>
@@ -73,14 +76,16 @@
                                     <div class="input-group-prepend">
                                         <button class="btn btn-warning btn-sm "
                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                type="button"
+                                                onclick="$(this).closest('.input-group').find('input').val('');">
                                             清空
                                         </button>
                                     </div>
                                     <div class="input-group-prepend">
                                         <button class="btn btn-primary btn-sm "
                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button" onclick="assessmentCommonHandle.selectUserAccountMember(this);">选择
+                                                type="button"
+                                                onclick="assessmentCommonHandle.selectUserAccountMember(this);">选择
                                         </button>
                                     </div>
                                 </div>
@@ -100,12 +105,14 @@
                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                 <button type="button"
                                         onclick="assessmentCommonHandle.loadAssessmentPerformanceList($(this).closest('form'));"
-                                        class="btn btn-info btn-sm"><i class="fa fa-search"></i>查询</button>
-                                <button style="margin-left: 5px" class="btn btn-info  btn-sm" type="button" onclick="$(this).closest('form').clearAll();">
+                                        class="btn btn-info btn-sm"><i class="fa fa-search"></i>查询
+                                </button>
+                                <button style="margin-left: 5px" class="btn btn-info  btn-sm" type="button"
+                                        onclick="$(this).closest('form').clearAll();">
                                     <span class="fa fa-undo-alt" aria-hidden="true"></span>
                                     重置
                                 </button>
-                                <button type="button" class="btn btn-info btn-sm"  style="margin-left: 5px"
+                                <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
                                         onclick="assessmentCommonHandle.copyData(this);"><i
                                         class="fa fa-copy" aria-hidden="true"></i> 拷贝
                                 </button>
@@ -115,7 +122,8 @@
                                 </button>
                                 <button type="button"
                                         onclick="assessmentCommonHandle.batchSetFinish();"
-                                        class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i>一键完成</button>
+                                        class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i>一键完成
+                                </button>
                             </div>
                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                 <div class="input-group ">
@@ -192,14 +200,141 @@
     </div>
 </div>
 
-<%--考核记录填写--%>
-<div id="divAssessmentPerformanceModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<%--质量考核记录填写--%>
+<div id="divQualityPerformanceModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">考核记录填写</h4>
+                <h4 class="modal-title">质量考核信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="adjustId">
+                    <div class="row form-group">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th width="3%">序号</th>
+                                            <th width="50%">考核标准</th>
+                                            <th width="10%">打分(分值)</th>
+                                            <th width="30%">说明</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="5" style="color: red;">${boxReDto.qualityStandard}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                <select class="form-control input-full" name="bisQualified" required>
+                                                    <option value="">-请选择-</option>
+                                                    <option value="true">合格</option>
+                                                    <option value="false">不合格</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                <textarea class="form-control input-full" name="remarks"
+                                                          placeholder="考核综合说明"></textarea></td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="assessmentCommonHandle.savePerformanceData(this);">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<%--质量考核记录查看--%>
+<div id="divQualityPerformanceModalDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">质量考核信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th width="3%">序号</th>
+                                            <th width="50%">考核标准</th>
+                                            <th width="10%">打分(分值)</th>
+                                            <th width="30%">说明</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="5" style="color: red;">${boxReDto.qualityStandard}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                {bisQualified}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                {remarks}
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--工时考核记录填写--%>
+<div id="divWorkHoursPerformanceModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">工时考核信息</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -217,8 +352,8 @@
                                         <tr>
                                             <th width="3%">序号</th>
                                             <th width="50%">考核标准</th>
-                                            <th width="10%">打分(分值)</th>
-                                            <th width="10%">说明</th>
+                                            <th width="10%">工分(分值)</th>
+                                            <th width="30%">说明</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -235,7 +370,7 @@
                     关闭
                 </button>
                 <button type="button" class="btn btn-primary btn-sm"
-                        onclick="assessmentCommonHandle.savePerformanceData();">
+                        onclick="assessmentCommonHandle.savePerformanceData(this);">
                     保存
                 </button>
             </div>
@@ -243,15 +378,14 @@
         </div>
     </div>
 </div>
-
-<%--考核记录查看--%>
-<div id="divAssessmentPerformanceModalDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
+<%--工时考核记录查看--%>
+<div id="divWorkHoursPerformanceModalDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">考核详情记录</h4>
+                <h4 class="modal-title">工时考核信息</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -267,8 +401,8 @@
                                         <tr>
                                             <th width="3%">序号</th>
                                             <th width="50%">考核标准</th>
-                                            <th width="10%">打分(分值)</th>
-                                            <th width="10%">说明</th>
+                                            <th width="10%">工分(分值)</th>
+                                            <th width="30%">说明</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -324,19 +458,7 @@
             <label name="remark{id}" class="form-control input-full">{remark}</label>
     </tr>
 </script>
-<script type="text/html" id="assessmentItemTemplateRemarksHTML">
-    <tr>
-        <td colspan="5"><textarea class="form-control input-full" name="remarks"
-                                  placeholder="考核综合说明">{remarks}</textarea></td>
-    </tr>
-</script>
-<script type="text/html" id="assessmentItemTemplateRemarksHTMLReadonly">
-    <tr>
-        <td colspan="5">
-            <label name="remarks" class="form-control input-full">{remarks}</label>
-        </td>
-    </tr>
-</script>
+
 
 <script type="text/javascript">
     var assessmentCommonHandle = {};
@@ -415,10 +537,6 @@
         assessmentCommonHandle.ajaxServerMethod(data, "/assessmentPerformance/saveAssessmentServer", "post", callback, null);
     };
 
-    assessmentCommonHandle.updatePerformanceDto = function (data, callback) {
-        assessmentCommonHandle.ajaxServerMethod({fomData: JSON.stringify(data)}, "/assessmentPerformance/updatePerformanceDto", "post", callback, null);
-    };
-
     assessmentCommonHandle.getPerformanceDetailsByPerformanceId = function (id, callback) {
         assessmentCommonHandle.ajaxServerMethod({performanceId: id}, "/assessmentPerformance/getPerformanceDetailsByPerformanceId", "get", callback, null);
     };
@@ -444,8 +562,8 @@
         cols.push({
             field: 'businessKey', title: '名称', formatter: function (value, row, index) {
                 var str = value;
-                if(row.sourceViewUrl){
-                    str='<a target="_blank" href="${pageContext.request.contextPath}'+row.sourceViewUrl+'">'+value+'</a>';
+                if (row.sourceViewUrl) {
+                    str = '<a target="_blank" href="${pageContext.request.contextPath}' + row.sourceViewUrl + '">' + value + '</a>';
                 }
                 str += "【" + row.assessmentTypeName + "】";
                 str += '<button type="button" class="btn  btn-xs btn-info" style="margin-left: 5px;" data-placement="bottom" data-original-title="调整记录" onclick="assessmentCommonHandle.showAdjustRecordListModal(' + row.id + ')" > <i class="fa fa-tasks fa-white"></i></button>';
@@ -483,11 +601,11 @@
         cols.push({
             field: 'examineStatus', title: '操作', formatter: function (value, row, index) {
                 var str = "";
-                if(row.canFill){//考核内容可填写
-                    str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + table.selector + '\')" > <i class="fa fa-pen fa-white"></i></button>';
+                if (row.canFill) {//考核内容可填写
+                    str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + row.assessmentType + '\')" > <i class="fa fa-pen fa-white"></i></button>';
                 }
-                if(row.canAdjust){//针对考核内容可调整
-                    str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + row.id + '\')" > <i class="fa fa-eraser fa-white"></i></button>';
+                if (row.canAdjust) {//针对考核内容可调整
+                    str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + row.assessmentType + ',\'' + row.id + '\')" > <i class="fa fa-eraser fa-white"></i></button>';
                 }
                 if (value == 'finish') {//完成之后可查看
                     str += "<button type='button' onclick='assessmentCommonHandle.showPerformanceDetailModal(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
@@ -509,6 +627,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            uniqueId: 'id',
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -601,15 +720,6 @@
                 standardScore: item.standardScore
             });
         });
-        if (performanceDetails.length >= 1) {
-            var remarksHtmlId = "assessmentItemTemplateRemarksHTML";
-            if (readonly && readonly == 'true') {
-                remarksHtmlId += "Readonly";
-            }
-            var remarksHtml = $("#" + remarksHtmlId).html();
-            remarksHtml = remarksHtml.replace(/{remarks}/g, performance.remarks);
-            restHtml += remarksHtml;
-        }
         target.empty().append(restHtml);
     };
 
@@ -709,7 +819,7 @@
             dataType: 'json',
             success: function (result) {
                 if (result.ret) {
-                    var restHtml='';
+                    var restHtml = '';
                     $.each(result.data, function (i, item) {
                         var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
                             index: i + 1,
@@ -744,18 +854,17 @@
      * 考核填写 弹窗方式
      * @param id
      */
-    assessmentCommonHandle.showPerformanceModal = function (id,adjustId) {
+    assessmentCommonHandle.showPerformanceModal = function (id, assessmentType, adjustId,) {
         if (id == undefined || id == null) {
             notifyWaring('提示', '数据不存在');
             return false;
         }
-        var target = $("#assessmentPerformanceTableList");
-        var box = $("#divAssessmentPerformanceModal");
-        var table = $("#tbAssessmentPerformance").find("tbody");
-        var itemA = target.bootstrapTable('getRowByUniqueId', id);
+        var box = assessmentType == 'quality' ? $("#divQualityPerformanceModal") : $("#divWorkHoursPerformanceModal");
+        var tbody = box.find("tbody");
         box.modal("show");
         box.find("input[name=id]").val(id);
         box.find("input[name=adjustId]").val(adjustId);
+        tbody.empty();
         assessmentCommonHandle.getPerformanceDetailsByPerformanceId(id, function (performanceDetails) {
             var restHtml = "";
             $.each(performanceDetails, function (i, item) {
@@ -773,12 +882,7 @@
                 });
                 restHtml += html;
             })
-            if (performanceDetails.length >= 1) {
-                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                restHtml += remarksHtml;
-            }
-            table.empty().append(restHtml);
+            tbody.append(restHtml);
         })
     };
 
@@ -824,8 +928,8 @@
     /**
      * 考核保存
      */
-    assessmentCommonHandle.savePerformanceData = function () {
-        var form = $("#tbAssessmentPerformance").closest('form');
+    assessmentCommonHandle.savePerformanceData = function (_this) {
+        var form = $(_this).closest('.modal-content').find('form');
         if (!form.valid()) {
             return false;
         }
@@ -850,8 +954,8 @@
             isSpot: isSpot
         }, function (data) {
             notifySuccess("成功", "考核成功!");
-            $("#divAssessmentPerformanceModal").modal("hide");
-            $("#assessmentPerformanceTableList").bootstrapTable('refresh');
+            $(_this).closest('.modal').modal("hide");
+            $(_this).closest('.modal-content').find('table').bootstrapTable('refresh');
         });
     };
 

@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.proxy.face.ProjectPlanDetailsDeleteInterface;
+import com.copower.pmcc.assess.proxy.face.ProjectPhaseInterface;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * Created by zch on 2020-3-20.
  */
 @Service
-public class SurveyAssetInfoService implements ProjectPlanDetailsDeleteInterface {
+public class SurveyAssetInfoService implements ProjectPhaseInterface {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired

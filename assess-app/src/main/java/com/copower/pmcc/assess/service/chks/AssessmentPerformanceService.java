@@ -7,11 +7,6 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.PublicService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -19,18 +14,18 @@ import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
-import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
+import com.copower.pmcc.bpm.api.provider.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.chks.api.dto.*;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -72,6 +67,11 @@ public class AssessmentPerformanceService {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BpmRpcToolsService bpmRpcToolsService;
+    @Autowired
+    private AssessmentCommonService assessmentCommonService;
+
 
     public BootstrapTableVo getPerformanceList(AssessmentPerformanceDto where, Integer boxId, String reActivityName, String flog) {
         //1.管理员与抽查组可查看所有质量考核数据
@@ -161,9 +161,15 @@ public class AssessmentPerformanceService {
      * @param assessmentPerformanceDto
      * @param detailDtoList
      */
-    public void saveAssessmentServer(AssessmentPerformanceDto assessmentPerformanceDto, List<AssessmentPerformanceDetailDto> detailDtoList) {
+    public void saveAssessmentServer(AssessmentPerformanceDto assessmentPerformanceDto, List<AssessmentPerformanceDetailDto> detailDtoList) throws BusinessException {
         if (assessmentPerformanceDto == null || assessmentPerformanceDto.getId() == null) return;
         AssessmentPerformanceDto target = getPerformanceById(assessmentPerformanceDto.getId());
+        if (target.getAssessmentType().equalsIgnoreCase(AssessmentTypeEnum.WORK_HOURS.getValue())) { //先验证工时得分是否超出最大值
+            Boolean isExceed = assessmentCommonService.isExceedWorkHoursMaxScore(target.getPlanDetailsId(), target.getBoxId(), assessmentPerformanceDto.getExamineScore());
+            if(isExceed==Boolean.TRUE){
+                throw new BusinessException("工时超出了该工作事项可获得的最大值");
+            }
+        }
         if (target.getAdjustId() != null && target.getExamineScore() != null) {//调整数据保存时，先备份
             AssessmentPerformanceDto adjustDto = new AssessmentPerformanceDto();
             BeanUtils.copyProperties(target, adjustDto, BaseConstant.ASSESS_IGNORE_ARRAY);
@@ -221,14 +227,6 @@ public class AssessmentPerformanceService {
     }
 
 
-    public void updatePerformanceDto(AssessmentPerformanceDto assessmentPerformanceDto, boolean updateNull) {
-        performanceService.updatePerformanceDto(assessmentPerformanceDto, updateNull);
-    }
-
-    public void updatePerformanceDetailDto(List<AssessmentPerformanceDetailDto> detailDtoList, boolean updateNull) {
-        performanceService.updatePerformanceDetailDto(detailDtoList, updateNull);
-    }
-
     //1.当前节点任务是否已生成，已生成则不再重复生成 2.将比当前节点序号大的节点考核任务置位无效状态
     public void generatePerformanceTask(String processInsId, Integer boxId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws Exception {
         //1.当前节点任务是否已生成，已生成则不再重复生成
@@ -236,6 +234,16 @@ public class AssessmentPerformanceService {
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
             ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
+            if (activitiTaskNodeDto == null) {//找出代理人的任务
+                List<String> agents = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
+                if (CollectionUtils.isNotEmpty(agents)) {
+                    for (String agent : agents) {
+                        activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, agent);
+                        if (activitiTaskNodeDto != null)
+                            break;
+                    }
+                }
+            }
             if (activitiTaskNodeDto == null) return;
             BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
             if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) return;
@@ -402,18 +410,23 @@ public class AssessmentPerformanceService {
         int index = 0;
         while (iterator.hasNext()) {
             Integer id = iterator.next();
-            boolean check = pasteData(copyObj, assessmentProjectPerformanceDetailDtoList, performanceService.getPerformanceById(id));
-            index++;
-            if (check) {
-                stringBuilder.append("第").append(index).append("条数据粘贴成功 \r");
-            } else {
+            boolean check = false;
+            try {
+                check = pasteData(copyObj, assessmentProjectPerformanceDetailDtoList, performanceService.getPerformanceById(id));
+                index++;
+                if (check) {
+                    stringBuilder.append("第").append(index).append("条数据粘贴成功 \r");
+                } else {
+                    stringBuilder.append("第").append(index).append("条数据粘贴失败 \r");
+                }
+            } catch (BusinessException e) {
                 stringBuilder.append("第").append(index).append("条数据粘贴失败 \r");
             }
         }
         return stringBuilder.toString();
     }
 
-    private boolean pasteData(AssessmentPerformanceDto copy, List<AssessmentPerformanceDetailDto> copyList, AssessmentPerformanceDto projectPerformanceDto) {
+    private boolean pasteData(AssessmentPerformanceDto copy, List<AssessmentPerformanceDetailDto> copyList, AssessmentPerformanceDto projectPerformanceDto) throws BusinessException {
         if (copy == null || projectPerformanceDto == null) return false;
         if (Objects.equal(projectPerformanceDto.getExamineStatus(), ProjectStatusEnum.FINISH.getKey())) return false;
         List<AssessmentPerformanceDetailDto> performanceDetailDtos = getPerformanceDetailsByPerformanceId(projectPerformanceDto.getId());

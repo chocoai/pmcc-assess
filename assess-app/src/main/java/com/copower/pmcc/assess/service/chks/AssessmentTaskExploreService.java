@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
@@ -57,20 +58,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         }
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(activityDto.getBoxId());
-
-        BasicApplyBatch basicApplyBatch = null;
-        try {
-            basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-        if (basicApplyBatch == null) {
-            try {
-                basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId());
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId());
         if (basicApplyBatch == null) {
             return;
         }
@@ -90,9 +78,12 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             linkedList.add(String.join("=", "tbType", basicApplyBatchDetail.getType()));
             linkedList.add(String.join("=", "isHistory", Boolean.FALSE.toString()));
             String businessKey = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicApplyBatchDetail.getId());
-            saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getType(), StringUtils.join(linkedList, "&"), businessKey, null);
+            saveAssessmentPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getType(), StringUtils.join(linkedList, "&"), businessKey, null);
         }
+
         //添加工时考核任务
+        List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, AssessmentTypeEnum.WORK_HOURS.getValue());
+        if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
         AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
@@ -128,7 +119,13 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         performanceService.saveAndUpdatePerformanceDto(dto, true);
     }
 
-    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey, Integer spotActivityId) {
+    private void saveAssessmentPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey, Integer spotActivityId) {
+        if (StringUtils.isNotBlank(assessmentKey)) {
+            String[] strings = assessmentKey.split("\\.");
+            assessmentKey = strings.length > 0 ? strings[0] : assessmentKey;
+        }
+        List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentKey);
+        if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
         AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
@@ -164,10 +161,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         dto.setCreator(commonService.thisUserAccount());
         dto.setSourceViewUrl(examineUrl);
         dto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
-        if (StringUtils.isNotBlank(assessmentKey)) {
-            String[] strings = assessmentKey.split(".");
-            dto.setAssessmentKey(strings.length > 0 ? strings[0] : assessmentKey);
-        }
+        dto.setAssessmentKey(assessmentKey);
         if (spotActivityId != null) {
             dto.setSpotActivityId(spotActivityId);
         }

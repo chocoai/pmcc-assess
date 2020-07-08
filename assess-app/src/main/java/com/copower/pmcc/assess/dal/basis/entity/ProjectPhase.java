@@ -30,6 +30,8 @@ public class ProjectPhase {
 
     private Integer phaseSort;
 
+    private BigDecimal assessmentMaxScore;
+
     private Boolean bisWait;
 
     private Boolean bisEnable;
@@ -146,6 +148,14 @@ public class ProjectPhase {
 
     public void setPhaseSort(Integer phaseSort) {
         this.phaseSort = phaseSort;
+    }
+
+    public BigDecimal getAssessmentMaxScore() {
+        return assessmentMaxScore;
+    }
+
+    public void setAssessmentMaxScore(BigDecimal assessmentMaxScore) {
+        this.assessmentMaxScore = assessmentMaxScore;
     }
 
     public Boolean getBisWait() {

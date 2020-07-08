@@ -155,28 +155,21 @@ public class GenerateHouseEntityService {
             builder.append(String.format("使用面积%s平方米，", basicBuilding.getUseArea()));
 
         List<BasicBuildingVo> buildingDiffVoList = basicBuilding.getBasicBuildingDifferences();
+        if (StringUtils.isNotBlank(basicBuilding.getBuildingHeight()))
+            builder.append(String.format("建筑高度%s米，", basicBuilding.getBuildingHeight()));
         if(CollectionUtils.isNotEmpty(buildingDiffVoList)){
             for (BasicBuildingVo vo : buildingDiffVoList) {
-                if(vo.getApplyId()!=null){
-                    BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(vo.getApplyId());
-                    if(applyBatchDetail!=null)
-                        builder.append(applyBatchDetail.getName());
-                    if (StringUtils.isNotBlank(vo.getBuildingHeight()))
-                        builder.append(String.format("建筑高度%s米，", vo.getBuildingHeight()));
-                    if (vo.getFirstFloor() != null)
-                        builder.append(String.format("首层%s至", vo.getFirstFloor()));
-                    if (vo.getMaxFloor() != null)
-                        builder.append(String.format("最高层%s是", vo.getMaxFloor()));
-                    if (vo.getPropertyType() != null)
-                        builder.append(String.format("%s，", baseDataDicService.getNameById(vo.getPropertyType())));
-                    if (StringUtils.isNotBlank(vo.getFloorHeight()))
-                        builder.append(String.format("层高%s米", vo.getFloorHeight()));
-                    builder.append(";");
-                }
+                if (vo.getFirstFloor() != null)
+                builder.append(String.format("首层%s至", vo.getFirstFloor()));
+                if (vo.getMaxFloor() != null)
+                    builder.append(String.format("最高层%s是", vo.getMaxFloor()));
+                if (vo.getPropertyType() != null)
+                    builder.append(String.format("%s，", baseDataDicService.getNameById(vo.getPropertyType())));
+                if (StringUtils.isNotBlank(vo.getFloorHeight()))
+                    builder.append(String.format("层高%s米", vo.getFloorHeight()));
+                builder.append(";");
             }
         }else{
-            if (StringUtils.isNotBlank(basicBuilding.getBuildingHeight()))
-                builder.append(String.format("建筑高度%s米，", basicBuilding.getBuildingHeight()));
             if (basicBuilding.getFirstFloor() != null)
                 builder.append(String.format("首层%s至", basicBuilding.getFirstFloor()));
             if (basicBuilding.getMaxFloor() != null)

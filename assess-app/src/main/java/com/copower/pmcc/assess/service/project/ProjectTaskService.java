@@ -156,7 +156,7 @@ public class ProjectTaskService {
         try {
             boolean hangup = false;
             //需要放在所在业务bean的下面  例如申报等会有一些操作是下个阶段所需要的
-            if (StringUtils.isNotBlank(processUserDto.getProcessInsId()) && !projectPlanDetails.getBisRestart().booleanValue()) {
+            if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
                 if (projectPhase.getBisWait() != null && projectPhase.getBisWait()) {//可以挂起任务
                     hangup = true;
                 }
