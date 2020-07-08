@@ -123,18 +123,6 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                工时考核<br/>最高工分
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control input-full" name="assessmentMaxScore"
-                                                       data-rule-number="true" data-rule-maxlength="255"
-                                                       placeholder="工时考核最高工分">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
                                                 工作事项Bean
                                             </label>
                                             <div class="col-sm-10">

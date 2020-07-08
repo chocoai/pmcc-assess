@@ -926,66 +926,6 @@ public class ProjectPhaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andAssessmentMaxScoreIsNull() {
-            addCriterion("assessment_max_score is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreIsNotNull() {
-            addCriterion("assessment_max_score is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreEqualTo(BigDecimal value) {
-            addCriterion("assessment_max_score =", value, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreNotEqualTo(BigDecimal value) {
-            addCriterion("assessment_max_score <>", value, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreGreaterThan(BigDecimal value) {
-            addCriterion("assessment_max_score >", value, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("assessment_max_score >=", value, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreLessThan(BigDecimal value) {
-            addCriterion("assessment_max_score <", value, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("assessment_max_score <=", value, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreIn(List<BigDecimal> values) {
-            addCriterion("assessment_max_score in", values, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreNotIn(List<BigDecimal> values) {
-            addCriterion("assessment_max_score not in", values, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assessment_max_score between", value1, value2, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andAssessmentMaxScoreNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("assessment_max_score not between", value1, value2, "assessmentMaxScore");
-            return (Criteria) this;
-        }
-
         public Criteria andBisWaitIsNull() {
             addCriterion("bis_wait is null");
             return (Criteria) this;

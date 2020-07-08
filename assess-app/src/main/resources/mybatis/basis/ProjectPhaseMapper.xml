@@ -15,7 +15,6 @@
     <result column="box_name" jdbcType="VARCHAR" property="boxName" />
     <result column="phase_key" jdbcType="VARCHAR" property="phaseKey" />
     <result column="phase_sort" jdbcType="INTEGER" property="phaseSort" />
-    <result column="assessment_max_score" jdbcType="DECIMAL" property="assessmentMaxScore" />
     <result column="bis_wait" jdbcType="BIT" property="bisWait" />
     <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
     <result column="bis_use_box" jdbcType="BIT" property="bisUseBox" />
@@ -84,8 +83,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, assets_setting_id, 
-    project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, assessment_max_score, 
-    bis_wait, bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified, service_bean
+    project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, bis_wait, 
+    bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified, service_bean
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" resultMap="BaseResultMap">
     select
@@ -125,16 +124,16 @@
       project_category_id, work_stage_id, assets_setting_id, 
       project_phase_name, phase_time, phase_form, 
       box_name, phase_key, phase_sort, 
-      assessment_max_score, bis_wait, bis_enable, 
-      bis_use_box, bis_can_return, gmt_created, 
-      gmt_modified, service_bean)
+      bis_wait, bis_enable, bis_use_box, 
+      bis_can_return, gmt_created, gmt_modified, 
+      service_bean)
     values (#{pid,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
       #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{assetsSettingId,jdbcType=INTEGER}, 
       #{projectPhaseName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, 
       #{boxName,jdbcType=VARCHAR}, #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, 
-      #{assessmentMaxScore,jdbcType=DECIMAL}, #{bisWait,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
-      #{bisUseBox,jdbcType=BIT}, #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{serviceBean,jdbcType=VARCHAR})
+      #{bisWait,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, 
+      #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{serviceBean,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -177,9 +176,6 @@
       </if>
       <if test="phaseSort != null">
         phase_sort,
-      </if>
-      <if test="assessmentMaxScore != null">
-        assessment_max_score,
       </if>
       <if test="bisWait != null">
         bis_wait,
@@ -239,9 +235,6 @@
       </if>
       <if test="phaseSort != null">
         #{phaseSort,jdbcType=INTEGER},
-      </if>
-      <if test="assessmentMaxScore != null">
-        #{assessmentMaxScore,jdbcType=DECIMAL},
       </if>
       <if test="bisWait != null">
         #{bisWait,jdbcType=BIT},
@@ -314,9 +307,6 @@
       <if test="record.phaseSort != null">
         phase_sort = #{record.phaseSort,jdbcType=INTEGER},
       </if>
-      <if test="record.assessmentMaxScore != null">
-        assessment_max_score = #{record.assessmentMaxScore,jdbcType=DECIMAL},
-      </if>
       <if test="record.bisWait != null">
         bis_wait = #{record.bisWait,jdbcType=BIT},
       </if>
@@ -358,7 +348,6 @@
       box_name = #{record.boxName,jdbcType=VARCHAR},
       phase_key = #{record.phaseKey,jdbcType=VARCHAR},
       phase_sort = #{record.phaseSort,jdbcType=INTEGER},
-      assessment_max_score = #{record.assessmentMaxScore,jdbcType=DECIMAL},
       bis_wait = #{record.bisWait,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_use_box = #{record.bisUseBox,jdbcType=BIT},
@@ -409,9 +398,6 @@
       <if test="phaseSort != null">
         phase_sort = #{phaseSort,jdbcType=INTEGER},
       </if>
-      <if test="assessmentMaxScore != null">
-        assessment_max_score = #{assessmentMaxScore,jdbcType=DECIMAL},
-      </if>
       <if test="bisWait != null">
         bis_wait = #{bisWait,jdbcType=BIT},
       </if>
@@ -450,7 +436,6 @@
       box_name = #{boxName,jdbcType=VARCHAR},
       phase_key = #{phaseKey,jdbcType=VARCHAR},
       phase_sort = #{phaseSort,jdbcType=INTEGER},
-      assessment_max_score = #{assessmentMaxScore,jdbcType=DECIMAL},
       bis_wait = #{bisWait,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_use_box = #{bisUseBox,jdbcType=BIT},
