@@ -5,6 +5,14 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+    <style>
+        .ui-autocomplete {
+            z-index: 2147483647;
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -58,22 +66,22 @@
                                                 style="margin-left: 5px;"
                                                 onclick=" batchTreeTool.expandAll(false);">全部收起
                                         </button>
-                                        <span id="btnGroup" style="display: none;">
-                                                <button type="button" class="btn btn-sm btn-success baseTool"
-                                                        style="margin-left: 5px;"
+                                        <span id="btnGroup">
+                                                <button type="button" class="btn btn-sm btn-success addNode"
+                                                        style="margin-left: 5px;display: none;"
                                                         onclick="batchTreeTool.showAddModal()">新增</button>
-                                            <button type="button" class="btn btn-sm btn-warning"
-                                                    style="margin-left: 5px;"
+                                            <button type="button" class="btn btn-sm btn-warning limitTool"
+                                                    style="margin-left: 5px;display: none;"
                                                     onclick=" batchTreeTool.deleteDetail();">删除</button>
-                                            <button type="button" class="btn btn-sm btn-primary fillInformation"
-                                                    style="margin-left: 5px;"
+                                            <button type="button" class="btn btn-sm btn-primary limitTool"
+                                                    style="margin-left: 5px;display: none;"
                                                     onclick="batchTreeTool.fillInformation();">填写信息</button>
-                                            <button type="button" class="btn btn-sm btn-info copy"
-                                                    style="margin-left: 5px;"
-                                                    onclick="batchTreeTool.copy();">复制</button>
-                                            <button type="button" class="btn btn-sm btn-warning paste"
-                                                    style="margin-left: 5px;"
-                                                    onclick="batchTreeTool.paste();">粘贴</button>
+                                            <%--<button type="button" class="btn btn-sm btn-info addNode"--%>
+                                                    <%--style="margin-left: 5px;display: none;"--%>
+                                                    <%--onclick="batchTreeTool.copy();">复制</button>--%>
+                                            <%--<button type="button" class="btn btn-sm btn-warning pase"--%>
+                                                    <%--style="margin-left: 5px;display: none;"--%>
+                                                    <%--onclick="batchTreeTool.paste();">粘贴</button>--%>
                                             </span>
                                         <ul id="ztree" class="ztree"></ul>
                                     </div>
@@ -177,15 +185,15 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
-                                            <div class="col-sm-5">
-                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoComplete(this)"
-                                                       name="name" class="form-control input-full" required>
-                                            </div>
                                             <label class="col-sm-1">表单类型<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
-                                                <select name='type' required onchange="batchTreeTool.typeChange(this)"
+                                                <select name='type' required
                                                         class='form-control input-full'></select>
+                                            </div>
+                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称"
+                                                       id="txtBatchDetailName" name="name" class="form-control input-full" required>
                                             </div>
                                         </div>
                                     </div>
@@ -232,7 +240,7 @@
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1">名称<span class="symbol required"></span></label>
                                             <div class="col-sm-5">
-                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this)"
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称"
                                                        name="name" class="form-control input-full" required>
                                             </div>
                                         </div>
@@ -260,9 +268,15 @@
 <script type="text/javascript">
     $(function () {
         batchTreeTool.ztreeInit(${applyBatch.id});
-        if ('${applyBatch.caseEstateId > 0}' == 'true') {
-            batchTreeTool.caseEstateZtreeInit('${applyBatch.caseEstateId}');
+        if ('${applyBatch.caseApplyBatchId > 0}' == 'true') {
+            batchTreeTool.caseEstateZtreeInit('${applyBatch.caseApplyBatchId}');
         }
+        $('#txtBatchDetailName').autocomplete({
+            source: function (request, response) {
+                response(batchTreeTool.getAutoCompleteData($('#txtBatchDetailName').closest('form').find('[name=type]').val(), $('#txtBatchDetailName').val()));
+            },
+            minLength: 1
+        });
     });
 
     //申请提交
@@ -332,13 +346,13 @@
     //表单大类change
     function formClassifyChange() {
         var dataKey = getClassifyKey();
-        if (AssessDicKey.projectSurveyFormClassifyLandOnly == dataKey) {
-            $("#btnGroup").find('.btn').not('.fillInformation').hide();
-            $("#btnGroup").find('.btn.caseTool').hide();
-        } else {
-            $("#btnGroup").find('.btn').show();
-            $("#btnGroup").find('.btn.caseTool').hide();
-        }
+        // if (AssessDicKey.projectSurveyFormClassifyLandOnly == dataKey) {
+        //     $("#btnGroup").find('.btn').not('.fillInformation').hide();
+        //     $("#btnGroup").find('.btn.caseTool').hide();
+        // } else {
+        //     $("#btnGroup").find('.btn').show();
+        //     $("#btnGroup").find('.btn.caseTool').hide();
+        // }
         initBasicApplyBatchCase();
     }
 
@@ -379,23 +393,6 @@
             }
         });
     }
-
-    function getTableType(tableName) {
-        switch (tableName) {
-            case "tb_basic_estate": {
-                return "estate";
-            }
-            case "tb_basic_building": {
-                return "building";
-            }
-            case "tb_basic_unit": {
-                return "unit";
-            }
-            case "tb_basic_house": {
-                return "house";
-            }
-        }
-    }
 </script>
 <script type="text/javascript">
     var zTreeObj, caseEstateZtreeObj;
@@ -408,6 +405,7 @@
                 enable: true,
                 idKey: "id",
                 pIdKey: "pid",
+                bisFromCase: "bisFromCase",
                 rootPId: 0
             }
         },// 回调函数
@@ -438,7 +436,10 @@
     batchTreeTool.ztreeInit = function (basicApplyBatchId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {basicApplyBatchId: basicApplyBatchId},
+            data: {
+                basicApplyBatchId: basicApplyBatchId,
+                showTag:true
+            },
             type: 'get',
             dataType: "json",
             success: function (result) {
@@ -453,11 +454,11 @@
     }
 
     //有案例数据时初始化tree
-    batchTreeTool.caseEstateZtreeInit = function (estateId) {
+    batchTreeTool.caseEstateZtreeInit = function (caseBatchApplyId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getCaseEstateZtreeDtos',
             data: {
-                estateId: estateId,
+                caseBatchApplyId: caseBatchApplyId
             },
             type: 'get',
             dataType: "json",
@@ -481,7 +482,7 @@
             type: "get",
             dataType: "json",
             success: function (result) {
-                if (result.ret && result.data && result.data.length>0) {
+                if (result.ret && result.data && result.data.length > 0) {
 
                     var typeHtml = "<option value=''>--请选择--</option>";
                     $.each(result.data, function (i, item) {
@@ -520,7 +521,6 @@
                     if ('${applyBatch.caseEstateId > 0}' == 'true') {
                         batchTreeTool.ztreeInit(${applyBatch.id});
                     } else {
-                        var tableType = getTableType(result.data.tableName);
                         var node = zTreeObj.getSelectedNodes()[0];
                         zTreeObj.addNodes(node, {
                             id: result.data.id,
@@ -565,6 +565,7 @@
                         zTreeObj.removeNode(node);
                         if (parentNode) {
                             zTreeObj.selectNode(parentNode);
+                            batchTreeTool.showOperationBtn();
                         }
                     } else {
                         AlertError("失败", "删除失败：" + result.errmsg);
@@ -653,13 +654,21 @@
         zTreeObj.expandAll(flag);
     }
 
-    //查看信息链接
+    //点击事件
     batchTreeTool.showOperationBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node && node.tableId) {
-            $("#btnGroup").show();
-        } else {
-            $("#btnGroup").hide();
+        if (node) {
+            if (node.bisFromCase == true) {
+                $("#btnGroup").find('.addNode').show();
+                $("#btnGroup").find('.limitTool').hide();
+            } else {
+                if (node.displayName.indexOf('(升级)') > 0) {
+                    $("#btnGroup").find('.addNode').hide();
+                } else {
+                    $("#btnGroup").find('.addNode').show();
+                }
+                $("#btnGroup").find('.limitTool').show();
+            }
         }
     }
 
@@ -691,7 +700,7 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    batchTreeTool.showAddModal({id: result.data.id, tableName: result.data.tableName});
+                    batchTreeTool.ztreeInit(${applyBatch.id});
                 }
             }
         })
@@ -706,6 +715,9 @@
         }
         var nodeArray = [];
         batchTreeTool.getParentsNodeJson(node, nodeArray);
+        if (nodeArray.length <= 0) {
+            nodeArray.push(node);
+        }
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initCaseEstateZtree",
             data: {
@@ -720,7 +732,7 @@
                         url: "${pageContext.request.contextPath}/basicApplyBatch/upgradeCase",
                         data: {
                             nodeJson: JSON.stringify(node),
-                            pid: result.data.id,
+                            pid: node.pid == 0 ? 0 : result.data.id,
                             applyBatchId: '${applyBatch.id}'
                         },
                         type: "post",
@@ -733,4 +745,26 @@
             }
         })
     }
+
+
+    /**
+     * 自动填充数据
+     * @param type
+     * @returns {Array}
+     */
+    batchTreeTool.getAutoCompleteData = function (type, name) {
+        var availableTags = [];
+        if (type && type.indexOf('building') >= 0) {
+            var a = "栋", b = "幢", c = "楼";
+            availableTags.push(name + a);
+            availableTags.push(name + b);
+            availableTags.push(name + c);
+        }
+        if (type && type.indexOf('unit') >= 0) {
+            var d = "单元", e = "区";
+            availableTags.push(name + d);
+            availableTags.push(name + e);
+        }
+        return availableTags;
+    };
 </script>

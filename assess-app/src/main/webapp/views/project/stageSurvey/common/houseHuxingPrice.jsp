@@ -88,7 +88,7 @@
                                                 面积
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="面积" name="area" data-rule-number='true'
+                                                <input type="number" placeholder="面积" name="area" data-rule-number='true'
                                                        class="form-control input-full">
                                             </div>
                                         </div>
@@ -117,15 +117,35 @@
                                                 通风
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full" required>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="通风" name="aeration"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="residenceAerationList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full" required>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="采光" name="lighting"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="residenceLightingList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -137,15 +157,35 @@
                                                 日照
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="日照" name="sunshine"
-                                                       class="form-control input-full" required>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="日照" name="sunshine"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="residenceSunshineList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 隔音
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="隔音" name="soundInsulation"
-                                                       class="form-control input-full" required>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="隔音" name="soundInsulation"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="residenceSoundInsulationList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -178,15 +218,35 @@
                                                 通风
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full" required>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="通风" name="aeration"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="hotelAerationList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full" required>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="采光" name="lighting"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="hotelLightingList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -269,7 +329,7 @@
                                                 方位
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 orientation2"
+                                                <select class="form-control input-full  orientation2"
                                                         name="orientation">
                                                 </select>
                                             </div>
@@ -304,15 +364,35 @@
                                                 通风
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full" required>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="通风" name="aeration"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="productionAerationList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full" required>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="采光" name="lighting"
+                                                           class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu" id="productionLightingList">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -358,7 +438,7 @@
                                                 计量标准
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 standardMeasure2"
+                                                <select class="form-control input-full  standardMeasure2"
                                                         name="standardMeasure">
                                                 </select>
                                             </div>
@@ -366,7 +446,7 @@
                                                 仓储要求
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 storageRequest2"
+                                                <select class="form-control input-full  storageRequest2"
                                                         name="storageRequest">
                                                 </select>
                                             </div>

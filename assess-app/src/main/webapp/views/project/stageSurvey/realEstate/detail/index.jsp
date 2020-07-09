@@ -49,22 +49,22 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade" id="caseEstate" aria-labelledby="profile-tab1">
                                 <div>
-                                    <%@include file="/views/project/stageSurvey/house/detail/estate.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/realEstate/detail/estate.jsp" %>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseBuilding" aria-labelledby="profile-tab2">
                                 <div>
-                                    <%@include file="/views/project/stageSurvey/house/detail/building.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/realEstate/detail/building.jsp" %>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseUnit" aria-labelledby="profile-tab3">
                                 <div>
-                                    <%@include file="/views/project/stageSurvey/house/detail/unit.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/realEstate/detail/unit.jsp" %>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="caseHouse" aria-labelledby="profile-tab4">
                                 <div>
-                                    <%@include file="/views/project/stageSurvey/house/detail/house.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/realEstate/detail/house.jsp" %>
                                 </div>
                             </div>
                         </div>

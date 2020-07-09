@@ -10,15 +10,16 @@ import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
+import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
-import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ChksRpcAssessmentService chksRpcAssessmentService;
+    private ChksRpcAssessmentPerformanceService performanceService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -51,29 +52,30 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
     @Autowired
     private ProjectPlanService projectPlanService;
-    @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
-    private final String applyUrl = "/chksCustomerAssessmentPlanDetail/apply";
 
     @Override
-    public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
+    public void createAssessmentPerformanceTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws Exception {
         if (activityId == null) {
             return;
         }
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(activityDto.getBoxId());
+
         DeclareRealtyHouseCert realtyHouseCert = new DeclareRealtyHouseCert();
         realtyHouseCert.setPlanDetailsId(projectPlanDetails.getId());
         realtyHouseCert.setEnable(DeclareTypeEnum.MasterData.getKey());
         List<DeclareRealtyHouseCertVo> declareRealtyHouseCertVoList = declareRealtyHouseCertService.lists(realtyHouseCert);
+
         DeclareRealtyLandCert realtyLandCert = new DeclareRealtyLandCert();
         realtyLandCert.setPlanDetailsId(projectPlanDetails.getId());
         realtyLandCert.setEnable(DeclareTypeEnum.MasterData.getKey());
         List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = declareRealtyLandCertService.lists(realtyLandCert);
+
         DeclareRealtyRealEstateCert realtyRealEstateCert = new DeclareRealtyRealEstateCert();
         realtyRealEstateCert.setPlanDetailsId(projectPlanDetails.getId());
         realtyRealEstateCert.setEnable(DeclareTypeEnum.MasterData.getKey());
         List<DeclareRealtyRealEstateCertVo> declareRealtyRealEstateCertVoList = declareRealtyRealEstateCertService.landLevels(realtyRealEstateCert);
+
         int sizeTotal = declareRealtyHouseCertVoList.size() + declareRealtyLandCertVoList.size() + declareRealtyRealEstateCertVoList.size();
         if (sizeTotal == 0) {
             return;
@@ -101,46 +103,65 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
         }
     }
 
+    /**
+     *
+     * @param processInsId
+     * @param activityId
+     * @param taskId
+     * @param byExamineUser
+     * @param projectInfo
+     * @param projectPlanDetails
+     * @param boxReDto
+     * @param tableName
+     * @param tableId
+     * @param businessKey
+     */
     private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String businessKey) {
-        AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
-        dto.setProcessInsId(processInsId);
-        dto.setAppKey(applicationConstant.getAppKey());
-        if (projectInfo != null) {
-            dto.setProjectId(projectInfo.getId());
-            dto.setProjectName(projectInfo.getProjectName());
-        }
-        dto.setTaskId(taskId);
-        dto.setBoxId(boxReDto.getId());
-        BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
-        dto.setActivityId(activityId);
-        if (activityDto != null) {
-            dto.setReActivityName(activityDto.getName());
-            dto.setActivityName(activityDto.getCnName());
-            dto.setSorting(activityDto.getSortMultilevel());
-            dto.setBusinessKey(activityDto.getCnName() + "/" + businessKey);
-        }
-        dto.setByExaminePeople(byExamineUser);
-        dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
-        dto.setTableId(tableId);
-        dto.setTableName(tableName);
-        if (projectPlanDetails != null) {
-            dto.setPlanId(projectPlanDetails.getPlanId());
-            dto.setPlanDetailsId(projectPlanDetails.getId());
-            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
-                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
-            } else {
-                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+        for (AssessmentTypeEnum assessmentTypeEnum : AssessmentTypeEnum.values()) {
+            List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentTypeEnum.getValue());
+            if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
+            AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
+            dto.setProcessInsId(processInsId);
+            dto.setAppKey(applicationConstant.getAppKey());
+            if (projectInfo != null) {
+                dto.setProjectId(projectInfo.getId());
+                dto.setProjectName(projectInfo.getProjectName());
             }
-        }
-        dto.setCreator(commonService.thisUserAccount());
-        dto.setValidScore(new BigDecimal(0));
-        dto.setExamineUrl(applyUrl);
-        Integer id = chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
-        if (id != null) {
-            dto.setExamineUrl(String.join("", applyUrl, "?id=", id.toString()));
+            dto.setTaskId(taskId);
+            dto.setBoxId(boxReDto.getId());
+            BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
+            dto.setActivityId(activityId);
+            if (activityDto != null) {
+                dto.setReActivityName(activityDto.getName());
+                dto.setActivityName(activityDto.getCnName());
+                dto.setSorting(activityDto.getSortMultilevel());
+                dto.setBusinessKey(activityDto.getCnName() + "/" + businessKey);
+            }
+            dto.setByExaminePeople(byExamineUser);
+            dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+            dto.setTableId(tableId);
+            dto.setTableName(tableName);
+            if (projectPlanDetails != null) {
+                dto.setPlanId(projectPlanDetails.getPlanId());
+                dto.setPlanDetailsId(projectPlanDetails.getId());
+                ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+                if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                    dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+                } else {
+                    dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+                }
+            }
+            dto.setAssessmentType(assessmentTypeEnum.getValue());
+            dto.setAssessmentKey(assessmentTypeEnum.getValue());
+            dto.setBisEffective(true);
+            dto.setCreator(commonService.thisUserAccount());
+            Integer id = performanceService.saveAndUpdatePerformanceDto(dto, true);
+
+            //更新考核地址
+            dto.setSourceViewUrl("/assessmentDeclare/index?performanceId=" + id);
             dto.setId(id);
-            chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, false);
+            performanceService.saveAndUpdatePerformanceDto(dto, false);
         }
     }
+
 }

@@ -87,4 +87,8 @@ public class DeclareLandUsePermitService {
        FormatUtils.transformString2Integer(id).forEach(integer -> deleteDeclareLandUsePermitById(integer));
     }
 
+    public List<DeclareLandUsePermit> getDataIds(List<Integer> ids){
+        return declareLandUsePermitDao.getDataIds(ids) ;
+    }
+
 }

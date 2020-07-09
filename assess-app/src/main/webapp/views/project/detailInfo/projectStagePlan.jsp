@@ -17,15 +17,15 @@
                     <div class="card-title">
                             ${projectPlan.planName}
                         <small>
-                            <input type="button" class="btn btn-xs btn-primary"
+                            <input type="button" class="btn btn-md btn-primary"
                                    onclick="window.open('${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}');"
                                    value="估价委托书及相关证明">
-                            <input type="button" class="btn btn-xs btn-primary"
+                            <input type="button" class="btn btn-md btn-primary"
                                    onclick="projectDetailsEnterNextStage();" value="进入下阶段">
-                            <input type="button" class="btn btn-xs btn-primary"
+                            <input type="button" class="btn btn-md btn-primary"
                                    onclick="window.open('${pageContext.request.contextPath}/declareRecord/editDeclareRecordNumber/${projectInfo.id}');"
                                    value="权证编号变更">
-                            <input type="button" class="btn btn-xs btn-primary"
+                            <input type="button" class="btn btn-md btn-primary"
                                    onclick="window.open('${pageContext.request.contextPath}/generateReport/viewResultSheetReport/${projectInfo.id}');"
                                    value="结果表生成">
                         </small>
@@ -686,42 +686,6 @@
         })
     };
     var copyPlanDetailsTempId = undefined;
-    //工作事项复制
-    projectStagePlan.taskCopy = function (_this, id) {
-        $(_this).closest('.tab-pane').find('.btn-copy').each(function () {
-            $(this).find('span').text('复制');
-        });
-        $(_this).find('span').text('已被复制');
-        copyPlanDetailsTempId = id;
-    }
-
-    //工作事项粘贴
-    projectStagePlan.taskPaste = function (_this, id) {
-        if (!copyPlanDetailsTempId) {
-            notifyInfo('提示','请选择复制对象');
-            return false;
-        }
-        if (id == copyPlanDetailsTempId) {
-            notifyInfo('提示','无法粘贴自己');
-            return false;
-        }
-        Loading.progressShow();
-        $.ajax({
-            url: '${pageContext.request.contextPath}/projectPlanDetails/taskPaste',
-            data: {
-                copyPlanDetailsId: copyPlanDetailsTempId,
-                pastePlanDetailsId: id
-            },
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    notifySuccess("成功", "粘贴完成");
-                } else {
-                    AlertError("复制失败，失败原因:" + result);
-                }
-            }
-        })
-    }
 
     //添加事项名称
     projectStagePlan.addPhaseName = function (_this) {

@@ -206,7 +206,11 @@
     function ztreeInit(basicApplyBatchId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {basicApplyBatchId: basicApplyBatchId},
+            data: {
+                basicApplyBatchId: basicApplyBatchId,
+                showTag:true,
+                bisDetail:'${applyBatch.status eq 'finish'}'
+            },
             type: 'get',
             dataType: "json",
             success: function (result) {
@@ -251,10 +255,8 @@
             url += 'applyBatchId=' +  ${applyBatch.id};
             url += '&formClassify=' + classify;
             url += '&formType=' + formType;
-            url += '&tableId=' + node.tableId;
+            url += '&tbId=' + node.tableId;
             url += '&tbType=' + node.type;
-            url += '&tableName=' + node.tableName;
-            url += '&planDetailsId=${projectPlanDetails.id}';
             openWin(url, function () {
             })
         }

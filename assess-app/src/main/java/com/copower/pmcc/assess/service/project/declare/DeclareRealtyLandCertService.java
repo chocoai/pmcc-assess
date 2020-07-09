@@ -294,7 +294,7 @@ public class DeclareRealtyLandCertService {
             return declareRealtyLandCert.getId();
         } else {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert, updateNull);
-            updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyLandCert);
+            syncUpdateDeclareAndJudge(declareRealtyLandCert);
             return declareRealtyLandCert.getId();
         }
     }
@@ -310,50 +310,20 @@ public class DeclareRealtyLandCertService {
             declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
         } else {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert, updateNull);
-            updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyLandCert);
+            syncUpdateDeclareAndJudge(declareRealtyLandCert);
         }
     }
 
-    private void updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(DeclareRealtyLandCert declareRealtyLandCert) {
-        if (declareRealtyLandCert == null) {
-            return;
-        }
-        if (declareRealtyLandCert.getId() == null) {
-            return;
-        }
-        if (declareRealtyLandCert.getId() == 0) {
-            return;
-        }
-        DeclareRealtyLandCert oo = getDeclareRealtyLandCertById(declareRealtyLandCert.getId());
-        if (oo == null) {
-            return;
-        }
-        declareRealtyLandCert.setBisRecord(oo.getBisRecord());
-        declareRealtyLandCert.setPlanDetailsId(oo.getPlanDetailsId());
-        if (declareRealtyLandCert.getPlanDetailsId() == null) {
-            return;
-        }
+    private void syncUpdateDeclareAndJudge(DeclareRealtyLandCert declareRealtyLandCert) {
+        if (declareRealtyLandCert == null) return;
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(declareRealtyLandCert.getPlanDetailsId());
-        if (projectPlanDetails == null) {
-            return;
-        }
-        if (declareRealtyLandCert.getBisRecord() == null) {
-            return;
-        }
-        if (!declareRealtyLandCert.getBisRecord()) {
-            return;
-        }
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordListByDataTableId(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), declareRealtyLandCert.getId(), projectPlanDetails.getProjectId());
-        //当明确是更新的时候确找不到申报id那么则不再更新这条数据
-        if (CollectionUtils.isEmpty(declareRecordList)) {
-            return;
-        }
-        DeclareRecord declareRecord = new DeclareRecord();
-        setDeclareRealtyLandCertForDeclareRecordProperties(declareRealtyLandCert, declareRecord, projectPlanDetails.getProjectId());
-        declareRecord.setId(declareRecordList.stream().findFirst().get().getId());
+        if (projectPlanDetails == null) return;
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordByDataTableId(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), declareRealtyLandCert.getId());
+        if (declareRecord == null) return;
+        setDeclareRecordProperties(declareRealtyLandCert, declareRecord, projectPlanDetails.getProjectId());
         try {
             declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-            declareRecordService.reStartDeclareApplyByDeclareRecordId(Arrays.asList(declareRecord.getId()), projectPlanDetails.getProjectId());
+            declareRecordService.updateJudgeObjectDeclareInfo(declareRecord, projectPlanDetails.getProjectId());
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
         }
@@ -488,7 +458,7 @@ public class DeclareRealtyLandCertService {
         if (CollectionUtils.isEmpty(lists)) return;
         for (DeclareRealtyLandCert oo : lists) {
             declareRecord = new DeclareRecord();
-            setDeclareRealtyLandCertForDeclareRecordProperties(oo, declareRecord, declareApply.getProjectId());
+            setDeclareRecordProperties(oo, declareRecord, declareApply.getProjectId());
             declareRecord.setInventoryContentKey(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT);
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
@@ -509,9 +479,8 @@ public class DeclareRealtyLandCertService {
         }
     }
 
-    private void setDeclareRealtyLandCertForDeclareRecordProperties(DeclareRealtyLandCert oo, DeclareRecord declareRecord, Integer projectId) {
-        BeanUtils.copyProperties(oo, declareRecord);
-        declareRecord.setId(null);
+    private void setDeclareRecordProperties(DeclareRealtyLandCert oo, DeclareRecord declareRecord, Integer projectId) {
+        BeanUtils.copyProperties(oo,declareRecord,BaseConstant.ASSESS_IGNORE_ARRAY);
         declareRecord.setName(oo.getLandCertName());
         declareRecord.setProjectId(projectId);
         declareRecord.setDataTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
@@ -606,4 +575,7 @@ public class DeclareRealtyLandCertService {
         }
     }
 
+    public List<DeclareRealtyLandCert> getDataIds(List<Integer> dataIds) {
+        return declareRealtyLandCertDao.getDataIds(dataIds);
+    }
 }

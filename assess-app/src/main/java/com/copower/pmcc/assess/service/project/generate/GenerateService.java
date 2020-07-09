@@ -139,9 +139,9 @@ public class GenerateService {
      * @param reportType
      */
     @Transactional(rollbackFor = Exception.class)
-    public void reGetDocumentNumber(Integer projectId, Integer areaId, Integer reportType) {
+    public void reGetDocumentNumber(Integer projectId, Integer areaId,Integer groupId, Integer reportType) {
         AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoService.getProjectInfoById(projectId).getProjectCategoryId());
-        ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(projectId, areaId, assessProjectType, reportType);
+        ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(projectId, areaId,groupId, assessProjectType, reportType);
         if (numberRecord != null) {
             numberRecord.setBisDelete(true);
             projectNumberRecordService.updateProjectNumberRecord(numberRecord);

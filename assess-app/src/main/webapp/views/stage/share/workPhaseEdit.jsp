@@ -65,7 +65,8 @@
                                                 所属阶段<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
-                                                <select class="form-control input-full" id="workStageId" name="workStageId"
+                                                <select class="form-control input-full" id="workStageId"
+                                                        name="workStageId"
                                                         required>
                                                     <option value="">-选择-</option>
                                                 </select>
@@ -92,7 +93,8 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <div class="input-group">
-                                                    <input class="form-control input-full" id="phaseTime" name="phaseTime" required
+                                                    <input class="form-control input-full" id="phaseTime"
+                                                           name="phaseTime" required
                                                            data-rule-number placeholder="计划耗费的工时">
                                                     <span class="input-group-addon"> <i
                                                             class="fa fa-clock-o"></i> </span>
@@ -107,7 +109,8 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <div class="input-group">
-                                                    <input class="form-control input-full" id="phaseSort" name="phaseSort" required
+                                                    <input class="form-control input-full" id="phaseSort"
+                                                           name="phaseSort" required
                                                            data-rule-digits="true" placeholder="用于显示排序">
                                                     <span class="input-group-addon"> <i
                                                             class="fa fa-sort-numeric-asc"></i> </span>
@@ -120,38 +123,32 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
-                                                自定义附件模板
+                                                工作事项Bean
                                             </label>
                                             <div class="col-sm-10">
-                                                <select name="assetsSettingId" class="form-control input-full">
-                                                    <c:forEach items="${dataAssetsAppraisalDicList}" var="item">
-                                                        <option value="${item.id}">${item.name}</option>
-                                                    </c:forEach>
-                                                </select>
+                                                <input class="form-control input-full" name="serviceBean"
+                                                       data-rule-maxlength="255" placeholder="工作事项Bean">
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
-
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisWait"
                                                                name="bisWait" value="true"
                                                                checked="checked">
-                                                        <span class="form-check-sign">允许挂起</span>
+                                                        <span class="form-check-sign">允许审核后置</span>
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
-
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
@@ -164,9 +161,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
-
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
@@ -181,7 +179,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -336,7 +334,7 @@
                     },
                     'click #item_assessment': function (e, value, row, index) {
                         if (!row.boxName) {
-                            AlertError("失败","当前工作事项还没有配置模型,不能配置考核数据");
+                            AlertError("失败", "当前工作事项还没有配置模型,不能配置考核数据");
                             return false;
                         }
                         boxDetailItemObj.renderBoxDetailItemTableForWorkPhase(row.boxName, row.workStageId, 0, "project");
@@ -432,7 +430,7 @@
 
             workStageObj.renderWorkStageDropList(workStage, typeId);
         } else {
-            AlertError("失败","新增项目阶段时必须选择具体的类型->类别.");
+            AlertError("失败", "新增项目阶段时必须选择具体的类型->类别.");
         }
         $("#phaseForm").select2();
         $("#workPhaseBoxName").select2();
@@ -453,17 +451,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功","操作成功");
+                    notifySuccess("成功", "操作成功");
                     if (typeof successFn === "function") {
                         successFn();
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -475,7 +473,7 @@
         if (!workPhaseObj.formWorkPhase.valid()) return false;
         var data = formSerializeArray(workPhaseObj.formWorkPhase);
         if (!data) {
-            AlertError("失败","没有需要保存的数据");
+            AlertError("失败", "没有需要保存的数据");
             return;
         }
         data.bisWait = $('#bisWait').prop('checked');
@@ -496,12 +494,12 @@
                         successFn();
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };

@@ -5,11 +5,13 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
-import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -17,6 +19,8 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,12 +35,13 @@ import java.util.List;
  */
 @Component(value = "assessmentTaskExploreService")
 public class AssessmentTaskExploreService implements AssessmentTaskInterface {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private ChksRpcAssessmentService chksRpcAssessmentService;
+    private ChksRpcAssessmentPerformanceService performanceService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -45,42 +50,21 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private ProjectPlanService projectPlanService;
-    @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Override
-    public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
+    public void createAssessmentPerformanceTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws Exception {
         if (activityId == null) {
             return;
         }
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(activityDto.getBoxId());
-
-        BasicApplyBatch basicApplyBatch = null;
-        try {
-            basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
-        } catch (Exception e) {
-
-        }
-        if (basicApplyBatch == null) {
-            try {
-                basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId());
-            } catch (Exception ex) {
-            }
-        }
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId());
         if (basicApplyBatch == null) {
             return;
         }
         List<BasicApplyBatchDetail> basicApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
         if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) {
             return;
-        }
-        Integer tempId = basicApplyBatch.getEstateId();
-        if (!basicApplyBatchDetailList.stream().anyMatch(basicApplyBatchDetail -> Objects.equal(basicApplyBatchDetail.getTableId(), tempId))) {
-            BasicApplyBatchDetail batchDetail = new BasicApplyBatchDetail();
-            batchDetail.setTableId(basicApplyBatch.getEstateId());
-            batchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-            basicApplyBatchDetailList.add(batchDetail);
         }
         Iterator<BasicApplyBatchDetail> basicApplyBatchDetailIterator = basicApplyBatchDetailList.iterator();
         while (basicApplyBatchDetailIterator.hasNext()) {
@@ -90,18 +74,59 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             linkedList.add(String.join("=", "planDetailsId", basicApplyBatch.getPlanDetailsId().toString()));
             linkedList.add(String.join("=", "formClassify", basicApplyBatch.getClassify().toString()));
             linkedList.add(String.join("=", "formType", basicApplyBatch.getType().toString()));
-            linkedList.add(String.join("=", "tableId", basicApplyBatchDetail.getTableId().toString()));
-            linkedList.add(String.join("=", "tableName", basicApplyBatchDetail.getTableName()));
+            linkedList.add(String.join("=", "tbId", basicApplyBatchDetail.getTableId().toString()));
+            linkedList.add(String.join("=", "tbType", basicApplyBatchDetail.getType()));
             linkedList.add(String.join("=", "isHistory", Boolean.FALSE.toString()));
-            String tbType = "";
             String businessKey = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicApplyBatchDetail.getId());
-            linkedList.add(String.join("=", "tbType", tbType));
-            saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey, null);
+            saveAssessmentPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getType(), StringUtils.join(linkedList, "&"), businessKey, null);
         }
+
+        //添加工时考核任务
+        List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, AssessmentTypeEnum.WORK_HOURS.getValue());
+        if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
+        dto.setProcessInsId(processInsId);
+        dto.setAppKey(applicationConstant.getAppKey());
+        if (projectInfo != null) {
+            dto.setProjectId(projectInfo.getId());
+            dto.setProjectName(projectInfo.getProjectName());
+        }
+        dto.setTaskId(taskId);
+        dto.setBoxId(boxReDto.getId());
+        dto.setActivityId(activityId);
+        if (activityDto != null) {
+            dto.setReActivityName(activityDto.getName());
+            dto.setActivityName(activityDto.getCnName());
+            dto.setSorting(activityDto.getSortMultilevel());
+            dto.setBusinessKey(activityDto.getCnName());
+        }
+        dto.setByExaminePeople(byExamineUser);
+        dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+        if (projectPlanDetails != null) {
+            dto.setPlanId(projectPlanDetails.getPlanId());
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+            } else {
+                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+            }
+            dto.setPlanDetailsId(projectPlanDetails.getId());
+        }
+        dto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
+        dto.setAssessmentKey(AssessmentTypeEnum.WORK_HOURS.getValue());
+        dto.setBisEffective(true);
+        dto.setCreator(commonService.thisUserAccount());
+        performanceService.saveAndUpdatePerformanceDto(dto, true);
     }
 
-    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey, Integer spotActivityId) {
-        AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
+    private void saveAssessmentPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey, Integer spotActivityId) {
+        if (StringUtils.isNotBlank(assessmentKey)) {
+            String[] strings = assessmentKey.split("\\.");
+            assessmentKey = strings.length > 0 ? strings[0] : assessmentKey;
+        }
+        List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentKey);
+        if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
         if (projectInfo != null) {
@@ -132,20 +157,14 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                 dto.setPlanName(projectPlanDetails.getProjectPhaseName());
             }
         }
+        dto.setBisEffective(true);
         dto.setCreator(commonService.thisUserAccount());
-        dto.setValidScore(new BigDecimal(0));
-        dto.setExamineUrl(examineUrl);
+        dto.setSourceViewUrl(examineUrl);
+        dto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
         dto.setAssessmentKey(assessmentKey);
-        dto.setBusinessKey(businessKey);
         if (spotActivityId != null) {
             dto.setSpotActivityId(spotActivityId);
         }
-        Integer id = chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
-        if (id != null) {
-            examineUrl = String.join("", examineUrl, "&", "assessmentPerformanceId=", id.toString());
-            dto.setExamineUrl(examineUrl);
-            dto.setId(id);
-            chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, false);
-        }
+        performanceService.saveAndUpdatePerformanceDto(dto, true);
     }
 }

@@ -120,7 +120,9 @@
             <div class="col-md-12">
                 <div class="form-inline">
                     <label class="col-sm-1 col-form-label">
-                        项目经理<span class="symbol required"></span></label>
+                        项目负责人【<span id="lab_total" style="cursor: pointer;color: red;"
+                                   onclick="objProject.checkProjectByAccount(this);"></span>】
+                        <span class="symbol required"></span></label>
                     </label>
                     <div class="col-sm-3 x-valid">
                         <div class="input-group">
@@ -142,6 +144,17 @@
                                         type="button" onclick="objProject.selectUserAccountManager(this);">选择
                                 </button>
                             </div>
+                            <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
+                                <div class="input-group-prepend" style="margin-left: 10px;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" id="bisAssign" name="bisAssign"
+                                                   value="true">
+                                            <span class="form-check-sign">下分</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
 
@@ -213,11 +226,11 @@
                                    onclick="objProject.selectContract(this);"
                                    value="${projectInfo.contractName}">
 
-                            <label class="form-control" name="contractNameView" >
+                            <label class="form-control" name="contractNameView">
                                 <c:if test="${!empty projectInfo.contractList}">
                                     <c:forEach var="item" items="${projectInfo.contractList}">
                                         <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
-                                           target="_blank">${item.value}     </a>
+                                           target="_blank">${item.value} </a>
                                     </c:forEach>
                                 </c:if>
                             </label>
@@ -275,9 +288,6 @@
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline">
-
-
-
                     <label class="col-sm-1 col-form-label">
                         业务来源
                     </label>
@@ -326,3 +336,32 @@
     </form>
 </div>
 <script src="/pmcc-contract/js/cms_contract_utils.js?v=${assessVersion}"></script>
+<div id="checkProjectsBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">项目列表</h4>
+                <input type="hidden" name="housePriceId">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <table class="table table-bordered" id="getProjectByAccountList">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

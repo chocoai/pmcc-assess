@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface BasicHouseTradingSellMapper {
-    int countByExample(BasicHouseTradingSellExample example);
+    long countByExample(BasicHouseTradingSellExample example);
 
     int deleteByExample(BasicHouseTradingSellExample example);
 

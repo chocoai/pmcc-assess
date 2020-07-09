@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn_project" %>
+<%@include file="/views/project/stageInit/stageInitModel/otherProjectIndexJs.jsp" %>
 <html lang="en" class="no-js">
 <div class="col-md-12">
     <div class="card full-height">
@@ -20,7 +21,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="form-horizontal">
+            <form id="frm_project_info" class="form-horizontal">
                 <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
                 <div class="row form-group">
                     <div class="col-md-12">
@@ -95,10 +96,58 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-1 col-form-label">项目经理</label>
-                            <div class="col-sm-3">
-                                <label class="form-control input-full">${projectInfo.projectMemberVo.userAccountManagerName}</label>
-                            </div>
+                            <c:choose>
+                                <c:when test="${isProjectAssign eq true}">
+                                    <label class="col-sm-1 col-form-label">
+                                        项目负责人【<span id="lab_total" style="cursor: pointer;color: red;"
+                                                    onclick="objProject.checkProjectByAccount(this);"></span>】
+                                        <span class="symbol required"></span></label>
+                                    </label>
+                                    <div class="col-sm-3 x-valid">
+                                        <div class="input-group">
+                                            <input type="hidden" name="userAccountManager"
+                                                   value="${projectInfo.projectMemberVo.userAccountManager}">
+                                            <input type="text" class="form-control" readonly="readonly"
+                                                   name="userAccountManagerName"
+                                                   required onclick="objProject.selectUserAccountManager(this);"
+                                                   value="${projectInfo.projectMemberVo.userAccountManagerName}">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-warning btn-sm "
+                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                        type="button"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');">
+                                                    清空
+                                                </button>
+                                            </div>
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-primary btn-sm "
+                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                        type="button"
+                                                        onclick="objProject.selectUserAccountManager(this);">选择
+                                                </button>
+                                            </div>
+                                            <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
+                                                <div class="input-group-prepend" style="margin-left: 10px;">
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   id="bisAssign" name="bisAssign"
+                                                                   value="true">
+                                                            <span class="form-check-sign">下分</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <label class="col-sm-1 col-form-label">项目负责人</label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.projectMemberVo.userAccountManagerName}</label>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                             <label class="col-sm-1 col-form-label">项目成员</label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.projectMemberVo.userAccountMemberName}</label>
@@ -121,12 +170,12 @@
                             </label>
                             <div class="col-sm-11">
                                 <label class="form-control input-full" name="contractName">
-                                        <c:if test="${!empty projectInfo.contractId}">
-                                            <c:forEach var="item" items="${projectInfo.contractList}">
-                                                <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
-                                                   target="_blank">${item.value}     </a>
-                                            </c:forEach>
-                                        </c:if>
+                                    <c:if test="${!empty projectInfo.contractId}">
+                                        <c:forEach var="item" items="${projectInfo.contractList}">
+                                            <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
+                                               target="_blank">${item.value} </a>
+                                        </c:forEach>
+                                    </c:if>
                                 </label>
                             </div>
                         </div>
@@ -145,7 +194,8 @@
                                 评估基准日
                             </label>
                             <div class="col-sm-3">
-                                <label class="form-control input-full"><fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/></label>
+                                <label class="form-control input-full"><fmt:formatDate
+                                        value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/></label>
                             </div>
                             <label class="col-sm-1 col-form-label">
                                 贷款类型
@@ -163,7 +213,7 @@
                                 业务来源
                             </label>
                             <div class="col-sm-3 x-valid">
-                                <label class="form-control input-full">${projectInfo.serviceComeFrom}</label>
+                                <label class="form-control input-full">${projectInfo.serviceComeFromName}</label>
                             </div>
                             <label class="col-sm-1 col-form-label">
                                 业务来源说明
@@ -196,7 +246,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -508,7 +558,8 @@
                     </div>
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <div class="form-inline x-valid" style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
+                            <div class="form-inline x-valid"
+                                 style="display: ${empty projectInfo.unitInformationVo.businessType?'none':''}">
                                 <label class="col-sm-1 col-form-label">
                                     业务类型
                                 </label>
@@ -539,39 +590,53 @@
         </div>
     </div>
 </div>
+<c:choose>
+<c:when test="${isProjectAssign eq true}">
+<div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+    <div class="card-body">
+        <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
+            取消
+        </button>
+        <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="projectAssign();">
+            提交
+        </button>
+    </div>
+</div>
+</c:when>
+    <c:when test="${not empty processInsId}"></c:when>
+<c:otherwise>
+    <%@include file="/views/share/form_details.jsp" %>
+</c:otherwise>
+</c:choose>
 <script src="/pmcc-contract/js/cms_contract_utils.js?v=${assessVersion}"></script>
-
 <script>
-
-
     /**
      * 文字溢出 情况 超过规定的就执行
      */
     function settingContract() {
         var textMax = 30;
         var projectId = $("#projectId");
-        var form = projectId.closest(".form-horizontal") ;
-        var contractName = form.find("label[name='contractName']") ;
+        var form = projectId.closest(".form-horizontal");
+        var contractName = form.find("label[name='contractName']");
         var len = 0;
-        var attribute = {'overflow':'scroll','-webkit-box-orient':'vertical',display:'-webkit-box'} ;//'text-overflow':'ellipsis'
-        contractName.find("a").each(function (i,a) {
-            var text = $.trim($(a).text()) ;
-            len += text.length ;
-            if (len > textMax){
-                $(a).hide() ;
+        var attribute = {'overflow': 'scroll', '-webkit-box-orient': 'vertical', display: '-webkit-box'};//'text-overflow':'ellipsis'
+        contractName.find("a").each(function (i, a) {
+            var text = $.trim($(a).text());
+            len += text.length;
+            if (len > textMax) {
+                $(a).hide();
             }
         });
-        if (len > textMax){
-            contractName.html(contractName.html()+"...") ;
+        if (len > textMax) {
+            contractName.html(contractName.html() + "...");
 //            contractName.css(attribute) ;
         }
 
     }
 
 
-
     $(function () {
-        settingContract() ;
+        settingContract();
         //---------
         FileUtils.getFileShows({
             target: "attachmentProjectInfoId",
@@ -667,7 +732,7 @@
                 callback();
             }
         } else {
-            AlertError("失败","未选择单元");
+            AlertError("失败", "无相关信息");
         }
     }
 
@@ -677,8 +742,41 @@
         loadInitContactsList("${projectInfo.consignorVo.id}", config.CONSIGNOR.table, config.CONSIGNOR.nodeKey);
         loadInitContactsList("${projectInfo.possessorVo.id}", config.POSSESSOR.table, config.POSSESSOR.nodeKey);
         loadInitContactsList('${projectInfo.unitInformationVo.id}', config.UNIT_INFORMATION.table, config.UNIT_INFORMATION.nodeKey);
-
+        objProject.getProjectNumber('${projectInfo.projectMemberVo.userAccountManager}');
     });
+
+    //项目提交立项
+    function projectAssign() {
+        if (!$("#frm_project_info").valid()) {
+            return false;
+        }
+        var data = {};
+        data.formData = JSON.stringify(objProject.getFormData());
+        data.bisAssign = $("#bisAssign").prop("checked");//注意这是是否分派标志
+
+        var url = "${pageContext.request.contextPath}/projectInfo/assignTaskSubmit";
+
+        Loading.progressShow();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    //保存完后其他动作
+                    AlertSuccess("提交成功", "数据已成功保存到数据库", function () {
+                        window.close();
+                    });
+                } else {
+                    AlertError("保存失败:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                AlertError("调用服务端方法失败，失败原因:" + e);
+            }
+        });
+    }
 </script>
 
 <div id="divBoxCRMContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -735,54 +833,32 @@
         </div>
     </div>
 </div>
-
-<%--
-<div id="divBoxCRMContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="checkProjectsBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">项目列表</h4>
+                <input type="hidden" name="housePriceId">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">crm联系人</h3>
             </div>
-            <form class="form-horizontal">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-
-                                <div class="row form-group">
-                                    <div class="form-inline x-valid">
-                                        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                            <input type="text" name="name" placeholder="联系人名字、电话"
-                                                   class="form-control input-full">
-                                        </div>
-                                    </div>
-                                    <div class="form-inline x-valid">
-                                        <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                            <input type="button"
-                                                   onclick="findCRMContacts(this)"
-                                                   class="btn btn-success" value="查询">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <table class="table table-bordered" id="tb_ListCRMContacts">
-                                        <!-- cerare document add ajax data-->
-                                    </table>
-                                </div>
-                            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <table class="table table-bordered" id="getProjectByAccountList">
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
---%>

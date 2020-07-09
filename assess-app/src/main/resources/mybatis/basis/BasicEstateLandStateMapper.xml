@@ -1,75 +1,76 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicEstateLandStateMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="land_use_type" property="landUseType" jdbcType="VARCHAR" />
-    <result column="land_use_category" property="landUseCategory" jdbcType="VARCHAR" />
-    <result column="land_use_year" property="landUseYear" jdbcType="DECIMAL" />
-    <result column="land_factor_total_score" property="landFactorTotalScore" jdbcType="DECIMAL" />
-    <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
-    <result column="land_level" property="landLevel" jdbcType="INTEGER" />
-    <result column="land_area_unit" property="landAreaUnit" jdbcType="VARCHAR" />
-    <result column="land_area" property="landArea" jdbcType="VARCHAR" />
-    <result column="east_to_name" property="eastToName" jdbcType="VARCHAR" />
-    <result column="east_to" property="eastTo" jdbcType="VARCHAR" />
-    <result column="south_to_name" property="southToName" jdbcType="VARCHAR" />
-    <result column="south_to" property="southTo" jdbcType="VARCHAR" />
-    <result column="west_to_name" property="westToName" jdbcType="VARCHAR" />
-    <result column="west_to" property="westTo" jdbcType="VARCHAR" />
-    <result column="north_to_name" property="northToName" jdbcType="VARCHAR" />
-    <result column="north_to" property="northTo" jdbcType="VARCHAR" />
-    <result column="shape_state" property="shapeState" jdbcType="INTEGER" />
-    <result column="shape_state_remark" property="shapeStateRemark" jdbcType="VARCHAR" />
-    <result column="planeness" property="planeness" jdbcType="INTEGER" />
-    <result column="topographic_terrain" property="topographicTerrain" jdbcType="INTEGER" />
-    <result column="development_degree" property="developmentDegree" jdbcType="INTEGER" />
-    <result column="development_degree_remark" property="developmentDegreeRemark" jdbcType="VARCHAR" />
-    <result column="development_degree_content" property="developmentDegreeContent" jdbcType="VARCHAR" />
-    <result column="acquisition_time" property="acquisitionTime" jdbcType="TIMESTAMP" />
-    <result column="plot_ratio" property="plotRatio" jdbcType="VARCHAR" />
-    <result column="building_density" property="buildingDensity" jdbcType="VARCHAR" />
-    <result column="green_space_rate" property="greenSpaceRate" jdbcType="VARCHAR" />
-    <result column="compatible_ratio" property="compatibleRatio" jdbcType="VARCHAR" />
-    <result column="bearing_capacity" property="bearingCapacity" jdbcType="VARCHAR" />
-    <result column="contaminated" property="contaminated" jdbcType="VARCHAR" />
-    <result column="ph" property="ph" jdbcType="VARCHAR" />
-    <result column="fertility" property="fertility" jdbcType="VARCHAR" />
-    <result column="conclusion" property="conclusion" jdbcType="VARCHAR" />
-    <result column="hold_on" property="holdOn" jdbcType="VARCHAR" />
-    <result column="building_height_limit" property="buildingHeightLimit" jdbcType="DECIMAL" />
-    <result column="investment_intensity" property="investmentIntensity" jdbcType="DECIMAL" />
-    <result column="special_restrictions" property="specialRestrictions" jdbcType="VARCHAR" />
-    <result column="present_situation_land_use" property="presentSituationLandUse" jdbcType="VARCHAR" />
-    <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
-    <result column="development_time" property="developmentTime" jdbcType="TIMESTAMP" />
-    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicEstateLandStateMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="apply_id" jdbcType="INTEGER" property="applyId" />
+    <result column="estate_id" jdbcType="INTEGER" property="estateId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="land_use_type" jdbcType="VARCHAR" property="landUseType" />
+    <result column="land_use_category" jdbcType="VARCHAR" property="landUseCategory" />
+    <result column="land_use_year" jdbcType="DECIMAL" property="landUseYear" />
+    <result column="land_factor_total_score" jdbcType="DECIMAL" property="landFactorTotalScore" />
+    <result column="land_level_content" jdbcType="VARCHAR" property="landLevelContent" />
+    <result column="land_level" jdbcType="INTEGER" property="landLevel" />
+    <result column="land_area_unit" jdbcType="VARCHAR" property="landAreaUnit" />
+    <result column="land_area" jdbcType="VARCHAR" property="landArea" />
+    <result column="east_to_name" jdbcType="VARCHAR" property="eastToName" />
+    <result column="east_to" jdbcType="VARCHAR" property="eastTo" />
+    <result column="south_to_name" jdbcType="VARCHAR" property="southToName" />
+    <result column="south_to" jdbcType="VARCHAR" property="southTo" />
+    <result column="west_to_name" jdbcType="VARCHAR" property="westToName" />
+    <result column="west_to" jdbcType="VARCHAR" property="westTo" />
+    <result column="north_to_name" jdbcType="VARCHAR" property="northToName" />
+    <result column="north_to" jdbcType="VARCHAR" property="northTo" />
+    <result column="shape_state" jdbcType="INTEGER" property="shapeState" />
+    <result column="shape_state_remark" jdbcType="VARCHAR" property="shapeStateRemark" />
+    <result column="planeness" jdbcType="INTEGER" property="planeness" />
+    <result column="topographic_terrain" jdbcType="INTEGER" property="topographicTerrain" />
+    <result column="development_degree" jdbcType="INTEGER" property="developmentDegree" />
+    <result column="development_degree_remark" jdbcType="VARCHAR" property="developmentDegreeRemark" />
+    <result column="development_degree_content" jdbcType="VARCHAR" property="developmentDegreeContent" />
+    <result column="acquisition_time" jdbcType="TIMESTAMP" property="acquisitionTime" />
+    <result column="plot_ratio" jdbcType="VARCHAR" property="plotRatio" />
+    <result column="building_density" jdbcType="VARCHAR" property="buildingDensity" />
+    <result column="green_space_rate" jdbcType="VARCHAR" property="greenSpaceRate" />
+    <result column="compatible_ratio" jdbcType="VARCHAR" property="compatibleRatio" />
+    <result column="bearing_capacity" jdbcType="VARCHAR" property="bearingCapacity" />
+    <result column="contaminated" jdbcType="VARCHAR" property="contaminated" />
+    <result column="ph" jdbcType="VARCHAR" property="ph" />
+    <result column="fertility" jdbcType="VARCHAR" property="fertility" />
+    <result column="conclusion" jdbcType="VARCHAR" property="conclusion" />
+    <result column="hold_on" jdbcType="VARCHAR" property="holdOn" />
+    <result column="building_height_limit" jdbcType="DECIMAL" property="buildingHeightLimit" />
+    <result column="investment_intensity" jdbcType="DECIMAL" property="investmentIntensity" />
+    <result column="special_restrictions" jdbcType="VARCHAR" property="specialRestrictions" />
+    <result column="present_situation_land_use" jdbcType="VARCHAR" property="presentSituationLandUse" />
+    <result column="infrastructure_completeness" jdbcType="INTEGER" property="infrastructureCompleteness" />
+    <result column="development_time" jdbcType="TIMESTAMP" property="developmentTime" />
+    <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="current_situation" jdbcType="VARCHAR" property="currentSituation" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -80,25 +81,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -109,7 +110,7 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, apply_id, estate_id, name, land_use_type, land_use_category, land_use_year, land_factor_total_score, 
     land_level_content, land_level, land_area_unit, land_area, east_to_name, east_to, 
     south_to_name, south_to, west_to_name, west_to, north_to_name, north_to, shape_state, 
@@ -118,40 +119,40 @@
     compatible_ratio, bearing_capacity, contaminated, ph, fertility, conclusion, hold_on, 
     building_height_limit, investment_intensity, special_restrictions, present_situation_land_use, 
     infrastructure_completeness, development_time, bis_delete, creator, gmt_created, 
-    gmt_modified
+    gmt_modified, current_situation
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_basic_estate_land_state
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_basic_estate_land_state
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_basic_estate_land_state
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample">
     delete from tb_basic_estate_land_state
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_land_state (apply_id, estate_id, name, 
@@ -171,7 +172,7 @@
       special_restrictions, present_situation_land_use, 
       infrastructure_completeness, development_time, 
       bis_delete, creator, gmt_created, 
-      gmt_modified)
+      gmt_modified, current_situation)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{landUseType,jdbcType=VARCHAR}, #{landUseCategory,jdbcType=VARCHAR}, #{landUseYear,jdbcType=DECIMAL}, 
       #{landFactorTotalScore,jdbcType=DECIMAL}, #{landLevelContent,jdbcType=VARCHAR}, 
@@ -189,459 +190,468 @@
       #{specialRestrictions,jdbcType=VARCHAR}, #{presentSituationLandUse,jdbcType=VARCHAR}, 
       #{infrastructureCompleteness,jdbcType=INTEGER}, #{developmentTime,jdbcType=TIMESTAMP}, 
       #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{gmtModified,jdbcType=TIMESTAMP}, #{currentSituation,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_land_state
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="applyId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
         apply_id,
       </if>
-      <if test="estateId != null" >
+      <if test="estateId != null">
         estate_id,
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name,
       </if>
-      <if test="landUseType != null" >
+      <if test="landUseType != null">
         land_use_type,
       </if>
-      <if test="landUseCategory != null" >
+      <if test="landUseCategory != null">
         land_use_category,
       </if>
-      <if test="landUseYear != null" >
+      <if test="landUseYear != null">
         land_use_year,
       </if>
-      <if test="landFactorTotalScore != null" >
+      <if test="landFactorTotalScore != null">
         land_factor_total_score,
       </if>
-      <if test="landLevelContent != null" >
+      <if test="landLevelContent != null">
         land_level_content,
       </if>
-      <if test="landLevel != null" >
+      <if test="landLevel != null">
         land_level,
       </if>
-      <if test="landAreaUnit != null" >
+      <if test="landAreaUnit != null">
         land_area_unit,
       </if>
-      <if test="landArea != null" >
+      <if test="landArea != null">
         land_area,
       </if>
-      <if test="eastToName != null" >
+      <if test="eastToName != null">
         east_to_name,
       </if>
-      <if test="eastTo != null" >
+      <if test="eastTo != null">
         east_to,
       </if>
-      <if test="southToName != null" >
+      <if test="southToName != null">
         south_to_name,
       </if>
-      <if test="southTo != null" >
+      <if test="southTo != null">
         south_to,
       </if>
-      <if test="westToName != null" >
+      <if test="westToName != null">
         west_to_name,
       </if>
-      <if test="westTo != null" >
+      <if test="westTo != null">
         west_to,
       </if>
-      <if test="northToName != null" >
+      <if test="northToName != null">
         north_to_name,
       </if>
-      <if test="northTo != null" >
+      <if test="northTo != null">
         north_to,
       </if>
-      <if test="shapeState != null" >
+      <if test="shapeState != null">
         shape_state,
       </if>
-      <if test="shapeStateRemark != null" >
+      <if test="shapeStateRemark != null">
         shape_state_remark,
       </if>
-      <if test="planeness != null" >
+      <if test="planeness != null">
         planeness,
       </if>
-      <if test="topographicTerrain != null" >
+      <if test="topographicTerrain != null">
         topographic_terrain,
       </if>
-      <if test="developmentDegree != null" >
+      <if test="developmentDegree != null">
         development_degree,
       </if>
-      <if test="developmentDegreeRemark != null" >
+      <if test="developmentDegreeRemark != null">
         development_degree_remark,
       </if>
-      <if test="developmentDegreeContent != null" >
+      <if test="developmentDegreeContent != null">
         development_degree_content,
       </if>
-      <if test="acquisitionTime != null" >
+      <if test="acquisitionTime != null">
         acquisition_time,
       </if>
-      <if test="plotRatio != null" >
+      <if test="plotRatio != null">
         plot_ratio,
       </if>
-      <if test="buildingDensity != null" >
+      <if test="buildingDensity != null">
         building_density,
       </if>
-      <if test="greenSpaceRate != null" >
+      <if test="greenSpaceRate != null">
         green_space_rate,
       </if>
-      <if test="compatibleRatio != null" >
+      <if test="compatibleRatio != null">
         compatible_ratio,
       </if>
-      <if test="bearingCapacity != null" >
+      <if test="bearingCapacity != null">
         bearing_capacity,
       </if>
-      <if test="contaminated != null" >
+      <if test="contaminated != null">
         contaminated,
       </if>
-      <if test="ph != null" >
+      <if test="ph != null">
         ph,
       </if>
-      <if test="fertility != null" >
+      <if test="fertility != null">
         fertility,
       </if>
-      <if test="conclusion != null" >
+      <if test="conclusion != null">
         conclusion,
       </if>
-      <if test="holdOn != null" >
+      <if test="holdOn != null">
         hold_on,
       </if>
-      <if test="buildingHeightLimit != null" >
+      <if test="buildingHeightLimit != null">
         building_height_limit,
       </if>
-      <if test="investmentIntensity != null" >
+      <if test="investmentIntensity != null">
         investment_intensity,
       </if>
-      <if test="specialRestrictions != null" >
+      <if test="specialRestrictions != null">
         special_restrictions,
       </if>
-      <if test="presentSituationLandUse != null" >
+      <if test="presentSituationLandUse != null">
         present_situation_land_use,
       </if>
-      <if test="infrastructureCompleteness != null" >
+      <if test="infrastructureCompleteness != null">
         infrastructure_completeness,
       </if>
-      <if test="developmentTime != null" >
+      <if test="developmentTime != null">
         development_time,
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         bis_delete,
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
+      <if test="currentSituation != null">
+        current_situation,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="applyId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
         #{applyId,jdbcType=INTEGER},
       </if>
-      <if test="estateId != null" >
+      <if test="estateId != null">
         #{estateId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="landUseType != null" >
+      <if test="landUseType != null">
         #{landUseType,jdbcType=VARCHAR},
       </if>
-      <if test="landUseCategory != null" >
+      <if test="landUseCategory != null">
         #{landUseCategory,jdbcType=VARCHAR},
       </if>
-      <if test="landUseYear != null" >
+      <if test="landUseYear != null">
         #{landUseYear,jdbcType=DECIMAL},
       </if>
-      <if test="landFactorTotalScore != null" >
+      <if test="landFactorTotalScore != null">
         #{landFactorTotalScore,jdbcType=DECIMAL},
       </if>
-      <if test="landLevelContent != null" >
+      <if test="landLevelContent != null">
         #{landLevelContent,jdbcType=VARCHAR},
       </if>
-      <if test="landLevel != null" >
+      <if test="landLevel != null">
         #{landLevel,jdbcType=INTEGER},
       </if>
-      <if test="landAreaUnit != null" >
+      <if test="landAreaUnit != null">
         #{landAreaUnit,jdbcType=VARCHAR},
       </if>
-      <if test="landArea != null" >
+      <if test="landArea != null">
         #{landArea,jdbcType=VARCHAR},
       </if>
-      <if test="eastToName != null" >
+      <if test="eastToName != null">
         #{eastToName,jdbcType=VARCHAR},
       </if>
-      <if test="eastTo != null" >
+      <if test="eastTo != null">
         #{eastTo,jdbcType=VARCHAR},
       </if>
-      <if test="southToName != null" >
+      <if test="southToName != null">
         #{southToName,jdbcType=VARCHAR},
       </if>
-      <if test="southTo != null" >
+      <if test="southTo != null">
         #{southTo,jdbcType=VARCHAR},
       </if>
-      <if test="westToName != null" >
+      <if test="westToName != null">
         #{westToName,jdbcType=VARCHAR},
       </if>
-      <if test="westTo != null" >
+      <if test="westTo != null">
         #{westTo,jdbcType=VARCHAR},
       </if>
-      <if test="northToName != null" >
+      <if test="northToName != null">
         #{northToName,jdbcType=VARCHAR},
       </if>
-      <if test="northTo != null" >
+      <if test="northTo != null">
         #{northTo,jdbcType=VARCHAR},
       </if>
-      <if test="shapeState != null" >
+      <if test="shapeState != null">
         #{shapeState,jdbcType=INTEGER},
       </if>
-      <if test="shapeStateRemark != null" >
+      <if test="shapeStateRemark != null">
         #{shapeStateRemark,jdbcType=VARCHAR},
       </if>
-      <if test="planeness != null" >
+      <if test="planeness != null">
         #{planeness,jdbcType=INTEGER},
       </if>
-      <if test="topographicTerrain != null" >
+      <if test="topographicTerrain != null">
         #{topographicTerrain,jdbcType=INTEGER},
       </if>
-      <if test="developmentDegree != null" >
+      <if test="developmentDegree != null">
         #{developmentDegree,jdbcType=INTEGER},
       </if>
-      <if test="developmentDegreeRemark != null" >
+      <if test="developmentDegreeRemark != null">
         #{developmentDegreeRemark,jdbcType=VARCHAR},
       </if>
-      <if test="developmentDegreeContent != null" >
+      <if test="developmentDegreeContent != null">
         #{developmentDegreeContent,jdbcType=VARCHAR},
       </if>
-      <if test="acquisitionTime != null" >
+      <if test="acquisitionTime != null">
         #{acquisitionTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="plotRatio != null" >
+      <if test="plotRatio != null">
         #{plotRatio,jdbcType=VARCHAR},
       </if>
-      <if test="buildingDensity != null" >
+      <if test="buildingDensity != null">
         #{buildingDensity,jdbcType=VARCHAR},
       </if>
-      <if test="greenSpaceRate != null" >
+      <if test="greenSpaceRate != null">
         #{greenSpaceRate,jdbcType=VARCHAR},
       </if>
-      <if test="compatibleRatio != null" >
+      <if test="compatibleRatio != null">
         #{compatibleRatio,jdbcType=VARCHAR},
       </if>
-      <if test="bearingCapacity != null" >
+      <if test="bearingCapacity != null">
         #{bearingCapacity,jdbcType=VARCHAR},
       </if>
-      <if test="contaminated != null" >
+      <if test="contaminated != null">
         #{contaminated,jdbcType=VARCHAR},
       </if>
-      <if test="ph != null" >
+      <if test="ph != null">
         #{ph,jdbcType=VARCHAR},
       </if>
-      <if test="fertility != null" >
+      <if test="fertility != null">
         #{fertility,jdbcType=VARCHAR},
       </if>
-      <if test="conclusion != null" >
+      <if test="conclusion != null">
         #{conclusion,jdbcType=VARCHAR},
       </if>
-      <if test="holdOn != null" >
+      <if test="holdOn != null">
         #{holdOn,jdbcType=VARCHAR},
       </if>
-      <if test="buildingHeightLimit != null" >
+      <if test="buildingHeightLimit != null">
         #{buildingHeightLimit,jdbcType=DECIMAL},
       </if>
-      <if test="investmentIntensity != null" >
+      <if test="investmentIntensity != null">
         #{investmentIntensity,jdbcType=DECIMAL},
       </if>
-      <if test="specialRestrictions != null" >
+      <if test="specialRestrictions != null">
         #{specialRestrictions,jdbcType=VARCHAR},
       </if>
-      <if test="presentSituationLandUse != null" >
+      <if test="presentSituationLandUse != null">
         #{presentSituationLandUse,jdbcType=VARCHAR},
       </if>
-      <if test="infrastructureCompleteness != null" >
+      <if test="infrastructureCompleteness != null">
         #{infrastructureCompleteness,jdbcType=INTEGER},
       </if>
-      <if test="developmentTime != null" >
+      <if test="developmentTime != null">
         #{developmentTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         #{bisDelete,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentSituation != null">
+        #{currentSituation,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" resultType="java.lang.Integer">
     select count(*) from tb_basic_estate_land_state
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_basic_estate_land_state
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.applyId != null" >
+      <if test="record.applyId != null">
         apply_id = #{record.applyId,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
+      <if test="record.estateId != null">
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
+      <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.landUseType != null" >
+      <if test="record.landUseType != null">
         land_use_type = #{record.landUseType,jdbcType=VARCHAR},
       </if>
-      <if test="record.landUseCategory != null" >
+      <if test="record.landUseCategory != null">
         land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
       </if>
-      <if test="record.landUseYear != null" >
+      <if test="record.landUseYear != null">
         land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
       </if>
-      <if test="record.landFactorTotalScore != null" >
+      <if test="record.landFactorTotalScore != null">
         land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
       </if>
-      <if test="record.landLevelContent != null" >
+      <if test="record.landLevelContent != null">
         land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
       </if>
-      <if test="record.landLevel != null" >
+      <if test="record.landLevel != null">
         land_level = #{record.landLevel,jdbcType=INTEGER},
       </if>
-      <if test="record.landAreaUnit != null" >
+      <if test="record.landAreaUnit != null">
         land_area_unit = #{record.landAreaUnit,jdbcType=VARCHAR},
       </if>
-      <if test="record.landArea != null" >
+      <if test="record.landArea != null">
         land_area = #{record.landArea,jdbcType=VARCHAR},
       </if>
-      <if test="record.eastToName != null" >
+      <if test="record.eastToName != null">
         east_to_name = #{record.eastToName,jdbcType=VARCHAR},
       </if>
-      <if test="record.eastTo != null" >
+      <if test="record.eastTo != null">
         east_to = #{record.eastTo,jdbcType=VARCHAR},
       </if>
-      <if test="record.southToName != null" >
+      <if test="record.southToName != null">
         south_to_name = #{record.southToName,jdbcType=VARCHAR},
       </if>
-      <if test="record.southTo != null" >
+      <if test="record.southTo != null">
         south_to = #{record.southTo,jdbcType=VARCHAR},
       </if>
-      <if test="record.westToName != null" >
+      <if test="record.westToName != null">
         west_to_name = #{record.westToName,jdbcType=VARCHAR},
       </if>
-      <if test="record.westTo != null" >
+      <if test="record.westTo != null">
         west_to = #{record.westTo,jdbcType=VARCHAR},
       </if>
-      <if test="record.northToName != null" >
+      <if test="record.northToName != null">
         north_to_name = #{record.northToName,jdbcType=VARCHAR},
       </if>
-      <if test="record.northTo != null" >
+      <if test="record.northTo != null">
         north_to = #{record.northTo,jdbcType=VARCHAR},
       </if>
-      <if test="record.shapeState != null" >
+      <if test="record.shapeState != null">
         shape_state = #{record.shapeState,jdbcType=INTEGER},
       </if>
-      <if test="record.shapeStateRemark != null" >
+      <if test="record.shapeStateRemark != null">
         shape_state_remark = #{record.shapeStateRemark,jdbcType=VARCHAR},
       </if>
-      <if test="record.planeness != null" >
+      <if test="record.planeness != null">
         planeness = #{record.planeness,jdbcType=INTEGER},
       </if>
-      <if test="record.topographicTerrain != null" >
+      <if test="record.topographicTerrain != null">
         topographic_terrain = #{record.topographicTerrain,jdbcType=INTEGER},
       </if>
-      <if test="record.developmentDegree != null" >
+      <if test="record.developmentDegree != null">
         development_degree = #{record.developmentDegree,jdbcType=INTEGER},
       </if>
-      <if test="record.developmentDegreeRemark != null" >
+      <if test="record.developmentDegreeRemark != null">
         development_degree_remark = #{record.developmentDegreeRemark,jdbcType=VARCHAR},
       </if>
-      <if test="record.developmentDegreeContent != null" >
+      <if test="record.developmentDegreeContent != null">
         development_degree_content = #{record.developmentDegreeContent,jdbcType=VARCHAR},
       </if>
-      <if test="record.acquisitionTime != null" >
+      <if test="record.acquisitionTime != null">
         acquisition_time = #{record.acquisitionTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.plotRatio != null" >
+      <if test="record.plotRatio != null">
         plot_ratio = #{record.plotRatio,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildingDensity != null" >
+      <if test="record.buildingDensity != null">
         building_density = #{record.buildingDensity,jdbcType=VARCHAR},
       </if>
-      <if test="record.greenSpaceRate != null" >
+      <if test="record.greenSpaceRate != null">
         green_space_rate = #{record.greenSpaceRate,jdbcType=VARCHAR},
       </if>
-      <if test="record.compatibleRatio != null" >
+      <if test="record.compatibleRatio != null">
         compatible_ratio = #{record.compatibleRatio,jdbcType=VARCHAR},
       </if>
-      <if test="record.bearingCapacity != null" >
+      <if test="record.bearingCapacity != null">
         bearing_capacity = #{record.bearingCapacity,jdbcType=VARCHAR},
       </if>
-      <if test="record.contaminated != null" >
+      <if test="record.contaminated != null">
         contaminated = #{record.contaminated,jdbcType=VARCHAR},
       </if>
-      <if test="record.ph != null" >
+      <if test="record.ph != null">
         ph = #{record.ph,jdbcType=VARCHAR},
       </if>
-      <if test="record.fertility != null" >
+      <if test="record.fertility != null">
         fertility = #{record.fertility,jdbcType=VARCHAR},
       </if>
-      <if test="record.conclusion != null" >
+      <if test="record.conclusion != null">
         conclusion = #{record.conclusion,jdbcType=VARCHAR},
       </if>
-      <if test="record.holdOn != null" >
+      <if test="record.holdOn != null">
         hold_on = #{record.holdOn,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildingHeightLimit != null" >
+      <if test="record.buildingHeightLimit != null">
         building_height_limit = #{record.buildingHeightLimit,jdbcType=DECIMAL},
       </if>
-      <if test="record.investmentIntensity != null" >
+      <if test="record.investmentIntensity != null">
         investment_intensity = #{record.investmentIntensity,jdbcType=DECIMAL},
       </if>
-      <if test="record.specialRestrictions != null" >
+      <if test="record.specialRestrictions != null">
         special_restrictions = #{record.specialRestrictions,jdbcType=VARCHAR},
       </if>
-      <if test="record.presentSituationLandUse != null" >
+      <if test="record.presentSituationLandUse != null">
         present_situation_land_use = #{record.presentSituationLandUse,jdbcType=VARCHAR},
       </if>
-      <if test="record.infrastructureCompleteness != null" >
+      <if test="record.infrastructureCompleteness != null">
         infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       </if>
-      <if test="record.developmentTime != null" >
+      <if test="record.developmentTime != null">
         development_time = #{record.developmentTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.bisDelete != null" >
+      <if test="record.bisDelete != null">
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.currentSituation != null">
+        current_situation = #{record.currentSituation,jdbcType=VARCHAR},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_basic_estate_land_state
     set id = #{record.id,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
@@ -690,159 +700,163 @@
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      current_situation = #{record.currentSituation,jdbcType=VARCHAR}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState">
     update tb_basic_estate_land_state
-    <set >
-      <if test="applyId != null" >
+    <set>
+      <if test="applyId != null">
         apply_id = #{applyId,jdbcType=INTEGER},
       </if>
-      <if test="estateId != null" >
+      <if test="estateId != null">
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="landUseType != null" >
+      <if test="landUseType != null">
         land_use_type = #{landUseType,jdbcType=VARCHAR},
       </if>
-      <if test="landUseCategory != null" >
+      <if test="landUseCategory != null">
         land_use_category = #{landUseCategory,jdbcType=VARCHAR},
       </if>
-      <if test="landUseYear != null" >
+      <if test="landUseYear != null">
         land_use_year = #{landUseYear,jdbcType=DECIMAL},
       </if>
-      <if test="landFactorTotalScore != null" >
+      <if test="landFactorTotalScore != null">
         land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
       </if>
-      <if test="landLevelContent != null" >
+      <if test="landLevelContent != null">
         land_level_content = #{landLevelContent,jdbcType=VARCHAR},
       </if>
-      <if test="landLevel != null" >
+      <if test="landLevel != null">
         land_level = #{landLevel,jdbcType=INTEGER},
       </if>
-      <if test="landAreaUnit != null" >
+      <if test="landAreaUnit != null">
         land_area_unit = #{landAreaUnit,jdbcType=VARCHAR},
       </if>
-      <if test="landArea != null" >
+      <if test="landArea != null">
         land_area = #{landArea,jdbcType=VARCHAR},
       </if>
-      <if test="eastToName != null" >
+      <if test="eastToName != null">
         east_to_name = #{eastToName,jdbcType=VARCHAR},
       </if>
-      <if test="eastTo != null" >
+      <if test="eastTo != null">
         east_to = #{eastTo,jdbcType=VARCHAR},
       </if>
-      <if test="southToName != null" >
+      <if test="southToName != null">
         south_to_name = #{southToName,jdbcType=VARCHAR},
       </if>
-      <if test="southTo != null" >
+      <if test="southTo != null">
         south_to = #{southTo,jdbcType=VARCHAR},
       </if>
-      <if test="westToName != null" >
+      <if test="westToName != null">
         west_to_name = #{westToName,jdbcType=VARCHAR},
       </if>
-      <if test="westTo != null" >
+      <if test="westTo != null">
         west_to = #{westTo,jdbcType=VARCHAR},
       </if>
-      <if test="northToName != null" >
+      <if test="northToName != null">
         north_to_name = #{northToName,jdbcType=VARCHAR},
       </if>
-      <if test="northTo != null" >
+      <if test="northTo != null">
         north_to = #{northTo,jdbcType=VARCHAR},
       </if>
-      <if test="shapeState != null" >
+      <if test="shapeState != null">
         shape_state = #{shapeState,jdbcType=INTEGER},
       </if>
-      <if test="shapeStateRemark != null" >
+      <if test="shapeStateRemark != null">
         shape_state_remark = #{shapeStateRemark,jdbcType=VARCHAR},
       </if>
-      <if test="planeness != null" >
+      <if test="planeness != null">
         planeness = #{planeness,jdbcType=INTEGER},
       </if>
-      <if test="topographicTerrain != null" >
+      <if test="topographicTerrain != null">
         topographic_terrain = #{topographicTerrain,jdbcType=INTEGER},
       </if>
-      <if test="developmentDegree != null" >
+      <if test="developmentDegree != null">
         development_degree = #{developmentDegree,jdbcType=INTEGER},
       </if>
-      <if test="developmentDegreeRemark != null" >
+      <if test="developmentDegreeRemark != null">
         development_degree_remark = #{developmentDegreeRemark,jdbcType=VARCHAR},
       </if>
-      <if test="developmentDegreeContent != null" >
+      <if test="developmentDegreeContent != null">
         development_degree_content = #{developmentDegreeContent,jdbcType=VARCHAR},
       </if>
-      <if test="acquisitionTime != null" >
+      <if test="acquisitionTime != null">
         acquisition_time = #{acquisitionTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="plotRatio != null" >
+      <if test="plotRatio != null">
         plot_ratio = #{plotRatio,jdbcType=VARCHAR},
       </if>
-      <if test="buildingDensity != null" >
+      <if test="buildingDensity != null">
         building_density = #{buildingDensity,jdbcType=VARCHAR},
       </if>
-      <if test="greenSpaceRate != null" >
+      <if test="greenSpaceRate != null">
         green_space_rate = #{greenSpaceRate,jdbcType=VARCHAR},
       </if>
-      <if test="compatibleRatio != null" >
+      <if test="compatibleRatio != null">
         compatible_ratio = #{compatibleRatio,jdbcType=VARCHAR},
       </if>
-      <if test="bearingCapacity != null" >
+      <if test="bearingCapacity != null">
         bearing_capacity = #{bearingCapacity,jdbcType=VARCHAR},
       </if>
-      <if test="contaminated != null" >
+      <if test="contaminated != null">
         contaminated = #{contaminated,jdbcType=VARCHAR},
       </if>
-      <if test="ph != null" >
+      <if test="ph != null">
         ph = #{ph,jdbcType=VARCHAR},
       </if>
-      <if test="fertility != null" >
+      <if test="fertility != null">
         fertility = #{fertility,jdbcType=VARCHAR},
       </if>
-      <if test="conclusion != null" >
+      <if test="conclusion != null">
         conclusion = #{conclusion,jdbcType=VARCHAR},
       </if>
-      <if test="holdOn != null" >
+      <if test="holdOn != null">
         hold_on = #{holdOn,jdbcType=VARCHAR},
       </if>
-      <if test="buildingHeightLimit != null" >
+      <if test="buildingHeightLimit != null">
         building_height_limit = #{buildingHeightLimit,jdbcType=DECIMAL},
       </if>
-      <if test="investmentIntensity != null" >
+      <if test="investmentIntensity != null">
         investment_intensity = #{investmentIntensity,jdbcType=DECIMAL},
       </if>
-      <if test="specialRestrictions != null" >
+      <if test="specialRestrictions != null">
         special_restrictions = #{specialRestrictions,jdbcType=VARCHAR},
       </if>
-      <if test="presentSituationLandUse != null" >
+      <if test="presentSituationLandUse != null">
         present_situation_land_use = #{presentSituationLandUse,jdbcType=VARCHAR},
       </if>
-      <if test="infrastructureCompleteness != null" >
+      <if test="infrastructureCompleteness != null">
         infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       </if>
-      <if test="developmentTime != null" >
+      <if test="developmentTime != null">
         development_time = #{developmentTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentSituation != null">
+        current_situation = #{currentSituation,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState">
     update tb_basic_estate_land_state
     set apply_id = #{applyId,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
@@ -890,7 +904,8 @@
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      current_situation = #{currentSituation,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

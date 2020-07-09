@@ -8,6 +8,8 @@ public class BasicEstateLandCategoryInfo {
 
     private Integer landId;
 
+    private Integer houseId;
+
     private String landUseType;
 
     private String landUseCategory;
@@ -40,13 +42,17 @@ public class BasicEstateLandCategoryInfo {
 
     private String buildingDensity;
 
-    private BigDecimal greeningRate;
+    private String greeningRate;
 
     private String compatibilityType;
 
-    private BigDecimal compatibilityRate;
+    private String compatibilityRate;
 
     private String heightPermitted;
+
+    private String plotRatioRemark;
+
+    private Date terminationData;
 
     public Integer getId() {
         return id;
@@ -62,6 +68,14 @@ public class BasicEstateLandCategoryInfo {
 
     public void setLandId(Integer landId) {
         this.landId = landId;
+    }
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
     }
 
     public String getLandUseType() {
@@ -192,12 +206,12 @@ public class BasicEstateLandCategoryInfo {
         this.buildingDensity = buildingDensity == null ? null : buildingDensity.trim();
     }
 
-    public BigDecimal getGreeningRate() {
+    public String getGreeningRate() {
         return greeningRate;
     }
 
-    public void setGreeningRate(BigDecimal greeningRate) {
-        this.greeningRate = greeningRate;
+    public void setGreeningRate(String greeningRate) {
+        this.greeningRate = greeningRate == null ? null : greeningRate.trim();
     }
 
     public String getCompatibilityType() {
@@ -208,12 +222,12 @@ public class BasicEstateLandCategoryInfo {
         this.compatibilityType = compatibilityType == null ? null : compatibilityType.trim();
     }
 
-    public BigDecimal getCompatibilityRate() {
+    public String getCompatibilityRate() {
         return compatibilityRate;
     }
 
-    public void setCompatibilityRate(BigDecimal compatibilityRate) {
-        this.compatibilityRate = compatibilityRate;
+    public void setCompatibilityRate(String compatibilityRate) {
+        this.compatibilityRate = compatibilityRate == null ? null : compatibilityRate.trim();
     }
 
     public String getHeightPermitted() {
@@ -222,5 +236,21 @@ public class BasicEstateLandCategoryInfo {
 
     public void setHeightPermitted(String heightPermitted) {
         this.heightPermitted = heightPermitted == null ? null : heightPermitted.trim();
+    }
+
+    public String getPlotRatioRemark() {
+        return plotRatioRemark;
+    }
+
+    public void setPlotRatioRemark(String plotRatioRemark) {
+        this.plotRatioRemark = plotRatioRemark == null ? null : plotRatioRemark.trim();
+    }
+
+    public Date getTerminationData() {
+        return terminationData;
+    }
+
+    public void setTerminationData(Date terminationData) {
+        this.terminationData = terminationData;
     }
 }

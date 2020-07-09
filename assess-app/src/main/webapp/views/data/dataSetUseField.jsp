@@ -37,14 +37,16 @@
                                                            placeholder="名称" id="queryName" name="queryName"
                                                            class="form-control input-full">
                                                 </div>
-                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                                        type="button"
                                                         onclick="reloadSetUseFieldList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
                                                     查询
                                                 </button>
-                                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                        type="button"
                                                         data-toggle="modal" onclick="addSetUseField()"
                                                         href="#divBox">
 											<span class="btn-label">
@@ -221,7 +223,8 @@
     </div>
 </div>
 
-<div id="divSubSetUseFieldManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divSubSetUseFieldManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -257,7 +260,8 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" data-rule-maxlength="100" placeholder="字段名称"
-                                                       id="subFieldName" name="fieldName" class="form-control input-full">
+                                                       id="subFieldName" name="fieldName"
+                                                       class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>
@@ -269,7 +273,8 @@
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="subBisEnable"
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="subBisEnable"
                                                                name="bisEnable" value="true"
                                                                checked="checked">
                                                         <span class="form-check-sign">是否启用</span>
@@ -284,7 +289,8 @@
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="subBisPrimaryKey"
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="subBisPrimaryKey"
                                                                name="bisPrimaryKey" value="true"
                                                                checked="checked">
                                                         <span class="form-check-sign">是否主键</span>
@@ -316,7 +322,8 @@
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="subBisOnlyView"
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="subBisOnlyView"
                                                                name="bisOnlyView" value="true"
                                                                checked="checked">
                                                         <span class="form-check-sign">是否只读</span>
@@ -333,7 +340,8 @@
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="subCanShrink"
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="subCanShrink"
                                                                name="canShrink" value="true"
                                                                checked="checked">
                                                         <span class="form-check-sign">是否可收缩</span>
@@ -402,11 +410,150 @@
     </div>
 </div>
 
+<!--子项管理-->
+<div id="divSubDataSetUseFieldItem" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">${baseViewDto.currentMenu.name} 类型 从表</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <p>
+                                <button style="margin-left: 10px" class="btn btn-success btn-sm"
+                                        type="button"
+                                        onclick="addDataSetUseFieldItemBox()">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                    新增
+                                </button>
+                            </p>
+                            <table id="tbDataSetUseFieldItemList" class="table table-bordered"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divDataSetUseFieldItemBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">比较法名称配置</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                类型<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input type="text" name="type" list="typeDataList"
+                                                           class="form-control form-control-sm" required>
+                                                    <datalist id="typeDataList"></datalist>
+                                                    <div class="input-group-prepend ">
+                                                        <button class="btn btn-warning btn-sm"
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                            <i class="fa "></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                类别
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input type="text" name="category" list="categoryDataList" class="form-control form-control-sm">
+                                                    <datalist id="categoryDataList">
+                                                        <option value="">请先选择类型</option>
+                                                    </datalist>
+                                                    <div class="input-group-prepend ">
+                                                        <button class="btn btn-warning btn-sm"
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                            <i class="fa "></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input name="name"
+                                                       class="form-control input-full"
+                                                       placeholder="名称"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveDataSetUseFieldItem();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="application/javascript">
     $(function () {
         loadSetUseFieldList();
     })
+
     //加载代理数据列表
     function loadSetUseFieldList() {
         var cols = [];
@@ -438,9 +585,13 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
         });
     }
+
     //刷新数据列表
     function reloadSetUseFieldList() {
         var opt = {
@@ -470,14 +621,13 @@
                         AlertSuccess("成功", "数据已成功保存到数据库");
                         TableReload("tb_List");
                         $('#divBox').modal('hide');
-                    }
-                    else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }
@@ -489,6 +639,7 @@
         $("#id").val("0");
         $("#bisEnable").prop("checked", true);
     }
+
     //编辑字典数据
     function editSetUseField(id) {
         $("#frm").clearAll();
@@ -503,17 +654,17 @@
                 if (result.ret) {
                     $("#frm").clearAll().initForm(result.data);
                     $('#divBox').modal();
-                }
-                else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
+
     //删除字典数据
     function delSetUseField(id, tbId) {
         AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
@@ -528,14 +679,13 @@
                     if (result.ret) {
                         notifySuccess("成功", "删除数据成功");
                         $('#' + tbId).bootstrapTable("refresh");
-                    }
-                    else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         })
@@ -547,6 +697,7 @@
         $("#groupKey").val("");
         $("#queryName").val("");
     }
+
     //设置子项数据
     function setSubSetUseField(pid) {
         $("#mainId").val(pid);
@@ -570,8 +721,11 @@
         cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<button onclick="setSubSetUseField(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                var str = '<button type="button" onclick="setSubSetUseField(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
                 str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '<button type="button" onclick="showDataSetUseFieldItemBoxList(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="子项关联类型数据">';
+                str += '<i class="fa fa-align-justify"></i>';
                 str += '</button>';
                 str += '<button onclick="editSubSetUseField(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
@@ -592,9 +746,11 @@
                     if (fn) {
                         fn();
                     }
+                    $('.tooltips').tooltip();
                 }
             });
     }
+
     //新增子项
     function addSubSetUseField() {
         $("#frmSub").clearAll();
@@ -653,18 +809,19 @@
                         AlertSuccess("成功", "数据已成功保存到数据库");
                         TableReload("tbSetUseFieldList");
                         $('#divSubSetUseFieldManage').modal('hide');
-                    }
-                    else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }
     }
+
     var strLevelHtml = "";
+
     //获取字典层级
     function getSetUseFieldLevel(id) {
         $.ajax({
@@ -682,22 +839,142 @@
                         strLevelHtml += '<a href="javascript:setSubSetUseField(' + result.data.key + ')">' + result.data.value + '</a>' + ">";
                         $("#titleContent").html(strLevelHtml.replace(/>$/, ""));
                     }
-                }
-                else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
+
     function getSetUseFieldLevelRecursion(keyValueDto) {
         if (keyValueDto) {
             getSetUseFieldLevelRecursion(keyValueDto.keyValueDto);
             strLevelHtml += '<a href="javascript:setSubSetUseField(' + keyValueDto.key + ')">' + keyValueDto.value + '</a>' + ">";
         }
     }
+
+    var setUseFieldItemMasterId = 0;
+
+    function loadDataSetUseFieldItemTableList() {
+        var cols = [];
+        cols.push({field: 'type', title: '类型', width: '5%'});
+        cols.push({field: 'category', title: '类别', width: '5%'});
+        cols.push({field: 'name', title: '名称', width: '5%'});
+        cols.push({
+            field: 'id', title: '操作', width: '9%', formatter: function (value, row, index) {
+                var str = "";
+
+                str += '<button type="button" onclick="editDataSetUseFieldItem(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button type="button" onclick="delDataSetUseFieldItem(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
+                return str;
+            }
+        });
+        var table = $("#tbDataSetUseFieldItemList");
+        table.bootstrapTable('destroy');
+        TableInit(table, "${pageContext.request.contextPath}/dataSetUseFieldItem/getBootstrapTableVo", cols, {masterId: setUseFieldItemMasterId}, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    var showDataSetUseFieldItemBoxList = function (masterId) {
+        var box = $("#divSubDataSetUseFieldItem");
+        box.modal('show');
+        setUseFieldItemMasterId = masterId;
+        loadDataSetUseFieldItemTableList();
+    };
+
+    var addDataSetUseFieldItemBox = function () {
+        var box = $("#divDataSetUseFieldItemBox");
+        box.modal('show');
+        initFormDataSetUseFieldItem({}) ;
+    };
+
+    var delDataSetUseFieldItem = function (id) {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataSetUseFieldItem/deleteDataSetUseFieldItem",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除数据成功");
+                        loadDataSetUseFieldItemTableList();
+                    } else {
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
+    };
+
+    var editDataSetUseFieldItem = function (id) {
+        var table = $("#tbDataSetUseFieldItemList");
+        var box = $("#divDataSetUseFieldItemBox");
+        var data = table.bootstrapTable('getRowByUniqueId', id);
+        initFormDataSetUseFieldItem(data) ;
+        box.modal('show');
+    };
+
+    var initFormDataSetUseFieldItem = function (data) {
+        var box = $("#divDataSetUseFieldItemBox");
+        var frm = box.find("form");
+        frm.clearAll();
+        frm.initForm(data);
+        frm.validate();
+        AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, '', function (html, data) {
+            frm.find("#typeDataList" ).empty().html(html).trigger('change');
+        }, false);
+        frm.find("input[name='type']").off('change').on('change', function () {
+            AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), '', function (html, data) {
+                frm.find("#categoryDataList").empty().html(html).trigger('change');
+            });
+        });
+    } ;
+
+    var saveDataSetUseFieldItem = function () {
+        var box = $("#divDataSetUseFieldItemBox");
+        var frm = box.find("form");
+        if (!frm.valid()) {
+            return false;
+        }
+        var data = formSerializeArray(frm);
+        data.masterId = setUseFieldItemMasterId;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/dataSetUseFieldItem/saveAndUpdateDataSetUseFieldItem",
+            type: "post",
+            dataType: "json",
+            data: {formData: JSON.stringify(data), updateNull: true},
+            success: function (result) {
+                if (result.ret) {
+                    AlertSuccess("成功", "数据已成功保存到数据库");
+                    box.modal('hide');
+                    loadDataSetUseFieldItemTableList();
+                } else {
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
+
 </script>
 
 

@@ -24,7 +24,7 @@
 
     <select id="getCustomReportAppraiserAssociationList" parameterType="map" resultMap="BaseResultMap">
         select distinct
-        A.id,A.gmt_created,A.project_id, A.report_type,E.u_use_unit_name,A.number_value,B.project_name,B.service_come_from,B.entrust_purpose_name,C.investigations_start_date,
+        A.id,A.gmt_created,A.project_id, A.report_type,E.u_use_unit_name,A.number_value,B.project_name,B.project_category_id,B.service_come_from,B.entrust_purpose_name,C.investigations_start_date,
         C.home_work_end_time,
         B.valuation_date,D.cs_address,C.qualification_type,C.real_estate_appraiser,B.contract_price, A.area_id, B.preaudit_number_date, B.result_number_date
         from tb_project_number_record A
@@ -38,11 +38,11 @@
             AND (B.project_name LIKE
             CONCAT(CONCAT('%',#{projectName}), '%'))
         </if>
-        <if test="reportType!=null and consultationId==null">
-            AND A.report_type = #{reportType}
+        <if test="projectCategoryId!=null">
+            AND B.project_category_id =  #{projectCategoryId}
         </if>
-        <if test="reportType!=null and consultationId!=null">
-            AND (A.report_type = #{reportType} or A.report_type = #{consultationId})
+        <if test="resultId!=null">
+            AND (A.report_type = #{resultId})
         </if>
         <if test="numberValue!=null and numberValue!=''">
             AND (A.number_value LIKE

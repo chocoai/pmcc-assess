@@ -64,6 +64,30 @@ public class SchemeJudgeObjectDao {
         return mapper.selectByExample(example);
     }
 
+    public List<SchemeJudgeObject> getSchemeJudgeObjectListAll(String name,String certName, String seat,String ownership,Integer areaGroupId,List<Integer> ids) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria().andBisMergeEqualTo(false);
+        if(areaGroupId!=null){
+            criteria.andAreaGroupIdEqualTo(areaGroupId);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
+        }
+        if (StringUtils.isNotBlank(seat)) {
+            criteria.andSeatLike(String.format("%%%s%%", seat));
+        }
+          if (StringUtils.isNotBlank(certName)) {
+            criteria.andCertNameLike(String.format("%%%s%%", certName));
+        }
+          if (StringUtils.isNotBlank(ownership)) {
+            criteria.andOwnershipLike(String.format("%%%s%%", ownership));
+        }
+        if(CollectionUtils.isNotEmpty(ids)){
+            criteria.andIdIn(ids);
+        }
+        return mapper.selectByExample(example);
+    }
+
     public boolean updateSchemeJudgeObject(Integer oldAreaGroupId, Integer newAreaGroupId) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andAreaGroupIdEqualTo(oldAreaGroupId);
@@ -152,7 +176,7 @@ public class SchemeJudgeObjectDao {
         return mapper.selectByExample(example);
     }
 
-    public int getNotSetFunctionCount(Integer projectId) {
+    public long getNotSetFunctionCount(Integer projectId) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andBisEnableEqualTo(true).andBisSetFunctionEqualTo(false);
         return mapper.countByExample(example);
@@ -174,21 +198,41 @@ public class SchemeJudgeObjectDao {
         return Integer.valueOf(judgeObjects.get(0).getNumber());
     }
 
-    public int getCountByAreaGroupId(Integer areaGroupId){
+    public long getCountByAreaGroupId(Integer areaGroupId){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andAreaGroupIdEqualTo(areaGroupId);
         return mapper.countByExample(example);
     }
 
-    public int getCountBySplitFrom(Integer judgeObjectId){
+    public long getCountBySplitFrom(Integer judgeObjectId){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andSplitFromEqualTo(judgeObjectId);
         return mapper.countByExample(example);
     }
 
-    public int getCountByPid(Integer pid){
+    public long getCountByPid(Integer pid){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andPidEqualTo(pid);
         return mapper.countByExample(example);
+    }
+
+    public List<SchemeJudgeObject> reloadSchemeJudgeObjectListByQuery(Integer projectId, String name, String certName,String seat) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        if(projectId!=null){
+            criteria.andProjectIdEqualTo(projectId);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
+        }
+        if (StringUtils.isNotBlank(seat)) {
+            criteria.andSeatLike(String.format("%%%s%%", seat));
+        }
+        if (StringUtils.isNotBlank(certName)) {
+            criteria.andCertNameLike(String.format("%%%s%%", certName));
+        }
+        criteria.andBisMergeEqualTo(false);
+        example.setOrderByClause("sorting,split_number");
+        return mapper.selectByExample(example);
     }
 }

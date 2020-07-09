@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
@@ -19,6 +21,7 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -52,6 +55,8 @@ public class BasicApplyService {
     private BasicApplyDao basicApplyDao;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -59,22 +64,19 @@ public class BasicApplyService {
         return basicApplyDao.getBasicApplyById(id);
     }
 
+    public BasicApply getBasicApplyByHouseId(Integer houseId) {
+        if (houseId == null || houseId <= 0) return null;
+        return basicApplyDao.getBasicApplyByHouseId(houseId);
+    }
+
     public List<BasicApply> getListByDeclareRecordId(Integer declareRecordId) {
         BasicApply where = new BasicApply();
         where.setDeclareRecordId(declareRecordId);
+        where.setBisDelete(false);
         List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
         if (CollectionUtils.isEmpty(basicApplyList)) return null;
         return basicApplyList;
     }
-
-    public BasicApply getBasicApplyByBatchDetailId(Integer batchDetailId) {
-        BasicApply where = new BasicApply();
-        where.setBatchDetailId(batchDetailId);
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
-        if (CollectionUtils.isEmpty(basicApplyList)) return null;
-        return basicApplyList.get(0);
-    }
-
 
     public BasicApply getBasicApplyByPlanDetailsId(Integer planDetailsId) {
         List<BasicApply> basicApplies = getBasicApplyListByPlanDetailsId(planDetailsId);
@@ -115,19 +117,33 @@ public class BasicApplyService {
         return basicApplyDao.getBasicApplyListByIds(ids);
     }
 
-    /**
-     * 获取权证信息by list
-     *
-     * @param batchDetailIds
-     * @return
-     */
-    public List<Integer> getDeclareIdsByBatchDetailIds(List<Integer> batchDetailIds) {
-        List<BasicApply> list = basicApplyDao.getBasicApplysByBatchDetailIds(batchDetailIds);
-        return LangUtils.transform(list,o->o.getDeclareRecordId());
-    }
-
     public List<BasicApply> getBasicApplysByBatchDetailIds(List<Integer> batchDetailIds) {
         List<BasicApply> list = basicApplyDao.getBasicApplysByBatchDetailIds(batchDetailIds);
         return list;
+    }
+
+    /**
+     * 根据apply表中名称
+     * @param batchDetailId
+     */
+    public void updateNameByBatchDetailId(Integer batchDetailId) {
+        List<BasicApplyBatchDetail> houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(batchDetailId);
+        if (CollectionUtils.isEmpty(houseBatchDetailList)) return;
+        for (BasicApplyBatchDetail basicApplyBatchDetail : houseBatchDetailList) {
+            BasicApply basicApply = getBasicApplyByHouseId(basicApplyBatchDetail.getTableId());
+            if (basicApply == null) continue;
+            List<KeyValueDto> keyValueDtos = JSON.parseArray(basicApply.getStructuralInfo(), KeyValueDto.class);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (KeyValueDto keyValueDto : keyValueDtos) {
+                if(StringUtils.isNotBlank(keyValueDto.getExplain())){
+                    BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(Integer.valueOf(keyValueDto.getExplain()));
+                    if (batchDetail != null) {
+                        stringBuilder.append(batchDetail.getName()).append("/");
+                    }
+                }
+            }
+            basicApply.setName(StringUtils.strip(stringBuilder.toString(), "/"));
+            updateBasicApply(basicApply);
+        }
     }
 }

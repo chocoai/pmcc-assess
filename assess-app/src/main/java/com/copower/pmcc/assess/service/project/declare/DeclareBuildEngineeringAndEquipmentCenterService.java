@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: zch
@@ -56,6 +57,8 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private DeclareRealtyCheckListService declareRealtyCheckListService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
     public Integer saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
         return saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(declareBuildEngineeringAndEquipmentCenter, false);
@@ -192,7 +195,7 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                         equipmentCenter.setHouseId(null);
                     }
                     declareBuildEngineeringAndEquipmentCenterDao.updateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
-                    copyLicense(type,idA,copyId) ;
+                    copyLicense(type, idA, copyId);
                 });
             });
         }
@@ -200,93 +203,94 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
 
     /**
      * 许可证 拷贝
+     *
      * @param masterType
      * @param masterId
      * @param copyId
      */
-    private void copyLicense(String masterType,Integer masterId,Integer copyId){
+    private void copyLicense(String masterType, Integer masterId, Integer copyId) {
         //附件拷贝 提取的公共方法
-        BiConsumer<String,MyEntry<Integer,Integer>> biConsumer = ((tableName,entryBiConsumer) -> {
+        BiConsumer<String, MyEntry<Integer, Integer>> biConsumer = ((tableName, entryBiConsumer) -> {
             SysAttachmentDto example = new SysAttachmentDto();
             example.setTableName(tableName);
             example.setTableId(entryBiConsumer.getKey());
-            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto() ;
+            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
             sysAttachmentDto.setTableName(tableName);
             sysAttachmentDto.setTableId(entryBiConsumer.getValue());
             try {
-                baseAttachmentService.copyFtpAttachments(example,sysAttachmentDto);
+                baseAttachmentService.copyFtpAttachments(example, sysAttachmentDto);
             } catch (Exception e) {
                 baseService.writeExceptionInfo(e);
             }
-        }) ;
+        });
         List<DeclareBuildingConstructionPermit> declareBuildingConstructionPermits = declareBuildingConstructionPermitService.getDeclareBuildingConstructionPermitByMasterId(copyId);
         List<DeclareBuildingPermit> declareBuildingPermits = declareBuildingPermitService.getDeclareBuildingPermitByMasterId(copyId);
         List<DeclareLandUsePermit> declareLandUsePermits = declareLandUsePermitService.getDeclareLandUsePermitByMasterId(copyId);
         List<DeclarePreSalePermit> declarePreSalePermits = declarePreSalePermitService.getDeclarePreSalePermitByMasterId(copyId);
         List<DeclareRealtyCheckList> realtyCheckLists = declareRealtyCheckListService.getDeclareRealtyCheckLists(copyId);
-        if (CollectionUtils.isNotEmpty(declareBuildingConstructionPermits)){
+        if (CollectionUtils.isNotEmpty(declareBuildingConstructionPermits)) {
             Iterator<DeclareBuildingConstructionPermit> iterator = declareBuildingConstructionPermits.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 DeclareBuildingConstructionPermit permit = iterator.next();
-                MyEntry<Integer,Integer> myEntry = new MyEntry<>(permit.getId(),0) ;
+                MyEntry<Integer, Integer> myEntry = new MyEntry<>(permit.getId(), 0);
                 permit.setId(null);
                 permit.setMasterId(masterId);
                 permit.setMasterType(masterType);
-                declareBuildingConstructionPermitService.saveAndUpdateDeclareBuildingConstructionPermit(permit) ;
-                myEntry.setValue(permit.getId()) ;
-                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareBuildingConstructionPermit.class) ,myEntry);
+                declareBuildingConstructionPermitService.saveAndUpdateDeclareBuildingConstructionPermit(permit);
+                myEntry.setValue(permit.getId());
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareBuildingConstructionPermit.class), myEntry);
 
             }
         }
-        if (CollectionUtils.isNotEmpty(declareBuildingPermits)){
+        if (CollectionUtils.isNotEmpty(declareBuildingPermits)) {
             Iterator<DeclareBuildingPermit> iterator = declareBuildingPermits.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 DeclareBuildingPermit buildingPermit = iterator.next();
-                MyEntry<Integer,Integer> myEntry = new MyEntry<>(buildingPermit.getId(),0) ;
+                MyEntry<Integer, Integer> myEntry = new MyEntry<>(buildingPermit.getId(), 0);
                 buildingPermit.setId(null);
                 buildingPermit.setMasterId(masterId);
                 buildingPermit.setMasterType(masterType);
                 declareBuildingPermitService.saveAndUpdateDeclareBuildingPermit(buildingPermit);
-                myEntry.setValue(buildingPermit.getId()) ;
-                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareBuildingPermit.class) ,myEntry);
+                myEntry.setValue(buildingPermit.getId());
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareBuildingPermit.class), myEntry);
             }
         }
-        if (CollectionUtils.isNotEmpty(declareLandUsePermits)){
+        if (CollectionUtils.isNotEmpty(declareLandUsePermits)) {
             Iterator<DeclareLandUsePermit> iterator = declareLandUsePermits.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 DeclareLandUsePermit usePermit = iterator.next();
-                MyEntry<Integer,Integer> myEntry = new MyEntry<>(usePermit.getId(),0) ;
+                MyEntry<Integer, Integer> myEntry = new MyEntry<>(usePermit.getId(), 0);
                 usePermit.setId(null);
                 usePermit.setMasterId(masterId);
                 usePermit.setMasterType(masterType);
-                declareLandUsePermitService.saveAndUpdateDeclareLandUsePermit(usePermit) ;
-                myEntry.setValue(usePermit.getId()) ;
-                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareLandUsePermit.class) ,myEntry);
+                declareLandUsePermitService.saveAndUpdateDeclareLandUsePermit(usePermit);
+                myEntry.setValue(usePermit.getId());
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareLandUsePermit.class), myEntry);
             }
         }
-        if (CollectionUtils.isNotEmpty(declarePreSalePermits)){
+        if (CollectionUtils.isNotEmpty(declarePreSalePermits)) {
             Iterator<DeclarePreSalePermit> iterator = declarePreSalePermits.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 DeclarePreSalePermit salePermit = iterator.next();
-                MyEntry<Integer,Integer> myEntry = new MyEntry<>(salePermit.getId(),0) ;
+                MyEntry<Integer, Integer> myEntry = new MyEntry<>(salePermit.getId(), 0);
                 salePermit.setId(null);
                 salePermit.setMasterId(masterId);
                 salePermit.setMasterType(masterType);
-                declarePreSalePermitService.saveAndUpdateDeclarePreSalePermit(salePermit) ;
-                myEntry.setValue(salePermit.getId()) ;
-                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclarePreSalePermit.class) ,myEntry);
+                declarePreSalePermitService.saveAndUpdateDeclarePreSalePermit(salePermit);
+                myEntry.setValue(salePermit.getId());
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclarePreSalePermit.class), myEntry);
             }
         }
-        if (CollectionUtils.isNotEmpty(realtyCheckLists)){
+        if (CollectionUtils.isNotEmpty(realtyCheckLists)) {
             Iterator<DeclareRealtyCheckList> iterator = realtyCheckLists.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 DeclareRealtyCheckList checkList = iterator.next();
-                MyEntry<Integer,Integer> myEntry = new MyEntry<>(checkList.getId(),0) ;
+                MyEntry<Integer, Integer> myEntry = new MyEntry<>(checkList.getId(), 0);
                 checkList.setId(null);
                 checkList.setMarsterId(masterId);
-                declareRealtyCheckListService.saveDeclareRealtyCheckList(checkList) ;
-                myEntry.setValue(checkList.getId()) ;
-                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareRealtyCheckList.class) ,myEntry);
+                declareRealtyCheckListService.saveDeclareRealtyCheckList(checkList);
+                myEntry.setValue(checkList.getId());
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareRealtyCheckList.class), myEntry);
             }
         }
     }
@@ -442,4 +446,104 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
         return true;
     }
 
+
+    public List<Integer> getDataIds(DeclareRecord declareRecord, Class<?> c) {
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+            center.setType(DeclareRealtyHouseCert.class.getSimpleName());
+            center.setHouseId(declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
+            center.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+            center.setRealEstateId(declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+            center.setType(DeclareRealtyLandCert.class.getSimpleName());
+            center.setLandId(declareRecord.getDataTableId());
+        }
+        if (StringUtils.isBlank(center.getType())) {
+            return arrayList;
+        }
+
+        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(center);
+        if (CollectionUtils.isEmpty(declareBuildEngineeringAndEquipmentCenterList)) {
+            return arrayList;
+        }
+        Iterator<DeclareBuildEngineeringAndEquipmentCenter> iterator = declareBuildEngineeringAndEquipmentCenterList.iterator();
+        while (iterator.hasNext()) {
+            DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
+            if (c.getSimpleName().equalsIgnoreCase(DeclareBuildingConstructionPermit.class.getSimpleName())) {
+                List<DeclareBuildingConstructionPermit> permitByMasterId = declareBuildingConstructionPermitService.getDeclareBuildingConstructionPermitByMasterId(equipmentCenter.getId());
+                if (CollectionUtils.isNotEmpty(permitByMasterId)) {
+                    List<Integer> collect = permitByMasterId.stream().map(oo -> oo.getId()).collect(Collectors.toList());
+                    arrayList.addAll(collect);
+                }
+            }
+            if (c.getSimpleName().equalsIgnoreCase(DeclareBuildingPermit.class.getSimpleName())) {
+                List<DeclareBuildingPermit> permitByMasterId = declareBuildingPermitService.getDeclareBuildingPermitByMasterId(equipmentCenter.getId());
+                if (CollectionUtils.isNotEmpty(permitByMasterId)) {
+                    List<Integer> collect = permitByMasterId.stream().map(oo -> oo.getId()).collect(Collectors.toList());
+                    arrayList.addAll(collect);
+                }
+            }
+            if (c.getSimpleName().equalsIgnoreCase(DeclareLandUsePermit.class.getSimpleName())) {
+                List<DeclareLandUsePermit> declareLandUsePermitByMasterId = declareLandUsePermitService.getDeclareLandUsePermitByMasterId(equipmentCenter.getId());
+                if (CollectionUtils.isNotEmpty(declareLandUsePermitByMasterId)) {
+                    List<Integer> collect = declareLandUsePermitByMasterId.stream().map(oo -> oo.getId()).collect(Collectors.toList());
+                    arrayList.addAll(collect);
+                }
+            }
+            if (c.getSimpleName().equalsIgnoreCase(DeclarePreSalePermit.class.getSimpleName())) {
+                List<DeclarePreSalePermit> permitByMasterId = declarePreSalePermitService.getDeclarePreSalePermitByMasterId(equipmentCenter.getId());
+                if (CollectionUtils.isNotEmpty(permitByMasterId)) {
+                    List<Integer> collect = permitByMasterId.stream().map(oo -> oo.getId()).collect(Collectors.toList());
+                    arrayList.addAll(collect);
+                }
+            }
+            if (c.getSimpleName().equalsIgnoreCase(DeclareRealtyCheckList.class.getSimpleName())) {
+                List<DeclareRealtyCheckList> declareRealtyCheckListList = declareRealtyCheckListService.getDeclareRealtyCheckLists(equipmentCenter.getId());
+                if (CollectionUtils.isNotEmpty(declareRealtyCheckListList)) {
+                    List<Integer> collect = declareRealtyCheckListList.stream().map(oo -> oo.getId()).collect(Collectors.toList());
+                    arrayList.addAll(collect);
+                }
+            }
+            if (c.getSimpleName().equalsIgnoreCase(DeclareRealtyLandCert.class.getSimpleName())) {
+                if (equipmentCenter.getLandId() != null && equipmentCenter.getLandId() != 0) {
+                    arrayList.add(equipmentCenter.getLandId());
+                }
+            }
+            if (c.getSimpleName().equalsIgnoreCase(DeclareRealtyHouseCert.class.getSimpleName())) {
+                if (equipmentCenter.getHouseId() != null && equipmentCenter.getHouseId() != 0) {
+                    arrayList.add(equipmentCenter.getHouseId());
+                }
+            }
+        }
+        return arrayList;
+    }
+
+
+    public DeclareBuildEngineeringAndEquipmentCenter getDataByDeclareRecord(Integer declareRecordId) {
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareRecordId);
+        DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+            center.setType(DeclareRealtyHouseCert.class.getSimpleName());
+            center.setHouseId(declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
+            center.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+            center.setRealEstateId(declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+            center.setType(DeclareRealtyLandCert.class.getSimpleName());
+            center.setLandId(declareRecord.getDataTableId());
+        }
+
+        List<DeclareBuildEngineeringAndEquipmentCenter> declareBuildEngineeringAndEquipmentCenterList = declareBuildEngineeringAndEquipmentCenterDao.getDeclareBuildEngineeringAndEquipmentCenterList(center);
+        if (CollectionUtils.isNotEmpty(declareBuildEngineeringAndEquipmentCenterList)) {
+            return declareBuildEngineeringAndEquipmentCenterList.get(0);
+        }
+        return center;
+
+    }
 }

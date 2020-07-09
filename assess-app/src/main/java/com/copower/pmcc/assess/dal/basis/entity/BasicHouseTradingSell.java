@@ -21,6 +21,8 @@ public class BasicHouseTradingSell {
 
     private Date gmtModified;
 
+    private Integer tradingId;
+
     public Integer getId() {
         return id;
     }
@@ -91,5 +93,13 @@ public class BasicHouseTradingSell {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getTradingId() {
+        return tradingId;
+    }
+
+    public void setTradingId(Integer tradingId) {
+        this.tradingId = tradingId;
     }
 }

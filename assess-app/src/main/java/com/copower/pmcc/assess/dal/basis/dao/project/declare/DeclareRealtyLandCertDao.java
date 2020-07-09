@@ -88,4 +88,10 @@ public class DeclareRealtyLandCertDao {
         example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
         return declareRealtyLandCertMapper.countByExample(example);
     }
+
+    public List<DeclareRealtyLandCert> getDataIds(List<Integer> dataIds) {
+        DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
+        example.createCriteria().andIdIn(dataIds);
+        return declareRealtyLandCertMapper.selectByExample(example);
+    }
 }

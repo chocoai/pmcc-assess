@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -44,6 +45,8 @@ public class MdBaseLandPriceController {
     private BasicEstateService basicEstateService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
 
     @ResponseBody
@@ -52,13 +55,15 @@ public class MdBaseLandPriceController {
         try {
             Integer landIndexId = null;
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+            BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+
             //找到委估对象对应的土地指数
             BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
             List<DataHousePriceIndex> dataHouseIndexList = null;
-            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
+            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict(), dataDic.getId());
             if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-                dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
+                dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), null, dataDic.getId());
             }
             if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
                 landIndexId = dataHouseIndexList.get(0).getId();

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
@@ -51,14 +52,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
-                        <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                                关闭
-                            </button>
-                        </div>
-                    </div>
+                    <%@include file="/views/project/stageSurvey/common/canvasQRcodePagination.jsp" %>
                 </div>
             </div>
         </div>

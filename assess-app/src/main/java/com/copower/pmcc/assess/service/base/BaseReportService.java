@@ -12,6 +12,8 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
+import com.copower.pmcc.crm.api.dto.CrmCustomerRelationDto;
+import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -54,6 +56,8 @@ public class BaseReportService {
     private InitiateUnitInformationService initiateUnitInformationService;
     @Autowired
     private CrmCustomerService crmCustomerService;
+    @Autowired
+    private CrmRpcCustomerService crmRpcCustomerService;
 
     public BaseReportTemplate getBaseReportTemplateById(Integer id) {
         return baseReportDao.getBaseReportTemplateById(id);
@@ -138,7 +142,9 @@ public class BaseReportService {
         }
         BaseReportTemplate template = null;
         if (StringUtils.isNotBlank(unitInformationVo.getuUseUnit())) {
-            template = getReportTemplate(projectInfo, Integer.valueOf(unitInformationVo.getuUseUnit()), reportType);
+            CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(unitInformationVo.getuUseUnit()));
+            if (customer != null)
+                template = getReportTemplate(projectInfo, customer.getPid(), reportType);
         }
         if (template == null) {
             template = getCompanyTemplate(projectInfo, reportType);
@@ -154,22 +160,22 @@ public class BaseReportService {
      * @param reportType  报告类型
      * @return
      */
-    public BaseReportTemplate getReportTemplate(ProjectInfo projectInfo, Integer useUnit, Integer reportType) {
+    public BaseReportTemplate getReportTemplate(ProjectInfo projectInfo, Integer relationId, Integer reportType) {
         //1.根据类型查看当前报告使用单位是否有报告模板
         //2.如果没有报告模板则到上级客户获取
         //3.如何客户配置了模板则获取对应的模板
         //4.如果都没有配置模板则获取公司默认模板
         BaseReportTemplate baseReportTemplateWhere = new BaseReportTemplate();
         baseReportTemplateWhere.setReportType(reportType);
-        baseReportTemplateWhere.setUseUnit(useUnit);//报告使用单位
+        baseReportTemplateWhere.setUseUnit(relationId);//报告使用单位
         baseReportTemplateWhere.setType(projectInfo.getProjectTypeId());
         baseReportTemplateWhere.setCategory(projectInfo.getProjectCategoryId());
         baseReportTemplateWhere.setBisEnable(true);
         List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere, projectInfo.getEntrustPurpose());
         if (CollectionUtils.isEmpty(reportTemplateList)) {
-            CrmCustomerDto customer = crmCustomerService.getCustomer(useUnit);
-            if (customer == null) return null;
-            return getReportTemplate(projectInfo, customer.getPid(), reportType);
+            CrmCustomerRelationDto customerRelationDto = crmRpcCustomerService.getCrmCustomerRelationList(relationId);
+            if (customerRelationDto == null) return null;
+            return getReportTemplate(projectInfo, customerRelationDto.getPid(), reportType);
         }
         return getReportTemplateByLoanType(reportTemplateList, projectInfo.getLoanType());
     }

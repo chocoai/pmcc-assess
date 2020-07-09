@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -11,12 +10,10 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
-import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.event.EmptyProcessEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
-import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
@@ -30,9 +27,6 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
-import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceQuery;
-import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -43,7 +37,6 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
-import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -163,7 +156,7 @@ public class ProjectTaskService {
         try {
             boolean hangup = false;
             //需要放在所在业务bean的下面  例如申报等会有一些操作是下个阶段所需要的
-            if (StringUtils.isNotBlank(processUserDto.getProcessInsId()) && !projectPlanDetails.getBisRestart().booleanValue()) {
+            if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
                 if (projectPhase.getBisWait() != null && projectPhase.getBisWait()) {//可以挂起任务
                     hangup = true;
                 }
@@ -203,8 +196,13 @@ public class ProjectTaskService {
             projectPlanDetails.setStatus(ProcessStatusEnum.FINISH.getValue());
             projectPlanDetails.setBisRestart(false);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-            if (isReStart == Boolean.FALSE)
+            if (isReStart == Boolean.FALSE) {
                 projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
+                if (projectPlanService.isAllPlanFinish(projectInfo.getId())) {//当所有阶段都结束时，将项目状态置为完成
+                    projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
+                    projectInfoService.saveProjectInfo(projectInfo);
+                }
+            }
         }
         bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());
         projectMemberService.autoAddFinishTaskMember(projectPlanDetails);
@@ -234,7 +232,7 @@ public class ProjectTaskService {
         }
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
-            assessmentCommonService.createProjectTask(approvalModelDto,projectInfo,projectPlanDetails);
+            assessmentCommonService.createProjectTask(approvalModelDto, projectInfo, projectPlanDetails);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

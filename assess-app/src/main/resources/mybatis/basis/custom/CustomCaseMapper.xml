@@ -7,10 +7,9 @@
         <result column="version" property="version" jdbcType="INTEGER"/>
     </resultMap>
     <select id="getCaseEstateList" parameterType="map" resultMap="BaseResultMap">
-        SELECT id,`name`,`type`,version FROM (
-        SELECT DISTINCT id,`name`,`type`,version FROM tb_basic_estate where bis_case=1
+        SELECT id,`estate_name` as name ,`type` FROM tb_basic_apply_batch  where bis_case=1 and bis_delete=0
         <if test="name!=null and name!=''">
-            AND `name` LIKE CONCAT(CONCAT('%', #{name}), '%')
+            AND `estate_name` LIKE CONCAT(CONCAT('%', #{name}), '%')
         </if>
         <if test="province!=null and province!=''">
             AND province = #{province}
@@ -18,16 +17,12 @@
         <if test="city!=null and city!=''">
             AND city = #{city}
         </if>
-        <if test="district!=null and district!=''">
-            AND district = #{district}
-        </if>
-        ORDER BY version DESC,id DESC) AS T
-        GROUP BY `name` ORDER BY version DESC,NAME
+        ORDER BY NAME
     </select>
 
     <select id="getCaseBuildingList" parameterType="map" resultMap="BaseResultMap">
         SELECT id,building_number AS `name`,version FROM (
-        SELECT DISTINCT id,building_number,version FROM tb_basic_building WHERE bis_case=1
+        SELECT DISTINCT id,building_number,version FROM tb_basic_building WHERE bis_case=1 and bis_delete=0
         <if test="buildingNumber!=null and buildingNumber!=''">
             AND building_number LIKE CONCAT(CONCAT('%', #{buildingNumber}), '%')
         </if>
@@ -40,7 +35,7 @@
 
     <select id="getCaseUnitList" parameterType="map" resultMap="BaseResultMap">
         SELECT id,unit_number AS `name`,version FROM (
-        SELECT DISTINCT id,unit_number,version FROM tb_basic_unit WHERE bis_case=1
+        SELECT DISTINCT id,unit_number,version FROM tb_basic_unit WHERE bis_case=1 and bis_delete=0
         <if test="unitNumber!=null and unitNumber!=''">
             AND unit_number LIKE CONCAT(CONCAT('%', #{unitNumber}), '%')
         </if>
@@ -53,7 +48,7 @@
 
     <select id="getCaseHouseList" parameterType="map" resultMap="BaseResultMap">
         SELECT id,house_number AS `name`,version FROM (
-        SELECT DISTINCT id,house_number,version FROM tb_basic_house WHERE bis_case=1
+        SELECT DISTINCT id,house_number,version FROM tb_basic_house WHERE bis_case=1 and bis_delete=0
         <if test="houseNumber!=null and houseNumber!=''">
             AND house_number LIKE CONCAT(CONCAT('%', #{houseNumber}), '%')
         </if>
@@ -69,7 +64,7 @@
     practical_use, trading_type, trading_time, trading_unit_price, version, creator,
     gmt_created, gmt_modified, house_type, house_category, area, estate_name, deal_type,
     current_price, consult_price, assess_standard_date, realization_ratios, realization_cycle,
-    deal_part_info, approver,bis_newest
+    deal_part_info, approver,bis_from_self,bis_newest
     </sql>
 
     <select id="findReportApplyStatistics" parameterType="map" resultType="com.copower.pmcc.assess.dto.input.StatisticsDto">
@@ -247,7 +242,7 @@
         <if test="startDate == null and endDate != null">
             and gmt_created <![CDATA[ <= ]]>   #{endDate}
         </if>
-
+        order by id desc
     </select>
 
     <sql id="Base_Column_ListCaseBuilding">

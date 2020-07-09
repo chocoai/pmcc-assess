@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,14 +23,17 @@ public class BasicEstateLandService extends BasicEntityAbstract {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
+
     @Override
     public Integer saveAndUpdate(Object o, Boolean updateNull) {
-        return basicEstateService.saveAndUpdate(o,updateNull);
+        return basicEstateService.saveAndUpdate(o, updateNull);
     }
 
     @Override
     public Integer saveAndUpdateByFormData(String formData, Integer planDetailsId) throws Exception {
-        return basicEstateService.saveAndUpdateByFormData(formData,planDetailsId);
+        Integer estateId = basicEstateService.saveAndUpdateByFormData(formData, planDetailsId);
+
+        return estateId;
     }
 
     @Override
@@ -49,17 +53,19 @@ public class BasicEstateLandService extends BasicEntityAbstract {
 
     @Override
     public Object copyBasicEntity(Integer sourceId, Integer targetId, Boolean containChild) throws Exception {
-        return basicEstateService.copyBasicEntity(sourceId,targetId,containChild);
+        return basicEstateService.copyBasicEntity(sourceId, targetId, containChild);
     }
 
     @Override
     public Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception {
-        return basicEstateService.copyBasicEntityIgnore(sourceId,targetId,containChild,ignoreList);
+        return basicEstateService.copyBasicEntityIgnore(sourceId, targetId, containChild, ignoreList);
     }
 
     @Override
     public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
-        return null;
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        list.add(BasicFormClassifyEnum.HOUSE_LAND);
+        return list;
     }
 
     @Override
@@ -78,6 +84,11 @@ public class BasicEstateLandService extends BasicEntityAbstract {
         modelAndView.addObject("basicEstate", basicEstateService.getBasicEstateVo(basicEstateService.getBasicEstateById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
+    }
+
+    @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception {
+        return basicEstateService.getBasicEntityListByBatchDetailId(applyBatchDetailId);
     }
 
     @Override

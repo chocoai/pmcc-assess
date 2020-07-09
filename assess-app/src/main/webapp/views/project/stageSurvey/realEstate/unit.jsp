@@ -55,11 +55,6 @@
                                                                                id="txt_Unit_search">
                                                                         <input type="hidden" name="mapId"
                                                                                value="${basicUnit.mapId}">
-                                                                        <%--<span class="input-group-btn">--%>
-                                                                        <%--<div onclick="unitCommon.mapMarker(false);" class="btn btn-info">--%>
-                                                                        <%--<i class="fa fa-map-marker"></i> 标注--%>
-                                                                        <%--</div>--%>
-                                                                        <%--</span>--%>
                                                                         <div class="input-group-prepend">
                                                                             <button class="btn btn-info btn-sm "
                                                                                     style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
@@ -124,15 +119,8 @@
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
-
-<script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js?v=${assessVersion}'></script>
-
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
-
-
-<%--<script type="text/javascript"--%>
-        <%--src="${pageContext.request.contextPath}/js/basic/basic.common.js?v=${assessVersion}"></script>--%>
 
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
@@ -141,11 +129,14 @@
         unitCommon.initById('${basicUnit.id}');
 
         $("#txt_Unit_search").apUnit({
-            caseBuildingId: function () {
-                return '${quoteId}';
+            type: function () {
+                return '${tbType}';
+            },
+            applyBatchId: function () {
+                return '${basicApplyBatch.id}';
             },
             onSelect: function (id, name) {
-                caseFun.caseUnit.showModel('${quoteId}', name);
+                caseFun.caseUnit.showModel(id,name);
             }
         });
 

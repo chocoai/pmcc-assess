@@ -61,7 +61,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="maintenance"
-                                                    class="form-control input-full search-select select2 maintenance">
+                                                    class="form-control input-full  maintenance">
                                             </select>
                                         </div>
                                     </div>
@@ -75,7 +75,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="type"
-                                                    class="form-control input-full search-select select2 type">
+                                                    class="form-control input-full  type">
                                             </select>
                                         </div>
                                     </div>
@@ -101,7 +101,7 @@
                                             电梯数量<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="电梯数量(数字)" data-rule-number='true'
+                                            <input type="number" placeholder="电梯数量(数字)" data-rule-number='true'
                                                    name="number" class="form-control input-full" required="required">
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@
                                             准载人数
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="准载人数(数字)" data-rule-number='true'
+                                            <input type="number" placeholder="准载人数(数字)" data-rule-number='true'
                                                    name="quasiLoadNumber" class="form-control input-full" >
                                         </div>
                                     </div>
@@ -127,7 +127,7 @@
                                             准载重量
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="准载重量(数字)" data-rule-number='true'
+                                            <input type="number" placeholder="准载重量kg(数字)" data-rule-number='true'
                                                    name="quasiLoadWeight" class="form-control input-full" >
                                         </div>
                                     </div>
@@ -146,7 +146,21 @@
                                     </div>
                                     </div>
                                 </div>
-                                
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input id="unitElevatorFile" placeholder="上传附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_unitElevatorFile"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                             </div>
                         </div>

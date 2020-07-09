@@ -2,7 +2,9 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.proxy.face.ProjectPhaseInterface;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -33,7 +35,7 @@ import java.util.stream.Collectors;
  * Created by zch on 2020-3-20.
  */
 @Service
-public class SurveyAssetInfoService {
+public class SurveyAssetInfoService implements ProjectPhaseInterface {
     @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
@@ -54,6 +56,8 @@ public class SurveyAssetInfoService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private SurveyAssetInventoryService surveyAssetInventoryService;
+    @Autowired
+    private SurveyAssetInfoItemDao surveyAssetInfoItemDao;
 
     /**
      * 提交要做的事
@@ -123,6 +127,16 @@ public class SurveyAssetInfoService {
         }
         query.setStatus(SysProjectEnum.RUNING.getValue());
         saveSurveyAssetInfo(query);
+        return query;
+    }
+
+    public SurveyAssetInfo getSurveyAssetInfoByPlanDetailsId(Integer projectPlanDetailsId) {
+        SurveyAssetInfo query = new SurveyAssetInfo();
+        query.setPlanDetailId(projectPlanDetailsId);
+        List<SurveyAssetInfo> list = getSurveyAssetInfoListByQuery(query);
+        if (CollectionUtils.isNotEmpty(list)) {
+            return list.get(0);
+        }
         return query;
     }
 
@@ -347,5 +361,28 @@ public class SurveyAssetInfoService {
         return null;
     }
 
+    @Override
+    public boolean beforeDeleteVerify(Integer projectPlanDetailsId) {
+        return true;
+    }
 
+    @Override
+    public void afterDeleteExecute(Integer projectPlanDetailsId) {
+        SurveyAssetInfo surveyAssetInfo = getSurveyAssetInfoByPlanDetailsId(projectPlanDetailsId);
+
+        List<SurveyAssetInfoItem> assetInfoItemList = surveyAssetInfoItemService.getItemsByAssetInfoId(surveyAssetInfo.getId());
+        if(CollectionUtils.isNotEmpty(assetInfoItemList)){
+            for(SurveyAssetInfoItem item:assetInfoItemList){
+                //权证状态修改
+                DeclareRecord recordById = declareRecordService.getDeclareRecordById(item.getDeclareId());
+                if(recordById!=null){
+                    recordById.setInventoryStatus(null);
+                    declareRecordService.updateDeclareRecord(recordById,true);
+                }
+                //删除认领的数据
+                surveyAssetInfoItemDao.deleteSurveyAssetInfoItemById(item.getId());
+            }
+        }
+
+    }
 }

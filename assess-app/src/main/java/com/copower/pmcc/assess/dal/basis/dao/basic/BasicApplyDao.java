@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicApplyMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,14 +19,23 @@ public class BasicApplyDao {
     @Autowired
     private BasicApplyMapper basicApplyMapper;
 
+    public BasicApply getBasicApplyById(Integer id) {
+        return basicApplyMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 获取数据信息
      *
-     * @param id
+     * @param houseId
      * @return
      */
-    public BasicApply getBasicApplyById(Integer id) {
-        return basicApplyMapper.selectByPrimaryKey(id);
+    public BasicApply getBasicApplyByHouseId(Integer houseId) {
+        BasicApplyExample example = new BasicApplyExample();
+        BasicApplyExample.Criteria criteria = example.createCriteria();
+        criteria.andBasicHouseIdEqualTo(houseId);
+        List<BasicApply> applyList = basicApplyMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(applyList)) return null;
+        return applyList.get(0);
     }
 
     public List<BasicApply> getBasicApplyListByIds(List<Integer> ids){
@@ -38,6 +48,14 @@ public class BasicApplyDao {
     public List<BasicApply> getBasicApplyList(BasicApply basicApply) {
         BasicApplyExample example = new BasicApplyExample();
         BasicApplyExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicApply,criteria);
+        example.setOrderByClause("id desc");
+        return basicApplyMapper.selectByExample(example);
+    }
+
+    public List<BasicApply> getBasicApplyListByWhere(BasicApply basicApply) {
+        BasicApplyExample example = new BasicApplyExample();
+        BasicApplyExample.Criteria criteria = example.createCriteria();
         MybatisUtils.convertObj2Criteria(basicApply,criteria);
         example.setOrderByClause("id desc");
         return basicApplyMapper.selectByExample(example);

@@ -50,6 +50,12 @@ public class SchemeLiquidationAnalysisJudgeDao {
         return schemeLiquidationAnalysisJudgeMapper.selectByExample(example);
     }
 
+    public List<SchemeLiquidationAnalysisJudge> getListByGroupId(Integer groupId) {
+        SchemeLiquidationAnalysisJudgeExample example = new SchemeLiquidationAnalysisJudgeExample();
+        example.createCriteria().andGroupIdEqualTo(groupId);
+        return schemeLiquidationAnalysisJudgeMapper.selectByExample(example);
+    }
+
     public List<SchemeLiquidationAnalysisJudge> getListByQuery(String name,String certName, String seat,String ownership,Integer areaGroupId, Integer groupId) {
         SchemeLiquidationAnalysisJudgeExample example = new SchemeLiquidationAnalysisJudgeExample();
         SchemeLiquidationAnalysisJudgeExample.Criteria criteria = example.createCriteria();

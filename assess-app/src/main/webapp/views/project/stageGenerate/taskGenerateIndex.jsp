@@ -33,8 +33,7 @@
                                 <div class="card-body">
                                     <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}"
                                           enctype="multipart/form-data">
-                                        <input type="hidden" id="areaGroupId" name="areaGroupId"
-                                               value="${generationVo.areaGroupId}">
+                                        <input type="hidden"  name="areaGroupId" value="${generationVo.areaGroupId}">
                                         <input type="hidden" name="id" value="${generationVo.id}">
                                         <div class="row form-group">
                                             <div class="col-md-12">
@@ -161,94 +160,19 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-
-                                                    <label class="col-sm-1 control-label">
-                                                        报告类型<span class="symbol required"></span>
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <select name="reportType" required multiple="multiple"
-                                                                onchange="objGenerate.reportTypeChangeEvent(this,'reportType${generationVo.areaGroupId}') ;"
-                                                                class="form-control input-full search-select select2">
-                                                            <option>请选择</option>
-                                                            <c:forEach items="${reportTypeList}" var="reportType"
-                                                                       varStatus="status">
-                                                                <option value="${reportType.id}">${reportType.name}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
-                                            <div class="row form-group" style="display: none;"
-                                                 id="reportType${generationVo.areaGroupId}${reportType.id}"
-                                                 data-name="reportType${generationVo.areaGroupId}">
-                                                <div class="col-md-12">
-                                                    <div class="form-inline x-valid">
-                                                        <div class="col-sm-1">
-                                                            <button type="button" class="btn-primary btn btn-sm"
-                                                                    onclick="reGetDocumentNumber('${generationVo.areaGroupId}','${reportType.id}',this)">
-                                                                重新拿号<i
-                                                                    class="fa fa-undo"></i></button>
-                                                        </div>
 
-                                                        <label class="col-sm-1">
-                                                            <!-- 报告附件方法 -->
-                                                            <button type="button" class="btn-dark btn btn-sm"
-                                                                    onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">
-                                                                生成${reportType.name}
-                                                                <i class="fa fa-file-word-o"></i></button>
-                                                        </label>
-
-                                                        <div class="col-sm-3">
-                                                            <!-- 报告附件id -->
-                                                            <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
-                                                        </div>
-
-                                                        <div class="col-sm-1">
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-info btn-sm dropdown-toggle"
-                                                                        type="button"
-                                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                                        aria-expanded="false">
-                                                                    意见稿
-                                                                </button>
-                                                                <div class="dropdown-menu" x-placement="bottom-start"
-                                                                     style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                                    <c:forEach var="item"
-                                                                               items="${documentTemplateList}">
-                                                                        <a class="dropdown-item"
-                                                                           href="${pageContext.request.contextPath}/documentOpinion/applyIndex/${item.id}&${projectInfo.id}&${reportType.fieldName}&${generationVo.areaGroupId}&${reportType.id}&${generationVo.id}"
-                                                                           target="_blank">${item.templateName}</a>
-                                                                    </c:forEach>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-1">
-                                                            <c:if test="${generationVo != null}">
-                                                                <c:if test="${generationVo.id != null}">
-                                                                    <input id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}"
-                                                                           name="file" type="file" style="display: none"
-                                                                           onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
-                                                                    <div class="btn btn-primary btn-sm"
-                                                                         onclick="$(this).prev().trigger('click')">上传报告
-                                                                    </div>
-                                                                </c:if>
-                                                            </c:if>
-                                                        </div>
-
-                                                        <div class="col-sm-1">
-                                                            <button type="button" class="btn-primary btn btn-sm"
-                                                                    onclick="getReportNumber('${generationVo.areaGroupId}','${reportType.id}',this)">
-                                                                拿号<i
-                                                                    class="fa fa-dot-circle-o"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
                                     </form>
                                 </div>
+
+                                <div class="card-body">
+                                    <div id="generateReportGroupTool${generationVo.areaGroupId}">
+
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <script type="text/javascript">
@@ -264,6 +188,7 @@
                     </c:forEach>
                     <%@include file="/views/share/form_apply.jsp" %>
                     <%@include file="/views/share/form_log.jsp" %>
+                    <%@include file="generateReportGroupView.jsp" %>
                 </div>
             </div>
         </div>
@@ -359,15 +284,15 @@
 
     objGenerate.reportTypeChangeEvent = function (_this, reportType) {
         var frm = $(_this).closest('form');
-        frm.find("div[data-name="+reportType+"]").hide() ;
+        frm.find("div[data-name=" + reportType + "]").hide();
         var data = formSerializeArray(frm);
         if (data.reportType) {
-            saveGenerateReportInfo([data],function () {
+            saveGenerateReportInfo([data], function () {
                 var ids = data.reportType.split(",");
                 $.each(ids, function (i, node) {
                     $("#" + reportType + node).show();
                 });
-            }) ;
+            });
         }
     };
 
@@ -593,62 +518,77 @@
 
     //提交
     function submit() {
-        var allData = [];
-        $(".area_panel").each(function () {
-            var form = $(this).find('form');
-            allData.push(formSerializeArray(form));
-        });
-        saveGenerateReportInfo(allData, function () {
-            var data = {};
-            data.planId = '${projectPlan.id}';
-            data.areaGroupId = $("#areaGroupId").val();
-            if ("${processInsId}" != "0") {
-                submitEditToServer(JSON.stringify(data));
+        reportGroupObj.getValidData('${projectInfo.id}' ,function (validData) {
+            if (validData.length != 0){
+                var message = validData.join("\n\r") ;
+                AlertSuccess("提示",message );
+                return false ;
             }
-            else {
-                submitToServer(JSON.stringify(data));
-            }
-        });
+            var allData = [];
+            $(".area_panel").each(function () {
+                var form = $(this).find('form');
+                allData.push(formSerializeArray(form));
+            });
+            saveGenerateReportInfo(allData, function () {
+                var data = {};
+                data.planId = '${projectPlan.id}';
+                data.areaGroupId = $("#areaGroupId").val();
+                if ("${processInsId}" != "0") {
+                    submitEditToServer(JSON.stringify(data));
+                } else {
+                    submitToServer(JSON.stringify(data));
+                }
+            });
+        }) ;
     }
 
     //提交
     function commitApply() {
-        var allData = [];
-        var isPass = true;
-        $(".area_panel").each(function () {
-            $(this).find('.x_content').show();
-            var form = $(this).find('form');
-            isPass = form.valid();
-            allData.push(formSerializeArray(form));
-        });
-        if (!isPass) {
-            return false;
-        }
-        var data = {};
-        data.planId = '${projectPlan.id}';
-        data.areaGroupId = $("#areaGroupId").val();
-        var url = "${pageContext.request.contextPath}/generate/submitApply";
-        if ("${empty processInsId?"0":processInsId}" != "0") {
-            url = "${pageContext.request.contextPath}/generate/submitEditApproval";
-            var approvalData = formParams("frm_approval");
-            data = $.extend(data, approvalData);
-        }
-        saveGenerateReportInfo(allData, function () {
-            //提交流程
-            $.ajax({
-                url: url,
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        AlertSuccess("成功", "提交成功", function () {
-                            window.close();
-                        });
-                    } else {
-                        AlertError(result.errmsg);
+        reportGroupObj.getValidData('${projectInfo.id}' ,function (validData) {
+            if (validData.length != 0){
+                var message = validData.join("\n\r") ;
+                AlertSuccess("提示",message );
+                return false ;
+            }
+            var allData = [];
+            var isPass = true;
+            $(".area_panel").each(function () {
+                $(this).find('.x_content').show();
+                var form = $(this).find('form');
+                isPass = form.valid();
+                allData.push(formSerializeArray(form));
+            });
+            if (!isPass) {
+                return false;
+            }
+            var data = {};
+            data.planId = '${projectPlan.id}';
+            data.areaGroupId = $("#areaGroupId").val();
+            var url = "${pageContext.request.contextPath}/generate/submitApply";
+            if ("${empty processInsId?"0":processInsId}" != "0") {
+                url = "${pageContext.request.contextPath}/generate/submitEditApproval";
+                var approvalData = formParams("frm_approval");
+                data = $.extend(data, approvalData);
+            }
+            saveGenerateReportInfo(allData, function () {
+                //提交流程
+                $.ajax({
+                    url: url,
+                    data: data,
+                    success: function (result) {
+                        if (result.ret) {
+                            AlertSuccess("成功", "提交成功", function () {
+                                window.close();
+                            });
+                        } else {
+                            AlertError(result.errmsg);
+                        }
                     }
-                }
-            })
-        });
+                })
+            });
+        }) ;
+
+
     }
 
 </script>

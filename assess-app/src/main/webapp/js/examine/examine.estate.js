@@ -61,10 +61,10 @@
         }
     };
 
-    estateCommon.getUploadKey = function (bisDetail,tbType) {
-        if(tbType=="estate.land"){
+    estateCommon.getUploadKey = function (bisDetail, tbType) {
+        if (tbType == "estate.land") {
             estateCommon.getFilePartHtml(AssessDicKey.estateLandEstateFile, bisDetail);
-        }else{
+        } else {
             estateCommon.getFilePartHtml(AssessDicKey.estateIndustrialFile, bisDetail);
             estateCommon.getFilePartHtml(AssessDicKey.estateNonIndustrialFile, bisDetail);
         }
@@ -150,7 +150,7 @@
     };
 
     //楼盘初始化by applyId
-    estateCommon.initById = function (id, tbType,callback) {
+    estateCommon.initById = function (id, tbType, callback) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateMapById',
             type: 'get',
@@ -171,7 +171,7 @@
     };
 
     //楼盘详情页面
-    estateCommon.initDetailById = function (id, callback, bisDetail,tbType) {
+    estateCommon.initDetailById = function (id, callback, bisDetail, tbType) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateMapById',
             type: 'get',
@@ -212,7 +212,7 @@
      * @param bisDetail 是否是详情页面
      */
     estateCommon.initForm = function (data, bisDetail) {
-        estateCommon.getUploadKey(bisDetail,data.estate.tbType);
+        estateCommon.getUploadKey(bisDetail, data.estate.tbType);
         estateCommon.estateForm.clearAll().initForm(data.estate);
         estateCommon.estateForm.find('.x-percent').each(function () {
             $(this).attr('data-value', data.estate[$(this).attr('name')]);
@@ -229,7 +229,9 @@
             districtTarget: estateCommon.estateForm.find("select[name='district']"),
             provinceValue: data.estate.province,
             cityValue: data.estate.city,
-            districtValue: data.estate.district
+            districtValue: data.estate.district,
+            useDefaultText: true,
+            provinceDefaultText: '四川',
         });
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
             var target = $("#industrySupplyInfoContainer");
@@ -285,6 +287,15 @@
         }, true);
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_infrastructureCompleteness, data.estate.infrastructureCompleteness, function (html, data) {
             estateCommon.estateForm.find("select[name='infrastructureCompleteness']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareAcquisitionType, data.estate.acquisitionType, function (html, data) {
+            estateCommon.estateForm.find("select.acquisitionType").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, data.estate.landRightNature, function (html, data) {
+            estateCommon.estateForm.find("select[name='landRightNature']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, data.estate.landRightType, function (html, data) {
+            estateCommon.estateForm.find("select[name='landRightType']").empty().html(html).trigger('change');
         });
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
             estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
@@ -365,8 +376,10 @@
                     }
                 });
                 estateCommon.estateLandStateForm.find(".developmentDegreeContent").hide();
+                estateCommon.estateLandStateForm.find(".parcelSettingInner").show();
             } else {
                 estateCommon.estateLandStateForm.find(".developmentDegreeContent").show();
+                estateCommon.estateLandStateForm.find(".parcelSettingInner").hide();
             }
         });
 
@@ -378,7 +391,7 @@
         try {
             estateLandCategoryInfo.init(data.land.id);
         } catch (e) {
-            console.log(e) ;
+            console.log(e);
         }
         try {
             estateVillageObj.init(data.estate.id);
@@ -484,23 +497,121 @@
 
     //楼盘标注
     estateCommon.mapMarker = function (readonly) {
-        var contentUrl = getContextPath() + '/map/mapMarkerEstate?estateName=' + estateCommon.getEstateName();
+        var option = {name: estateCommon.getEstateName(), type: 'estate', tableId: estateCommon.getEstateId()};
+        var cityName = estateCommon.estateForm.find("select[name='city']").find('option:selected').text();
+        var contentUrl = getContextPath() + '/map/drawPolygon?callback=estateCommon.settingFileGeneralLayout&cityName='+cityName+'&estateName=' + estateCommon.getEstateName();
         if (readonly != true) {
-            contentUrl += '&click=estateCommon.addMarker';
+            contentUrl += '&apply=true';
+        } else {
+            contentUrl += '&detail=true';
         }
-        layer.open({
-            type: 2,
-            title: '楼盘标注',
-            shadeClose: true,
-            shade: true,
-            maxmin: true, //开启最大化最小化按钮
-            area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
-            content: contentUrl,
-            success: function (layero) {
-                estateCommon.estateMapiframe = window[layero.find('iframe')[0]['name']];
-                estateCommon.loadMarkerList();
+        examineCommon.getApplyBatchEstateTaggingsByTableId({
+            tableId: option.tableId,
+            type: option.type
+        }, function (taggingVos) {
+            if (taggingVos.length != 0) {
+                examineCommon.taggingId = taggingVos[0].id;
+            }
+            if (examineCommon.taggingId) {
+                contentUrl += "&taggingId=" + examineCommon.taggingId;
+            }
+            layer.open({
+                type: 2,
+                // title: '楼盘标注',
+                shadeClose: true,
+                shade: true,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['100%', '100%'],
+                content: contentUrl,
+                cancel: function (index, layero) {
+                    var iframe = window[layero.find('iframe')[0]['name']];
+                    estateCommon.mapMarkerSaveData(iframe, option);
+                },
+                btnAlign: 'c',
+                btn: ['关闭'],
+                yes: function (index, layero) {
+                    var iframe = window[layero.find('iframe')[0]['name']];
+                    if (readonly != true) {
+                        estateCommon.mapMarkerSaveData(iframe, option);
+                    }
+                    layer.closeAll('iframe');
+                }
+            });
+        });
+    };
+
+    estateCommon.mapMarkerSaveData = function (iframe, option) {
+        if (iframe.getFormDrawPolygonData) {
+            if (iframe.getFormDrawCenterData) {
+                var centerObj = iframe.getFormDrawCenterData();
+                option.lng = centerObj.lng;
+                option.lat = centerObj.lat;
+            }
+            examineCommon.saveDrawPolygon(iframe.getFormDrawPolygonData(), option, function (obj) {
+                examineCommon.taggingId = obj.id;
+                notifyInfo("成功", "标注数据保存成功");
+            });
+        }
+    };
+
+    /**
+     * canvas 截图  并且上传到附件
+     * @param canvasCode
+     */
+    estateCommon.settingFileGeneralLayout = function (canvasCode) {
+        //这里使用的是胡豪定义的动态数组附件
+        var option = {canvasCode: canvasCode, tableId: estateCommon.getEstateId(), tableName: AssessDBKey.BasicEstate};
+        console.log(option) ;
+        //三个同步方法
+        var arr = [];
+        var tempArr = [];
+        var filters = ['总平面图'];//假如你想把截图的高德地图添加到多个附件中那么把名称加入这个数组
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandEstateFile, null, function (html, data) {
+            if (data.length != 0) {
+                $.each(data, function (i, item) {
+                    tempArr.push(item);
+                });
+            }
+        }, false);
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateIndustrialFile, null, function (html, data) {
+            if (data.length != 0) {
+                $.each(data, function (i, item) {
+                    tempArr.push(item);
+                });
+            }
+        }, false);
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateNonIndustrialFile, null, function (html, data) {
+            if (data.length != 0) {
+                $.each(data, function (i, item) {
+                    tempArr.push(item);
+                });
+            }
+        }, false);
+        $.each(tempArr, function (i, item) {
+            if (jQuery.inArray(item.name, filters) != -1) {
+                arr.push(item.fieldName);
             }
         });
+        $.ajax({
+            url: getContextPath() + '/public/html2canvasNetDownloadUtils',
+            // url: getContextPath() + '/public/newHtml2canvasNetDownloadUtils',//折线 url
+            data: {
+                canvasCode: canvasCode,
+                tableId: estateCommon.getEstateId(),
+                tableName: AssessDBKey.BasicEstate,
+                fieldsName: arr.join(",")
+            },
+            method: "post",
+            success: function (result) {
+                if (result.ret) {
+                    $.each(arr, function (i, n) {
+                        estateCommon.fileShow(n, option.tableName, option.tableId, true);
+                    });
+                } else {
+
+                }
+            }
+        })
     };
 
     //土地标注画区块
@@ -631,7 +742,6 @@
             }
         })
     };
-
 
 
     //板块选择

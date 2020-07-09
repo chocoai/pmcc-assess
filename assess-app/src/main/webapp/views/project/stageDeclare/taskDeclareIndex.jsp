@@ -509,18 +509,6 @@
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                             <div class="form-inline x-valid">
                                                 <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
-                                                    估价委托书
-                                                </label>
-                                                <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                    <input id="project_proxy" name="project_proxy" type="file"
-                                                           multiple="false">
-                                                    <div id="_project_proxy"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
                                                     上次评估报告
                                                 </label>
                                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">

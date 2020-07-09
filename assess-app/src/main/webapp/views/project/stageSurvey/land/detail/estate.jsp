@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en" class="no-js">
 <head>
-    <title>楼盘</title>
+    <title>土地基本信息</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body>
@@ -17,7 +17,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        楼盘基本信息
+                                        土地基本信息
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -89,32 +89,49 @@
                                                     <label class="form-control input-full"
                                                            name="positionName">${basicEstate.positionName}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">基础版块<span
-                                                        class="symbol required"></span></label>
+                                                <label class="col-sm-1 control-label">区域规划</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
-                                                           name="blockName">${basicEstate.blockName}</label>
+                                                           name="regionalPlanning">${basicEstate.regionalPlanning}</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%--<div class="row form-group">--%>
+                                        <%--<div class="col-md-12">--%>
+                                            <%--<div class="form-inline x-valid">--%>
+                                                <%--<label class="col-sm-1 control-label">基础版块描述<span--%>
+                                                        <%--class="symbol required"></span></label>--%>
+                                                <%--<div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">--%>
+                                                    <%--<label class="form-control input-full">${basicEstate.blockDescription}</label>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">基础版块描述<span
-                                                        class="symbol required"></span></label>
-                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                                                    <label class="form-control input-full">${basicEstate.blockDescription}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1">占地面积(平方米)</label>
+                                                <label class="col-sm-1">土地取得方式</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">${basicEstate.coverAnArea}</label>
+                                                    <label class="form-control input-full">${basicEstate.acquisitionTypeName}</label>
+                                                </div>
+                                                <label class="col-sm-1">土地权利性质</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${basicEstate.landRightNatureName}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">权利类型</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${basicEstate.landRightTypeName}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">占地面积</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${basicEstate.coverAnArea}${basicEstate.coverAnAreaUnit}</label>
                                                 </div>
                                                 <label class="col-sm-1">土地权利人</label>
                                                 <div class="col-sm-3">
@@ -122,7 +139,7 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">均价</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">${basicEstate.averagePrice}</label>
+                                                    <label class="form-control input-full">${basicEstate.averagePrice}${basicEstate.averagePriceUnit}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,7 +149,7 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">价格区间</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">${basicEstate.priceRange}</label>
+                                                    <label class="form-control input-full">${basicEstate.priceRange}${basicEstate.priceRangeUnit}</label>
                                                 </div>
                                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                                     取得时间
@@ -172,7 +189,10 @@
                                                         <div class="col-sm-3">
                                                             <label class="form-control input-full">${basicEstate.infrastructureCompletenessName}</label>
                                                         </div>
-                                                        <div class="col-sm-8">
+                                                        <label class="col-sm-1">
+                                                            宗地外设定
+                                                        </label>
+                                                        <div class="col-sm-7">
                                                             <label class="form-control input-full">${basicEstate.infrastructureName}</label>
                                                         </div>
                                                     </div>
@@ -233,13 +253,12 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">土地面积</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="landArea">${basicEstateLandState.landArea}${basicEstateLandState.landAreaUnit}</label>
+                                                    <label class="form-control input-full">${basicEstateLandState.landArea}${basicEstateLandState.landAreaUnit}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">土地形状</label>
+                                                <label class="col-sm-1 control-label">地形</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
-                                                           name="shapeStateName">${basicEstateLandState.planenessName}</label>
+                                                           name="planenessName">${basicEstateLandState.planenessName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -252,14 +271,92 @@
                                                     <label class="form-control input-full"
                                                            name="topographicTerrainName">${basicEstateLandState.topographicTerrainName}</label>
                                                 </div>
+                                                <label class="col-sm-1 control-label">土地开发程度</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="developmentDegreeName">${basicEstateLandState.developmentDegreeName}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">土地利用现状</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="presentSituationLandUse">${basicEstateLandState.presentSituationLandUse}</label>
+                                                </div>
+                                                <c:if test="${basicEstateLandState.developmentDegreeName == '熟地'}">
+                                                    <label class="col-sm-1 parcelSettingInner">
+                                                        宗地内设定
+                                                    </label>
+                                                    <div class="col-sm-7 parcelSettingInner">
+                                                        <label class="form-control input-full"
+                                                               name="developmentDegreeContentName">${basicEstateLandState.developmentDegreeContentName}</label>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="${basicEstateLandState.developmentDegreeName != '熟地'}">
+                                                    <label class="col-sm-1 control-label">土地开发程度备注</label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full"
+                                                               name="developmentDegreeRemark">${basicEstateLandState.developmentDegreeRemark}</label>
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">宗地内现状</label>
+                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                                    <label class="form-control input-full">${basicEstateLandState.currentSituation}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header">
+                                        <div class="card-category">土壤</div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">污染</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="contaminatedName">${basicEstateLandState.contaminatedName}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">酸碱度</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="phName">${basicEstateLandState.phName}</label>
+                                                </div>
+                                                <c:if test="${not empty basicEstateLandState.holdOnName}">
+
+                                                    <label class="col-sm-1 control-label">稳定性</label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full"
+                                                               name="holdOnName">${basicEstateLandState.holdOnName}</label>
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <c:if test="${not empty basicEstateLandState.bearingCapacityName}">
+                                                    <label class="col-sm-1 control-label">承载力</label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full"
+                                                               name="bearingCapacityName">${basicEstateLandState.bearingCapacityName}</label>
+                                                    </div>
+                                                </c:if>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
-                                <div class="x_title">
-                                    <h4>土地用途类型类别</h4>
-                                </div>
-                                <div class="x_content" id="LandUseTypeContent"></div>
                             </div>
                         </div>
                     </div>
@@ -284,10 +381,7 @@
                         <c:if test="${formType eq 'industry'}">
                             <%@include file="/views/project/stageSurvey/commonDetail/matchingMaterial.jsp" %>
                         </c:if>
-
                     </c:if>
-
-                    <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -308,9 +402,6 @@
 <%@include file="/views/project/stageSurvey/commonDetail/estateStreetInfo.jsp" %>
 <%@include file="/views/project/stageSurvey/commonDetail/estateLandCategoryInfo.jsp" %>
 <%@include file="/views/project/stageSurvey/commonDetail/estateVillage.jsp" %>
-<%@include file="/views/project/stageSurvey/commonDetail/estateLandUseCategory.jsp" %>
-
-<%@include file="/views/share/chksCommon.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"

@@ -23,7 +23,7 @@ public enum BasicFormClassifyEnum {
     HOUSE("house", "房屋", "tb_basic_house", "basicHouseService"),
     //----纯土地-----------------------------------
     ESTATE_LAND("estate.land", "土地", "tb_basic_estate", "basicEstateLandService"),
-    HOUSE_LAND("house.land", "房屋", "tb_basic_house", "basicHouseLandService"),
+    HOUSE_LAND("house.land", "土地类型", "tb_basic_house", "basicHouseLandService"),
     //----土地带房产-----------------------------------
     ESTATE_LAND_INCLUD("estate.land.includ", "土地[房产]", "tb_basic_estate", "basicEstateLandIncludService"),
     BUILDING_LAND_INCLUD("building.land.includ", "楼栋[房产]", "tb_basic_building", "basicBuildingLandIncludService"),

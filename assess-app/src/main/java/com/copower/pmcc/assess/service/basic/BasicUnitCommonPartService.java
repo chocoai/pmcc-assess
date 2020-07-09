@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -173,6 +174,14 @@ public class BasicUnitCommonPartService {
         }
         if (CollectionUtils.isNotEmpty(stringList)) {
             vo.setUnitLocation(org.apache.commons.lang3.StringUtils.join(stringList, " , "));
+        }
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicUnitCommonPart.getId(), null, FormatUtils.entityNameConvertToTableName(BasicUnitCommonPart.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
+            }
+            vo.setFileViewName(builder.toString());
         }
         return vo;
     }

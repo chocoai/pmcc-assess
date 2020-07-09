@@ -24,11 +24,13 @@
                         <div class="col-md-12">
                             <div class="x_panel card area_panel">
                                 <input type="hidden" name="areaGroupId" value="${item.id}">
-                                <div class="x_title card-header collapse-link" onclick="programme.loadJudgeObjectList(this);">
+                                <div class="x_title card-header collapse-link"
+                                     onclick="programme.loadJudgeObjectList(this);">
                                     <div class="card-head-row">
                                         <div class="card-title">${item.areaName}</div>
                                         <div class="card-tools">
-                                            <button class="btn  btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span>
+                                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                                    class="fa fa-angle-down"></span>
                                             </button>
                                         </div>
                                     </div>
@@ -61,7 +63,8 @@
                                             </label>
                                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                                 <label class="form-control input-full">
-                                                    <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
+                                                    <fmt:formatDate value="${item.valueTimePoint}"
+                                                                    pattern="yyyy-MM-dd"/>
                                                 </label>
                                             </div>
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
@@ -348,7 +351,9 @@
                             <input type="checkbox">
                             <label style="word-break: break-all">{mergeNumber}</label>
                             <button type="button" href="javascript://" onclick="programmeMethod.setMethod(this);"
-                                    class="btn btn-sm btn-info judge-method tooltips">评估方法</button>
+                                    class="btn btn-md btn-info judge-method tooltips">评估方法
+                            </button>
+                            <small></small>
                         </div>
                         <div class="card-tools">
                             <button type="button" class="btn  btn-link btn-primary btn-xs collapse-link"><span
@@ -375,15 +380,18 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <label class="form-control input-full" data-name="ownership">{ownership}
-                                        <button type="button" href="javascript://" onclick="programme.viewJudgeInfo(this);"
-                                                class="btn btn-xs btn-info tooltips"><i class="fa fa-white fa-search"></i></button>
+                                            <button type="button" href="javascript://"
+                                                    onclick="programme.viewJudgeInfo(this);"
+                                                    class="btn btn-xs btn-info tooltips"><i
+                                                    class="fa fa-white fa-search"></i></button>
                                         </label>
                                     </div>
                                     <label class="col-sm-1 control-label">
                                         坐落
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control input-full" data-name="seat"><span>{seat}</span></label>
+                                        <label class="form-control input-full"
+                                               data-name="seat"><span>{seat}</span></label>
                                     </div>
                                     <label class="col-sm-1 control-label">
                                         终止日期
@@ -415,26 +423,45 @@
                                         实际用途
                                     </label>
                                     <div class="col-sm-2 x-valid">
-                                        <label class="form-control input-full" data-name="practicalUse">{practicalUse}</label>
+                                        <label class="form-control input-full"
+                                               data-name="practicalUse">{practicalUse}</label>
                                     </div>
-                                    <label class="col-sm-1 control-label">
-                                        设定用途
-                                    </label>
-                                    <div class="col-sm-2 x-valid">
-                                        <label class="form-control input-full">{setUseName}</label>
-                                    </div>
-                                    <label class="col-sm-1 control-label">
-                                        最佳利用方式
-                                    </label>
-                                    <div class="col-sm-2 x-valid">
-                                        <label class="form-control input-full">{bestUseName}</label>
-                                    </div>
+                                    <c:choose>
+                                        <c:when test="${projectCategory eq 'land'}">
+                                            <label class="col-sm-1 control-label">
+                                                设定用途类型
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <label class="form-control input-full">{setUseClassifyName}</label>
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                设定用途类别
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <label class="form-control input-full">{setUseName}</label>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <label class="col-sm-1 control-label">
+                                                设定用途
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <label class="form-control input-full">{setUseName}</label>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
+                                        最佳利用方式
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <label class="form-control input-full">{bestUseName}</label>
+                                    </div>
                                     <label class="col-sm-1 control-label">
                                         证载面积
                                     </label>
@@ -447,21 +474,97 @@
                                     <div class="col-sm-2 x-valid">
                                         <label class="form-control input-full">{evaluationArea}</label>
                                     </div>
-                                    <label class="col-sm-1 control-label" data-name="mergeExplainContainer{id}" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group" data-name="mergeExplainContainer{id}" style="display: none;">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
                                         合并对象说明
                                     </label>
-                                    <div class="col-sm-2 x-valid" data-name="mergeExplainContainer{id}" style="display: none;">
+                                    <div class="col-sm-11 x-valid">
                                         <label class="form-control input-full">{mergeExplain}</label>
                                     </div>
-                                    <label class="col-sm-1 control-label"  data-name="splitExplainContainer{id}" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group" data-name="splitExplainContainer{id}" style="display: none;">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
                                         拆分对象说明
                                     </label>
-                                    <div class="col-sm-2 x-valid"  data-name="splitExplainContainer{id}" style="display: none;">
+                                    <div class="col-sm-11 x-valid">
                                         <label class="form-control input-full">{splitExplain}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <c:if test="${projectCategoryId eq 'landCategoryId'}">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            规划容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="planPlotRatio">{planPlotRatio}</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            实际容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="actualPlotRatio">{actualPlotRatio}</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            设定容积率
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="setPlotRatio">{setPlotRatio}</label>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            宗地外实际开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="parcelOuterDevelopName">{parcelOuterDevelopName}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            宗地内实际开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full" data-name="parcelInnerDevelopName">{parcelInnerDevelopName}</label>
+                                        </div>
+
+                                        <label class="col-sm-1 control-label">
+                                            宗地内设定开发程度
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full"
+                                                   data-name="parcelSettingInnerDevelopName">{parcelSettingInnerDevelopName}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            宗地内现状
+                                        </label>
+                                        <div class="col-sm-11 x-valid">
+                                            <label class="form-control input-full" data-name="currentSituation">{currentSituation}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -533,9 +636,15 @@
                         html = html.replace(/{planPlotRatio}/g, item.planPlotRatio == undefined ? "" : item.planPlotRatio);
                         html = html.replace(/{actualPlotRatio}/g, item.actualPlotRatio == undefined ? "" : item.actualPlotRatio);
                         html = html.replace(/{setUseName}/g, item.setUseName == undefined ? "" : item.setUseName);
+                        html = html.replace(/{setUseClassifyName}/g, item.setUseClassifyName == undefined ? "" : item.setUseClassifyName);
                         html = html.replace(/{bestUseName}/g, item.bestUseName == undefined ? "" : item.bestUseName);
                         html = html.replace(/{mergeExplain}/g, item.mergeExplain == undefined ? "" : item.mergeExplain);
                         html = html.replace(/{splitExplain}/g, item.splitExplain == undefined ? "" : item.splitExplain);
+                        html = html.replace(/{currentSituation}/g, item.currentSituation == undefined ? "" : item.currentSituation);
+                        html = html.replace(/{parcelOuterDevelopName}/g, item.parcelOuterDevelopName == undefined ? "" : item.parcelOuterDevelopName);
+                        html = html.replace(/{parcelInnerDevelopName}/g, item.parcelInnerDevelopName == undefined ? "" : item.parcelInnerDevelopName);
+                        html = html.replace(/{parcelSettingInnerDevelopName}/g, item.parcelSettingInnerDevelopName == undefined ? "" : item.parcelSettingInnerDevelopName);
+
                         tbody.append(html);
                         //设值
                         var lastTr = tbody.find(".x_panel:last");
@@ -549,6 +658,14 @@
                         if (item.bisSetFunction) {
                             lastTr.find('.x_title').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }
+                        var desc = '';
+                        if (item.standardNumber) {
+                            desc += "【" + item.standardNumber + "号】";
+                        }
+                        if (item.surveyObjectName) {
+                            desc += "【" + item.surveyObjectName + "】";
+                        }
+                        lastTr.find('.card-title').find('small').text(desc);
                     })
                 }
             },
@@ -642,7 +759,7 @@
                     $("#frm_other_info").clearAll().initForm(result.data);
                     $("#modal_other_info").modal();
                 } else {
-                    notifyInfo('错误',result.errmsg);
+                    notifyInfo('错误', result.errmsg);
                 }
             }
         })
@@ -682,14 +799,14 @@
                             },
                             {
                                 field: 'workStages', title: '操作', width: '30%', formatter: function (value, row) {
-                                if (row.bisEnable) {
-                                    var s = "";
-                                    if (row.displayUrl) {
-                                        s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                    if (row.bisEnable) {
+                                        var s = "";
+                                        if (row.displayUrl) {
+                                            s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                        }
+                                        return s;
                                     }
-                                    return s;
                                 }
-                            }
                             }
                         ]]
                     }

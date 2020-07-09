@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectMemberDao;
@@ -25,8 +26,6 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
-import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
-import com.copower.pmcc.assess.service.event.project.ProjectAssignEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
@@ -69,6 +68,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -145,18 +145,19 @@ public class ProjectInfoService {
      *
      * @param projectDto
      * @param init       是否立项
+     * @param bisAssign  是否分派
      */
-    public boolean projectApply(InitiateProjectDto projectDto, boolean init, boolean mustUseBox) throws BusinessException {
+    public boolean projectApply(InitiateProjectDto projectDto, boolean init, boolean mustUseBox, Boolean bisAssign) throws BusinessException {
         ProjectMember projectMember = new ProjectMember();
         projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
         projectMember.setUserAccountMember(projectDto.getProjectInfo().getUserAccountMember());
         projectMember.setBisEnable(true);
-        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), projectMember, projectDto.getProjectInfo(), init, mustUseBox);
+        return projectApplyChange(projectDto.getConsignor(), projectDto.getUnitinformation(), projectDto.getPossessor(), projectMember, projectDto.getProjectInfo(), init, mustUseBox, bisAssign);
     }
 
     @Transactional(rollbackFor = {Exception.class})
     public boolean projectApplyChange(InitiateConsignor consignor, InitiateUnitInformation unitInformation, InitiatePossessor possessor, ProjectMember projectMember,
-                                      ProjectInfoDto projectInfoDto, boolean init, boolean mustUseBox) {
+                                      ProjectInfoDto projectInfoDto, boolean init, boolean mustUseBox, Boolean bisAssign) {
         boolean flag = true;
         try {
             ProjectInfo projectInfo = change(projectInfoDto);
@@ -166,7 +167,7 @@ public class ProjectInfoService {
             if (!init) {
                 projectInfo.setStatus(ProjectStatusEnum.DRAFT.getKey());
                 projectInfo.setProjectStatus(ProjectStatusEnum.DRAFT.getKey());
-            }else {
+            } else {
                 projectInfo.setStatus(ProjectStatusEnum.RUNING.getKey());
                 projectInfo.setProjectStatus(ProjectStatusEnum.RUNING.getKey());
             }
@@ -189,13 +190,38 @@ public class ProjectInfoService {
                 projectMember.setCreator(commonService.thisUserAccount());
                 projectMemberService.saveProjectMemeber(projectMember);
             }
-
             //发起项目
             if (init) {
                 //初始化项目信息
-                initProjectInfo(projectInfo, mustUseBox);
-                publicService.writeToErpProject(projectInfo);
-                unitInformationService.roundWrite(unitInformation);
+                initProjectInfo(projectInfo, mustUseBox, bisAssign);
+
+                //分派
+                if (bisAssign) {
+                    ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                    projectResponsibilityDto.setProjectId(projectId);
+                    String url = String.format("/pmcc-assess/projectInfo/assignTask?projectId=%s", projectInfo.getId());
+                    projectResponsibilityDto.setUrl(url);
+                    List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+                    if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                        for (ProjectResponsibilityDto oo : projectTaskList) {
+                            bpmRpcProjectTaskService.deleteProjectTask(oo.getId());
+                        }
+                    }
+                    //发起任务
+                    ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                    projectPlanResponsibility.setProjectId(projectInfo.getId());
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("[").append("分派").append("]");
+                    projectPlanResponsibility.setPlanDetailsName(stringBuilder.toString());
+                    projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
+                    projectPlanResponsibility.setUserAccount(projectMember.getUserAccountManager());
+                    projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
+                    projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
+                    projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+                    projectPlanResponsibility.setUrl(url);
+                    bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
+
+                }
             }
         } catch (Exception e) {
             flag = false;
@@ -250,17 +276,44 @@ public class ProjectInfoService {
 
     /**
      * 初始化项目信息
+     *
      * @param projectInfo
-     * @param mustUseBox 当为true的时候发起审批流程,当为false直接进入下一个阶段
+     * @param mustUseBox  当为true的时候发起审批流程,当为false直接进入下一个阶段
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public void initProjectInfo(ProjectInfo projectInfo, boolean mustUseBox) throws Exception {
+    public void initProjectInfo(ProjectInfo projectInfo, boolean mustUseBox, boolean bisAssign) throws Exception {
         Integer projectTypeId = projectInfo.getProjectTypeId();//项目类别id
-        Integer projectCategoryId = projectInfo.getProjectCategoryId();//项目范围id
+
         List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);
         if (CollectionUtils.isEmpty(projectWorkStages))
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+
+        //发起流程,注意以前是取得阶段中的复核模型,现在改为参数直接获取复核模型
+        if (mustUseBox) {
+            ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
+            ProcessUserDto processUserDto = startProjectProcess(projectInfo, projectWorkStage);
+            //发起流程后更新项目的项目id
+            projectInfo.setProcessInsId(processUserDto.getProcessInsId());
+            projectInfo.setStatus(ProcessStatusEnum.RUN.getValue());
+            projectInfoDao.updateProjectInfo(projectInfo);
+        }
+        //直接进入下一阶段
+        if (!mustUseBox) {
+            if (!bisAssign) {
+                initProjectWorkStages(projectInfo, projectWorkStages);
+                publicService.writeToErpProject(projectInfo);
+                InitiateUnitInformationVo unitInformationVo = unitInformationService.getDataByProjectId(projectInfo.getId());
+                unitInformationService.roundWrite(unitInformationVo);
+            }
+            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());//更新项目状态
+            updateProjectInfo(projectInfo);
+        }
+    }
+
+    //初始化项目阶段
+    public void initProjectWorkStages(ProjectInfo projectInfo, List<ProjectWorkStage> projectWorkStages) throws Exception{
+        Integer projectCategoryId = projectInfo.getProjectCategoryId();//项目范围id
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
             ProjectPlan projectPlan = new ProjectPlan();
@@ -279,23 +332,8 @@ public class ProjectInfoService {
             projectPlanDao.addProjectPlan(projectPlan);
             i++;//系统对不同项目进行分别排序，你处理某些阶段不需要执行的问题
         }
-
-        //发起流程,注意以前是取得阶段中的复核模型,现在改为参数直接获取复核模型
-        if (mustUseBox) {
-            ProjectWorkStage projectWorkStage = projectWorkStages.get(0);//取得第一个阶段，即为项目审批立项阶段的审批
-            ProcessUserDto processUserDto = startProjectProcess(projectInfo, projectWorkStage);
-            //发起流程后更新项目的项目id
-            projectInfo.setProcessInsId(processUserDto.getProcessInsId());
-            projectInfo.setStatus(ProcessStatusEnum.RUN.getValue());
-            projectInfoDao.updateProjectInfo(projectInfo);
-        }
-        //直接进入下一阶段
-        if (!mustUseBox) {
-            projectInfo.setProjectStatus(ProjectStatusEnum.NORMAL.getKey());//更新项目状态
-            updateProjectInfo(projectInfo);
-            List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
-            projectPlanService.enterNextStage(projectPlans.get(0).getId());
-        }
+        List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
+        projectPlanService.enterNextStage(projectPlans.get(0).getId());
     }
 
     /**
@@ -311,7 +349,7 @@ public class ProjectInfoService {
         //发起相应的流程
         String folio = "【立项审批】" + projectInfo.getProjectName();
         //取得复核模型
-        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT__FORM__TASK__PROCESS__KEY.getParameterKey());
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_FORM_TASK_PROCESS_KEY.getParameterKey());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ProcessInfo processInfo = new ProcessInfo();
         processInfo.setStartUser(projectInfo.getCreator());
@@ -346,7 +384,7 @@ public class ProjectInfoService {
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(approvalModelDto.getProjectId());
-        assessmentCommonService.createProjectTask(approvalModelDto,projectInfo,null);
+        assessmentCommonService.createProjectTask(approvalModelDto, projectInfo, null);
     }
 
     /**
@@ -490,7 +528,7 @@ public class ProjectInfoService {
             return projectInfoVo;
         }
         BeanUtils.copyProperties(projectInfo, projectInfoVo);
-        projectInfoVo.setServiceComeFromName(bidBaseDataDicService.getNameById(projectInfoVo.getServiceComeFrom()));
+        projectInfoVo.setServiceComeFromName(bidBaseDataDicService.getNameById(projectInfoVo.getServiceComeFrom()));//业务来源
         if (StringUtils.isNotEmpty(projectInfo.getContractId()) && StringUtils.isNotEmpty(projectInfo.getContractId())) {
             List<String> contractIds = FormatUtils.transformString2List(projectInfo.getContractId());
             List<String> contractName = FormatUtils.transformString2List(projectInfo.getContractName());
@@ -520,14 +558,10 @@ public class ProjectInfoService {
                 projectInfoVo.setProjectCategoryName(projectClassify.getName());
             }
         }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustPurpose())) {
-            //委托目的
-            projectInfoVo.setEntrustPurposeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getName());
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getEntrustAimType())) {
-            //委托目的类别
-            projectInfoVo.setEntrustAimTypeName(bidBaseDataDicService.getCacheDataDicById(projectInfo.getEntrustAimType()).getName());
-        }
+
+
+        projectInfoVo.setEntrustPurposeName(bidBaseDataDicService.getNameById(projectInfo.getEntrustPurpose()));//委托目的
+        projectInfoVo.setEntrustAimTypeName(bidBaseDataDicService.getNameById(projectInfo.getEntrustAimType())); //委托目的类别
         if (StringUtils.isNotBlank(projectInfo.getProvince())) {
             //省
             projectInfoVo.setProvinceName(erpAreaService.getSysAreaName(projectInfo.getProvince()));
@@ -540,21 +574,14 @@ public class ProjectInfoService {
             //县
             projectInfoVo.setDistrictName(erpAreaService.getSysAreaName(projectInfo.getDistrict()));
         }
-        //紧急程度
-        if (projectInfo.getUrgency() != null) {
-            projectInfoVo.setUrgencyName(bidBaseDataDicService.getNameById(projectInfo.getUrgency()));
-        }
-        projectInfoVo.setLoanTypeName(bidBaseDataDicService.getNameById(projectInfo.getLoanType()));
+
+        projectInfoVo.setUrgencyName(bidBaseDataDicService.getNameById(projectInfo.getUrgency()));//紧急程度
+        projectInfoVo.setLoanTypeName(bidBaseDataDicService.getNameById(projectInfo.getLoanType()));//贷款类型
         if (projectInfo.getDepartmentId() != null) {
             projectInfoVo.setDepartmentName(getDepartmentDto(projectInfo.getDepartmentId()).getName());
         }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getValueType())) {
-            //价值类型
-            projectInfoVo.setValueTypeName(bidBaseDataDicService.getNameById(projectInfo.getValueType()));
-        }
-        if (!org.springframework.util.StringUtils.isEmpty(projectInfo.getPropertyScope())) {
-            projectInfoVo.setPropertyScopeName(bidBaseDataDicService.getNameById(projectInfo.getPropertyScope()));
-        }
+        projectInfoVo.setValueTypeName(bidBaseDataDicService.getNameById(projectInfo.getValueType()));
+        projectInfoVo.setPropertyScopeName(bidBaseDataDicService.getNameById(projectInfo.getPropertyScope()));
 
         if (projectInfo.getId() != null && projectInfo.getId().intValue() > 0) {
             InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
@@ -630,12 +657,27 @@ public class ProjectInfoService {
      * @return
      */
     public List<CrmBaseDataDicDto> getUnitPropertiesList() {
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = new ArrayList<>();
+        try {
+            crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        } catch (Exception e) {
+            //crm 未知错误
+            logger.error(e.getMessage(), e);
+            List<BaseDataDic> cacheDataDicList = bidBaseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_INITIATE_UNIT_TYPE);
+            if (CollectionUtils.isNotEmpty(cacheDataDicList)) {
+                for (BaseDataDic baseDataDic : cacheDataDicList) {
+                    CrmBaseDataDicDto crmBaseDataDicDto = new CrmBaseDataDicDto();
+                    crmBaseDataDicDto.setId(baseDataDic.getId());
+                    crmBaseDataDicDto.setName(baseDataDic.getName());
+                    crmBaseDataDicDtos.add(crmBaseDataDicDto);
+                }
+            }
+        }
         return crmBaseDataDicDtos;
     }
 
     /**
-     * 仅仅是联系人清楚
+     * 仅仅是联系人清除
      */
     public void clear() {
         consignorService.clear();
@@ -694,7 +736,7 @@ public class ProjectInfoService {
     public boolean isProjectOperable(Integer projectId) {
         ProjectInfo projectInfo = getProjectInfoById(projectId);
         if (projectInfo == null) return false;
-        if (ProjectStatusEnum.FINISH.getKey().equals(projectInfo.getProjectStatus()))
+        if (ProjectStatusEnum.FILED_AWAY.getKey().equals(projectInfo.getProjectStatus()))
             return false;
         if (ProjectStatusEnum.CLOSE.getKey().equals(projectInfo.getProjectStatus()))
             return false;
@@ -757,10 +799,10 @@ public class ProjectInfoService {
         return null;
     }
 
-    public List<KeyValueDto> getAssessProjectTypeList(){
-        List<KeyValueDto> list=Lists.newArrayList();
+    public List<KeyValueDto> getAssessProjectTypeList() {
+        List<KeyValueDto> list = Lists.newArrayList();
         for (AssessProjectTypeEnum assessProjectTypeEnum : AssessProjectTypeEnum.values()) {
-            KeyValueDto keyValueDto=new KeyValueDto();
+            KeyValueDto keyValueDto = new KeyValueDto();
             keyValueDto.setKey(assessProjectTypeEnum.getKey());
             keyValueDto.setValue(assessProjectTypeEnum.getDec());
             keyValueDto.setExplain(assessProjectTypeEnum.getDec());
@@ -769,12 +811,82 @@ public class ProjectInfoService {
         return list;
     }
 
-    public String getProjectInfoView(){
+    public String getProjectInfoView() {
         try {
-            return baseParameterService.getBaseParameter(BaseParameterEnum.PROJECTINITVIEWURL) ;
+            return baseParameterService.getBaseParameter(BaseParameterEnum.PROJECTINITVIEWURL);
         } catch (BusinessException e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
+
+
+    /**
+     * 分派提交
+     *
+     * @param projectDto
+     * @param bisAssign  是否分派
+     */
+    public boolean assignTaskSubmit(InitiateProjectDto projectDto, Boolean bisAssign) throws BusinessException {
+        ProjectMemberVo projectMember = projectMemberService.getProjectMember(projectDto.getProjectInfo().getId());
+        projectMember.setUserAccountManager(projectDto.getProjectInfo().getUserAccountManager());
+        projectMember.setBisEnable(true);
+        return projectAssignTaskChange(projectMember, projectDto.getProjectInfo(), bisAssign);
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    public boolean projectAssignTaskChange(ProjectMember projectMember,
+                                           ProjectInfoDto projectInfoDto, Boolean bisAssign) {
+        boolean flag = true;
+        try {
+            ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectInfoDto.getId());
+            if (projectMember != null) {//保存项目成员
+                projectMember.setProjectId(projectInfo.getId());
+                projectMember.setCreator(commonService.thisUserAccount());
+                projectMemberService.saveProjectMemeber(projectMember);
+            }
+            //先删除
+            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+            projectResponsibilityDto.setProjectId(projectInfo.getId());
+            String url = String.format("/pmcc-assess/projectInfo/assignTask?projectId=%s", projectInfo.getId());
+            projectResponsibilityDto.setUrl(url);
+            List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+            if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                for (ProjectResponsibilityDto oo : projectTaskList) {
+                    bpmRpcProjectTaskService.deleteProjectTask(oo.getId());
+                }
+            }
+            //分派
+            if (bisAssign) {
+                //发起任务
+                ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                projectPlanResponsibility.setProjectId(projectInfo.getId());
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("[").append("分派").append("]");
+                projectPlanResponsibility.setPlanDetailsName(stringBuilder.toString());
+                projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
+                projectPlanResponsibility.setUserAccount(projectMember.getUserAccountManager());
+                projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
+                projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
+                projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+                projectPlanResponsibility.setUrl(url);
+                bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
+            } else {
+                //初始化项目信息
+                Integer projectTypeId = projectInfo.getProjectTypeId();//项目类别id
+                List<ProjectWorkStage> projectWorkStages = projectWorkStageService.queryWorkStageByClassIdAndTypeId(projectTypeId, true);
+                initProjectWorkStages(projectInfo, projectWorkStages);
+                publicService.writeToErpProject(projectInfo);
+                InitiateUnitInformationVo unitInformation = unitInformationService.getDataByProjectId(projectInfo.getId());
+                unitInformationService.roundWrite(unitInformation);
+
+            }
+
+        } catch (Exception e) {
+            flag = false;
+            logger.error("exception!" + e.getMessage());
+        }
+        return flag;
+    }
+
 }

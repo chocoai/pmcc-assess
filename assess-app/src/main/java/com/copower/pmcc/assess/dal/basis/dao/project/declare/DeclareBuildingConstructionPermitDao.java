@@ -29,6 +29,13 @@ public class DeclareBuildingConstructionPermitDao {
         return declareBuildingConstructionPermitMapper.selectByPrimaryKey(id);
     }
 
+    public List<DeclareBuildingConstructionPermit> getDataIds(List<Integer> ids){
+        DeclareBuildingConstructionPermitExample example = new DeclareBuildingConstructionPermitExample();
+        DeclareBuildingConstructionPermitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids) ;
+        return declareBuildingConstructionPermitMapper.selectByExample(example) ;
+    }
+
     public boolean updateDeclareBuildingConstructionPermit(DeclareBuildingConstructionPermit declareBuildingConstructionPermit){
         return declareBuildingConstructionPermitMapper.updateByPrimaryKeySelective(declareBuildingConstructionPermit)==1;
     }

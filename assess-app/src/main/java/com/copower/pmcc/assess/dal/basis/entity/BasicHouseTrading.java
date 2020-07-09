@@ -78,6 +78,12 @@ public class BasicHouseTrading {
 
     private String priceConnotationUnit;
 
+    private BigDecimal perMuPrice;
+
+    private Boolean bisMark;
+
+    private BigDecimal cost;
+
     public Integer getId() {
         return id;
     }
@@ -372,5 +378,29 @@ public class BasicHouseTrading {
 
     public void setPriceConnotationUnit(String priceConnotationUnit) {
         this.priceConnotationUnit = priceConnotationUnit == null ? null : priceConnotationUnit.trim();
+    }
+
+    public BigDecimal getPerMuPrice() {
+        return perMuPrice;
+    }
+
+    public void setPerMuPrice(BigDecimal perMuPrice) {
+        this.perMuPrice = perMuPrice;
+    }
+
+    public Boolean getBisMark() {
+        return bisMark;
+    }
+
+    public void setBisMark(Boolean bisMark) {
+        this.bisMark = bisMark;
+    }
+
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
     }
 }

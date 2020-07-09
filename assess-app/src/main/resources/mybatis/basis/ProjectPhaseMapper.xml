@@ -1,46 +1,47 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectPhaseMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="project_class_id" property="projectClassId" jdbcType="INTEGER" />
-    <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER" />
-    <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
-    <result column="work_stage_id" property="workStageId" jdbcType="INTEGER" />
-    <result column="assets_setting_id" property="assetsSettingId" jdbcType="INTEGER" />
-    <result column="project_phase_name" property="projectPhaseName" jdbcType="VARCHAR" />
-    <result column="phase_time" property="phaseTime" jdbcType="DECIMAL" />
-    <result column="phase_form" property="phaseForm" jdbcType="VARCHAR" />
-    <result column="box_name" property="boxName" jdbcType="VARCHAR" />
-    <result column="phase_key" property="phaseKey" jdbcType="VARCHAR" />
-    <result column="phase_sort" property="phaseSort" jdbcType="INTEGER" />
-    <result column="bis_wait" property="bisWait" jdbcType="BIT" />
-    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
-    <result column="bis_use_box" property="bisUseBox" jdbcType="BIT" />
-    <result column="bis_can_return" property="bisCanReturn" jdbcType="BIT" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectPhaseMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="project_class_id" jdbcType="INTEGER" property="projectClassId" />
+    <result column="project_type_id" jdbcType="INTEGER" property="projectTypeId" />
+    <result column="project_category_id" jdbcType="INTEGER" property="projectCategoryId" />
+    <result column="work_stage_id" jdbcType="INTEGER" property="workStageId" />
+    <result column="assets_setting_id" jdbcType="INTEGER" property="assetsSettingId" />
+    <result column="project_phase_name" jdbcType="VARCHAR" property="projectPhaseName" />
+    <result column="phase_time" jdbcType="DECIMAL" property="phaseTime" />
+    <result column="phase_form" jdbcType="VARCHAR" property="phaseForm" />
+    <result column="box_name" jdbcType="VARCHAR" property="boxName" />
+    <result column="phase_key" jdbcType="VARCHAR" property="phaseKey" />
+    <result column="phase_sort" jdbcType="INTEGER" property="phaseSort" />
+    <result column="bis_wait" jdbcType="BIT" property="bisWait" />
+    <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
+    <result column="bis_use_box" jdbcType="BIT" property="bisUseBox" />
+    <result column="bis_can_return" jdbcType="BIT" property="bisCanReturn" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="service_bean" jdbcType="VARCHAR" property="serviceBean" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -51,25 +52,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -80,43 +81,43 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, assets_setting_id, 
     project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, bis_wait, 
-    bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified
+    bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified, service_bean
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_project_phase
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_project_phase
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_project_phase
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample">
     delete from tb_project_phase
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_phase (pid, project_class_id, project_type_id, 
@@ -124,206 +125,215 @@
       project_phase_name, phase_time, phase_form, 
       box_name, phase_key, phase_sort, 
       bis_wait, bis_enable, bis_use_box, 
-      bis_can_return, gmt_created, gmt_modified
-      )
+      bis_can_return, gmt_created, gmt_modified, 
+      service_bean)
     values (#{pid,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
       #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{assetsSettingId,jdbcType=INTEGER}, 
       #{projectPhaseName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, 
       #{boxName,jdbcType=VARCHAR}, #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, 
       #{bisWait,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, 
-      #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{serviceBean,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_phase
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="pid != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
         pid,
       </if>
-      <if test="projectClassId != null" >
+      <if test="projectClassId != null">
         project_class_id,
       </if>
-      <if test="projectTypeId != null" >
+      <if test="projectTypeId != null">
         project_type_id,
       </if>
-      <if test="projectCategoryId != null" >
+      <if test="projectCategoryId != null">
         project_category_id,
       </if>
-      <if test="workStageId != null" >
+      <if test="workStageId != null">
         work_stage_id,
       </if>
-      <if test="assetsSettingId != null" >
+      <if test="assetsSettingId != null">
         assets_setting_id,
       </if>
-      <if test="projectPhaseName != null" >
+      <if test="projectPhaseName != null">
         project_phase_name,
       </if>
-      <if test="phaseTime != null" >
+      <if test="phaseTime != null">
         phase_time,
       </if>
-      <if test="phaseForm != null" >
+      <if test="phaseForm != null">
         phase_form,
       </if>
-      <if test="boxName != null" >
+      <if test="boxName != null">
         box_name,
       </if>
-      <if test="phaseKey != null" >
+      <if test="phaseKey != null">
         phase_key,
       </if>
-      <if test="phaseSort != null" >
+      <if test="phaseSort != null">
         phase_sort,
       </if>
-      <if test="bisWait != null" >
+      <if test="bisWait != null">
         bis_wait,
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         bis_enable,
       </if>
-      <if test="bisUseBox != null" >
+      <if test="bisUseBox != null">
         bis_use_box,
       </if>
-      <if test="bisCanReturn != null" >
+      <if test="bisCanReturn != null">
         bis_can_return,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
+      <if test="serviceBean != null">
+        service_bean,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="pid != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
         #{pid,jdbcType=INTEGER},
       </if>
-      <if test="projectClassId != null" >
+      <if test="projectClassId != null">
         #{projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="projectTypeId != null" >
+      <if test="projectTypeId != null">
         #{projectTypeId,jdbcType=INTEGER},
       </if>
-      <if test="projectCategoryId != null" >
+      <if test="projectCategoryId != null">
         #{projectCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="workStageId != null" >
+      <if test="workStageId != null">
         #{workStageId,jdbcType=INTEGER},
       </if>
-      <if test="assetsSettingId != null" >
+      <if test="assetsSettingId != null">
         #{assetsSettingId,jdbcType=INTEGER},
       </if>
-      <if test="projectPhaseName != null" >
+      <if test="projectPhaseName != null">
         #{projectPhaseName,jdbcType=VARCHAR},
       </if>
-      <if test="phaseTime != null" >
+      <if test="phaseTime != null">
         #{phaseTime,jdbcType=DECIMAL},
       </if>
-      <if test="phaseForm != null" >
+      <if test="phaseForm != null">
         #{phaseForm,jdbcType=VARCHAR},
       </if>
-      <if test="boxName != null" >
+      <if test="boxName != null">
         #{boxName,jdbcType=VARCHAR},
       </if>
-      <if test="phaseKey != null" >
+      <if test="phaseKey != null">
         #{phaseKey,jdbcType=VARCHAR},
       </if>
-      <if test="phaseSort != null" >
+      <if test="phaseSort != null">
         #{phaseSort,jdbcType=INTEGER},
       </if>
-      <if test="bisWait != null" >
+      <if test="bisWait != null">
         #{bisWait,jdbcType=BIT},
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         #{bisEnable,jdbcType=BIT},
       </if>
-      <if test="bisUseBox != null" >
+      <if test="bisUseBox != null">
         #{bisUseBox,jdbcType=BIT},
       </if>
-      <if test="bisCanReturn != null" >
+      <if test="bisCanReturn != null">
         #{bisCanReturn,jdbcType=BIT},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceBean != null">
+        #{serviceBean,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" resultType="java.lang.Long">
     select count(*) from tb_project_phase
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_project_phase
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.pid != null" >
+      <if test="record.pid != null">
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
-      <if test="record.projectClassId != null" >
+      <if test="record.projectClassId != null">
         project_class_id = #{record.projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="record.projectTypeId != null" >
+      <if test="record.projectTypeId != null">
         project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
       </if>
-      <if test="record.projectCategoryId != null" >
+      <if test="record.projectCategoryId != null">
         project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="record.workStageId != null" >
+      <if test="record.workStageId != null">
         work_stage_id = #{record.workStageId,jdbcType=INTEGER},
       </if>
-      <if test="record.assetsSettingId != null" >
+      <if test="record.assetsSettingId != null">
         assets_setting_id = #{record.assetsSettingId,jdbcType=INTEGER},
       </if>
-      <if test="record.projectPhaseName != null" >
+      <if test="record.projectPhaseName != null">
         project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
       </if>
-      <if test="record.phaseTime != null" >
+      <if test="record.phaseTime != null">
         phase_time = #{record.phaseTime,jdbcType=DECIMAL},
       </if>
-      <if test="record.phaseForm != null" >
+      <if test="record.phaseForm != null">
         phase_form = #{record.phaseForm,jdbcType=VARCHAR},
       </if>
-      <if test="record.boxName != null" >
+      <if test="record.boxName != null">
         box_name = #{record.boxName,jdbcType=VARCHAR},
       </if>
-      <if test="record.phaseKey != null" >
+      <if test="record.phaseKey != null">
         phase_key = #{record.phaseKey,jdbcType=VARCHAR},
       </if>
-      <if test="record.phaseSort != null" >
+      <if test="record.phaseSort != null">
         phase_sort = #{record.phaseSort,jdbcType=INTEGER},
       </if>
-      <if test="record.bisWait != null" >
+      <if test="record.bisWait != null">
         bis_wait = #{record.bisWait,jdbcType=BIT},
       </if>
-      <if test="record.bisEnable != null" >
+      <if test="record.bisEnable != null">
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
-      <if test="record.bisUseBox != null" >
+      <if test="record.bisUseBox != null">
         bis_use_box = #{record.bisUseBox,jdbcType=BIT},
       </if>
-      <if test="record.bisCanReturn != null" >
+      <if test="record.bisCanReturn != null">
         bis_can_return = #{record.bisCanReturn,jdbcType=BIT},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.serviceBean != null">
+        service_bean = #{record.serviceBean,jdbcType=VARCHAR},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_project_phase
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
@@ -343,72 +353,76 @@
       bis_use_box = #{record.bisUseBox,jdbcType=BIT},
       bis_can_return = #{record.bisCanReturn,jdbcType=BIT},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      service_bean = #{record.serviceBean,jdbcType=VARCHAR}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase">
     update tb_project_phase
-    <set >
-      <if test="pid != null" >
+    <set>
+      <if test="pid != null">
         pid = #{pid,jdbcType=INTEGER},
       </if>
-      <if test="projectClassId != null" >
+      <if test="projectClassId != null">
         project_class_id = #{projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="projectTypeId != null" >
+      <if test="projectTypeId != null">
         project_type_id = #{projectTypeId,jdbcType=INTEGER},
       </if>
-      <if test="projectCategoryId != null" >
+      <if test="projectCategoryId != null">
         project_category_id = #{projectCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="workStageId != null" >
+      <if test="workStageId != null">
         work_stage_id = #{workStageId,jdbcType=INTEGER},
       </if>
-      <if test="assetsSettingId != null" >
+      <if test="assetsSettingId != null">
         assets_setting_id = #{assetsSettingId,jdbcType=INTEGER},
       </if>
-      <if test="projectPhaseName != null" >
+      <if test="projectPhaseName != null">
         project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
       </if>
-      <if test="phaseTime != null" >
+      <if test="phaseTime != null">
         phase_time = #{phaseTime,jdbcType=DECIMAL},
       </if>
-      <if test="phaseForm != null" >
+      <if test="phaseForm != null">
         phase_form = #{phaseForm,jdbcType=VARCHAR},
       </if>
-      <if test="boxName != null" >
+      <if test="boxName != null">
         box_name = #{boxName,jdbcType=VARCHAR},
       </if>
-      <if test="phaseKey != null" >
+      <if test="phaseKey != null">
         phase_key = #{phaseKey,jdbcType=VARCHAR},
       </if>
-      <if test="phaseSort != null" >
+      <if test="phaseSort != null">
         phase_sort = #{phaseSort,jdbcType=INTEGER},
       </if>
-      <if test="bisWait != null" >
+      <if test="bisWait != null">
         bis_wait = #{bisWait,jdbcType=BIT},
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
-      <if test="bisUseBox != null" >
+      <if test="bisUseBox != null">
         bis_use_box = #{bisUseBox,jdbcType=BIT},
       </if>
-      <if test="bisCanReturn != null" >
+      <if test="bisCanReturn != null">
         bis_can_return = #{bisCanReturn,jdbcType=BIT},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceBean != null">
+        service_bean = #{serviceBean,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase">
     update tb_project_phase
     set pid = #{pid,jdbcType=INTEGER},
       project_class_id = #{projectClassId,jdbcType=INTEGER},
@@ -427,7 +441,8 @@
       bis_use_box = #{bisUseBox,jdbcType=BIT},
       bis_can_return = #{bisCanReturn,jdbcType=BIT},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      service_bean = #{serviceBean,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -143,14 +143,10 @@ var buildingModelView;
                     AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonMaterialGrade, item.materialGrade, function (html, data) {
                         $("#" + buildingModelView.prototype.config().sonFrm).find('select.materialGrade').empty().html(html).trigger('change');
                     });
-                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_building_decoration_part, '', function (html, data) {
-                        html = '';
-                        html += '<option value="" selected>-请选择-</option>';
-                        $.each(data, function (i, item) {
-                            html += "<option value='" + item.name + "'>" + item.name + "</option>";
-                        });
-                        $("#" + buildingModelView.prototype.config().sonFrm).find('#build_decorationPart_datalist').empty().html(html).trigger('change');
-                    }, false);
+
+                    AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_building_decoration_part, null, function (html, data) {
+                        $("#build_decorationPart_datalist").empty().html(html).trigger('change');
+                    }, true);
                 },
                 loadDataDicList: function () {
                     var cols = commonColumn.buildingOutfitColumn();

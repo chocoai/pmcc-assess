@@ -13,6 +13,8 @@
                     <small><input type="button" id="btnViewProjectInfoMore" class="btn btn-success btn-sm"
                                   value="查看更多..."/>
                     </small>
+                    <small><a href="${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}" target="_blank" style="color: white;" class="btn btn-success btn-sm">项目中心</a>
+                    </small>
                     <small>${projectInfo.projectCategoryName}</small>
                 </div>
                 <div class="card-tools">
@@ -98,7 +100,7 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-1 col-form-label">项目经理</label>
+                            <label class="col-sm-1 col-form-label">项目负责人</label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.projectMemberVo.userAccountManagerName}</label>
                             </div>
@@ -181,7 +183,7 @@
                                 业务来源
                             </label>
                             <div class="col-sm-3 x-valid">
-                                <label class="form-control input-full">${projectInfo.serviceComeFrom}</label>
+                                <label class="form-control input-full">${projectInfo.serviceComeFromName}</label>
                             </div>
                             <label class="col-sm-1 col-form-label">
                                 业务来源说明

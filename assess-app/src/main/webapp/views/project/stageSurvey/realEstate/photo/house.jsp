@@ -9,7 +9,6 @@
 <body>
 
 
-
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -42,8 +41,6 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card-body">
-
-
                                                     <div id="houseFilePart"></div>
                                                 </div>
                                             </div>
@@ -73,7 +70,6 @@
                                         <input type="hidden" name="id" value="${basicHouseTrading.id}">
 
 
-
                                         <div class="x_title">
                                             <div class="clearfix"></div>
                                         </div>
@@ -83,41 +79,24 @@
 
                                     </form>
                                 </div>
+
                                 <div class="x_content">
-                                    <div class="col-md-12">
-                                        <div class="card full-height">
-                                            <div class="card-header ">
-                                                <div class="card-head-row">
-                                                    <div class="card-title">
-                                                        房间
-                                                    </div>
-                                                    <div class="card-tools">
-                                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                                class="fa fa-angle-down"></span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <form class="form-horizontal">
-                                                    <table class="table table-bordered" id="HouseRoomList">
-                                                        <!-- cerare document add ajax data-->
-                                                    </table>
-                                                </form>
-                                            </div>
-                                        </div>
+                                    <div class="x_title">
+                                        <h3>
+                                            房间
+                                        </h3>
+                                        <div class="clearfix"></div>
                                     </div>
+                                    <form class="form-horizontal">
+                                        <div id="houseRoomToolDiv">
+
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-                        <div class="card-body">
-                            <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
-                                    onclick="window.close()">关闭
-                            </button>
-                        </div>
-                    </div>
+                    <%@include file="/views/project/stageSurvey/common/canvasQRcodePagination.jsp" %>
                 </div>
             </div>
         </div>
@@ -125,8 +104,29 @@
     </div>
 </div>
 </body>
-</html>
 
+
+<script type="text/html" id="houseRoomHtmlModel">
+    <div class="form-group">
+
+        <div class="col-sm-12 col-md-12">
+            <div class="form-inline x-valid">
+
+                <div class="col-xs-6   text-center" style="margin-top:15px;">
+                    {name} {fileViewName}
+                </div>
+
+                <div class="col-xs-6   text-center" style="margin-top:15px;">
+                    操作: {html}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</script>
+
+
+</html>
 
 
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
@@ -148,6 +148,10 @@
 
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+
+
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;">
+
 <script type="text/javascript">
 
     var houseRoom;
@@ -179,7 +183,6 @@
                 var target = $(this_);
                 var fieldName = target.attr("data-fileid");
                 var id = target.attr("data-id");
-                var table = $("#" + houseRoom.prototype.config().table);
                 Loading.progressShow();
                 $.ajaxFileUpload({
                     type: "POST",
@@ -196,7 +199,7 @@
                     success: function (result) {
                         Loading.progressHide();
                         if (result.ret) {
-                            table.bootstrapTable('refresh');
+                            houseRoom.prototype.loadDataDicList();
                             notifySuccess("成功", "上传附件成功!");
                         } else {
                             if (result.errmsg) {
@@ -220,7 +223,6 @@
                 $("#" + fileId).trigger('click');
             },
             delFileObj: function (tableId) {
-                var table = $("#" + houseRoom.prototype.config().table);
                 AssessCommon.getSysAttachmentDtoList({
                     tableId: tableId,
                     tableName: AssessDBKey.BasicHouseRoom
@@ -236,33 +238,38 @@
                     AlertConfirm("是否确认删除当前附件", "删除相应的数据后将不可恢复", function (flag) {
                         AssessCommon.deleteAttachmentById(arr.join(","), function () {
                             notifySuccess("成功", "附件成功删除!");
-                            table.bootstrapTable('refresh');
+                            houseRoom.prototype.loadDataDicList();
                         });
                     });
                 });
             },
-            loadDataDicList: function () {
-                var table = $("#" + houseRoom.prototype.config().table);
-                var cols = [];
-                cols.push({
-                    field: 'name', title: '名称', formatter: function (value, row, index) {
-                        var s = "";
-                        if (row.name) {
-                            s += row.name;
+            getDataList: function (callback) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/basicHouseRoom/basicHouseRoomList",
+                    type: "get",
+                    dataType: "json",
+                    data: {houseId: houseCommon.getHouseId()},
+                    success: function (result) {
+                        if (result.ret) {
+                            if (callback) {
+                                callback(result.data);
+                            }
+                        } else {
+                            AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                         }
-                        if (row.creatorName) {
-                            s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
-                        }
-                        return s;
                     }
                 });
-                cols.push({field: 'fileViewName', title: '附件'});
-                AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineHouseRoomFilePart, '', function (html, resultData) {
-                    cols.push({
-                        field: 'id', title: '文件上传', formatter: function (value, row, index) {
-                            var str = '<div class="btn-margin">';
+            },
+            loadDataDicList: function () {
+                var target = $("#houseRoomToolDiv");
+                target.empty();
+                houseRoom.prototype.getDataList(function (result) {
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineHouseRoomFilePart, '', function (html, resultData) {
+                        $.each(result, function (k, row) {
+                            var html = $("#houseRoomHtmlModel").html();
+                            var str = "";
                             $.each(resultData, function (i, fileData) {
-                                str += "<input name='file' onchange='houseRoom.prototype.inputFile(this)' style='display: none' type='file' multiple='multiple' id='" + fileData.fieldName + row.id + "'" + "data-id='" + value + "'" + "data-fileId='" + fileData.fieldName + "'" + ">";
+                                str += "<input name='file' onchange='houseRoom.prototype.inputFile(this)' style='display: none' type='file' multiple='multiple' id='" + fileData.fieldName + row.id + "'" + "data-id='" + row.id + "'" + "data-fileId='" + fileData.fieldName + "'" + ">";
                                 str += '<button type="button" onclick="houseRoom.prototype.importEvent(' + "'" + fileData.fieldName + row.id + "'" + ')"  style="margin-left: 5px;"  class="btn btn-info btn-xs tooltips"  data-placement="bottom" data-original-title="上传附件">';
                                 str += '<i class="fa fa-cloud-upload-alt"></i>';
                                 str += '</button>';
@@ -271,22 +278,27 @@
                                 str += '<i class="fa fa-minus"></i>';
                                 str += '</button>';
                             });
-                            str += '</div>';
-                            return str;
-                        }
-                    });
-                    table.bootstrapTable('destroy');
-                    TableInit(table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-                        houseId: houseCommon.getHouseId()
-                    }, {
-                        showColumns: false,
-                        showRefresh: false,
-                        search: false,
-                        onLoadSuccess: function () {
-                            $('.tooltips').tooltip();
-                        }
-                    });
-                }, false);
+
+                            var s = "";
+                            if (row.name) {
+                                s += row.name;
+                            }
+                            if (row.creatorName) {
+                                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+                            }
+                            if (row.fileViewName) {
+                                html = html.replace(/{fileViewName}/g, row.fileViewName);
+                            } else {
+                                html = html.replace(/{fileViewName}/g, "");
+                            }
+                            html = html.replace(/{name}/g, s);
+                            html = html.replace(/{html}/g, str);
+
+                            target.append(html);
+
+                        });
+                    }, false);
+                });
             }
         };
 
@@ -296,7 +308,7 @@
 //        })
     })();
     $(function () {
-        houseCommon.initById('${basicHouse.id}' ,function () {
+        houseCommon.initById('${basicHouse.id}', function () {
             houseRoom.prototype.loadDataDicList();
         });
 

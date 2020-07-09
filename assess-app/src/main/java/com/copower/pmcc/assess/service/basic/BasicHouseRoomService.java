@@ -170,10 +170,14 @@ public class BasicHouseRoomService {
             String[] distances = basicHouseRoom.getDistance().split(",");
             StringBuilder s = new StringBuilder();
             if(adjacentPositions.length>0){
-                for (int i = 0; i < adjacentPositions.length; i++) {
-                    if(!StringUtils.isEmpty(adjacentPositions[i])){
-                        s.append("距离").append(baseDataDicService.getNameById(adjacentPositions[i])).append(distances[i]).append("m").append(";");
+                try {
+                    for (int i = 0; i < adjacentPositions.length; i++) {
+                        if(!StringUtils.isEmpty(adjacentPositions[i])){
+                            s.append("距离").append(baseDataDicService.getNameById(adjacentPositions[i])).append(distances[i]).append("m").append(";");
+                        }
                     }
+                }catch (Exception ex){
+                    logger.error(ex.getMessage(),ex);
                 }
             }
             vo.setAdjacentPositionDescribe(s.toString());

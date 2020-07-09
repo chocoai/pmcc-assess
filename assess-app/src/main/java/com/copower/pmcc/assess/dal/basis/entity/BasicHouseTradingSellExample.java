@@ -664,6 +664,66 @@ public class BasicHouseTradingSellExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andTradingIdIsNull() {
+            addCriterion("trading_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdIsNotNull() {
+            addCriterion("trading_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdEqualTo(Integer value) {
+            addCriterion("trading_id =", value, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdNotEqualTo(Integer value) {
+            addCriterion("trading_id <>", value, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdGreaterThan(Integer value) {
+            addCriterion("trading_id >", value, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("trading_id >=", value, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdLessThan(Integer value) {
+            addCriterion("trading_id <", value, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdLessThanOrEqualTo(Integer value) {
+            addCriterion("trading_id <=", value, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdIn(List<Integer> values) {
+            addCriterion("trading_id in", values, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdNotIn(List<Integer> values) {
+            addCriterion("trading_id not in", values, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdBetween(Integer value1, Integer value2) {
+            addCriterion("trading_id between", value1, value2, "tradingId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTradingIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("trading_id not between", value1, value2, "tradingId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

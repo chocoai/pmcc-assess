@@ -43,6 +43,5 @@
     <!-- ======================finance - consumer========================== -->
     <dubbo:reference interface="com.copower.pmcc.finance.api.provider.FinanceRpcToolService" id="financeRpcToolService" check="false" retries="0" timeout="10000" url="${finance.api.url}" />
     <!-- ======================chks 考核========================== -->
-    <dubbo:reference interface="com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService" id="chksRpcAssessmentService" check="false" retries="0" timeout="10000" url="${chks.api.url}" />
-    <dubbo:reference interface="com.copower.pmcc.chks.api.provider.ChksRpcAssessmentWorkHoursService" id="chksRpcAssessmentWorkHoursService" check="false" retries="0" timeout="10000" url="${chks.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService" id="chksRpcAssessmentPerformanceService" check="false" retries="0" timeout="10000" url="${chks.api.url}" />
 </beans>

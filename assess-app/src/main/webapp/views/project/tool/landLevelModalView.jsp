@@ -25,18 +25,18 @@
                                             <label class=" col-sm-1">省</label>
                                             <div class=" col-sm-3">
                                                 <select name="province"
-                                                        class="form-control input-full search-select select2">
+                                                        class="form-control input-full  ">
                                                 </select>
                                             </div>
                                             <label class=" col-sm-1">市</label>
                                             <div class=" col-sm-3">
-                                                <select name="city" class="form-control input-full search-select select2">
+                                                <select name="city" class="form-control input-full  ">
                                                 </select>
                                             </div>
                                             <label class=" col-sm-1">县</label>
                                             <div class=" col-sm-3">
                                                 <select name="district"
-                                                        class="form-control input-full search-select select2">
+                                                        class="form-control input-full  ">
                                                 </select>
                                             </div>
                                         </div>

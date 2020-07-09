@@ -87,4 +87,9 @@ public class DeclarePreSalePermitService {
     public List<DeclarePreSalePermit> getDeclarePreSalePermitByMasterId(Integer masterId) {
         return declarePreSalePermitDao.getDeclarePreSalePermitByMasterId(masterId);
     }
+
+    public List<DeclarePreSalePermit> getDataIds(List<Integer> ids){
+        return declarePreSalePermitDao.getDataIds(ids);
+    }
+
 }

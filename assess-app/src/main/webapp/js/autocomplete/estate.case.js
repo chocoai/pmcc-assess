@@ -39,8 +39,8 @@
                         if (result.ret && result.data) {
                             response($.map(result.data, function (item) {
                                 return {
-                                    label: item.name,
-                                    value: item.name,
+                                    label: item.estateName,
+                                    value: item.estateName,
                                     id: item.id
                                 }
                             }));

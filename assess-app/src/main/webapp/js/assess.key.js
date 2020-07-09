@@ -31,6 +31,7 @@ AssessDBKey.CaseEstateParking = "tb_case_estate_parking";
 AssessDBKey.CaseHouseCorollaryEquipment = "tb_case_house_corollary_equipment";
 AssessDBKey.CaseUnitHuxing = "tb_case_unit_huxing";
 
+AssessDBKey.BasicApplyBatch = "tb_basic_apply_batch";
 AssessDBKey.BasicEstate = "tb_basic_estate";
 AssessDBKey.BasicBuilding = "tb_basic_building";
 AssessDBKey.BasicHouse = "tb_basic_house";
@@ -42,6 +43,10 @@ AssessDBKey.BasicHouseCorollaryEquipment = "tb_basic_house_corollary_equipment";
 AssessDBKey.BasicHouseRoom = "tb_basic_house_room";
 AssessDBKey.BasicEstateStreetInfo = "tb_basic_estate_street_info";
 AssessDBKey.BasicEstateLandCategoryInfo = "tb_basic_estate_land_category_info";
+AssessDBKey.BasicUnitCommonPart = "tb_basic_unit_common_part";
+AssessDBKey.BasicUnitStairs = "tb_basic_unit_stairs";
+AssessDBKey.BasicUnitElevator = "tb_basic_unit_elevator";
+AssessDBKey.BasicUnitDecorate = "tb_basic_unit_decorate";
 
 AssessDBKey.SurveyExaminePurenessLand = "tb_survey_examine_pureness_land";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
@@ -58,6 +63,7 @@ AssessDBKey.SchemeReportFileCustom = "tb_scheme_report_file_custom";
 
 AssessDBKey.BaseFileTemplate = "tb_base_file_template";
 AssessDBKey.GenerateReportInfo = "tb_generate_report_info";
+AssessDBKey.GenerateReportGroup = "tb_generate_report_group";
 
 
 AssessDBKey.DeclareRecord = "tb_declare_record";
@@ -112,6 +118,7 @@ AssessDicKey.projectDeclareCommonSituation = "project.declare.common.situation";
 AssessDicKey.projectDeclareLandCertificateType = "project.declare.land.certificate.type";//土地证类型
 AssessDicKey.projectDeclareUseRightType = "project.declare.use.right.type";//权利性质
 AssessDicKey.projectDeclareRoomType = "project.declare.room.type";//房屋性质
+AssessDicKey.projectDeclareAcquisitionType = "project.declare.acquisition.type";//土地取得方式
 
 //基础数据
 AssessDicKey.DATA_LAND_LEVEL_CLASSIFY = "data.land.level.classify";//土地级别类型
@@ -279,6 +286,9 @@ AssessDicKey.examineHouseDecorateSituation = "examine.house.decorate.situation";
 AssessDicKey.examineBasicHouseRoom = "basicHouseRoom";//房间附件
 AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位
 AssessDicKey.examine_house_room_names = "examine.house.room.names";//房间名称
+AssessDicKey.examine_house_room_status = "examine.house.room.status";//房间通风、采光等状态
+AssessDicKey.examine_house_floor_high = "examine.house.floor.high";//房间层高
+AssessDicKey.examine_house_clear_high = "examine .house.clear.high";//房间净高
 AssessDicKey.examine_house_room_level = "examine.house.room.level";//房间装修档次
 AssessDicKey.examine_house_room_material = "examine.house.room.material";//房间装修材料
 AssessDicKey.examine_house_room_adjacent_position = "examine.house.room.adjacent.position";//相邻位置

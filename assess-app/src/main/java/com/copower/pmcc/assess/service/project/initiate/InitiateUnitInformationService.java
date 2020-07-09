@@ -1,10 +1,13 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateUnitInformationDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateUnitInformation;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
@@ -15,6 +18,8 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -44,18 +49,22 @@ public class InitiateUnitInformationService {
     private InitiateContactsService initiateContactsService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 回写 crm data
+     *
      * @param initiateUnitInformation
      * @throws Exception
      */
-    public void roundWrite(InitiateUnitInformation initiateUnitInformation)throws Exception{
-        if (initiateUnitInformation == null){
-            return ;
+    public void roundWrite(InitiateUnitInformation initiateUnitInformation) throws Exception {
+        if (initiateUnitInformation == null) {
+            return;
         }
         CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
-        if (org.apache.commons.lang3.StringUtils.isNotEmpty(initiateUnitInformation.getuUseUnit())){
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(initiateUnitInformation.getuUseUnit())) {
             if (NumberUtils.isNumber(initiateUnitInformation.getuUseUnit())) {
                 if (initiateUnitInformation.getInfoWrite() != null) {
                     if (initiateUnitInformation.getInfoWrite().booleanValue()) {
@@ -73,20 +82,20 @@ public class InitiateUnitInformationService {
                 }
             }
         }
-        initiateContactsService.writeCrmCustomerDto(initiateUnitInformation.getProjectId(),InitiateContactsEnum.UNIT_INFORMATION.getId()) ;
+        initiateContactsService.writeCrmCustomerDto(initiateUnitInformation.getProjectId(), InitiateContactsEnum.UNIT_INFORMATION.getId());
     }
 
-    public Integer saveAndUpdate(InitiateUnitInformation initiateUnitInformation)throws Exception{
-        if (initiateUnitInformation == null){
+    public Integer saveAndUpdate(InitiateUnitInformation initiateUnitInformation) throws Exception {
+        if (initiateUnitInformation == null) {
             return null;
         }
-        if (initiateUnitInformation.getId()==null || initiateUnitInformation.getId().intValue()==0){
+        if (initiateUnitInformation.getId() == null || initiateUnitInformation.getId().intValue() == 0) {
             initiateUnitInformation.setCreator(commonService.thisUserAccount());
             Integer id = dao.add(initiateUnitInformation);
             initiateContactsService.update(id, InitiateContactsEnum.UNIT_INFORMATION.getId());
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateUnitInformation.class),id);
-            return  id ;
-        }else {
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(InitiateUnitInformation.class), id);
+            return id;
+        } else {
             dao.update(initiateUnitInformation);
             return initiateUnitInformation.getId();
         }
@@ -94,7 +103,7 @@ public class InitiateUnitInformationService {
 
 
     public InitiateUnitInformationVo getDataByProjectId(Integer projectId) {
-        if (projectId == null){
+        if (projectId == null) {
             return null;
         }
         InitiateUnitInformation initiateUnitInformation = new InitiateUnitInformation();
@@ -129,13 +138,31 @@ public class InitiateUnitInformationService {
         BeanUtils.copyProperties(unitInformation, vo);
         if (!StringUtils.isEmpty(unitInformation.getuUseUnit())) {
             if (NumberUtils.isNumber(unitInformation.getuUseUnit())) {
-                CrmCustomerDto customer = crmRpcCustomerService.getCustomer(Integer.valueOf(unitInformation.getuUseUnit()));
+                CrmCustomerDto customer = null;
+                try {
+                    if (NumberUtils.isNumber(unitInformation.getuUseUnit())) {
+                        customer = crmRpcCustomerService.getCustomer(Integer.valueOf(unitInformation.getuUseUnit()));
+                    }
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
                 if (customer != null) {
                     vo.setuUseUnitName(customer.getName());
                 }
             }
         }
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = new ArrayList<>();
+        try {
+            crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        } catch (Exception e) {
+            //crm 未知错误
+            logger.error(e.getMessage(), e);
+            if (!StringUtils.isEmpty(unitInformation.getuUnitProperties())) {
+                if (NumberUtils.isNumber(unitInformation.getuUnitProperties())) {
+                    vo.setuUnitPropertiesName(baseDataDicService.getNameById(Integer.valueOf(unitInformation.getuUnitProperties())));
+                }
+            }
+        }
         if (!StringUtils.isEmpty(unitInformation.getuUnitProperties())) {
             if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
                 for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {

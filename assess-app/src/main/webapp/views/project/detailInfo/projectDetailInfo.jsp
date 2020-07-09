@@ -475,17 +475,15 @@
                 }
             });
             cols.push({
-                field: 'thisBalance', title: '收款金额', formatter: function (value, row, index) {
+                field: 'payAmount', title: '到账金额', formatter: function (value, row, index) {
                     if (value) {
                         return (Number(value) / 100).toFixed(2);
                     }
                 }
             });
-            cols.push({field: 'company', title: '公司'});
-            cols.push({field: 'billExplain', title: '说明'});
             cols.push({field: 'applyUserName', title: '申请人'});
             cols.push({
-                field: 'created', title: '创建日期', formatter: function (value, row, index) {
+                field: 'created', title: '申请日期', formatter: function (value, row, index) {
                     return formatDate(value, true);
                 }
             });

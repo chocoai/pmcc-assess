@@ -72,4 +72,11 @@ public class DeclareBuildingPermitDao {
         criteria.andIdIsNotNull();
         return declareBuildingPermitMapper.selectByExample(example) ;
     }
+
+    public List<DeclareBuildingPermit> getDataIds(List<Integer> ids){
+        DeclareBuildingPermitExample example = new DeclareBuildingPermitExample();
+        DeclareBuildingPermitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        return declareBuildingPermitMapper.selectByExample(example) ;
+    }
 }

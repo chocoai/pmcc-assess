@@ -7,6 +7,7 @@
     houseCommon.houseTradingForm = $('#basicTradingFrm');
     houseCommon.houseForm = $('#basicHouseFrm');
     houseCommon.houseHuxingForm = $('#basicHouseHuxing');
+    houseCommon.landCategoryInfoForm = $('#landCategoryInfoFrm');
     houseCommon.houseTradingTypeSell = 'ExamineHouseTradingSell';
     houseCommon.houseTradingTypeLease = 'ExamineHouseTradingLease';
     houseCommon.houseMapiframe = undefined;
@@ -47,26 +48,30 @@
         fileDiv.empty();
         var houseFileHtml = '';
         AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
-            var divLength = Math.ceil(resultData.length/3);
-            for (var j = 0; j < divLength; j++) {
+
+            var groupIndex= 2;//分成2个一组
+            var result = [];
+            for(var k=0,len=resultData.length;k<len;k+=groupIndex){
+                result.push(resultData.slice(k,k+groupIndex));
+            }
+            $.each(result , function (i,data) {
                 houseFileHtml += '<div class="row form-group">';
                 houseFileHtml += '<div class="col-md-12">';
                 houseFileHtml += '<div class="form-inline x-valid">';
-                var length = (j+1)*3>resultData.length?resultData.length:(j+1)*3;
-                for (var i = j*3; i < length; i++) {
-                    houseFileHtml += '<label class="col-sm-1">'+resultData[i].name+'</label>';
-                    houseFileHtml += '<div class="col-sm-3">';
+                $.each(data,function (j,item) {
+                    houseFileHtml += '<label class="col-sm-1 col-md-2">'+item.name+'</label>';
+                    houseFileHtml += '<div class="col-sm-5 col-md-4">';
                     if (bisDetail != false) {
-                        houseFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
+                        houseFileHtml += '<input id="' + item.fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
                     }
-                    houseFileHtml += '<div id="_' + resultData[i].fieldName + '"></div>';
+                    houseFileHtml += '<div id="_' + item.fieldName + '"></div>';
                     houseFileHtml += '</div>';
-                    houseCommon.houseFileControlIdArray.push(resultData[i].fieldName);
-                }
+                    houseCommon.houseFileControlIdArray.push(item.fieldName);
+                }) ;
                 houseFileHtml += "</div>";
                 houseFileHtml += "</div>";
                 houseFileHtml += "</div>";
-            }
+            }) ;
 
         }, false);
         fileDiv.append(houseFileHtml);
@@ -213,10 +218,10 @@
         //基本信息
         houseCommon.houseForm.initForm(data.basicHouse, function () {
             //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；
-            AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, data.basicHouse.certUse, function (html, data) {
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineHouseLoadUtility, null, function (html, data) {
                 houseCommon.houseForm.find("#certUseList").empty().html(html).trigger('change');
             }, true);
-            AssessCommon.loadDataListHtml(AssessDicKey.examineHousePracticalUse, data.basicHouse.practicalUse, function (html, data) {
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineHousePracticalUse, null, function (html, data) {
                 houseCommon.houseForm.find("#practicalUseList").empty().html(html).trigger('change');
             }, true);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseEnvironmentUse, data.basicHouse.useEnvironment, function (html, data) {
@@ -307,10 +312,10 @@
         //户型
         houseCommon.houseHuxingForm.initForm(data.basicHouseHuxing, function () {
             if (data.basicHouseHuxing != null) {
-                AssessCommon.loadDataListHtml(AssessDicKey.examineHouseTenementType, data.basicHouseHuxing.tenementType, function (html, data) {
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineHouseTenementType, null, function (html, data) {
                     houseCommon.houseHuxingForm.find("#tenementTypeList").empty().html(html).trigger('change');
                 }, true);
-                AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonHouseOrientation, data.basicHouseHuxing.orientation, function (html, data) {
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, data.basicHouseHuxing.orientation, function (html, data) {
                     houseCommon.houseHuxingForm.find("select.orientation").empty().html(html).trigger('change');
                 });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, data.basicHouseHuxing.spatialDistribution, function (html, data) {
@@ -327,12 +332,31 @@
             }
 
         });
+
+        //土地类型
+        houseCommon.landCategoryInfoForm.initForm(data.landCategoryInfo, function () {
+            if (data.landCategoryInfo != null) {
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_compatibility_rate, null, function (html, data) {
+                    houseCommon.landCategoryInfoForm.find("#compatibilityTypeList").empty().html(html).trigger('change');
+                }, false);
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
+                    houseCommon.landCategoryInfoForm.find("#landUseTypeList").empty().html(html).trigger('change');
+                }, false);
+            }
+        });
         //完损度数据加载
         try {
             damagedDegree.loadDamagedDegreeList();
         } catch (e) {
         }
     };
+
+    houseCommon.landUseTypeChange = function(){
+        var value = houseCommon.landCategoryInfoForm.find('[name=landUseType]').val();
+        AssessCommon.getSonTextAppendDicList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
+            houseCommon.landCategoryInfoForm.find("#landUseCategoryList").empty().html(html).trigger('change');
+        });
+    }
 
     houseCommon.showUseCondition = function (data) {
         if (houseCommon.isNotBlank(data.basicHouse.useCondition)) {
@@ -647,6 +671,9 @@
             } else {
                 houseCommon.houseTradingForm.find('.ExamineHouseTradingSell').hide();
                 houseCommon.houseTradingForm.find('.ExamineHouseTradingLease').hide();
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePaymentMethod, basicHouseTrading.paymentMethod, function (html, data) {
+                    houseCommon.houseTradingForm.find("select.paymentMethod").empty().html(html).trigger('change');
+                });
             }
         });
 
@@ -976,12 +1003,25 @@
     };
 
     //计算单价
-    houseCommon.computeUnitPrice = function () {
+    houseCommon.computeUnitPrice = function (_this) {
         var area = houseCommon.houseForm.find('[name=area]').val();
-        var tradingTotalPrice = houseCommon.houseTradingForm.find('[name=tradingTotalPrice]').val();
+        if(!area){
+            area = houseCommon.houseTradingForm.find('[id=tempLandArea]').val();
+        }
+        var tradingTotalPrice = $(_this).closest('form').find('[name=tradingTotalPrice]').val();
         if (AssessCommon.isNumber(area) && AssessCommon.isNumber(tradingTotalPrice)) {
             var tradingUnitPrice = parseFloat(tradingTotalPrice) / parseFloat(area);
-            houseCommon.houseTradingForm.find('[name=tradingUnitPrice]').val(parseInt(tradingUnitPrice));
+            $(_this).closest('form').find('[name=tradingUnitPrice]').val(parseInt(tradingUnitPrice));
+            houseCommon.computePerMuPrice(_this);
+        }
+    };
+
+    //计算每亩单价
+    houseCommon.computePerMuPrice = function (_this) {
+        var unitPrice = $(_this).closest('form').find('[name=tradingUnitPrice]').val();
+        if (AssessCommon.isNumber(unitPrice)) {
+            var value = (parseFloat(unitPrice) * AssessCommon.BHOU).toFixed(2);
+            $(_this).closest('form').find('[name=perMuPrice]').val(value);
         }
     };
 
@@ -1005,7 +1045,7 @@
             html += '<option value="商间">商间</option>';
             html += '<option value="商区">商区</option>';
         }
-        if (tenementType == '餐饮酒店') {
+        if (tenementType == '餐饮'||tenementType == '酒店') {
             html += '<option value="住宿" data-child="标间(普通),标间(商务),标间(高级),单间(普通),单间(商务),单间(高级),套房(普通),套房(商务),套房(高级)">住宿</option>';
             html += '<option value="商业" data-child="会议室,会议厅,商务厅,影视厅">商业</option>';
             html += '<option value="餐饮" data-child="包间(普通),包间(标准),包间(豪华),餐饮大厅,共用餐区">餐饮</option>';

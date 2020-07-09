@@ -465,7 +465,15 @@ commonColumn.buildingFunctionColumn = function () {
 //单元-户型差异调查表
 commonColumn.houseHuxingPriceColumn = function () {
     var cols = [];
-    cols.push({field: 'houseNumber', title: '房号'});
+    cols.push({
+        field: 'houseNumber', title: '房号', formatter: function (value, row, index) {
+            var s = row.houseNumber;
+            if (row.declareName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.declareName + "</span>"
+            }
+            return s;
+        }
+    });
     cols.push({field: 'area', title: '面积'});
     cols.push({field: 'floor', title: '楼层'});
     return cols;
@@ -560,6 +568,7 @@ commonColumn.unitDecorateColumn = function () {
     cols.push({field: 'materialGradeName', title: '材料档次'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '材料价格区间'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
 
@@ -594,6 +603,7 @@ commonColumn.unitCommonPartColumn = function () {
         }
     });
     cols.push({field: 'unitLocation', title: '描述'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
 
@@ -633,16 +643,26 @@ commonColumn.unitElevatorColumn = function () {
     cols.push({field: 'brand', title: '电梯品牌'});
     cols.push({field: 'number', title: '电梯数量'});
     cols.push({field: 'quasiLoadNumber', title: '准载人数'});
-    cols.push({field: 'quasiLoadWeight', title: '准载重量'});
+    cols.push({field: 'quasiLoadWeight', title: '准载重量kg'});
     cols.push({field: 'runningSpeed', title: '运行速度'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
 
 commonColumn.unitStairsColumn = function () {
     var cols = [];
-    cols.push({field: 'type', title: '楼梯类型'});
+    cols.push({
+        field: 'name', title: '楼梯类型', formatter: function (value, row, index) {
+            var s = row.type;
+            if (row.creatorName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+            }
+            return s;
+        }
+    });
     cols.push({field: 'purpose', title: '用途'});
     cols.push({field: 'staircase', title: '楼梯间'});
+    cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 };
 
@@ -662,11 +682,32 @@ commonColumn.houseRoomColumn = function () {
             return s;
         }
     });
-    cols.push({field: 'houseShape', title: '房间形状'});
-    cols.push({field: 'shapeRemark', title: '形状说明'});
-    cols.push({field: 'area', title: '面积(m²)'});
-    cols.push({field: 'layerHeight', title: '层高(m)'});
-    cols.push({field: 'clearHeight', title: '净高(m)'});
+    cols.push({
+        field: 'baseDescription', title: '基本信息', formatter: function (value, row, index) {
+            var s = "";
+            if (row.houseShape) {
+                s += "房间形状:"+row.houseShape;
+                s += ";";
+            }
+            if (row.shapeRemark) {
+                s += "形状说明:"+row.shapeRemark;
+                s += ";";
+            }
+            if (row.area) {
+                s += "面积:"+row.area;
+                s += "m²;";
+            }
+            if (row.layerHeight) {
+                s += "层高:"+row.layerHeight;
+                s += "m;";
+            }
+            if (row.clearHeight) {
+                s += "净高:"+row.clearHeight;
+                s += "m;";
+            }
+            return s;
+        }
+    });
 
     return cols;
 }
@@ -680,8 +721,8 @@ commonColumn.houseRoomResidence = function () {
     cols.push({
         field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
             var s = row.length;
-            if (row.houseShape == '不规则'&&row.length) {
-                s = "最长"+s;
+            if (row.houseShape == '不规则' && row.length) {
+                s = "最长" + s;
             }
             return s;
         }
@@ -689,8 +730,8 @@ commonColumn.houseRoomResidence = function () {
     cols.push({
         field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
             var s = row.width;
-            if (row.houseShape == '不规则'&&row.width) {
-                s = "最宽"+s;
+            if (row.houseShape == '不规则' && row.width) {
+                s = "最宽" + s;
             }
             return s;
         }
@@ -706,8 +747,8 @@ commonColumn.houseRoomStore = function () {
     cols.push({
         field: 'openingDisplay', title: '开间', formatter: function (value, row, index) {
             var s = row.opening;
-            if (row.houseShape == '不规则'&&row.opening) {
-                s = "最大"+s;
+            if (row.houseShape == '不规则' && row.opening) {
+                s = "最大" + s;
             }
             return s;
         }
@@ -715,8 +756,8 @@ commonColumn.houseRoomStore = function () {
     cols.push({
         field: 'depthDisplay', title: '进深', formatter: function (value, row, index) {
             var s = row.depth;
-            if (row.houseShape == '不规则'&&row.depth) {
-                s = "最小"+s;
+            if (row.houseShape == '不规则' && row.depth) {
+                s = "最小" + s;
             }
             return s;
         }
@@ -732,8 +773,8 @@ commonColumn.houseRoomHotel = function () {
     cols.push({
         field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
             var s = row.length;
-            if (row.houseShape == '不规则'&&row.length) {
-                s = "最长"+s;
+            if (row.houseShape == '不规则' && row.length) {
+                s = "最长" + s;
             }
             return s;
         }
@@ -741,8 +782,8 @@ commonColumn.houseRoomHotel = function () {
     cols.push({
         field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
             var s = row.width;
-            if (row.houseShape == '不规则'&&row.width) {
-                s = "最宽"+s;
+            if (row.houseShape == '不规则' && row.width) {
+                s = "最宽" + s;
             }
             return s;
         }
@@ -803,33 +844,32 @@ commonColumn.houseIntelligentColumn = function () {
             return s;
         }
     });
+    cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'layingMethodName', title: '铺设方式'});
     cols.push({field: 'lampsLanternsName', title: '灯具'});
-    cols.push({field: 'gradeName', title: '档次'});
-    cols.push({field: 'intelligentSystemName', title: '智能系统'});
     cols.push({field: 'remark', title: '备注'});
+    cols.push({field: 'intelligentSystemName', title: '智能系统'});
+    cols.push({field: 'systemDescribe', title: '智能系统描述'});
     return cols;
 }
 
 //房屋-供水
 commonColumn.houseWaterColumn = function () {
     var cols = [];
-    cols.push({
-        field: 'name', title: '给水方式', formatter: function (value, row, index) {
+    cols.push({field: 'fireWaterSupplyName', title: '给水方式', formatter: function (value, row, index) {
             var s = row.supplyModeName;
             if (row.creatorName) {
                 s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
-        }
-    });
+        }});
+    cols.push({field: 'fireWaterSupplyName', title: '供水分类'});
     cols.push({field: 'pipingLayoutName', title: '给水管道布置'});
     cols.push({field: 'pipeMaterialName', title: '给水管材料'});
     cols.push({field: 'gradeName', title: '档次'});
     cols.push({field: 'boosterEquipmentName', title: '给水升压设备'});
     cols.push({field: 'pretreatedWaterName', title: '前置净水'});
     cols.push({field: 'purificationEquipmentPriceName', title: '前置净水设备价格区间'});
-    cols.push({field: 'fireWaterSupplyName', title: '供水分类'});
     return cols;
 }
 

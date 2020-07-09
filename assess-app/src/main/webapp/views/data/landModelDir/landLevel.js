@@ -523,6 +523,7 @@ function zTreeOnClick(event, treeId, treeNode) {
     landLevel.getDataLandLevelDetailById(treeNode.id, function (data) {
         landLevel.initLandLevelDetailBaseForm(form, data);
     });
+    zTree.checkAllNodes(false);
     zTree.checkNode(treeNode, true, true);
 }
 
@@ -665,7 +666,7 @@ landLevel.loadTree = function () {
             chkboxType: {"Y": "", "N": ""}//必须设为null ,这样可以真正意义上让复选框不影响父级和子级,哪个被点击了就勾选哪个
         },
         callback: {
-            onClick: zTreeOnClick
+            onClick: zTreeOnClick,
         },
         data: {
             key: {
@@ -754,7 +755,7 @@ landLevel.treeCheckAllNodes = function (_this) {
 landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function () {
     var box = landLevel.config.land_level_detail_modal;
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
-    var nodes = zTree.getSelectedNodes();
+    var nodes = zTree.getCheckedNodes(true);
     if (nodes.length != 1) {
         notifyInfo('提示', '请选择一个节点');
         return false;
@@ -778,6 +779,21 @@ landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function 
     }, "delete");
 };
 
+landLevel.deleteCorrectionCoefficientVolumeRatioBatch = function () {
+    var rows = landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        notifyInfo('提示', "请勾选要删除的数据");
+        return false;
+    }
+    var ids = [];
+    $.each(rows, function (i, item) {
+        ids.push(item.id);
+    });
+    landLevel.ajaxServerFun({_method: "DELETE"}, '/dataLandLevelDetailVolume/delete/' + ids.join(","), "post", function () {
+        landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTable.bootstrapTable('refresh');
+    }, "delete");
+};
+
 landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag) {
     var target = $('#ajaxFileUploadLandLevelDetailCoefficientVolumeRatio');
     var levelDetailId = "";
@@ -785,7 +801,7 @@ landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag)
     if (flag) {
         var nodes = zTreeObj.getCheckedNodes(true);
         if (nodes.length != 1) {
-            notifyInfo('提示', '勾选一个');
+            notifyInfo('提示', '勾选至少一个节点');
             return false;
         }
         levelDetailId = nodes[0].id;
@@ -858,7 +874,7 @@ landLevel.showDataHousePriceIndexDetailList = function (levelDetailId) {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    });
+    },true);
 };
 //------容积率 method end--------//
 
@@ -904,6 +920,21 @@ landLevel.deleteDataLandDetailAchievement = function (index) {
     }, "delete");
 };
 
+landLevel.deleteDataLandDetailAchievementBatch = function () {
+    var rows = landLevel.config.achievementTable.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        notifyInfo('提示', "请勾选要删除的数据");
+        return false;
+    }
+    var ids = [];
+    $.each(rows, function (i, item) {
+        ids.push(item.id);
+    });
+    landLevel.ajaxServerFun({_method: "DELETE"}, '/dataLandLevelDetailAchievement/delete/' + ids.join(","), "post", function () {
+        landLevel.config.achievementTable.bootstrapTable('refresh');
+    }, "delete");
+};
+
 landLevel.downloadDataLandDetailAchievementFile = function (this_) {
     //AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelDetailBaseAchievementTemplate)
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
@@ -912,11 +943,11 @@ landLevel.downloadDataLandDetailAchievementFile = function (this_) {
         notifyInfo('提示', '至少勾选一个节点');
         return false;
     }
-    var ids = [] ;
-    $.each(nodes,function (j,node) {
-        ids.push(node.id) ;
-    }) ;
-    landLevel.ajaxServerFun({id:ids.join(",")}, "/dataLandLevelDetailAchievement/downloadDataLandDetailAchievementFile", "post", function (fileId) {
+    var ids = [];
+    $.each(nodes, function (j, node) {
+        ids.push(node.id);
+    });
+    landLevel.ajaxServerFun({id: ids.join(",")}, "/dataLandLevelDetailAchievement/downloadDataLandDetailAchievementFile", "post", function (fileId) {
         FileUtils.downAttachments(fileId);
         FileUtils.deleteFile({attachmentId: fileId});
     });
@@ -999,7 +1030,7 @@ landLevel.showLandDetailAchievementList = function (levelDetailId) {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    });
+    }, true);
 };
 
 //土地级别详情从表 土地因素 保存或者更新

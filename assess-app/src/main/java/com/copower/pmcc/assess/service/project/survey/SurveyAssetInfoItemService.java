@@ -176,6 +176,7 @@ public class SurveyAssetInfoItemService {
         }else  if(eatate!=null){
             houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(eatate);
         }
+//        oo.setCreator(commonService.thisUserAccount());
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<SurveyAssetInfoItem> surveyAssetInfoItems = getSurveyAssetInfoItemLikeList(oo, LangUtils.transform(houseBatchDetailList,o->o.getDeclareRecordId()));
         if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
@@ -228,5 +229,10 @@ public class SurveyAssetInfoItemService {
         return integerList;
     }
 
-
+    public List<SurveyAssetInfoItem> getItemsByAssetInfoId(Integer assetInfoId) {
+        SurveyAssetInfoItem query = new SurveyAssetInfoItem();
+        query.setAssetInfoId(assetInfoId);
+        List<SurveyAssetInfoItem> infoItems = getSurveyAssetInfoItemListByQuery(query);
+        return infoItems;
+    }
 }

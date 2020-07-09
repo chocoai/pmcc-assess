@@ -50,7 +50,7 @@ public class BasicEstateTaggingController {
     public HttpResult addBasicEstateTagging(BasicEstateTagging basicEstateTagging) {
         try {
             basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
-            return HttpResult.newCorrectResult();
+            return HttpResult.newCorrectResult(basicEstateTagging);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -62,7 +62,7 @@ public class BasicEstateTaggingController {
     public HttpResult addBasicEstateTaggingByTableId(BasicEstateTagging basicEstateTagging) {
         try {
             basicEstateTaggingService.addBasicEstateTaggingByTableId(basicEstateTagging);
-            return HttpResult.newCorrectResult();
+            return HttpResult.newCorrectResult(basicEstateTagging);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

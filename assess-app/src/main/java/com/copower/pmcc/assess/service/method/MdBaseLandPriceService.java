@@ -7,6 +7,8 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdBaseLandPriceDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -38,13 +40,15 @@ public class MdBaseLandPriceService {
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private DeclareRecordService declareRecordService;
+    private BasicEstateService basicEstateService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataHousePriceIndexDao dataHousePriceIndexDao;
     @Autowired
     private DataHousePriceIndexDetailDao dataHousePriceIndexDetailDao;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     public List<MdBaseLandPrice> getObjectList(MdBaseLandPrice mdBaseLandPrice) {
         return mdBaseLandPriceDao.getObjectList(mdBaseLandPrice);
@@ -113,29 +117,47 @@ public class MdBaseLandPriceService {
         StringBuilder s = new StringBuilder();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObjectId);
         ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(schemeJudgeObject.getProjectId());
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+
+        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+
         //评估基准日
         Date valuationDate = projectInfoById.getValuationDate();
         //找到评估基准日对应的土地因素
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
         List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
+        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict(), dataDic.getId());
         if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
+            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), null, dataDic.getId());
         }
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
-            Integer masterId = dataHouseIndexList.get(0).getId();
+            DataHousePriceIndex housePriceIndex = dataHouseIndexList.get(0);
             DataHousePriceIndexDetail dataHousePriceIndexDetail = new DataHousePriceIndexDetail();
-            dataHousePriceIndexDetail.setHousePriceId(masterId);
+            dataHousePriceIndexDetail.setHousePriceId(housePriceIndex.getId());
             List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(dataHousePriceIndexDetail);
-            //最早月份的指数
-            DataHousePriceIndexDetail firstIndex = detailList.get(0);
+
             if (CollectionUtils.isNotEmpty(detailList)) {
-                for (DataHousePriceIndexDetail item : detailList) {
-                    if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
-                        return item.getIndexNumber().divide(firstIndex.getIndexNumber(), 4, BigDecimal.ROUND_HALF_UP);
+                //基期
+                Date basePeriod = housePriceIndex.getBasePeriod();
+                BigDecimal basePeriodIndex = null;
+                if(basePeriod!=null){
+                    for (DataHousePriceIndexDetail item : detailList) {
+                        //基期对应的指数
+                        if (item.getStartDate().compareTo(basePeriod) != 1 && item.getStartDate().compareTo(basePeriod) != -1) {
+                            basePeriodIndex = item.getIndexNumber();
+                        }
                     }
                 }
+
+                if(basePeriodIndex!=null){
+                    //找到自身对应指数：基期指数
+                    for (DataHousePriceIndexDetail item : detailList) {
+                        if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
+                            return item.getIndexNumber().divide(basePeriodIndex, 4, BigDecimal.ROUND_HALF_UP);
+                        }
+                    }
+                }
+
             }
         }
         return null;

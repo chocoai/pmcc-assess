@@ -17,6 +17,33 @@ var unitDecorate;
             }
             return false;
         },
+        //附件上传
+        fileUpload: function (fieldsName, id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitDecorate,
+                    tableId: unitDecorate.prototype.isNotBlank(id) ? id : "0"
+                },
+                deleteFlag: true,
+                onUploadComplete: function () {
+                    unitDecorate.prototype.fileShow(fieldsName, id);
+                }
+            });
+        },
+        fileShow: function (fieldsName, id) {
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitDecorate,
+                    tableId: unitDecorate.prototype.isNotBlank(id) ? id : "0"
+                },
+                deleteFlag: true
+            })
+        },
         loadDataDicList: function () {
             var cols = commonColumn.unitDecorateColumn();
             cols.push({
@@ -159,6 +186,8 @@ var unitDecorate;
                     frm.find('#unitDecorate_datalist').empty().html(html).trigger('change');
                 });
             });
+            unitDecorate.prototype.fileUpload("unitDecorateFile", item.id);
+            unitDecorate.prototype.fileShow("unitDecorateFile", item.id);
         },
         openPartItemModal: function () {
             UnitCommonPartFun.getBasicUnitCommonPartList({unitId: unitCommon.getUnitId()}, function (dataAll) {
@@ -259,7 +288,33 @@ unitCommonPart.prototype.config = function () {
     data.frm = "frmExamineUnitCommonPart";
     return data;
 };
-
+//附件上传
+unitCommonPart.prototype.fileUpload= function (fieldsName, id) {
+    FileUtils.uploadFiles({
+        target: fieldsName,
+        disabledTarget: "btn_submit",
+        formData: {
+            fieldsName: fieldsName,
+            tableName: AssessDBKey.BasicUnitCommonPart,
+            tableId: unitCommonPart.prototype.isNotBlank(id) ? id : "0"
+        },
+        deleteFlag: true,
+        onUploadComplete: function () {
+            unitCommonPart.prototype.fileShow(fieldsName, id);
+        }
+    });
+};
+unitCommonPart.prototype.fileShow= function (fieldsName, id) {
+    FileUtils.getFileShows({
+        target: fieldsName,
+        formData: {
+            fieldsName: fieldsName,
+            tableName: AssessDBKey.BasicUnitCommonPart,
+            tableId: unitCommonPart.prototype.isNotBlank(id) ? id : "0"
+        },
+        deleteFlag: true
+    })
+};
 unitCommonPart.prototype.isNotBlank = function (item) {
     if (item) {
         return true;
@@ -404,41 +459,19 @@ unitCommonPart.prototype.compare = function (obj1, obj2) {
 };
 unitCommonPart.prototype.init = function (item) {
     $("#" + unitCommonPart.prototype.config().frm).clearAll().initForm(item, function () {
-        AssessCommon.loadDataListHtml(AssessDicKey.examineUnitLocation, item.unitLocation, function (html, data) {
-            $("#" + unitCommonPart.prototype.config().frm).find("#unitLocationList").empty().html(html).trigger('change');
+
+
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitCommonPart, null, function (html, data) {
+            $("#unitCommonPart_datalist").empty().html(html).trigger('change');
         }, true);
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitCommonPart, null, function (html, data) {
-            html = '';
-            html += '<option value="" selected>-请选择-</option>';
-            $.each(data, function (i, item) {
-                html += "<option value='" + item.name + "'>" + item.name + "</option>";
-            });
-            $("#" + unitCommonPart.prototype.config().frm).find('#unitCommonPart_datalist').empty().html(html).trigger('change');
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitMonad, null, function (html, data) {
-            html = '';
-            html += '<option value="" selected>-请选择-</option>';
-            $.each(data, function (i, item) {
-                html += "<option value='" + item.name + "'>" + item.name + "</option>";
-            });
-            $("#" + unitCommonPart.prototype.config().frm).find('#unitMonad_datalist').empty().html(html).trigger('change');
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitQuantity, null, function (html, data) {
-            html = '';
-            html += '<option value="" selected>-请选择-</option>';
-            $.each(data, function (i, item) {
-                html += "<option value='" + item.name + "'>" + item.name + "</option>";
-            });
-            $("#" + unitCommonPart.prototype.config().frm).find('#unitQuantity_datalist').empty().html(html).trigger('change');
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.unit_commonPart_description, null, function (html, data) {
-            html = '';
-            html += '<option value="" selected>-请选择-</option>';
-            $.each(data, function (i, item) {
-                html += "<option value='" + item.name + "'>" + item.name + "</option>";
-            });
-            $("#" + unitCommonPart.prototype.config().frm).find('#unitDescriptionList').empty().html(html).trigger('change');
-        });
+
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitMonad, null, function (html, data) {
+            $("#unitMonad_datalist").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitQuantity, null, function (html, data) {
+            $("#unitQuantity_datalist").empty().html(html).trigger('change');
+        }, true);
+
         var target = $(".unitLocationTextModel");
         target.empty();
         if (item.unitLocation) {
@@ -452,8 +485,21 @@ unitCommonPart.prototype.init = function (item) {
                 var html = unitCommonPart.prototype.replaceHtml(obj);
                 target.append(html);
             }
+            for (var i = 1; i <= resultData.length; i++) {
+                var locationListId = "#unitLocationList"+i;
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitLocation, null, function (html, data) {
+                    $(locationListId).empty().html(html).trigger('change');
+                }, false);
+
+                var unitDescriptionListId = "#unitDescriptionList"+i;
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.unit_commonPart_description, null, function (html, data) {
+                    $(unitDescriptionListId).empty().html(html).trigger('change');
+                }, false);
+            }
         }
     });
+    unitCommonPart.prototype.fileUpload("unitCommonPartFile", item.id);
+    unitCommonPart.prototype.fileShow("unitCommonPartFile", item.id);
 };
 unitCommonPart.prototype.openPartItemModal = function () {
     AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
@@ -519,6 +565,17 @@ unitCommonPart.prototype.appendRecording = function (_this) {
     for (var i = 1 + start; i <= len; i++) {
         var html = unitCommonPart.prototype.replaceHtml({index: i, name: data.unitCommonPart + i});
         target.append(html);
+    }
+    for (var i = 1 + start; i <= len; i++) {
+        var locationListId = "#unitLocationList"+i;
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitLocation, null, function (html, data) {
+            $(locationListId).empty().html(html).trigger('change');
+        }, false);
+
+        var unitDescriptionListId = "#unitDescriptionList"+i;
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.unit_commonPart_description, null, function (html, data) {
+            $(unitDescriptionListId).empty().html(html).trigger('change');
+        }, false);
     }
 
 };
@@ -881,6 +938,33 @@ var unitElevator;
             }
             return false;
         },
+        //附件上传
+        fileUpload: function (fieldsName, id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitElevator,
+                    tableId: unitElevator.prototype.isNotNull(id) ? id : "0"
+                },
+                deleteFlag: true,
+                onUploadComplete: function () {
+                    unitElevator.prototype.fileShow(fieldsName, id);
+                }
+            });
+        },
+        fileShow: function (fieldsName, id) {
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitElevator,
+                    tableId: unitElevator.prototype.isNotNull(id) ? id : "0"
+                },
+                deleteFlag: true
+            })
+        },
         config: function () {
             var data = {};
             data.table = "ExamineUnitElevatorList";
@@ -986,6 +1070,8 @@ var unitElevator;
             AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitElevatorType, item.type, function (html, data) {
                 $("#" + unitElevator.prototype.config().frm).find('select.type').empty().html(html).trigger('change');
             });
+            unitElevator.prototype.fileUpload("unitElevatorFile", item.id);
+            unitElevator.prototype.fileShow("unitElevatorFile", item.id);
         }
     }
 
@@ -1015,6 +1101,33 @@ var unitStairs;
             data.box = "divBoxBasicUnitStairs";
             data.boxItem = "divBoxBasicUnitStairsItem";
             return data;
+        },
+        //附件上传
+        fileUpload: function (fieldsName, id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitStairs,
+                    tableId: unitStairs.prototype.isNotNull(id) ? id : "0"
+                },
+                deleteFlag: true,
+                onUploadComplete: function () {
+                    unitStairs.prototype.fileShow(fieldsName, id);
+                }
+            });
+        },
+        fileShow: function (fieldsName, id) {
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicUnitStairs,
+                    tableId: unitStairs.prototype.isNotNull(id) ? id : "0"
+                },
+                deleteFlag: true
+            })
         },
         loadDataDicList: function () {
             var cols = commonColumn.unitStairsColumn();
@@ -1098,22 +1211,15 @@ var unitStairs;
         init: function (item) {
             var frm = $('#' + unitStairs.prototype.config().box).find("form");
             frm.clearAll().initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitStairs_type, null, function (html, data) {
-                html = '';
-                html += '<option value="" selected>-请选择-</option>';
-                $.each(data, function (i, item) {
-                    html += "<option value='" + item.name + "'>" + item.name + "</option>";
-                });
-                frm.find('#UnitStairs_TYPE_List').empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitStairs_use, null, function (html, data) {
-                html = '';
-                html += '<option value="" selected>-请选择-</option>';
-                $.each(data, function (i, item) {
-                    html += "<option value='" + item.name + "'>" + item.name + "</option>";
-                });
-                frm.find('#UnitStairs_purpose_List').empty().html(html).trigger('change');
-            });
+
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitStairs_type, null, function (html, data) {
+                $("#UnitStairs_TYPE_List").empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitStairs_use, null, function (html, data) {
+                $("#UnitStairs_purpose_List").empty().html(html).trigger('change');
+            }, true);
+            unitStairs.prototype.fileUpload("unitStairsFile", item.id);
+            unitStairs.prototype.fileShow("unitStairsFile", item.id);
         },
         openPartItemModal:function () {
             var box = $("#" + unitStairs.prototype.config().boxItem) ;

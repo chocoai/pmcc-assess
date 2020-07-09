@@ -14,6 +14,15 @@ public class BasicUnitDecorateVo extends BasicUnitDecorate {
     private String materialPriceName;
     private String constructionTechnologyName;
     private String creatorName;
+    private String fileViewName;
+
+    public String getFileViewName() {
+        return fileViewName;
+    }
+
+    public void setFileViewName(String fileViewName) {
+        this.fileViewName = fileViewName;
+    }
 
     public String getDecorationPartName() {
         return decorationPartName;

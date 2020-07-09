@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dto.output.basic.BasicUnitDecorateVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -139,6 +140,14 @@ public class BasicUnitDecorateService {
         vo.setDecoratingMaterialName(baseDataDicService.getNameById(basicUnitDecorate.getDecoratingMaterial()));
         vo.setMaterialGradeName(baseDataDicService.getNameById(basicUnitDecorate.getMaterialGrade()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicUnitDecorate.getCreator()));
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicUnitDecorate.getId(), null, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
+            }
+            vo.setFileViewName(builder.toString());
+        }
         return vo;
     }
 }

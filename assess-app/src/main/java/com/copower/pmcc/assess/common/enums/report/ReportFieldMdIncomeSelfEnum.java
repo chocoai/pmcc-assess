@@ -51,6 +51,7 @@ public enum ReportFieldMdIncomeSelfEnum implements Serializable {
     //IncomeManageEarning("收益法自营经营收入"),
     //IncomeOperatingProfitRatio("收益法自营商业利润率"),
 
+    IncomeMethodFormula("收益法计算公式"),
     IncomeRateIncrease("收益法自营增长率"),
 
     IncomeCalculateFormulaExpression("收益法自营测算公式表达式"),

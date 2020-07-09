@@ -120,9 +120,9 @@ public class ProjectReportFileController {
 
     @ResponseBody
     @RequestMapping(value = "/makeJudgeObjectPosition", name = "生成位置图", method = RequestMethod.POST)
-    public HttpResult makeJudgeObjectPosition(Integer declareRecordId) {
+    public HttpResult makeJudgeObjectPosition(Integer schemeJudgeObjectId) {
         try {
-            schemeReportFileService.makeJudgeObjectPosition(declareRecordId);
+            schemeReportFileService.makeJudgeObjectPosition(schemeJudgeObjectId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,"生成位置图");

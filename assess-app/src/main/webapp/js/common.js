@@ -370,7 +370,7 @@ $(function () {
                         fieldName: key
                     },
                     success: function (result) {
-                        if (result.ret) {
+                        if (result.ret&&result.data) {
                             var retHtml = '';
                             if (initHtml == undefined || initHtml) {
                                 retHtml += '<option value="" selected>-请选择-</option>';
@@ -903,7 +903,7 @@ $(function () {
                         fieldName: key
                     },
                     success: function (result) {
-                        if (result.ret) {
+                        if (result.ret&&result.data) {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
                                 retHtml += '<option value="' + item.name + '"'
@@ -990,7 +990,88 @@ $(function () {
                 }
                 layer.close(index);
             });
-        }
+        },
+        //获取文本带下拉框字典信息
+        loadTextAppendDicHtml: function (key, value, callback, async) {
+            if (key) {
+                $.ajax({
+                    url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
+                    type: "get",
+                    dataType: "json",
+                    async: async,
+                    data: {
+                        fieldName: key
+                    },
+                    success: function (result) {
+                        if (result.ret&&result.data) {
+                            var retHtml = '';
+                            $.each(result.data, function (i, item) {
+                                retHtml += '<a class="dropdown-item" onclick="AssessCommon.setValueBySelect(this)">'+item.name+'</a>';
+                            });
+                            if (callback) {
+                                callback(retHtml, result.data);
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                });
+            }
+        },
+        setValueBySelect:function (_this) {
+            $(_this).closest(".input-group").find("input").val($(_this).text());
+        },
+        getSonTextAppendDicList: function (fieldName, name, value, callback) {
+            $.ajax({
+                url: getContextPath() + "/baseDataDic/getDataDicByName",
+                type: "get",
+                dataType: "json",
+                data: {
+                    fieldName: fieldName,
+                    name: name
+                },
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data) {
+                            AssessCommon.loadSonTextAppendDicHtml(result.data.id, value, callback);
+                        }
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            });
+
+        },
+        loadSonTextAppendDicHtml: function (pid, value, callback) {
+            if (pid) {
+                $.ajax({
+                    url: getContextPath() + "/baseDataDic/getCacheDataDicListByPid",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        pid: pid
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            var retHtml = '';
+                            $.each(result.data, function (i, item) {
+                                retHtml += '<a class="dropdown-item" onclick="AssessCommon.setValueBySelect(this)">'+item.name+'</a>';
+                            });
+                            retHtml +='</div>';
+                            if (callback) {
+                                callback(retHtml, result.data);
+                            }
+
+                        }
+                    },
+                    error: function (result) {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                });
+            }
+        },
     };
 
     window.AssessCommon = assessCommon;

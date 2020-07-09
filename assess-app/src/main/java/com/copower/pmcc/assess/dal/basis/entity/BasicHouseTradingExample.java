@@ -2495,6 +2495,186 @@ public class BasicHouseTradingExample {
             addCriterion("price_connotation_unit not between", value1, value2, "priceConnotationUnit");
             return (Criteria) this;
         }
+
+        public Criteria andPerMuPriceIsNull() {
+            addCriterion("per_mu_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceIsNotNull() {
+            addCriterion("per_mu_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceEqualTo(BigDecimal value) {
+            addCriterion("per_mu_price =", value, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceNotEqualTo(BigDecimal value) {
+            addCriterion("per_mu_price <>", value, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceGreaterThan(BigDecimal value) {
+            addCriterion("per_mu_price >", value, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("per_mu_price >=", value, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceLessThan(BigDecimal value) {
+            addCriterion("per_mu_price <", value, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("per_mu_price <=", value, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceIn(List<BigDecimal> values) {
+            addCriterion("per_mu_price in", values, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceNotIn(List<BigDecimal> values) {
+            addCriterion("per_mu_price not in", values, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("per_mu_price between", value1, value2, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andPerMuPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("per_mu_price not between", value1, value2, "perMuPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkIsNull() {
+            addCriterion("bis_mark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkIsNotNull() {
+            addCriterion("bis_mark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkEqualTo(Boolean value) {
+            addCriterion("bis_mark =", value, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkNotEqualTo(Boolean value) {
+            addCriterion("bis_mark <>", value, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkGreaterThan(Boolean value) {
+            addCriterion("bis_mark >", value, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_mark >=", value, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkLessThan(Boolean value) {
+            addCriterion("bis_mark <", value, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_mark <=", value, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkIn(List<Boolean> values) {
+            addCriterion("bis_mark in", values, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkNotIn(List<Boolean> values) {
+            addCriterion("bis_mark not in", values, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_mark between", value1, value2, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMarkNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_mark not between", value1, value2, "bisMark");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIsNull() {
+            addCriterion("cost is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIsNotNull() {
+            addCriterion("cost is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostEqualTo(BigDecimal value) {
+            addCriterion("cost =", value, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostNotEqualTo(BigDecimal value) {
+            addCriterion("cost <>", value, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostGreaterThan(BigDecimal value) {
+            addCriterion("cost >", value, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("cost >=", value, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostLessThan(BigDecimal value) {
+            addCriterion("cost <", value, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("cost <=", value, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostIn(List<BigDecimal> values) {
+            addCriterion("cost in", values, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostNotIn(List<BigDecimal> values) {
+            addCriterion("cost not in", values, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("cost between", value1, value2, "cost");
+            return (Criteria) this;
+        }
+
+        public Criteria andCostNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("cost not between", value1, value2, "cost");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

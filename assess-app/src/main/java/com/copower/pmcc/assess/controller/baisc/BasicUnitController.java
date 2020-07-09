@@ -1,12 +1,10 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -38,7 +36,9 @@ public class BasicUnitController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    private BasicApplyBatchDao basicApplyBatchDao;
+    @Autowired
+    private BasicEstateService basicEstateService;
     @Autowired
     private BasicAlternativeCaseDao basicAlternativeCaseDao;
     @Autowired
@@ -48,7 +48,7 @@ public class BasicUnitController {
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) throws Exception {
-        String view = "project/stageSurvey/house/detail/unit";
+        String view = "project/stageSurvey/realEstate/detail/unit";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject(StringUtils.uncapitalize(BasicUnit.class.getSimpleName()), basicUnitService.getBasicUnitById(id));
         return modelAndView;
@@ -133,10 +133,16 @@ public class BasicUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
-    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingId) {
+    public HttpResult autoCompleteCaseEstate(String unitNumber,String type, Integer applyBatchId) {
         try {
-            List<CustomCaseEntity> caseEntities = basicUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingId);
-            return HttpResult.newCorrectResult(caseEntities);
+            BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchId);
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+            if(basicEstate==null){
+                return HttpResult.newCorrectResult(null);
+            }else {
+                List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailDao.getQuoteDataList(basicEstate.getQuoteId(), type, unitNumber);
+                return HttpResult.newCorrectResult(batchDetailList);
+            }
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }
@@ -148,7 +154,7 @@ public class BasicUnitController {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
-            ArrayList<String> ignoreList = Lists.newArrayList("estateId", "buildingId");
+            ArrayList<String> ignoreList = Lists.newArrayList("id","estateId", "buildingId","version","bisCase","creator");
             BasicUnit basicUnit = (BasicUnit) basicUnitService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
             return HttpResult.newCorrectResult(basicUnit);
         } catch (Exception e) {
@@ -159,12 +165,11 @@ public class BasicUnitController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseUnit", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseUnit(Integer sourceId, Integer targetId) {
+    public HttpResult quoteCaseUnit(Integer sourceApplyBatchDetailId, Integer targetId) {
         try {
-            ArrayList<String> ignoreList = Lists.newArrayList("estateId", "buildingId");
-            BasicUnit basicUnit = (BasicUnit) basicUnitService.copyBasicEntityIgnore(sourceId, targetId, true, ignoreList);
-            basicUnit.setQuoteId(sourceId);
-            basicUnit.setBisCase(false);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(sourceApplyBatchDetailId);
+            ArrayList<String> ignoreList = Lists.newArrayList("id","estateId", "buildingId","applyId","version","bisCase","creator");
+            BasicUnit basicUnit = (BasicUnit) basicUnitService.copyBasicEntityIgnore(batchDetail.getTableId(), targetId, true, ignoreList);
             basicUnitService.saveAndUpdate(basicUnit, false);
             return HttpResult.newCorrectResult(basicUnit);
         } catch (Exception e) {

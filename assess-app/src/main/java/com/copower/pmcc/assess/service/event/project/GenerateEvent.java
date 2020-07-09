@@ -79,7 +79,8 @@ public class GenerateEvent extends BaseProcessEvent {
                     projectPlanService.updateProjectPlan(projectPlan);
                     if (CollectionUtils.isEmpty(reportNumberList)) return;
                     reportNumberList = LangUtils.filter(reportNumberList, o -> o.getAreaId() > 0);
-                    String s = StringUtils.join(reportNumberList, ',');
+                    List<String> transform = LangUtils.transform(reportNumberList, p -> p.getNumberValue());
+                    String s = StringUtils.join(transform, ',');
                     sysProjectDto.setProjectDocumentNumber(s);
                     erpRpcProjectService.saveProject(sysProjectDto);
                     for (ProjectNumberRecord record : reportNumberList) {

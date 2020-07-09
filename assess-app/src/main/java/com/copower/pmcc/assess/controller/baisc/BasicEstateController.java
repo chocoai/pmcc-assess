@@ -1,15 +1,13 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
-import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
@@ -45,9 +43,13 @@ public class BasicEstateController {
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
+    private BasicApplyBatchDao basicApplyBatchDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -141,7 +143,7 @@ public class BasicEstateController {
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) throws Exception {
-        String view = "project/stageSurvey/house/detail/estate";
+        String view = "project/stageSurvey/realEstate/detail/estate";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateById(id);
         modelAndView.addObject(StringUtils.uncapitalize(BasicEstate.class.getSimpleName()), basicEstateVo);
@@ -163,8 +165,9 @@ public class BasicEstateController {
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String name, String province, String city) {
         try {
-            List<CustomCaseEntity> caseEstateList = basicEstateService.autoCompleteCaseEstate(name, province, city);
-            return HttpResult.newCorrectResult(caseEstateList);
+            //List<CustomCaseEntity> caseEstateList = basicEstateService.autoCompleteCaseEstate(name, province, city);
+            List<BasicApplyBatch> applyBatchList = basicApplyBatchDao.getListByEstate(province, city, name);
+            return HttpResult.newCorrectResult(applyBatchList);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }
@@ -186,11 +189,11 @@ public class BasicEstateController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseEstate", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseEstate(Integer sourceId, Integer targetId) {
+    public HttpResult quoteCaseEstate(Integer sourceApplyBatchId, Integer targetId) {
         try {
-            BasicEstate basicEstate = (BasicEstate) basicEstateService.copyBasicEntity(sourceId, targetId, true);
-            basicEstate.setQuoteId(sourceId);
-            basicEstate.setBisCase(false);
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(sourceApplyBatchId);
+            BasicEstate basicEstate = (BasicEstate) basicEstateService.copyBasicEntity(applyBatch.getEstateId(), targetId, true);
+            basicEstate.setQuoteId(applyBatch.getId());
             basicEstateService.saveAndUpdate(basicEstate, false);
             return HttpResult.newCorrectResult(basicEstate);
         } catch (Exception e) {

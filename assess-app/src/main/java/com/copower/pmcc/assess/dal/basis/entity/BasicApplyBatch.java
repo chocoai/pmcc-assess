@@ -13,6 +13,8 @@ public class BasicApplyBatch {
 
     private Integer referenceApplyBatchId;
 
+    private Integer caseApplyBatchId;
+
     private String province;
 
     private String city;
@@ -48,6 +50,8 @@ public class BasicApplyBatch {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String remark;
 
     public Integer getId() {
         return id;
@@ -87,6 +91,14 @@ public class BasicApplyBatch {
 
     public void setReferenceApplyBatchId(Integer referenceApplyBatchId) {
         this.referenceApplyBatchId = referenceApplyBatchId;
+    }
+
+    public Integer getCaseApplyBatchId() {
+        return caseApplyBatchId;
+    }
+
+    public void setCaseApplyBatchId(Integer caseApplyBatchId) {
+        this.caseApplyBatchId = caseApplyBatchId;
     }
 
     public String getProvince() {
@@ -231,5 +243,13 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

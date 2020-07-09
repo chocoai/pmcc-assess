@@ -166,17 +166,28 @@
                                                                 <div class="input-group">
                                                                     <input type="text" readonly="readonly" class="form-control"
                                                                            id="plotRatioElementAmend">
-                                                                    <div class="input-group-prepend">
-                                                                        <button class="btn btn-info btn-sm "
-                                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                type="button"
-                                                                                onclick="getLandLevelTabContent();">土地因素
-                                                                        </button>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <table class="table table-bordered" id="landLevelTableList">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th  width="10%">土地级别类型</th>
+                                                                    <th  width="10%">土地级别类别</th>
+                                                                    <th  width="10%">土地级别等级</th>
+                                                                    <th  width="20%">说明</th>
+                                                                    <th  width="10%">分值</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="landLevelTabContent">
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </form>
                                             </div>
@@ -493,6 +504,9 @@
 </body>
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
+        <td>
+            {typeName}
+        </td>
         <td class="table-cell">
             {landLevelTypeName}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -512,57 +526,7 @@
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
 
-<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 90%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">土地因素</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
 
-            <div class="modal-body">
-                <form class="form-horizontal" id="landLevelContentFrm">
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <div class="col-sm-12">
-                                    <div id="_select_land_level_file"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                <tr>
-                                    <th width="10%">土地级别类型类别</th>
-                                    <th width="10%">土地级别等级</th>
-                                    <th width="20%">说明</th>
-                                    <th width="10%">分值</th>
-                                </tr>
-                                </thead>
-                                <tbody id="landLevelTabContent">
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/case/case.common.js?v=${assessVersion}"></script>
 <script type="application/javascript">
@@ -573,7 +537,7 @@
     $(function () {
         getLandAcquisitionBhou("${master.id}");
         getPloughArearatio();
-
+        getLandLevelTabContent();
         $("#plotRatioElementAmend").val(AssessCommon.pointToPercent('${master.plotRatioElementAmend}'));
     });
 
@@ -762,10 +726,11 @@
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
-        $("#detailAchievementModal").modal();
+        //$("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
 
+        var rows = [];
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
@@ -773,21 +738,22 @@
                 obj.forEach(function (value, index) {
                     if (value.modelStr == "update") {
                         item = value;
+                        rows.push(item)
                     }
                 });
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                    var landLevelTypeName = item.typeName;
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{typeName}/g, item.typeName);
+                    var landLevelTypeName = "";
                     if(item.classification){
-                        landLevelTypeName+="/"+item.classification;
+                        landLevelTypeName+=item.classification;
                     }
-                    if(item.categoryName){
-                        landLevelTypeName+="/"+item.categoryName;
+                    if(item.category){
+                        landLevelTypeName+="/"+item.category;
                     }
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     var text = "";
                     $.each(obj, function (i, n) {
                         text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
@@ -797,7 +763,27 @@
                 }
             });
 
+
         });
+        var length = rows.length;// 获取当前表格中tr的个数
+        var mark = 0; //要合并的单元格数
+        var index = 0; //起始行数
+        if(length <= 1){
+        }else{
+            for(var i=0;i < length ;i++){
+                var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
+                var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
+                if(ford == behind){
+                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
+                    mark = mark +1;
+                }else if(ford != behind){
+                    index = i-mark;
+                    $("#landLevelTableList tr:gt(0):eq("+index+") td:eq(0)").attr("rowspan",mark+1);//+1 操作标识，将当前的行加入到隐藏
+                    mark = 0;
+                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i))+") td:eq(0)").hide();
+                }
+            }
+        }
     };
 </script>
 <%--年平均产值--%>

@@ -1,13 +1,7 @@
 package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareApplyService;
-import com.copower.pmcc.assess.service.project.survey.ProjectPlanSurveyService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

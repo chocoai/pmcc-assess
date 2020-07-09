@@ -170,7 +170,7 @@ public class SchemeSurePriceService {
      * @throws BusinessException
      */
     @Transactional
-    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) throws BusinessException {
+    public List<SchemeSurePriceItem> initSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) throws BusinessException {
         List<SchemeSurePriceItem> surePriceItemList = new ArrayList<>();
         if (judgeObjectId == null) {
             return surePriceItemList;
@@ -236,6 +236,14 @@ public class SchemeSurePriceService {
         return surePriceItemList;
     }
 
+    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId) throws BusinessException {
+        if (judgeObjectId == null) {
+            return null;
+        }
+        SchemeSurePriceItem where = new SchemeSurePriceItem();
+        where.setJudgeObjectId(judgeObjectId);
+        return schemeSurePriceItemDao.getSurePriceItemList(where);
+    }
 
     /**
      * 获取方法名称

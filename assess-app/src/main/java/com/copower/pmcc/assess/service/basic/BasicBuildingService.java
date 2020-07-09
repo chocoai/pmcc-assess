@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateStreetInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
@@ -97,7 +98,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
     @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
-    private BasicEstateLandStateService basicEstateLandStateService;
+    private BasicEstateStreetInfoDao basicEstateStreetInfoDao;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -167,7 +168,6 @@ public class BasicBuildingService extends BasicEntityAbstract {
         List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
         BasicBuildingVo vo = new BasicBuildingVo();
         //检查是否存在差异的楼栋数据，有则需将基础部分与差异部分写入vo中
-        BasicBuilding currBuildingDifference = null;
         for (KeyValueDto keyValueDto : keyValueDtos) {
             Boolean isBuilding = BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey());
             Boolean isBuildingBase = BasicFormClassifyEnum.BUILDING_BASE.getKey().equals(keyValueDto.getKey());
@@ -263,7 +263,11 @@ public class BasicBuildingService extends BasicEntityAbstract {
         vo.setAppearanceStyleName(baseDataDicService.getNameById(basicBuilding.getAppearanceStyle()));
         vo.setAppearanceNewAndOldName(baseDataDicService.getNameById(basicBuilding.getAppearanceNewAndOld()));
         if (basicBuilding.getPropertyCompanyNature() != null) {
-            vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
+            try { //crm 未知错误  暂时这样处理
+                vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
         }
         vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(basicBuilding.getPropertySocialPrestige()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicBuilding.getCreator()));
@@ -272,6 +276,10 @@ public class BasicBuildingService extends BasicEntityAbstract {
             if (StringUtils.isNotBlank(nameById)) {
                 vo.setMinimumFloorDistance(nameById);
             }
+        }
+        if(basicBuilding.getStreetInfoId()!=null){
+            BasicEstateStreetInfo estateStreetInfo = basicEstateStreetInfoDao.getBasicEstateStreetInfoById(basicBuilding.getStreetInfoId());
+            vo.setStreetNumber(estateStreetInfo.getStreetNumber());
         }
         return vo;
     }
@@ -377,16 +385,18 @@ public class BasicBuildingService extends BasicEntityAbstract {
             }
 
             if (basicBuilding != null) {
-                BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicBuilding.getEstateId());
-                if (basicEstate != null)
-                    basicBuilding.setFullName(basicEstate.getName() + basicBuilding.getBuildingNumber());
-                saveAndUpdate(basicBuilding, true);
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId());
                 if (buildingDetail != null) {
                     buildingDetail.setName(basicBuilding.getBuildingNumber());
                     buildingDetail.setDisplayName(basicBuilding.getBuildingNumber());
+                    buildingDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(buildingDetail.getId()));
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingDetail);
+                    basicBuilding.setApplyId(buildingDetail.getId());
+                    basicBuilding.setFullName(buildingDetail.getFullName());
                 }
+
+                saveAndUpdate(basicBuilding, true);
+
                 return basicBuilding.getId();
             }
         }
@@ -499,6 +509,19 @@ public class BasicBuildingService extends BasicEntityAbstract {
         BasicBuildingVo buildingVo = getBasicBuildingVoById(basicFormClassifyParamDto.getTbId());
         modelAndView.addObject("basicBuilding", buildingVo);
         return modelAndView;
+    }
+
+    @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+        List<Object> objects = Lists.newArrayList();
+        BasicBuilding basicBuilding = new BasicBuilding();
+        basicBuilding.setApplyId(applyBatchDetailId);
+        basicBuilding.setBisCase(true);
+        List<BasicBuilding> basicBuildingList = getBasicBuildingList(basicBuilding);
+        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(basicBuildingList)){
+            basicBuildingList.forEach(o->objects.add(o));
+        }
+        return objects;
     }
 
     @Override

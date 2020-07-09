@@ -4,6 +4,7 @@ import com.aspose.words.*;
 import com.aspose.words.Shape;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -20,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -1126,5 +1128,49 @@ public class AsposeUtils {
                     '}';
         }
     }
+
+    public static String getValue(BigDecimal bigDecimal){
+        if (bigDecimal == null){
+            return "" ;
+        }
+        return ArithmeticUtils.getBigDecimalString(bigDecimal) ;
+    }
+
+    public static String getValue(Integer integer){
+        if (integer == null){
+            return "" ;
+        }
+        return integer.toString() ;
+    }
+
+    public static String getValue(Date date){
+        if (date == null){
+            return "" ;
+        }
+        return DateUtils.format(date,DateUtils.DATE_CHINESE_PATTERN) ;
+    }
+
+    public static String getValue(String value){
+        if (StringUtils.isBlank(value)){
+            return "" ;
+        }
+        return value ;
+    }
+
+    public static String getValue(List<String> list){
+        if (CollectionUtils.isEmpty(list)){
+            return "" ;
+        }
+        Iterator<String> iterator = list.iterator();
+        while (iterator.hasNext()){
+            String s = iterator.next();
+            if (StringUtils.isBlank(s)){
+                iterator.remove();
+            }
+        }
+        return StringUtils.join(list,"-") ;
+    }
+
+
 
 }

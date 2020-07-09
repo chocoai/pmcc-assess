@@ -33,35 +33,29 @@
             </div>
             <div class="col-sm-6">
                 <div class="btn-group">
-                    <button class="btn btn-primary btn-sm" onclick="forecastRestaurant.loadHistoryList(1,this);">
+                    <button type="button" class="btn btn-info btn-sm" onclick="forecastRestaurant.loadHistoryList(1,this);">
                         查询
                     </button>
-                    <button class="btn btn-success btn-sm" data-toggle="modal" onclick="forecastRestaurant.addHistory(1);">
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" onclick="forecastRestaurant.addHistory(1);">
                         新增
                     </button>
                 </div>
-                <div class="btn-group">
+                <div class="dropdown" style="display: inline;margin-left: 5px;">
                     <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"
                             aria-expanded="false">
                         导入数据
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
                     </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="javascript://"
-                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftMethodIncomeHistory);">下载模板</a>
-                        </li>
-                        <li><a href="javascript://;"
-                               onclick="$('#ajaxFileUpload').val('').attr('data-type',1).trigger('click');">导入数据</a>
-                        </li>
-                    </ul>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="javascript://" class="dropdown-item"
+                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftMethodIncomeHistory);">下载模板</a>
+                        <a href="javascript://;" class="dropdown-item"
+                           onclick="$('#ajaxFileUpload').val('').attr('data-type',1).trigger('click');">导入数据</a>
+                    </div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"
                             aria-expanded="false">
                         添加到预测
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu" role="menu" id="ulForecastRestaurantAnalyseCost">
 

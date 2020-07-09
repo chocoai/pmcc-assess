@@ -49,7 +49,7 @@
 
                                                 <div class="col-sm-2">
                                                     <button type="button" class="btn-primary btn btn-sm"
-                                                            onclick="objReport.resultSheetReport(this)">结果表附件<i
+                                                            onclick="objReport.resultSheetReport(this)">生成结果表<i
                                                             class="fas fa-file-word"></i></button>
                                                 </div>
 

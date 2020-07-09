@@ -36,6 +36,7 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_BUILD_AREA_UNIT_PRICE = "data.build.area.unit.price";//单价内涵（建筑面积单价）
     public static final String DATA_INTERIOR_AREA_UNIT_PRICE = "data.interior.area.unit.price";//单价内涵（套内面积单价）
     public static final String DATA_SYSTEM_TYPE = "data.system.type";//所属系统
+    public static final String DATA_INITIATE_UNIT_TYPE = "project.initiate.unit.properties";//单位性质 暂时这么配置的
 
 
     /*
@@ -73,6 +74,16 @@ public class AssessDataDicKeyConstant {
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_MARKET = "report.analysis.category.background.market"; //同类房地产市场状况
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_BLOCK = "report.analysis.category.background.block"; //同类房地产市场板块状况
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_PROPERTY = "report.analysis.category.background.property"; //背景估价对象区域物业总体状况
+
+
+    /*
+     * 报告模板附件
+     */
+    public static final String REPORT_ATTACHMENT_PREAUDIT = "report.house.attachment.preaudit"; //预评报告 附件
+    public static final String REPORT_ATTACHMENT_CONSULTATION = "report.house.attachment.consultation"; //咨评报告 附件
+    public static final String REPORT_ATTACHMENT_TECHNOLOGY = "report.house.attachment.technology"; //技术报告 附件
+    public static final String REPORT_ATTACHMENT_RESULT = "report.house.attachment.result"; //结果报告附件 附件
+
 
     /*
      * 项目立项
@@ -136,6 +147,18 @@ public class AssessDataDicKeyConstant {
     public static final String MD_DEVELOPMENT = "md.development"; //假设开发法
     public static final String MD_BASE_LAND_PRICE = "md.base.land.price"; //基准地价修正法
     public static final String MD_COST_APPROACH = "md.cost.approach"; //成本逼近法
+
+    /**
+     * 评估方法公式
+     */
+    public static final String COMPARE_FORMULA = "compare.formula"; //市场比较法公式
+    public static final String INCOME_RENTIN_USE_COMPARE = "income.rentin.use.compare"; //收益法+比较法公式
+    public static final String INCOME_RENTIN_NOT_USE_COMPARE = "income.rentin.not.use.compare"; //收益法+不使用比较法公式
+    public static final String INCOME_SELF_SUPPORT = "income.self.support"; //收益法自营公式
+    public static final String COST_BUILDING = "cost.building"; //成本法建筑物公式
+    public static final String COST_ENGINEERING = "cost.engineering"; //成本法建筑物公式
+    public static final String HYPOTHESIS_DEVELOP_LAND = "hypothesis.develop.land"; //假设开发法土地公式
+    public static final String HYPOTHESIS_DEVELOP_ENGINEERING = "hypothesis.develop.engineering"; //假设开发法在建工程公式
 
     /*
      * 测算方法配置

@@ -14,7 +14,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 
     <script type="text/javascript"
-            src="//webapi.amap.com/maps?v=1.4.15&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.ToolBar,AMap.PlaceSearch,AMap.MouseTool,AMap.RectangleEditor"></script>
+            src="//webapi.amap.com/maps?v=1.4.15&key=ac9fb0371e0405ef74cb1ca003fd0eef&plugin=AMap.Autocomplete,AMap.ToolBar,AMap.PlaceSearch,AMap.MouseTool,AMap.RectangleEditor,AMap.CitySearch"></script>
     <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
     <link rel='stylesheet' type='text/css' href='https://a.amap.com/jsapi_demos/static/demo-center/css/prety-json.css'>
     <script type='text/javascript'
@@ -30,9 +30,6 @@
 </head>
 <body>
 
-
-
-
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -40,46 +37,9 @@
                 <div class="row mt--2">
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header ">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        高德地图 区块 显示
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card">
                             <div class="card-body">
-                                <form class="form-horizontal">
-
-                                    <div class="row form-group">
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    type="button" onclick="drawPolygon.html2canvas(this) ;">
-											<span class="btn-label">
-												<i class="fa fa-mouse-pointer"></i>
-											</span>
-                                                地图截取
-                                            </button>
-                                            <%--<span class="label label-warning">请使用360极速浏览器或者谷歌浏览器或者火狐浏览器请不要使用遨游浏览器和IE浏览器</span>--%>
-                                        </div>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <button style="margin-left: 5px" class="btn btn-primary btn-sm"
-                                                    data-value="2D"
-                                                    type="button" onclick="drawPolygon.switch3DMap(this) ;">
-											<span class="btn-label">
-												<i class="fas fa-recycle"></i>
-											</span>
-                                                3D或2D切换
-                                            </button>
-                                        </div>
-
-
-                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                            <input type="text" class="form-control input-full"
-                                                   placeholder="搜索...." name="mapSearchName" id="tipinput">
-                                        </div>
-                                    </div>
-
+                                <div class="form-horizontal">
                                     <div class="row form-group">
                                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                             <div class="form-inline x-valid">
@@ -90,7 +50,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -112,6 +72,12 @@
     drawPolygon.defaultObj = null;
     drawPolygon.box = $("#divPolygonBox");
     drawPolygon.textBox = $("#divTextBox");
+
+
+    drawPolygon.fillColor = '#00b0ff'; //多边形填充颜色，使用16进制颜色代码赋值，如：#00B2D5
+    drawPolygon.fillOpacity  = '0.3';//多边形填充透明度，取值范围 [0,1] ，0表示完全透明，1表示不透明。默认为0.5
+    drawPolygon.strokeWeight  = '2';//轮廓线宽度
+    drawPolygon.strokeColor  = '#80d8ff';//线条颜色，使用16进制颜色代码赋值。默认值为#006600
 
 
     drawPolygon.jsonData = [];
@@ -147,6 +113,27 @@
             AMap.event.addListener(auto, "select", function (e) {
                 drawPolygon.autoCompleteSearch(e.poi.name);
             });
+
+            (function (estateName) {
+                var basicEstateTaggingStr = '${basicEstateTagging}';
+                var center = null;
+                if (basicEstateTaggingStr) {
+                    try {
+                        var center2 = JSON.parse(basicEstateTaggingStr);
+                        center2 = new AMap.LngLat(center2.lng, center2.lat);
+                        center = center2;
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+                if (center) {
+                    drawPolygon.map.setCenter(center); //设置地图中心点
+                } else {
+                    if (estateName && estateName != 'undefined') {
+                        drawPolygon.autoCompleteSearch(estateName);
+                    }
+                }
+            }('${estateName}'));
 
             (function (tt) {
                 if (!tt) {
@@ -203,6 +190,14 @@
                     var poi = result.poiList.pois[0];
                     drawPolygon.map.setCenter([poi.location.lng, poi.location.lat]); //设置地图中心点
                 }
+            }else {
+                var citySearch = new AMap.CitySearch();
+                citySearch.getLocalCity(function (status, result) {
+                    if (status === 'complete' && result.info === 'OK') {
+                        var bounds = result.bounds;
+                        drawPolygon.map.setCenter(bounds); //设置地图中心点
+                    }
+                });
             }
         })
     };
@@ -245,15 +240,16 @@
             return false;
         }
         $.each(data, function (i, item) {
-            var fillColor = '#80d8ff';
+            var fillColor = drawPolygon.fillColor;
             if (item.fillColor) {
                 fillColor = item.fillColor;
             }
             var polygon = new AMap.Polygon({
                 path: item.path,
                 fillColor: fillColor,
-                borderWeight: 2, // 线条宽度，默认为 1
-                strokeColor: '#0000FF',
+                fillOpacity: drawPolygon.fillOpacity,
+                strokeWeight: drawPolygon.strokeWeight,
+                strokeColor: drawPolygon.strokeColor ,
                 map: drawPolygon.map
             });
             var title = item.extData.title;

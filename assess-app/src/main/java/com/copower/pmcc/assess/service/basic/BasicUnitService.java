@@ -283,16 +283,18 @@ public class BasicUnitService extends BasicEntityAbstract {
             }
 
             if (basicUnit != null) {
-                BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingById(basicUnit.getBuildingId());
-                if (basicBuilding != null)
-                    basicUnit.setFullName(basicBuilding.getFullName() + basicUnit.getUnitNumber());
-                saveAndUpdate(basicUnit, true);
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
                 if (unitDetail != null) {
                     unitDetail.setName(basicUnit.getUnitNumber());
                     unitDetail.setDisplayName(basicUnit.getUnitNumber());
+                    unitDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(unitDetail.getId()));
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitDetail);
+                    basicUnit.setApplyId(unitDetail.getId());
+                    basicUnit.setFullName(unitDetail.getFullName());
                 }
+
+                saveAndUpdate(basicUnit, true);
+
                 return basicUnit.getId();
             }
         }
@@ -415,6 +417,19 @@ public class BasicUnitService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/unit");
         modelAndView.addObject("basicUnit", getBasicUnitVo(getBasicUnitById(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
+    }
+
+    @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+        List<Object> objects = Lists.newArrayList();
+        BasicUnit basicUnit = new BasicUnit();
+        basicUnit.setApplyId(applyBatchDetailId);
+        basicUnit.setBisCase(true);
+        List<BasicUnit> basicUnitList = getBasicUnitList(basicUnit);
+        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(basicUnitList)){
+            basicUnitList.forEach(o->objects.add(o));
+        }
+        return objects;
     }
 
     @Override

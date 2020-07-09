@@ -42,23 +42,16 @@ public class CustomReportAppraiserAssociationController {
         String view = "/report/customReportAppraiserAssociation";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         List<BaseDataDic> reportTypeList = Lists.newArrayList();
-        //预评报告
-        BaseDataDic preauditReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT);
-        //结果报告
-        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
-        reportTypeList.add(preauditReport);
-        reportTypeList.add(resultReport);
-        modelAndView.addObject("reportTypeList", reportTypeList);
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getCustomReportAppraiserAssociationList", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getCustomReportAppraiserAssociationList(String projectName, Integer reportType, String numberValue, String unitName,
+    public BootstrapTableVo getCustomReportAppraiserAssociationList(String projectName, String numberValue, String unitName,
                                                                     String queryStartDate, String queryEndDate,Integer limit,Integer offset) {
         BootstrapTableVo vo = null;
         try {
-            vo = customReportAppraiserAssociationService.getCustomReportAppraiserAssociationList(projectName, reportType, numberValue, unitName,
+            vo = customReportAppraiserAssociationService.getCustomReportAppraiserAssociationList(projectName, numberValue, unitName,
                     queryStartDate, queryEndDate,limit,offset);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
@@ -68,10 +61,10 @@ public class CustomReportAppraiserAssociationController {
     }
 
     @RequestMapping(value = "/export", name = "导出")
-    public void export(HttpServletRequest request, HttpServletResponse response, String projectName, Integer reportType, String numberValue, String unitName,
+    public void export(HttpServletRequest request, HttpServletResponse response, String projectName, String numberValue, String unitName,
                        String queryStartDate, String queryEndDate) throws Exception {
         try {
-            customReportAppraiserAssociationService.export(response, projectName, reportType, numberValue, unitName,
+            customReportAppraiserAssociationService.export(response, projectName, numberValue, unitName,
                     queryStartDate, queryEndDate);
         } catch (Exception e) {
             e.printStackTrace();

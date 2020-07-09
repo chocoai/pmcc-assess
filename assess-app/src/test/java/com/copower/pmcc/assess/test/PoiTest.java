@@ -653,6 +653,14 @@ public class PoiTest {
     public void testReplace1(){
         System.out.println("张三123".replace("张三","李四"));
     }
+
+    @Test
+    public void testReplace11() throws Exception {
+        String filePath="D:\\模板123.docx";
+        Map<String,String> map=Maps.newHashMap();
+        map.put("${公告主要内容}","D:\\fbe9834e-003b-4be6-abea-b2bc56f99c8f.doc");
+        AsposeUtils.replaceTextToFile(filePath,map);
+    }
 }
 
 

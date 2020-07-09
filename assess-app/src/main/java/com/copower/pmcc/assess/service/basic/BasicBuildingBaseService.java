@@ -101,6 +101,11 @@ public class BasicBuildingBaseService extends BasicEntityAbstract {
     }
 
     @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception {
+        return basicBuildingService.getBasicEntityListByBatchDetailId(applyBatchDetailId);
+    }
+
+    @Override
     public ModelAndView getPhoneEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/photo/buildingBase");
         modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingVoById(basicFormClassifyParamDto.getTbId()));

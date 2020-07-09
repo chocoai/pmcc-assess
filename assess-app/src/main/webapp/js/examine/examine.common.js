@@ -39,6 +39,9 @@ examineCommon.getFormData = function () {
     if (window.houseCommon && houseCommon.houseHuxingForm.length > 0) {
         item.basicHouseHuxing = formSerializeArray(houseCommon.houseHuxingForm);
     }
+    if (window.houseCommon && houseCommon.landCategoryInfoForm.length > 0) {
+        item.landCategoryInfo = formSerializeArray(houseCommon.landCategoryInfoForm);
+    }
     if (window.damagedDegree) {
         item.basicDamagedDegree = damagedDegree.getFormData();
     }
@@ -95,6 +98,67 @@ examineCommon.getApplyBatchEstateTaggingsByTableId = function (data, callback) {
     })
 };
 
+examineCommon.convertArray = function (lnglatarr) {
+    var arr = [];
+    $.each(lnglatarr, function (i, item) {
+        arr.push({lng: item[0], lat: item[1]});
+    });
+    return arr;
+};
+
+/**
+ * 获取区域中心
+ * @param lnglatarr
+ * @returns {{lng: number, lat: number}}
+ */
+examineCommon.getTheAreaCenter = function (lnglatarr) {
+    lnglatarr = this.convertArray(lnglatarr);
+    var total = lnglatarr.length;
+    var X = 0, Y = 0, Z = 0;
+    $.each(lnglatarr, function (index, lnglat) {
+        var lng = lnglat.lng * Math.PI / 180;
+        var lat = lnglat.lat * Math.PI / 180;
+        var x, y, z;
+        x = Math.cos(lat) * Math.cos(lng);
+        y = Math.cos(lat) * Math.sin(lng);
+        z = Math.sin(lat);
+        X += x;
+        Y += y;
+        Z += z;
+    });
+
+    X = X / total;
+    Y = Y / total;
+    Z = Z / total;
+
+    var Lng = Math.atan2(Y, X);
+    var Hyp = Math.sqrt(X * X + Y * Y);
+    var Lat = Math.atan2(Z, Hyp);
+    return {lng: Lng * 180 / Math.PI, lat: Lat * 180 / Math.PI};
+};
+
+examineCommon.saveDrawPolygon = function (json, option, callback) {
+    if (! json){
+        return false;
+    }
+    if (!$.isArray(json)) {
+        return false;
+    }
+    if (json.length == 0){
+        return false;
+    } 
+    var data = json[0];
+    var path = data.path;
+    var lnglat = examineCommon.getTheAreaCenter(path);
+    if (option.lng){
+        jQuery.extend(option, lnglat);
+    }
+    option.pathArray = JSON.stringify(json);
+    if (option.pathArray) {
+        examineCommon.addBasicEstateTagging(option,callback) ;
+    }
+};
+
 
 examineCommon.addBasicEstateTagging = function (data, callback) {
     $.ajax({
@@ -107,7 +171,19 @@ examineCommon.addBasicEstateTagging = function (data, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert(result.errmsg);
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        },
+        error: function (result) {
+            Loading.progressHide();
+            if (result.errmsg) {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+            } else {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
             }
         }
     })

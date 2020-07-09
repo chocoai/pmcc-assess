@@ -98,6 +98,13 @@
                                        class="form-control input-full" name="remainingDevelopmentYear"
                                        onblur="checkParams(this);">
                             </div>
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label showLandArea">
+                                土地面积
+                            </label>
+                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2 showLandArea">
+                                <input type="text" value="${mdDevelopment.landArea}" class="form-control input-full"
+                                       name="landArea" onblur="checkParams(this);" placeholder="土地面积">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -134,6 +141,20 @@
                                 <input type="text" value="${mdDevelopment.unsaleableBuildingArea}"
                                        class="form-control input-full"
                                        name="unsaleableBuildingArea" onblur="checkParams(this);" placeholder="不可售建筑面积">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                移交面积(㎡)
+                            </label>
+                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                <input type="text" value="${mdDevelopment.transferArea}"
+                                       class="form-control input-full"
+                                       name="transferArea"  placeholder="移交面积">
                             </div>
                         </div>
                     </div>

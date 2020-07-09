@@ -3,17 +3,26 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
     <classPathEntry
-            location="E:\lib\maven\mysql\mysql-connector-java\5.1.9\mysql-connector-Java-5.1.9.jar"/>
+            location="E:\lib\maven\mysql\mysql-connector-java\8.0.15\mysql-connector-java-8.0.15.jar"/>
 
     <context id="ticket-pms">
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.SelectiveEnhancedPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <!-- 数据Model属性对应Column获取插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
+        <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin">
+            <property name="allowMultiQueries" value="false"/>
+        </plugin>
 
-        <commentGenerator>
+        <commentGenerator type="com.copower.pmcc.assess.test.MyCommentGenerator">
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://192.168.2.206:3306/pmcc_assess?serverTimezone=Asia/Shanghai"
                         userId="root" password="123456">
+
             <property name="useInformationSchema" value="true"></property>
             <property name="remarks" value="true"></property>
             <property name="nullCatalogMeansCurrent" value="true"/>
@@ -42,184 +51,29 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-
-        <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="content" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_md_cost_construction" domainObjectName="MdCostConstruction">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_md_economic_indicators" domainObjectName="MdEconomicIndicators">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_economic_indicators_content" domainObjectName="DeclareEconomicIndicatorsContent">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="child_data" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_data_infrastructure_children" domainObjectName="DataInfrastructureChildren">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_data_land_level" domainObjectName="DataLandLevel">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_basic_estate" domainObjectName="BasicEstate">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-
-
-        <!--<table tableName="tb_basic_house" domainObjectName="BasicHouse">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_basic_building" domainObjectName="BasicBuilding">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_basic_unit" domainObjectName="BasicUnit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_tool_map_handle" domainObjectName="ToolMapHandle">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="content" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_basic_estate_land_category_info" domainObjectName="BasicEstateLandCategoryInfo">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="land_level_content_result" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
-
-        <table tableName="tb_data_average_wage_urban_employees" domainObjectName="DataAverageWageUrbanEmployees">
+        <table tableName="tb_data_house_price_index_detail" domainObjectName="DataHousePriceIndexDetail">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_data_average_wage_urban_employees_item" domainObjectName="DataAverageWageUrbanEmployeesItem">
+        <!--<table tableName="tb_report_provider" domainObjectName="ReportProvider">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        </table>-->
 
-        <!--<table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-            <!--<columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>-->
-        <!--</table>-->
+        <!--<table tableName="tb_sys_menu" domainObjectName="SysMenu">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
 
-        <!--<table tableName="tb_md_architectural_obj" domainObjectName="MdArchitecturalObj">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <!--<table tableName="tb_sys_parameter" domainObjectName="SysParameter">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
 
-        <!--<table tableName="tb_data_allocation_correction_coefficient_volume_ratio" domainObjectName="DataAllocationCorrectionCoefficientVolumeRatio">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <!--<table tableName="tb_request_log" domainObjectName="RequestLog">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
 
-        <!--<table tableName="tb_data_allocation_correction_coefficient_volume_ratio_detail" domainObjectName="DataAllocationCorrectionCoefficientVolumeRatioDetail">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_data_land_approximation_method_setting" domainObjectName="DataLandApproximationMethodSetting">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_md_income_lease_cost" domainObjectName="MdIncomeLeaseCost">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_build_economic_indicators_center" domainObjectName="DeclareBuildEconomicIndicatorsCenter">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_survey_scene_explore" domainObjectName="SurveySceneExplore">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_build_equipment_install" domainObjectName="DeclareBuildEquipmentInstall">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_survey_asset_info" domainObjectName="SurveyAssetInfo">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_survey_asset_info_group" domainObjectName="SurveyAssetInfoGroup">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_survey_asset_inventory" domainObjectName="SurveyAssetInventory">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_realty_land_cert" domainObjectName="DeclareRealtyLandCert">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_realty_real_estate_cert" domainObjectName="DeclareRealtyRealEstateCert">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-
-
-
-
-        <!--<table tableName="tb_md_economic_indicators_item" domainObjectName="MdEconomicIndicatorsItem">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-
-
-        <!--<table tableName="tb_examine_building" domainObjectName="ExamineBuilding">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_data_price_timepoint_description" domainObjectName="DataPriceTimepointDescription">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_generate_report_info" domainObjectName="GenerateReportInfo">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_md_cost_building" domainObjectName="MdCostBuilding">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-
-
-        <!--<table tableName="tb_declare_build_engineering" domainObjectName="DeclareBuildEngineering">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-
-        <!--<table tableName="tb_declare_build_equipment_install" domainObjectName="DeclareBuildEquipmentInstall">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_building_permit" domainObjectName="DeclareBuildingPermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_land_use_permit" domainObjectName="DeclareLandUsePermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_pre_sale_permit" domainObjectName="DeclarePreSalePermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-        <!--<table tableName="tb_declare_building_construction_permit" domainObjectName="DeclareBuildingConstructionPermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
+        <!-- <table tableName="tb_sys_attachment_keep" domainObjectName="SysAttachmentKeep">
+             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+         </table>-->
 
 
 

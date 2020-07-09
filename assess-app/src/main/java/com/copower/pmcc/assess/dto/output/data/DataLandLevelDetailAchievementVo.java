@@ -13,6 +13,15 @@ public class DataLandLevelDetailAchievementVo extends DataLandLevelDetailAchieve
     private String typeName;
     private String gradeName;
     private String categoryName;
+    private String modelStr;
+
+    public String getModelStr() {
+        return modelStr;
+    }
+
+    public void setModelStr(String modelStr) {
+        this.modelStr = modelStr;
+    }
 
     public String getTypeName() {
         return typeName;

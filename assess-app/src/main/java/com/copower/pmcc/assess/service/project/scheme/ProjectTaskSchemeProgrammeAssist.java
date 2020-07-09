@@ -1,9 +1,10 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
-import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
@@ -13,6 +14,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.data.EvaluationMethodService;
@@ -74,6 +76,8 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -99,6 +103,11 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
+        //土地
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey())){
+            modelAndView.addObject("projectCategory", "land");
+        }
         return modelAndView;
     }
 
@@ -131,6 +140,11 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
+        //土地
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey())){
+            modelAndView.addObject("projectCategory", "land");
+        }
         return modelAndView;
     }
 
@@ -145,7 +159,7 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
             }
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
             ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-            int count = schemeJudgeObjectDao.getNotSetFunctionCount(projectInfo.getId());
+            long count = schemeJudgeObjectDao.getNotSetFunctionCount(projectInfo.getId());
             if (count > 0) {
                 throw new BusinessException("还有委估对象未设置评估方法请检查");
             }
@@ -191,7 +205,14 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         modelAndView.addObject("projectInfo", projectInfoVo);
         modelAndView.addObject("areaGroups", areaGroups);
         modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(), projectInfoVo.getProjectCategoryId()));
-        modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldsByType(BaseConstant.ASSESS_DATA_SET_USE_TYPE_HOUSE));
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(assessProjectType.getKey())){
+            modelAndView.addObject("setUseList", dataSetUseFieldService.getCacheSetUseFieldsByType(assessProjectType.getKey()));
+        }else  if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey())){
+            modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.ESTATE_LAND_USE));
+            modelAndView.addObject("projectCategory", "land");
+        }
+
         modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
         modelAndView.addObject("valueTypes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.VALUE_TYPE));//价值类型
         modelAndView.addObject("entrustmentPurposes", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE));//委托目的

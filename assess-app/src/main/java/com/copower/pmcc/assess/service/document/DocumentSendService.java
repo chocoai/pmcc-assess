@@ -6,6 +6,7 @@ import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.assess.common.DocumentWordUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.document.DocumentBaseEnum;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataNumberRuleDao;
 import com.copower.pmcc.assess.dal.basis.dao.document.DocumentDao;
@@ -383,7 +384,7 @@ public class DocumentSendService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(documentSend.getProjectId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(documentSend.getProjectId(), 0, numberRule.getReportType());
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, 0, new BaseReportTemplate(), new ProjectPlan());
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, 0, new BaseDataDic(), new ProjectPlan(),new GenerateReportGroup());
         String qrCode = null;
         if (qrcodeRecode != null) {
             qrCode = qrcodeRecode.getQrcode();//更新部分信息

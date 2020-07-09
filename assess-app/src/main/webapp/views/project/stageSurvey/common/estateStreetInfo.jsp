@@ -21,24 +21,17 @@
                 <input type="text" required="required" data-name="gateName" onblur="estateStreetInfoObj.onblur(this);"
                        name="gateName{id}" placeholder="大门名称"
                        class="form-control form-control-sm"
-                       list="estateStreetInfoToolbar{id}" value="{gateName}">
-                <datalist id="estateStreetInfoToolbar{id}">
-                    <option value="" selected="">-请选择-</option>
-                    <option value="南门">南门</option>
-                    <option value="北门">北门</option>
-                    <option value="东门">东门</option>
-                    <option value="西门">西门</option>
-                    <option value="正门">正门</option>
-                    <option value="后门">后门</option>
-                </datalist>
-                <div class="input-group-prepend ">
-                    <button class="btn btn-warning btn-sm "
-                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                            type="button"
-                            onclick="$(this).closest('.input-group').find('input').val('');">
-                        清空
-                        <i class="fa "></i>
-                    </button>
+                       value="{gateName}">
+                <div class="input-group-append">
+                    <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">南门</a>
+                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">北门</a>
+                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">东门</a>
+                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">西门</a>
+                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">正门</a>
+                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">后门</a>
+                    </div>
                 </div>
             </div>
         </td>
@@ -181,6 +174,17 @@
             table.find("tbody").append(html);
             estateStreetInfoObj.showFile(estateStreetInfoObj.fileId + id, AssessDBKey.BasicEstateStreetInfo, id);
             estateStreetInfoObj.fileUpload(estateStreetInfoObj.fileId + id, AssessDBKey.BasicEstateStreetInfo, id);
+            table.find("[name='streetNumber" + id + "']").apStreetName({
+                getProvince: function () {
+                    return estateCommon.estateForm.find("select[name='province']").val();
+                },
+                getCity: function () {
+                    return estateCommon.estateForm.find("select[name='city']").val();
+                },
+                onSelect: function (id, name) {
+                    caseFun.caseEstate.showModel(name);
+                }
+            });
         });
     };
 
@@ -230,6 +234,7 @@
     estateStreetInfoObj.init = function (estateId) {
         (function (table) {
             var frm = table.closest("form");
+            table.find("tbody").empty() ;
             var data = formSerializeArray(frm);
             if (! estateId){
                 estateId = data.id ;
@@ -240,6 +245,17 @@
                         table.find("tbody").append(estateStreetInfoObj.replaceHtml(item));
                         estateStreetInfoObj.showFile(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
                         estateStreetInfoObj.fileUpload(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
+                        table.find("[name='streetNumber" + item.id + "']").apStreetName({
+                            getProvince: function () {
+                                return estateCommon.estateForm.find("select[name='province']").val();
+                            },
+                            getCity: function () {
+                                return estateCommon.estateForm.find("select[name='city']").val();
+                            },
+                            onSelect: function (id, name) {
+                                caseFun.caseEstate.showModel(name);
+                            }
+                        });
                     });
                     setTimeout(function () {
                         var html = "" ;

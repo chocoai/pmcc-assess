@@ -292,13 +292,13 @@
                                                 <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
                                                        onblur="selfSupport.computeInitialAmount(this);"
                                                        class="form-control x-percent">
-                                                <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="selfSupport.operatingCostItem()"
-                                                    data-toggle="tooltip" data-original-title="明细">
-                                            <i class="fa fa-edit"></i>
-                                            </button>
-                                    </span>
+                                                <div class="input-group-prepend">
+                                                    <button type="button" class="btn btn-warning btn-sm"
+                                                            onclick="selfSupport.operatingCostItem()"
+                                                            data-toggle="tooltip" data-original-title="明细">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                         <label class="col-sm-2 control-label">

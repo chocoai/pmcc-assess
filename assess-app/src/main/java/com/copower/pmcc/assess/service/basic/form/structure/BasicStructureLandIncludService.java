@@ -4,7 +4,6 @@ import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
@@ -16,6 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,9 +37,8 @@ public class BasicStructureLandIncludService implements BasicFormStructureInterf
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
-    @Autowired
-    private BaseQrcodeService baseQrcodeService;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BasicApplyBatch initBasicApplyBatch(BasicApplyBatch basicApplyBatch) throws Exception {
         if (basicApplyBatch == null) return null;
@@ -96,7 +95,6 @@ public class BasicStructureLandIncludService implements BasicFormStructureInterf
         estateApplyBatchDetail.setExecutor(commonService.thisUserAccount());
         estateApplyBatchDetail.setType(formClassifyEnum.getKey());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
-        baseQrcodeService.createQrCode(estateApplyBatchDetail);
         return basicApplyBatch;
     }
 }

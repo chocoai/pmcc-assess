@@ -1,15 +1,12 @@
 package com.copower.pmcc.assess.controller.baisc;
 
-import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
-import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
-import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
@@ -45,7 +42,9 @@ public class BasicHouseController {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicApplyBatchDao basicApplyBatchDao;
     @Autowired
     private BasicAlternativeCaseDao basicAlternativeCaseDao;
     @Autowired
@@ -56,7 +55,7 @@ public class BasicHouseController {
 
     @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) throws Exception {
-        String view = "project/stageSurvey/house/detail/house";
+        String view = "project/stageSurvey/realEstate/detail/house";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(id);
         modelAndView.addObject(StringUtils.uncapitalize(BasicHouse.class.getSimpleName()), basicHouseVo);
@@ -167,10 +166,16 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseHouse", method = {RequestMethod.GET}, name = "房屋-- 信息自动补全")
-    public HttpResult autoCompleteCaseHouse(String houseNumber, Integer unitId) {
+    public HttpResult autoCompleteCaseHouse(String houseNumber,String type, Integer applyBatchId) {
         try {
-            List<CustomCaseEntity> caseEntities = basicHouseService.autoCompleteCaseHouse(houseNumber, unitId);
-            return HttpResult.newCorrectResult(caseEntities);
+            BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchId);
+            BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+            if(basicEstate==null){
+                return HttpResult.newCorrectResult(null);
+            }else {
+                List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailDao.getQuoteDataList(basicEstate.getQuoteId(), type, houseNumber);
+                return HttpResult.newCorrectResult(batchDetailList);
+            }
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
         }
@@ -182,8 +187,8 @@ public class BasicHouseController {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
-            List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
-            BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true,ignoreList);
+            List<String> ignoreList = Lists.newArrayList("id","estateId", "buildingId", "unitId","applyId","version","bisCase","creator");
+            BasicHouse basicHouse = (BasicHouse) basicHouseService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
             Map<String, Object> objectMap = basicHouseService.getBasicHouseMapById(basicHouse.getId());
             return HttpResult.newCorrectResult(objectMap);
         } catch (Exception e) {
@@ -194,12 +199,11 @@ public class BasicHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/quoteCaseHouse", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseHouse(Integer sourceId, Integer targetId) {
+    public HttpResult quoteCaseHouse(Integer sourceApplyBatchDetailId, Integer targetId) {
         try {
-            List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
-            BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntityIgnore(sourceId, targetId, true,ignoreList);
-            basicHouse.setQuoteId(sourceId);
-            basicHouse.setBisCase(false);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(sourceApplyBatchDetailId);
+            List<String> ignoreList = Lists.newArrayList("id","estateId", "buildingId", "unitId","applyId","version","bisCase","creator");
+            BasicHouse basicHouse = (BasicHouse) basicHouseService.copyBasicEntityIgnore(batchDetail.getTableId(), targetId, true, ignoreList);
             basicHouseService.saveAndUpdate(basicHouse, false);
             return HttpResult.newCorrectResult(basicHouse);
         } catch (Exception e) {

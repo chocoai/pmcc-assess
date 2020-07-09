@@ -529,11 +529,11 @@ declareRealtyRealEstateCert.config = {
 declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
     var box = $('#' + declareRealtyRealEstateCert.config.box) ;
     box.find("#" + commonDeclareApplyModel.config.realEstateCert.handleId2).remove();
-    box.find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
+    box.find("#" + commonDeclareApplyModel.config.realEstateCert.handleId3).remove();
     var landCertGetQuestion = null;
     if (flag) {
         landCertGetQuestion = "有权证";
-        box.find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
+        box.find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml3());
     } else {
         landCertGetQuestion = "无权证";
         box.find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml2());

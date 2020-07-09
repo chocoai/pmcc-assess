@@ -16,16 +16,16 @@
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header collapse-link">
+                            <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${judgeObject.name}
-                                        <small>(${judgeObject.evaluationArea}㎡)</small>
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
+                                        <small>(${judgeObject.evaluationArea}㎡)
+                                            <button type="button" href="javascript://;" class="btn btn-md btn-info"
+                                                    onclick="surePrice.initSurePriceItem('${projectPlanDetails.judgeObjectId}',true)">
+                                                初始化
+                                            </button>
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -56,15 +56,27 @@
                                     </div>
                                     <div class="row form-group form-inline">
                                         <label class="col-sm-1 control-label">
+                                            计算单价
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" name="tempPrice" class="form-control input-full" readonly="readonly">
+                                        </div>
+                                        <label class="col-sm-1 control-label">
                                             最终单价
                                         </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="price" class="form-control" readonly="readonly"
+                                        <div class="col-sm-2">
+                                            <input type="text" name="price" class="form-control input-full" readonly="readonly"
                                                    value="${schemeSurePrice.price}">
                                         </div>
                                         <div class="col-sm-3">
                                             <button type="button" class="btn btn-success btn-sm"
                                                     onclick="updatePrice(this)">更新单价
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="surePrice.digitValue(10)">取值到十位
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="surePrice.digitValue(100)">取值到百位
                                             </button>
                                         </div>
                                     </div>
@@ -213,6 +225,9 @@
             <div class="btn btn-xs btn-warning paste" style="display:none;"
                  onclick="surePrice.paste(this)">粘贴
             </div>
+            <div class="btn btn-xs btn-primary houseRommInfo"
+                 onclick="surePrice.getHouseRoomInfo('{id}')">房间信息
+            </div>
             <div class="btn btn-xs btn-primary priceAdjust" style="display:{bisShow};"
                  onclick="surePrice.getHouseId('{id}')">单价调整
             </div>
@@ -315,7 +330,7 @@
 
 <script type="application/javascript">
     $(function () {
-        surePrice.surePrice('${projectPlanDetails.judgeObjectId}', true);
+        surePrice.surePrice('${projectPlanDetails.judgeObjectId}');
         surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
         loadDocumentSend();
     });
@@ -347,41 +362,7 @@
     }
 
     function updatePrice() {
-        var surePriceApply = {};
-        var form = $("#sure_price_form");
-        if (!form.valid()) {
-            return false;
-        }
-        surePriceApply.id = form.find('[name=id]').val();
-        surePriceApply.judgeObjectId = '${projectPlanDetails.judgeObjectId}';
-        surePriceApply.weightExplain = form.find('[name=weightExplain]').val();
-        surePriceApply.price = form.find('[name=price]').val();
-        surePriceApply.surePriceItemList = [];
-        $("#tbody_data_section tr").each(function () {
-            var schemeSurePriceItem = {};
-            schemeSurePriceItem.id = $(this).find('[name=id]').val();
-            schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
-            surePriceApply.surePriceItemList.push(schemeSurePriceItem);
-        });
-        AlertConfirm("确认更新么", "将同步更新与标准估价对象关联的其他对象的初始单价", function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
-                data: {
-                    fomData: JSON.stringify(surePriceApply), planDetailsId: '${projectPlanDetails.id}'
-                },
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    if (result.ret) {
-//                        window.location.reload(true);
-                        surePrice.surePrice('${projectPlanDetails.judgeObjectId}', false);
-                        surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
-                    } else {
-                        AlertError("失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                }
-            });
-        });
+        surePrice.digitValue(1);
     }
 
 
@@ -459,12 +440,45 @@
     };
 
     //确定单价
-    surePrice.surePrice = function (judgeObjectId, isUpdatePrice) {
+    surePrice.initSurePriceItem = function (judgeObjectId,isUpdatePrice) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeSurePrice/initSchemeSurePriceItemList",
+            data: {
+                judgeObjectId: judgeObjectId,
+                isUpdatePrice: isUpdatePrice
+            },
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    $("#tbody_data_section").empty();
+                    $.each(result.data, function (i, item) {
+                        var html = $("#surePriceTemp").html();
+                        html = html.replace(/{id}/g, AssessCommon.toString(item.id));
+                        html = html.replace(/{methodName}/g, AssessCommon.toString(item.methodName));
+                        html = html.replace(/{trialPrice}/g, AssessCommon.toString(item.trialPrice));
+                        html = html.replace(/{weight}/g, AssessCommon.toString(item.weight));
+                        $("#tbody_data_section").append(html);
+                    });
+                    $("#tbody_data_section").find('.x-percent').each(function () {
+                        AssessCommon.elementParsePercent($(this));
+                    });
+                    surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
+                }
+                else {
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
+    };
+
+    //确定单价
+    surePrice.surePrice = function (judgeObjectId) {
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeSurePrice/getSchemeSurePriceItemList",
             data: {
                 judgeObjectId: judgeObjectId,
-                isUpdatePrice: isUpdatePrice
             },
             type: "get",
             dataType: "json",
@@ -527,12 +541,53 @@
                 resultPrice += parseFloat(trialPrice) * parseFloat(weight);
             }
         })
-        $("#sure_price_form").find('[name=price]').val(resultPrice.toFixed(0));
+        $("#sure_price_form").find('[name=tempPrice]').val(resultPrice.toFixed(0));
         if (isAverage) {
             $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').hide();
         } else {
             $("#sure_price_form").find('[name=weightExplain]').closest('.form-group').show();
         }
+    }
+
+    //取值到十或百位
+    surePrice.digitValue = function(dividend){
+        var tempPrice = $("#sure_price_form").find('[name=tempPrice]').val();
+        if(tempPrice){
+            var tempPrice = Math.round(tempPrice/dividend);
+            $("#sure_price_form").find('[name=price]').val(tempPrice*dividend);
+        }
+
+        var surePriceApply = {};
+        var form = $("#sure_price_form");
+        if (!form.valid()) {
+            return false;
+        }
+        surePriceApply.id = form.find('[name=id]').val();
+        surePriceApply.judgeObjectId = '${projectPlanDetails.judgeObjectId}';
+        surePriceApply.weightExplain = form.find('[name=weightExplain]').val();
+        surePriceApply.price = form.find('[name=price]').val();
+        surePriceApply.surePriceItemList = [];
+        $("#tbody_data_section tr").each(function () {
+            var schemeSurePriceItem = {};
+            schemeSurePriceItem.id = $(this).find('[name=id]').val();
+            schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
+            surePriceApply.surePriceItemList.push(schemeSurePriceItem);
+        });
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
+            data: {
+                fomData: JSON.stringify(surePriceApply), planDetailsId: '${projectPlanDetails.id}'
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
+                } else {
+                    AlertError("失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
     }
 
     //调整因素
@@ -937,12 +992,84 @@
             }
         })
     }
+
+    surePrice.getHouseRoomInfo = function (judgeObjectId) {
+        $.ajax({
+            url: getContextPath() + "/schemeSurePrice/getBasicHouse",
+            type: "get",
+            dataType: "json",
+            data: {judgeObjectId: judgeObjectId},
+            success: function (result) {
+                if (result.ret) {
+                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
+                        surePrice.showHouseRoomModal(result.data.id, judgeObjectId);
+                    }
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    surePrice.showHouseRoomModal = function (houseId, judgeObjectId) {
+        $.ajax({
+            url: getContextPath() + "/basicUnitHuxing/getHuxingByHouseId",
+            type: "get",
+            dataType: "json",
+            data: {basicHouseId: houseId},
+            success: function (result) {
+                if (result.ret) {
+                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
+                        surePrice.loadHouseRoomList(houseId,result.data.tenementType);
+                        $("#divBoxHouseRoomTable").modal("show");
+                    } else {
+                        notifyInfo("提示", "没有户型信息")
+                    }
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+    surePrice.loadHouseRoomList =  function (houseId,tenementType) {
+        var cols = commonColumn.houseRoomColumn();
+        var temp = [];
+        if (tenementType == '住宅' || tenementType == '办公') {
+            temp = commonColumn.houseRoomResidence();
+        } else if (tenementType == '商铺' || tenementType == '商场') {
+            temp = commonColumn.houseRoomStore();
+        } else if (tenementType == '餐饮酒店') {
+            temp = commonColumn.houseRoomHotel();
+        } else if (tenementType == '生产') {
+            temp = commonColumn.houseRoomProduction();
+        } else if (tenementType == '仓储') {
+            temp = commonColumn.houseRoomStorage();
+        }
+        $.each(temp, function (i, item) {
+            cols.push(item);
+        })
+        cols.push({field: 'fileViewName', title: '附件'});
+        $("#HouseRoomList").bootstrapTable('destroy');
+        TableInit("HouseRoomList", getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
+            houseId: houseId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
 </script>
 
 <div id="divBoxHouseHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">调查信息</h4>
@@ -1353,6 +1480,43 @@
                 </button>
                 <button type="button" class="btn btn-primary btn-sm" onclick="houseHuxingPrice.prototype.saveData()">
                     保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="divBoxHouseRoomTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">房间信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="HouseRoomList">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
             </div>
 

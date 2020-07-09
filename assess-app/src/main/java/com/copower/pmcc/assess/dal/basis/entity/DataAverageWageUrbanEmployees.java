@@ -12,6 +12,8 @@ public class DataAverageWageUrbanEmployees {
 
     private String district;
 
+    private String year;
+
     private Date date;
 
     private BigDecimal stateOwnedEconomy;
@@ -60,6 +62,14 @@ public class DataAverageWageUrbanEmployees {
 
     public void setDistrict(String district) {
         this.district = district == null ? null : district.trim();
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year == null ? null : year.trim();
     }
 
     public Date getDate() {

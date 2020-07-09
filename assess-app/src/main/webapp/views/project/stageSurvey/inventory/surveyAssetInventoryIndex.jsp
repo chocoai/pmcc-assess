@@ -32,6 +32,7 @@
                                     <input type="hidden" name="id" value="${surveyAssetInventory.id}">
                                     <input type="hidden" name="influenceFactorRemarkText"
                                            value="${surveyAssetInventory.influenceFactorRemarkText}">
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -52,7 +53,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div class="row form-group bisCheckOriginalZero">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
 
@@ -79,6 +80,38 @@
                                                 <div class="col-sm-3">
                                            <textarea placeholder="查询说明" class="form-control input-full"
                                                      name="networkRemark">${surveyAssetInventory.networkRemark}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group bisCheckOriginalOne" style="display: none;">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">
+                                                    核对日期<span class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" required placeholder="核对日期"
+                                                           name="checkDate"
+                                                           data-date-format="yyyy-mm-dd"
+                                                           class="form-control input-full date-picker dbdate"
+                                                           readonly="readonly"
+                                                           value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
+
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    证明文件
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input id="checkOriginalFile" type="file" multiple="false">
+                                                    <div id="_checkOriginalFile"></div>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    说明
+                                                </label>
+                                                <div class="col-sm-3">
+                                           <textarea placeholder="说明" class="form-control input-full"
+                                                     name="remark">${surveyAssetInventory.remark}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -134,41 +167,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                        color="#6f5499" size="10"/>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    核对日期<span class="symbol required"></span></label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" required placeholder="核对日期"
-                                                           name="checkDate"
-                                                           data-date-format="yyyy-mm-dd"
-                                                           class="form-control input-full date-picker dbdate"
-                                                           readonly="readonly"
-                                                           value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
-
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    说明
-                                                </label>
-                                                <div class="col-sm-3">
-                                           <textarea placeholder="说明" class="form-control input-full"
-                                                     name="remark">${surveyAssetInventory.remark}</textarea>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    证明文件
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <input id="checkOriginalFile" type="file" multiple="false">
-                                                    <div id="_checkOriginalFile"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -219,8 +217,8 @@
                                                                        id="areConsistent${item.id}"
                                                                        onclick="survey.areConsistentEvent(this) ;"
                                                                        name="areConsistent${item.id}"
-                                                                       value="一致" ${item.areConsistent eq '一致'?'checked':''} ${empty item.areConsistent ?'checked':''}>
-                                                                <span class="form-check-sign">一致</span>
+                                                                       value="一致" >
+                                                                <span class="form-check-sign">一致4</span>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -231,7 +229,7 @@
                                                 <td>${item.inventoryContentName}</td>
 
                                                 <td>
-                                                    <div class="x-valid show-hide">
+                                                    <div class="x-valid">
                                                         <input type="text" data-rule-maxlength="50" placeholder="登记"
                                                                required
                                                                id="registration${item.id}"
@@ -243,7 +241,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <div class="x-valid show-hide">
+                                                    <div class="x-valid">
                                                         <input type="text" data-rule-maxlength="50" placeholder="实际"
                                                                required
                                                                id="actual${item.id}"
@@ -331,7 +329,7 @@
                                                     //清查内容附件上传和加载
                                                     survey.uploadFileCommon("${item.id}");
                                                     survey.showFileCommon("${item.id}");
-                                                    survey.initAgreement('#areConsistent${item.id}');
+                                                    survey.initAgreement('#areConsistent${item.id}','${item.areConsistent}');
                                                 })
                                             </script>
                                         </c:forEach>
@@ -560,7 +558,8 @@
                                                                 onclick="survey.findDeclareRecord() ;">
                                                             权证查看
                                                         </button>
-                                                        <button type="button" class="btn btn-sm btn-success" onclick="survey.findRightDetail();">
+                                                        <button type="button" class="btn btn-sm btn-success"
+                                                                onclick="survey.findRightDetail();">
                                                             他项权力查看
                                                         </button>
                                                     </div>
@@ -668,7 +667,7 @@
     //公共  赋值 方法
     survey.initFormData = function (form, item, fileArr, bisDetail, tableName, inputArr) {
         var frm = $(form.selector);
-        frm.clearAll();
+        frm.clearAll(['bisCheckOriginal']);
         frm.initForm(item);
         frm.validate();
         if (fileArr) {
@@ -730,13 +729,13 @@
             if (data.affected) {
                 frm.find("select[name='affected']").val(data.affected.split(",")).trigger('change');
             }
-        },true,false);
+        }, true, false);
         AssessCommon.loadNewAsyncDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor, data.influenceFactor, function (html, item) {
             frm.find("select[name='influenceFactor']").empty().html(html);
             if (data.influenceFactor) {
                 frm.find("select[name='influenceFactor']").val(data.influenceFactor.split(",")).trigger('change');
             }
-        },true,false);
+        }, true, false);
         frm.find("select[name='influenceFactor']").change(function () {
             var ids = $(this).val();
             if (!ids) {
@@ -798,6 +797,28 @@
             writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', data.otherProject);
             writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
+        try {
+            if (data.bisCheckOriginal != null && data.bisCheckOriginal != undefined) {
+                if (data.bisCheckOriginal) {
+                    frm.find("[name=bisCheckOriginal][value=0]").attr("checked", false);
+                    frm.find("[name=bisCheckOriginal][value=1]").attr("checked", true);
+                } else {
+                    frm.find("[name=bisCheckOriginal][value=0]").attr("checked", true);
+                    frm.find("[name=bisCheckOriginal][value=1]").attr("checked", false);
+                }
+            }
+        } catch (e) {
+        }
+        frm.find("[name=bisCheckOriginal]").change(function () {
+            var value = $(this).val();
+            if (value == '1') {
+                frm.find(".bisCheckOriginalOne").show();
+                frm.find(".bisCheckOriginalZero").hide();
+            } else {
+                frm.find(".bisCheckOriginalOne").hide();
+                frm.find(".bisCheckOriginalZero").show();
+            }
+        });
     };
 
 
@@ -845,17 +866,11 @@
     /**
      * 初始化
      */
-    survey.initAgreement = function (selector) {
+    survey.initAgreement = function (selector,areConsistent) {
         var tr = $(selector).closest('tr');
-        var registration = $.trim(tr.find('[name^=registration]').val());//登记
-        var actual = $.trim(tr.find('[name^=actual]').val());//实际
-        var num = 1;
-        if (actual && registration) {
-            if (actual != registration) {
-                num++;
-            }
-        }
-        if (num == 1) {
+        console.log(areConsistent+"====****")
+
+        if (areConsistent == "一致") {
             tr.find('.show-hide').hide();
             tr.find("input[type=checkbox]").prop('checked', true);
         } else {
@@ -880,6 +895,9 @@
             if (actual == registration) {
                 tr.find('.show-hide').hide();
                 tr.find("input[type=checkbox]").prop('checked', true);
+            }else{
+                tr.find('.show-hide').show();
+                tr.find("input[type=checkbox]").prop('checked', false);
             }
         }
     };
@@ -1258,7 +1276,7 @@
                     survey.initSurveyAssetInventoryForm(data);
                 });
             } else {
-                survey.initSurveyAssetInventoryForm({checkDate:new Date()});
+                survey.initSurveyAssetInventoryForm({checkDate: new Date()});
             }
         }
         showLimit();

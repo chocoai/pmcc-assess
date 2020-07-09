@@ -92,51 +92,41 @@
         <td>
             <input type="hidden" data-name="id" value="{id}">
             <div class="input-group">
-                <input type="text" required="required" name="landUseType{id}" data-name="landUseType"
-                       onblur="estateLandCategoryInfo.onblur(this);estateLandCategoryInfo.landUseTypeChange(this);"
-                       class="form-control" list="landUseTypeList{id}" value="{landUseType}">
-                <datalist id="landUseTypeList{id}" >
+                <input type="text" required="required" name="landUseType{id}" data-name="landUseType" style="width: 50%"
+                       onblur="estateLandCategoryInfo.onblur(this);" id="landUseType{id}"
+                       class="form-control form-control-sm" value="{landUseType}">
 
-                </datalist>
-                <div class="input-group-prepend">
-                    <button class="btn btn-warning btn-sm "
-                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                            type="button"
-                            onclick="$(this).closest('.input-group').find('input').val('');">
-                        清空
-                    </button>
+                <div class="input-group-append">
+                    <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                    <div class="dropdown-menu" id="landUseTypeList{id}">
+                    </div>
                 </div>
             </div>
         </td>
         <td>
             <div class="input-group">
-                <input type="text" required="required" name="landUseCategory{id}" data-name="landUseCategory"
+                <input type="text" required="required" name="landUseCategory{id}" data-name="landUseCategory" style="width: 50%"
                        onblur="estateLandCategoryInfo.onblur(this);"
-                       class="form-control" list="landUseCategoryList{id}" value="{landUseCategory}">
-                <datalist id="landUseCategoryList{id}">
-
-                </datalist>
-                <div class="input-group-prepend">
-                    <button class="btn btn-warning btn-sm "
-                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                            type="button"
-                            onclick="$(this).closest('.input-group').find('input').val('');">
-                        清空
-                    </button>
+                       class="form-control form-control-sm" list="landUseCategoryList{id}" value="{landUseCategory}">
+                
+                <div class="input-group-append">
+                    <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onfocus="estateLandCategoryInfo.landUseTypeChange(this);">选择</button>
+                    <div class="dropdown-menu" id="landUseCategoryList{id}">
+                    </div>
                 </div>
             </div>
         </td>
         <td>
             <input placeholder="土地取得时间"
-                   name="acquisitionTime{id}" required data-name="acquisitionTime"
+                   name="acquisitionTime{id}" required data-name="acquisitionTime" style="width: 50%"
                    data-date-format="yyyy-mm-dd"
-                   class="form-control  date-picker dbdate " value="{acquisitionTime}"
-                   onkeyup="estateLandCategoryInfo.onblur(this);">
+                   class="form-control form-control-sm input-full date-picker dbdate " value="{acquisitionTime}"
+                   onblur="estateLandCategoryInfo.onblur(this);">
         </td>
         <td>
-            <input placeholder="土地使用年限" data-rule-number="true"
+            <input placeholder="土地使用年限"  style="width: 50%" type="number"
                    name="landUseYear{id}" required data-name="landUseYear"
-                   class="form-control " value="{landUseYear}" onblur="estateLandCategoryInfo.onblur(this);">
+                   class="form-control form-control-sm input-full x-valid" value="{landUseYear}" onblur="estateLandCategoryInfo.onblur(this);">
         </td>
         <td>
             <div class="input-group">
@@ -149,9 +139,9 @@
                 <input type="hidden" name="landLevelContentResult{id}" data-name="landLevelContentResult"
                        value="{landLevelContentResult}" onblur="estateLandCategoryInfo.onblur(this);">
 
-                <input type="text" readonly="readonly"
+                <input type="text" readonly="readonly" style="width: 30%"
                        onclick="examineCommon.landLevelSelect(this);"
-                       placeholder="土地级别" class="form-control"
+                       placeholder="土地级别" class="form-control form-control-sm"
                        name="landLevelName{id}" data-name="landLevelName" required value="{landLevelName}">
 
                 <div class="input-group-prepend">
@@ -345,15 +335,9 @@
             var html = estateLandCategoryInfo.replaceHtml({id: id});
             table.find("tbody").append(html);
 
-            AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
+            AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
                 var landUseTypeList = $("#landUseTypeList" + id);
                 landUseTypeList.empty().html(html).trigger('change');
-                //绑定变更事件
-                landUseTypeList.off('change').on('change', function () {
-                    AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), null, function (html, data) {
-                        $("#landUseCategoryList" + id).empty().html(html).trigger('change');
-                    });
-                });
             }, true);
 
             estateLandCategoryInfo.showFile(estateLandCategoryInfo.fileId + id, AssessDBKey.BasicEstateLandCategoryInfo, id);
@@ -454,10 +438,10 @@
     };
 
     estateLandCategoryInfo.landUseTypeChange = function (this_) {
-        var value = $(this_).val() ;
         var tr = $(this_).closest("tr");
         var id = tr.find("input[data-name=id]").val();
-        AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
+        var value = $("#landUseType"+id).val() ;
+        AssessCommon.getSonTextAppendDicList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
             $("#landUseCategoryList" + id).empty().html(html).trigger('change');
         });
     };
@@ -469,13 +453,14 @@
             if (!landId) {
                 landId = data.id;
             }
+            table.find("tbody").empty() ;
             estateLandCategoryInfo.getBasicEstateStreetInfoList({landId: landId}, function (data) {
                 if (data.length >= 1) {
                     $.each(data, function (i, item) {
                         table.find("tbody").append(estateLandCategoryInfo.replaceHtml(item));
                         estateLandCategoryInfo.showFile(estateLandCategoryInfo.fileId + item.id, AssessDBKey.BasicEstateLandCategoryInfo, item.id);
                         estateLandCategoryInfo.fileUpload(estateLandCategoryInfo.fileId + item.id, AssessDBKey.BasicEstateLandCategoryInfo, item.id);
-                        AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
+                        AssessCommon.loadTextAppendDicHtml(AssessDicKey.estate_total_land_use, null, function (html, data) {
                             var landUseTypeList = $("#landUseTypeList" + item.id);
                             landUseTypeList.empty().html(html).trigger('change');
                         }, true);

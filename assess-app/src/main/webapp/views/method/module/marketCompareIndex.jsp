@@ -19,13 +19,13 @@
                         <small>标准估价对象:[${standardJudgeObject.number}]评估面积:[${standardJudgeObject.evaluationArea}]㎡</small>
                     </c:if>
                     <span id="small_select_evaluation">
-                    <input type="button" class="btn btn-primary btn-xs" value="选择估价对象"
+                    <input type="button" class="btn btn-info btn-md" value="选择估价对象"
                            onclick="marketCompare.loadStandardJudges();">
                     </span>
                     <span id="small_select_case">
-                    <input type="button" class="btn btn-primary btn-xs" value="选择案例"
+                    <input type="button" class="btn btn-info btn-md" value="选择案例"
                            onclick="marketCompare.loadCaseAll();">
-                    <input type="button" class="btn btn-primary btn-xs" value="刷新"
+                    <input type="button" class="btn btn-info btn-md" value="刷新"
                            onclick="marketCompare.refreshData();">
                     </span>
                 </div>
@@ -259,6 +259,7 @@
 
 
         var marketCompare = {};
+        var marketCompare = {};
         //初始化 1.初始化表格的标题 2.初始化表格内容
         marketCompare.isPass = true;
         marketCompare.isLand = false;
@@ -285,23 +286,23 @@
             defaluts = $.extend({}, defaluts, options);
             //验证
             if (!defaluts.marketCompare) {
-                AlertError("提示","主信息为空！");
+                AlertError("提示", "主信息为空！");
                 return;
             }
             $("#marketCompareId").val(defaluts.marketCompare.id);
             if (!defaluts.fields) {
-                AlertError("提示","字段为空！");
+                AlertError("提示", "字段为空！");
                 return;
             }
             marketCompare.fields = defaluts.fields;
             if (!defaluts.evaluation) {
-                AlertError("提示","委估对象为空！");
+                AlertError("提示", "委估对象为空！");
                 return;
             }
             marketCompare.projectId = defaluts.projectId;
             marketCompare.mcId = defaluts.mcId;
             marketCompare.areaId = defaluts.areaId;
-            marketCompare.isLand = defaluts.isLand == 'true' ? true : false;
+            marketCompare.isLand = (defaluts.isLand == 'true' || defaluts.isLand == true) ? true : false;
             marketCompare.evaluation = defaluts.evaluation;
             marketCompare.standardJudges = defaluts.standardJudges;
             marketCompare.judgeObjectId = defaluts.judgeObjectId;
@@ -311,9 +312,7 @@
             marketCompare.initResult(defaluts);
 
             $("#cbxScore,#cbxRatio").each(function () {
-                if ($(this).prop('checked')) {
-                    $(this).trigger('click');
-                }
+                $(this).trigger('click').trigger('click');
             })
             //分值背影颜色设置
             $("#tb_md_mc_item_list").find('[data-name="score"] a').each(function () {
@@ -333,11 +332,13 @@
 
             if (!defaluts.readonly) {
                 setElementEditable();
+                //市场状况添加修正说明
                 $('#tb_md_mc_item_list').find('tr[data-group="trading.time"][data-name="text"]').each(function () {
                     $(this).find('td').each(function () {
                         $(this).append('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.tradingTimeExplain(this,' + defaluts.readonly + ');" value="修正说明">');
                     })
                 })
+                //添加成新率设置
                 $('#tb_md_mc_item_list').find('tr[data-group="new.degree"][data-name="text"]').each(function () {
                     $(this).find('td').each(function () {
                         $(this).find('a').after('<input type="button" class="btn btn-xs btn-warning pull-right" onclick="marketCompare.callResidueRatio(this,' + defaluts.readonly + ');" value="成新率">');
@@ -467,6 +468,11 @@
                             var pTextHtml = getTempHtml("pTextTemp", defaluts.readonly);
                             var pScoreHtml = getTempHtml("pScoreTemp", defaluts.readonly);
                             caseItem = caseItem == undefined ? {} : caseItem;
+                            if (item.bisPrice && defaluts.cases[j].priceConnotation) {
+                                pTextHtml = pTextHtml.replace(/{priceConnotation}/g, "(" + toString(defaluts.cases[j].priceConnotation) + ")");
+                            } else {
+                                pTextHtml = pTextHtml.replace(/{priceConnotation}/g, "");
+                            }
                             caseText += pTextHtml.replace(/{fieldValue}/g, toString(item.name)).replace(/{value}/g, toString(caseItem.value)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
                             caseScore += pScoreHtml.replace(/{fieldValue}/g, toString(item.name)).replace(/{score}/g, toString(caseItem.score)).replace(/{itemId}/g, toString(defaluts.cases[j].id));
                             caseRatio += ' <td data-item-id="' + toString(defaluts.cases[j].id) + '">' + toString(caseItem.ratio) + '</td>';
@@ -544,7 +550,7 @@
             $.each(caseItemIdArray, function (i, item) {
                 //先找到该案例的成交价，再将成交价与测算值依次相乘，最后将结果保留两位小数
                 //交易情况、市场状况、单价内涵、区位状况、权益状况、实体状况 的各项测算值保留4位小数 再与案例成交价相乘计算结果
-                var price = table.find('tr[data-bisprice="true"]').closest('tbody').find('td[data-item-id=' + item + '].p_text').text();
+                var price = table.find('tr[data-bisprice="true"]').closest('tbody').find('td[data-item-id=' + item + '].p_text a').text();
                 if (price && AssessCommon.isNumber(price)) {
                     var specificPrice = price = parseFloat(price);
                     if (marketCompare.isLand) {
@@ -564,13 +570,13 @@
                         var evaluationAnnual = annualTr.find('td[data-item-id=' + evaluationItemId + ']').find('span').text();
                         var caseAnnual = annualTr.find('td[data-item-id=' + item + ']').text();
                         if (AssessCommon.isNumber(evaluationAnnual) && AssessCommon.isNumber(caseAnnual)) {
-                            specificPrice = parseFloat(caseAnnual) / parseFloat(evaluationAnnual) * specificPrice;
+                            specificPrice = parseFloat(evaluationAnnual) / parseFloat(caseAnnual) * specificPrice;
                         }
                         var volumeRatioTr = table.find('tr[data-name="volumeRatioCoefficient"]');
                         var evaluationVolumeRatio = volumeRatioTr.find('td[data-item-id=' + evaluationItemId + ']').text();
                         var caseVolumeRatio = volumeRatioTr.find('td[data-item-id=' + item + ']').text();
                         if (AssessCommon.isNumber(evaluationVolumeRatio) && AssessCommon.isNumber(caseVolumeRatio)) {
-                            specificPrice = parseFloat(caseVolumeRatio) / parseFloat(evaluationVolumeRatio) * specificPrice;
+                            specificPrice = parseFloat(evaluationVolumeRatio) / parseFloat(caseVolumeRatio) * specificPrice;
                         }
                     } else {
                         var situationTr = table.find('tr[data-group="trading.transaction.situation"][data-name="ratio"]');
@@ -930,7 +936,7 @@
             //如果案例的面积超过估价对象面积3倍则必须为面积添加说明
             var rows = $("#select_case_list").bootstrapTable('getSelections');
             if (rows.length <= 0) {
-                AlertError("提示","还未选择任何案例");
+                AlertError("提示", "还未选择任何案例");
                 return false;
             }
             var jsonData = JSON.stringify(marketCompare.getData());
@@ -969,7 +975,7 @@
                             cases: result.data.cases
                         });
                     } else {
-                        AlertError("提示",'选择案例异常，' + result.errmsg);
+                        AlertError("提示", '选择案例异常，' + result.errmsg);
                     }
                 }
             })
@@ -1114,6 +1120,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         notifySuccess('成功', "刷新成功！");
+                        console.log(JSON.stringify(marketCompare));
                         marketCompare.init({
                             projectId: marketCompare.projectId,
                             mcId: result.data.mcId,
@@ -1129,7 +1136,7 @@
                         marketCompare.calculation();
                         marketCompare.save();
                     } else {
-                        AlertError("提示",'刷新异常，' + result.errmsg);
+                        AlertError("提示", '刷新异常，' + result.errmsg);
                     }
                 }
             })
@@ -1180,7 +1187,7 @@
                             cases: result.data.cases
                         });
                     } else {
-                        AlertError("提示",'选择异常，' + result.errmsg);
+                        AlertError("提示", '选择异常，' + result.errmsg);
                     }
                 }
             })
@@ -1329,12 +1336,13 @@
         <a href="javascript://" data-type="textarea"
            data-original-title="{fieldValue}"
            class="editable editable-click editable-pre-wrapped">{value}</a>
+        <span>{priceConnotation}</span>
     </td>
 </script>
 
 <%--文本模板只读--%>
 <script type="text/html" id="pTextTempView">
-    <td>{value}</td>
+    <td>{value}<span>{priceConnotation}</span></td>
 </script>
 
 <%--分值模板--%>
@@ -1398,7 +1406,8 @@
 
 <%--交易价格行数据模板--%>
 <script type="text/html" id="pRowPriceTemp">
-    <tr data-group="{fieldName}" data-field-parent-id="{fieldParentId}" data-bisPrice="{bisPrice}" data-bisPrimaryKey="{bisPrimaryKey}" data-name="utext">
+    <tr data-group="{fieldName}" data-field-parent-id="{fieldParentId}" data-bisPrice="{bisPrice}"
+        data-bisPrimaryKey="{bisPrimaryKey}" data-name="utext">
         <td style="vertical-align: middle">{fieldValue}</td>
         <td class="p_text" data-item-id="{itemId}">
             <a href="javascript://" data-type="textarea"

@@ -139,21 +139,6 @@ declareCommon.fileUpload = function (target, tableName, id, deleteFlag, fieldsNa
         },
         deleteFlag: deleteFlag
     });
-    // FileUtils.uploadFiles({
-    //     target: target,
-    //     disabledTarget: "btn_submit",
-    //     onUpload: function (file) {
-    //         var formData = {
-    //             fieldsName: target,
-    //             tableName: tableName,
-    //             tableId: id
-    //         };
-    //         return formData;
-    //     }, onUploadComplete: function (result, file) {
-    //
-    //     },
-    //     deleteFlag: true
-    // });
 };
 
 declareCommon.showFile = function (target, tableName, id, deleteFlag, fieldsName) {
@@ -648,8 +633,8 @@ declareCommon.initHouse = function (item, form, fileArr, callback, bisDetail) {
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         frm.find("select[name='nature']").empty().html(html).trigger('change');
     });
-    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareUseRightType, item.landAcquisition, function (html, data) {
-        frm.find("select[name='landAcquisition']").empty().html(html).trigger('change');
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareAcquisitionType, item.landAcquisition, function (html, data) {
+        frm.find("select.acquisitionType").empty().html(html).trigger('change');
     });
     frm.find("input[name='certUse']").off('change').on('change', function () {
         AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility, $(this).val(), item.certUseCategory, function (html, data) {
@@ -826,9 +811,13 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
     AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, item.landCertUse, function (html, data) {
         frm.find("#landCertUseList").empty().html(html).trigger('change');
         frm.find("#landCertUseList2").empty().html(html).trigger('change');
+        frm.find("#landCertUseList3").empty().html(html).trigger('change');
     }, true);
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.landRightType, function (html, data) {
         frm.find("select[name='landRightType']").empty().html(html).trigger('change');
+    });
+    AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareAcquisitionType, item.acquisitionType, function (html, data) {
+        frm.find("select.acquisitionType").empty().html(html).trigger('change');
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
@@ -839,11 +828,13 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
     AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, item.houseCertUse, function (html, data) {
         frm.find("#realHouseUseList").empty().html(html).trigger('change');
         frm.find("#realHouseUseList2").empty().html(html).trigger('change');
+        frm.find("#realHouseUseList3").empty().html(html).trigger('change');
     }, true);
     frm.find("input[name='houseCertUse']").off('change').on('change', function () {
         AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility, $(this).val(), item.houseCertUseCategory, function (html, data) {
             frm.find("#houseCertUseCategoryList1").empty().html(html).trigger('change');
             frm.find("#houseCertUseCategoryList2").empty().html(html).trigger('change');
+            frm.find("#houseCertUseCategoryList3").empty().html(html).trigger('change');
         });
     });
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
@@ -854,6 +845,7 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
         AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), item.landCertUseCategory, function (html, data) {
             frm.find("#landCertUseCategoryList").empty().html(html).trigger('change');
             frm.find("#landCertUseCategoryList2").empty().html(html).trigger('change');
+            frm.find("#landCertUseCategoryList3").empty().html(html).trigger('change');
         });
     });
     //绑定变更事件
@@ -863,10 +855,12 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
             AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
                 console.log(landRightNatureData.name)
                 if (landRightNatureData.name == "划拨") {
-                    frm.find("input[name='useEndDate']").parent().parent().hide();
+                    frm.find("input[name='useEndDate']").parent().hide();
+                    frm.find("input[name='useEndDate']").parent().prev().hide();
                     frm.find("input[name='useStartDate']").attr("required", true);
                 } else {
-                    frm.find("input[name='useEndDate']").parent().parent().show();
+                    frm.find("input[name='useEndDate']").parent().show();
+                    frm.find("input[name='useEndDate']").parent().prev().show();
                     frm.find("input[name='useStartDate']").attr("required", false);
                 }
             });
@@ -1178,31 +1172,9 @@ declareCommon.loadDeclareRealtyCheckListTable = function (marsterId, tableId) {
     frm.clearAll();
     frm.initForm(query);
     var cols = [];
-    if (tableId) {
-        cols.push({
-            field: 'id', title: '编辑', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<button onclick="declareCommon.editDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
-                str += '<i class="fa fa-pen"></i>';
-                str += '</button>';
-                str += '</div>';
-                return str;
-            }
-        });
-    } else {
-        cols.push({
-            field: 'id', title: '详情', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<button onclick="declareCommon.findDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
-                str += '<i class="fa fa-search"></i>';
-                str += '</button>';
-                str += '</div>';
-                return str;
-            }
-        });
-    }
+
     cols.push({field: 'district', title: '所在区'});
-    cols.push({field: 'streetNumber', title: '街道号'});
+    cols.push({field: 'streetNumber', title: '街道'});
     cols.push({field: 'houseNumber', title: '门牌号'});
     // cols.push({field: 'attachedNumber', title: '附号'});
     // cols.push({field: 'buildingNumber', title: '栋号'});
@@ -1213,6 +1185,29 @@ declareCommon.loadDeclareRealtyCheckListTable = function (marsterId, tableId) {
     cols.push({field: 'floorArea', title: '房屋建筑面积'});
     cols.push({field: 'apportionmentArea', title: '分摊面积'});
     cols.push({field: 'realEstateUnitNumber', title: '不动产单元号'});
+    if (tableId) {
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.editDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    } else {
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.findDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
     var table = $(declareCommon.config.declareRealtyCheckListTable);
     table.bootstrapTable('destroy');
     TableInit(table, getContextPath() + "/declareRealtyCheckList/getBootstrapTableVo", cols, query, {

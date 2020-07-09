@@ -48,6 +48,8 @@ public class SchemeJudgeObject {
 
     private BigDecimal landRemainingYear;
 
+    private Integer setUseClassify;
+
     private Integer setUse;
 
     private Integer bestUse;
@@ -97,6 +99,14 @@ public class SchemeJudgeObject {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private String parcelOuterDevelop;
+
+    private String parcelInnerDevelop;
+
+    private String parcelSettingInnerDevelop;
+
+    private String currentSituation;
 
     public Integer getId() {
         return id;
@@ -272,6 +282,14 @@ public class SchemeJudgeObject {
 
     public void setLandRemainingYear(BigDecimal landRemainingYear) {
         this.landRemainingYear = landRemainingYear;
+    }
+
+    public Integer getSetUseClassify() {
+        return setUseClassify;
+    }
+
+    public void setSetUseClassify(Integer setUseClassify) {
+        this.setUseClassify = setUseClassify;
     }
 
     public Integer getSetUse() {
@@ -472,5 +490,37 @@ public class SchemeJudgeObject {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getParcelOuterDevelop() {
+        return parcelOuterDevelop;
+    }
+
+    public void setParcelOuterDevelop(String parcelOuterDevelop) {
+        this.parcelOuterDevelop = parcelOuterDevelop == null ? null : parcelOuterDevelop.trim();
+    }
+
+    public String getParcelInnerDevelop() {
+        return parcelInnerDevelop;
+    }
+
+    public void setParcelInnerDevelop(String parcelInnerDevelop) {
+        this.parcelInnerDevelop = parcelInnerDevelop == null ? null : parcelInnerDevelop.trim();
+    }
+
+    public String getParcelSettingInnerDevelop() {
+        return parcelSettingInnerDevelop;
+    }
+
+    public void setParcelSettingInnerDevelop(String parcelSettingInnerDevelop) {
+        this.parcelSettingInnerDevelop = parcelSettingInnerDevelop == null ? null : parcelSettingInnerDevelop.trim();
+    }
+
+    public String getCurrentSituation() {
+        return currentSituation;
+    }
+
+    public void setCurrentSituation(String currentSituation) {
+        this.currentSituation = currentSituation == null ? null : currentSituation.trim();
     }
 }

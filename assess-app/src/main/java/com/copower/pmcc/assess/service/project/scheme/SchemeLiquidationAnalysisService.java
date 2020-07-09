@@ -501,8 +501,8 @@ public class SchemeLiquidationAnalysisService {
             groupAndPriceVo.setGroupPrice(groupPrice);
             return groupAndPriceVo;
         }
-        List<SchemeJudgeObject> listByDeclareIds = schemeJudgeObjectService.getListByIds(schemeJudgeObjList);
-        List<SchemeLiquidationAnalysisJudge> judgeList = schemeLiquidationAnalysisJudgeDao.getListByAreaId(listByDeclareIds.get(0).getAreaGroupId());
+
+        List<SchemeLiquidationAnalysisJudge> judgeList = schemeLiquidationAnalysisJudgeDao.getListByGroupId(groupId);
         List<Integer> transform = LangUtils.transform(judgeList, o -> o.getJudgeObjectId());
         List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getListByIds(transform);
         //应该获取最终测算好的价格与面积

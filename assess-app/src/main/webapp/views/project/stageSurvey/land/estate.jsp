@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
@@ -17,7 +18,6 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         信息填写
-
                                         <button type="button" class="btn btn-sm btn-primary"
                                                 onclick="showHistoryModal();">历史记录
                                         </button>
@@ -32,7 +32,6 @@
                             <div class="card-body">
                                 <form class="form-horizontal" id="frm_estate">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
-                                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -67,9 +66,7 @@
                                                             <th style="width: 7%"></th>
                                                         </tr>
                                                         </thead>
-                                                        <tbody>
-
-                                                        </tbody>
+                                                        <tbody></tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -87,10 +84,14 @@
                                                                required="required"
                                                                name="name" class="form-control"
                                                                value="${basicEstate.name}">
-                                                        <span class="input-group-btn">
-                        <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
-                                class="fa fa-map-marker"></i> 标注</div>
-                        </span>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-info btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="estateCommon.mapMarker();">
+                                                                标注
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">地块方位</label>
@@ -99,58 +100,75 @@
                                                             class="form-control input-full search-select position select2">
                                                     </select>
                                                 </div>
-                                                <label class="col-sm-1 control-label">基础版块<span
-                                                        class="symbol required"></span></label>
+                                                <label class="col-sm-1">区域规划</label>
                                                 <div class="col-sm-3">
-                                                    <div class="input-group">
-                                                        <input type="hidden" name="blockId"
-                                                               value="${basicEstate.blockId}">
-                                                        <input type="text"
-                                                               onchange="$(this).closest('.input-group').find('[name=blockId]').val('0');"
-                                                               placeholder="基础版块" class="form-control" name="blockName"
-                                                               value="${basicEstate.blockName}">
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-warning btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                清空
-                                                            </button>
-                                                        </div>
-                                                        <div class="input-group-prepend">
-                                                            <button class="btn btn-primary btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="estateCommon.blockSelect(this);">选择
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">基础版块描述<span
-                                                        class="symbol required"></span></label>
-                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <textarea class="form-control input-full" name="blockDescription" id="blockDescription" required
-                                  placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1">占地面积(平方米)</label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" data-rule-maxlength="100"
-                                                           data-rule-number='true'
-                                                           placeholder="占地面积(请输入数字)" name="coverAnArea"
+                                                    <input type="text" placeholder="区域规划" name="regionalPlanning"
                                                            class="form-control input-full"
-                                                           value="${basicEstate.coverAnArea}">
+                                                           value="${basicEstate.regionalPlanning}">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%--<div class="row form-group">--%>
+                                        <%--<div class="col-md-12">--%>
+                                            <%--<div class="form-inline x-valid">--%>
+                                                <%--<label class="col-sm-1 control-label">基础版块描述<span--%>
+                                                        <%--class="symbol required"></span></label>--%>
+                                                <%--<div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">--%>
+                        <%--<textarea class="form-control input-full" name="blockDescription" id="blockDescription" required--%>
+                                  <%--placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                    土地取得方式
+                                                </label>
+                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                    <select name="acquisitionType"
+                                                            class="form-control input-full search-select select2 acquisitionType">
+                                                    </select>
+                                                </div>
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                    土地权利性质
+                                                </label>
+                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                    <select name="landRightNature"
+                                                            class="form-control input-full search-select select2 landRightNature">
+                                                    </select>
+                                                </div>
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                    权利类型
+                                                </label>
+                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                    <select name="landRightType" class="form-control input-full search-select select2 landRightType">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">占地面积</label>
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="coverAnAreaUnit">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="平方米">平方米</option>
+                                                            <option value="亩">亩</option>
+                                                        </select>
+                                                        <input type="number" data-rule-maxlength="100"
+                                                               data-rule-number='true'
+                                                               placeholder="占地面积(请输入数字)" name="coverAnArea"
+                                                               class="form-control form-control-sm"
+                                                               value="${basicEstate.coverAnArea}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-sm-1">土地权利人</label>
                                                 <div class="col-sm-3">
@@ -160,11 +178,18 @@
                                                 </div>
 
                                                 <label class="col-sm-1 control-label">均价</label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" data-rule-maxlength="100" data-rule-number='true'
-                                                           placeholder="均价(请输入数字)" name="averagePrice"
-                                                           class="form-control input-full"
-                                                           value="${basicEstate.averagePrice}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="averagePriceUnit">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="元/平方米">元/平方米</option>
+                                                            <option value="万元/亩">万元/亩</option>
+                                                        </select>
+                                                        <input type="number" data-rule-maxlength="100" data-rule-number='true'
+                                                               placeholder="均价(请输入数字)" name="averagePrice"
+                                                               class="form-control-sm form-control"
+                                                               value="${basicEstate.averagePrice}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -173,10 +198,17 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">价格区间</label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" placeholder="价格区间"
-                                                           name="priceRange" class="form-control input-full"
-                                                           value="${basicEstate.priceRange}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="priceRangeUnit">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="元/平方米">元/平方米</option>
+                                                            <option value="万元/亩">万元/亩</option>
+                                                        </select>
+                                                        <input type="text" placeholder="价格区间"
+                                                               name="priceRange" class="form-control-sm form-control"
+                                                               value="${basicEstate.priceRange}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                                     取得时间
@@ -203,7 +235,7 @@
                                     <div id="landEstateFile"></div>
 
                                     <div class="card-header">
-                                        <div class="card-category">基础设施情况</div>
+                                        <div class="card-category">宗地外</div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
@@ -211,12 +243,15 @@
                                                 <label class="col-sm-1">基础设施完备度<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full search-select select2 "
+                                                    <select class="form-control input-full  "
                                                             name="infrastructureCompleteness"
                                                             required="required">
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-8">
+                                                <label class="col-sm-1">
+                                                    宗地外
+                                                </label>
+                                                <div class="col-sm-7">
                                                     <div id="industrySupplyInfoContainer"></div>
                                                 </div>
                                             </div>
@@ -235,45 +270,45 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">四至(1)<span
                                                         class="symbol required"></span></label>
-                                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                                    <select class="form-control input-full" name="eastToName">
-                                                        <option value="东至" selected="selected">东至</option>
-                                                        <option value="东南">东南</option>
-                                                        <option value="东北">东北</option>
-                                                    </select>
-                                                </div>
-                                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                                    <input type="text" class="form-control input-full" required
-                                                           name="eastTo"
-                                                           value="${basicEstateLandState.eastTo}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="eastToName">
+                                                            <option value="东至" selected="selected">东至</option>
+                                                            <option value="东南">东南</option>
+                                                            <option value="东北">东北</option>
+                                                        </select>
+                                                        <input type="text" class="form-control form-control-sm" required
+                                                               name="eastTo"
+                                                               value="${basicEstateLandState.eastTo}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-sm-1">四至(2)<span
                                                         class="symbol required"></span></label>
-                                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                                    <select class="form-control input-full" name="southToName">
-                                                        <option value="南至" selected="selected">南至</option>
-                                                        <option value="东南">东南</option>
-                                                        <option value="西南">西南</option>
-                                                    </select>
-                                                </div>
-                                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                                    <input type="text" class="form-control input-full" required
-                                                           name="southTo"
-                                                           value="${basicEstateLandState.southTo}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="southToName">
+                                                            <option value="南至" selected="selected">南至</option>
+                                                            <option value="东南">东南</option>
+                                                            <option value="西南">西南</option>
+                                                        </select>
+                                                        <input type="text" class="form-control form-control-sm" required
+                                                               name="southTo"
+                                                               value="${basicEstateLandState.southTo}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-sm-1">四至(3)<span
                                                         class="symbol required"></span></label>
-                                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                                    <select class="form-control input-full" name="westToName">
-                                                        <option value="西至" selected="selected">西至</option>
-                                                        <option value="西南">西南</option>
-                                                        <option value="西北"></option>
-                                                    </select>
-                                                </div>
-                                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                                    <input type="text" class="form-control input-full" required
-                                                           name="westTo"
-                                                           value="${basicEstateLandState.westTo}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="westToName">
+                                                            <option value="西至" selected="selected">西至</option>
+                                                            <option value="西南">西南</option>
+                                                            <option value="西北"></option>
+                                                        </select>
+                                                        <input type="text" class="form-control form-control-sm" required
+                                                               name="westTo"
+                                                               value="${basicEstateLandState.westTo}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -283,28 +318,34 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">四至(4)<span
                                                         class="symbol required"></span></label>
-                                                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                                    <select class="form-control input-full" name="northToName">
-                                                        <option value="北至" selected="selected">北至</option>
-                                                        <option value="东北">东北</option>
-                                                        <option value="西北">西北</option>
-                                                    </select>
-                                                </div>
-                                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                                    <input type="text" class="form-control input-full" required
-                                                           name="northTo"
-                                                           value="${basicEstateLandState.northTo}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="northToName">
+                                                            <option value="北至" selected="selected">北至</option>
+                                                            <option value="东北">东北</option>
+                                                            <option value="西北">西北</option>
+                                                        </select>
+                                                        <input type="text" class="form-control form-control-sm" required
+                                                               name="northTo"
+                                                               value="${basicEstateLandState.northTo}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">土地面积</label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" class="form-control input-full"
-                                                           data-rule-number='true'
-                                                           placeholder="土地面积(请输入数字)" name="landArea"
-                                                           value="${basicEstateLandState.landArea}">
+                                                <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
+                                                    <div class="input-group">
+                                                        <select class="form-control form-control-sm" name="landAreaUnit">
+                                                            <option value="平方米" selected="selected">平方米</option>
+                                                            <option value="亩">亩</option>
+                                                        </select>
+                                                        <input type="number" class="form-control form-control-sm"
+                                                               data-rule-number='true'
+                                                               placeholder="土地面积(请输入数字)" name="landArea"
+                                                               value="${basicEstateLandState.landArea}">
+                                                    </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">地形</label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full search-select select2 planeness"
+                                                    <select class="form-control input-full  planeness"
                                                             name="planeness">
                                                     </select>
                                                 </div>
@@ -316,32 +357,101 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">地势</label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full search-select select2 topographicTerrain"
+                                                    <select class="form-control input-full  topographicTerrain"
                                                             name="topographicTerrain">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1">土地开发程度</label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full developmentDegree"
+                                                            name="developmentDegree">
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">土地利用现状</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="未开发，已开发完成投入使用，部分开发"
+                                                           name="presentSituationLandUse"
+                                                           value="${basicEstateLandState.presentSituationLandUse}">
+                                                </div>
+                                                <label class="col-sm-1 developmentDegreeContent">土地开发程度备注</label>
+                                                <div class="col-sm-3 developmentDegreeContent">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="土地开发程度备注"
+                                                           name="developmentDegreeRemark"
+                                                           value="${basicEstateLandState.developmentDegreeRemark}">
+                                                </div>
+                                                <label class="col-sm-1 parcelSettingInner">
+                                                    宗地内
+                                                </label>
+                                                <div class="col-sm-7 parcelSettingInner">
+                                                    <div id="developmentDegreeContentContainer"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">宗地内现状</label>
+                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                        <textarea class="form-control input-full" name="currentSituation" required
+                                  placeholder="宗地内现状">${basicEstateLandState.currentSituation}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header">
+                                        <div class="card-category">土壤</div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">污染<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full  "
+                                                            name="contaminated" required>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1">酸碱度<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full  "
+                                                            name="ph" required>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1">稳定性<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full  "
+                                                            name="holdOn" required>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">承载力<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full  "
+                                                            name="bearingCapacity" required>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
-                                <div class="x_title">
-                                    <h4>土地用途类型类别
-                                        <small>
-                                            <button style="margin-left: 5px" class="btn btn-success btn-xs"
-                                                    type="button" data-toggle="modal" type="button"
-                                                    onclick="landUseType.appendHtml()">
-											<span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                                新增
-                                            </button>
-                                        </small>
-                                    </h4>
-                                </div>
-                                <div class="x_content" id="LandUseTypeContent"></div>
-                                <%@include file="/views/project/stageSurvey/common/estateLandUseCategory.jsp" %>
-                                <%@include file="/views/project/tool/landLevelModalView.jsp" %>
+
                                 <div class="x_content">
                                     <%@include file="/views/project/stageSurvey/common/estateNetwork.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/estateParking.jsp" %>
@@ -372,7 +482,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <%@include file="/views/project/stageSurvey/common/canvasQRcode.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
 
                         <div class="card-body">
@@ -402,7 +512,18 @@
         src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
-
+<!-- 高德抓取周边数据 -->
+<script src="${pageContext.request.contextPath}/js/select/selectMap/transit.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/metro.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/finance.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/education.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/recreation.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/restaurant.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/market.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/medical.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/trafficHub.checkbox.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/select/selectMap/distance.get.fun.js?v=${assessVersion}"></script>
+<script src="${pageContext.request.contextPath}/js/map.placeSearch.js?v=${assessVersion}"></script>
 </html>
 <script type="text/javascript">
     //保存数据信息

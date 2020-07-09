@@ -4,13 +4,18 @@ package com.copower.pmcc.assess.service.project.survey;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.DeclareCertificateTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateVillageVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
+import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
@@ -66,9 +71,17 @@ public class SurveyAssetInventoryContentService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
+    private BasicBuildingService basicBuildingService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicEstateVillageService basicEstateVillageService;
+    @Autowired
+    private ErpAreaService erpAreaService;
 
     public BootstrapTableVo getList(Integer planDetailsId) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -161,7 +174,12 @@ public class SurveyAssetInventoryContentService {
                 SurveyAssetInventoryContent inventoryAddress = getInventoryAddress(declareRecord);
                 if (inventoryAddress != null) {
                     surveyAssetInventoryContent.setRegistration(inventoryAddress.getRegistration());
-                    //surveyAssetInventoryContent.setActual(inventoryAddress.getActual());
+                    surveyAssetInventoryContent.setActual(inventoryAddress.getActual());
+                    if (Objects.equal(surveyAssetInventoryContent.getRegistration(), surveyAssetInventoryContent.getActual())) {
+                        surveyAssetInventoryContent.setAreConsistent("一致");
+                    } else {
+                        surveyAssetInventoryContent.setAreConsistent("不一致");
+                    }
                 }
                 inventoryContentList.add(surveyAssetInventoryContent);
             }
@@ -262,12 +280,33 @@ public class SurveyAssetInventoryContentService {
      * @return
      */
     public SurveyAssetInventoryContent getInventoryAddress(DeclareRecord declareRecord) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
+        BaseProjectClassify projectLandCategory = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
+
         SurveyAssetInventoryContent content = new SurveyAssetInventoryContent();
         if (declareRecord == null) return content;
         SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemByDeclareId(declareRecord.getId());
+        List<String> actualList = Lists.newArrayList();
         if (assetInfoItem == null || assetInfoItem.getGroupId() == null || assetInfoItem.getGroupId() <= 0) {
             List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
-            String fusinString = publicService.fusinString(LangUtils.transform(applyList, o -> o.getAddress()), true);
+            if(CollectionUtils.isNotEmpty(applyList)){
+                for (BasicApply basicApply : applyList) {
+                    if(projectInfo.getProjectCategoryId().equals(projectLandCategory.getId())){
+                        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                        List<BasicEstateVillageVo> voList = basicEstateVillageService.getVillageListByEstateId(basicEstate.getId());
+                        if(CollectionUtils.isNotEmpty(voList)){
+                            for(BasicEstateVillageVo item:voList){
+                                String districtName = erpAreaService.getSysAreaName(item.getDistrict());
+                                actualList.add(String.format("%s%s%s%s",districtName,item.getVillageStreet(),item.getBurgStreet(),item.getNumberGroup()));
+                            }
+                        }
+                    }else{
+                        BasicBuildingVo building =  basicBuildingService.getBasicBuildingByBasicApply(basicApply);
+                        actualList.add(String.format("%s%s",building.getStreetNumber(),basicApply.getAddress()));
+                    }
+                }
+            }
+            String fusinString = publicService.fusinString(actualList, true);
             content.setRegistration(declareRecord.getSeat());
             content.setActual(fusinString);
             return content;
@@ -277,11 +316,24 @@ public class SurveyAssetInventoryContentService {
             List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(infoItems, o -> o.getDeclareId()));
             if (CollectionUtils.isNotEmpty(declareRecords)) {
                 List<String> registrationList = LangUtils.transform(declareRecords, o -> o.getSeat());
-                List<String> actualList = Lists.newArrayList();
                 for (DeclareRecord record : declareRecords) {
                     List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(record.getId());
                     if (CollectionUtils.isNotEmpty(applyList)) {
-                        applyList.forEach(o -> actualList.add(o.getAddress()));
+                        for (BasicApply basicApply : applyList) {
+                            if(projectInfo.getProjectCategoryId().equals(projectLandCategory.getId())){
+                                BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                                List<BasicEstateVillageVo> voList = basicEstateVillageService.getVillageListByEstateId(basicEstate.getId());
+                                if(CollectionUtils.isNotEmpty(voList)){
+                                    for(BasicEstateVillageVo item:voList){
+                                        String districtName = erpAreaService.getSysAreaName(item.getDistrict());
+                                        actualList.add(String.format("%s%s%s%s",districtName,item.getVillageStreet(),item.getBurgStreet(),item.getNumberGroup()));
+                                    }
+                                }
+                            }else{
+                                BasicBuildingVo building =  basicBuildingService.getBasicBuildingByBasicApply(basicApply);
+                                actualList.add(String.format("%s%s",building.getStreetNumber(),basicApply.getAddress()));
+                            }
+                        }
                     }
                 }
                 content.setRegistration(publicService.fusinString(registrationList, true));

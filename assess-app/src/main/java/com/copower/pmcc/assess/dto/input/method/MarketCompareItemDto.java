@@ -7,6 +7,7 @@ import java.math.BigDecimal;
  */
 public class MarketCompareItemDto {
     private String name;
+    private String desc;
     private String value;
     private BigDecimal score;
     private BigDecimal ratio;
@@ -18,6 +19,14 @@ public class MarketCompareItemDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getValue() {

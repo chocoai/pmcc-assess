@@ -61,10 +61,24 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="switchCircuit"
-                                                    class="form-control input-full search-select select2 switchCircuit">
+                                                    class="form-control input-full  switchCircuit">
                                             </select>
                                         </div>
                                     </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                档次
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="grade"
+                                                        class="form-control input-full  grade">
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -75,7 +89,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="layingMethod"
-                                                    class="form-control input-full search-select select2 layingMethod">
+                                                    class="form-control input-full  layingMethod">
                                             </select>
                                         </div>
                                     </div>
@@ -97,18 +111,17 @@
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            档次
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="grade"
-                                                    class="form-control input-full search-select select2 grade">
-                                            </select>
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                备注
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <textarea name="remark" class="form-control input-full"></textarea>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
                                 </div>
+                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                     <div class="form-inline x-valid">
@@ -132,17 +145,17 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <select required="required" name="intelligentSystem1"
-                                                        class="form-control input-full search-select select2 intelligentSystem1">
+                                                        class="form-control input-full  intelligentSystem1">
                                                 </select>
                                             </div>
                                             <div class="col-sm-2">
                                                 <select required="required" name="layingMethod1"
-                                                        class="form-control input-full search-select select2 layingMethod1">
+                                                        class="form-control input-full  layingMethod1">
                                                 </select>
                                             </div>
                                             <div class="col-sm-2">
                                                 <select required="required" name="intelligenceGrade1"
-                                                        class="form-control input-full search-select select2 intelligenceGrade1">
+                                                        class="form-control input-full  intelligenceGrade1">
                                                 </select>
                                             </div>
                                             <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
@@ -155,14 +168,14 @@
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            描述
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea name="remark" class="form-control input-full"></textarea>
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                智能系统描述
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <textarea name="systemDescribe" class="form-control input-full"></textarea>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
 

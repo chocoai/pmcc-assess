@@ -9,7 +9,6 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private Integer id;
     private Integer pid;
     private String name;
-    private String textName;
     private String displayName;
     private String key;
     private Integer _parentId;
@@ -20,13 +19,22 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private String tableName;
     private Integer tableId;
     private Boolean bisModify;
-    private Boolean bisStructure;
     private String creator;
     private String creatorName;
     private String executor;
     private Integer declareRecordId;
     private String declareRecordName;
     private Integer applyBatchId;
+    private String icon;
+    private boolean bisFromCase;
+
+    public boolean isBisFromCase() {
+        return bisFromCase;
+    }
+
+    public void setBisFromCase(boolean bisFromCase) {
+        this.bisFromCase = bisFromCase;
+    }
 
     public Integer getApplyBatchId() {
         return applyBatchId;
@@ -50,22 +58,6 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
 
     public void setDeclareRecordId(Integer declareRecordId) {
         this.declareRecordId = declareRecordId;
-    }
-
-    public String getTextName() {
-        return textName;
-    }
-
-    public void setTextName(String textName) {
-        this.textName = textName;
-    }
-
-    public Boolean getBisStructure() {
-        return bisStructure;
-    }
-
-    public void setBisStructure(Boolean bisStructure) {
-        this.bisStructure = bisStructure;
     }
 
     public String getCreatorName() {
@@ -148,7 +140,6 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
         isParent = parent;
     }
 
-
     public Integer get_parentId() {
         return _parentId;
     }
@@ -208,5 +199,13 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
 
     public void setBisModify(Boolean bisModify) {
         this.bisModify = bisModify;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

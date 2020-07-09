@@ -30,7 +30,7 @@ public class AssessExamineTaskConstant {
     public static final String ESTATE_ENTERTAINMENT_CATEGORY = "estate.entertainment.category";//休闲娱乐场所类别
     public static final String ESTATE_DINING_CATEGORY = "estate.dining.category";//餐饮场所类别
     public static final String ESTATE_DINING_GRADE = "estate.dining.grade";//餐饮场所档次
-    public static final String ESTATE_TOTAL_LAND_USE = "estate.land_use";//土地用途
+    public static final String ESTATE_LAND_USE = "estate.land_use";//土地用途
 
     public static final String EXAMINE_BUILDING_STRUCTURE = "examine.building.structure";//屋面结构
     public static final String EXAMINE_BUILDING_FUNCTION_TYPE_HEAT_INSULATION = "building.function.type.heat.insulation";//隔热

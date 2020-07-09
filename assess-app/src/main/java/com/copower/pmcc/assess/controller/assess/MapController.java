@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -19,10 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -30,7 +28,7 @@ import java.util.List;
 /**
  * Created by kings on 2018-5-17.
  */
-@Controller
+@RestController
 @RequestMapping(value = "/map", name = "高德地图相关处理")
 public class MapController {
     @Autowired
@@ -104,16 +102,38 @@ public class MapController {
     }
 
     @RequestMapping(value = "/drawPolygon", name = "地图多边形标注 地图着色备注")
-    public ModelAndView drawPolygon(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String formData) {
+    public ModelAndView drawPolygon(@RequestParam(defaultValue = "true") boolean apply, @RequestParam(defaultValue = "false") boolean detail, String cityName, String callback, String estateName, String formData, Integer taggingId) {
         ModelAndView modelAndView = new ModelAndView();
+        BasicEstateTagging basicEstateTagging = null;
+        if (taggingId != null && taggingId != 0) {
+            basicEstateTagging = basicEstateTaggingService.getBasicEstateTaggingById(taggingId);
+            if (basicEstateTagging != null) {
+                if (StringUtils.isNotBlank(basicEstateTagging.getPathArray())) {
+                    formData = basicEstateTagging.getPathArray();
+                }
+            }
+        }
         if (apply) {
             modelAndView.setViewName("base/drawPolygon");
         }
         if (detail) {
             modelAndView.setViewName("base/drawPolygonDetail");
         }
-        if (StringUtils.isNotBlank(formData)){
-            modelAndView.addObject("formData", "formData");
+        if (StringUtils.isNotBlank(formData)) {
+            modelAndView.addObject("formData", formData);
+            if (basicEstateTagging != null){
+                basicEstateTagging.setPathArray(null);
+                modelAndView.addObject("basicEstateTagging", JSONObject.toJSONString(basicEstateTagging));
+            }
+        }
+        if (StringUtils.isNotBlank(cityName)) {
+            modelAndView.addObject("cityName", cityName);
+        }
+        if (StringUtils.isNotBlank(callback)) {
+            modelAndView.addObject("callback", callback);
+        }
+        if (StringUtils.isNotBlank(estateName)) {
+            modelAndView.addObject("estateName", estateName);
         }
         return modelAndView;
     }

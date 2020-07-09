@@ -25,6 +25,7 @@
                             <div class="card-body">
                                 <div class="x_content">
                                     <form class="form-horizontal" id="basicBuildingFrm">
+                                        <input type="hidden" name="id" value="${basicBuilding.id}">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card-body">
@@ -39,13 +40,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-                        <div class="card-body">
-                            <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
-                                    onclick="window.close()">关闭
-                            </button>
-                        </div>
-                    </div>
+                    <%@include file="/views/project/stageSurvey/common/canvasQRcodePagination.jsp" %>
                 </div>
             </div>
         </div>

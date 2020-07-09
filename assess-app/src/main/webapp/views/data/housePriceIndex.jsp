@@ -120,6 +120,7 @@
         var frm = $(dataObjFun.config.frm);
         frm.clearAll();
         frm.initForm(data);
+        frm.find('[name=basePeriod]').val(dataObjFun.formatDateMonth(data.basePeriod));
         AssessCommon.initAreaInfo({
             provinceTarget: frm.find("select[name='province']"),
             cityTarget: frm.find("select[name='city']"),
@@ -207,7 +208,7 @@
         });
         cols.push({
             field: 'basePeriod', title: '基期', formatter: function (value, row, index) {
-                return formatDate(value, false);
+                return dataObjFun.formatDateMonth(value);
             }
         });
         cols.push({
@@ -246,6 +247,7 @@
         if (!frm.valid()) {
             return false;
         }
+        data.basePeriod = data.basePeriod + "-01 00:00:00";
         $.ajax({
             url: "${pageContext.request.contextPath}/housePriceIndex/save",
             data: {formData: JSON.stringify(data)},
@@ -550,7 +552,7 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" readonly="readonly"
-                                                       class="form-control input-full date-picker dbdate"
+                                                       class="form-control input-full date-picker dbdate-month"
                                                        data-date-format="yyyy-mm-dd"
                                                        name="basePeriod" placeholder="基期">
                                             </div>

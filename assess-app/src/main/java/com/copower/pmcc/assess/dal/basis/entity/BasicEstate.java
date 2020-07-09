@@ -102,6 +102,20 @@ public class BasicEstate {
 
     private Date gmtModified;
 
+    private String averagePriceUnit;
+
+    private String priceRangeUnit;
+
+    private String coverAnAreaUnit;
+
+    private String acquisitionType;
+
+    private String landRightNature;
+
+    private String landRightType;
+
+    private String regionalPlanning;
+
     public Integer getId() {
         return id;
     }
@@ -492,5 +506,61 @@ public class BasicEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getAveragePriceUnit() {
+        return averagePriceUnit;
+    }
+
+    public void setAveragePriceUnit(String averagePriceUnit) {
+        this.averagePriceUnit = averagePriceUnit == null ? null : averagePriceUnit.trim();
+    }
+
+    public String getPriceRangeUnit() {
+        return priceRangeUnit;
+    }
+
+    public void setPriceRangeUnit(String priceRangeUnit) {
+        this.priceRangeUnit = priceRangeUnit == null ? null : priceRangeUnit.trim();
+    }
+
+    public String getCoverAnAreaUnit() {
+        return coverAnAreaUnit;
+    }
+
+    public void setCoverAnAreaUnit(String coverAnAreaUnit) {
+        this.coverAnAreaUnit = coverAnAreaUnit == null ? null : coverAnAreaUnit.trim();
+    }
+
+    public String getAcquisitionType() {
+        return acquisitionType;
+    }
+
+    public void setAcquisitionType(String acquisitionType) {
+        this.acquisitionType = acquisitionType == null ? null : acquisitionType.trim();
+    }
+
+    public String getLandRightNature() {
+        return landRightNature;
+    }
+
+    public void setLandRightNature(String landRightNature) {
+        this.landRightNature = landRightNature == null ? null : landRightNature.trim();
+    }
+
+    public String getLandRightType() {
+        return landRightType;
+    }
+
+    public void setLandRightType(String landRightType) {
+        this.landRightType = landRightType == null ? null : landRightType.trim();
+    }
+
+    public String getRegionalPlanning() {
+        return regionalPlanning;
+    }
+
+    public void setRegionalPlanning(String regionalPlanning) {
+        this.regionalPlanning = regionalPlanning == null ? null : regionalPlanning.trim();
     }
 }

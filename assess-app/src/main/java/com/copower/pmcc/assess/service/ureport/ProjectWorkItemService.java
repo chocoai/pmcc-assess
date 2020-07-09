@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,8 @@ public class ProjectWorkItemService {
         String queryPhaseName = "";
         String queryUserAccount = "";
         String queryExecuteUserAccount = "";
+        String queryStartTime = "";
+        String queryEndTime = "";
 
         Integer pageIndex = objectToInteger(maps.get("_pageIndex"));
         Integer fixRows = objectToInteger(maps.get("_fixRows"));
@@ -67,7 +70,18 @@ public class ProjectWorkItemService {
         if (maps.get("queryExecuteUserAccount") != null) {
             queryExecuteUserAccount = (String) maps.get("queryExecuteUserAccount");
         }
-
+        if (maps.get("queryStartTime") != null) {
+            queryStartTime = (String) maps.get("queryStartTime");
+        }
+        if (maps.get("queryEndTime") != null) {
+            queryEndTime = (String) maps.get("queryEndTime");
+        }
+        Date endTimeParse = null;
+        if (StringUtil.isNotEmpty(queryEndTime)) {
+            endTimeParse = DateUtils.parse(queryEndTime);
+            endTimeParse = DateUtils.addDay(endTimeParse, 1);
+            queryEndTime = DateUtils.format(endTimeParse);
+        }
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT A.id,A.project_id,A.project_phase_name,A.actual_hours,A.status,A.task_submit_time,A.execute_user_account," +
                 " B.project_name,C.work_stage_name,D.user_account_manager FROM tb_project_plan_details A" +
@@ -90,6 +104,12 @@ public class ProjectWorkItemService {
         }
         if (StringUtil.isNotEmpty(queryExecuteUserAccount)) {
             sql.append(String.format(" AND A.execute_user_account LIKE '%s%s%s'", "%", queryExecuteUserAccount, "%"));
+        }
+        if (StringUtil.isNotEmpty(queryStartTime)) {
+            sql.append(String.format(" AND Date(A.task_submit_time) >= '%s'", queryStartTime));
+        }
+        if (StringUtil.isNotEmpty(queryEndTime)) {
+            sql.append(String.format(" AND Date(A.task_submit_time) < '%s'", queryEndTime));
         }
         List<ProjectWorkItemVo> list = Lists.newArrayList();
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);

@@ -92,4 +92,11 @@ public class BasicHouseTradingSellService {
         return basicHouseTradingSellDao.basicHouseTradingSellList(basicHouseTradingSell);
     }
 
+
+    public List<BasicHouseTradingSell> basicHouseTradingSellsGetByTradingId(Integer tradingId) throws Exception {
+        BasicHouseTradingSell basicHouseTradingSell = new BasicHouseTradingSell();
+        basicHouseTradingSell.setTradingId(tradingId);
+        return basicHouseTradingSellDao.basicHouseTradingSellList(basicHouseTradingSell);
+    }
+
 }

@@ -75,7 +75,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="lineGrade"
-                                                    class="form-control input-full search-select select2 lineGrade">
+                                                    class="form-control input-full  lineGrade">
                                             </select>
                                         </div>
                                     </div>
@@ -90,7 +90,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="reputation"
-                                                    class="form-control input-full search-select select2 reputation">
+                                                    class="form-control input-full  reputation">
                                             </select>
                                         </div>
                                     </div>
@@ -104,7 +104,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="grade"
-                                                    class="form-control input-full search-select select2 grade">
+                                                    class="form-control input-full  grade">
                                             </select>
                                         </div>
                                     </div>
@@ -117,7 +117,7 @@
                                             供应量或功率
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" name="power" class="form-control input-full" data-rule-number='true'
+                                            <input type="number" name="power" class="form-control input-full" data-rule-number='true'
                                                    placeholder="供应量或功率">
                                         </div>
                                     </div>

@@ -169,7 +169,7 @@ public class MdDevelopmentService {
                 MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = mdEconomicIndicatorsService.getEconomicIndicatorsInfo(target.getEconomicId());
                 tempFlag = mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators().getId() != null;
             }
-            if (!tempFlag){
+            if (!tempFlag) {
                 mapEconomicId.forEach((integer, integer2) -> {
                     target.setEconomicId(integer);
                     target.setCenterId(integer2);
@@ -213,12 +213,12 @@ public class MdDevelopmentService {
     }
 
     public void calculationNumeric(MdDevelopment target) {
-        if (target == null){
+        if (target == null) {
             return;
         }
-        saveAndUpdateMdDevelopment(target) ;
+        saveAndUpdateMdDevelopment(target);
         getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_Price, target);
-        saveAndUpdateMdDevelopment(target) ;
+        saveAndUpdateMdDevelopment(target);
     }
 
 
@@ -241,18 +241,21 @@ public class MdDevelopmentService {
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_total_saleableArea: {//f18
-                BigDecimal unsaleableBuildingArea = new BigDecimal(0) ;
+                BigDecimal unsaleableBuildingArea = new BigDecimal(0);
                 if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getSaleableArea()})) {
                     return "";
                 }
-                if (target.getUnsaleableBuildingArea() != null){
-                    unsaleableBuildingArea = new BigDecimal(target.getUnsaleableBuildingArea().toString()) ;
+                if (target.getUnsaleableBuildingArea() != null) {
+                    unsaleableBuildingArea = new BigDecimal(target.getUnsaleableBuildingArea().toString());
                 }
                 BigDecimal bigDecimal = ArithmeticUtils.addModel(target.getSaleableArea(), unsaleableBuildingArea, null, null);
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
+            case Development_Land_Area: {//f18
+                return ArithmeticUtils.getBigDecimalString(target.getLandArea());
+            }
             case Development_constructionInstallationEngineeringFee: {//d21 or e21
-                String f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
+                String f18 = target.getPlannedBuildingArea() == null ? "" : target.getPlannedBuildingArea().toString();
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -265,7 +268,7 @@ public class MdDevelopmentService {
             }
             case Development_reconnaissanceDesignTotal: {//d20 or e20
                 //=F18*F21*F20/10000
-                String f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
+                String f18 = target.getPlannedBuildingArea() == null ? "" : target.getPlannedBuildingArea().toString();
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -282,7 +285,7 @@ public class MdDevelopmentService {
             }
             case Development_infrastructureCostTotal: {//d22 or e22
                 //F18*F22/10000
-                String f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
+                String f18 = target.getPlannedBuildingArea() == null ? "" : target.getPlannedBuildingArea().toString();
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -295,7 +298,7 @@ public class MdDevelopmentService {
             }
             case Development_infrastructureMatchingCostTotal: {//d23 or e23
                 //F18*F23/10000
-                String f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
+                String f18 = target.getPlannedBuildingArea() == null ? "" : target.getPlannedBuildingArea().toString();
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -308,7 +311,7 @@ public class MdDevelopmentService {
             }
             case Development_devDuringTotal: {//d24 or e24
                 //F18*F24/10000
-                String f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
+                String f18 = target.getPlannedBuildingArea() == null ? "" : target.getPlannedBuildingArea().toString();
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -321,7 +324,7 @@ public class MdDevelopmentService {
             }
             case Development_otherEngineeringCostTotal: {//d25 or e25
                 //F18*F25/10000
-                String f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
+                String f18 = target.getPlannedBuildingArea() == null ? "" : target.getPlannedBuildingArea().toString();
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -620,7 +623,12 @@ public class MdDevelopmentService {
             case Development_assessPrice: {//d41
                 //=E40/F18*10000
                 String e40 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_LandPriceValue, target);
-                String f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
+                String f18 = null;
+                if (Objects.equal(target.getType(), MdDevelopmentTypeEnum.developmentLand.getKey())) {
+                    f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_Land_Area, target);
+                } else {
+                    f18 = getFieldObjectValueHandle(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
+                }
                 if (!ArithmeticUtils.checkNotNull(new String[]{e40, f18})) {
                     target.setAssessPrice(ArithmeticUtils.createBigDecimal(0));
                     return "";

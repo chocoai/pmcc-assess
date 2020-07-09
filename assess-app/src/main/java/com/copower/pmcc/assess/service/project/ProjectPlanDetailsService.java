@@ -8,9 +8,11 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
+import com.copower.pmcc.assess.proxy.face.ProjectPhaseInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.assess.service.chks.AssessmentPerformanceService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -31,7 +33,6 @@ import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
-import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
@@ -41,6 +42,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -113,6 +115,8 @@ public class ProjectPlanDetailsService {
     private PublicService publicService;
     @Autowired
     private BpmRpcToolsService bpmRpcToolsService;
+    @Autowired
+    private AssessmentPerformanceService assessmentPerformanceService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -161,6 +165,7 @@ public class ProjectPlanDetailsService {
         List<ProjectPlanDetails> planDetailsList = getProjectPlanDetailsByIds(planDetailsIds);
         int successCount = 0;
         for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
             if (projectPlanDetails.getStatus() == ProcessStatusEnum.FINISH.getName())
                 continue;
             if (projectPlanDetails.getBisStart() == Boolean.TRUE)
@@ -169,6 +174,10 @@ public class ProjectPlanDetailsService {
                 continue;
             bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(), projectPlanDetails.getId());
             projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
+            if (StringUtils.isNotEmpty(projectPhase.getServiceBean())) {
+                ProjectPhaseInterface serviceBean = (ProjectPhaseInterface) SpringContextUtils.getBean(projectPhase.getServiceBean());
+                serviceBean.afterDeleteExecute(projectPlanDetails.getId());
+            }
             successCount++;
         }
         if (successCount <= 0)
@@ -358,7 +367,7 @@ public class ProjectPlanDetailsService {
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 
-            if (isMember && isOperable && ProjectStatusEnum.FINISH.getKey().equals(sysProjectEnum.getKey())) {
+            if (isMember && isOperable) {
                 if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
                     ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
                     if (projectPhase != null) {
@@ -554,6 +563,16 @@ public class ProjectPlanDetailsService {
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return null;
         if (StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue())) {
+            //重启需删除该事项的考核相关任务
+            assessmentPerformanceService.clearAssessmentProjectPerformanceAll(projectPlanDetails.getProcessInsId());
+            try {
+                if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId()) && !projectPlanDetails.getProcessInsId().equals("0")
+                        && projectPlanDetails.getStatus().equalsIgnoreCase(ProcessStatusEnum.RUN.getValue()))
+                    bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());//关闭当前流程
+            } catch (Exception ex) {
+                logger.error(ex.getMessage(), ex);
+            }
+
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
             projectPlanDetails.setBisStart(false);
             projectPlanDetails.setProcessInsId("0");
@@ -585,6 +604,8 @@ public class ProjectPlanDetailsService {
             sysAttachmentDto.setTableId(returnId);
             erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
         }
+
+
         return getProjectPlanDetailsVo(projectPlanDetails);
     }
 
@@ -636,23 +657,6 @@ public class ProjectPlanDetailsService {
                 logger.error(ex.getMessage(), ex);
             }
         }
-    }
-
-    /**
-     * 任务粘贴
-     *
-     * @param copyPlanDetailsId
-     * @param pastePlanDetailsId
-     */
-    public void taskPaste(Integer copyPlanDetailsId, Integer pastePlanDetailsId) throws Exception {
-        //1.被复制的任务必须是叶子节点 2.目前只支持资产清查，现场查勘案例调查可被复制
-        //3.被粘贴的任务必须是还未开始的任务 4.被粘贴的任务必须与被复制数据的工作事项一致
-        //5.被粘贴的任务也必须是叶子节点
-        if (copyPlanDetailsId == null || pastePlanDetailsId == null)
-            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        ProjectPlanDetails copyPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(copyPlanDetailsId);
-        ProjectPlanDetails pastePlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pastePlanDetailsId);
-        publicBasicService.copyForExamine(copyPlanDetails.getId(), pastePlanDetails.getId());
     }
 
     /**

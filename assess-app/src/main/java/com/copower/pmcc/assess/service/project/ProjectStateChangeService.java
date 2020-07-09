@@ -180,7 +180,6 @@ public class ProjectStateChangeService extends BaseService {
             processInfo.setProcessEventExecutor(ProjectRestartChangeEvent.class);
         } else if (projectChangeTypeEnum.equals(ProjectChangeTypeEnum.INFO_CHANGE)) {
             processInfo.setProcessEventExecutor(ProjectInfoChangeEvent.class);
-            processInfo.setProcessEventExecutor(ProjectInfoChangeEvent.class);
         }else if(projectChangeTypeEnum.equals(ProjectChangeTypeEnum.SCHEME_CHANGE)){
             processInfo.setProcessEventExecutor(ProjectSchemeChangeEvent.class);
         }

@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface MdDevelopmentMapper {
-    int countByExample(MdDevelopmentExample example);
+    long countByExample(MdDevelopmentExample example);
 
     int deleteByExample(MdDevelopmentExample example);
 
@@ -16,15 +16,21 @@ public interface MdDevelopmentMapper {
 
     int insertSelective(MdDevelopment record);
 
+    List<MdDevelopment> selectByExampleWithBLOBs(MdDevelopmentExample example);
+
     List<MdDevelopment> selectByExample(MdDevelopmentExample example);
 
     MdDevelopment selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") MdDevelopment record, @Param("example") MdDevelopmentExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") MdDevelopment record, @Param("example") MdDevelopmentExample example);
+
     int updateByExample(@Param("record") MdDevelopment record, @Param("example") MdDevelopmentExample example);
 
     int updateByPrimaryKeySelective(MdDevelopment record);
+
+    int updateByPrimaryKeyWithBLOBs(MdDevelopment record);
 
     int updateByPrimaryKey(MdDevelopment record);
 }

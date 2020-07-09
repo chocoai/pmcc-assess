@@ -1,9 +1,10 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
-import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -47,7 +48,7 @@ public class BasicEstateLandCategoryInfoService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private PublicService publicService;
+    private BasicApplyDao basicApplyDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void copy(Integer oldId, Integer newId)throws Exception {
@@ -88,6 +89,16 @@ public class BasicEstateLandCategoryInfoService {
         return new ArrayList<>();
     }
 
+    public BasicEstateLandCategoryInfo getBasicEstateLandCategoryInfoByHouseId(Integer houseId){
+        BasicEstateLandCategoryInfo query = new BasicEstateLandCategoryInfo();
+        query.setHouseId(houseId);
+        List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfoList = basicEstateLandCategoryInfoList(query);
+        if(CollectionUtils.isNotEmpty(basicEstateLandCategoryInfoList)){
+            return basicEstateLandCategoryInfoList.get(0);
+        }
+        return null ;
+    }
+
     /**
      * 获取数据
      *
@@ -95,7 +106,7 @@ public class BasicEstateLandCategoryInfoService {
      * @return
      * @throws Exception
      */
-    public BasicEstateLandCategoryInfo getBasicEstateLandCategoryInfoById(Integer id) throws Exception {
+    public BasicEstateLandCategoryInfo getBasicEstateLandCategoryInfoById(Integer id) {
         return basicEstateLandCategoryInfoDao.getBasicEstateLandCategoryInfoById(id);
     }
 
@@ -106,7 +117,7 @@ public class BasicEstateLandCategoryInfoService {
      * @return
      * @throws Exception
      */
-    public Integer saveAndUpdateBasicEstateLandCategoryInfo(BasicEstateLandCategoryInfo basicEstateLandCategoryInfo, boolean updateNull) throws Exception {
+    public Integer saveAndUpdateBasicEstateLandCategoryInfo(BasicEstateLandCategoryInfo basicEstateLandCategoryInfo, boolean updateNull) {
         if(!StringUtils.isNotEmpty(basicEstateLandCategoryInfo.getLandLevelContentResult())){
             basicEstateLandCategoryInfo.setLandLevelContentResult(null);
         }

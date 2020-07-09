@@ -24,7 +24,6 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -80,7 +79,9 @@ public class BasicHouseService extends BasicEntityAbstract {
     @Autowired
     private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
-    private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
+    private BasicHouseTradingSellService basicHouseTradingSellService;
+    @Autowired
+    private BasicHouseTradingLeaseService basicHouseTradingLeaseService;
     @Autowired
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
@@ -103,6 +104,8 @@ public class BasicHouseService extends BasicEntityAbstract {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -228,6 +231,10 @@ public class BasicHouseService extends BasicEntityAbstract {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), houseId));
         sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
+
+        //同步删除apply信息
+        BasicApply basicApply = basicApplyService.getBasicApplyByHouseId(houseId);
+        if(basicApply!=null) basicApplyService.deleteBasicApplyById(basicApply.getId());
     }
 
     /**
@@ -240,6 +247,7 @@ public class BasicHouseService extends BasicEntityAbstract {
     public void clearInvalidChildData(Integer houseId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where house_id=%s;";
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class), houseId));
@@ -290,16 +298,7 @@ public class BasicHouseService extends BasicEntityAbstract {
 
     public BasicHouse getHouseByBasicApply(BasicApply basicApply) {
         if (basicApply == null) return null;
-        String structuralInfo = basicApply.getStructuralInfo();
-        if(StringUtils.isNotBlank(structuralInfo)){
-            List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
-            for (KeyValueDto keyValueDto : keyValueDtos) {
-                if (StringUtils.isNotBlank(keyValueDto.getKey())&&keyValueDto.getKey().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
-                    return getBasicHouseById(Integer.valueOf(keyValueDto.getValue()));
-                }
-            }
-        }
-        return null;
+        return getBasicHouseById(basicApply.getBasicHouseId());
     }
 
     /**
@@ -410,6 +409,10 @@ public class BasicHouseService extends BasicEntityAbstract {
 
         BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
         objectMap.put("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) != null ? basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) : new BasicUnitHuxingVo());
+
+        BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
+        objectMap.put("landCategoryInfo",landCategoryInfo != null ? landCategoryInfo : new BasicEstateLandCategoryInfo());
+
         initDemagedDegree(basicHouse);
         return objectMap;
     }
@@ -456,17 +459,19 @@ public class BasicHouseService extends BasicEntityAbstract {
             }
 
             if (basicHouse != null) {
-                BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicHouse.getUnitId());
-                if (basicUnit != null)
-                    basicHouse.setFullName(basicUnit.getFullName() + basicHouse.getHouseNumber());
-                Integer houseId = saveAndUpdate(basicHouse, true);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
-                    houseDetail.setName(basicHouse.getHouseNumber());
-                    houseDetail.setDisplayName(basicHouse.getHouseNumber());
-                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
-                    basicApplyBatchDetailService.insertBasicApply(houseDetail,planDetailsId);
+                    if(StringUtils.isNotEmpty(basicHouse.getHouseNumber())){
+                        houseDetail.setName(basicHouse.getHouseNumber());
+                        houseDetail.setDisplayName(basicHouse.getHouseNumber());
+                        houseDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseDetail.getId()));
+                        basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
+                    }
+                    basicHouse.setApplyId(houseDetail.getId());
+                    basicHouse.setFullName(houseDetail.getFullName());
                 }
+                Integer houseId = saveAndUpdate(basicHouse, true);
+
                 //户型
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE_HUXING.getVar());
                 BasicUnitHuxing huxing = JSONObject.parseObject(jsonContent, BasicUnitHuxing.class);
@@ -487,7 +492,36 @@ public class BasicHouseService extends BasicEntityAbstract {
                     if (houseTradingOld != null) {
                         basicTrading.setId(houseTradingOld.getId());
                         basicTrading.setHouseId(houseId);
+                        basicTrading.setBisMark(true);
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
+                    }
+                }
+                //案例交易信息
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING_GROUPS.getVar());
+                List<BasicHouseTrading> basicTradingList = JSONObject.parseArray(jsonContent, BasicHouseTrading.class);
+                if (CollectionUtils.isNotEmpty(basicTradingList)) {
+                    for(BasicHouseTrading item:basicTradingList){
+                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(item, true);
+                    }
+                    //默认设置第一条的标识
+                    List<BasicHouseTrading> filter = LangUtils.filter(basicTradingList, p -> {
+                        return p.getBisMark() == true;
+                    });
+                    if(!CollectionUtils.isNotEmpty(filter)){
+                        basicTradingList.get(0).setBisMark(true);
+                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTradingList.get(0), true);
+                    }
+                }
+
+                //土地类型
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_LANDCATEGORYINFO.getVar());
+                BasicEstateLandCategoryInfo landCategoryInfo = JSONObject.parseObject(jsonContent, BasicEstateLandCategoryInfo.class);
+                if (landCategoryInfo != null) {
+                    BasicEstateLandCategoryInfo landCategoryInfoOld = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
+                    if (landCategoryInfoOld != null) {
+                        landCategoryInfo.setId(landCategoryInfoOld.getId());
+                        landCategoryInfo.setHouseId(houseId);
+                        basicEstateLandCategoryInfoService.saveAndUpdateBasicEstateLandCategoryInfo(landCategoryInfo, true);
                     }
                 }
                 //完损度
@@ -507,6 +541,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                     basicHouse.setNewDegree(newDegree);
                     saveAndUpdate(basicHouse, false);
                 }
+                basicApplyBatchDetailService.insertBasicApply(houseDetail,planDetailsId);//更新basicApply表中的信息
                 return basicHouse.getId();
             }
         }
@@ -557,23 +592,7 @@ public class BasicHouseService extends BasicEntityAbstract {
             basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(targetBasicHouseHuxing, true);
         }
 
-        BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceId);
-        if (sourceBasicHouseTrading != null) {
-            BasicHouseTrading targetBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(targetBasicHouse.getId());
-            if (targetBasicHouseTrading == null) {
-                targetBasicHouseTrading = new BasicHouseTrading();
-                BeanUtils.copyProperties(sourceBasicHouseTrading, targetBasicHouseTrading);
-                targetBasicHouseTrading.setId(null);
-                targetBasicHouseTrading.setHouseId(targetBasicHouse.getId());
-                targetBasicHouseTrading.setCreator(commonService.thisUserAccount());
-                targetBasicHouseTrading.setGmtCreated(null);
-                targetBasicHouseTrading.setGmtModified(null);
-            } else {
-                BeanUtils.copyProperties(sourceBasicHouseTrading, targetBasicHouseTrading, "id");
-                targetBasicHouseTrading.setHouseId(targetBasicHouse.getId());
-            }
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(targetBasicHouseTrading, true);
-        }
+
         if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetId);
 
@@ -581,6 +600,44 @@ public class BasicHouseService extends BasicEntityAbstract {
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
             where.setTableId(targetId);
             baseAttachmentService.deleteAttachmentByDto(where);
+        }
+        List<BasicHouseTrading> sourceBasicHouseTradingList = basicHouseTradingService.getTradingListByHouseId(sourceId);
+        if (CollectionUtils.isNotEmpty(sourceBasicHouseTradingList)) {
+            for(BasicHouseTrading source:sourceBasicHouseTradingList){
+                BasicHouseTrading targetBasicHouseTrading = new BasicHouseTrading();
+                BeanUtils.copyProperties(source, targetBasicHouseTrading);
+                targetBasicHouseTrading.setId(null);
+                targetBasicHouseTrading.setHouseId(targetBasicHouse.getId());
+                basicHouseTradingService.saveAndUpdateBasicHouseTrading(targetBasicHouseTrading, true);
+                //出售
+                List<BasicHouseTradingSell> basicHouseTradingSells = basicHouseTradingSellService.basicHouseTradingSellsGetByTradingId(source.getId());
+                if(CollectionUtils.isNotEmpty(basicHouseTradingSells)){
+                    for(BasicHouseTradingSell sellSource:basicHouseTradingSells){
+                        BasicHouseTradingSell targetSell = new BasicHouseTradingSell();
+                        BeanUtils.copyProperties(sellSource,targetSell);
+                        targetSell.setId(null);
+                        targetSell.setHouseId(targetBasicHouse.getId());
+                        targetSell.setTradingId(targetBasicHouseTrading.getId());
+                        basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(targetSell,true);
+                    }
+
+                }
+                //出租
+                List<BasicHouseTradingLease> basicHouseTradingLeases = basicHouseTradingLeaseService.basicHouseTradingLeaseListByTradingId(source.getId());
+                if(CollectionUtils.isNotEmpty(basicHouseTradingLeases)){
+                    for(BasicHouseTradingLease leaseSource:basicHouseTradingLeases){
+                        BasicHouseTradingLease targetLease = new BasicHouseTradingLease();
+                        BeanUtils.copyProperties(leaseSource,targetLease);
+                        targetLease.setId(null);
+                        targetLease.setHouseId(targetBasicHouse.getId());
+                        targetLease.setTradingId(targetBasicHouseTrading.getId());
+                        basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(targetLease,true);
+                    }
+
+                }
+                //附件拷贝
+                baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), source.getId(), targetBasicHouseTrading.getId());
+            }
         }
         baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouse.class), sourceId, targetBasicHouse.getId());
         if (containChild) {
@@ -592,13 +649,6 @@ public class BasicHouseService extends BasicEntityAbstract {
             synchronousDataDto.setFieldDefaultValue(map);
             synchronousDataDto.setWhereSql("house_id=" + sourceId);
             synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出售sql
-
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingLease.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//房屋出租sql
 
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class));
@@ -623,6 +673,10 @@ public class BasicHouseService extends BasicEntityAbstract {
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseEquipment.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//设备sql
+
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//土地类型sql
 
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
 
@@ -739,6 +793,19 @@ public class BasicHouseService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
+    }
+
+    @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+        List<Object> objects = Lists.newArrayList();
+        BasicHouse basicHouse = new BasicHouse();
+        basicHouse.setApplyId(applyBatchDetailId);
+        basicHouse.setBisCase(true);
+        List<BasicHouse> basicHouseList = getBasicHouseList(basicHouse);
+        if(CollectionUtils.isNotEmpty(basicHouseList)){
+            basicHouseList.forEach(o->objects.add(o));
+        }
+        return objects;
     }
 
     @Override

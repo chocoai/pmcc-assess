@@ -133,7 +133,12 @@ public class DataPropertyService {
         DataPropertyVo dataPropertyVo = new DataPropertyVo();
         BeanUtils.copyProperties(dataProperty, dataPropertyVo);
         if (dataProperty.getCompanyNature() != null) {
-            dataPropertyVo.setCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(dataProperty.getCompanyNature()).getName());
+            try {
+                //crm 未知错误  暂时这样处理
+                dataPropertyVo.setCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(dataProperty.getCompanyNature()).getName());
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
         }
         if (dataProperty.getSocialPrestige() != null) {
             dataPropertyVo.setSocialPrestigeName(baseDataDicService.getNameById(dataProperty.getSocialPrestige()));

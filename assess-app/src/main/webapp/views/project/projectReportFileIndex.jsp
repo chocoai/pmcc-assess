@@ -55,39 +55,18 @@
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <div class="form-inline x-valid">
-                                        <label class="col-sm-1 col-form-label">
-                                            省
-                                        </label>
-                                        <div class="col-sm-2">
-                                            <select id="queryProvince" class="form-control input-full">
-                                            </select>
-                                        </div>
                                         <label class="col-sm-1 control-label">
-                                            市
-                                        </label>
-                                        <div class="col-sm-2">
-                                            <select id="queryCity" class="form-control input-full">
-                                            </select>
-                                        </div>
-                                        <label class="col-sm-1 control-label">
-                                            区
-                                        </label>
-                                        <div class="col-sm-2">
-                                            <select id="queryDistrict" class="form-control input-full">
-                                            </select>
-                                        </div>
-                                        <label class="col-sm-1 control-label">
-                                            名称
+                                            估价对象名称
                                         </label>
                                         <div class="col-sm-2">
                                             <input type="text" class="form-control input-full" id="queryName"/>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            权证名称
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control input-full" id="queryCertName"/>
+                                        </div>
                                         <label class="col-sm-1 col-form-label">
                                             坐落
                                         </label>
@@ -95,7 +74,7 @@
                                             <input type="text" class="form-control input-full" id="querySeat"/>
                                         </div>
                                         <button style="margin-left: 10px" class="btn btn-info btn-sm" type="button"
-                                                onclick="reloadDeclareList()">
+                                                onclick="reloadSchemeJudgeObjectList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
@@ -103,9 +82,9 @@
                                         </button>
                                     </div>
                                 </div>
-
                             </div>
-                            <table class="table table-bordered" id="declareTable">
+
+                            <table class="table table-bordered" id="SchemeJudgeObjectListTable">
                                 <!-- cerare document add ajax data-->
                             </table>
 
@@ -210,7 +189,7 @@
 
             <div class="modal-body">
                 <form id="frmItemFile" class="form-horizontal">
-                    <input type="hidden" name="declareRecordId">
+                    <input type="hidden" name="schemeJudgeObjectId">
                     <input type="hidden" name="id">
                     <div class="row">
                         <div class="col-md-12">
@@ -376,7 +355,7 @@
 
             <div class="modal-body">
                 <form id="frmPictureType" class="form-horizontal">
-                    <input type="hidden" name="declareRecordId">
+                    <input type="hidden" name="schemeJudgeObjectId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -427,7 +406,7 @@
 
             <div class="modal-body">
                 <form id="frmPicture" class="form-horizontal">
-                    <input type="hidden" name="declareRecordId">
+                    <input type="hidden" name="schemeJudgeObjectId">
                     <input type="hidden" name="certifyPartCategory">
                     <input type="hidden" name="id">
                     <input type="hidden" name="bisEnable">
@@ -523,7 +502,7 @@
 
             <div class="modal-body">
                 <form id="frmTemplateMaster" class="form-horizontal">
-                    <input type="hidden" name="declareRecordId">
+                    <input type="hidden" name="schemeJudgeObjectId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -628,7 +607,7 @@
             districtTarget: $("#queryDistrict")
         });
 
-        reloadDeclareList();
+        reloadSchemeJudgeObjectList();
         uploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
     });
@@ -694,69 +673,7 @@
         });
     }
 
-    function getLandFileAllByDeclareRecord(tbody, declareRecordId) {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/projectReportFile/getLandCertId',
-            data: {
-                declareRecordId: declareRecordId
-            },
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        getLandFileAll(tbody, result.data);
-                    }
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
-                }
-            }
-        })
 
-    }
-
-    function uploadLandFile(tableName, target, tbody, declareRecordId) {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/projectReportFile/getLandCertId',
-            data: {
-                declareRecordId: declareRecordId
-            },
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        var html = '';
-                        html += '<label class="col-sm-1 control-label">附件</label>';
-                        html += '<div class="col-sm-10">';
-                        html += '<input id="uploadlandFile' + declareRecordId + '" class="form-control input-full"type="file">';
-                        html += '<div id="uploadlandFile' + declareRecordId + '">';
-                        html += '</div>';
-                        html += '</div>';
-
-                        $('div[data-id=' + declareRecordId + '][data-name=land_file_btn]').empty().append(html);
-                        var tableId = result.data
-                        FileUtils.uploadFiles({
-                            target: target,
-                            disabledTarget: "btn_submit",
-                            formData: {
-                                tableName: tableName,
-                                tableId: tableId,
-                            },
-                            onUploadComplete: function () {
-                                getLandFileAll(tbody, tableId);
-                            },
-                            editFlag: true,
-                            deleteFlag: true
-                        });
-                    } else {
-                        var html = '';
-                        html += '<label class="control-label">未关联土地证</label>';
-                        $('div[data-id=' + declareRecordId + '][data-name=land_file_btn]').empty().append(html);
-                    }
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
-                }
-            }
-        })
-
-    }
 
     //加载土地证附件
     function getLandFileAll(tbody, tableId) {
@@ -785,49 +702,6 @@
         })
     }
 
-    function uploadOwnershipCertFile(tableName, tableId, target, tbody, declareRecordId) {
-        FileUtils.uploadFiles({
-            target: target == undefined ? fieldsName : target,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: tableName,
-                tableId: tableId,
-                projectId: "${projectInfo.id}"
-            },
-            onUploadComplete: function () {
-                getOwnershipCertFileAll(tbody, declareRecordId);
-            },
-            editFlag: true,
-            deleteFlag: true
-        });
-    }
-
-    //加载复印件
-    function getOwnershipCertFileAll(tbody, declareRecordId) {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/projectReportFile/getOwnershipCertFileAll',
-            data: {
-                declareRecordId: declareRecordId
-            },
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        var html = '';
-                        $.each(result.data, function (i, item) {
-                            ++i;
-                            html += '<tr><th scope="row">' + i + '</th><td>' + item.fileName + '</td><td>' +
-                                '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="FileUtils.editAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                                '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                                '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeOwnershipCertFile(' + item.id + ',this)"></td></tr>';
-                        })
-                        tbody.empty().append(html);
-                    }
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
-                }
-            }
-        })
-    }
 
     //移除复印件片
     function removeOwnershipCertFile(id, _this) {
@@ -849,17 +723,17 @@
     }
 
     //加载自定义附件
-    function loadReportFileCustomList(declareRecordId) {
+    function loadReportFileCustomList(schemeJudgeObjectId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/scheme/getReportFileCustomList',
             data: {
-                declareRecordId: declareRecordId
+                schemeJudgeObjectId: schemeJudgeObjectId
             },
             success: function (result) {
                 if (result.ret) {
                     $('.report-file-custom').empty();
                     $.each(result.data, function (i, item) {
-                        appendCustomHtml(item.id, item.name, declareRecordId);
+                        appendCustomHtml(item.id, item.name, schemeJudgeObjectId);
                     })
                 } else {
                     AlertError("失败","调用服务端方法失败，失败原因:" + result);
@@ -869,26 +743,26 @@
     }
 
     //添加html
-    function appendCustomHtml(id, name, declareRecordId) {
+    function appendCustomHtml(id, name, schemeJudgeObjectId) {
         var html = $("#reportFileCustomHtml").html();
         html = html.replace(/{id}/g, id).replace(/{name}/g, name);
-        $('.report-file-custom' + declareRecordId).append(html);
+        $('.report-file-custom' + schemeJudgeObjectId).append(html);
         uploadFiles(AssessDBKey.SchemeReportFileCustom, id, "reportFileCustom" + id);
         loadUploadFiles(AssessDBKey.SchemeReportFileCustom, id, "reportFileCustom" + id);
     }
 
     //添加自定义块
-    function addReportFileCustom(declareRecordId) {
+    function addReportFileCustom(schemeJudgeObjectId) {
         layer.prompt(function (value, index, elem) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/scheme/addReportFileCustom',
                 data: {
                     name: value,
-                    declareRecordId: declareRecordId
+                    schemeJudgeObjectId: schemeJudgeObjectId
                 },
                 success: function (result) {
                     if (result.ret) {
-                        appendCustomHtml(result.data.id, result.data.name, declareRecordId);
+                        appendCustomHtml(result.data.id, result.data.name, schemeJudgeObjectId);
                         layer.close(index);
                     } else {
                         AlertError("失败","调用服务端方法失败，失败原因:" + result);
@@ -942,18 +816,18 @@
     }
 
     //加载实况照片
-    function loadLiveSituation(tbody, declareRecordId) {
+    function loadLiveSituation(tbody, schemeJudgeObjectId) {
         $.ajax({
-            url: '${pageContext.request.contextPath}/scheme/getListByDeclareRecordId',
+            url: '${pageContext.request.contextPath}/scheme/getListBySchemeJudgeObjectId',
             data: {
-                declareRecordId: declareRecordId
+                schemeJudgeObjectId: schemeJudgeObjectId
             },
             success: function (result) {
                 if (result.ret) {
                     var html = '';
                     $.each(result.data, function (i, item) {
                         html += '<tr><td><input type="text" name="fileName" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
-                            '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this,' + declareRecordId + ');" ></td>' +
+                            '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this,' + schemeJudgeObjectId + ');" ></td>' +
                             '<td>' + item.fileViewName + '</td>' + '<td>' + item.certifyPartName + '</td>' + '<td>' + item.certifyPartCategoryName + '</td>' + '<td>' + item.bisEnableName + '</td><td>' +
                             '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-info" data-original-title="上传照片" onclick="addPicture(' + item.id + ');"><i class="fa fa-cloud-upload-alt"></i></button>' +
                             '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary" data-original-title="编辑" onclick="getAndInit(' + item.id + ');"><i class="fa fa-pen"></i></button>' +
@@ -986,11 +860,11 @@
         });
     }
 
-    function addLiveSituationFile(declareRecordId) {
+    function addLiveSituationFile(schemeJudgeObjectId) {
         $("#frmItemFile").clearAll();
-        $("#frmItemFile").find("input[name='declareRecordId']").val(declareRecordId);
-        uploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement", "uploadSupplementFile");
-        loadUploadFiles(AssessDBKey.DeclareRecord, 0, "live_situation_select_supplement", "uploadSupplementFile");
+        $("#frmItemFile").find("input[name='schemeJudgeObjectId']").val(schemeJudgeObjectId);
+        uploadFiles(AssessDBKey.SchemeJudgeObject, 0, "live_situation_select_supplement", "uploadSupplementFile");
+        loadUploadFiles(AssessDBKey.SchemeJudgeObject, 0, "live_situation_select_supplement", "uploadSupplementFile");
         AssessCommon.loadDataDicByKey(AssessDicKey.certifyPart, '', function (html, data) {
             $("#frmItemFile").find("select[name='certifyPart']").empty().html(html).trigger('change');
         });
@@ -1003,11 +877,11 @@
     }
 
     //加载查勘所有实况照片
-    function getLiveSituationAll(declareRecordId) {
+    function getLiveSituationAll(schemeJudgeObjectId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/scheme/getLiveSituationAll',
             data: {
-                declareRecordId: declareRecordId
+                schemeJudgeObjectId: schemeJudgeObjectId
             },
             success: function (result) {
                 if (result.ret) {
@@ -1017,7 +891,7 @@
                             ++i;
                             html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
                                 '<button type="button" class="btn btn-xs btn-info" style="margin-left: 5px;" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><i class="fa fa-search"></i></button>' +
-                                '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-original-title="选择" onclick="selectLiveSituation(' + item.id + ',' + declareRecordId + ',\'' + item.reName + '\');"><i class="fa fa-check"></i></button></td></tr>';
+                                '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-original-title="选择" onclick="selectLiveSituation(' + item.id + ',' + schemeJudgeObjectId + ',\'' + item.reName + '\');"><i class="fa fa-check"></i></button></td></tr>';
                         })
                         $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
                     }
@@ -1030,12 +904,12 @@
     }
 
     //预览实况照片图片
-    function generateLiveSituation(declareRecordId) {
+    function generateLiveSituation(schemeJudgeObjectId) {
         Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/scheme/generateLiveSituation',
             data: {
-                declareRecordId: declareRecordId
+                schemeJudgeObjectId: schemeJudgeObjectId
             },
             success: function (result) {
                 Loading.progressHide();
@@ -1053,7 +927,7 @@
 
     //根据类型获取委估对象下实况图片
     function getLiveSituationByCertifyPart() {
-        var declareRecordId = $("#frmItemFile").find("input[name='declareRecordId']").val();
+        var schemeJudgeObjectId = $("#frmItemFile").find("input[name='schemeJudgeObjectId']").val();
         var certifyPart = $("#frmItemFile").find("select[name='certifyPart']").val();
         if (!certifyPart) {
             notifyInfo("提示","先选择查勘部位");
@@ -1063,7 +937,7 @@
             url: '${pageContext.request.contextPath}/scheme/getLiveSituationByCertifyPart',
             data: {
                 certifyPart: certifyPart,
-                declareRecordId: declareRecordId
+                schemeJudgeObjectId: schemeJudgeObjectId
             },
             success: function (result) {
                 if (result.ret) {
@@ -1086,20 +960,19 @@
     }
 
     //选择查勘中照片
-    function selectLiveSituation(attachmentId, declareRecordId, fileName) {
+    function selectLiveSituation(attachmentId, schemeJudgeObjectId, fileName) {
         Loading.progressShow();
         $.ajax({
             url: '${pageContext.request.contextPath}/scheme/selectLiveSituation',
             data: {
                 attachmentId: attachmentId,
-                declareRecordId: declareRecordId,
+                schemeJudgeObjectId: schemeJudgeObjectId,
                 fileName: fileName
             },
             success: function (result) {
                 Loading.progressHide();
                 AlertSuccess("成功", "选择图片成功", function () {
-                    loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
-
+                    loadLiveSituation($('tbody[data-id=' + schemeJudgeObjectId + '][data-name=live_situation_select]'), schemeJudgeObjectId);
                 });
             }
         })
@@ -1120,7 +993,7 @@
                 if (result.ret) {
                     notifySuccess("成功", "选择成功");
                     $("#examineFileModalByCertifyPart").modal("hide");
-                    loadUploadFiles(AssessDBKey.DeclareRecord, reportFileItemId, "live_situation_select_supplement", "uploadSupplementFile");
+                    loadUploadFiles(AssessDBKey.SchemeJudgeObject, reportFileItemId, "live_situation_select_supplement", "uploadSupplementFile");
                 }
             },
             error: function (result) {
@@ -1147,8 +1020,8 @@
                     $("#frmItemFile").find("select[name='certifyPart']").on('change', function () {
                         getCategory($(this).val(), result.data.certifyPartCategory);
                     });
-                    uploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
-                    loadUploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
+                    uploadFiles(AssessDBKey.SchemeJudgeObject, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
+                    loadUploadFiles(AssessDBKey.SchemeJudgeObject, result.data.id, "live_situation_select_supplement", "uploadSupplementFile");
                     $('#addItemModal').modal("show");
                 }
             },
@@ -1173,7 +1046,7 @@
                 if (result.ret) {
                     notifySuccess("成功", "保存成功");
                     $('#addItemModal').modal('hide');
-                    loadLiveSituation($('tbody[data-id="' + data.declareRecordId + '"][data-name=live_situation_select]'), data.declareRecordId);
+                    loadLiveSituation($('tbody[data-id="' + data.schemeJudgeObjectId + '"][data-name=live_situation_select]'), data.schemeJudgeObjectId);
                 }
                 else {
                     AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
@@ -1186,7 +1059,7 @@
     }
 
     //实况照片改名
-    function reportFileEditName(id, _this, declareRecordId) {
+    function reportFileEditName(id, _this, schemeJudgeObjectId) {
         var newName = $(_this).closest("tr").find("input[name='fileName']").val();
         var newSorting = $(_this).closest("tr").find("input[name='sorting']").val();
         $.ajax({
@@ -1198,7 +1071,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
+                    loadLiveSituation($('tbody[data-id=' + schemeJudgeObjectId + '][data-name=live_situation_select]'), schemeJudgeObjectId);
                 } else {
                     AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
@@ -1277,9 +1150,9 @@
     };
 
     //选择查勘照片模板类型
-    function selectPictureTempale(declareRecordId) {
+    function selectPictureTempale(schemeJudgeObjectId) {
         $("#frmPictureType").clearAll();
-        $("#frmPictureType").find("input[name='declareRecordId']").val(declareRecordId);
+        $("#frmPictureType").find("input[name='schemeJudgeObjectId']").val(schemeJudgeObjectId);
 
         $("#selectPictureTypeModal").modal("show");
 
@@ -1290,20 +1163,20 @@
         if (!$("#frmPictureType").valid()) {
             return false;
         }
-        var declareRecordId = $("#frmPictureType").find("input[name='declareRecordId']").val();
+        var schemeJudgeObjectId = $("#frmPictureType").find("input[name='schemeJudgeObjectId']").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/scheme/affirmPictureTemplate",
             type: "post",
             dataType: "json",
             data: {
                 masterId: masterId,
-                declareRecordId: declareRecordId
+                schemeJudgeObjectId: schemeJudgeObjectId
             },
             success: function (result) {
                 if (result.ret) {
                     notifySuccess("成功", "模板添加成功");
                     $('#selectPictureTypeModal').modal('hide');
-                    loadLiveSituation($('tbody[data-id="' + declareRecordId + '"][data-name=live_situation_select]'), declareRecordId);
+                    loadLiveSituation($('tbody[data-id="' + schemeJudgeObjectId + '"][data-name=live_situation_select]'), schemeJudgeObjectId);
                 }
                 else {
                     AlertError("失败","模板添加失败，失败原因:" + result.errmsg);
@@ -1326,8 +1199,8 @@
                 if (result.ret) {
                     $("#frmPicture").clearAll();
                     $("#frmPicture").initForm(result.data);
-                    uploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadPicture");
-                    loadUploadFiles(AssessDBKey.DeclareRecord, result.data.id, "live_situation_select_supplement", "uploadPicture");
+                    uploadFiles(AssessDBKey.SchemeJudgeObject, result.data.id, "live_situation_select_supplement", "uploadPicture");
+                    loadUploadFiles(AssessDBKey.SchemeJudgeObject, result.data.id, "live_situation_select_supplement", "uploadPicture");
                     $('#addPictureModal').modal("show");
                 }
             },
@@ -1349,7 +1222,7 @@
                 if (result.ret) {
                     notifySuccess("成功", "保存成功");
                     $('#addPictureModal').modal('hide');
-                    loadLiveSituation($('tbody[data-id="' + data.declareRecordId + '"][data-name=live_situation_select]'), data.declareRecordId);
+                    loadLiveSituation($('tbody[data-id="' + data.schemeJudgeObjectId + '"][data-name=live_situation_select]'), data.schemeJudgeObjectId);
                 }
                 else {
                     AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
@@ -1363,13 +1236,13 @@
 
     //加载指定位置查勘图片
     function correspondingSitePic() {
-        var declareRecordId = $("#frmPicture").find("[name='declareRecordId']").val();
+        var schemeJudgeObjectId = $("#frmPicture").find("[name='schemeJudgeObjectId']").val();
         var certifyPartCategory = $("#frmPicture").find("[name='certifyPartCategory']").val();
         if (certifyPartCategory) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/scheme/correspondingSitePic',
                 data: {
-                    declareRecordId: declareRecordId,
+                    schemeJudgeObjectId: schemeJudgeObjectId,
                     certifyPartCategory: certifyPartCategory
                 },
                 success: function (result) {
@@ -1411,7 +1284,7 @@
                 if (result.ret) {
                     notifySuccess("成功", "选择成功");
                     $("#allExamineFileModal").modal("hide");
-                    loadUploadFiles(AssessDBKey.DeclareRecord, reportFileItemId, "live_situation_select_supplement", "uploadPicture");
+                    loadUploadFiles(AssessDBKey.SchemeJudgeObject, reportFileItemId, "live_situation_select_supplement", "uploadPicture");
                 }
             },
             error: function (result) {
@@ -1421,14 +1294,10 @@
     }
 
     //权证列表
-    function reloadDeclareList() {
+    function reloadSchemeJudgeObjectList() {
         var cols = [];
-        cols.push({
-            field: 'area', title: '区域', formatter: function (value, row, index) {
-                return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-            }
-        });
-        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'name', title: '估价对象名称'});
+        cols.push({field: 'certName', title: '权证名称'});
         cols.push({field: 'seat', title: '坐落'});
         cols.push({field: 'certUse', title: '证载用途'});
         cols.push({
@@ -1438,13 +1307,11 @@
                 return str;
             }
         });
-        $("#declareTable").bootstrapTable('destroy');
-        TableInit("declareTable", "${pageContext.request.contextPath}/declareRecord/getDeclareRecordList", cols, {
+        $("#SchemeJudgeObjectListTable").bootstrapTable('destroy');
+        TableInit("SchemeJudgeObjectListTable", "${pageContext.request.contextPath}/scheme/reloadSchemeJudgeObjectList", cols, {
             projectId: ${projectId},
-            province: $("#queryProvince").val(),
-            city: $("#queryCity").val(),
-            district: $("#queryDistrict").val(),
             name: $("#queryName").val(),
+            certName: $("#queryCertName").val(),
             seat: $("#querySeat").val()
         }, {
             showColumns: false,
@@ -1459,27 +1326,25 @@
         });
     };
 
-    function loadCertAllFile(declareRecord) {
-        loadPositionHtml(declareRecord);
-        loadLiveSituationHtml(declareRecord);
-        loadOwnershipCertHtml(declareRecord);
-        loadLandFileHtml(declareRecord);
-        loadReportFileCustomHtml(declareRecord);
+    function loadCertAllFile(schemeJudgeObject) {
+        loadPositionHtml(schemeJudgeObject);
+        loadLiveSituationHtml(schemeJudgeObject);
+        loadReportFileCustomHtml(schemeJudgeObject);
     }
 
     //位置示意图
-    function makeJudgeObjectPosition(declareRecordId) {
+    function makeJudgeObjectPosition(schemeJudgeObjectId) {
         $.ajax({
             url: "${pageContext.request.contextPath}/projectReportFile/makeJudgeObjectPosition",
             type: "post",
             dataType: "json",
             data: {
-                declareRecordId: declareRecordId
+                schemeJudgeObjectId: schemeJudgeObjectId
             },
             success: function (result) {
                 if (result.ret) {
-                    uploadFiles(AssessDBKey.DeclareRecord, declareRecordId, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecordId);
-                    loadUploadFiles(AssessDBKey.DeclareRecord, declareRecordId, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecordId);
+                    uploadFiles(AssessDBKey.SchemeJudgeObject, schemeJudgeObjectId, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + schemeJudgeObjectId);
+                    loadUploadFiles(AssessDBKey.SchemeJudgeObject, schemeJudgeObjectId, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + schemeJudgeObjectId);
 
                 }
             },
@@ -1490,49 +1355,49 @@
     }
 
     //位置示意图html
-    function loadPositionHtml(declareRecord) {
+    function loadPositionHtml(schemeJudgeObject) {
         var html = '';
-        html += '<tr><td>' + declareRecord.name;
-        html += '<small style="margin-left: 5px;"><button type="button" value="自动生成" onclick="makeJudgeObjectPosition(' + declareRecord.id + ')" class="btn btn-success btn-xs">自动生成</button></small>';
+        html += '<tr><td>' + schemeJudgeObject.name;
+        html += '<small style="margin-left: 5px;"><button type="button" value="自动生成" onclick="makeJudgeObjectPosition(' + schemeJudgeObject.id + ')" class="btn btn-success btn-xs">自动生成</button></small>';
         html += "</td><td>";
-        html += '<input type="file" multiple="false"  id="judge_object_position' + declareRecord.id + '">';
-        html +=  '<div id="_judge_object_position' + declareRecord.id + '"></div></td></tr>';
+        html += '<input type="file" multiple="false"  id="judge_object_position' + schemeJudgeObject.id + '">';
+        html +=  '<div id="_judge_object_position' + schemeJudgeObject.id + '"></div></td></tr>';
         $("#positionTbody").empty().append(html);
-        uploadFiles(AssessDBKey.DeclareRecord, declareRecord.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecord.id);
-        loadUploadFiles(AssessDBKey.DeclareRecord, declareRecord.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + declareRecord.id);
+        uploadFiles(AssessDBKey.SchemeJudgeObject, schemeJudgeObject.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + schemeJudgeObject.id);
+        loadUploadFiles(AssessDBKey.SchemeJudgeObject, schemeJudgeObject.id, AssessUploadKey.JUDGE_OBJECT_POSITION, "judge_object_position" + schemeJudgeObject.id);
     }
 
     //实况照片html
-    function loadLiveSituationHtml(declareRecord) {
+    function loadLiveSituationHtml(schemeJudgeObject) {
         var html = '';
         html += '<div class="row">';
-        html += '<input type="hidden" name="declareRecordId" value="' + declareRecord.id + '">';
+        html += '<input type="hidden" name="schemeJudgeObjectId" value="' + schemeJudgeObject.id + '">';
         html += '<div class=" col-sm-12">';
         html += '<div class="x_panel">';
         html += '<div class="x_title"><h4>';
-        html += '<strong>' + declareRecord.name + '</strong>';
-        html += '<small style="margin-left: 5px;"><button type="button" value="新增照片" onclick="addLiveSituationFile(' + declareRecord.id + ')" class="btn btn-success btn-xs">新增照片</button></small>';
-        html += '<small style="margin-left: 5px;"><button type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-primary btn-xs">选择查勘中图片</button></small>';
-        html += '<small style="margin-left: 5px;"><button type="button" value="选择模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-primary btn-xs">选择模板</button></small>';
-        html += '<small style="margin-left: 5px;"><button type="button" value="保存到模板" onclick="saveToTemplateModal(' + declareRecord.id + ')" class="btn btn-primary btn-xs">保存到模板</button></small>';
-        html += '<small style="margin-left: 5px;"><button type="button" value="预览实况图片" onclick="generateLiveSituation(' + declareRecord.id + ')" class="btn btn-primary btn-xs">预览实况图片</button></small></h4>';
+        html += '<strong>' + schemeJudgeObject.name + '</strong>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="新增照片" onclick="addLiveSituationFile(' + schemeJudgeObject.id + ')" class="btn btn-success btn-xs">新增照片</button></small>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + schemeJudgeObject.id + ')" class="btn btn-primary btn-xs">选择查勘中图片</button></small>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="选择模板" onclick="selectPictureTempale(' + schemeJudgeObject.id + ')" class="btn btn-primary btn-xs">选择模板</button></small>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="保存到模板" onclick="saveToTemplateModal(' + schemeJudgeObject.id + ')" class="btn btn-primary btn-xs">保存到模板</button></small>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="预览实况图片" onclick="generateLiveSituation(' + schemeJudgeObject.id + ')" class="btn btn-primary btn-xs">预览实况图片</button></small></h4>';
         html += '</div><table class="table table-hover"><thead><tr><th width="10%">文件名称</th><th width="10%">排序</th><th width="20%">附件</th><th width="15%">对应查勘部位</th><th width="10%">附件类别</th><th width="10%">是否上报告</th><th width="20%">操作</th></tr></thead>';
-        html += '<tbody data-id="' + declareRecord.id + '" data-name="live_situation_select"></tbody></table>';
+        html += '<tbody data-id="' + schemeJudgeObject.id + '" data-name="live_situation_select"></tbody></table>';
         html += '</div></div></div>';
         $("#liveSituationHtml").empty().append(html);
-        loadLiveSituation($('tbody[data-id=' + declareRecord.id + '][data-name=live_situation_select]'), declareRecord.id);
+        loadLiveSituation($('tbody[data-id=' + schemeJudgeObject.id + '][data-name=live_situation_select]'), schemeJudgeObject.id);
     }
 
-    function saveToTemplateModal(declareRecordId) {
+    function saveToTemplateModal(schemeJudgeObjectId) {
         $('#divBoxSaveTemplate').modal("show");
-        $("#frmTemplateMaster").find("input[name='declareRecordId']").val(declareRecordId);
+        $("#frmTemplateMaster").find("input[name='schemeJudgeObjectId']").val(schemeJudgeObjectId);
     }
 
     //保存到模板
     function saveToTemplate() {
         if ($("#frmTemplateMaster").valid()) {
             var name = $("#frmTemplateMaster").find("#name").val();
-            var declareRecordId = $("#frmTemplateMaster").find("input[name='declareRecordId']").val();
+            var schemeJudgeObjectId = $("#frmTemplateMaster").find("input[name='schemeJudgeObjectId']").val();
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/scheme/saveToTemplate",
@@ -1540,7 +1405,7 @@
                 dataType: "json",
                 data: {
                     name: name,
-                    declareRecordId: declareRecordId
+                    schemeJudgeObjectId: schemeJudgeObjectId
                 },
                 success: function (result) {
                     Loading.progressHide();
@@ -1560,53 +1425,16 @@
         }
     }
 
-    //权属证明复印件html
-    function loadOwnershipCertHtml(declareRecord) {
-        var html = '';
-        html += '<div class="row">';
-        html += '<div class="col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">';
-        html += '<div class="x_panel">';
-        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
-        html += '<table class="table table-hover"><thead><tr><th width="20%">序号</th><th width="35%">文件名称</th><th width="45%">操作</th></tr></thead>';
-        html += '<tbody data-id="' + declareRecord.id + '" data-name="ownership_cert_file_list"></tbody></table>';
-        html += '<div class="x-valid">';
-        html += '<label class="col-sm-1 control-label">复印件</label>';
-        html += '<div class="col-sm-10">';
-        html += '<input id="uploadOwnershipCertFile' + declareRecord.id + '" class="form-control input-full" type="file">';
-        html += '<div id="_uploadOwnershipCertFile' + declareRecord.id + '"></div>';
-        html += '</div></div></div></div>';
-
-        $("#ownershipCertHtml").empty().append(html);
-        uploadOwnershipCertFile(declareRecord.dataTableName, declareRecord.dataTableId, "uploadOwnershipCertFile" + declareRecord.id, $('tbody[data-id=' + declareRecord.id + '][data-name=ownership_cert_file_list]'), declareRecord.id);
-        getOwnershipCertFileAll($('tbody[data-id=' + declareRecord.id + '][data-name=ownership_cert_file_list]'), declareRecord.id);
-    }
-
-    //关联土地证附件html
-    function loadLandFileHtml(declareRecord) {
-        var html = '';
-        html += '<div class="row">';
-        html += '<div class="col-xs-6612  col-sm-6612  col-md-6612  col-lg-6612  col-sm-6 col-xs-12">';
-        html += '<div class="x_panel">';
-        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
-        html += '<table class="table table-hover"><thead><tr><th width="20%">序号</th><th width="35%">文件名称</th><th width="45%">操作</th></tr></thead>';
-        html += '<tbody data-id="' + declareRecord.id + '" data-name="land_file_list"></tbody></table>';
-        html += '<div class="x-valid" data-id="' + declareRecord.id + '" data-name="land_file_btn">';
-        html += '</div></div></div></div>';
-
-        $("#landFileHtml").empty().append(html);
-        uploadLandFile(AssessDBKey.DeclareRealtyLandCert, "uploadlandFile" + declareRecord.id, $('tbody[data-id=' + declareRecord.id + '][data-name=land_file_list]'), declareRecord.id);
-        getLandFileAllByDeclareRecord($('tbody[data-id=' + declareRecord.id + '][data-name=land_file_list]'), declareRecord.id);
-    }
 
     //估价中引用的专用文件资料html
-    function loadReportFileCustomHtml(declareRecord) {
-        if (declareRecord) {
+    function loadReportFileCustomHtml(schemeJudgeObject) {
+        if (schemeJudgeObject) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/projectReportFile/getAddressFileListByDeclareRecordId',
                 type: "post",
                 dataType: "json",
                 data: {
-                    declareRecordId: declareRecord.id,
+                    declareRecordId: schemeJudgeObject.declareRecordId,
                 },
                 success: function (result) {
                     if (result.ret) {
@@ -1614,7 +1442,7 @@
                         html += '<div class="row">';
                         html += '<div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">';
                         html += '<div class="x_panel">';
-                        html += '<div class="x_title"><h4><strong>' + declareRecord.name + '</strong></h4></div>';
+                        html += '<div class="x_title"><h4><strong>' + schemeJudgeObject.name + '</strong></h4></div>';
                         if (result.data) {
                             $.each(result.data, function (i, item) {
                                 ++i;
@@ -1626,10 +1454,10 @@
                                 html += '</td></tr></tbody></table></div></div>';
                             })
                         }
-                        html += '<input type="button" class="btn btn-success btn-sm" value="自定义添加"onclick="addReportFileCustom(' + declareRecord.id + ');">';
-                        html += '<div class="row report-file-custom' + declareRecord.id + '"></div></div></div></div>';
+                        html += '<input type="button" class="btn btn-success btn-sm" value="自定义添加"onclick="addReportFileCustom(' + schemeJudgeObject.id + ');">';
+                        html += '<div class="row report-file-custom' + schemeJudgeObject.id + '"></div></div></div></div>';
                         $("#ReportFileCustom").empty().append(html);
-                        loadReportFileCustomList(declareRecord.id);
+                        loadReportFileCustomList(schemeJudgeObject.id);
                     } else {
                         AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }

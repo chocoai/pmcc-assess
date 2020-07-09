@@ -31,22 +31,7 @@
             <div class="card-body">
                 <form class="form-horizontal" id="taskLiquidationAnalysisFrm_number">
                     <input type="hidden" name="id">
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-1 control-label">估价对象信息<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-5">
-
-                                    <input type="hidden" name="judgeObjectIds">
-                                    <button class="btn-primary btn btn-sm" type="button"
-                                            onclick="schemeJudgeObj.init({callback:selectRecord,this_:this});">
-                                        选择估价对象
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <input type="hidden" name="judgeObjectIds">
                     <div class="row form-group">
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
@@ -83,6 +68,10 @@
 												<i class="fa fa-search"></i>
 											</span>搜索
                                 </button>
+                                <button class="btn-info btn btn-sm" style="margin-left: 10px" type="button"
+                                        onclick="schemeJudgeObj.init({callback:selectRecord,this_:this});">
+                                    选择估价对象
+                                </button>
                                 <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
                                         onclick="deleteJudgeItemByIds(this)">
 											<span class="btn-label">
@@ -99,23 +88,8 @@
                             </table>
                         </div>
                     </div>
-
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-1 control-label">户型差异调查表<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-5">
-
-                                    <input type="hidden" name="judgeIds">
-                                    <button class="btn-primary btn btn-sm" type="button"
-                                            onclick="houseHuxingPrice.prototype.showTableModel(this)">
-                                        选择单价
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10"/>
+                    <input type="hidden" name="judgeIds">
                     <div class="row form-group">
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
@@ -130,6 +104,10 @@
 												<i class="fa fa-search"></i>
 											</span>搜索
                                 </button>
+                                <button class="btn-info btn btn-sm" style="margin-left: 10px" type="button"
+                                        onclick="houseHuxingPrice.prototype.showTableModel(this)">
+                                    选择房号
+                                </button>
                                 <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
                                         onclick="houseHuxingPrice.prototype.batchCutHuxingPrice(this)">
 											<span class="btn-label">
@@ -137,8 +115,6 @@
 											</span>
                                     批量删除
                                 </button>
-
-
                             </div>
                         </div>
                     </div>
@@ -148,7 +124,7 @@
                             </table>
                         </div>
                     </div>
-
+                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10"/>
                     <div class="row form-group">
                         <div class="col-sm-12">
                             <table class="table">
@@ -595,7 +571,7 @@
                 success: function (result) {
                     if (result.ret) {
                         var html = $("#" + commonField.taskLiquidationAnalysisDiv).html();
-                        var index = $("#" + commonField.taskLiquidationAnalysisAppend).find('.col-md-12').length;
+                        var index = $("#" + commonField.taskLiquidationAnalysisAppend).find('.form-horizontal').length;
                         var number = result.data.id;
                         html = html.replace(/_number/g, number).replace(/{index}/g, index + 1);
                         $("#" + commonField.taskLiquidationAnalysisAppend).append(html);

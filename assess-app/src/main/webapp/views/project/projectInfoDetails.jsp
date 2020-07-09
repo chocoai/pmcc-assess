@@ -17,7 +17,6 @@
                 </div>
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfo.jsp" %>
-                    <%@include file="/views/share/form_details.jsp" %>
                 </div>
             </div>
         </div>

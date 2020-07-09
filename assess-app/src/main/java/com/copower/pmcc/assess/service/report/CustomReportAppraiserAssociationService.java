@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.report;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportAppraiserAssociation;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportAppraiserAssociationMapper;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
@@ -12,6 +13,7 @@ import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -70,9 +72,11 @@ public class CustomReportAppraiserAssociationService {
     private CustomReportAppraiserAssociationMapper customReportAppraiserAssociationMapper;
     @Autowired
     private ProjectNumberRecordDao projectNumberRecordDao;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
 
-    public BootstrapTableVo getCustomReportAppraiserAssociationList(String projectName, Integer reportType, String numberValue, String unitName,
+    public BootstrapTableVo getCustomReportAppraiserAssociationList(String projectName, String numberValue, String unitName,
                                                                     String queryStartDate, String queryEndDate,Integer limit,Integer offset) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -87,17 +91,15 @@ public class CustomReportAppraiserAssociationService {
             endDate = DateUtils.addDay(endDate, 1);
         }
         List<CustomReportAppraiserAssociation> customNumberRecordList = null;
+        //房产
+        BaseProjectClassify projectCategory = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE);
+        Integer projectCategoryId = projectCategory.getId();
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
         Integer resultId = resultReport.getId();
-        //咨评报告
-        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
-        Integer consultationId = consultationReport.getId();
-        if (resultId.equals(reportType)) {
-            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, consultationId, numberValue, unitName, startDate, endDate);
-        } else {
-            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, null, numberValue, unitName, startDate, endDate);
-        }
+
+        customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, projectCategoryId, resultId, numberValue, unitName, startDate, endDate);
+
         List<CustomReportAppraiserAssociation> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportAppraiserAssociation(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportAppraiserAssociation>() : vos);
@@ -110,9 +112,13 @@ public class CustomReportAppraiserAssociationService {
         }
         CustomReportAppraiserAssociation vo = new CustomReportAppraiserAssociation();
         BeanUtils.copyProperties(data, vo);
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
 
         ProjectNumberRecord where = new ProjectNumberRecord();
         where.setBisDelete(false);
+        where.setReportType(resultId);
         where.setProjectId(data.getProjectId());
         List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
         StringBuilder numberStr = new StringBuilder();
@@ -197,7 +203,7 @@ public class CustomReportAppraiserAssociationService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String projectName, Integer reportType, String numberValue, String unitName,
+    public void export(HttpServletResponse response, String projectName, String numberValue, String unitName,
                        String queryStartDate, String queryEndDate) throws BusinessException, IOException {
         //获取数据
         Date startDate = null;
@@ -210,17 +216,14 @@ public class CustomReportAppraiserAssociationService {
         }
 
         List<CustomReportAppraiserAssociation> customNumberRecordList = null;
+        //房产
+        BaseProjectClassify projectCategory = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE);
+        Integer projectCategoryId = projectCategory.getId();
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
         Integer resultId = resultReport.getId();
-        //咨评报告
-        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
-        Integer consultationId = consultationReport.getId();
-        if (resultId.equals(reportType)) {
-            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, consultationId, numberValue, unitName, startDate, endDate);
-        } else {
-            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, null, numberValue, unitName, startDate, endDate);
-        }
+
+        customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, projectCategoryId, resultId, numberValue, unitName, startDate, endDate);
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {
             throw new BusinessException("没有获取到有效的数据");
@@ -270,7 +273,7 @@ public class CustomReportAppraiserAssociationService {
 
         OutputStream os = response.getOutputStream();
         try {
-            this.setResponseHeader(response, "中房协业绩报表.XLS");
+            this.setResponseHeader(response, "中国房协报表.XLS");
             wb.write(os);
 
         } catch (Exception e) {

@@ -223,26 +223,20 @@ public class EvaluationHypothesisService {
                     if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
                         continue;
                     }
-                    BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-                    if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
-                        continue;
-                    }
-                    BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
-                    if (basicExamineHandle == null) {
-                        continue;
-                    }
                     actualTimenumbers.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
                     BasicBuilding building = basicBuildingService.getBasicBuildingByApplyId(schemeJudgeObject.getBasicApplyId());
-                    //实际调查
-                    Integer type = building.getCompletedTimeType();
-                    if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
-                        Map<Integer, String> map = Maps.newHashMap();
-                        if (building.getBeCompletedTime() != null) {
-                            completedTime.add(String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
-                            times.add(String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
-                            map.put(Integer.valueOf(schemeJudgeObject.getNumber()), String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
+                    if (building != null){
+                        //实际调查
+                        Integer type = building.getCompletedTimeType();
+                        if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
+                            Map<Integer, String> map = Maps.newHashMap();
+                            if (building.getBeCompletedTime() != null) {
+                                completedTime.add(String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
+                                times.add(String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
+                                map.put(Integer.valueOf(schemeJudgeObject.getNumber()), String.valueOf(DateUtils.getYear(building.getBeCompletedTime())));
+                            }
+                            maps.add(map);
                         }
-                        maps.add(map);
                     }
 
                     //用途
@@ -367,12 +361,14 @@ public class EvaluationHypothesisService {
                     //对应资产清查内容
                     SurveyAssetInventory surveyAssetInventory =surveyAssetInventories.get(0);
                     //参考同类（不配合）
-                    Integer type = basicHouse.getResearchType();
-                    if (type != null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
-                        if ("正常".equals(surveyAssetInventory.getPaymentStatus())) {
-                            paymentNormal.append(schemeJudgeObject.getNumber()).append(",");
-                        } else if ("不正常".equals(surveyAssetInventory.getPaymentStatus())) {
-                            paymentAbnormality.append(schemeJudgeObject.getNumber()).append(",");
+                    if (basicHouse != null){
+                        Integer type = basicHouse.getResearchType();
+                        if (type != null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
+                            if ("正常".equals(surveyAssetInventory.getPaymentStatus())) {
+                                paymentNormal.append(schemeJudgeObject.getNumber()).append(",");
+                            } else if ("不正常".equals(surveyAssetInventory.getPaymentStatus())) {
+                                paymentAbnormality.append(schemeJudgeObject.getNumber()).append(",");
+                            }
                         }
                     }
 

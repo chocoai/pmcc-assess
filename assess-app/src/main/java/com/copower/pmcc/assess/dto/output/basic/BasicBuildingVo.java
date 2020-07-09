@@ -32,8 +32,17 @@ public class BasicBuildingVo extends BasicBuilding {
     private String propertySocialPrestigeName;
     private String propertyCompanyNatureName;
     private String creatorName;
+    private String streetNumber;
     private BasicBuildingVo currBuildingDifference;//当前房屋对应的楼栋差异部分
     private List<BasicBuildingVo> basicBuildingDifferences;//楼栋下所有差异部分
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
 
     public String getCreatorName() {
         return creatorName;

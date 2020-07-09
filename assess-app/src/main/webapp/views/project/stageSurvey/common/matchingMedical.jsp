@@ -91,7 +91,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="organizationLevel"
-                                                    class="form-control input-full search-select select2 organizationLevel">
+                                                    class="form-control input-full  organizationLevel">
                                             </select>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="bedNumber"
-                                                    class="form-control input-full search-select select2 bedNumber">
+                                                    class="form-control input-full  bedNumber">
                                             </select>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="distance"
-                                                    class="form-control input-full search-select select2 distance">
+                                                    class="form-control input-full  distance">
                                             </select>
                                         </div>
                                     </div>

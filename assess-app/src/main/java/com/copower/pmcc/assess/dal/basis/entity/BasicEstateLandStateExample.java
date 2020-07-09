@@ -3285,6 +3285,76 @@ public class BasicEstateLandStateExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andCurrentSituationIsNull() {
+            addCriterion("current_situation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationIsNotNull() {
+            addCriterion("current_situation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationEqualTo(String value) {
+            addCriterion("current_situation =", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotEqualTo(String value) {
+            addCriterion("current_situation <>", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationGreaterThan(String value) {
+            addCriterion("current_situation >", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationGreaterThanOrEqualTo(String value) {
+            addCriterion("current_situation >=", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLessThan(String value) {
+            addCriterion("current_situation <", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLessThanOrEqualTo(String value) {
+            addCriterion("current_situation <=", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLike(String value) {
+            addCriterion("current_situation like", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotLike(String value) {
+            addCriterion("current_situation not like", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationIn(List<String> values) {
+            addCriterion("current_situation in", values, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotIn(List<String> values) {
+            addCriterion("current_situation not in", values, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationBetween(String value1, String value2) {
+            addCriterion("current_situation between", value1, value2, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotBetween(String value1, String value2) {
+            addCriterion("current_situation not between", value1, value2, "currentSituation");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

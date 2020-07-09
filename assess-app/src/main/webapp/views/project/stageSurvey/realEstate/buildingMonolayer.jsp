@@ -94,7 +94,7 @@
                                                                     土地使用年限
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="土地使用年限(数字)"
+                                                                    <input type="number" placeholder="土地使用年限(数字)"
                                                                            data-rule-number='true'
                                                                            name="landUseYear"
                                                                            class="form-control input-full"
@@ -125,22 +125,14 @@
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <div class="input-group">
-                                                                        <input type="text" required="required"
-                                                                               name="reference" placeholder="参照物"
-                                                                               class="form-control form-control-sm"
-                                                                               list="build_reference_data"
-                                                                               value="${basicBuilding.reference}">
-                                                                        <datalist id="build_reference_data">
+                                                                        <select class="form-control form-control-sm" required
+                                                                                name="reference">
                                                                             <option value="" selected="">-请选择-</option>
-                                                                            <option value="楼盘中">楼盘中</option>
+                                                                            <option value="楼盘内">楼盘内</option>
                                                                             <option value="楼盘大门">楼盘大门</option>
-                                                                        </datalist>
-                                                                        <input type="text" required="required"
-                                                                               name="orientation" placeholder="方位"
-                                                                               class="form-control form-control-sm"
-                                                                               list="build_orientation_data"
-                                                                               value="${basicBuilding.orientation}">
-                                                                        <datalist id="build_orientation_data">
+                                                                        </select>
+                                                                        <select class="form-control form-control-sm" required
+                                                                                name="orientation">
                                                                             <option value="" selected="">-请选择-</option>
                                                                             <option value="左面">左面</option>
                                                                             <option value="右面">右面</option>
@@ -155,23 +147,18 @@
                                                                             <option value="东北面">东北面</option>
                                                                             <option value="西南面">西南面</option>
                                                                             <option value="西北面">西北面</option>
-                                                                        </datalist>
+                                                                        </select>
+
                                                                         <div class="input-group-prepend ">
                                                                             <button class="btn btn-warning btn-sm "
                                                                                     style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                                                                     type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                                    onclick="$(this).closest('.input-group').find('select').val('');">
                                                                                 清空
                                                                                 <i class="fa "></i>
                                                                             </button>
                                                                         </div>
                                                                     </div>
-
-
-                                                                    <%--<input type="text" placeholder="楼栋所在位置"--%>
-                                                                    <%--name="location"--%>
-                                                                    <%--class="form-control input-full" required--%>
-                                                                    <%--value="${basicBuilding.location}">--%>
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     层高<span class="symbol required"></span>
@@ -187,7 +174,7 @@
                                                                     建筑高度
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="建筑高度(数字)"
+                                                                    <input type="number" placeholder="建筑高度(数字)"
                                                                            data-rule-number='true'
                                                                            name="buildingHeight"
                                                                            class="form-control input-full"
@@ -204,7 +191,7 @@
                                                                     建筑面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="建筑面积(数字)"
+                                                                    <input type="number" placeholder="建筑面积(数字)"
                                                                            data-rule-number='true'
                                                                            name="buildingArea"
                                                                            class="form-control input-full"
@@ -214,7 +201,7 @@
                                                                     占地面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="占地面积(数字)"
+                                                                    <input type="number" placeholder="占地面积(数字)"
                                                                            data-rule-number='true'
                                                                            name="coverAnArea"
                                                                            class="form-control input-full"
@@ -298,18 +285,10 @@
                                                                                list="build_minimumFloorDistance_data"
                                                                                value="${basicBuilding.minimumFloorDistance}">
 
-                                                                        <datalist id="build_minimumFloorDistance_data">
-                                                                            <option value="" selected="">-请选择-</option>
-                                                                        </datalist>
-
-                                                                        <div class="input-group-prepend ">
-                                                                            <button class="btn btn-warning btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                                清空
-                                                                                <i class="fa "></i>
-                                                                            </button>
+                                                                        <div class="input-group-append">
+                                                                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                                                                            <div class="dropdown-menu" id="build_minimumFloorDistance_data">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
 
@@ -380,7 +359,7 @@
                                                                     物业费(平方米)<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="物业费(数字)"
+                                                                    <input type="number" placeholder="物业费(数字)"
                                                                            name="propertyFee" data-rule-number='true'
                                                                            required
                                                                            class="form-control input-full"
@@ -396,7 +375,7 @@
                                                                     配套公共设施使用费
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="配套公共设施使用费(数字)"
+                                                                    <input type="number" placeholder="配套公共设施使用费(数字)"
                                                                            name="facilitiesUseFee"
                                                                            data-rule-number='true'
                                                                            class="form-control input-full"
@@ -453,6 +432,16 @@
                                                                         <option value="">-请选择-</option>
                                                                     </select>
                                                                 </div>
+                                                                <label class="col-md-1">
+                                                                    街道号
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <select name="streetInfoId" class="form-control input-full">
+                                                                        <c:forEach var="item" items="${streetInfoList}">
+                                                                            <option value="${item.id}">${item.streetNumber}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -500,8 +489,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div id="basicBuilding"></div>                                                </div>
+                                                    <div id="basicBuilding"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
@@ -757,11 +746,14 @@
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');
         $("#txt_building_search").apBuilding({
-            caseEstateId: function () {
-                return '${quoteId}';
+            type: function () {
+                return '${tbType}';
+            },
+            applyBatchId: function () {
+                return '${basicApplyBatch.id}';
             },
             onSelect: function (id, name) {
-                caseFun.caseBuild.showModel('${quoteId}', name);
+                caseFun.caseBuild.showModel(id,name);
             }
         });
         buildingCommon.autocompleteStart();

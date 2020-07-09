@@ -141,7 +141,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select required="required" name="distance"
-                                                        class="form-control input-full search-select select2 distance">
+                                                        class="form-control input-full  distance">
                                                 </select>
                                             </div>
                                         </div>
@@ -155,7 +155,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select name="category"
-                                                        class="form-control input-full search-select select2 category">
+                                                        class="form-control input-full  category">
                                                 </select>
                                             </div>
                                         </div>
@@ -170,7 +170,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select name="nature"
-                                                        class="form-control input-full search-select select2 nature">
+                                                        class="form-control input-full  nature">
                                                 </select>
                                             </div>
                                         </div>
@@ -184,7 +184,7 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <select name="serviceContent"
-                                                        class="form-control input-full search-select select2 serviceContent">
+                                                        class="form-control input-full  serviceContent">
                                                 </select>
                                             </div>
                                         </div>

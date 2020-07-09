@@ -1406,6 +1406,66 @@ public class MdDevelopmentExample {
             return (Criteria) this;
         }
 
+        public Criteria andTransferAreaIsNull() {
+            addCriterion("transfer_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaIsNotNull() {
+            addCriterion("transfer_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaEqualTo(BigDecimal value) {
+            addCriterion("transfer_area =", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaNotEqualTo(BigDecimal value) {
+            addCriterion("transfer_area <>", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaGreaterThan(BigDecimal value) {
+            addCriterion("transfer_area >", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("transfer_area >=", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaLessThan(BigDecimal value) {
+            addCriterion("transfer_area <", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("transfer_area <=", value, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaIn(List<BigDecimal> values) {
+            addCriterion("transfer_area in", values, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaNotIn(List<BigDecimal> values) {
+            addCriterion("transfer_area not in", values, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("transfer_area between", value1, value2, "transferArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andTransferAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("transfer_area not between", value1, value2, "transferArea");
+            return (Criteria) this;
+        }
+
         public Criteria andReconnaissanceDesignIsNull() {
             addCriterion("reconnaissance_design is null");
             return (Criteria) this;
@@ -4186,76 +4246,6 @@ public class MdDevelopmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andContentIsNull() {
-            addCriterion("content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIsNotNull() {
-            addCriterion("content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentEqualTo(String value) {
-            addCriterion("content =", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotEqualTo(String value) {
-            addCriterion("content <>", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThan(String value) {
-            addCriterion("content >", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThanOrEqualTo(String value) {
-            addCriterion("content >=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThan(String value) {
-            addCriterion("content <", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThanOrEqualTo(String value) {
-            addCriterion("content <=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLike(String value) {
-            addCriterion("content like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotLike(String value) {
-            addCriterion("content not like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIn(List<String> values) {
-            addCriterion("content in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotIn(List<String> values) {
-            addCriterion("content not in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentBetween(String value1, String value2) {
-            addCriterion("content between", value1, value2, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotBetween(String value1, String value2) {
-            addCriterion("content not between", value1, value2, "content");
-            return (Criteria) this;
-        }
-
         public Criteria andCenterIdIsNull() {
             addCriterion("center_id is null");
             return (Criteria) this;
@@ -4503,6 +4493,66 @@ public class MdDevelopmentExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaIsNull() {
+            addCriterion("land_area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaIsNotNull() {
+            addCriterion("land_area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaEqualTo(BigDecimal value) {
+            addCriterion("land_area =", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaNotEqualTo(BigDecimal value) {
+            addCriterion("land_area <>", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaGreaterThan(BigDecimal value) {
+            addCriterion("land_area >", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_area >=", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaLessThan(BigDecimal value) {
+            addCriterion("land_area <", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_area <=", value, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaIn(List<BigDecimal> values) {
+            addCriterion("land_area in", values, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaNotIn(List<BigDecimal> values) {
+            addCriterion("land_area not in", values, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_area between", value1, value2, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_area not between", value1, value2, "landArea");
             return (Criteria) this;
         }
     }

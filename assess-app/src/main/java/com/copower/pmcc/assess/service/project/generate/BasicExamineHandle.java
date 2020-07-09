@@ -184,10 +184,12 @@ public class BasicExamineHandle implements Serializable {
         List<BasicHouseAndTrading> list = new ArrayList<>(1);
         List<BasicHouse> basicHouseList = new ArrayList<>(1);
         List<BasicApplyBatchDetail> basicApplyBatchDetails = getBasicApplyBatchDetailList();
-        List<BasicApplyBatchDetail> houseTree = basicApplyBatchDetails.stream().filter(oo -> Objects.equal(oo.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(houseTree)) {
-            List<BasicHouse> basicHouseList2 = basicHouseService.getBasicHouseIds(houseTree.stream().map(oo -> oo.getTableId()).collect(Collectors.toList()));
-            basicHouseList.addAll(basicHouseList2);
+        if (CollectionUtils.isNotEmpty(basicApplyBatchDetails)) {
+            List<BasicApplyBatchDetail> houseTree = basicApplyBatchDetails.stream().filter(oo -> Objects.equal(oo.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(houseTree)) {
+                List<BasicHouse> basicHouseList2 = basicHouseService.getBasicHouseIds(houseTree.stream().map(oo -> oo.getTableId()).collect(Collectors.toList()));
+                basicHouseList.addAll(basicHouseList2);
+            }
         }
         if (CollectionUtils.isNotEmpty(basicHouseList)) {
             Iterator<BasicHouse> it = basicHouseList.iterator();

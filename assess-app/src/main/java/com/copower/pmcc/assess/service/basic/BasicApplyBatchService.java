@@ -5,7 +5,6 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.common.enums.basic.BasicFormStructureEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -18,12 +17,9 @@ import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.proxy.face.BasicFormStructureInterface;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
-import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
-import com.copower.pmcc.assess.service.base.BaseQrcodeService;
 import com.copower.pmcc.assess.service.event.basic.BasicApplyBatchEvent;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -31,20 +27,17 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
-import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -56,10 +49,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BasicApplyBatchService {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
@@ -73,11 +68,11 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicUnitService basicUnitService;
     @Autowired
-    private BasicEstateLandStateService basicEstateLandStateService;
+    private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
-    private BasicUnitHuxingService basicUnitHuxingService;
+    private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -95,7 +90,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
-    private BasicBuildingDao basicBuildingDao;
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
     private BasicUnitDao basicUnitDao;
     @Autowired
@@ -103,7 +98,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicEstateDao basicEstateDao;
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private BasicHouseDao basicHouseDao;
     @Autowired
     private DeclareRecordService declareRecordService;
     @Lazy
@@ -111,12 +106,19 @@ public class BasicApplyBatchService {
     private CustomBasicAppBatchMapper customBasicAppBatchMapper;
     @Autowired
     private PublicBasicService publicBasicService;
-    @Autowired
-    private BaseQrcodeService baseQrcodeService;
+
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public List<ZtreeDto> getZtreeDto(Integer basicApplyBatchId) throws Exception {
+    /**
+     * 初始化树形结构
+     *
+     * @param basicApplyBatchId
+     * @param showTag           是否显示新增或升级提示
+     * @param bisDetail         查看明细
+     * @return
+     */
+    public List<ZtreeDto> getZtreeDto(Integer basicApplyBatchId, Boolean showTag, Boolean bisDetail) throws Exception {
         List<ZtreeDto> treeDtos = new ArrayList<>();
         if (basicApplyBatchId == null) return treeDtos;
         BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(basicApplyBatchId);
@@ -127,7 +129,7 @@ public class BasicApplyBatchService {
             ZtreeDto ztreeDto = new ZtreeDto();
             ztreeDto.setId(item.getId());
             ztreeDto.setName(item.getName());
-            ztreeDto.setTextName(item.getDisplayName());
+            ztreeDto.setBisFromCase(item.getBisFromCase());
             if (basicApplyBatch.getPlanDetailsId() == null) {
                 ztreeDto.setDisplayName(item.getDisplayName());
             } else {
@@ -135,21 +137,45 @@ public class BasicApplyBatchService {
             }
             ztreeDto.setPid(item.getPid());
             ztreeDto.setTableName(item.getTableName());
-            if (item.getBisFromCase() == Boolean.FALSE) {
-                ztreeDto.setTableId(item.getTableId());
-                if (basicApplyBatch.getCaseEstateId() != null && basicApplyBatch.getCaseEstateId() > 0) {
-                    if (item.getUpgradeTableId() != null && item.getUpgradeTableId() > 0) {
-                        ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
-                    } else {
-                        ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+            ztreeDto.setTableId(item.getTableId());
+            if (showTag == true) {
+                BasicApplyBatch caseBasicApplyBatch = getCaseBasicApplyBatch(basicApplyBatch.getProvince(), basicApplyBatch.getCity(), basicApplyBatch.getEstateName());
+                if (caseBasicApplyBatch == null) {
+                    ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+                } else {
+                    BasicApplyBatchDetail caseBasicApplyBatchDetail = getCaseBasicApplyBatchDetail(item, caseBasicApplyBatch.getId());
+                    if (item.getBisFromCase() != true) {
+                        if (caseBasicApplyBatchDetail == null) {
+                            ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+                        } else {
+                            ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
+                        }
+                    }
+
+                }
+                if (bisDetail == true) {
+                    if (item.getBisFromCase() != true) {
+                        BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(item.getType());
+                        Object entity = anAbstract.getBasicEntityById(item.getTableId());
+                        Object version = anAbstract.getProperty(entity, "version");
+                        if ((Integer) (version == null ? 1 : version) == 1) {
+                            ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+                        } else {
+                            ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
+                        }
                     }
                 }
             }
-            ztreeDto.setType(item.getType());
+
+            if (StringUtils.isNotEmpty(item.getType())) {
+                ztreeDto.setType(item.getType());
+            } else {
+                BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(item.getTableName());
+                ztreeDto.setType(anEnum.getKey());
+            }
             ztreeDto.setCreator(item.getCreator());
             ztreeDto.setExecutor(item.getExecutor());
             ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
-            ztreeDto.setBisStructure(item.getBisStructure());
             ztreeDto.setApplyBatchId(item.getApplyBatchId());
             ztreeDto.setDeclareRecordId(item.getDeclareRecordId());
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(item.getDeclareRecordId());
@@ -171,89 +197,58 @@ public class BasicApplyBatchService {
         return null;
     }
 
-    public List<ZtreeDto> getCacheEstateZtreeById(Integer estateId) {
-        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_BASIC_BATCH_APPLY_ESTATE_ID, String.valueOf(estateId));
-        try {
-            List<ZtreeDto> sysProjectClassifys = LangUtils.listCache(rdsKey, estateId, ZtreeDto.class, input -> getEstateZtreeById(estateId));
-            return sysProjectClassifys;
-        } catch (Exception e) {
-            return getEstateZtreeById(estateId);
-        }
-
-    }
-
     /**
      * 获取楼盘树形结构
      *
-     * @param estateId
+     * @param caseBatchApplyId
      * @return
      */
-    public List<ZtreeDto> getEstateZtreeById(Integer estateId) {
-        List<ZtreeDto> ztreeDtoList = Lists.newArrayList();
-        ZtreeDto ztreeDtoEstate = new ZtreeDto();
-        BasicEstate basicEstate = basicEstateService.getBasicEstateById(estateId);
-        if (basicEstate == null) return ztreeDtoList;
-        ztreeDtoEstate.setPid(0);
-        ztreeDtoEstate.setId(estateId);
-        ztreeDtoEstate.setName(basicEstate.getName());
-        ztreeDtoEstate.setDisplayName(ztreeDtoEstate.getName());
-        ztreeDtoEstate.setTableName(BasicFormClassifyEnum.ESTATE.getTableName());
-        ztreeDtoEstate.setTableId(estateId);
-        ztreeDtoEstate.setType(BasicFormClassifyEnum.ESTATE.getKey());
-        ztreeDtoList.add(ztreeDtoEstate);
-
-        BasicBuilding whereBasicBuilding = new BasicBuilding();
-        whereBasicBuilding.setEstateId(estateId);
-        whereBasicBuilding.setBisCase(true);
-        List<BasicBuilding> buildingList = basicBuildingService.getBasicBuildingList(whereBasicBuilding);
-        if (CollectionUtils.isEmpty(buildingList)) return ztreeDtoList;
-        for (BasicBuilding basicBuilding : buildingList) {
-            ZtreeDto ztreeDtoBuilding = new ZtreeDto();
-            ztreeDtoBuilding.setPid(ztreeDtoEstate.getId());
-            ztreeDtoBuilding.setId(basicBuilding.getId());
-            ztreeDtoBuilding.setName(basicBuilding.getBuildingNumber());
-            ztreeDtoBuilding.setDisplayName(ztreeDtoBuilding.getName());
-            ztreeDtoBuilding.setTableName(BasicFormClassifyEnum.BUILDING.getTableName());
-            ztreeDtoBuilding.setTableId(basicBuilding.getId());
-            ztreeDtoBuilding.setType(BasicFormClassifyEnum.BUILDING.getKey());
-            ztreeDtoList.add(ztreeDtoBuilding);
-
-            BasicUnit whereBasicUnit = new BasicUnit();
-            whereBasicUnit.setBuildingId(basicBuilding.getId());
-            whereBasicUnit.setBisCase(true);
-            List<BasicUnit> basicUnitList = basicUnitService.getBasicUnitList(whereBasicUnit);
-            if (CollectionUtils.isEmpty(basicUnitList)) continue;
-            for (BasicUnit basicUnit : basicUnitList) {
-                ZtreeDto ztreeDtoUnit = new ZtreeDto();
-                ztreeDtoUnit.setPid(ztreeDtoBuilding.getId());
-                ztreeDtoUnit.setId(basicUnit.getId());
-                ztreeDtoUnit.setName(basicUnit.getUnitNumber());
-                ztreeDtoUnit.setDisplayName(ztreeDtoUnit.getName());
-                ztreeDtoUnit.setTableName(BasicFormClassifyEnum.UNIT.getTableName());
-                ztreeDtoUnit.setTableId(basicUnit.getId());
-                ztreeDtoUnit.setType(BasicFormClassifyEnum.UNIT.getKey());
-                ztreeDtoList.add(ztreeDtoUnit);
-
-                BasicHouse whereBasicHouse = new BasicHouse();
-                whereBasicHouse.setUnitId(basicUnit.getId());
-                whereBasicHouse.setBisCase(true);
-                List<BasicHouse> basicHouseList = basicHouseService.getBasicHouseList(whereBasicHouse);
-                if (CollectionUtils.isEmpty(basicHouseList)) continue;
-                for (BasicHouse basicHouse : basicHouseList) {
-                    ZtreeDto ztreeDtoHouse = new ZtreeDto();
-                    ztreeDtoHouse.setPid(ztreeDtoUnit.getId());
-                    ztreeDtoHouse.setId(basicHouse.getId());
-                    ztreeDtoHouse.setName(basicHouse.getHouseNumber());
-                    ztreeDtoHouse.setDisplayName(ztreeDtoHouse.getName());
-                    ztreeDtoHouse.setTableName(BasicFormClassifyEnum.HOUSE.getTableName());
-                    ztreeDtoHouse.setTableId(basicHouse.getId());
-                    ztreeDtoHouse.setType(BasicFormClassifyEnum.HOUSE.getKey());
-                    ztreeDtoList.add(ztreeDtoHouse);
+    public List<ZtreeDto> getEstateZtreeById(Integer caseBatchApplyId) {
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(caseBatchApplyId);
+        List<ZtreeDto> treeDtos = new ArrayList<>();
+        if (basicApplyBatch == null) return treeDtos;
+        List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
+        if (CollectionUtils.isEmpty(basicApplyBatchDetails)) return treeDtos;
+        for (BasicApplyBatchDetail item : basicApplyBatchDetails) {
+            ZtreeDto ztreeDto = new ZtreeDto();
+            ztreeDto.setId(item.getId());
+            ztreeDto.setName(item.getName());
+            if (basicApplyBatch.getPlanDetailsId() == null) {
+                ztreeDto.setDisplayName(item.getDisplayName());
+            } else {
+                ztreeDto.setDisplayName(String.format("%s(%s)", item.getDisplayName(), publicService.getUserNameByAccount(item.getExecutor())));
+            }
+            ztreeDto.setPid(item.getPid());
+            ztreeDto.setTableName(item.getTableName());
+            if (item.getBisFromCase() == Boolean.FALSE) {
+                ztreeDto.setTableId(item.getTableId());
+                if (basicApplyBatch.getCaseEstateId() != null && basicApplyBatch.getCaseEstateId() > 0) {
+                    if (item.getUpgradeTableId() != null && item.getUpgradeTableId() > 0) {
+                        ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
+                    } else {
+                        ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
+                    }
                 }
             }
+            if (StringUtils.isNotEmpty(item.getType())) {
+                ztreeDto.setType(item.getType());
+            } else {
+                BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(item.getTableName());
+                ztreeDto.setType(anEnum.getKey());
+            }
+            ztreeDto.setCreator(item.getCreator());
+            ztreeDto.setExecutor(item.getExecutor());
+            ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
+            ztreeDto.setApplyBatchId(item.getApplyBatchId());
+            ztreeDto.setDeclareRecordId(item.getDeclareRecordId());
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(item.getDeclareRecordId());
+            if (declareRecord != null) {
+                ztreeDto.setDeclareRecordName(declareRecord.getName());
+            }
+            treeDtos.add(ztreeDto);
         }
 
-        return ztreeDtoList;
+        return treeDtos;
     }
 
     /**
@@ -272,12 +267,12 @@ public class BasicApplyBatchService {
         basicApplyBatch.setBisDelete(false);
         Boolean existEstateCase = basicEstateService.isExistEstateCase(province, city, estateName);
         if (existEstateCase) {
-            BasicEstate latestVersionEstate = basicEstateDao.getLatestVersionEstate(province, city, estateName);
-            if (latestVersionEstate != null) {
-                basicApplyBatch.setBisCase(true);
-                basicApplyBatch.setClassify(latestVersionEstate.getClassify());
-                basicApplyBatch.setType(latestVersionEstate.getType());
-                basicApplyBatch.setCaseEstateId(latestVersionEstate.getId());
+            BasicApplyBatch caseBasicApplyBatch = getCaseBasicApplyBatch(province, city, estateName);
+            if (caseBasicApplyBatch != null) {
+                basicApplyBatch.setClassify(caseBasicApplyBatch.getClassify());
+                basicApplyBatch.setType(caseBasicApplyBatch.getType());
+                basicApplyBatch.setCaseEstateId(caseBasicApplyBatch.getEstateId());
+                basicApplyBatch.setCaseApplyBatchId(caseBasicApplyBatch.getId());
             }
         }
         saveBasicApplyBatch(basicApplyBatch);
@@ -290,7 +285,7 @@ public class BasicApplyBatchService {
         if (CollectionUtils.isEmpty(dataDicList)) return resultList;
         resultList = LangUtils.filter(dataDicList, o -> {
             return AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE.equals(o.getFieldName())
-                    || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(o.getFieldName())
+//                    || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(o.getFieldName())
                     || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(o.getFieldName());
         });
 
@@ -306,6 +301,7 @@ public class BasicApplyBatchService {
 
 
     public BasicApplyBatch getBasicApplyBatchById(Integer id) {
+        if (id == null) return null;
         return basicApplyBatchDao.getBasicApplyBatchById(id);
     }
 
@@ -499,6 +495,55 @@ public class BasicApplyBatchService {
         return processUserDto;
     }
 
+    /**
+     * 查勘案例申请流程发起
+     *
+     * @param sourceApplyBatchId
+     * @param detailIds
+     * @return
+     * @throws Exception
+     */
+    public ProcessUserDto processSurveySubmit(Integer sourceApplyBatchId, String detailIds) throws Exception {
+        if (sourceApplyBatchId == null || sourceApplyBatchId == 0) return null;
+        BasicApplyBatch sourceApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(sourceApplyBatchId);
+        BasicApplyBatch targetApplyBatch = new BasicApplyBatch();
+        BeanUtils.copyProperties(sourceApplyBatch, targetApplyBatch, "referenceApplyBatchId", "planDetailsId");
+        ProcessUserDto processUserDto = null;
+        ProcessInfo processInfo = new ProcessInfo();
+        //流程描述
+        BasicEstate basicEstate = basicEstateService.getBasicEstateById(sourceApplyBatch.getEstateId());
+        processInfo.setFolio(String.format("%s%s", "批量申请_", basicEstate.getName()));
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(BasicApplyBatch.class));
+        processInfo.setBoxId(boxReDto.getId());
+        processInfo.setProcessName(boxReDto.getProcessName());
+        processInfo.setGroupName(boxReDto.getGroupName());
+        processInfo.setProcessEventExecutor(BasicApplyBatchEvent.class);
+        processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getKey());
+        processInfo.setProcessEventExecutorName(BasicApplyBatchEvent.class.getSimpleName());
+        processInfo.setTableId(sourceApplyBatchId);
+        try {
+            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
+            //applyBatch.setDraftFlag(false);
+            targetApplyBatch.setProcessInsId(processUserDto.getProcessInsId());
+            targetApplyBatch.setStatus(ProjectStatusEnum.RUNING.getKey());
+            basicApplyBatchDao.addBasicApplyBatch(targetApplyBatch);
+            if (!StringUtils.isEmpty(detailIds)) {
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(detailIds));
+                for (Integer id : integers) {
+                    List<BasicApplyBatchDetail> list = Lists.newArrayList();
+                    basicApplyBatchDetailService.collectionParentBatchDetails(id, list);
+                    basicApplyBatchDetailService.copyNodeStructure(list, targetApplyBatch.getId(), sourceApplyBatch, FormatUtils.transformString2List(detailIds));
+                }
+            }
+        } catch (Exception e) {
+            logger.error(String.format("流程发起失败: %s", e.getMessage()), e);
+            throw e;
+        }
+        return processUserDto;
+    }
+
     public BasicApplyBatchVo getBasicApplyBatchVo(BasicApplyBatch basicApplyBatch) {
         if (basicApplyBatch == null) {
             return null;
@@ -619,6 +664,7 @@ public class BasicApplyBatchService {
             batchDetail.setPid(pid);
             batchDetail.setApplyBatchId(basicApplyBatchId);
             batchDetail.setName(needList.get(i).getName());
+            batchDetail.setType(needList.get(i).getType());
             batchDetail.setDisplayName(needList.get(i).getDisplayName());
             batchDetail.setTableId(needList.get(i).getTableId());
             batchDetail.setTableName(needList.get(i).getTableName());
@@ -671,17 +717,11 @@ public class BasicApplyBatchService {
         ArrayList<String> ignoreList = Lists.newArrayList("bisCase");
         if (ztreeDto != null) {
             applyBatchDetail.setUpgradeTableId(ztreeDto.getTableId());
-            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(ztreeDto.getTableName());
+            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(ztreeDto.getType());
             Object o = entityAbstract.copyBasicEntityIgnore(ztreeDto.getTableId(), null, true, ignoreList);
-            Object name = entityAbstract.getProperty(o, "name");
-            if (o instanceof BasicBuilding)
-                name = entityAbstract.getProperty(o, "buildingNumber");
-            if (o instanceof BasicUnit)
-                name = entityAbstract.getProperty(o, "unitNumber");
-            if (o instanceof BasicHouse)
-                name = entityAbstract.getProperty(o, "houseNumber");
-            applyBatchDetail.setName(String.valueOf(name));
-            applyBatchDetail.setDisplayName(String.valueOf(name));
+            applyBatchDetail.setName(ztreeDto.getName());
+            applyBatchDetail.setType(ztreeDto.getType());
+            applyBatchDetail.setDisplayName(ztreeDto.getName());
             applyBatchDetail.setTableName(ztreeDto.getTableName());
             applyBatchDetail.setTableId((Integer) entityAbstract.getProperty(o, "id"));
         }
@@ -714,7 +754,6 @@ public class BasicApplyBatchService {
             newBasicApplyBatch.setCreator(commonService.thisUserAccount());
             basicApplyBatchDao.addBasicApplyBatch(newBasicApplyBatch);
         }
-
     }
 
     /**
@@ -800,10 +839,311 @@ public class BasicApplyBatchService {
                         }
                     }
                 }
-
             }
         }
-
         return basicApplyBatch;
     }
+
+    /**
+     * 获取楼盘案例数据
+     *
+     * @param province
+     * @param city
+     * @param search
+     * @return
+     */
+    public BootstrapTableVo getBasicApplyBatchList(String province, String city, String search) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicApplyBatch> basicAppBatchDraftList = basicApplyBatchDao.getListByEstate(province, city, search);
+        List<BasicApplyBatchVo> voList = LangUtils.transform(basicAppBatchDraftList, o -> getBasicApplyBatchVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(voList) ? new ArrayList<BasicApplyBatchVo>() : voList);
+        return vo;
+    }
+
+    /**
+     * 根据区域+楼盘名称查询案例中的楼盘
+     *
+     * @param province
+     * @param city
+     * @param estateName
+     * @return
+     */
+    public BasicApplyBatch getCaseBasicApplyBatch(String province, String city, String estateName) {
+        BasicApplyBatch where = new BasicApplyBatch();
+        where.setProvince(province);
+        where.setCity(city);
+        where.setEstateName(estateName);
+        where.setBisDelete(false);
+        where.setBisCase(true);
+        BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatch(where);
+        return basicApplyBatch;
+    }
+
+    /**
+     * 获取案例下同类型节点数据（确定该节点是否为升级数据）
+     *
+     * @param source
+     * @param caseApplyBatchId
+     * @return
+     */
+    public BasicApplyBatchDetail getCaseBasicApplyBatchDetail(BasicApplyBatchDetail source, Integer caseApplyBatchId) {
+        if (source == null || caseApplyBatchId == null) return null;
+        List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(source.getType(), caseApplyBatchId, null, true);
+        if (CollectionUtils.isEmpty(list)) return null;
+        for (BasicApplyBatchDetail basicApplyBatchDetail : list) {
+            List<Boolean> booleanList = Lists.newArrayList();
+            compareParentName(source, basicApplyBatchDetail, booleanList);
+            if (LangUtils.filter(booleanList, o -> o.booleanValue() == Boolean.FALSE).size() <= 0) {
+                return basicApplyBatchDetail;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 递归比较父级节点的名称是否完全一致
+     *
+     * @param source
+     * @param caseTarget
+     * @return
+     */
+    public void compareParentName(BasicApplyBatchDetail source, BasicApplyBatchDetail caseTarget, List<Boolean> booleanList) {
+        if (source == null || caseTarget == null) {
+            booleanList.add(false);
+            return;
+        }
+        if (source.getName().equals(caseTarget.getName())) {
+            booleanList.add(true);
+            if (source.getPid() <= 0 && caseTarget.getPid() <= 0) return;
+            BasicApplyBatchDetail sourceParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
+            BasicApplyBatchDetail caseTargetParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(caseTarget.getPid());
+            compareParentName(sourceParent, caseTargetParent, booleanList);
+        } else {
+            booleanList.add(false);
+        }
+    }
+
+    /**
+     * 获取案例上级
+     *
+     * @param source
+     * @param caseApplyBatchId
+     * @return
+     */
+    public BasicApplyBatchDetail getCaseParentBasicApplyBatchDetail(BasicApplyBatchDetail source, Integer caseApplyBatchId) {
+        if (source == null || caseApplyBatchId == null) return null;
+        BasicApplyBatchDetail batchDetailParent = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(source.getPid());
+        List<BasicApplyBatchDetail> detailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByName(batchDetailParent.getType(), batchDetailParent.getName(), caseApplyBatchId);
+        if (CollectionUtils.isEmpty(detailList)) return null;
+        if (detailList.size() == 1) return detailList.get(0);
+        for (BasicApplyBatchDetail basicApplyBatchDetail : detailList) {
+            List<Boolean> booleanList = Lists.newArrayList();
+            compareParentName(batchDetailParent, basicApplyBatchDetail, booleanList);
+            if (LangUtils.filter(booleanList, o -> o.booleanValue() == Boolean.FALSE).size() <= 0) {
+                return basicApplyBatchDetail;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 通过备选案例引用数据
+     *
+     * @param basicApplyBatchDetailId
+     * @return
+     */
+    public BasicApplyBatch referenceDataByDetailId(Integer basicApplyBatchDetailId, Integer projectId, Integer planDetailsId) {
+        if (basicApplyBatchDetailId == null) return null;
+        List<BasicApplyBatchDetail> list = Lists.newArrayList();
+        basicApplyBatchDetailService.collectionParentBatchDetails(basicApplyBatchDetailId, list);
+        if (CollectionUtils.isEmpty(list)) return null;
+        BasicApplyBatchDetail topBatchDetai = list.get(list.size() - 1);
+        BasicApplyBatch sourceApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(topBatchDetai.getApplyBatchId());
+        BasicApplyBatch newBasicApplyBatch = new BasicApplyBatch();
+        BeanUtils.copyProperties(sourceApplyBatch, newBasicApplyBatch, BaseConstant.ASSESS_IGNORE_ARRAY);
+        newBasicApplyBatch.setProjectId(projectId);
+        newBasicApplyBatch.setPlanDetailsId(planDetailsId);
+        newBasicApplyBatch.setDraftFlag(false);
+        newBasicApplyBatch.setBisDelete(false);
+        newBasicApplyBatch.setCreator(commonService.thisUserAccount());
+        basicApplyBatchDao.addBasicApplyBatch(newBasicApplyBatch);
+        Integer pid = 0;
+        for (int i = list.size() - 1; i >= 0; i--) {
+            BasicApplyBatchDetail sourceApplyBatchDetail = list.get(i);
+            BasicApplyBatchDetail newApplyBatchDetail = new BasicApplyBatchDetail();
+            newApplyBatchDetail.setPid(pid);
+            newApplyBatchDetail.setApplyBatchId(newBasicApplyBatch.getId());
+            newApplyBatchDetail.setTableName(sourceApplyBatchDetail.getTableName());
+            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(sourceApplyBatchDetail.getType());
+            try {
+                Object entity = entityAbstract.copyBasicEntity(sourceApplyBatchDetail.getTableId(), null, true);
+                Integer entityId = (Integer) entityAbstract.getProperty(entity, "id");
+                newApplyBatchDetail.setTableId(entityId);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+            newApplyBatchDetail.setType(sourceApplyBatchDetail.getType());
+            newApplyBatchDetail.setName(sourceApplyBatchDetail.getName());
+            newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());
+            newApplyBatchDetail.setExecutor(commonService.thisUserAccount());
+            basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
+            try {
+                basicApplyBatchDetailService.insertBasicApply(newApplyBatchDetail,planDetailsId);
+            } catch (Exception e) {
+                log.error(e.getMessage(),e);
+            }
+            pid = newApplyBatchDetail.getId();
+        }
+        return newBasicApplyBatch;
+    }
+
+    //写入案例数据
+    @Transactional(rollbackFor = Exception.class)
+    public void handleCaseData(BasicApplyBatch applyBatch)throws Exception {
+        BasicApplyBatch caseBasicApplyBatch = basicApplyBatchService.getCaseBasicApplyBatch(applyBatch.getProvince(), applyBatch.getCity(), applyBatch.getEstateName());
+        List<BasicApplyBatchDetail> sourceDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
+        //新增
+        if (caseBasicApplyBatch == null) {
+            applyBatch.setBisCase(true);
+            basicApplyBatchDao.updateInfo(applyBatch);
+            //将从数据也设置为案例数据
+            if (CollectionUtils.isNotEmpty(sourceDetails)) {
+                for (BasicApplyBatchDetail source : sourceDetails) {
+                    BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(source.getType());
+                    Object entity = anAbstract.getBasicEntityById(source.getTableId());
+                    if (entity != null) {
+                        anAbstract.setProperty(entity, "bisCase", true);
+                        anAbstract.setProperty(entity, "version", 1);
+                        anAbstract.setProperty(entity, "applyId", source.getId());
+                        anAbstract.saveAndUpdate(entity, false);
+                    }
+                    //summary表处理
+                    if (source.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                        houseWriteToSummary(source, applyBatch);
+                    }
+                }
+            }
+        } else {
+            //升级或新增节点
+            if (CollectionUtils.isNotEmpty(sourceDetails)) {
+                for (BasicApplyBatchDetail source : sourceDetails) {
+                    if (source.getBisFromCase() != true) {
+                        BasicApplyBatchDetail caseBasicApplyBatchDetail = basicApplyBatchService.getCaseBasicApplyBatchDetail(source, caseBasicApplyBatch.getId());
+                        //升级
+                        if (caseBasicApplyBatchDetail != null) {
+                            //原数据对应表
+                            BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(caseBasicApplyBatchDetail.getType());
+                            Object entity = anAbstract.getBasicEntityById(caseBasicApplyBatchDetail.getTableId());
+                            Object version = anAbstract.getProperty(entity, "version");
+                            //查勘案例申请可能出现
+                            if(caseBasicApplyBatchDetail.getTableId().equals(source.getTableId())){
+                                Object object = anAbstract.copyBasicEntity(caseBasicApplyBatchDetail.getTableId(), null, true);
+                                if(object!=null){
+                                    anAbstract.setProperty(object, "bisCase", true);
+                                    anAbstract.setProperty(object, "version", (Integer) (version == null ? 0 : version) + 1);
+                                    anAbstract.setProperty(object, "applyId", caseBasicApplyBatchDetail.getId());
+                                    anAbstract.saveAndUpdate(object, false);
+
+                                    caseBasicApplyBatchDetail.setTableId((Integer) anAbstract.getProperty(object, "id"));
+                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
+                                }
+                            }else{
+                                //升级后对应表
+                                BasicEntityAbstract upgradeupgradeAbstract = publicBasicService.getServiceBeanByKey(source.getType());
+                                Object upgradeEntity = upgradeupgradeAbstract.getBasicEntityById(source.getTableId());
+                                if (upgradeEntity != null) {
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "bisCase", true);
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "version", (Integer) (version == null ? 0 : version) + 1);
+                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "applyId", caseBasicApplyBatchDetail.getId());
+                                    upgradeupgradeAbstract.saveAndUpdate(upgradeEntity, false);
+
+                                    caseBasicApplyBatchDetail.setTableId((Integer) upgradeupgradeAbstract.getProperty(upgradeEntity, "id"));
+                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
+                                }
+                            }
+
+                        } else {
+                            //新增节点
+                            BasicApplyBatchDetail caseParentBasicApplyBatchDetail = basicApplyBatchService.getCaseParentBasicApplyBatchDetail(source, caseBasicApplyBatch.getId());
+                            if (caseParentBasicApplyBatchDetail != null) {
+                                BasicApplyBatchDetail newDetail = new BasicApplyBatchDetail();
+                                BeanUtils.copyProperties(source, newDetail, "id");
+                                newDetail.setApplyBatchId(caseBasicApplyBatch.getId());
+                                newDetail.setPid(caseParentBasicApplyBatchDetail.getId());
+                                basicApplyBatchDetailService.saveBasicApplyBatchDetail(newDetail);
+                                BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(newDetail.getType());
+                                Object entity = anAbstract.getBasicEntityById(newDetail.getTableId());
+                                if (entity != null) {
+                                    anAbstract.setProperty(entity, "bisCase", true);
+                                    anAbstract.setProperty(entity, "version", 1);
+                                    anAbstract.setProperty(entity, "applyId", newDetail.getId());
+                                    anAbstract.saveAndUpdate(entity, false);
+                                }
+                            }
+                        }
+                        //summary表处理
+                        if (source.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                            houseWriteToSummary(source, applyBatch);
+                        }
+                    }
+
+                }
+            }
+        }
+        applyBatch.setStatus(ProjectStatusEnum.FINISH.getKey());
+        basicApplyBatchDao.updateInfo(applyBatch);
+    }
+
+    //写入summary
+    public void houseWriteToSummary(BasicApplyBatchDetail house, BasicApplyBatch applyBatch) {
+        //准备需要的数据
+        BasicEstate basicEstate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
+        BasicHouse basicHouse = basicHouseService.getBasicHouseById(house.getTableId());
+        if (basicHouse == null) return;
+        BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
+        cleanSummary(house.getId());
+
+        List<BasicHouseTrading> tradingList = basicHouseTradingService.getTradingListByHouseId(basicHouse.getId());
+        if (CollectionUtils.isNotEmpty(tradingList)) {
+            for (BasicHouseTrading trading : tradingList) {
+                BasicHouseCaseSummary summary = new BasicHouseCaseSummary();
+                summary.setCaseHouseId(house.getId());
+                summary.setProvince(basicEstate.getProvince());
+                summary.setCity(basicEstate.getCity());
+                summary.setDistrict(basicEstate.getDistrict());
+                summary.setBlockName(basicEstate.getBlockName());
+                summary.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(house.getId()));
+                summary.setStreet(basicEstate.getStreet());
+                summary.setTradingType(trading.getTradingType());
+                summary.setTradingTime(trading.getTradingTime());
+                summary.setTradingUnitPrice(trading.getTradingUnitPrice());
+                if (landCategoryInfo != null) {
+                    summary.setHouseType(landCategoryInfo.getLandUseType());
+                    summary.setHouseCategory(landCategoryInfo.getLandUseCategory());
+                }
+                summary.setArea(basicHouse.getArea());
+                summary.setEstateName(basicEstate.getName());
+                summary.setVersion(basicHouse.getVersion());
+                summary.setBisFromSelf(true);
+                summary.setBisNewest(true);
+                basicHouseCaseSummaryService.addBaseHouseSummary(summary);
+            }
+        }
+    }
+
+    public void cleanSummary(Integer houseId) {
+        BasicHouseCaseSummary where = new BasicHouseCaseSummary();
+        where.setCaseHouseId(houseId);
+        where.setBisFromSelf(true);
+        List<BasicHouseCaseSummary> caseSummaryList = basicHouseCaseSummaryService.getBaseHouseSummaryList(where);
+        if (CollectionUtils.isNotEmpty(caseSummaryList)) {
+            for (BasicHouseCaseSummary item : caseSummaryList) {
+                basicHouseCaseSummaryService.deleteBaseHouseSummaryById(item.getId());
+            }
+        }
+    }
+
 }

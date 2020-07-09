@@ -135,5 +135,12 @@ public class replaceTest {
         return JSON.toJSONString(maps);
     }
 
+    @Test
+    public void testReplace1() throws Exception {
+        String filePath="D:\\模板123.docx";
+        Map<String,String> map=Maps.newHashMap();
+        map.put("${这是是内容}","D:\\fbe9834e-003b-4be6-abea-b2bc56f99c8f.doc");
+        AsposeUtils.replaceTextToFile(filePath,map);
+    }
 }
 

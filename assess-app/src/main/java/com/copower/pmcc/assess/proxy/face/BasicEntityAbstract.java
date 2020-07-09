@@ -75,4 +75,5 @@ public abstract class BasicEntityAbstract {
 
     public abstract ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception;
 
+    public abstract List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception;//获取实体List
 }

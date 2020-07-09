@@ -69,7 +69,7 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
                 }
             }
         }
-        setViewParam(projectPlanDetails, info,judgeObject, modelAndView);
+        setViewParam(info,judgeObject, modelAndView);
         return modelAndView;
     }
 
@@ -78,7 +78,7 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareApproval", processInsId, boxId, taskId, agentUserAccount);
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        setViewParam(projectPlanDetails,info,judgeObject, modelAndView);
+        setViewParam(info,judgeObject, modelAndView);
         return modelAndView;
     }
 
@@ -87,7 +87,7 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareIndex", processInsId, boxId, taskId, agentUserAccount);
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        setViewParam(projectPlanDetails,info,judgeObject, modelAndView);
+        setViewParam(info,judgeObject, modelAndView);
         return modelAndView;
     }
 
@@ -101,7 +101,7 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskMarketCompareApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        setViewParam(projectPlanDetails,info,judgeObject, modelAndView);
+        setViewParam(info,judgeObject, modelAndView);
         return modelAndView;
     }
 
@@ -110,10 +110,9 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
      *
      * @param modelAndView
      */
-    private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info,SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
-        ProjectInfo projectInfo=projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+    private void setViewParam(SchemeInfo info,SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
         MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
-        List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()));
+        List<DataSetUseField> fieldList = mdMarketCompareService.getLandFieldListByApplyId(judgeObject.getBasicApplyId());
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
         List<MdMarketCompareItem> caseList = mdMarketCompareService.getCaseListByMcId(marketCompare.getId());
         List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);

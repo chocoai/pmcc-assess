@@ -17,6 +17,8 @@ public class DataMethodFormula {
 
     private Date gmtModified;
 
+    private String methodKey;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class DataMethodFormula {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getMethodKey() {
+        return methodKey;
+    }
+
+    public void setMethodKey(String methodKey) {
+        this.methodKey = methodKey == null ? null : methodKey.trim();
     }
 }

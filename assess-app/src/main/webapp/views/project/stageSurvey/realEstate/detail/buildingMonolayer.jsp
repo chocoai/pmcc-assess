@@ -38,12 +38,14 @@
                                             <div class="col-sm-3">
                                                 <div class="input-group">
                                                     <label class="form-control" name="buildingNumber">${basicBuilding.buildingNumber}</label>
-                                                    <span class="input-group-btn">
-                            <input type="hidden" name="mapId" value="${basicBuilding.mapId}">
-                             <div onclick="buildingCommon.mapMarker(true);" class="btn btn-info">
-                                 <i class="fa fa-map-marker"></i> 标注
-                             </div>
-                        </span>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-info btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="buildingCommon.mapMarker(true);">
+                                                            标注
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                     
@@ -290,6 +292,13 @@
                                                 <label class="form-control input-full"
                                                        name="propertySocialPrestigeName">${basicBuilding.propertySocialPrestigeName}</label>
                                             </div>
+                                            <label class="col-sm-1 control-label">
+                                                街道号
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class="form-control input-full"
+                                                       name="streetNumber">${basicBuilding.streetNumber}</label>
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
@@ -321,7 +330,6 @@
                                 <%@include file="/views/project/stageSurvey/commonDetail/buildingMaintenance.jsp" %>
                             </c:if>
                     </c:if>
-                    <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -334,12 +342,8 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
-
 </body>
-<%@include file="/views/share/chksCommon.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"

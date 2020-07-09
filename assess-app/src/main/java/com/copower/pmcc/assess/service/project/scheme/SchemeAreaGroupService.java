@@ -1,21 +1,24 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdEconomicIndicatorsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeAreaGroupDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -63,7 +66,7 @@ public class SchemeAreaGroupService {
     @Autowired
     private MdIncomeService mdIncomeService;
     @Autowired
-    private SurveyCommonService surveyCommonService;
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
@@ -74,6 +77,16 @@ public class SchemeAreaGroupService {
     private ProjectMemberService projectMemberService;
     @Autowired
     private BasicHouseService basicHouseService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private MdEconomicIndicatorsDao mdEconomicIndicatorsDao;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -197,7 +210,8 @@ public class SchemeAreaGroupService {
             }
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+        boolean isLand = AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equalsIgnoreCase(assessProjectType.getKey());
         //添加或清除估价对象 先找出上次已经生成的估价对象 再找出本次会参与生成的权证 最后确定其新增或删除
         if (CollectionUtils.isNotEmpty(newAreaGroups)) {//为新产生的区域添加数据
             for (SchemeAreaGroup areaGroup : newAreaGroups) {
@@ -226,7 +240,7 @@ public class SchemeAreaGroupService {
                     boolean isSameCity = StringUtils.equals(StringUtils.defaultString(declareRecord.getCity()), StringUtils.defaultString(areaGroup.getCity()));
                     boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(declareRecord.getDistrict()), StringUtils.defaultString(areaGroup.getDistrict()));
                     if (isSameProvince && isSameCity && isSameDistrict) {
-                        declareRecordToJudgeObject(declareRecord, areaGroup);
+                        declareRecordToJudgeObject(declareRecord, areaGroup,isLand);
                         declareRecordIterator.remove();
                     }
                 }
@@ -252,7 +266,7 @@ public class SchemeAreaGroupService {
                 Boolean isNeedReNumber = false;//是否需要重新编号
                 if (CollectionUtils.isNotEmpty(declareRecordList)) {//为权证添加估价对象
                     isNeedReNumber = true;
-                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup));
+                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup,isLand));
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
                     isNeedReNumber = true;
@@ -286,49 +300,87 @@ public class SchemeAreaGroupService {
      *
      * @param declareRecord
      * @param areaGroup
-     * @param i
      * @return
      */
-    private SchemeJudgeObject declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup) {
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
-        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
-        schemeJudgeObject.setProjectId(declareRecord.getProjectId());
-        schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
-        schemeJudgeObject.setBuildingStatus(declareRecord.getBuildingStatus());
-        if (basicApply != null) {
+    private void declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup, Boolean isLand) {
+        //根据查勘情况生成对应的估价对象，并将查勘applyid关联到估价对象上
+        List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
+        if (CollectionUtils.isEmpty(basicApplyList)) return;
+        //经济指标
+        MdEconomicIndicators economicIndicators = null;
+        if (isLand) {
+            DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = declareBuildEngineeringAndEquipmentCenterService.getDataByDeclareRecord(declareRecord.getId());
+            economicIndicators = mdEconomicIndicatorsDao.getEconomicIndicatorsById(equipmentCenter.getIndicatorId());
+        }
+        SchemeJudgeObject splitSource = null;//拆分源对象
+        for (int i = 0; i < basicApplyList.size(); i++) {
+            BasicApply basicApply = basicApplyList.get(i);
+            SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+            schemeJudgeObject.setProjectId(declareRecord.getProjectId());
+            schemeJudgeObject.setDeclareRecordId(declareRecord.getId());
+            schemeJudgeObject.setBuildingStatus(declareRecord.getBuildingStatus());
             schemeJudgeObject.setBasicApplyId(basicApply.getId());
             schemeJudgeObject.setEvaluationArea(basicApply.getArea());
+            if (isLand && economicIndicators != null) {
+                if (StringUtils.isNotEmpty(economicIndicators.getVolumetricRate())) {
+                    schemeJudgeObject.setPlanPlotRatio(new BigDecimal(economicIndicators.getVolumetricRate()));
+                    schemeJudgeObject.setSetPlotRatio(new BigDecimal(economicIndicators.getVolumetricRate()));
+                }
+                schemeJudgeObject.setParcelSettingInnerDevelop(economicIndicators.getParcelSettingInner());
+            }
+
+            BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if (basicEstate != null) {
+                schemeJudgeObject.setParcelInnerDevelop(basicEstate.getInfrastructure());
+                BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+                schemeJudgeObject.setParcelOuterDevelop(estateLandState.getDevelopmentDegreeContent());
+                schemeJudgeObject.setCurrentSituation(estateLandState.getCurrentSituation());
+            }
 
             BasicHouse basicHouse = basicHouseService.getHouseByBasicApply(basicApply);
             if (basicHouse != null) {
                 schemeJudgeObject.setCertUse(basicHouse.getCertUse());
                 schemeJudgeObject.setPracticalUse(basicHouse.getPracticalUse());
+                BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
+                if (isLand&&landCategoryInfo != null) {
+                    schemeJudgeObject.setCertUse(declareRecord.getLandCertUse());
+                    schemeJudgeObject.setPracticalUse(landCategoryInfo.getLandUseType());
+                    schemeJudgeObject.setActualPlotRatio(landCategoryInfo.getPlotRatio());
+                }
             }
+            schemeJudgeObject.setNumber(String.valueOf(declareRecord.getNumber()));
+            schemeJudgeObject.setCreator(commonService.thisUserAccount());
+            schemeJudgeObject.setAreaGroupId(areaGroup.getId());
+            schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
+            schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
+
+            schemeJudgeObject.setCertName(declareRecord.getName());
+            schemeJudgeObject.setOwnership(declareRecord.getOwnership());
+            schemeJudgeObject.setSeat(declareRecord.getSeat());
+            if (declareRecord.getLandUseEndDate() != null) {
+                schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());//计算出土地剩余年限
+                if (areaGroup.getValueTimePoint() != null)
+                    schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
+            }
+            schemeJudgeObject.setBisSplit(false);
+            schemeJudgeObject.setSorting(declareRecord.getNumber());
+            schemeJudgeObject.setCreator(commonService.thisUserAccount());
+            if (basicApplyList.size() > 1) {//自动拆分
+                if (i == 0) {
+                    schemeJudgeObject.setSplitNumber(1);
+                    schemeJudgeObject.setName(String.format("%s-%s%s", schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                    schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
+                    splitSource = schemeJudgeObject;
+                } else {
+                    schemeJudgeObjectService.splitJudge(splitSource, i + 1, basicApply.getId());
+                }
+            } else {
+                schemeJudgeObject.setName(String.format("%s%s", declareRecord.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                schemeJudgeObject.setPid(0);
+                schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
+            }
+
         }
-        schemeJudgeObject.setNumber(String.valueOf(declareRecord.getNumber()));
-        schemeJudgeObject.setCreator(commonService.thisUserAccount());
-        schemeJudgeObject.setAreaGroupId(areaGroup.getId());
-        schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
-        schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
-        schemeJudgeObject.setName(String.format("%s%s", declareRecord.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
-        schemeJudgeObject.setCertName(declareRecord.getName());
-        schemeJudgeObject.setOwnership(declareRecord.getOwnership());
-        schemeJudgeObject.setSeat(declareRecord.getSeat());
-        if (declareRecord.getLandUseEndDate() != null) {
-            schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());//计算出土地剩余年限
-            if (areaGroup.getValueTimePoint() != null)
-                schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
-        }
-        schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
-        schemeJudgeObject.setPid(0);
-        schemeJudgeObject.setBisSplit(false);
-        schemeJudgeObject.setSorting(declareRecord.getNumber());
-        schemeJudgeObject.setCreator(commonService.thisUserAccount());
-        schemeJudgeObjectService.addSchemeJudgeObject(schemeJudgeObject);
-        //反写申报数据的区域id
-        declareRecord.setAreaGroupId(areaGroup.getId());
-        declareRecordDao.updateDeclareRecord(declareRecord);
-        return schemeJudgeObject;
     }
 
     /**

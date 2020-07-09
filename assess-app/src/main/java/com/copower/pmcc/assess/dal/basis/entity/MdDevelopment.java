@@ -46,6 +46,8 @@ public class MdDevelopment {
 
     private BigDecimal unsaleableBuildingArea;
 
+    private BigDecimal transferArea;
+
     private BigDecimal reconnaissanceDesign;
 
     private String constructionInstallationEngineeringFeeIds;
@@ -132,8 +134,6 @@ public class MdDevelopment {
 
     private String developmentDegreeRevisionExplain;
 
-    private String content;
-
     private Integer centerId;
 
     private String creator;
@@ -141,6 +141,10 @@ public class MdDevelopment {
     private Date gmtCreated;
 
     private Date gmtModified;
+
+    private BigDecimal landArea;
+
+    private String content;
 
     public Integer getId() {
         return id;
@@ -308,6 +312,14 @@ public class MdDevelopment {
 
     public void setUnsaleableBuildingArea(BigDecimal unsaleableBuildingArea) {
         this.unsaleableBuildingArea = unsaleableBuildingArea;
+    }
+
+    public BigDecimal getTransferArea() {
+        return transferArea;
+    }
+
+    public void setTransferArea(BigDecimal transferArea) {
+        this.transferArea = transferArea;
     }
 
     public BigDecimal getReconnaissanceDesign() {
@@ -654,14 +666,6 @@ public class MdDevelopment {
         this.developmentDegreeRevisionExplain = developmentDegreeRevisionExplain == null ? null : developmentDegreeRevisionExplain.trim();
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
-    }
-
     public Integer getCenterId() {
         return centerId;
     }
@@ -692,5 +696,21 @@ public class MdDevelopment {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getLandArea() {
+        return landArea;
+    }
+
+    public void setLandArea(BigDecimal landArea) {
+        this.landArea = landArea;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 }

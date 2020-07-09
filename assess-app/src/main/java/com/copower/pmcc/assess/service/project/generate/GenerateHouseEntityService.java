@@ -60,7 +60,7 @@ public class GenerateHouseEntityService {
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
-    private BasicHouseEquipmentService basicHouseEquipmentService;
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
 
     /**
@@ -145,7 +145,7 @@ public class GenerateHouseEntityService {
 
     public String getBuildingScaleExtend(BasicApply basicApply) {
         if (basicApply == null) return "";
-        BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+        BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
         StringBuilder builder = new StringBuilder();
         if (basicBuilding.getBuildingArea() != null)
             builder.append(String.format("建筑面积%s平方米，", basicBuilding.getBuildingArea()));
@@ -153,16 +153,32 @@ public class GenerateHouseEntityService {
             builder.append(String.format("套内面积%s平方米，", basicBuilding.getInJacketArea()));
         if (StringUtils.isNotBlank(basicBuilding.getUseArea()))
             builder.append(String.format("使用面积%s平方米，", basicBuilding.getUseArea()));
+
+        List<BasicBuildingVo> buildingDiffVoList = basicBuilding.getBasicBuildingDifferences();
         if (StringUtils.isNotBlank(basicBuilding.getBuildingHeight()))
             builder.append(String.format("建筑高度%s米，", basicBuilding.getBuildingHeight()));
-        if (basicBuilding.getFirstFloor() != null)
-            builder.append(String.format("首层%s至", basicBuilding.getFirstFloor()));
-        if (basicBuilding.getMaxFloor() != null)
-            builder.append(String.format("最高层%s是", basicBuilding.getMaxFloor()));
-        if (basicBuilding.getPropertyType() != null)
-            builder.append(String.format("%s，", baseDataDicService.getNameById(basicBuilding.getPropertyType())));
-        if (StringUtils.isNotBlank(basicBuilding.getFloorHeight()))
-            builder.append(String.format("层高%s米", basicBuilding.getFloorHeight()));
+        if(CollectionUtils.isNotEmpty(buildingDiffVoList)){
+            for (BasicBuildingVo vo : buildingDiffVoList) {
+                if (vo.getFirstFloor() != null)
+                builder.append(String.format("首层%s至", vo.getFirstFloor()));
+                if (vo.getMaxFloor() != null)
+                    builder.append(String.format("最高层%s是", vo.getMaxFloor()));
+                if (vo.getPropertyType() != null)
+                    builder.append(String.format("%s，", baseDataDicService.getNameById(vo.getPropertyType())));
+                if (StringUtils.isNotBlank(vo.getFloorHeight()))
+                    builder.append(String.format("层高%s米", vo.getFloorHeight()));
+                builder.append(";");
+            }
+        }else{
+            if (basicBuilding.getFirstFloor() != null)
+                builder.append(String.format("首层%s至", basicBuilding.getFirstFloor()));
+            if (basicBuilding.getMaxFloor() != null)
+                builder.append(String.format("最高层%s是", basicBuilding.getMaxFloor()));
+            if (basicBuilding.getPropertyType() != null)
+                builder.append(String.format("%s，", baseDataDicService.getNameById(basicBuilding.getPropertyType())));
+            if (StringUtils.isNotBlank(basicBuilding.getFloorHeight()))
+                builder.append(String.format("层高%s米", basicBuilding.getFloorHeight()));
+        }
         return builder.toString();
     }
 
@@ -589,7 +605,7 @@ public class GenerateHouseEntityService {
     }
 
     /**
-     * 房屋配套设备设施工
+     * 房屋配套设备设施
      *
      * @param judgeObjectList
      * @return
@@ -951,10 +967,7 @@ public class GenerateHouseEntityService {
     private Map<String, List<Integer>> groupByBuilding(List<SchemeJudgeObject> judgeObjectList) {
         Map<String, List<Integer>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
@@ -990,10 +1003,7 @@ public class GenerateHouseEntityService {
     private Map<String, List<Integer>> groupByUnit(List<SchemeJudgeObject> judgeObjectList) {
         Map<String, List<Integer>> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
@@ -1038,10 +1048,7 @@ public class GenerateHouseEntityService {
         Map<Integer, String> functionMap = Maps.newHashMap();
         Map<Integer, String> roomMap = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0){
-                continue;
-            }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId()) ;
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId()) ;
             if (basicApplyBatch == null || basicApplyBatch.getId() == 0){
                 continue;
             }

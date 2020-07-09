@@ -146,7 +146,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="schoolNature"
-                                                    class="form-control input-full search-select select2 schoolNature">
+                                                    class="form-control input-full schoolNature">
                                             </select>
                                         </div>
                                     </div>
@@ -160,7 +160,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="schoolGradation"
-                                                    class="form-control input-full search-select select2 schoolGradation">
+                                                    class="form-control input-full schoolGradation">
                                             </select>
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="schoolLevel"
-                                                    class="form-control input-full search-select select2 schoolLevel">
+                                                    class="form-control input-full schoolLevel">
                                             </select>
                                         </div>
                                     </div>
@@ -188,7 +188,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="distance"
-                                                    class="form-control input-full search-select select2 distance">
+                                                    class="form-control input-full distance">
                                             </select>
                                         </div>
                                     </div>

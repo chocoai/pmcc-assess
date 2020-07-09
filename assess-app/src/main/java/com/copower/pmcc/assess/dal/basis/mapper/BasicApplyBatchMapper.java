@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface BasicApplyBatchMapper {
-    int countByExample(BasicApplyBatchExample example);
+    long countByExample(BasicApplyBatchExample example);
 
     int deleteByExample(BasicApplyBatchExample example);
 

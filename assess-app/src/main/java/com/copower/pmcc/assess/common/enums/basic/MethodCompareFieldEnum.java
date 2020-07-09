@@ -72,7 +72,14 @@ public enum MethodCompareFieldEnum {
 
     //土地相关-----------------------------------------------------------------------------------------------------------------------
     LAND_NAME("land.name", "地块名称"),//ps:地块名称
+    LAND_SCOPE_PROPERTY("land.scope.property", "财产范围"),// ps:土地-交易情况-财产范围
+    LAND_FINANCING_CONDITIONS("land.financing.conditions", "融资条件"),// ps:土地-交易情况-融资条件
+    LAND_TAX_BURDEN("land.tax.burden", "税费负担"),// ps:土地-交易情况-税费负担
+    LAND_PAYMENT_METHOD("land.payment.method", "付款方式"),//ps:土地-交易情况-付款方式
     LAND_TRADING_PRICE("land.trading.price", "交易价格"),//ps:土地-交易情况-交易价格
+    LAND_TRADING_TRANSACTION_SITUATION("land.trading.transaction.situation", "交易情况"),//ps:土地-交易情况
+    LAND_TRADING_TIME("land.trading.time", "交易时间"),//ps:土地-交易情况-交易时间
+    LAND_PRICE_CONNOTATION("land.price.connotation", "单价内涵"),//ps:土地-交易情况-单价内涵
     LAND_AREA_LOCATION("land.area.location", "区域位置"),//ps:区域位置
     LAND_AGGLOMERATION_DEGREE("land.agglomeration.degree", "产业聚集度"),//ps:产业聚集度
     LAND_TRAFFIC_CONDITIONS("land.traffic.conditions", "交通条件"),//ps:交通条件
@@ -82,10 +89,12 @@ public enum MethodCompareFieldEnum {
     LAND_AREA("land.area", "面积"),//ps:面积
     LAND_USE("land.use", "用途"),//ps:用途
     LAND_TEMPORARY_ROAD_CONDITION("land.temporary.road.condition", "临街（路）状况"),//ps:临街（路）状况
-    LAND_TOPOGRAPHY("land.topography", "形状、地质、地形、地势"),//ps:形状、地质、地形、地势
+    LAND_SHAPE("land.shape", "形状"),//ps:形状
+    LAND_GEOLOGY("land.geology", "地质"),//ps:地质
+    LAND_TOPOGRAPHY("land.topography", "地形、地势"),//ps:形状、地质、地形、地势
     LAND_PLOT_RATIO("land.plot.ratio", "容积率"),//ps:容积率
     LAND_DEVELOPMENT_LEVEL("land.development.level", "宗地开发程度"),//ps:宗地开发程度
-    LAND_USEFUL_LIFE("land.useful.life", "使用年限"),//ps:使用年限
+    LAND_USEFUL_LIFE("land.useful.life", "剩余使用年限"),//ps:使用年限
     LAND_RIGHT_CONDITION("land.right.condition", "土地权利状况"),//ps:土地权利状况
     LAND_OTHER("land.other", "土地其它"),//ps:土地其它
     Land_Annual_Coefficient("annual.coefficient", "年期修正系数"),//ps:年期修正系数

@@ -113,7 +113,7 @@
             <label class="col-sm-1 control-label">交易总价（元）${empty surveyCaseStudy?"":'<span class="symbol required"></span>'} </label>
             <div class="col-sm-3">
                 <input type="text" placeholder="交易总价（元）" class="form-control input-full" name="tradingTotalPrice"
-                       onblur="houseCommon.computeUnitPrice();"
+                       onblur="houseCommon.computeUnitPrice(this);"
                 ${empty surveyCaseStudy?"":'required'} value="${basicHouseTrading.tradingTotalPrice}">
             </div>
             <label class="col-sm-1 control-label">单价内涵<span class="symbol required"></span></label>

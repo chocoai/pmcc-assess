@@ -33,15 +33,6 @@
                                             <input id="queryProjectName" name="queryProjectName"
                                                    class="form-control input-full" placeholder="项目名称"/>
                                         </div>
-                                        <label class="col-md-1 col-form-label">报告类型</label>
-                                        <div class="col-md-2 p-0">
-                                            <select name="queryReportType" id="queryReportType"
-                                                    class="form-control input-full">
-                                                <option value="">--请选择--</option>
-                                                <c:forEach var="item" items="${reportTypeList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select></div>
                                         <label class="col-md-1 col-form-label">文号</label>
                                         <div class="col-md-2 p-0">
                                             <input type="text" data-rule-maxlength="50"
@@ -54,15 +45,14 @@
                                                    placeholder="报告使用单位" id="queryUnitName" name="queryUnitName"
                                                    class="form-control input-full">
                                         </div>
-                                    </div>
-                                    <div class="form-group form-inline">
-
                                         <label class="col-md-1 col-form-label">开始时间</label>
                                         <div class="col-md-2 p-0">
                                             <input id="queryStartDate" name="queryStartDate"
                                                    class="form-control input-full date-picker dbdate"
                                                    data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
                                         </div>
+                                    </div>
+                                    <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">结束时间</label>
                                         <div class="col-md-2 p-0">
                                             <input id="queryEndDate" name="queryEndDate"
@@ -175,10 +165,14 @@
             //cols.push({field: 'participationAppraiser', width: '5%', title: '参与报告人'});
             //cols.push({field: 'registrationNumber', width: '5%', title: '注册号'});
             //cols.push({field: 'contractPrice', width: '5%', title: '收费'});
+            cols.push({
+                field: 'gmtCreated', width: '5%', title: '报告生成时间', formatter: function (value, row, index) {
+                    return formatDate(row.gmtCreated, false);
+                }
+            });
             $("#" + ReportAppraiserAssociation.prototype.config().table).bootstrapTable('destroy');
             TableInit(ReportAppraiserAssociation.prototype.config().table, "${pageContext.request.contextPath}/customReportAppraiserAssociation/getCustomReportAppraiserAssociationList", cols, {
                 projectName: $("#queryProjectName").val(),
-                reportType: $("#queryReportType").val(),
                 numberValue: $("#queryNumberValue").val(),
                 unitName: $("#queryUnitName").val(),
                 queryStartDate: $("#queryStartDate").val(),
@@ -246,14 +240,12 @@
         },
         export: function () {
             var projectName = $("#queryProjectName").val();
-            var reportType = $("#queryReportType").val();
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
             var queryStartDate = $("#queryStartDate").val();
             var queryEndDate = $("#queryEndDate").val();
             var href = "${pageContext.request.contextPath}/customReportAppraiserAssociation/export";
             href += "?projectName=" + projectName;
-            href += "&reportType=" + reportType;
             href += "&numberValue=" + numberValue;
             href += "&unitName=" + unitName;
             href += "&queryStartDate=" + queryStartDate;

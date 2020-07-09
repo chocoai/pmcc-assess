@@ -415,6 +415,66 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
+        public Criteria andCaseApplyBatchIdIsNull() {
+            addCriterion("case_apply_batch_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdIsNotNull() {
+            addCriterion("case_apply_batch_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdEqualTo(Integer value) {
+            addCriterion("case_apply_batch_id =", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdNotEqualTo(Integer value) {
+            addCriterion("case_apply_batch_id <>", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdGreaterThan(Integer value) {
+            addCriterion("case_apply_batch_id >", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("case_apply_batch_id >=", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdLessThan(Integer value) {
+            addCriterion("case_apply_batch_id <", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdLessThanOrEqualTo(Integer value) {
+            addCriterion("case_apply_batch_id <=", value, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdIn(List<Integer> values) {
+            addCriterion("case_apply_batch_id in", values, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdNotIn(List<Integer> values) {
+            addCriterion("case_apply_batch_id not in", values, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdBetween(Integer value1, Integer value2) {
+            addCriterion("case_apply_batch_id between", value1, value2, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCaseApplyBatchIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("case_apply_batch_id not between", value1, value2, "caseApplyBatchId");
+            return (Criteria) this;
+        }
+
         public Criteria andProvinceIsNull() {
             addCriterion("province is null");
             return (Criteria) this;
@@ -1552,6 +1612,76 @@ public class BasicApplyBatchExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
     }

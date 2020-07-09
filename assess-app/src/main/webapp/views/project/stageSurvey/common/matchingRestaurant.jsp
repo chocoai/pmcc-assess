@@ -120,7 +120,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="category"
-                                                    class="form-control input-full search-select select2 category">
+                                                    class="form-control input-full  category">
                                             </select>
                                         </div>
                                     </div>
@@ -134,7 +134,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="grade"
-                                                    class="form-control input-full search-select select2 grade">
+                                                    class="form-control input-full  grade">
                                             </select>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="distance"
-                                                    class="form-control input-full search-select select2 distance">
+                                                    class="form-control input-full  distance">
                                             </select>
                                         </div>
                                     </div>

@@ -3,11 +3,13 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseRoomDecorateDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomVo;
 import com.copower.pmcc.assess.service.basic.BasicHouseRoomDecorateService;
 import com.copower.pmcc.assess.service.basic.BasicHouseRoomService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +67,8 @@ public class BasicHouseRoomController {
     public HttpResult basicHouseRoomList(BasicHouseRoom basicHouseRoom) {
         try {
             List<BasicHouseRoom> basicHouseRooms = basicHouseRoomService.basicHouseRoomList(basicHouseRoom);
-            return HttpResult.newCorrectResult(200, basicHouseRooms);
+            List<BasicHouseRoomVo> vos = LangUtils.transform(basicHouseRooms,(oo -> basicHouseRoomService.getBasicHouseRoomVo(oo)));
+            return HttpResult.newCorrectResult(200, vos);
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, "异常");

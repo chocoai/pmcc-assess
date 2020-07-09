@@ -28,10 +28,11 @@
     <result column="deal_part_info" property="dealPartInfo" jdbcType="VARCHAR" />
     <result column="approver" property="approver" jdbcType="VARCHAR" />
     <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="bis_newest" property="bisNewest" jdbcType="BIT" />
+    <result column="bis_from_self" property="bisFromSelf" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="bis_newest" property="bisNewest" jdbcType="BIT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -95,8 +96,8 @@
     id, case_house_id, type, province, city, district, block_name, full_name, street, 
     practical_use, trading_type, trading_time, trading_unit_price, house_type, house_category, 
     area, estate_name, deal_type, current_price, consult_price, assess_standard_date, 
-    realization_ratios, realization_cycle, deal_part_info, approver, version, creator, 
-    gmt_created, gmt_modified, bis_newest
+    realization_ratios, realization_cycle, deal_part_info, approver, version, bis_newest, 
+    bis_from_self, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummaryExample" >
     select
@@ -140,8 +141,9 @@
       estate_name, deal_type, current_price, 
       consult_price, assess_standard_date, realization_ratios, 
       realization_cycle, deal_part_info, approver, 
-      version, creator, gmt_created, 
-      gmt_modified, bis_newest)
+      version, bis_newest, bis_from_self, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{caseHouseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockName,jdbcType=VARCHAR}, 
       #{fullName,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{practicalUse,jdbcType=INTEGER}, 
@@ -150,8 +152,9 @@
       #{estateName,jdbcType=VARCHAR}, #{dealType,jdbcType=INTEGER}, #{currentPrice,jdbcType=DECIMAL}, 
       #{consultPrice,jdbcType=DECIMAL}, #{assessStandardDate,jdbcType=TIMESTAMP}, #{realizationRatios,jdbcType=DECIMAL}, 
       #{realizationCycle,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, #{approver,jdbcType=VARCHAR}, 
-      #{version,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{bisNewest,jdbcType=BIT})
+      #{version,jdbcType=INTEGER}, #{bisNewest,jdbcType=BIT}, #{bisFromSelf,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -234,6 +237,12 @@
       <if test="version != null" >
         version,
       </if>
+      <if test="bisNewest != null" >
+        bis_newest,
+      </if>
+      <if test="bisFromSelf != null" >
+        bis_from_self,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -242,9 +251,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="bisNewest != null" >
-        bis_newest,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -323,6 +329,12 @@
       <if test="version != null" >
         #{version,jdbcType=INTEGER},
       </if>
+      <if test="bisNewest != null" >
+        #{bisNewest,jdbcType=BIT},
+      </if>
+      <if test="bisFromSelf != null" >
+        #{bisFromSelf,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -331,9 +343,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="bisNewest != null" >
-        #{bisNewest,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -424,6 +433,12 @@
       <if test="record.version != null" >
         version = #{record.version,jdbcType=INTEGER},
       </if>
+      <if test="record.bisNewest != null" >
+        bis_newest = #{record.bisNewest,jdbcType=BIT},
+      </if>
+      <if test="record.bisFromSelf != null" >
+        bis_from_self = #{record.bisFromSelf,jdbcType=BIT},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -432,9 +447,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.bisNewest != null" >
-        bis_newest = #{record.bisNewest,jdbcType=BIT},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -469,10 +481,11 @@
       deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
       approver = #{record.approver,jdbcType=VARCHAR},
       version = #{record.version,jdbcType=INTEGER},
+      bis_newest = #{record.bisNewest,jdbcType=BIT},
+      bis_from_self = #{record.bisFromSelf,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      bis_newest = #{record.bisNewest,jdbcType=BIT}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -555,6 +568,12 @@
       <if test="version != null" >
         version = #{version,jdbcType=INTEGER},
       </if>
+      <if test="bisNewest != null" >
+        bis_newest = #{bisNewest,jdbcType=BIT},
+      </if>
+      <if test="bisFromSelf != null" >
+        bis_from_self = #{bisFromSelf,jdbcType=BIT},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -563,9 +582,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="bisNewest != null" >
-        bis_newest = #{bisNewest,jdbcType=BIT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -597,10 +613,11 @@
       deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
       approver = #{approver,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},
+      bis_newest = #{bisNewest,jdbcType=BIT},
+      bis_from_self = #{bisFromSelf,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      bis_newest = #{bisNewest,jdbcType=BIT}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

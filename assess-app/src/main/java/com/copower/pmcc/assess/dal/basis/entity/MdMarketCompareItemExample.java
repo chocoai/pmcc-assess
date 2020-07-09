@@ -976,6 +976,76 @@ public class MdMarketCompareItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andPriceConnotationIsNull() {
+            addCriterion("price_connotation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationIsNotNull() {
+            addCriterion("price_connotation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationEqualTo(String value) {
+            addCriterion("price_connotation =", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotEqualTo(String value) {
+            addCriterion("price_connotation <>", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationGreaterThan(String value) {
+            addCriterion("price_connotation >", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationGreaterThanOrEqualTo(String value) {
+            addCriterion("price_connotation >=", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationLessThan(String value) {
+            addCriterion("price_connotation <", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationLessThanOrEqualTo(String value) {
+            addCriterion("price_connotation <=", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationLike(String value) {
+            addCriterion("price_connotation like", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotLike(String value) {
+            addCriterion("price_connotation not like", value, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationIn(List<String> values) {
+            addCriterion("price_connotation in", values, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotIn(List<String> values) {
+            addCriterion("price_connotation not in", values, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationBetween(String value1, String value2) {
+            addCriterion("price_connotation between", value1, value2, "priceConnotation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceConnotationNotBetween(String value1, String value2) {
+            addCriterion("price_connotation not between", value1, value2, "priceConnotation");
+            return (Criteria) this;
+        }
+
         public Criteria andMustAdjustPriceIsNull() {
             addCriterion("must_adjust_price is null");
             return (Criteria) this;

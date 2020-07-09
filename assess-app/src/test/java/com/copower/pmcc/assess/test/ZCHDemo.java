@@ -492,7 +492,11 @@ public class ZCHDemo {
 
     @Test
     public void sdh32663(){
-//        Package p = new Package();//com.copower.pmcc.assess.common.enums.report
+        Map<String,String> map = Maps.newHashMap();
+        map.put("name","张三") ;
+        map.put("code","47347") ;
+        String string = JSONObject.toJSONString(map) ;
+        System.out.println(string);
     }
 
 

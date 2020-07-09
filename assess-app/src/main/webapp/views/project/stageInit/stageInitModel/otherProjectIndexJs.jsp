@@ -808,9 +808,87 @@
             onSelected: function (data) {
                 $(this_).closest('.input-group').find("input[name='userAccountManager']").val(data.account);
                 $(this_).closest('.input-group').find("input[name='userAccountManagerName']").val(data.name);
+                objProject.getProjectNumber(data.account);
             }
         });
     };
+
+    objProject.getProjectNumber = function (account) {
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/projectInfo/getProjectNumber",
+            data: {account: account},
+            success: function (result) {
+                if (result.ret) {
+                    $("#lab_total").text(result.data + "个");
+                }
+            }
+        });
+    };
+
+    objProject.checkProjectByAccount = function (_this) {
+        var account = $(_this).closest('form').find("input[name='userAccountManager']").val();
+        objProject.getProjectByAccount(account);
+        $("#checkProjectsBox").modal("show");
+    };
+
+    objProject.getProjectByAccount = function (account) {
+        var cols = [];
+        cols.push({
+            field: 'projectName', title: '项目名称', width: '30%', formatter: function (value, row, index) {
+                var str = value;
+                str += '<span style="margin-left: 2px;background-color: #868b9e;" class="label label-default">' + row.useUnitName + '</span>';
+                str += '<span style="margin-left: 2px;background-color: #9ed2a0;" class="label label-success">' + row.departmentName + '</span>';
+                str += '<span style="margin-left: 2px;background-color: #b3b0e2;" class="label label-secondary">' + row.entrustPurposeName + '</span>';
+                str += '<span style="margin-left: 2px;background-color: #accfea;" class="label label-info">' + row.loanTypeName + '</span>';
+                return str;
+            }
+        });
+        cols.push({
+            field: 'serviceEnd', title: '项目成员', width: '15%', formatter: function (value, row, index) {
+                var s = "";
+                if (row.userAccountManagerName) {
+                    s += "<span class='label label-primary'>" + row.userAccountManagerName.split("_")[0] + "</span>"
+                }
+                if (row.userAccountMemberName) {
+                    s += " " + row.userAccountMemberName.split("_")[0];
+                }
+                return s;
+            }
+        });
+        cols.push({
+            field: 'projectClassName', title: '类型', width: '8%', formatter: function (value, row, index) {
+                return row.projectCategoryName;
+            }
+        });
+        cols.push({field: 'projectStatus', title: '状态', width: '10%'});
+        cols.push({
+            field: 'finishPre', title: '项目进度', width: '15%', formatter: function (value, row, index) {
+                var s = "<div class='progress progress-sm' style='margin-bottom: 0px;'>";
+                s += "<div class='progress-bar bg-success' role='progressbar'  style='width: " + value + "%;'></div>";
+                s += "</div>";
+                s += "<small>完成" + value + "%</small>";
+                return s;
+            }
+        });
+        cols.push({
+            field: 'gmtCreated', title: '立项时间', width: '14%', formatter: function (value, row, index) {
+                return formatDate(row.gmtCreated, true);
+            }
+        });
+
+        $("#getProjectByAccountList").bootstrapTable('destroy');
+        TableInit("getProjectByAccountList", "${pageContext.request.contextPath}/projectInfo/getProjectByAccount", cols, {
+            account: account
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
 
     //项目成员
     objProject.selectUserAccountMember = function (this_) {

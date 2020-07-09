@@ -70,6 +70,16 @@ public class DataMethodFormulaService {
         return list.get(0);
     }
 
+    public DataMethodFormula getMethodFormulaByMethodKey(String methodKey) {
+        DataMethodFormula dataMethodFormula = new DataMethodFormula();
+        dataMethodFormula.setMethodKey(methodKey);
+        DataMethodFormula singleObject = dataMethodFormulaDao.getSingleObject(dataMethodFormula);
+        if (singleObject != null) {
+            return singleObject;
+        }
+        return dataMethodFormula;
+    }
+
 
     public DataMethodFormulaVo getDataMethodFormulaVo(DataMethodFormula dataMethodFormula) {
         if (dataMethodFormula == null) return null;

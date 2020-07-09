@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.GenerateReportGroup;
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.base.Objects;
@@ -32,7 +33,7 @@ public final class GenerateReportAssembleHelp {
      * @param reportType
      * @throws Exception
      */
-    public static boolean assembleSifaMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
+    public static boolean assembleSifaMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception {
         //司法估价项目名称
         if (Objects.equal(ReportFieldSifaEnum.SifaValuationProjectName.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuationProjectName2());
@@ -54,7 +55,7 @@ public final class GenerateReportAssembleHelp {
      * @param reportType
      * @throws Exception
      */
-    public static boolean assembleGongshangMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
+    public static boolean assembleGongshangMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception {
         //工行估价案例情况表
         if (Objects.equal(ReportFieldGongshangBankEnum.GongshangICBCValuationCaseInformationSheet.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getICBCValuationCaseInformationSheet());
@@ -78,7 +79,7 @@ public final class GenerateReportAssembleHelp {
      * @param reportType
      * @throws Exception
      */
-    public static boolean assembleJiansheMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
+    public static boolean assembleJiansheMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception {
 
         if (Objects.equal(ReportFieldJiansheBankEnum.JiansheNetAssessmentOne.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentNumber(name));
@@ -133,10 +134,10 @@ public final class GenerateReportAssembleHelp {
      * @param generateReportInfo
      * @param reportType
      */
-    public static boolean assembleCommonMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
+    public static boolean assembleCommonMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType  , GenerateReportGroup reportGroup) throws Exception {
         //文号
         if (Objects.equal(ReportFieldCommonEnum.CommonReportNumber.getName(), name)) {
-            if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
+            if (Objects.equal(reportGroup.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
                 return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber());
             }
         }
@@ -158,14 +159,14 @@ public final class GenerateReportAssembleHelp {
         }
         //报告编号
         if (Objects.equal(ReportFieldCommonEnum.CommonReportNumbering.getName(), name)) {
-            if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
+            if (Objects.equal(reportGroup.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
                 return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber2());
             }
         }
         //报告二维码
         if (Objects.equal(ReportFieldCommonEnum.CommonReportQrcode.getName(), name)) {
-            if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
-                return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType.getFieldName()));
+            if (Objects.equal(reportGroup.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
+                return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType.getFieldName() ,reportGroup));
             }
         }
         //报告类别
@@ -394,7 +395,7 @@ public final class GenerateReportAssembleHelp {
      * @param reportType
      * @throws Exception
      */
-    public static boolean assembleBaseMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
+    public static boolean assembleBaseMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception {
         //财产范围说明
         if (Objects.equal(ReportFieldEnum.ScopePropertyExplain.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getScopePropertyExplain());
@@ -632,7 +633,7 @@ public final class GenerateReportAssembleHelp {
      * @param reportType
      * @throws Exception
      */
-    public static boolean assembleUniversalBankMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
+    public static boolean assembleUniversalBankMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception {
 
         //厌恶设施
         if (Objects.equal(ReportFieldUniversalBankEnum.BankGeneralAversionFacility.getName(), name)) {
@@ -887,7 +888,7 @@ public final class GenerateReportAssembleHelp {
      * @return
      * @throws Exception
      */
-    public static boolean assembleOtherMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception{
+    public static boolean assembleOtherMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception{
         //收益法租赁限制说明
         if (Objects.equal(ReportFieldMdIncomeEnum.TenancyrestrictionRemark.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTenancyrestrictionRemark());

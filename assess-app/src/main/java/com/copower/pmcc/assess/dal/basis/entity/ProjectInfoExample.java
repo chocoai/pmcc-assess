@@ -2915,6 +2915,66 @@ public class ProjectInfoExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andBisAssignIsNull() {
+            addCriterion("bis_assign is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignIsNotNull() {
+            addCriterion("bis_assign is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignEqualTo(Boolean value) {
+            addCriterion("bis_assign =", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignNotEqualTo(Boolean value) {
+            addCriterion("bis_assign <>", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignGreaterThan(Boolean value) {
+            addCriterion("bis_assign >", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_assign >=", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignLessThan(Boolean value) {
+            addCriterion("bis_assign <", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_assign <=", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignIn(List<Boolean> values) {
+            addCriterion("bis_assign in", values, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignNotIn(List<Boolean> values) {
+            addCriterion("bis_assign not in", values, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_assign between", value1, value2, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_assign not between", value1, value2, "bisAssign");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

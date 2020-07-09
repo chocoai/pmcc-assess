@@ -218,13 +218,22 @@ public class DataLandLevelController {
             List<DataLandLevelDetail> dataLandLevelDetailList = dataLandLevelDetailService.getDataLandLevelDetailTree(dataLandLevelDetail);
             List<ZtreeDto> ztreeDtoList = new ArrayList<ZtreeDto>(dataLandLevelDetailList.size());
             if (CollectionUtils.isNotEmpty(dataLandLevelDetailList)) {
-                dataLandLevelDetailList.forEach(landLevelDetail -> ztreeDtoList.add(getZtreeDto(dataLandLevelDetailService.getDataLandLevelDetailVo(landLevelDetail))));
+                dataLandLevelDetailList.forEach(landLevelDetail -> ztreeDtoList.add(getZtreeDto(landLevelDetail)) );
             }
             return HttpResult.newCorrectResult(200, ztreeDtoList);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("异常");
         }
+    }
+
+    private ZtreeDto getZtreeDto(DataLandLevelDetail vo) {
+        ZtreeDto ztreeDto = new ZtreeDto();
+        ztreeDto.setId(vo.getId());
+        ztreeDto.setName(vo.getName());
+        ztreeDto.setPid(vo.getPid());
+        ztreeDto.set_parentId(vo.getPid());
+        return ztreeDto;
     }
 
 
@@ -254,7 +263,11 @@ public class DataLandLevelController {
     @GetMapping(value = "/getDataLandLevelDetailById", name = "获取 土地级别信息")
     public HttpResult getDataLandLevelDetailById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200, dataLandLevelDetailService.getDataLandLevelDetailById(id));
+            DataLandLevelDetail dataLandLevelDetailById = dataLandLevelDetailService.getDataLandLevelDetailById(id);
+            if (StringUtils.isBlank(dataLandLevelDetailById.getName())){
+                dataLandLevelDetailById.setName(dataLandLevelDetailService.getCacheNameById(id));
+            }
+            return HttpResult.newCorrectResult(200, dataLandLevelDetailById);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -292,25 +305,6 @@ public class DataLandLevelController {
 
     }
 
-    private ZtreeDto getZtreeDto(DataLandLevelDetailVo vo) {
-        ZtreeDto ztreeDto = new ZtreeDto();
-        ztreeDto.setId(vo.getId());
-        ztreeDto.setName(vo.getName());
-        ztreeDto.setPid(vo.getPid());
-        ztreeDto.set_parentId(vo.getPid());
-        if (StringUtils.isBlank(vo.getName())){
-            if (vo.getPid() == null || vo.getPid() == 0) {
-                ztreeDto.setPid(0);
-                ztreeDto.set_parentId(0);
-                ztreeDto.setName(vo.getClassifyName());
-            } else {
-                ztreeDto.setPid(vo.getPid());
-                ztreeDto.set_parentId(vo.getPid());
-                ztreeDto.setName(vo.getTypeName());
-            }
-        }
-        return ztreeDto;
-    }
 
     private void setParams(ModelAndView modelAndView, boolean readOnly) {
         modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());

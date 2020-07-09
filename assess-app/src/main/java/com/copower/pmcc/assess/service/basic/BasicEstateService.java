@@ -108,6 +108,8 @@ public class BasicEstateService extends BasicEntityAbstract {
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
     private BasicCommonQuoteFieldInfoService basicCommonQuoteFieldInfoService;
+    @Autowired
+    private BasicEstateStreetInfoService basicEstateStreetInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -209,6 +211,9 @@ public class BasicEstateService extends BasicEntityAbstract {
         vo.setSupplyHeatingName(baseDataDicService.getNameById(basicEstate.getSupplyHeating()));
         vo.setSupplyCommunicationName(baseDataDicService.getNameById(basicEstate.getSupplyCommunication()));
         vo.setSupplyRoadName(baseDataDicService.getNameById(basicEstate.getSupplyRoad()));
+        vo.setAcquisitionTypeName(baseDataDicService.getNameById(basicEstate.getAcquisitionType()));
+        vo.setLandRightNatureName(baseDataDicService.getNameById(basicEstate.getLandRightNature()));
+        vo.setLandRightTypeName(baseDataDicService.getNameById(basicEstate.getLandRightType()));
         if (NumberUtils.isNumber(basicEstate.getDeveloper())) {
             DataDeveloper dataDeveloper = dataDeveloperService.getByDataDeveloperId(Integer.parseInt(basicEstate.getDeveloper()));
             if (dataDeveloper != null) {
@@ -426,6 +431,47 @@ public class BasicEstateService extends BasicEntityAbstract {
         }
 
         if (basicEstate != null) {
+            BasicApplyBatchDetail estateDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
+            if (estateDetail != null) {
+
+
+                estateDetail.setName(basicEstate.getName());
+                estateDetail.setDisplayName(basicEstate.getName());
+                estateDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(estateDetail.getId()));
+                basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateDetail);
+                BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(estateDetail.getApplyBatchId());
+                if (basicApplyBatch != null) {
+                    basicApplyBatch.setEstateId(basicEstate.getId());
+                    basicApplyBatch.setEstateName(basicEstate.getName());
+                    basicApplyBatch.setProvince(basicEstate.getProvince());
+                    basicApplyBatch.setCity(basicEstate.getCity());
+                    //街道号
+                    BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+                    basicEstateStreetInfo.setEstateId(basicEstate.getId());
+                    List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
+                    if(!CollectionUtils.isEmpty(streetInfoList)){
+                        List<String> strs = LangUtils.transform(streetInfoList, o -> o.getStreetNumber());
+                        if(!CollectionUtils.isEmpty(strs)){
+                            String remark = StringUtils.join(strs.toArray(), ",");
+                            basicApplyBatch.setRemark(remark);
+                        }
+                    }
+
+
+                    basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
+                }
+
+                //添加公共引用
+                basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.OPEN_TIME_ENUM, DateUtils.formatDate(basicEstate.getOpenTime()));
+                basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.COVER_AN_AREA, String.valueOf(basicEstate.getCoverAnArea()));
+                List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfos = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
+                if (!CollectionUtils.isEmpty(basicEstateLandCategoryInfos)) {
+                    BigDecimal landUseYear = basicEstateLandCategoryInfos.get(0).getLandUseYear();
+                    basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.LAND_USE_YEAR_ENUM, String.valueOf(landUseYear));
+                }
+                basicEstate.setApplyId(estateDetail.getId());
+            }
+
             basicEstate.setClassify(oldBasicEstate.getClassify());
             basicEstate.setType(oldBasicEstate.getType());
             saveAndUpdate(basicEstate, true);
@@ -440,29 +486,9 @@ public class BasicEstateService extends BasicEntityAbstract {
                     basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, true);
                 }
             }
-            BasicApplyBatchDetail estateDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
-            if (estateDetail != null) {
-                estateDetail.setName(basicEstate.getName());
-                estateDetail.setDisplayName(basicEstate.getName());
-                basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateDetail);
-                BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(estateDetail.getApplyBatchId());
-                if (basicApplyBatch != null) {
-                    basicApplyBatch.setEstateId(basicEstate.getId());
-                    basicApplyBatch.setEstateName(basicEstate.getName());
-                    basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
-                }
 
-                //添加公共引用
-                basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.OPEN_TIME_ENUM, DateUtils.formatDate(basicEstate.getOpenTime()));
-                basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.COVER_AN_AREA, String.valueOf(basicEstate.getCoverAnArea()));
-                List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfos = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
-                if (!CollectionUtils.isEmpty(basicEstateLandCategoryInfos)) {
-                    BigDecimal landUseYear = basicEstateLandCategoryInfos.get(0).getLandUseYear();
-                    basicCommonQuoteFieldInfoService.setValue(estateDetail.getApplyBatchId(), estateDetail.getType(), ExamineCommonQuoteFieldEnum.LAND_USE_YEAR_ENUM, String.valueOf(landUseYear));
-                }
-            }
 
-            //土地类型类别
+            //土地类型
             jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELandUseTypeCategory.getVar());
             List<BasicEstateLandCategoryInfo> landUseCategorieVos = JSONObject.parseArray(jsonContent, BasicEstateLandCategoryInfo.class);
             if (!CollectionUtils.isEmpty(landUseCategorieVos)) {
@@ -635,6 +661,19 @@ public class BasicEstateService extends BasicEntityAbstract {
         modelAndView.addObject("basicEstate", getBasicEstateVo(getBasicEstateById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
+    }
+
+    @Override
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+        List<Object> objects = Lists.newArrayList();
+        BasicEstate basicEstate = new BasicEstate();
+        basicEstate.setApplyId(applyBatchDetailId);
+        basicEstate.setBisCase(true);
+        List<BasicEstate> basicEstateList = getBasicEstateList(basicEstate);
+        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(basicEstateList)){
+            basicEstateList.forEach(o->objects.add(o));
+        }
+        return objects;
     }
 
     @Override

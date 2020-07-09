@@ -279,24 +279,31 @@
         </div>
     </div>
 </div>
-
+<%@include file="/views/project/stageSurvey/common/houseTradingCase.jsp" %>
 <script type="application/javascript">
     //填充对应的数据
     function autocompleteData(data) {
-        if ("estate" == "${tbType}") {
+        if ("${tbType}".indexOf("estate")!=-1) {
             estateCommon.initById(data.id);
         }
 
-        if ("building" == "${tbType}") {
+        if ("${tbType}".indexOf("building")!=-1) {
             buildingCommon.showBuildingView(data);
         }
 
-        if ("unit" == "${tbType}") {
+        if ("${tbType}".indexOf("unit")!=-1) {
             unitCommon.showUnitView(data);
         }
 
-        if ("house" == "${tbType}") {
+        if ("${tbType}".indexOf("house")!=-1) {
             houseCommon.showHouseView(data);
+            if(${projectPhase eq 'caseStudyExtend'}) {
+                if("house.land" == "${tbType}"){
+                    houseLandTrading.init();
+                }else{
+                    houseTrading.init();
+                }
+            }
         }
     }
 </script>
@@ -316,10 +323,8 @@
                         url += 'applyBatchId=' + result.data.applyBatchId;
                         url += '&formClassify=' + result.data.formClassify;
                         url += '&formType=' + result.data.formType;
-                        url += '&tableId=' + result.data.tableId;
-                        url += '&tableName=' + result.data.tableName;
-                        url += '&tbType=' + tbType;
-                        url += '&planDetailsId=' + result.data.planDetailsId;
+                        url += '&tbId=' + result.data.tableId;
+                        url += '&tbType=' + '${tbType}';
                         openWin(url, function () {
                         })
                     }
@@ -436,7 +441,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectData.prototype.findData(' + row.id + ',\'estate\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectData.prototype.findData(' + row.batchDetailId + ',\'estate\')"><i class="fa fa-search fa-white"></i></button>';
                     str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="引用" onclick="projectData.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '<button type="button" onclick="projectData.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
@@ -448,7 +453,7 @@
             $("#" + projectData.prototype.config().houseTable).bootstrapTable('destroy');
             TableInit(projectData.prototype.config().houseTable, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
                 name: $("#queryEstateName").val(),
-                tbType: "estate",
+                tbType: '${tbType}',
                 planDetailsId:'${planDetailsId}'
             }, {
                 showColumns: false,
@@ -531,7 +536,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectBuild.prototype.findData(' + row.id + ',\'building\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectBuild.prototype.findData(' + row.batchDetailId + ',\'building\')"><i class="fa fa-search fa-white"></i></button>';
                     str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="引用" onclick="projectBuild.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '<button type="button" onclick="projectBuild.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
@@ -544,7 +549,7 @@
             $("#" + projectBuild.prototype.config().table).bootstrapTable('destroy');
             TableInit(projectBuild.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
                 name: $("#queryBuildName").val(),
-                tbType: "building",
+                tbType: '${tbType}',
                 planDetailsId:'${planDetailsId}'
             }, {
                 showColumns: false,
@@ -623,7 +628,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectUnit.prototype.findData(' + row.id + ',\'unit\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectUnit.prototype.findData(' + row.batchDetailId + ',\'unit\')"><i class="fa fa-search fa-white"></i></button>';
                     str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="引用" onclick="projectUnit.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '<button type="button" onclick="projectUnit.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
@@ -635,7 +640,7 @@
             $("#" + projectUnit.prototype.config().table).bootstrapTable('destroy');
             TableInit(projectUnit.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
                 name: $("#queryUnitName").val(),
-                tbType: "unit",
+                tbType: '${tbType}',
                 planDetailsId:'${planDetailsId}'
             }, {
                 showColumns: false,
@@ -714,7 +719,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectHouse.prototype.findData(' + row.id + ',\'unit\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectHouse.prototype.findData(' + row.batchDetailId + ',\'unit\')"><i class="fa fa-search fa-white"></i></button>';
                     str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="引用" onclick="projectHouse.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '<button type="button" onclick="projectHouse.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
@@ -726,7 +731,7 @@
             $("#" + projectHouse.prototype.config().table).bootstrapTable('destroy');
             TableInit(projectHouse.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
                 name: $("#queryHouseName").val(),
-                tbType: "house",
+                tbType: '${tbType}',
                 planDetailsId:'${planDetailsId}'
             }, {
                 showColumns: false,
@@ -810,7 +815,7 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <select id="queryProvince"
-                                                        class="form-control input-full search-select select2">
+                                                        class="form-control input-full  ">
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">
@@ -818,7 +823,7 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <select id="queryCity"
-                                                        class="form-control input-full search-select select2">
+                                                        class="form-control input-full  ">
                                                 </select>
                                             </div>
                                             <label class="col-sm-1 control-label">楼盘名称</label>
@@ -1035,28 +1040,22 @@
                 estate = {querySearch: null, queryCity: null, queryProvince: null};
             }
             var cols = [];
-            cols.push({field: 'name', title: '名称'});
-            cols.push({
-                field: 'area', title: '区域', formatter: function (value, row, index) {
-                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-                }
-            });
-            cols.push({field: 'blockName', title: '版块'});
-            cols.push({field: 'averagePrice', title: '均价'});
-            cols.push({field: 'coverAnArea', title: '占地面积'});
-            cols.push({field: 'version', title: '版本'});
+            cols.push({field: 'fullName', title: '名称'});
+            cols.push({field: 'provinceName', title: '省'});
+            cols.push({field: 'cityName', title: '市'});
+            cols.push({field: 'typeName', title: '类型'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="详情" onclick="caseFun.caseEstate.findData(' + row.id + ')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="详情" onclick="checkInfo('+0+',' + row.id + ')"><i class="fa fa-search fa-white"></i></button>';
                     str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="caseFun.caseEstate.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + caseFun.config.father.caseEstate.table()).bootstrapTable('destroy');
-            TableInit(caseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/basicEstate/getCaseEstateVos", cols, {
+            TableInit(caseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/basicApplyBatch/getBasicApplyBatchList", cols, {
                 name: estate.querySearch,
                 city: estate.queryCity,
                 province: estate.queryProvince
@@ -1097,7 +1096,7 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/basicEstate/quoteCaseEstate',
                 data: {
-                    sourceId: id,
+                    sourceApplyBatchId: id,
                     targetId:'${tbId}'
                 },
                 type: "get",
@@ -1124,23 +1123,22 @@
         },
         loadDataList: function (estateId, buildName) {
             var cols = [];
-            cols.push({field: 'buildingNumber', title: '楼栋编号'});
-            cols.push({field: 'buildingName', title: '楼栋名称'});
-            cols.push({field: 'version', title: '版本'});
+            cols.push({field: 'fullName', title: '名称'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseBuild.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="checkInfo(' + row.id + ')"><i class="fa fa-search fa-white"></i></button>';
                     str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="caseFun.caseBuild.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + caseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
-            TableInit(caseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/basicBuilding/getCaseBuildingList", cols, {
-                estateId: estateId,
-                buildName: buildName
+            TableInit(caseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/basicApplyBatch/getQuoteDataList", cols, {
+                applyBatchId:'${basicApplyBatch.id}',
+                type: '${tbType}',
+                name: buildName
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1158,7 +1156,7 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/basicBuilding/quoteCaseBuilding',
                 data: {
-                    sourceId: id,
+                    sourceApplyBatchDetailId: id,
                     targetId:${tbId}
                 },
                 type: "get",
@@ -1185,23 +1183,22 @@
         },
         loadDataList: function (buildingId, unitName) {
             var cols = [];
-            cols.push({field: 'unitNumber', title: '单元编号'});
-            cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
-            cols.push({field: 'version', title: '版本'});
+            cols.push({field: 'fullName', title: '名称'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseUnit.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="checkInfo(' + row.id + ')"><i class="fa fa-search fa-white"></i></button>';
                     str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="caseFun.caseUnit.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + caseFun.config.father.caseUnit.table()).bootstrapTable('destroy');
-            TableInit(caseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/basicUnit/getCaseUnitList", cols, {
-                buildingId: buildingId,
-                unitName: unitName
+            TableInit(caseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/basicApplyBatch/getQuoteDataList", cols, {
+                applyBatchId:'${basicApplyBatch.id}',
+                type: '${tbType}',
+                name: unitName
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1219,7 +1216,7 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/basicUnit/quoteCaseUnit',
                 data: {
-                    sourceId: id,
+                    sourceApplyBatchDetailId: id,
                     targetId:${tbId}
                 },
                 type: "get",
@@ -1245,23 +1242,22 @@
         },
         loadDataList: function (unitId, houseName) {
             var cols = [];
-            cols.push({field: 'houseNumber', title: '房号'});
-            cols.push({field: 'floor', title: '所在楼层'});
-            cols.push({field: 'version', title: '版本'});
+            cols.push({field: 'fullName', title: '名称'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseHouse.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="checkInfo(' + row.id + ')"><i class="fa fa-search fa-white"></i></button>';
                     str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;" data-placement="top" data-original-title="引用" onclick="caseFun.caseHouse.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + caseFun.config.father.caseHouse.table()).bootstrapTable('destroy');
-            TableInit(caseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/basicHouse/getCaseHouseList", cols, {
-                unitId: unitId,
-                houseName: houseName
+            TableInit(caseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/basicApplyBatch/getQuoteDataList", cols, {
+                applyBatchId:'${basicApplyBatch.id}',
+                type: '${tbType}',
+                name: houseName
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1279,7 +1275,7 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/basicHouse/quoteCaseHouse',
                 data: {
-                    sourceId: id,
+                    sourceApplyBatchDetailId: id,
                     targetId:${tbId}
                 },
                 type: "get",
@@ -1287,6 +1283,9 @@
                     if (result.ret) {
                         if (result.data != null) {
                             houseCommon.initById(result.data.id);
+                            if(${projectPhase eq 'caseStudyExtend'}) {
+                                houseTrading.init();
+                            }
                             $('#' + caseFun.config.father.caseHouse.box()).modal('hide');
                         }
                     } else {
@@ -1297,4 +1296,64 @@
         }
     };
 
+</script>
+<script type="application/javascript">
+    function checkInfo(id,applyBatchId){
+        <%--var data = {};--%>
+        <%--data.tbType = '${tbType}';--%>
+        <%--data.applyBatchId = '${basicApplyBatch.id}';--%>
+        <%--data.formClassify = '${basicApplyBatch.classify}';--%>
+        <%--data.formType = '${basicApplyBatch.type}';--%>
+        <%--data.planDetailsId = '${basicApplyBatch.planDetailsId}';--%>
+        <%--data.tbId = id;--%>
+        <%--window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?' + parseParam(data));--%>
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/getApplyBatchDetailByType",
+            type: "get",
+            dataType: "json",
+            data: {
+                id: id,
+                applyBatchId: applyBatchId,
+                type:'${tbType}'
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
+                        url += 'applyBatchId=' + result.data.applyBatchId;
+                        url += '&formClassify=' + result.data.formClassify;
+                        url += '&formType=' + result.data.formType;
+                        url += '&tbId=' + result.data.tableId;
+                        url += '&tbType=' + '${tbType}';
+                        openWin(url, function () {
+                        })
+                    }
+
+                }
+                else {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        })
+    }
+
+    //js对象转成路径参数
+    var parseParam = function (param) {
+        var arr = [];
+        var keys = Object.keys(param);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var value = param[key];
+            if (!value) {
+                // continue ;
+            }
+            var paramStr = key + "=" + value;
+            arr.push(paramStr)
+        }
+        return arr.join("&");
+    };
 </script>

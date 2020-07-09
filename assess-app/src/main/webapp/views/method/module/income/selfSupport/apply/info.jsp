@@ -127,13 +127,14 @@
                             </label>
                             <div class="col-sm-3">
                                 <div class="input-group">
+                                    <input type="hidden" name="rewardRateId" value="${mdIncome.rewardRateId}">
                                     <input type="text" required class="form-control x-percent" name="rewardRate"
                                            placeholder="报酬率"
                                            data-value="${mdIncome.rewardRate}" onblur="selfSupport.computePrice();">
-                                    <span class="input-group-btn">
-                              <input type="button" class="btn btn-primary" value="报酬率测算"
-                                     onclick="selfSupport.getRewardRate(this);"/>
-                            </span>
+                                    <div class="input-group-prepend">
+                              <button type="button" class="btn btn-info btn-sm" value="" style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                     onclick="selfSupport.getRewardRate(this);">报酬率</button>
+                            </div>
                                 </div>
                             </div>
                         </div>
@@ -459,13 +460,13 @@
                                                     <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
                                                            onblur="selfSupport.computeInitialAmount(this);"
                                                            class="form-control x-percent">
-                                                    <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default docs-tooltip"
-                                                    onclick="selfSupport.operatingCostItem()"
-                                                    data-toggle="tooltip" data-original-title="明细">
-                                            <i class="fa fa-edit"></i>
-                                            </button>
-                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <button type="button" class="btn btn-warning btn-sm"
+                                                                onclick="selfSupport.operatingCostItem()"
+                                                                data-toggle="tooltip" data-original-title="明细">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
@@ -1533,10 +1534,12 @@
 
     //获取报酬率
     selfSupport.getRewardRate = function (_this) {
-        rewardRateFunc.calculation(function (result) {
+        var rewardRateId = $(_this).closest('.input-group').find('[name=rewardRateId]').val();
+        rewardRateFunc.calculation(rewardRateId,function (result) {
             if (result) {
                 var element = $(_this).closest('.input-group').find(':text');
-                element.val(result);
+                element.val(result.resultValue);
+                $(_this).closest('.input-group').find('[name=rewardRateId]').val(result.id);
                 AssessCommon.elementParsePoint(element);
                 selfSupport.computeOperatingProfit();
             }
@@ -1592,6 +1595,7 @@
         formData.mdIncome.averageProfitRate = $("#frm_self_support").find('[name=averageProfitRate]').attr('data-value');
         formData.mdIncome.averageProfitRateRemark = $("#frm_self_support").find('[name=averageProfitRateRemark]').val();
         formData.mdIncome.rewardRate = $("#frm_self_support").find('[name=rewardRate]').attr('data-value');
+        formData.mdIncome.rewardRateId = $("#frm_self_support").find('[name=rewardRateId]').val();
 
         formData.dateSectionList = [];
         $("#selfSupportResultBody").find('tr').each(function () {
@@ -1724,7 +1728,7 @@
         //var data = formParams("frmCostItem");
         var id = $("#frmCostItem").find("input[name='id']").val();
         var operatingCostItem = [];
-        $("#frmCostItem").find('.system').find('.row form-group').each(function () {
+        $("#frmCostItem").find('.system').find('.form-group').each(function () {
             var item = {};
             var amountMoney = $(this).find('[name^=amountMoney]').val();
             var total = $(this).find('[name^=total]').val();
@@ -1738,6 +1742,7 @@
                 operatingCostItem.push(item);
             }
         });
+        console.log(operatingCostItem+"==")
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/income/saveOperatingCostItem",
@@ -1779,8 +1784,9 @@
 
     selfSupport.writeHTMLData = function (json) {
         var jsonarray = eval(json);
+        console.log(jsonarray)
         $.each(jsonarray, function (i, n) {
-            var html = "<div class='row form-group' >";
+            var html = "<div class='row form-group'>";
             html += ' <div class="col-md-12">'
 
             html += "<input type='hidden'  name='amountMoney'  value='" + n.amountMoney + "'>";
@@ -1820,7 +1826,7 @@
             if (AssessCommon.isNumber(incomeTotal) && AssessCommon.isNumber(costTotal)) {
                 incomeTotal = parseFloat(incomeTotal);
                 costTotal = parseFloat(costTotal);
-                var operatingProfit = (incomeTotal * averageProfitRate).toFixed(2);
+                var operatingProfit = ((incomeTotal-costTotal) * averageProfitRate).toFixed(2);
                 $(this).find('[data-name=operatingProfit]').text(operatingProfit);
                 //净收益
                 var netProfit = incomeTotal - costTotal - operatingProfit;

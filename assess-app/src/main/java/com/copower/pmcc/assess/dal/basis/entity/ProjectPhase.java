@@ -42,6 +42,8 @@ public class ProjectPhase {
 
     private Date gmtModified;
 
+    private String serviceBean;
+
     public Integer getId() {
         return id;
     }
@@ -192,5 +194,13 @@ public class ProjectPhase {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getServiceBean() {
+        return serviceBean;
+    }
+
+    public void setServiceBean(String serviceBean) {
+        this.serviceBean = serviceBean == null ? null : serviceBean.trim();
     }
 }

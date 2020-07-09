@@ -4,17 +4,19 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="apply_batch_id" property="applyBatchId" jdbcType="INTEGER" />
     <result column="batch_detail_id" property="batchDetailId" jdbcType="INTEGER" />
-    <result column="structural_info" property="structuralInfo" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="land_category_id" property="landCategoryId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="structural_info" property="structuralInfo" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="DECIMAL" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="basic_estate_id" property="basicEstateId" jdbcType="INTEGER" />
     <result column="basic_building_id" property="basicBuildingId" jdbcType="INTEGER" />
     <result column="basic_unit_id" property="basicUnitId" jdbcType="INTEGER" />
     <result column="basic_house_id" property="basicHouseId" jdbcType="INTEGER" />
-    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="area" property="area" jdbcType="DECIMAL" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -79,9 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, batch_detail_id, structural_info, type, address, declare_record_id, basic_estate_id, 
-    basic_building_id, basic_unit_id, basic_house_id, plan_details_id, area, bis_delete, 
-    creator, gmt_created, gmt_modified
+    id, name, apply_batch_id, batch_detail_id, declare_record_id, plan_details_id, land_category_id, 
+    type, structural_info, area, address, basic_estate_id, basic_building_id, basic_unit_id, 
+    basic_house_id, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample" >
     select
@@ -117,18 +119,20 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply (name, batch_detail_id, structural_info, 
-      type, address, declare_record_id, 
-      basic_estate_id, basic_building_id, basic_unit_id, 
-      basic_house_id, plan_details_id, area, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified)
-    values (#{name,jdbcType=VARCHAR}, #{batchDetailId,jdbcType=INTEGER}, #{structuralInfo,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{declareRecordId,jdbcType=INTEGER}, 
-      #{basicEstateId,jdbcType=INTEGER}, #{basicBuildingId,jdbcType=INTEGER}, #{basicUnitId,jdbcType=INTEGER}, 
-      #{basicHouseId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_basic_apply (name, apply_batch_id, batch_detail_id, 
+      declare_record_id, plan_details_id, land_category_id, 
+      type, structural_info, area, 
+      address, basic_estate_id, basic_building_id, 
+      basic_unit_id, basic_house_id, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{name,jdbcType=VARCHAR}, #{applyBatchId,jdbcType=INTEGER}, #{batchDetailId,jdbcType=INTEGER}, 
+      #{declareRecordId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{landCategoryId,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{structuralInfo,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
+      #{address,jdbcType=VARCHAR}, #{basicEstateId,jdbcType=INTEGER}, #{basicBuildingId,jdbcType=INTEGER}, 
+      #{basicUnitId,jdbcType=INTEGER}, #{basicHouseId,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -139,20 +143,32 @@
       <if test="name != null" >
         name,
       </if>
+      <if test="applyBatchId != null" >
+        apply_batch_id,
+      </if>
       <if test="batchDetailId != null" >
         batch_detail_id,
       </if>
-      <if test="structuralInfo != null" >
-        structural_info,
+      <if test="declareRecordId != null" >
+        declare_record_id,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
+      <if test="landCategoryId != null" >
+        land_category_id,
       </if>
       <if test="type != null" >
         type,
       </if>
+      <if test="structuralInfo != null" >
+        structural_info,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
       <if test="address != null" >
         address,
-      </if>
-      <if test="declareRecordId != null" >
-        declare_record_id,
       </if>
       <if test="basicEstateId != null" >
         basic_estate_id,
@@ -165,12 +181,6 @@
       </if>
       <if test="basicHouseId != null" >
         basic_house_id,
-      </if>
-      <if test="planDetailsId != null" >
-        plan_details_id,
-      </if>
-      <if test="area != null" >
-        area,
       </if>
       <if test="bisDelete != null" >
         bis_delete,
@@ -189,20 +199,32 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="applyBatchId != null" >
+        #{applyBatchId,jdbcType=INTEGER},
+      </if>
       <if test="batchDetailId != null" >
         #{batchDetailId,jdbcType=INTEGER},
       </if>
-      <if test="structuralInfo != null" >
-        #{structuralInfo,jdbcType=VARCHAR},
+      <if test="declareRecordId != null" >
+        #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="landCategoryId != null" >
+        #{landCategoryId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>
+      <if test="structuralInfo != null" >
+        #{structuralInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=DECIMAL},
+      </if>
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="declareRecordId != null" >
-        #{declareRecordId,jdbcType=INTEGER},
       </if>
       <if test="basicEstateId != null" >
         #{basicEstateId,jdbcType=INTEGER},
@@ -215,12 +237,6 @@
       </if>
       <if test="basicHouseId != null" >
         #{basicHouseId,jdbcType=INTEGER},
-      </if>
-      <if test="planDetailsId != null" >
-        #{planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="area != null" >
-        #{area,jdbcType=DECIMAL},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -251,20 +267,32 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
+      <if test="record.applyBatchId != null" >
+        apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
+      </if>
       <if test="record.batchDetailId != null" >
         batch_detail_id = #{record.batchDetailId,jdbcType=INTEGER},
       </if>
-      <if test="record.structuralInfo != null" >
-        structural_info = #{record.structuralInfo,jdbcType=VARCHAR},
+      <if test="record.declareRecordId != null" >
+        declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.landCategoryId != null" >
+        land_category_id = #{record.landCategoryId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=INTEGER},
       </if>
+      <if test="record.structuralInfo != null" >
+        structural_info = #{record.structuralInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=DECIMAL},
+      </if>
       <if test="record.address != null" >
         address = #{record.address,jdbcType=VARCHAR},
-      </if>
-      <if test="record.declareRecordId != null" >
-        declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       </if>
       <if test="record.basicEstateId != null" >
         basic_estate_id = #{record.basicEstateId,jdbcType=INTEGER},
@@ -277,12 +305,6 @@
       </if>
       <if test="record.basicHouseId != null" >
         basic_house_id = #{record.basicHouseId,jdbcType=INTEGER},
-      </if>
-      <if test="record.planDetailsId != null" >
-        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="record.area != null" >
-        area = #{record.area,jdbcType=DECIMAL},
       </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
@@ -305,17 +327,19 @@
     update tb_basic_apply
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
+      apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
       batch_detail_id = #{record.batchDetailId,jdbcType=INTEGER},
-      structural_info = #{record.structuralInfo,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=INTEGER},
-      address = #{record.address,jdbcType=VARCHAR},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      land_category_id = #{record.landCategoryId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      structural_info = #{record.structuralInfo,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=DECIMAL},
+      address = #{record.address,jdbcType=VARCHAR},
       basic_estate_id = #{record.basicEstateId,jdbcType=INTEGER},
       basic_building_id = #{record.basicBuildingId,jdbcType=INTEGER},
       basic_unit_id = #{record.basicUnitId,jdbcType=INTEGER},
       basic_house_id = #{record.basicHouseId,jdbcType=INTEGER},
-      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      area = #{record.area,jdbcType=DECIMAL},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -330,20 +354,32 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="applyBatchId != null" >
+        apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
+      </if>
       <if test="batchDetailId != null" >
         batch_detail_id = #{batchDetailId,jdbcType=INTEGER},
       </if>
-      <if test="structuralInfo != null" >
-        structural_info = #{structuralInfo,jdbcType=VARCHAR},
+      <if test="declareRecordId != null" >
+        declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="landCategoryId != null" >
+        land_category_id = #{landCategoryId,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
       </if>
+      <if test="structuralInfo != null" >
+        structural_info = #{structuralInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DECIMAL},
+      </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="declareRecordId != null" >
-        declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       </if>
       <if test="basicEstateId != null" >
         basic_estate_id = #{basicEstateId,jdbcType=INTEGER},
@@ -356,12 +392,6 @@
       </if>
       <if test="basicHouseId != null" >
         basic_house_id = #{basicHouseId,jdbcType=INTEGER},
-      </if>
-      <if test="planDetailsId != null" >
-        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="area != null" >
-        area = #{area,jdbcType=DECIMAL},
       </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
@@ -381,17 +411,19 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
     update tb_basic_apply
     set name = #{name,jdbcType=VARCHAR},
+      apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
       batch_detail_id = #{batchDetailId,jdbcType=INTEGER},
-      structural_info = #{structuralInfo,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
-      address = #{address,jdbcType=VARCHAR},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      land_category_id = #{landCategoryId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      structural_info = #{structuralInfo,jdbcType=VARCHAR},
+      area = #{area,jdbcType=DECIMAL},
+      address = #{address,jdbcType=VARCHAR},
       basic_estate_id = #{basicEstateId,jdbcType=INTEGER},
       basic_building_id = #{basicBuildingId,jdbcType=INTEGER},
       basic_unit_id = #{basicUnitId,jdbcType=INTEGER},
       basic_house_id = #{basicHouseId,jdbcType=INTEGER},
-      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      area = #{area,jdbcType=DECIMAL},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

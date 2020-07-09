@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportAssetAssociationMapper">
+    <resultMap id="BaseResultMap"
+               type="com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportAssetAssociation">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="report_type" property="reportType" jdbcType="INTEGER" />
+        <result column="u_use_unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="number_value" property="numberValue" jdbcType="VARCHAR"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="service_come_from" property="serviceComeFrom" jdbcType="VARCHAR"/>
+        <result column="entrust_purpose_name" property="entrustPurposeName" jdbcType="VARCHAR"/>
+        <result column="investigations_start_date" property="investigationsStartDate" jdbcType="TIMESTAMP"/>
+        <result column="home_work_end_time" property="homeWorkEndTime" jdbcType="TIMESTAMP"/>
+        <result column="valuation_date" property="valuationDate" jdbcType="TIMESTAMP"/>
+        <result column="cs_address" property="csAddress" jdbcType="VARCHAR"/>
+        <result column="qualification_type" property="qualificationType" jdbcType="VARCHAR"/>
+        <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="VARCHAR"/>
+        <result column="contract_price" property="contractPrice" jdbcType="DECIMAL"/>
+        <result column="area_id" property="areaId" jdbcType="INTEGER"/>
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getCustomReportAssetAssociationList" parameterType="map" resultMap="BaseResultMap">
+        select distinct
+        A.id,A.gmt_created,A.project_id, A.report_type,E.u_use_unit_name,A.number_value,B.project_name,B.project_category_id,B.service_come_from,B.entrust_purpose_name,C.investigations_start_date,
+        C.home_work_end_time,
+        B.valuation_date,D.cs_address,C.qualification_type,C.real_estate_appraiser,B.contract_price, A.area_id, B.preaudit_number_date, B.result_number_date
+        from tb_project_number_record A
+        LEFT JOIN tb_project_info B ON A.project_id = B.id
+        LEFT JOIN tb_generate_report_info C ON A.area_id = C.area_group_id
+        LEFT JOIN tb_initiate_consignor D ON A.project_id = D.project_id
+        LEFT JOIN tb_initiate_unit_information E ON A.project_id = E.project_id
+        WHERE 1=1
+        and bis_delete = false
+        <if test="projectName!=null and projectName!=''">
+            AND (B.project_name LIKE
+            CONCAT(CONCAT('%',#{projectName}), '%'))
+        </if>
+        <if test="projectCategoryId!=null">
+            AND B.project_category_id =  #{projectCategoryId}
+        </if>
+        <if test="resultId!=null">
+            AND (A.report_type = #{resultId})
+        </if>
+        <if test="numberValue!=null and numberValue!=''">
+            AND (A.number_value LIKE
+            CONCAT(CONCAT('%',#{numberValue}), '%'))
+        </if>
+        <if test="unitName!=null and unitName!=''">
+            AND (E.u_use_unit_name LIKE
+            CONCAT(CONCAT('%',#{unitName}), '%'))
+        </if>
+        <if test="startDate!=null">
+            AND A.gmt_created &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null">
+            AND A.gmt_created &lt;= #{endDate}
+        </if>
+        GROUP BY A.project_id
+    </select>
+</mapper>

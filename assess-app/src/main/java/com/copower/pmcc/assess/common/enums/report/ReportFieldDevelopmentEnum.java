@@ -65,6 +65,7 @@ public enum ReportFieldDevelopmentEnum {
     Development_Land_SetUse("假设法土地设定用途"),
     Development_SetUse("假设法设定用途"),
     Development_total_saleableArea("假设法总可售面积"),//f18
+    Development_Land_Area("假设法总土地面积"),
     Development_reconnaissanceDesignRate("假设法勘察设计和前期工程费率"),
     Development_constructionInstallationEngineeringFee("假设法建筑安装工程费"),
     Development_projectDevelopmentIncomeCorrectRate("假设法项目开发税及附加计算率"),
@@ -79,6 +80,7 @@ public enum ReportFieldDevelopmentEnum {
     Development_infrastructureCost_FileName("假设法基础设施费文件名称"),//暂时不确定删除
     Development_constructionSubtotalContent("假设法建设成本内容"),//暂时不确定删除
     Development_SalesTaxAndAdditional("假设法增值税及附加"),//暂时不确定删除
+    Development_formula("假设法计算公式"),//暂时不确定删除
     ;
     private String name;
     private ReportFieldDevelopmentEnum(String name) {

@@ -26,7 +26,7 @@ public class BasicApplyBatchDao {
      * @param estateName
      * @return
      */
-    public List<BasicApplyBatch> getCommitBasicApplyBatchListByName(String estateName,String userAccount, Boolean draftFlag) {
+    public List<BasicApplyBatch> getCommitBasicApplyBatchListByName(String estateName, String userAccount, Boolean draftFlag) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(estateName)) {
@@ -49,7 +49,7 @@ public class BasicApplyBatchDao {
      * @param estateName
      * @return
      */
-    public List<BasicApplyBatch> getDraftBasicApplyBatchListByName(String estateName,String userAccount, Boolean draftFlag) {
+    public List<BasicApplyBatch> getDraftBasicApplyBatchListByName(String estateName, String userAccount, Boolean draftFlag) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(estateName)) {
@@ -137,10 +137,9 @@ public class BasicApplyBatchDao {
     public BasicApplyBatch getBasicApplyBatchByPlanDetailsId(Integer planDetailsId) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
-        if (planDetailsId!=null) {
+        if (planDetailsId != null) {
             criteria.andPlanDetailsIdEqualTo(planDetailsId);
         }
-        criteria.andReferenceApplyBatchIdIsNull();
         criteria.andBisDeleteEqualTo(false);
         example.setOrderByClause("id desc");
         List<BasicApplyBatch> basicApplyBatchs = basicApplyBatchMapper.selectByExample(example);
@@ -176,10 +175,45 @@ public class BasicApplyBatchDao {
      */
     public boolean deleteInfo(Integer id) {
         BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(id);
-        if(basicApplyBatch==null) return false;
+        if (basicApplyBatch == null) return false;
         basicApplyBatch.setBisDelete(true);
         return basicApplyBatchMapper.updateByPrimaryKeySelective(basicApplyBatch) > 0;
     }
 
+    public List<BasicApplyBatch> getListByEstate(String province, String city, String estateName) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (StringUtils.isNotBlank(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        if (StringUtils.isNotBlank(estateName)) {
+            criteria.andEstateNameLike(String.format("%s%s%s", "%", estateName, "%"));
+        }
+        criteria.andDraftFlagEqualTo(false).andBisCaseEqualTo(true);
+        criteria.andBisDeleteEqualTo(false);
+        example.setOrderByClause("id desc");
+        return basicApplyBatchMapper.selectByExample(example);
+    }
 
+
+    public List<BasicApplyBatch> getListByRemark(String province, String city, String remark) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (StringUtils.isNotBlank(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        if (StringUtils.isNotBlank(remark)) {
+            criteria.andRemarkLike(String.format("%s%s%s", "%", remark, "%"));
+        }
+        criteria.andDraftFlagEqualTo(false).andBisCaseEqualTo(true);
+        criteria.andBisDeleteEqualTo(false);
+        example.setOrderByClause("id desc");
+        return basicApplyBatchMapper.selectByExample(example);
+    }
 }

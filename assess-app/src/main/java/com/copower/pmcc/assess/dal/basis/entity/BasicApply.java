@@ -8,15 +8,23 @@ public class BasicApply {
 
     private String name;
 
+    private Integer applyBatchId;
+
     private Integer batchDetailId;
 
-    private String structuralInfo;
+    private Integer declareRecordId;
+
+    private Integer planDetailsId;
+
+    private Integer landCategoryId;
 
     private Integer type;
 
-    private String address;
+    private String structuralInfo;
 
-    private Integer declareRecordId;
+    private BigDecimal area;
+
+    private String address;
 
     private Integer basicEstateId;
 
@@ -25,10 +33,6 @@ public class BasicApply {
     private Integer basicUnitId;
 
     private Integer basicHouseId;
-
-    private Integer planDetailsId;
-
-    private BigDecimal area;
 
     private Boolean bisDelete;
 
@@ -54,6 +58,14 @@ public class BasicApply {
         this.name = name == null ? null : name.trim();
     }
 
+    public Integer getApplyBatchId() {
+        return applyBatchId;
+    }
+
+    public void setApplyBatchId(Integer applyBatchId) {
+        this.applyBatchId = applyBatchId;
+    }
+
     public Integer getBatchDetailId() {
         return batchDetailId;
     }
@@ -62,12 +74,28 @@ public class BasicApply {
         this.batchDetailId = batchDetailId;
     }
 
-    public String getStructuralInfo() {
-        return structuralInfo;
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
     }
 
-    public void setStructuralInfo(String structuralInfo) {
-        this.structuralInfo = structuralInfo == null ? null : structuralInfo.trim();
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getLandCategoryId() {
+        return landCategoryId;
+    }
+
+    public void setLandCategoryId(Integer landCategoryId) {
+        this.landCategoryId = landCategoryId;
     }
 
     public Integer getType() {
@@ -78,20 +106,28 @@ public class BasicApply {
         this.type = type;
     }
 
+    public String getStructuralInfo() {
+        return structuralInfo;
+    }
+
+    public void setStructuralInfo(String structuralInfo) {
+        this.structuralInfo = structuralInfo == null ? null : structuralInfo.trim();
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
-    }
-
-    public Integer getDeclareRecordId() {
-        return declareRecordId;
-    }
-
-    public void setDeclareRecordId(Integer declareRecordId) {
-        this.declareRecordId = declareRecordId;
     }
 
     public Integer getBasicEstateId() {
@@ -124,22 +160,6 @@ public class BasicApply {
 
     public void setBasicHouseId(Integer basicHouseId) {
         this.basicHouseId = basicHouseId;
-    }
-
-    public Integer getPlanDetailsId() {
-        return planDetailsId;
-    }
-
-    public void setPlanDetailsId(Integer planDetailsId) {
-        this.planDetailsId = planDetailsId;
-    }
-
-    public BigDecimal getArea() {
-        return area;
-    }
-
-    public void setArea(BigDecimal area) {
-        this.area = area;
     }
 
     public Boolean getBisDelete() {

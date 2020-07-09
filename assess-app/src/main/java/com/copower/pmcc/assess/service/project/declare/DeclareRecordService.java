@@ -73,8 +73,11 @@ public class DeclareRecordService {
         return null;
     }
 
-    public List<DeclareRecord> getDeclareRecordListByDataTableId(String dataTableName, Integer dataTableId, Integer projectId) {
-        return declareRecordDao.getDeclareRecordListByDataTableId(dataTableName, dataTableId, projectId);
+    public DeclareRecord getDeclareRecordByDataTableId(String dataTableName, Integer dataTableId) {
+        if (StringUtils.isBlank(dataTableName) || dataTableId == null) return null;
+        List<DeclareRecord> recordList = declareRecordDao.getDeclareRecordListByDataTableId(dataTableName, dataTableId);
+        if (CollectionUtils.isEmpty(recordList)) return null;
+        return recordList.get(0);
     }
 
 
@@ -258,14 +261,8 @@ public class DeclareRecordService {
         return declareRecordDao.getDeclareRecordListByIds(ids);
     }
 
-    public void reStartDeclareApplyByDeclareRecordId(List<Integer> declareRecordIds, Integer projectId) {
-        if (CollectionUtils.isEmpty(declareRecordIds)) {
-            return;
-        }
-        if (projectId == null) {
-            return;
-        }
-        schemeJudgeObjectService.reStartDeclareApplyByDeclareRecordId(declareRecordIds, projectId);
+    public void updateJudgeObjectDeclareInfo(DeclareRecord declareRecord, Integer projectId) {
+        schemeJudgeObjectService.updateJudgeObjectDeclareInfo(declareRecord, projectId);
     }
 
     /**
@@ -303,12 +300,12 @@ public class DeclareRecordService {
             stringBuilder.append("编号重复");
             return stringBuilder.toString();
         }
-        changeDeclareRecordNumberHelp(declareRecord,Integer.parseInt(number)) ;
+        changeDeclareRecordNumberHelp(declareRecord, Integer.parseInt(number));
         stringBuilder.append("变更成功");
         return stringBuilder.toString();
     }
 
-    private void changeDeclareRecordNumberHelp(DeclareRecord declareRecord,Integer number){
+    private void changeDeclareRecordNumberHelp(DeclareRecord declareRecord, Integer number) {
         if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
             declareRealtyHouseCertService.changeAutoInitNumber(number, declareRecord.getDataTableId());
         }
@@ -344,10 +341,10 @@ public class DeclareRecordService {
             Iterator<DeclareRecord> iterator = declareRecordList.iterator();
             while (iterator.hasNext()) {
                 DeclareRecord declareRecord = iterator.next();
-                if (CollectionUtils.isNotEmpty(collect)){
-                    if (collect.contains(declareRecord.getId())){
-                        if (declareRecord.getNumber() != null || declareRecord.getNumber() != 0){
-                            treeSet.add(declareRecord.getNumber()) ;
+                if (CollectionUtils.isNotEmpty(collect)) {
+                    if (collect.contains(declareRecord.getId())) {
+                        if (declareRecord.getNumber() != null || declareRecord.getNumber() != 0) {
+                            treeSet.add(declareRecord.getNumber());
                         }
                         iterator.remove();
                     }
@@ -357,8 +354,8 @@ public class DeclareRecordService {
         if (CollectionUtils.isEmpty(declareRecordList)) {
             return "权证已经全部生成了估价对象,无剩余可以变更编号的权证";
         }
-        if (CollectionUtils.isNotEmpty(treeSet)){
-            startIndex += treeSet.last().intValue() ;
+        if (CollectionUtils.isNotEmpty(treeSet)) {
+            startIndex += treeSet.last().intValue();
         }
         //排下序
         Ordering<DeclareRecord> ordering = Ordering.from(new Comparator<DeclareRecord>() {
@@ -366,13 +363,13 @@ public class DeclareRecordService {
             public int compare(DeclareRecord o1, DeclareRecord o2) {
                 return o1.getId().compareTo(o2.getId());
             }
-        }) ;
+        });
         declareRecordList.sort(ordering);
         Iterator<DeclareRecord> iterator = declareRecordList.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             DeclareRecord declareRecord = iterator.next();
-            changeDeclareRecordNumberHelp(declareRecord,startIndex) ;
-            startIndex++ ;
+            changeDeclareRecordNumberHelp(declareRecord, startIndex);
+            startIndex++;
         }
         stringBuilder.append("变更成功");
         return stringBuilder.toString();
@@ -395,11 +392,28 @@ public class DeclareRecordService {
         return treeSet;
     }
 
-    private List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId){
+    private List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId) {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setProjectId(projectId);
-        return schemeJudgeObjectService.getJudgeObjectList(schemeJudgeObject) ;
+        return schemeJudgeObjectService.getJudgeObjectList(schemeJudgeObject);
     }
 
-
+    /**
+     * 根据id获取坐落
+     *
+     * @param id
+     * @return
+     */
+    public String getSeatById(Integer id) {
+        if (id == null) return "";
+        DeclareRecord declareRecord = getDeclareRecordById(id);
+        String cityName = erpAreaService.getSysAreaName(declareRecord.getCity());
+        String districtName = erpAreaService.getSysAreaName(declareRecord.getDistrict());
+        String seat = declareRecord.getSeat();
+        if (!seat.contains(districtName))
+            seat = districtName + seat;
+        if (!seat.contains(cityName))
+            seat = cityName + seat;
+        return seat;
+    }
 }

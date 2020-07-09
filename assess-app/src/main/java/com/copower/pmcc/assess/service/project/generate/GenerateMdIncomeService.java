@@ -794,21 +794,16 @@ public class GenerateMdIncomeService implements Serializable {
      * @date: 2019/2/28 16:37
      */
     private synchronized String getIncomeMethodFormula() throws Exception {
-        String s = "";
-        BaseDataDic income = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
-        if (income != null) {
-            List<DataMethodFormula> dataMethodFormulaList = dataMethodFormulaService.getDataMethodFormulaList(income.getId());
-            if (CollectionUtils.isNotEmpty(dataMethodFormulaList)) {
-                if (StringUtils.isNotBlank(dataMethodFormulaList.stream().findFirst().get().getFormula())) {
-                    if (leaseVoList.size() == 1) {
-                        s = dataMethodFormulaList.stream().findFirst().get().getFormula();
-                    } else {
-                        s = "V1+V2";
-                    }
+        DataMethodFormula formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.INCOME_RENTIN_NOT_USE_COMPARE);
+        List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList();
+        if (CollectionUtils.isNotEmpty(leaseVoList)) {
+            for (MdIncomeLeaseVo vo : leaseVoList) {
+                if (vo.getMcId() != null) {
+                    formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.INCOME_RENTIN_USE_COMPARE);
                 }
             }
         }
-        return s;
+        return StringUtils.isNotEmpty(formula.getFormula())?formula.getFormula():"";
     }
 
     /**
@@ -1398,7 +1393,12 @@ public class GenerateMdIncomeService implements Serializable {
             case IncomeOpportunityCostReamrk:
                 jsonObject = getToolRewardRateHelp(jsonArray, opportunityCost);
                 if (jsonObject != null) {
-                    value = jsonObject.getString(remark);
+                    String text = jsonObject.getString(ratio);
+                    if (NumberUtils.isNumber(text)) {
+                        double d = Double.parseDouble(text);
+                        d = d * 100;
+                        value = String.format("%s%s", Double.toString(d), "%");
+                    }
                 }
                 break;
             case IncomeRiskCompensation:
@@ -1436,14 +1436,23 @@ public class GenerateMdIncomeService implements Serializable {
                 break;
             case IncomeFinancingAdvantage:
                 jsonObject = getToolRewardRateHelp(jsonArray, financingAdvantage);
+                double a = 0;
                 if (jsonObject != null) {
                     String text = jsonObject.getString(ratio);
                     if (NumberUtils.isNumber(text)) {
                         double d = Double.parseDouble(text);
-                        d = d * 100;
-                        value = String.format("%s%s", Double.toString(d), "%");
+                        a += d * 100;
                     }
                 }
+                jsonObject = getToolRewardRateHelp(jsonArray, taxDeductionAdvantage);
+                if (jsonObject != null) {
+                    String text = jsonObject.getString(ratio);
+                    if (NumberUtils.isNumber(text)) {
+                        double c = Double.parseDouble(text);
+                        a += c * 100;
+                    }
+                }
+                value = String.format("%s%s", Double.toString(a), "%");
                 break;
             default:
                 break;

@@ -72,7 +72,7 @@
                                             档次
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="grade" class="form-control input-full search-select select2 grade">
+                                            <select name="grade" class="form-control input-full  grade">
                                             </select>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="category"
-                                                    class="form-control input-full search-select select2 category">
+                                                    class="form-control input-full  category">
                                             </select>
                                         </div>
                                     </div>
@@ -100,7 +100,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="supplyMode"
-                                                    class="form-control input-full search-select select2 supplyMode">
+                                                    class="form-control input-full  supplyMode">
                                             </select>
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="equipmentPrice"
-                                                    class="form-control input-full search-select select2 equipmentPrice">
+                                                    class="form-control input-full  equipmentPrice">
                                             </select>
                                         </div>
                                     </div>

@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.service.project.initiate;
 
 import com.copower.pmcc.assess.common.enums.InitiateContactsEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateConsignorDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -108,7 +111,20 @@ public class InitiateConsignorService {
         }
         InitiateConsignorVo vo = new InitiateConsignorVo();
         BeanUtils.copyProperties(initiateConsignor, vo);
-        List<CrmBaseDataDicDto> crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        List<CrmBaseDataDicDto> crmBaseDataDicDtos = new ArrayList<>();
+        try {
+            crmBaseDataDicDtos = crmRpcBaseDataDicService.getUnitPropertiesList();
+        } catch (Exception e) {
+            List<BaseDataDic> cacheDataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_INITIATE_UNIT_TYPE);
+            if (CollectionUtils.isNotEmpty(cacheDataDicList)){
+                for (BaseDataDic baseDataDic:cacheDataDicList){
+                    CrmBaseDataDicDto crmBaseDataDicDto = new CrmBaseDataDicDto();
+                    crmBaseDataDicDto.setId(baseDataDic.getId());
+                    crmBaseDataDicDto.setName(baseDataDic.getName());
+                    crmBaseDataDicDtos.add(crmBaseDataDicDto);
+                }
+            }
+        }
         if (!ObjectUtils.isEmpty(crmBaseDataDicDtos)) {
             for (CrmBaseDataDicDto dicDto : crmBaseDataDicDtos) {
                 if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())) {
@@ -121,6 +137,11 @@ public class InitiateConsignorService {
         if (!StringUtils.isEmpty(initiateConsignor.getCsEntrustmentUnit())) {
             if (NumberUtils.isNumber(initiateConsignor.getCsEntrustmentUnit())) {
                 vo.setCsEntrustmentUnitName(baseDataDicService.getNameById(Integer.valueOf(initiateConsignor.getCsEntrustmentUnit())));
+            }
+        }
+        if (!StringUtils.isEmpty(initiateConsignor.getCsUnitProperties())) {
+            if (NumberUtils.isNumber(initiateConsignor.getCsUnitProperties())) {
+                vo.setCsUnitPropertiesName(baseDataDicService.getNameById(Integer.valueOf(initiateConsignor.getCsUnitProperties())));
             }
         }
         return vo;
