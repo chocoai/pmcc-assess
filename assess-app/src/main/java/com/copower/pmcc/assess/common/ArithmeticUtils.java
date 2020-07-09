@@ -33,26 +33,26 @@ public class ArithmeticUtils implements Serializable {
      抛出 java.lang.ArithmeticException: Non-terminating decimal expansion; no exact representable decimal result. 除法运算有时候也会报错
      */
     /*
-    * setScale(1,BigDecimal.ROUND_DOWN)直接删除多余的小数位，如2.35会变成2.3
-    * setScale(1,BigDecimal.ROUND_UP)进位处理，2.35变成2.4
-    * setScale(1,BigDecimal.ROUND_HALF_UP)四舍五入，2.35变成2.4
-    * setScaler(1,BigDecimal.ROUND_HALF_DOWN)四舍五入，2.35变成2.3，如果是5则向下舍
-    * setScaler(1,BigDecimal.ROUND_CEILING)接近正无穷大的舍入
-    * setScaler(1,BigDecimal.ROUND_FLOOR)接近负无穷大的舍入，数字>0和ROUND_UP作用一样，数字<0和ROUND_DOWN作用一样
-    * setScaler(1,BigDecimal.ROUND_HALF_EVEN)向最接近的数字舍入，如果与两个相邻数字的距离相等，则向相邻的偶数舍入。
-    *
-    * RoundingMode.CEILING：取右边最近的整数
-    * RoundingMode.DOWN：去掉小数部分取整，也就是正数取左边，负数取右边，相当于向原点靠近的方向取整
-    * RoundingMode.FLOOR：取左边最近的正数
-    * RoundingMode.HALF_DOWN:五舍六入，负数先取绝对值再五舍六入再负数
-    * RoundingMode.HALF_UP:四舍五入，负数原理同上
-    * RoundingMode.HALF_EVEN:这个比较绕，整数位若是奇数则四舍五入，若是偶数则五舍六入
-    *
-    * MathContext DECIMAL128 其精度设置与 IEEE 754R Decimal128 格式（即 34 个数字）匹配，舍入模式为 HALF_EVEN，这是 IEEE 754R 的默认舍入模式。
-    * MathContext DECIMAL32 其精度设置与 IEEE 754R Decimal32 格式（即 7 个数字）匹配,舍入模式为 HALF_EVEN,这是 IEEE 754R 的默认舍入模式
-    * MathContext DECIMAL64 其精度设置与 IEEE 754R Decimal64 格式（即 16 个数字）匹配,舍入模式为 HALF_EVEN,这是 IEEE 754R 的默认舍入模式
-    * MathContext UNLIMITED  其设置具有无限精度算法所需值的 MathContext 对象
-    * */
+     * setScale(1,BigDecimal.ROUND_DOWN)直接删除多余的小数位，如2.35会变成2.3
+     * setScale(1,BigDecimal.ROUND_UP)进位处理，2.35变成2.4
+     * setScale(1,BigDecimal.ROUND_HALF_UP)四舍五入，2.35变成2.4
+     * setScaler(1,BigDecimal.ROUND_HALF_DOWN)四舍五入，2.35变成2.3，如果是5则向下舍
+     * setScaler(1,BigDecimal.ROUND_CEILING)接近正无穷大的舍入
+     * setScaler(1,BigDecimal.ROUND_FLOOR)接近负无穷大的舍入，数字>0和ROUND_UP作用一样，数字<0和ROUND_DOWN作用一样
+     * setScaler(1,BigDecimal.ROUND_HALF_EVEN)向最接近的数字舍入，如果与两个相邻数字的距离相等，则向相邻的偶数舍入。
+     *
+     * RoundingMode.CEILING：取右边最近的整数
+     * RoundingMode.DOWN：去掉小数部分取整，也就是正数取左边，负数取右边，相当于向原点靠近的方向取整
+     * RoundingMode.FLOOR：取左边最近的正数
+     * RoundingMode.HALF_DOWN:五舍六入，负数先取绝对值再五舍六入再负数
+     * RoundingMode.HALF_UP:四舍五入，负数原理同上
+     * RoundingMode.HALF_EVEN:这个比较绕，整数位若是奇数则四舍五入，若是偶数则五舍六入
+     *
+     * MathContext DECIMAL128 其精度设置与 IEEE 754R Decimal128 格式（即 34 个数字）匹配，舍入模式为 HALF_EVEN，这是 IEEE 754R 的默认舍入模式。
+     * MathContext DECIMAL32 其精度设置与 IEEE 754R Decimal32 格式（即 7 个数字）匹配,舍入模式为 HALF_EVEN,这是 IEEE 754R 的默认舍入模式
+     * MathContext DECIMAL64 其精度设置与 IEEE 754R Decimal64 格式（即 16 个数字）匹配,舍入模式为 HALF_EVEN,这是 IEEE 754R 的默认舍入模式
+     * MathContext UNLIMITED  其设置具有无限精度算法所需值的 MathContext 对象
+     * */
 
 
     /**
@@ -522,7 +522,7 @@ public class ArithmeticUtils implements Serializable {
 
     public static boolean isLong(String str) {
         try {
-            Long.parseLong(str) ;
+            Long.parseLong(str);
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -531,7 +531,7 @@ public class ArithmeticUtils implements Serializable {
 
     public static boolean isFloat(String str) {
         try {
-            Float.parseFloat(str) ;
+            Float.parseFloat(str);
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -540,7 +540,7 @@ public class ArithmeticUtils implements Serializable {
 
     public static boolean isDouble(String str) {
         try {
-            Double.parseDouble(str) ;
+            Double.parseDouble(str);
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -634,11 +634,11 @@ public class ArithmeticUtils implements Serializable {
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         double result = whileDivide(atomicInteger, bigDecimal.doubleValue());
         int sub = atomicInteger.get() - log;//总int长度 - 需要保留到的int长度
-        BigDecimal decimal = new BigDecimal(result).setScale(sub, BigDecimal.ROUND_HALF_UP);
-        BigInteger bigInteger = new BigInteger(String.valueOf(10)).pow(atomicInteger.get()) ;
+        BigDecimal decimal = new BigDecimal(String.valueOf(result)).setScale(sub, BigDecimal.ROUND_HALF_UP);
+        BigInteger bigInteger = new BigInteger(String.valueOf(10)).pow(atomicInteger.get());
         //自定义数学计算模型,并且精确到约定的长度
-        MathContext mathContext = new MathContext(length, RoundingMode.HALF_EVEN) ;
-        BigDecimal target = decimal.multiply(createBigDecimal(bigInteger),mathContext) ;
+        MathContext mathContext = new MathContext(length, RoundingMode.HALF_EVEN);
+        BigDecimal target = decimal.multiply(createBigDecimal(bigInteger), mathContext);
 //        return target.toString();
         return target.toBigInteger().toString();
     }

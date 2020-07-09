@@ -188,6 +188,8 @@ public class AssessmentPerformanceService {
 
         target.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
         target.setExaminePeople(commonService.thisUserAccount());
+        target.setExamineScore(assessmentPerformanceDto.getExamineScore());
+        target.setBisQualified(assessmentPerformanceDto.getBisQualified());
         target.setRemarks(assessmentPerformanceDto.getRemarks());
         target.setExamineDate(DateUtils.now());
         performanceService.savePerformanceBase(target, detailDtoList);
@@ -512,28 +514,23 @@ public class AssessmentPerformanceService {
     /**
      * 保存抽查考核内容
      *
-     * @param performanceId
+     * @param assessmentPerformanceDto
      * @param detailDtoList
      */
-    public void saveSpotPerformance(Integer performanceId, String remark, List<AssessmentPerformanceDetailDto> detailDtoList) {
-        BigDecimal total = new BigDecimal("0");
-        if (CollectionUtils.isNotEmpty(detailDtoList)) {
-            for (AssessmentPerformanceDetailDto detailDto : detailDtoList) {
-                total = total.add(detailDto.getActualScore());
-            }
-        }
-
-        AssessmentPerformanceDto performanceDto = performanceService.getPerformanceById(performanceId);
+    public void saveSpotPerformance(AssessmentPerformanceDto assessmentPerformanceDto, List<AssessmentPerformanceDetailDto> detailDtoList) {
+        AssessmentPerformanceDto performanceDto = performanceService.getPerformanceById(assessmentPerformanceDto.getId());
         AssessmentPerformanceDto spotPerformance = new AssessmentPerformanceDto();
         BeanUtils.copyProperties(performanceDto, spotPerformance);
         spotPerformance.setId(null);
-        spotPerformance.setSpotId(performanceId);
+        spotPerformance.setSpotId(assessmentPerformanceDto.getId());
         spotPerformance.setExaminePeople(commonService.thisUserAccount());
         spotPerformance.setByExaminePeople(performanceDto.getExaminePeople());
         spotPerformance.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
         spotPerformance.setExamineDate(DateUtils.now());
-        spotPerformance.setExamineScore(total);
-        spotPerformance.setRemarks(remark);
+        spotPerformance.setExamineScore(assessmentPerformanceDto.getExamineScore());
+        spotPerformance.setRemarks(assessmentPerformanceDto.getRemarks());
+        spotPerformance.setBisQualified(assessmentPerformanceDto.getBisQualified());
+        spotPerformance.setExamineScore(assessmentPerformanceDto.getExamineScore());
         spotPerformance.setBisEffective(true);
         spotPerformance.setCreated(DateUtils.now());
         spotPerformance.setCreator(commonService.thisUserAccount());

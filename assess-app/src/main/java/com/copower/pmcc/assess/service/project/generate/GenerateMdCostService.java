@@ -122,7 +122,6 @@ public class GenerateMdCostService {
         final ConcurrentHashMap<String, String> textMap = new ConcurrentHashMap<String, String>(0);
         final ConcurrentHashMap<String, String> fileMap = new ConcurrentHashMap<String, String>(0);
         final ConcurrentHashMap<String, String> bookmarkMap = new ConcurrentHashMap<String, String>(0);
-        final long time = 70;//最多阻塞70秒
         //设置必要的数据
         final ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(schemeInfo.getPlanDetailsId());
         final LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap = Maps.newLinkedHashMap();
@@ -133,35 +132,14 @@ public class GenerateMdCostService {
         final ToolResidueRatio toolResidueRatio = residueRatioService.getToolResidueRatio(mdCostVo.getMdCostConstruction().getResidueRatioId());
         final MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto = getMdEconomicIndicatorsApplyDto();
         if (!map.isEmpty()) {
-            //发起线程组
-            final CountDownLatch countDownLatch = new CountDownLatch(map.size());
             for (Map.Entry<ReportFieldCostMethodEnum, String> enumStringEntry : map.entrySet()) {
-                taskExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio, mdEconomicIndicatorsApplyDto);
-                            setFieldObjectOtherValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, costJSONObjectMap);
-                        } catch (Exception e) {
-                            baseService.writeExceptionInfo(e);
-                        } finally {
-                            countDownLatch.countDown();
-                        }
-                    }
-                });
+                try {
+                    setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio, mdEconomicIndicatorsApplyDto);
+                    setFieldObjectOtherValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, costJSONObjectMap);
+                } catch (Exception e) {
+                    baseService.writeExceptionInfo(e);
+                }
             }
-            //能够阻塞线程 直到调用N次end.countDown() 方法才释放线程
-            countDownLatch.await(time, TimeUnit.SECONDS);
-
-//            for (Map.Entry<BaseReportMarketCostEnum, String> enumStringEntry : map.entrySet()) {
-//                try {
-//                    setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio, mdEconomicIndicatorsApplyDto);
-//                    setFieldObjectOtherValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, costJSONObjectMap);
-//                } catch (Exception e) {
-//                    baseService.writeExceptionInfo(e);
-//                }
-//            }
-
         }
 
         //替换

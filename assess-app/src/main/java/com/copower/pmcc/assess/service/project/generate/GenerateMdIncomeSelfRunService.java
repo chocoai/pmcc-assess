@@ -310,7 +310,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:10
      */
-    private synchronized String getIncomeCompletionTime() throws Exception {
+    private  String getIncomeCompletionTime() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         if (basicApply != null) {
@@ -330,7 +330,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    private synchronized String getIncomeEngageSituation() throws Exception {
+    private  String getIncomeEngageSituation() throws Exception {
         //主营业务收入
         String main = mdIncomeService.getEngageSituation(miId, mdIncome.getFormType(), 0, AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_INCOME_MAIN);
         //其他业务收入
@@ -356,7 +356,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    private synchronized String getIncomeEngageCost() throws Exception {
+    private  String getIncomeEngageCost() throws Exception {
         StringBuilder s = new StringBuilder();
         //主经营成本
         String main = mdIncomeService.getEngageSituation(miId, mdIncome.getFormType(), 1, AssessDataDicKeyConstant.MD_INCOME_HISTORY_TYPE_MAIN_MANAGER_COST);
@@ -401,7 +401,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    private synchronized String getIncomeOperatingTaxRemark() throws Exception {
+    private  String getIncomeOperatingTaxRemark() throws Exception {
         List<MdIncomeForecastVo> vos = getForecastList(1);
         //排序
         Comparator<MdIncomeForecastVo> comparator = new Comparator<MdIncomeForecastVo>() {
@@ -469,7 +469,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    private synchronized String getIncomeRateIncrease() throws Exception {
+    private  String getIncomeRateIncrease() throws Exception {
         List<MdIncomeForecastVo> vos = getForecastList(0);
         //排序
         Comparator<MdIncomeForecastVo> comparator = new Comparator<MdIncomeForecastVo>() {
@@ -538,7 +538,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    private synchronized String getIncomeOperatingProfitRemark() throws Exception {
+    private  String getIncomeOperatingProfitRemark() throws Exception {
         String s = getMdIncome().getAverageProfitRateRemark();
         if (StringUtils.isNotBlank(s)) {
             return s;
@@ -804,7 +804,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    private synchronized String getIncomeRegionalCities() throws Exception {
+    private  String getIncomeRegionalCities() throws Exception {
         String s = getSchemeAreaGroup().getAreaName();
         if (StringUtils.isNotBlank(s)) {
             return s;
@@ -819,7 +819,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    private synchronized String getIncomeFormulaResult(Boolean flag) throws Exception {
+    private  String getIncomeFormulaResult(Boolean flag) throws Exception {
         List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();
         BigDecimal result = new BigDecimal("0");
         if (CollectionUtils.isNotEmpty(mdIncomeDateSectionList)) {
@@ -1072,7 +1072,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 10:34
      */
-    private synchronized String getIncomeUsedLife() throws Exception {
+    private  String getIncomeUsedLife() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
@@ -1096,7 +1096,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:18
      */
-    private synchronized String getIncomebuildingStructureType() throws Exception {
+    private  String getIncomebuildingStructureType() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         if (basicApply != null) {
@@ -1116,7 +1116,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 13:41
      */
-    private synchronized String getIncomeBuildEconomicLife() throws Exception {
+    private  String getIncomeBuildEconomicLife() throws Exception {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
@@ -1142,7 +1142,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 10:27
      */
-    private synchronized String getIncomeValuePoint() throws Exception {
+    private  String getIncomeValuePoint() throws Exception {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         if (schemeAreaGroup.getValueTimePoint() != null) {
             return DateUtils.formatDate(schemeAreaGroup.getValueTimePoint(), DateUtils.DATE_CHINESE_PATTERN);
@@ -1156,7 +1156,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:44
      */
-    private synchronized String getTerminationDateLand() throws Exception {
+    private  String getTerminationDateLand() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
@@ -1174,7 +1174,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:05
      */
-    private synchronized String getIncomeSurplusLandUseYear() throws Exception {
+    private  String getIncomeSurplusLandUseYear() throws Exception {
         if (getMdIncome().getLandRemainingYear() != null) {
             return getMdIncome().getLandRemainingYear().toString();
         }
@@ -1187,7 +1187,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 13:54
      */
-    private synchronized String getIncomeHouseSurplusYear() throws Exception {
+    private  String getIncomeHouseSurplusYear() throws Exception {
         if (getMdIncome().getHouseRemainingYear() != null) {
             return getMdIncome().getHouseRemainingYear().toString();
         }
@@ -1200,7 +1200,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:01
      */
-    private synchronized String getIncomeYears() throws Exception {
+    private  String getIncomeYears() throws Exception {
         List<Double> doubleList = Lists.newArrayList(new Double(0));
         List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();
         mdIncomeDateSectionList.stream().forEach(mdIncomeDateSection -> {
@@ -1217,7 +1217,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 16:37
      */
-    private synchronized String getIncomeMethodFormula() throws Exception {
+    private  String getIncomeMethodFormula() throws Exception {
         DataMethodFormula formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.INCOME_SELF_SUPPORT);
         return formula.getFormula();
     }
@@ -1228,7 +1228,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:35
      */
-    private synchronized String getIncomeSetUse() {
+    private  String getIncomeSetUse() {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getSetUse() != null) {
             DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
@@ -1245,7 +1245,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:21
      */
-    private synchronized String getPropertyRightCertificateIncomeLaw() throws Exception {
+    private  String getPropertyRightCertificateIncomeLaw() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());

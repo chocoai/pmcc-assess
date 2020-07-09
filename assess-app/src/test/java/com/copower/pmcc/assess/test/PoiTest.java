@@ -28,6 +28,9 @@ import org.junit.Test;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -656,10 +660,53 @@ public class PoiTest {
 
     @Test
     public void testReplace11() throws Exception {
-        String filePath="D:\\模板123.docx";
-        Map<String,String> map=Maps.newHashMap();
-        map.put("${公告主要内容}","D:\\fbe9834e-003b-4be6-abea-b2bc56f99c8f.doc");
-        AsposeUtils.replaceTextToFile(filePath,map);
+        System.out.print(getBigDecimalToInteger(new BigDecimal("5015"),10));
+        BigDecimal decimal = new BigDecimal(0.5015).setScale(3, BigDecimal.ROUND_HALF_UP);
+        System.out.print(decimal);
+    }
+
+    public static String getBigDecimalToInteger(final BigDecimal bigDecimal, final int number) {
+        if (bigDecimal == null) {
+            throw new IllegalArgumentException("不符合约定哦亲!");
+        }
+        int log = (int) Math.log10(number);//这里一定会是整数,不用担心精度损失
+        if (log < 1) {
+            throw new IllegalArgumentException("不符合约定哦亲!");
+        }
+//        int length = getBigDecimalString(bigDecimal).length();
+        int length = bigDecimal.toBigInteger().toString().length();
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        double result = whileDivide(atomicInteger, bigDecimal.doubleValue());
+        int sub = atomicInteger.get() - log;//总int长度 - 需要保留到的int长度
+        BigDecimal decimal = new BigDecimal(String.valueOf(result) ).setScale(sub, BigDecimal.ROUND_HALF_UP);
+        BigInteger bigInteger = new BigInteger(String.valueOf(10)).pow(atomicInteger.get()) ;
+        //自定义数学计算模型,并且精确到约定的长度
+        MathContext mathContext = new MathContext(length, RoundingMode.HALF_EVEN) ;
+        BigDecimal target = decimal.multiply(createBigDecimal(bigInteger),mathContext) ;
+//        return target.toString();
+        return target.toBigInteger().toString();
+    }
+
+    public static BigDecimal createBigDecimal(BigInteger value) {
+        return new BigDecimal(value, MathContext.UNLIMITED);
+    }
+
+    /**
+     * 将非小数转换为小数并且记录次数
+     *
+     * @param atomicInteger
+     * @param number
+     * @return
+     */
+    private static double whileDivide(final AtomicInteger atomicInteger, double number) {
+        final int one = 1;
+        if (number > one) {
+            number = number / 10;
+            atomicInteger.incrementAndGet();
+            return whileDivide(atomicInteger, number);
+        } else {
+            return number;
+        }
     }
 }
 

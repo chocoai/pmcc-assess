@@ -484,7 +484,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:26
      */
-    private synchronized String getIncomeRegionalCities() throws Exception {
+    private  String getIncomeRegionalCities() throws Exception {
         String s = getSchemeAreaGroup().getAreaName();
         if (StringUtils.isNotBlank(s)) {
             return s;
@@ -498,7 +498,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:31
      */
-    private synchronized String getIncomeAssessmentArea() throws Exception {
+    private  String getIncomeAssessmentArea() throws Exception {
         BigDecimal bigDecimal = getSchemeJudgeObject().getEvaluationArea();
         if (bigDecimal != null) {
             return String.format("%s%s", bigDecimal.toString(), "㎡");
@@ -512,7 +512,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:18
      */
-    private synchronized String getIncomebuildingStructureType() throws Exception {
+    private  String getIncomebuildingStructureType() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         if (basicApply != null) {
@@ -532,7 +532,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:10
      */
-    private synchronized String getIncomeCompletionTime() throws Exception {
+    private  String getIncomeCompletionTime() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         if (basicApply != null) {
@@ -552,7 +552,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 10:34
      */
-    private synchronized String getIncomeUsedLife() throws Exception {
+    private  String getIncomeUsedLife() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
@@ -576,7 +576,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 13:41
      */
-    private synchronized String getIncomeBuildEconomicLife() throws Exception {
+    private  String getIncomeBuildEconomicLife() throws Exception {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
@@ -602,7 +602,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 10:27
      */
-    private synchronized String getIncomeValuePoint() throws Exception {
+    private  String getIncomeValuePoint() throws Exception {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         if (schemeAreaGroup.getValueTimePoint() != null) {
             return DateUtils.formatDate(schemeAreaGroup.getValueTimePoint(), DateUtils.DATE_CHINESE_PATTERN);
@@ -616,7 +616,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 18:05
      */
-    private synchronized String getIncomeSurplusLandUseYear() throws Exception {
+    private  String getIncomeSurplusLandUseYear() throws Exception {
         if (getMdIncome().getLandRemainingYear() != null) {
             return getMdIncome().getLandRemainingYear().toString();
         }
@@ -629,7 +629,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 13:54
      */
-    private synchronized String getIncomeHouseSurplusYear() throws Exception {
+    private  String getIncomeHouseSurplusYear() throws Exception {
         if (getMdIncome().getHouseRemainingYear() != null) {
             return getMdIncome().getHouseRemainingYear().toString();
         }
@@ -642,7 +642,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:01
      */
-    private synchronized String getIncomeYears() throws Exception {
+    private  String getIncomeYears() throws Exception {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         List<Double> doubleList = Lists.newArrayList(new Double(0));
         if (CollectionUtils.isNotEmpty(leaseVoList)) {
@@ -664,7 +664,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @return
      * @throws Exception
      */
-    private synchronized String getMonthRentalIncome(Map<String, String> fileMap)throws Exception  {
+    private  String getMonthRentalIncome(Map<String, String> fileMap)throws Exception  {
         List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList();
         LinkedList<String> linkedList = Lists.newLinkedList();
         if (CollectionUtils.isNotEmpty(leaseVoList)) {
@@ -727,7 +727,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 14:13
      */
-    private synchronized String getIncomeGetMdCompare() throws Exception {
+    private  String getIncomeGetMdCompare() throws Exception {
         Document document = new Document();
         DocumentBuilder builder = new DocumentBuilder(document);
         List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList();
@@ -758,7 +758,7 @@ public class GenerateMdIncomeService implements Serializable {
     }
 
     //收益法单价内涵
-    private synchronized String getIncomeUnitPriceConnotation() throws Exception {
+    private  String getIncomeUnitPriceConnotation() throws Exception {
         BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
         if (basicApply != null) {
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -771,7 +771,7 @@ public class GenerateMdIncomeService implements Serializable {
     }
 
     //收益法确定月租金方式
-    private synchronized String getIncomeDetermineRentalWay() throws Exception {
+    private  String getIncomeDetermineRentalWay() throws Exception {
         List<MdIncomeLeaseVo> mdIncomeLeaseList = getMdIncomeLeaseList();
         boolean flag = false;
         if (CollectionUtils.isNotEmpty(mdIncomeLeaseList)) {
@@ -793,7 +793,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 16:37
      */
-    private synchronized String getIncomeMethodFormula() throws Exception {
+    private  String getIncomeMethodFormula() throws Exception {
         DataMethodFormula formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.INCOME_RENTIN_NOT_USE_COMPARE);
         List<MdIncomeLeaseVo> leaseVoList = getMdIncomeLeaseList();
         if (CollectionUtils.isNotEmpty(leaseVoList)) {
@@ -812,7 +812,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:44
      */
-    private synchronized String getTerminationDateLand() throws Exception {
+    private  String getTerminationDateLand() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
@@ -829,7 +829,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:35
      */
-    private synchronized String getIncomeSetUse() {
+    private  String getIncomeSetUse() {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getSetUse() != null) {
             DataSetUseField dataSetUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
@@ -846,7 +846,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @auther: zch
      * @date: 2019/2/27 17:21
      */
-    private synchronized String getPropertyRightCertificateIncomeLaw() throws Exception {
+    private  String getPropertyRightCertificateIncomeLaw() throws Exception {
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (schemeJudgeObject.getDeclareRecordId() != null) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
@@ -873,7 +873,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @author: zch
      * @date: 2019/2/28 16:28
      */
-    public synchronized String getTenancyrestrictionReamrk() throws Exception {
+    public  String getTenancyrestrictionReamrk() throws Exception {
         return StringUtils.isNotBlank(getMdIncome().getRestrictionExplain()) ? getMdIncome().getRestrictionExplain() : "不考虑估价对象租赁因素影响";
     }
 
@@ -892,7 +892,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum incomeEnum) {
+    private  String getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseVo> mdIncomeLeaseList = getMdIncomeLeaseList();
         if (CollectionUtils.isEmpty(mdIncomeLeaseList)) {
             return errorStr;
@@ -986,7 +986,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum incomeEnum) {
+    private  String getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         List<MdIncomeLeaseVo> mdIncomeLeaseVoList = getMdIncomeLeaseList();
         if (CollectionUtils.isEmpty(leaseVoList)) {
@@ -1170,7 +1170,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getSimpleFormula(ReportFieldMdIncomeEnum incomeEnum, ReportFieldMdIncomeEnum incomeEnumTax) throws Exception{
+    private  String getSimpleFormula(ReportFieldMdIncomeEnum incomeEnum, ReportFieldMdIncomeEnum incomeEnumTax) throws Exception{
         String moneyStr = getMdIncomeLeaseCostOtherCommon(incomeEnum);
         String taxStr = getMdIncomeLeaseCostCommonTax(incomeEnumTax);
         BigDecimal money = new BigDecimal("0");
@@ -1192,7 +1192,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum incomeEnum) {
+    private  String getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         if (CollectionUtils.isEmpty(leaseVoList)) {
             return errorStr;
@@ -1255,7 +1255,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum incomeEnum) {
+    private  String getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         if (CollectionUtils.isEmpty(leaseVoList)) {
             return errorStr;
@@ -1576,7 +1576,7 @@ public class GenerateMdIncomeService implements Serializable {
      *
      * @return
      */
-    private synchronized String getIncomePrice() {
+    private  String getIncomePrice() {
         BigDecimal price = getMdIncome().getPrice();
         if (price != null) {
             return price.toString();

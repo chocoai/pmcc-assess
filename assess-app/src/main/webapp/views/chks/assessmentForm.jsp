@@ -236,7 +236,7 @@
                                             <td colspan="5" style="color: red;">${boxReDto.qualityStandard}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="5">
+                                            <td colspan="2">
                                                 <select class="form-control input-full" name="bisQualified" required>
                                                     <option value="">-请选择-</option>
                                                     <option value="true">合格</option>
@@ -303,12 +303,13 @@
                                         </tr>
                                         <tr>
                                             <td colspan="5">
-                                                {bisQualified}
+                                                <label class="btn btn-info" data-name="bisQualified"></label>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="5">
-                                                {remarks}
+                                                <span data-name="remarks"></span>
+                                            </td>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -605,10 +606,10 @@
                     str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + row.assessmentType + '\')" > <i class="fa fa-pen fa-white"></i></button>';
                 }
                 if (row.canAdjust) {//针对考核内容可调整
-                    str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + row.assessmentType + ',\'' + row.id + '\')" > <i class="fa fa-eraser fa-white"></i></button>';
+                    str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + row.assessmentType + '\',' + row.id + ')" > <i class="fa fa-eraser fa-white"></i></button>';
                 }
                 if (value == 'finish') {//完成之后可查看
-                    str += "<button type='button' onclick='assessmentCommonHandle.showPerformanceDetailModal(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
+                    str += '<button type="button" onclick="assessmentCommonHandle.showPerformanceDetailModal(' + row.id + ',\'' + row.assessmentType + '\')" style="margin-left: 5px;" data-placement="top" data-original-title="考核查看" class="btn btn-xs btn-info"  ><i class="fa fa-search fa-white"></i></button>';
                 }
                 return str;
             }
@@ -650,31 +651,6 @@
                     target.find("input[name='examinePeople']").val(data.account);
                     target.find("input[name='examinePeopleName']").val(data.name);
                 }
-            }
-        });
-    };
-
-    /*
-     考核收集数据
-     */
-    assessmentCommonHandle.getChksSonData = function (target, data) {
-        target.find("tr").each(function (i, tr) {
-            var ele = $(tr);
-            var obj = {};
-            obj.contentId = ele.find("[data-name='contentId']").val();
-            var id = ele.find("[data-name='id']").val();
-            var performanceId = ele.find("[data-name='performanceId']").val();
-            if (id) {
-                obj.id = id;
-            }
-            if (performanceId) {
-                obj.performanceId = performanceId;
-            }
-            var eleActualScore = ele.find("[data-name='actualScore']");
-            obj.actualScore = eleActualScore.val();
-            obj.remark = ele.find("[data-name='remark']").val();
-            if (eleActualScore.size() != 0) {
-                data.push(obj);
             }
         });
     };
@@ -861,10 +837,11 @@
         }
         var box = assessmentType == 'quality' ? $("#divQualityPerformanceModal") : $("#divWorkHoursPerformanceModal");
         var tbody = box.find("tbody");
+        box.find("form").clearAll();
+        tbody.empty();
         box.modal("show");
         box.find("input[name=id]").val(id);
         box.find("input[name=adjustId]").val(adjustId);
-        tbody.empty();
         assessmentCommonHandle.getPerformanceDetailsByPerformanceId(id, function (performanceDetails) {
             var restHtml = "";
             $.each(performanceDetails, function (i, item) {
@@ -873,8 +850,8 @@
                     id: item.id,
                     contentId: item.contentId,
                     assessmentDes: item.content,
-                    actualScore: '',
-                    remark: '',
+                    actualScore: item.actualScore,
+                    remark: item.remark,
                     performanceId: item.performanceId,
                     minScore: item.minScore,
                     maxScore: item.maxScore,
@@ -890,9 +867,9 @@
      * 考核查看详情 弹窗方式
      * @param id
      */
-    assessmentCommonHandle.showPerformanceDetailModal = function (id) {
-        var box = $("#divAssessmentPerformanceModalDetail");
-        var table = $("#tbAssessmentPerformanceDetail").find("tbody");
+    assessmentCommonHandle.showPerformanceDetailModal = function (id, assessmentType) {
+        var box = assessmentType == 'quality' ? $("#divQualityPerformanceModalDetail") : $("#divWorkHoursPerformanceModalDetail");
+        var table = box.find("tbody");
         assessmentCommonHandle.getPerformanceById(id, function (obj) {
             box.modal("show");
             var restHtml = "";
@@ -914,13 +891,10 @@
                     restHtml += htmlB;
                 });
             }
-            var remarksHtml = $("#assessmentItemTemplateRemarksHTMLReadonly").html();
-            if (obj.remarks) {
-                remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
-            } else {
-                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+            if(assessmentType == 'quality'){
+                box.find('[data-name=remarks]').text(obj.remarks);
+                box.find('[data-name=bisQualified]').text(obj.bisQualified == true ? '合格' : '不合格');
             }
-            restHtml += remarksHtml;
             table.empty().append(restHtml);
         });
     };
@@ -933,29 +907,35 @@
         if (!form.valid()) {
             return false;
         }
-        var data = [];
-        var filterData = [];
+        var actualScoreArray = [];
+        var examineScore = 0;
         var remarks = form.find("textarea[name=remarks]").val();
         var isSpot = form.find("input[name=isSpot]").val();
-        assessmentCommonHandle.getChksSonData(form, data);
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].actualScore) {
-                filterData.push(data[i]);
+
+        form.find('tbody tr').each(function (i, item) {
+            var actualScore = {};
+            actualScore.id = $(item).find('[data-name=id]').val();
+            actualScore.actualScore = $(item).find('[data-name=actualScore]').val();
+            actualScore.remark = $(item).find('[data-name=remark]').val();
+            actualScoreArray.push(actualScore);
+            if (actualScore.actualScore) {
+                examineScore += parseFloat(actualScore.actualScore);
             }
-        }
+        })
         var parentData = {
             id: form.find("input[name=id]").val(),
             remarks: remarks,
-            examineStatus: 'finish'
+            examineScore: examineScore,
+            bisQualified: form.find("input[name=bisQualified]").val()
         };
         assessmentCommonHandle.saveAssessmentServer({
-            chksScore: JSON.stringify(filterData),
+            chksScore: JSON.stringify(actualScoreArray),
             fomData: JSON.stringify(parentData),
             isSpot: isSpot
         }, function (data) {
             notifySuccess("成功", "考核成功!");
             $(_this).closest('.modal').modal("hide");
-            $(_this).closest('.modal-content').find('table').bootstrapTable('refresh');
+            assessmentCommonHandle.loadAssessmentPerformanceList($('#assessmentPerformanceForm'));
         });
     };
 
@@ -1019,11 +999,7 @@
             field: 'examineStatus', title: '操作', formatter: function (value, row, index) {
                 var str = "";
                 if (value == 'finish') {
-                    if (row.examineUrl) { //进入一个地址查看考核内容
-                        str = "<button type='button' onclick='window.open(\"${pageContext.request.contextPath}" + row.examineDetailUrl + "\")'  style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
-                    } else { //使用弹窗查看考核
-                        str = "<button type='button' onclick='assessmentCommonHandle.showPerformanceDetailModal(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
-                    }
+                    str = '<button type="button" onclick="assessmentCommonHandle.showPerformanceDetailModal(' + row.id + ',\'' + row.assessmentType + '\')" style="margin-left: 5px;" data-placement="top" data-original-title="考核查看" class="btn btn-xs btn-info"  ><i class="fa fa-search fa-white"></i></button>';
                 }
                 return str;
             }

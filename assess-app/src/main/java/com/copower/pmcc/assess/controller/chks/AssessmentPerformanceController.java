@@ -94,7 +94,7 @@ public class AssessmentPerformanceController {
             AssessmentPerformanceDto performanceDto = JSONObject.parseObject(fomData, AssessmentPerformanceDto.class);
             List<AssessmentPerformanceDetailDto> detailDtoList = JSONObject.parseArray(chksScore, AssessmentPerformanceDetailDto.class);
             if (isSpot == Boolean.TRUE) {
-                assessmentPerformanceService.saveSpotPerformance(performanceDto.getId(),performanceDto.getRemarks(),detailDtoList);
+                assessmentPerformanceService.saveSpotPerformance(performanceDto,detailDtoList);
                 return HttpResult.newCorrectResult();
             } else {
                  assessmentPerformanceService.saveAssessmentServer(performanceDto, detailDtoList);
