@@ -213,8 +213,9 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
-                    <input type="hidden" name="id">
+                    <input type="hidden" name="id">assessmentType
                     <input type="hidden" name="adjustId">
+                    <input type="hidden" name="assessmentType">
                     <div class="row form-group">
                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="form-inline x-valid">
@@ -233,7 +234,9 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <td colspan="5" style="color: red;">${boxReDto.qualityStandard}</td>
+                                            <td colspan="5" style="color: red;">
+                                                <span data-name="qualityStandard">${boxReDto.qualityStandard}</span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">
@@ -299,7 +302,9 @@
                                         <tbody></tbody>
                                         <tfoot>
                                         <tr>
-                                            <td colspan="5" style="color: red;">${boxReDto.qualityStandard}</td>
+                                            <td colspan="5" style="color: red;">
+                                                <span data-name="qualityStandard">${boxReDto.qualityStandard}</span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="5">
@@ -343,6 +348,7 @@
                 <form class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="adjustId">
+                    <input type="hidden" name="assessmentType">
                     <div class="row form-group">
                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="form-inline x-valid">
@@ -493,9 +499,9 @@
                     }
                 } else {
                     if (result.errmsg) {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("错误", result.errmsg);
                     } else {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                        AlertError("错误", result);
                     }
                     if (errorCallback) {
                         errorCallback();
@@ -590,7 +596,17 @@
                 return str;
             }
         });
-        cols.push({field: 'examineScore', title: '考核得分'});
+        cols.push({
+            field: 'examineScore', title: '考核得分', formatter: function (value, row, index) {
+                if (row.assessmentType == 'quality' && row.bisQualified === true) {
+                    return "<span class=\"label label-success\">" + value + "【合格】</span> ";
+                } else if (row.assessmentType == 'quality' && row.bisQualified === false) {
+                    return "<span class=\"label label-danger\">" + value + "【不合格】</span>";
+                } else {
+                    return value;
+                }
+            }
+        });
         cols.push({
             field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
                 if (value) {
@@ -842,6 +858,8 @@
         box.modal("show");
         box.find("input[name=id]").val(id);
         box.find("input[name=adjustId]").val(adjustId);
+        box.find("input[name=assessmentType]").val(assessmentType);
+        box.find("[data-name=qualityStandard]").html(box.find("[data-name=qualityStandard]").text().replace(/\n/g, '<br>'));
         assessmentCommonHandle.getPerformanceDetailsByPerformanceId(id, function (performanceDetails) {
             var restHtml = "";
             $.each(performanceDetails, function (i, item) {
@@ -891,9 +909,10 @@
                     restHtml += htmlB;
                 });
             }
-            if(assessmentType == 'quality'){
+            if (assessmentType == 'quality') {
                 box.find('[data-name=remarks]').text(obj.remarks);
                 box.find('[data-name=bisQualified]').text(obj.bisQualified == true ? '合格' : '不合格');
+                box.find("[data-name=qualityStandard]").html(box.find("[data-name=qualityStandard]").text().replace(/\n/g, '<br>'));
             }
             table.empty().append(restHtml);
         });
@@ -909,9 +928,6 @@
         }
         var actualScoreArray = [];
         var examineScore = 0;
-        var remarks = form.find("textarea[name=remarks]").val();
-        var isSpot = form.find("input[name=isSpot]").val();
-
         form.find('tbody tr').each(function (i, item) {
             var actualScore = {};
             actualScore.id = $(item).find('[data-name=id]').val();
@@ -922,11 +938,15 @@
                 examineScore += parseFloat(actualScore.actualScore);
             }
         })
+
+        var remarks = form.find("textarea[name=remarks]").val();
+        var isSpot = form.find("input[name=isSpot]").val();
         var parentData = {
             id: form.find("input[name=id]").val(),
+            assessmentType: form.find("input[name=assessmentType]").val(),
             remarks: remarks,
             examineScore: examineScore,
-            bisQualified: form.find("input[name=bisQualified]").val()
+            bisQualified: form.find("[name=bisQualified]").val()
         };
         assessmentCommonHandle.saveAssessmentServer({
             chksScore: JSON.stringify(actualScoreArray),
@@ -986,7 +1006,17 @@
                 return str;
             }
         });
-        cols.push({field: 'examineScore', title: '考核得分'});
+        cols.push({
+            field: 'examineScore', title: '考核得分', formatter: function (value, row, index) {
+                if (row.assessmentType == 'quality' && row.bisQualified === true) {
+                    return "<span class=\"label label-success\">" + value + "【合格】</span> ";
+                } else if (row.assessmentType == 'quality' && row.bisQualified === false) {
+                    return "<span class=\"label label-danger\">" + value + "【不合格】</span>";
+                } else {
+                    return value;
+                }
+            }
+        });
         cols.push({
             field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
                 if (value) {

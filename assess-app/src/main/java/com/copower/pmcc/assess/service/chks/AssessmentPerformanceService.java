@@ -165,8 +165,8 @@ public class AssessmentPerformanceService {
         if (assessmentPerformanceDto == null || assessmentPerformanceDto.getId() == null) return;
         AssessmentPerformanceDto target = getPerformanceById(assessmentPerformanceDto.getId());
         if (target.getAssessmentType().equalsIgnoreCase(AssessmentTypeEnum.WORK_HOURS.getValue())) { //先验证工时得分是否超出最大值
-            Boolean isExceed = assessmentCommonService.isExceedWorkHoursMaxScore(target.getPlanDetailsId(), target.getBoxId(), assessmentPerformanceDto.getExamineScore());
-            if(isExceed==Boolean.TRUE){
+            Boolean isExceed = assessmentCommonService.isExceedWorkHoursMaxScore(target.getPlanDetailsId(), target.getBoxId(), assessmentPerformanceDto.getExamineScore(), assessmentPerformanceDto.getId());
+            if (isExceed == Boolean.TRUE) {
                 throw new BusinessException("工时超出了该工作事项可获得的最大值");
             }
         }
@@ -189,7 +189,7 @@ public class AssessmentPerformanceService {
         target.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
         target.setExaminePeople(commonService.thisUserAccount());
         target.setExamineScore(assessmentPerformanceDto.getExamineScore());
-        target.setBisQualified(assessmentPerformanceDto.getBisQualified());
+        target.setBisQualified(assessmentPerformanceDto.getBisQualified() == null ? true : assessmentPerformanceDto.getBisQualified());
         target.setRemarks(assessmentPerformanceDto.getRemarks());
         target.setExamineDate(DateUtils.now());
         performanceService.savePerformanceBase(target, detailDtoList);

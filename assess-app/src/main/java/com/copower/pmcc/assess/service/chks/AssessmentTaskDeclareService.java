@@ -150,6 +150,7 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
                 } else {
                     dto.setPlanName(projectPlanDetails.getProjectPhaseName());
                 }
+                dto.setProjectPhaseId(projectPlanDetails.getProjectPhaseId());
             }
             dto.setAssessmentType(assessmentTypeEnum.getValue());
             dto.setAssessmentKey(assessmentTypeEnum.getValue());

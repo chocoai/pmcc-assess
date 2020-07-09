@@ -13,6 +13,7 @@ import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
@@ -76,7 +77,7 @@ public class AssessmentCommonService {
             String generateProjectId = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
             if (StringUtils.isNotBlank(generateDate)) {
                 Date date = DateUtils.convertDate(generateDate);
-                if (DateUtils.compareDate(date, DateUtils.now()) > 0) return;
+                if (DateUtils.compareDate(date, projectInfo.getGmtCreated()) > 0) return;
             }
             if (StringUtils.isNotBlank(generateProjectId)) {
                 List<Integer> list = FormatUtils.transformString2Integer(generateProjectId);
@@ -125,7 +126,7 @@ public class AssessmentCommonService {
      *
      * @return
      */
-    public Boolean isExceedWorkHoursMaxScore(Integer planDetailsId,Integer boxId, BigDecimal currScore) {
+    public Boolean isExceedWorkHoursMaxScore(Integer planDetailsId, Integer boxId, BigDecimal currScore, Integer currPerformanceId) {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return false;
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
@@ -133,13 +134,17 @@ public class AssessmentCommonService {
         BigDecimal maxScore = boxReDto.getWorkHoursMaxScore();
         AssessmentPerformanceDto where = new AssessmentPerformanceDto();
         where.setProjectId(projectPlanDetails.getProjectId());
-        where.setProjectPhaseId(projectPlanDetails.getId());
+        where.setProjectPhaseId(projectPlanDetails.getProjectPhaseId());
+        where.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
+        where.setBisEffective(true);
         List<AssessmentPerformanceDto> dtoList = performanceService.getPerformancesByParam(where);
         if (CollectionUtils.isEmpty(dtoList)) return false;
         for (AssessmentPerformanceDto assessmentPerformanceDto : dtoList) {
-            currScore = currScore.add(assessmentPerformanceDto.getExamineScore());
+            if (currPerformanceId != null && currPerformanceId.equals(assessmentPerformanceDto.getId())) continue;
+            if (assessmentPerformanceDto.getExamineScore() != null)
+                currScore = currScore.add(assessmentPerformanceDto.getExamineScore());
         }
-        if (currScore.compareTo(maxScore) > 0) return true;
+        if (maxScore != null && currScore != null && currScore.compareTo(maxScore) > 0) return true;
         return false;
     }
 
