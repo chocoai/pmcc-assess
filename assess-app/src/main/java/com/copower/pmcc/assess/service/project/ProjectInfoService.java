@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
-import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
@@ -57,6 +54,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -879,7 +877,6 @@ public class ProjectInfoService {
                 publicService.writeToErpProject(projectInfo);
                 InitiateUnitInformationVo unitInformation = unitInformationService.getDataByProjectId(projectInfo.getId());
                 unitInformationService.roundWrite(unitInformation);
-
             }
 
         } catch (Exception e) {
@@ -887,6 +884,23 @@ public class ProjectInfoService {
             logger.error("exception!" + e.getMessage());
         }
         return flag;
+    }
+
+    /**
+     * 获取项目委托单位
+     * @param projectInfo
+     * @return
+     */
+    public String getEntrustmentUnit(ProjectInfo projectInfo) {
+        String value = "/";
+        InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
+        if (Objects.equal(consignorVo.getCsType(), InitiateContactsEnum.legalPerson.getId())) {
+            value = consignorVo.getCsEntrustmentUnit();
+        }
+        if (Objects.equal(consignorVo.getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
+            value = consignorVo.getCsName();
+        }
+        return value;
     }
 
 }

@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dto.input.data.SurveyDamageDto;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationBasisVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -51,7 +52,7 @@ public class EvaluationBasisService {
     @Autowired
     private DataReportTemplateItemService dataReportTemplateItemService;
     @Autowired
-    private DeclarePublicService declarePublicService;
+    private ProjectInfoService projectInfoService;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
@@ -170,12 +171,9 @@ public class EvaluationBasisService {
         Integer pledgeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId();
         //征收评估
         Integer imposeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_IMPOSE).getId();
-
-        //委估单位
-        DeclareApply declareApplyByProjectId = declarePublicService.getDeclareApplyByProjectId(projectInfo.getId());
         //对应委估对象
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        String unit = declareApplyByProjectId.getClient();
+        String unit = projectInfoService.getEntrustmentUnit(projectInfo);//获取委托单位
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < basisList.size(); i++) {
             DataEvaluationBasis basis = basisList.get(i);

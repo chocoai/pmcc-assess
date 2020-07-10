@@ -3297,7 +3297,7 @@ public class GenerateBaseDataService {
     public String getPracticalUse() {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectDeclareList) {
-            map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getCertUse());
+            map.put(generateCommonMethod.parseIntJudgeNumber(generateCommonMethod.getNumber(schemeJudgeObject.getNumber())), schemeJudgeObject.getPracticalUse());
         }
         return generateCommonMethod.judgeSummaryDesc(map, "实际用途为", false);
     }
@@ -5363,95 +5363,79 @@ public class GenerateBaseDataService {
                 basicVo.setParentName(basicEstateVoAndLandStateVo.getBasicEstateVo().getName());
                 basicVo.setName(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo().getName());
                 int index = 0;
-                if (true) {
-                    String s = generateLandEntityService.getLandName(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s)) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "名称", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+                String s = generateLandEntityService.getLandName(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s)) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "名称", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.fourTheFor(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s)) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "四至", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+
+                s = generateLandEntityService.fourTheFor(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s)) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "四至", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.getLandArea(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s)) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "土地面积", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+
+                s = generateLandEntityService.getLandArea(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s)) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "土地面积", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.getLandUse(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "用途", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+
+                s = generateLandEntityService.getLandUse(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s.trim())) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "用途", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.getShapeState(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "形状", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+                s = generateLandEntityService.getShapeState(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s.trim())) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "形状", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.getTopographicTerrain(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "地势", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+                s = generateLandEntityService.getTopographicTerrain(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s.trim())) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "地势", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.getSoil(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "土壤与地质", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+                s = generateLandEntityService.getSoil(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s.trim())) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "土壤与地质", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.getInfrastructureCompleteness(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "基础设施完备度", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+                s = generateLandEntityService.getInfrastructureCompleteness(basicEstateVoAndLandStateVo.getBasicEstateVo());
+                if (StringUtils.isNotBlank(s.trim())) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "基础设施完备度", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.getDevelopmentDegree(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "开发程度", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+                s = generateLandEntityService.getDevelopmentDegree(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s.trim())) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "开发程度", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
-                if (true) {
-                    String s = generateLandEntityService.getContent2(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
-                    if (StringUtils.isNotBlank(s.trim())) {
-                        BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
-                        sun.setType(String.join("", String.valueOf(++index), "、", "综上所述", ":"));
-                        sun.setValue(generateCommonMethod.trim(s));
-                        basicVo.getBasicVoLinkedHashSet().add(sun);
-                    }
+
+                s = generateLandEntityService.getContent2(basicEstateVoAndLandStateVo.getBasicEstateLandStateVo());
+                if (StringUtils.isNotBlank(s.trim())) {
+                    BasicExamineHandle.BasicVo sun = new BasicExamineHandle.BasicVo();
+                    sun.setType(String.join("", String.valueOf(++index), "、", "综上所述", ":"));
+                    sun.setValue(generateCommonMethod.trim(s));
+                    basicVo.getBasicVoLinkedHashSet().add(sun);
                 }
                 basicVoLinkedList.add(basicVo);
             }
@@ -5499,7 +5483,7 @@ public class GenerateBaseDataService {
             stringBuilder.append(biFunction.apply(String.format("%d、形状", ++index), generateLandEntityService.getShapeState(landStateVo)));
             stringBuilder.append(biFunction.apply(String.format("%d、地势", ++index), generateLandEntityService.getTopographicTerrain(landStateVo)));
             stringBuilder.append(biFunction.apply(String.format("%d、土壤与地质", ++index), generateLandEntityService.getSoil(landStateVo)));
-            stringBuilder.append(biFunction.apply(String.format("%d、基础设施完备度", ++index), generateLandEntityService.getInfrastructureCompleteness(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、基础设施完备度", ++index), generateLandEntityService.getInfrastructureCompleteness(basicEstate)));
             stringBuilder.append(biFunction.apply(String.format("%d、开发程度", ++index), generateLandEntityService.getDevelopmentDegree(landStateVo)));
             stringBuilder.append(biFunction.apply("综上所述", generateLandEntityService.getContent(basicApplyBatch)));
             documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);

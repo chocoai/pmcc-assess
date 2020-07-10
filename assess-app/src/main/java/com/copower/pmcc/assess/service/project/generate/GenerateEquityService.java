@@ -150,8 +150,7 @@ public class GenerateEquityService {
                         if (StringUtils.isNotBlank(greenSpaceRate)) {
                             landStateBuilder.append(String.format("绿地率%s，", greenSpaceRate));
                         }
-                        value = String.join("", "规划条件:"
-                                , generateCommonMethod.trim(landStateBuilder.toString()));
+                        value = generateCommonMethod.trim(landStateBuilder.toString());
                     }
                     break;
                 }
@@ -312,14 +311,9 @@ public class GenerateEquityService {
             Iterator<BasicBuilding> iterator = basicBuildingList.iterator();
             while (iterator.hasNext()) {
                 BasicBuilding basicBuilding = iterator.next();
-                if (basicBuilding.getProperty() != null) {//物业信誉与管理
-                    DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
-                    if (dataProperty == null) {
-                        continue;
-                    }
-                    propertyMap.put(number, getProperty(dataProperty));
+                if (StringUtils.isNotBlank(basicBuilding.getPropertyName())) {//物业信誉与管理
+                    propertyMap.put(number, basicBuilding.getPropertyName());
                 }
-
             }
         }
         switch (key) {

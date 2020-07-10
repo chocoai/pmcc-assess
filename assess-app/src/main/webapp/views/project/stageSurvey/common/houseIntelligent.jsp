@@ -46,139 +46,119 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frmHouseIntelligent" class="form-horizontal">
                     <input type="hidden" name="id">
-                    <div class="row">
+                    <div class="row form-group">
                         <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            开关回路<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="switchCircuit"
-                                                    class="form-control input-full  switchCircuit">
-                                            </select>
-                                        </div>
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 control-label">
+                                    开关回路<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-4">
+                                    <select required="required" name="switchCircuit"
+                                            class="form-control input-full  switchCircuit">
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 control-label">
+                                    档次
+                                </label>
+                                <div class="col-sm-4">
+                                    <select name="grade"
+                                            class="form-control input-full  grade">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 control-label">
+                                    铺设方式<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-4">
+                                    <select required="required" name="layingMethod"
+                                            class="form-control input-full  layingMethod">
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 control-label">
+                                    灯具
+                                </label>
+                                <div class="col-sm-4">
+                                    <select name="lampsLanterns" multiple="multiple"
+                                            class="form-control input-full search-select select2 lampsLanterns">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 control-label">
+                                    备注
+                                </label>
+                                <div class="col-sm-10">
+                                    <textarea name="remark" class="form-control input-full"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 control-label">
+                                    智能系统<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-10">
+                                    <a href="javascript://;" class="btn btn-sm btn-success"
+                                       onclick="houseIntelligent.prototype.appendHTML('',this)"><i
+                                            class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 8px;" class="system">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        智能系统
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <select required="required" name="intelligentSystem1"
+                                                class="form-control input-full  intelligentSystem1">
+                                        </select>
                                     </div>
+                                    <div class="col-sm-2">
+                                        <select required="required" name="layingMethod1"
+                                                class="form-control input-full  layingMethod1">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <select required="required" name="intelligenceGrade1"
+                                                class="form-control input-full  intelligenceGrade1">
+                                        </select>
+                                    </div>
+                                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                                        <input type="button" class="btn btn-warning" value="X"
+                                               onclick="houseIntelligent.prototype.cleanHTMLData(this)">
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                档次
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <select name="grade"
-                                                        class="form-control input-full  grade">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 control-label">
+                                    智能系统描述
+                                </label>
+                                <div class="col-sm-10">
+                                    <textarea name="systemDescribe" class="form-control input-full"></textarea>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            铺设方式<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="layingMethod"
-                                                    class="form-control input-full  layingMethod">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            灯具
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name="lampsLanterns" multiple="multiple"
-                                                    class="form-control input-full search-select select2 lampsLanterns">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                备注
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <textarea name="remark" class="form-control input-full"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            智能系统<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <a href="javascript://;" class="btn btn-sm btn-success"
-                                               onclick="houseIntelligent.prototype.appendHTML('',this)"><i
-                                                    class="fa fa-plus"></i></a>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 8px;" class="system">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                智能系统
-                                            </label>
-                                            <div class="col-sm-2">
-                                                <select required="required" name="intelligentSystem1"
-                                                        class="form-control input-full  intelligentSystem1">
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <select required="required" name="layingMethod1"
-                                                        class="form-control input-full  layingMethod1">
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <select required="required" name="intelligenceGrade1"
-                                                        class="form-control input-full  intelligenceGrade1">
-                                                </select>
-                                            </div>
-                                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                                <input type="button" class="btn btn-warning" value="X"
-                                                       onclick="houseIntelligent.prototype.cleanHTMLData(this)">
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                智能系统描述
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <textarea name="systemDescribe" class="form-control input-full"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>

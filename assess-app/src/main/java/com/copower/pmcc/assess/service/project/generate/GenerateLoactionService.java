@@ -296,7 +296,6 @@ public class GenerateLoactionService {
      */
     public String getRoadConditionNew(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
-
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchByApplyId(schemeJudgeObject.getBasicApplyId());
             String s = getRoadConditionExtend(basicApplyBatch);
@@ -304,18 +303,18 @@ public class GenerateLoactionService {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), s);
         }
         String s = generateCommonMethod.judgeEachDesc(map, "", "。", false);
-        String value = StringUtils.strip(s, "。");
+        String value = StringUtils.strip("估价对象位于" + s, "。");
         return value;
     }
 
     //道路状况
-    public String getRoadConditionExtend(BasicApplyBatch basicApply) {
-        if (basicApply == null || basicApply.getId() == 0) {
+    public String getRoadConditionExtend(BasicApplyBatch basicApplyBatch) {
+        if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
             return "";
         }
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
-        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = basicExamineHandle.getBasicMatchingTrafficList();
         List<BasicMatchingTrafficVo> metroList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
             if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainRoad.getName()) && basicMatchingTrafficVo.getDistance() != null) {
@@ -323,26 +322,36 @@ public class GenerateLoactionService {
             }
             return false;
         }).collect(Collectors.toList());
+        StringBuilder stringBuilder = new StringBuilder();
         if (CollectionUtils.isNotEmpty(metroList)) {
             for (int i = 0; i < metroList.size(); i++) {
                 BasicMatchingTrafficVo trafficVo = metroList.get(i);
-                if (StringUtils.isNotBlank(trafficVo.getName())) {
-                    linkedHashSet.add(trafficVo.getName());
+                if (StringUtils.isNotBlank(trafficVo.getName()) && StringUtils.isNotBlank(trafficVo.getPositionName())) {
+                    stringBuilder.append(trafficVo.getName() + trafficVo.getPositionName());
+                    if (stringBuilder.length() > 0) {
+                        if (i == metroList.size() - 1) {
+                            stringBuilder.append("；");
+                        } else {
+                            stringBuilder.append("、");
+                        }
+                    }
                 }
-                if (StringUtils.isNotBlank(trafficVo.getPositionName())) {
-                    linkedHashSet.add(trafficVo.getPositionName());
+            }
+            for (int i = 0; i < metroList.size(); i++) {
+                BasicMatchingTrafficVo trafficVo = metroList.get(i);
+                if (StringUtils.isNotBlank(trafficVo.getName())) {
+                    stringBuilder.append(trafficVo.getName());
                 }
                 if (StringUtils.isNotBlank(trafficVo.getTrafficFlowName())) {
-                    linkedHashSet.add(String.format("交通流量%s 、", trafficVo.getTrafficFlowName()));
+                    stringBuilder.append(String.format("交通流量%s 、", trafficVo.getTrafficFlowName()));
                 }
                 if (StringUtils.isNotBlank(trafficVo.getVisitorsFlowrateName())) {
-                    linkedHashSet.add(String.format("人流量%s", trafficVo.getVisitorsFlowrateName()));
+                    stringBuilder.append(String.format("人流量%s", trafficVo.getVisitorsFlowrateName()));
                 }
-                hashSet.add(StringUtils.join(linkedHashSet, ""));
-                linkedHashSet.clear();
+                stringBuilder.append(",");
             }
         }
-        return StringUtils.join(hashSet, "；");
+        return stringBuilder.toString();
     }
 
     /**
@@ -351,11 +360,11 @@ public class GenerateLoactionService {
      * @return
      * @throws Exception
      */
-    public String getAccessAvailableMeansTransport(BasicApplyBatch basicApply) {
-        if (basicApply == null) {
+    public String getAccessAvailableMeansTransport(BasicApplyBatch basicApplyBatch) {
+        if (basicApplyBatch == null) {
             return null;
         }
-        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = basicExamineHandle.getBasicMatchingTrafficList();
         List<MyEntry<String, Integer>> transitEntry = new ArrayList<>();
         List<MyEntry<String, Integer>> metroEntry = new ArrayList<>();
@@ -392,81 +401,48 @@ public class GenerateLoactionService {
     /**
      * 停车方便度
      *
-     * @param basicApply
+     * @param basicApplyBatch
      * @return
      * @throws Exception
      */
-    public String getParkingConvenience(BasicApplyBatch basicApply) {
-        if (basicApply == null) {
+    public String getParkingConvenience(BasicApplyBatch basicApplyBatch) {
+        if (basicApplyBatch == null) {
             return null;
         }
-        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
         List<BasicEstateParking> basicEstateParkingList = basicExamineHandle.getBasicEstateParkingList();
         return getParkingConvenience(basicEstateParkingList);
     }
 
     public String getParkingConvenience(List<BasicEstateParking> basicEstateParkingList) {
+        if (CollectionUtils.isEmpty(basicEstateParkingList)) return "";
         StringBuilder builder = new StringBuilder(8);
-        Set<String> stringSet = Sets.newHashSet();
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
-        final String TYPE = "自有车位";
-        if (CollectionUtils.isNotEmpty(basicEstateParkingList)) {
-            List<BasicEstateParking> commonParkingList = basicEstateParkingList.stream().filter(basicEstateParking -> !Objects.equal(TYPE, baseDataDicService.getNameById(basicEstateParking.getParkingEstate()))).collect(Collectors.toList());
-            List<BasicEstateParking> mySelfParkingList = Lists.newArrayList(CollectionUtils.subtract(basicEstateParkingList, commonParkingList));
-            if (CollectionUtils.isNotEmpty(commonParkingList)) {
-                commonParkingList = Arrays.asList(commonParkingList.get(0));
-                commonParkingList.stream().forEach(basicEstateParking -> {
-                    if (basicEstateParking.getNumber() != null) {
-                        builder.append("自有").append(StringUtils.isNotBlank(basicEstateParking.getName()) ? basicEstateParking.getName() : "").append("停车场");
-                        if (basicEstateParking.getNumber() != null)
-                            builder.append("有").append(basicEstateParking.getNumber()).append("个车位");
-                        stringSet.add(builder.toString());
-                        builder.delete(0, builder.toString().length());
-                    }
-                });
+        for (BasicEstateParking basicEstateParking : basicEstateParkingList) {
+            if (StringUtils.isNotBlank(basicEstateParking.getName()))
+                builder.append(basicEstateParking.getName());
+            if (basicEstateParking.getParkingType() != null && basicEstateParking.getParkingEstate() != null && basicEstateParking.getNumber() != null) {
+                builder.append(baseDataDicService.getNameById(basicEstateParking.getParkingEstate()));
+                builder.append(baseDataDicService.getNameById(basicEstateParking.getParkingType()));
+                builder.append(basicEstateParking.getNumber()).append("个");
             }
-            if (CollectionUtils.isNotEmpty(stringSet)) {
-                linkedHashSet.add(StringUtils.join(stringSet, "、"));
-            }
-            stringSet.clear();
-            if (CollectionUtils.isNotEmpty(mySelfParkingList)) {
-                mySelfParkingList = Arrays.asList(mySelfParkingList.get(0));
-                mySelfParkingList.stream().forEach(basicEstateParking -> {
-                    if (basicEstateParking.getNumber() != null) {
-                        String v = baseDataDicService.getNameById(basicEstateParking.getParkingType());
-                        if (StringUtils.isNotBlank(v)) {
-                            builder.append(baseDataDicService.getNameById(basicEstateParking.getParkingEstate()));
-                            builder.append(baseDataDicService.getNameById(basicEstateParking.getLocation()));
-                            builder.append(v);
-                            builder.append(basicEstateParking.getNumber()).append("个");
-                            stringSet.add(builder.toString());
-                            builder.delete(0, builder.toString().length());
-                        }
-                    }
-                });
-            }
-            if (CollectionUtils.isNotEmpty(stringSet)) {
-                linkedHashSet.add(StringUtils.join(stringSet, "、"));
-            }
-            stringSet.clear();
+            builder.append(",");
         }
-        String value = generateCommonMethod.trim(StringUtils.join(linkedHashSet, "；"));
-        return value;
+        return builder.toString();
     }
 
     /**
      * 交通收费情况
      *
-     * @param basicApply
+     * @param basicApplyBatch
      * @return
      * @throws Exception
      */
-    public String getTrafficCharges(BasicApplyBatch basicApply) {
-        if (basicApply == null) {
+    public String getTrafficCharges(BasicApplyBatch basicApplyBatch) {
+        if (basicApplyBatch == null) {
             return null;
         }
         StringBuilder builder = new StringBuilder(8);
-        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
         List<BasicMatchingTrafficVo> basicMatchingTrafficList = basicExamineHandle.getBasicMatchingTrafficList().stream().filter(basicMatchingTrafficVo -> {
             if (StringUtils.isNotBlank(basicMatchingTrafficVo.getCostStandard())) {
                 return true;
@@ -474,9 +450,8 @@ public class GenerateLoactionService {
             return false;
         }).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
-            basicMatchingTrafficList = Arrays.asList(basicMatchingTrafficList.get(0));
             basicMatchingTrafficList.stream().forEach(basicMatchingTrafficVo -> {
-                builder.append(basicMatchingTrafficVo.getName()).append(basicMatchingTrafficVo.getCostStandard());
+                builder.append(basicMatchingTrafficVo.getName()).append(basicMatchingTrafficVo.getCostStandard()).append(",");
             });
         }
         String value = generateCommonMethod.trim(builder.toString());
@@ -506,7 +481,7 @@ public class GenerateLoactionService {
         }).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(basicMatchingTrafficList)) {
             basicMatchingTrafficList = Arrays.asList(basicMatchingTrafficList.get(0));
-            builder.append("限行情况:");
+            builder.append("限行情况为");
             Set<String> stringSet = Sets.newHashSet();
             StringBuffer stringBuffer = new StringBuffer(8);
             basicMatchingTrafficList.stream().forEach(basicMatchingTrafficVo -> {

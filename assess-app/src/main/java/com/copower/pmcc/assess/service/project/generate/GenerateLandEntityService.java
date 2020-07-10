@@ -2,11 +2,15 @@ package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,40 +26,25 @@ import java.util.stream.Collectors;
  */
 @Service
 public class GenerateLandEntityService {
-    private static final String error = "";
+    private static final String defaultString = "无";
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+
 
     /**
      * 综上所述
      *
-     * @param basicApply
+     * @param basicApplyBatch
      * @return
      * @throws Exception
      */
-    @Deprecated
-//    public String getContent(BasicApply basicApply) throws Exception {
-//        if (basicApply == null) return null;
-//        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-//        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
-//        if (landStateVo == null || landStateVo.getId() == null) {
-//            return "";
-//        }
-//        return getContent2(generateBaseExamineService.getBasicEstateLandState());
-//    }
-
-    /**
-     * 综上所述
-     *
-     * @param basicApply
-     * @return
-     * @throws Exception
-     */
-    public String getContent(BasicApplyBatch basicApply) throws Exception {
-        if (basicApply == null) return null;
-        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply) ;
+    public String getContent(BasicApplyBatch basicApplyBatch) throws Exception {
+        if (basicApplyBatch == null) return null;
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
         BasicEstateLandStateVo landStateVo = basicExamineHandle.getBasicEstateLandState();
         if (landStateVo == null || landStateVo.getId() == null) {
             return "";
@@ -116,9 +105,16 @@ public class GenerateLandEntityService {
      * @return
      * @throws Exception
      */
-    public String getLandUse(BasicEstateLandStateVo landStateVo) throws Exception {
-        String v = landStateVo.getLandUseTypeName();
-        return StringUtils.isNotBlank(v) ? v : error;
+    public String getLandUse(BasicEstateLandStateVo landStateVo) {
+        List<BasicEstateLandCategoryInfo> landCategoryInfos = basicEstateLandCategoryInfoService.getListByEstateId(landStateVo.getEstateId());
+        if (CollectionUtils.isEmpty(landCategoryInfos)) return defaultString;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (BasicEstateLandCategoryInfo landCategoryInfo : landCategoryInfos) {
+            if (StringUtils.isNotBlank(landCategoryInfo.getLandUseCategory()))
+                stringBuilder.append(landCategoryInfo.getLandUseCategory()).append("、");
+        }
+        String v = stringBuilder.toString().replaceAll("、$", "");
+        return StringUtils.isNotBlank(v) ? v : defaultString;
     }
 
     /**
@@ -133,7 +129,7 @@ public class GenerateLandEntityService {
         if (StringUtils.isNotBlank(landStateVo.getShapeStateName())) {
             v = String.format("%s", landStateVo.getShapeStateName());
         } else {
-            v = error;
+            v = defaultString;
         }
         return v;
     }
@@ -141,12 +137,22 @@ public class GenerateLandEntityService {
     /**
      * 基础设施完备度
      *
-     * @param landStateVo
+     * @param basicEstate
      * @return
      * @throws Exception
      */
-    public String getInfrastructureCompleteness(BasicEstateLandStateVo landStateVo) throws Exception {
-        return StringUtils.isNotBlank(landStateVo.getInfrastructureCompletenessName()) ? landStateVo.getInfrastructureCompletenessName() : error;
+    public String getInfrastructureCompleteness(BasicEstate basicEstate) throws Exception {
+        StringBuilder stringBuilder=new StringBuilder();
+        if (StringUtils.isNotBlank(basicEstate.getInfrastructure())) {
+            List<String> stringList = Lists.newArrayList(basicEstate.getInfrastructure().split(","));
+            if (CollectionUtils.isNotEmpty(stringList)) {
+                for (String s : stringList) {
+                    stringBuilder.append(baseDataDicService.getNameById(s)).append("、");
+                }
+            }
+        }
+        String v = stringBuilder.toString().replaceAll("、$","");
+        return StringUtils.isNotBlank(v) ? v : defaultString;
     }
 
     /**
@@ -175,7 +181,7 @@ public class GenerateLandEntityService {
                 return landStateVo.getDevelopmentDegreeRemark();
             }
         }
-        return error;
+        return defaultString;
     }
 
     /**
@@ -211,7 +217,7 @@ public class GenerateLandEntityService {
             }
         }
         if (StringUtils.isEmpty(stringBuilder.toString().trim())) {
-            stringBuilder.append(error);
+            stringBuilder.append(defaultString);
         }
         return stringBuilder.toString();
     }
@@ -224,7 +230,7 @@ public class GenerateLandEntityService {
      * @throws Exception
      */
     public String getTopographicTerrain(BasicEstateLandStateVo landStateVo) throws Exception {
-        return StringUtils.isNotBlank(landStateVo.getTopographicTerrainName()) ? landStateVo.getTopographicTerrainName() : error;
+        return StringUtils.isNotBlank(landStateVo.getTopographicTerrainName()) ? landStateVo.getTopographicTerrainName() : defaultString;
     }
 
     /**
@@ -239,7 +245,7 @@ public class GenerateLandEntityService {
         if (StringUtils.isNotBlank(value)) {
             return String.format("%s㎡", value);
         } else {
-            return error;
+            return defaultString;
         }
     }
 
@@ -276,6 +282,6 @@ public class GenerateLandEntityService {
             stringSet.add(String.format("%s%s", landStateVo.getNorthToName(), landStateVo.getNorthTo()));
         }
         String v = StringUtils.join(stringSet.stream().filter(s -> StringUtils.isNotBlank(s)).collect(Collectors.toList()), "、");
-        return StringUtils.isNotBlank(v) ? v : error;
+        return StringUtils.isNotBlank(v) ? v : defaultString;
     }
 }
