@@ -127,8 +127,8 @@
                             </div>
                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                 <div class="input-group ">
-                                    <input type="hidden" name="id">
-                                    <input type="text" readonly="readonly" name="copyName"
+                                    <input type="hidden" data-name="id">
+                                    <input type="text" readonly="readonly" data-name="copyName"
                                            class="form-control form-control-sm"
                                            placeholder="无拷贝数据">
                                     <div class="input-group-prepend ">
@@ -728,8 +728,8 @@
                 table.bootstrapTable('uncheckAll');
                 return false;
             }
-            form.find("input[name='copyName']").val(rows[0].businessKey);
-            form.find("input[name='id']").val(rows[0].id);
+            form.find("input[data-name='copyName']").val(rows[0].businessKey);
+            form.find("input[data-name='id']").val(rows[0].id);
             notifySuccess("成功", "拷贝数据成功!");
             table.bootstrapTable('uncheckAll');
         } else {
@@ -740,9 +740,8 @@
     //粘贴
     assessmentCommonHandle.pasteAll = function (_this) {
         var form = $(_this).closest("form");
-        var data = formSerializeArray(form);
         var table = $("#assessmentPerformanceTableList");
-        var copyId = data.id;
+        var copyId = form.find('[data-name=id]').val();
         if (!copyId) {
             notifyWarning("警告", "请先拷贝一个数据作为被粘贴的模板!");
             return false;
@@ -771,7 +770,7 @@
                 ids: idArray.join(",")
             }, "/assessmentPerformance/pasteAll", "post", function (message) {
                 Loading.progressHide();
-                AlertSuccess("粘贴情况 ", message);
+                AlertSuccess("提示 ", message);
                 table.bootstrapTable('uncheckAll');
                 table.bootstrapTable('refresh');
             });

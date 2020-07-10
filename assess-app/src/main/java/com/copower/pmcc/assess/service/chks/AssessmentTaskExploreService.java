@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,10 +85,15 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         }
         //添加工时考核任务
         Map<String, String> workHoursMap = Maps.newHashMap();
-        workHoursMap.put("work.hours.estate", "楼盘信息");
-        workHoursMap.put("work.hours.building", "楼栋信息");
-        workHoursMap.put("work.hours.unit", "单元信息");
-        workHoursMap.put("work.hours.house", "房屋信息");
+        List<String> transform = LangUtils.transform(basicApplyBatchDetailList, o -> o.getTableName());
+        if (transform.contains(BasicFormClassifyEnum.ESTATE.getTableName()))
+            workHoursMap.put("work.hours.estate", "楼盘信息");
+        if (transform.contains(BasicFormClassifyEnum.BUILDING.getTableName()))
+            workHoursMap.put("work.hours.building", "楼栋信息");
+        if (transform.contains(BasicFormClassifyEnum.UNIT.getTableName()))
+            workHoursMap.put("work.hours.unit", "单元信息");
+        if (transform.contains(BasicFormClassifyEnum.HOUSE.getTableName()))
+            workHoursMap.put("work.hours.house", "房屋信息");
         for (Map.Entry<String, String> entry : workHoursMap.entrySet()) {
             List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, entry.getKey());
             if (CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务

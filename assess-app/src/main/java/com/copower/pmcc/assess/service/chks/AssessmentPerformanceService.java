@@ -407,43 +407,39 @@ public class AssessmentPerformanceService {
             return stringBuilder.toString();
         }
         List<Integer> integerList = FormatUtils.transformString2Integer(ids);
-        Iterator<Integer> iterator = integerList.iterator();
-        //索引 用作日志的书写
-        int index = 0;
-        while (iterator.hasNext()) {
-            Integer id = iterator.next();
-            boolean check = false;
+        for (int i = 0; i < integerList.size(); i++) {
             try {
-                check = pasteData(copyObj, assessmentProjectPerformanceDetailDtoList, performanceService.getPerformanceById(id));
-                index++;
-                if (check) {
-                    stringBuilder.append("第").append(index).append("条数据粘贴成功 \r");
-                } else {
-                    stringBuilder.append("第").append(index).append("条数据粘贴失败 \r");
-                }
+                pasteData(copyObj, assessmentProjectPerformanceDetailDtoList, performanceService.getPerformanceById(integerList.get(i)));
             } catch (BusinessException e) {
-                stringBuilder.append("第").append(index).append("条数据粘贴失败 \r");
+                stringBuilder.append("第").append(i+1).append("条数据粘贴失败,"+e.getMessage()).append(";");
             }
         }
         return stringBuilder.toString();
     }
 
     private boolean pasteData(AssessmentPerformanceDto copy, List<AssessmentPerformanceDetailDto> copyList, AssessmentPerformanceDto projectPerformanceDto) throws BusinessException {
-        if (copy == null || projectPerformanceDto == null) return false;
-        if (Objects.equal(projectPerformanceDto.getExamineStatus(), ProjectStatusEnum.FINISH.getKey())) return false;
+        if (copy == null || projectPerformanceDto == null)
+            throw new BusinessException("源数据为空");
+        if (Objects.equal(projectPerformanceDto.getExamineStatus(), ProjectStatusEnum.FINISH.getKey()))
+            throw new BusinessException("已完成的数据不允许粘贴");
         List<AssessmentPerformanceDetailDto> performanceDetailDtos = getPerformanceDetailsByPerformanceId(projectPerformanceDto.getId());
         if (CollectionUtils.isEmpty(performanceDetailDtos)) return false;
         if (copyList.size() != performanceDetailDtos.size()) return false;
-
+        Integer pasteTotal = 0;
         Map<Integer, AssessmentPerformanceDetailDto> map = FormatUtils.mappingSingleEntity(copyList, o -> o.getContentId(), o -> o);
         for (AssessmentPerformanceDetailDto performanceDetailDto : performanceDetailDtos) {
             AssessmentPerformanceDetailDto source = map.get(performanceDetailDto.getContentId());
             if (source != null) {
                 performanceDetailDto.setActualScore(source.getActualScore());
                 performanceDetailDto.setRemark(source.getRemark());
+                pasteTotal++;
             }
         }
+        if (pasteTotal <= 0)
+            throw new BusinessException("没找到考核项一致的数据");
         projectPerformanceDto.setRemarks(copy.getRemarks());
+        projectPerformanceDto.setBisQualified(copy.getBisQualified());
+        projectPerformanceDto.setExamineScore(copy.getExamineScore());
         projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
         saveAssessmentServer(projectPerformanceDto, performanceDetailDtos);
         return true;
