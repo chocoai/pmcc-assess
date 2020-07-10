@@ -93,6 +93,13 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailsByPlanDetailsId(Integer planDetailsId) {
+        if (planDetailsId == null) return null;
+        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
+        basicApplyBatchDetail.setPlanDetailsId(planDetailsId);
+        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
+    }
+
     public BasicApplyBatchDetail getBasicApplyBatchDetail(String tableName, Integer tableId) {
         BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
         basicApplyBatchDetail.setTableId(tableId);
@@ -149,6 +156,7 @@ public class BasicApplyBatchDetailService {
     public BasicApplyBatchDetail saveAndUpdateComplete(BasicApplyBatchDetail basicApplyBatchDetail, Integer planDetailsId) throws Exception {
         basicApplyBatchDetail.setDisplayName(basicApplyBatchDetail.getName());
         basicApplyBatchDetail.setName(basicApplyBatchDetail.getName());
+        basicApplyBatchDetail.setPlanDetailsId(planDetailsId);
         basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
         basicApplyBatchDetail.setExecutor(processControllerComponent.getThisUser());
         BasicFormClassifyEnum enumByKey = BasicFormClassifyEnum.getEnumByKey(basicApplyBatchDetail.getType());

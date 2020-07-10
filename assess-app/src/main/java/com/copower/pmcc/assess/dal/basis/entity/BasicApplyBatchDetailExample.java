@@ -225,6 +225,66 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
         public Criteria andApplyBatchIdIsNull() {
             addCriterion("apply_batch_id is null");
             return (Criteria) this;
@@ -755,6 +815,76 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andFullNameIsNull() {
+            addCriterion("full_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameIsNotNull() {
+            addCriterion("full_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameEqualTo(String value) {
+            addCriterion("full_name =", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameNotEqualTo(String value) {
+            addCriterion("full_name <>", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameGreaterThan(String value) {
+            addCriterion("full_name >", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameGreaterThanOrEqualTo(String value) {
+            addCriterion("full_name >=", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameLessThan(String value) {
+            addCriterion("full_name <", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameLessThanOrEqualTo(String value) {
+            addCriterion("full_name <=", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameLike(String value) {
+            addCriterion("full_name like", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameNotLike(String value) {
+            addCriterion("full_name not like", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameIn(List<String> values) {
+            addCriterion("full_name in", values, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameNotIn(List<String> values) {
+            addCriterion("full_name not in", values, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameBetween(String value1, String value2) {
+            addCriterion("full_name between", value1, value2, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameNotBetween(String value1, String value2) {
+            addCriterion("full_name not between", value1, value2, "fullName");
+            return (Criteria) this;
+        }
+
         public Criteria andExecutorIsNull() {
             addCriterion("executor is null");
             return (Criteria) this;
@@ -885,136 +1015,6 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andBaseTypeIsNull() {
-            addCriterion("base_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeIsNotNull() {
-            addCriterion("base_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeEqualTo(String value) {
-            addCriterion("base_type =", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeNotEqualTo(String value) {
-            addCriterion("base_type <>", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeGreaterThan(String value) {
-            addCriterion("base_type >", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("base_type >=", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeLessThan(String value) {
-            addCriterion("base_type <", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeLessThanOrEqualTo(String value) {
-            addCriterion("base_type <=", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeLike(String value) {
-            addCriterion("base_type like", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeNotLike(String value) {
-            addCriterion("base_type not like", value, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeIn(List<String> values) {
-            addCriterion("base_type in", values, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeNotIn(List<String> values) {
-            addCriterion("base_type not in", values, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeBetween(String value1, String value2) {
-            addCriterion("base_type between", value1, value2, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBaseTypeNotBetween(String value1, String value2) {
-            addCriterion("base_type not between", value1, value2, "baseType");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidIsNull() {
-            addCriterion("case_table_pid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidIsNotNull() {
-            addCriterion("case_table_pid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidEqualTo(Integer value) {
-            addCriterion("case_table_pid =", value, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidNotEqualTo(Integer value) {
-            addCriterion("case_table_pid <>", value, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidGreaterThan(Integer value) {
-            addCriterion("case_table_pid >", value, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("case_table_pid >=", value, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidLessThan(Integer value) {
-            addCriterion("case_table_pid <", value, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidLessThanOrEqualTo(Integer value) {
-            addCriterion("case_table_pid <=", value, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidIn(List<Integer> values) {
-            addCriterion("case_table_pid in", values, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidNotIn(List<Integer> values) {
-            addCriterion("case_table_pid not in", values, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidBetween(Integer value1, Integer value2) {
-            addCriterion("case_table_pid between", value1, value2, "caseTablePid");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseTablePidNotBetween(Integer value1, Integer value2) {
-            addCriterion("case_table_pid not between", value1, value2, "caseTablePid");
-            return (Criteria) this;
-        }
-
         public Criteria andUpgradeTableIdIsNull() {
             addCriterion("upgrade_table_id is null");
             return (Criteria) this;
@@ -1072,126 +1072,6 @@ public class BasicApplyBatchDetailExample {
 
         public Criteria andUpgradeTableIdNotBetween(Integer value1, Integer value2) {
             addCriterion("upgrade_table_id not between", value1, value2, "upgradeTableId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureIsNull() {
-            addCriterion("bis_structure is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureIsNotNull() {
-            addCriterion("bis_structure is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureEqualTo(Boolean value) {
-            addCriterion("bis_structure =", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureNotEqualTo(Boolean value) {
-            addCriterion("bis_structure <>", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureGreaterThan(Boolean value) {
-            addCriterion("bis_structure >", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_structure >=", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureLessThan(Boolean value) {
-            addCriterion("bis_structure <", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_structure <=", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureIn(List<Boolean> values) {
-            addCriterion("bis_structure in", values, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureNotIn(List<Boolean> values) {
-            addCriterion("bis_structure not in", values, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_structure between", value1, value2, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_structure not between", value1, value2, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardIsNull() {
-            addCriterion("bis_standard is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardIsNotNull() {
-            addCriterion("bis_standard is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardEqualTo(Boolean value) {
-            addCriterion("bis_standard =", value, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardNotEqualTo(Boolean value) {
-            addCriterion("bis_standard <>", value, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardGreaterThan(Boolean value) {
-            addCriterion("bis_standard >", value, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_standard >=", value, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardLessThan(Boolean value) {
-            addCriterion("bis_standard <", value, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_standard <=", value, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardIn(List<Boolean> values) {
-            addCriterion("bis_standard in", values, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardNotIn(List<Boolean> values) {
-            addCriterion("bis_standard not in", values, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_standard between", value1, value2, "bisStandard");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStandardNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_standard not between", value1, value2, "bisStandard");
             return (Criteria) this;
         }
 
@@ -1502,76 +1382,6 @@ public class BasicApplyBatchDetailExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameIsNull() {
-            addCriterion("full_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameIsNotNull() {
-            addCriterion("full_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameEqualTo(String value) {
-            addCriterion("full_name =", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotEqualTo(String value) {
-            addCriterion("full_name <>", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameGreaterThan(String value) {
-            addCriterion("full_name >", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameGreaterThanOrEqualTo(String value) {
-            addCriterion("full_name >=", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLessThan(String value) {
-            addCriterion("full_name <", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLessThanOrEqualTo(String value) {
-            addCriterion("full_name <=", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLike(String value) {
-            addCriterion("full_name like", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotLike(String value) {
-            addCriterion("full_name not like", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameIn(List<String> values) {
-            addCriterion("full_name in", values, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotIn(List<String> values) {
-            addCriterion("full_name not in", values, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameBetween(String value1, String value2) {
-            addCriterion("full_name between", value1, value2, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotBetween(String value1, String value2) {
-            addCriterion("full_name not between", value1, value2, "fullName");
             return (Criteria) this;
         }
     }

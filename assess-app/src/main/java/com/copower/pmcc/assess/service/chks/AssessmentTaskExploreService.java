@@ -64,10 +64,8 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(activityDto.getBoxId());
         BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId());
-        if (basicApplyBatch == null) {
-            return;
-        }
-        List<BasicApplyBatchDetail> basicApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
+        if (basicApplyBatch == null) return;
+        List<BasicApplyBatchDetail> basicApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailsByPlanDetailsId(projectPlanDetails.getId());
         if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) return;
         //只取本次申请的
         Iterator<BasicApplyBatchDetail> basicApplyBatchDetailIterator = basicApplyBatchDetailList.iterator();

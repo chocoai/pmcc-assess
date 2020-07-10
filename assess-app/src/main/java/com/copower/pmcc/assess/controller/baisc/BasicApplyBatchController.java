@@ -412,7 +412,8 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult saveItemData(String formData, Integer planDetailsId) {
         try {
             BasicApplyBatchDetail basicApplyBatchDetail = JSON.parseObject(formData, BasicApplyBatchDetail.class);
-            BasicApplyBatchDetailVo basicApplyBatchDetailVo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.saveAndUpdateComplete(basicApplyBatchDetail, planDetailsId));
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.saveAndUpdateComplete(basicApplyBatchDetail, planDetailsId);
+            BasicApplyBatchDetailVo basicApplyBatchDetailVo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(batchDetail);
             return HttpResult.newCorrectResult(basicApplyBatchDetailVo);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
@@ -716,7 +717,6 @@ public class BasicApplyBatchController extends BaseController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
-
 
     @ResponseBody
     @RequestMapping(value = "/editBuildingStatus", method = {RequestMethod.POST}, name = "保存")

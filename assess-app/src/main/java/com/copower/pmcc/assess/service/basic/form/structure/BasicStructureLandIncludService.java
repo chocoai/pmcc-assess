@@ -87,6 +87,7 @@ public class BasicStructureLandIncludService implements BasicFormStructureInterf
 
         BasicApplyBatchDetail estateApplyBatchDetail = new BasicApplyBatchDetail();
         estateApplyBatchDetail.setPid(0);
+        estateApplyBatchDetail.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
         estateApplyBatchDetail.setApplyBatchId(basicApplyBatch.getId());
         estateApplyBatchDetail.setTableName(formClassifyEnum.getTableName());
         estateApplyBatchDetail.setTableId(basicEstate.getId());

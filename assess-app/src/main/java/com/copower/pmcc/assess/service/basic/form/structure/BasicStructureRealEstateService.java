@@ -62,8 +62,6 @@ public class BasicStructureRealEstateService implements BasicFormStructureInterf
             basicEstate.setProvince(declareRecord.getProvince());
             basicEstate.setCity(declareRecord.getCity());
             basicEstate.setDistrict(declareRecord.getDistrict());
-            basicEstate.setStreetNumber(declareRecord.getStreetNumber());
-            basicEstate.setAttachNumber(declareRecord.getAttachedNumber());
         }
         basicEstateService.saveAndUpdate(basicEstate, false);
         BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
@@ -82,6 +80,7 @@ public class BasicStructureRealEstateService implements BasicFormStructureInterf
 
         BasicApplyBatchDetail estateApplyBatchDetail = new BasicApplyBatchDetail();
         estateApplyBatchDetail.setPid(0);
+        estateApplyBatchDetail.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
         estateApplyBatchDetail.setApplyBatchId(basicApplyBatch.getId());
         estateApplyBatchDetail.setTableName(formClassifyEnum.getTableName());
         estateApplyBatchDetail.setTableId(basicEstate.getId());

@@ -985,6 +985,7 @@ public class BasicApplyBatchService {
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
+            newApplyBatchDetail.setPlanDetailsId(planDetailsId);
             newApplyBatchDetail.setType(sourceApplyBatchDetail.getType());
             newApplyBatchDetail.setName(sourceApplyBatchDetail.getName());
             newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());

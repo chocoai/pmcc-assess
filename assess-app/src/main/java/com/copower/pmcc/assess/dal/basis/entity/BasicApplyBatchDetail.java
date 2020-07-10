@@ -7,6 +7,8 @@ public class BasicApplyBatchDetail {
 
     private Integer pid;
 
+    private Integer planDetailsId;
+
     private Integer applyBatchId;
 
     private Integer declareRecordId;
@@ -23,19 +25,13 @@ public class BasicApplyBatchDetail {
 
     private String displayName;
 
+    private String fullName;
+
     private String executor;
 
     private Integer quoteId;
 
-    private String baseType;
-
-    private Integer caseTablePid;
-
     private Integer upgradeTableId;
-
-    private Boolean bisStructure;
-
-    private Boolean bisStandard;
 
     private Boolean bisFromCase;
 
@@ -46,8 +42,6 @@ public class BasicApplyBatchDetail {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String fullName;
 
     public Integer getId() {
         return id;
@@ -63,6 +57,14 @@ public class BasicApplyBatchDetail {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getApplyBatchId() {
@@ -129,6 +131,14 @@ public class BasicApplyBatchDetail {
         this.displayName = displayName == null ? null : displayName.trim();
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName == null ? null : fullName.trim();
+    }
+
     public String getExecutor() {
         return executor;
     }
@@ -145,44 +155,12 @@ public class BasicApplyBatchDetail {
         this.quoteId = quoteId;
     }
 
-    public String getBaseType() {
-        return baseType;
-    }
-
-    public void setBaseType(String baseType) {
-        this.baseType = baseType == null ? null : baseType.trim();
-    }
-
-    public Integer getCaseTablePid() {
-        return caseTablePid;
-    }
-
-    public void setCaseTablePid(Integer caseTablePid) {
-        this.caseTablePid = caseTablePid;
-    }
-
     public Integer getUpgradeTableId() {
         return upgradeTableId;
     }
 
     public void setUpgradeTableId(Integer upgradeTableId) {
         this.upgradeTableId = upgradeTableId;
-    }
-
-    public Boolean getBisStructure() {
-        return bisStructure;
-    }
-
-    public void setBisStructure(Boolean bisStructure) {
-        this.bisStructure = bisStructure;
-    }
-
-    public Boolean getBisStandard() {
-        return bisStandard;
-    }
-
-    public void setBisStandard(Boolean bisStandard) {
-        this.bisStandard = bisStandard;
     }
 
     public Boolean getBisFromCase() {
@@ -223,13 +201,5 @@ public class BasicApplyBatchDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName == null ? null : fullName.trim();
     }
 }
