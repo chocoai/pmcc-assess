@@ -382,11 +382,11 @@ public class ZCHDemo {
      */
     public String getBigDecimalToInteger(final BigDecimal bigDecimal, final int number) {
         if (bigDecimal == null) {
-            throw new IllegalArgumentException("不符合约定哦亲!");
+            throw new IllegalArgumentException("参数为空!");
         }
         int log = (int) Math.log10(number);//这里一定会是整数,不用担心精度损失
         if (log < 1) {
-            throw new IllegalArgumentException("不符合约定哦亲!");
+            throw new IllegalArgumentException("参数异常!");
         }
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         double result = whileDivide(atomicInteger, bigDecimal.doubleValue());

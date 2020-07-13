@@ -239,10 +239,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/basicApplyBatchSurveySubmit", name = "查勘案例申请 提交", method = RequestMethod.POST)
-    public HttpResult basicApplyBatchSurveySubmit(Integer sourceApplyBatchId, String detailIds) {
+    public HttpResult basicApplyBatchSurveySubmit(Integer sourceApplyBatchId, String zTreeData) {
         try {
-            //发起流程
-            basicApplyBatchService.processSurveySubmit(sourceApplyBatchId, detailIds);
+            basicApplyBatchService.processSurveySubmit(sourceApplyBatchId, zTreeData);
         } catch (BusinessException e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
@@ -532,7 +531,6 @@ public class BasicApplyBatchController extends BaseController {
             }
         }
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
-        modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
         modelAndView.addObject("formClassify", basicFormClassifyParamDto.getFormClassify());
         modelAndView.addObject("tbId", basicFormClassifyParamDto.getTbId());
         modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(basicFormClassifyParamDto.getFormType()).getKey());
@@ -551,8 +549,6 @@ public class BasicApplyBatchController extends BaseController {
     //com.copower.pmcc.assess.service.base.BaseQrcodeService.createQrCode( )  这里的参数变动必须把这个方法的参数一起变动
     @RequestMapping(value = "/informationPhoneEdit", name = "信息手机端填写", method = RequestMethod.GET)
     public ModelAndView informationPhoneEdit(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-//        List<String> stringList = FormatUtils.transformString2List(basicFormClassifyParamDto.getTbType(), BasicFormClassifyEnum.transform(true));
-//        basicFormClassifyParamDto.setTbType(org.apache.commons.lang3.StringUtils.join(stringList, BasicFormClassifyEnum.transform(false)));
         BasicFormClassifyEnum estateTaggingTypeEnum = BasicFormClassifyEnum.getEnumByKey(basicFormClassifyParamDto.getTbType());
         BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(estateTaggingTypeEnum.getKey());
         ModelAndView modelAndView = entityAbstract.getPhoneEditModelAndView(basicFormClassifyParamDto);

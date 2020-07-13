@@ -15,10 +15,11 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private Integer area;
     private String number;
     private Boolean isParent;
+    private Boolean checked;
+    private Boolean halfCheck;
     private String type;
     private String tableName;
     private Integer tableId;
-    private Boolean bisModify;
     private String creator;
     private String creatorName;
     private String executor;
@@ -26,7 +27,9 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private String declareRecordName;
     private Integer applyBatchId;
     private String icon;
-    private boolean bisFromCase;
+    private boolean bisFromCase;//是否来源于案例库
+    private boolean bisAdd;//是否为新增数据
+    private boolean bisUpgrade;//是否为升级数据
 
     public boolean isBisFromCase() {
         return bisFromCase;
@@ -193,19 +196,43 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
         this.tableId = tableId;
     }
 
-    public Boolean getBisModify() {
-        return bisModify;
-    }
-
-    public void setBisModify(Boolean bisModify) {
-        this.bisModify = bisModify;
-    }
-
     public String getIcon() {
         return icon;
     }
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public boolean isBisAdd() {
+        return bisAdd;
+    }
+
+    public void setBisAdd(boolean bisAdd) {
+        this.bisAdd = bisAdd;
+    }
+
+    public boolean isBisUpgrade() {
+        return bisUpgrade;
+    }
+
+    public void setBisUpgrade(boolean bisUpgrade) {
+        this.bisUpgrade = bisUpgrade;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
+
+    public Boolean getHalfCheck() {
+        return halfCheck;
+    }
+
+    public void setHalfCheck(Boolean halfCheck) {
+        this.halfCheck = halfCheck;
     }
 }

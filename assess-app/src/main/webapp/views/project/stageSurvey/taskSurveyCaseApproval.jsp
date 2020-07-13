@@ -14,7 +14,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
@@ -56,7 +55,8 @@
                                         <form id="frmProjectCIP" class="form-horizontal">
                                             <input type="hidden" name="formClassify" value="${applyBatch.classify}">
                                             <input type="hidden" name="formType" value="${applyBatch.type}">
-                                            <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
+                                            <input type="hidden" name="planDetailsId"
+                                                   value="${applyBatch.planDetailsId}">
                                             <div class="row form-group">
                                                 <div class="col-md-12 form-inline">
                                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
@@ -264,6 +264,8 @@
         });
     }
 </script>
+
+<%--案例快速申请--%>
 <script type="application/javascript">
     var caseSetting = {
         check: {
@@ -298,7 +300,7 @@
                 var nodesSys = zTreeObj.getNodes(); //可以获取所有的父节点
                 var nodesSysAll = zTreeObj.transformToArray(nodesSys); //获取树所有节点
                 for (var i = 0; i < nodesSysAll.length; i++) {
-                    if (nodesSysAll[i].displayName.indexOf('新增')!=-1) {
+                    if (nodesSysAll[i].displayName.indexOf('新增') != -1) {
                         nodesSysAll[i].checked = true;
                         zTreeObj.updateNode(nodesSysAll[i]);
                     }
@@ -325,29 +327,23 @@
 
     //申请案例提交
     function submitCase() {
-        var sourceApplyBatchId = 0;
-
-        if (${!empty applyBatch.referenceApplyBatchId}) {
-            sourceApplyBatchId = '${applyBatch.referenceApplyBatchId}';
-        } else {
-            sourceApplyBatchId = '${applyBatch.id}';
-        }
-
+        var sourceApplyBatchId = '${applyBatch.id}';
         var zTreeObj = $.fn.zTree.getZTreeObj($("#caseZtree").prop("id"));
-        var nodes = zTreeObj.getCheckedNodes(true);
+        var nodes = zTreeObj.getNodesByFilter(function (node) {
+            return node.checked || node.halfCheck;
+        });
         if (nodes.length == 0) {
             notifyInfo('提示', '勾选至少一个节点');
             return false;
         }
-        var ids = [];
         $.each(nodes, function (i, node) {
-            ids.push(node.id);
+            checkParentNodeRecursion(node);
         });
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/basicApplyBatchSurveySubmit",
             data: {
                 sourceApplyBatchId: sourceApplyBatchId,
-                detailIds: ids.join(",")
+                zTreeData: JSON.stringify(nodes)
             },
             type: "post",
             dataType: "json",
@@ -360,6 +356,17 @@
                 }
             }
         })
+    }
+
+    //在勾选的节点中，当前节点的上级节点为新增节点则该节点必须选中，递归执行
+    function checkParentNodeRecursion(node) {
+        if (!node) return;
+        var parentNode = node.getParentNode();
+        if (parentNode && parentNode.bisAdd && !parentNode.checked) {
+            parentNode.checked = true;
+            zTreeObj.updateNode(parentNode);
+        }
+        checkParentNodeRecursion(parentNode);
     }
 </script>
 </html>
