@@ -1115,66 +1115,6 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
-        public Criteria andCaseEstateIdIsNull() {
-            addCriterion("case_estate_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdIsNotNull() {
-            addCriterion("case_estate_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdEqualTo(Integer value) {
-            addCriterion("case_estate_id =", value, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdNotEqualTo(Integer value) {
-            addCriterion("case_estate_id <>", value, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdGreaterThan(Integer value) {
-            addCriterion("case_estate_id >", value, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("case_estate_id >=", value, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdLessThan(Integer value) {
-            addCriterion("case_estate_id <", value, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdLessThanOrEqualTo(Integer value) {
-            addCriterion("case_estate_id <=", value, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdIn(List<Integer> values) {
-            addCriterion("case_estate_id in", values, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdNotIn(List<Integer> values) {
-            addCriterion("case_estate_id not in", values, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdBetween(Integer value1, Integer value2) {
-            addCriterion("case_estate_id between", value1, value2, "caseEstateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCaseEstateIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("case_estate_id not between", value1, value2, "caseEstateId");
-            return (Criteria) this;
-        }
-
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;

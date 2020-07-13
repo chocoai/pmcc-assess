@@ -136,11 +136,11 @@ public class BasicController {
     }
 
     @RequestMapping(value = "/checkCaseDetail", name = "查看详情", method = RequestMethod.GET)
-    public ModelAndView checkDetail(Integer estateId) {
+    public ModelAndView checkDetail(Integer applyBatchId) {
         String view = "/case/caseDetail";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
-            BasicApplyBatch caseData = basicApplyBatchService.getBasicApplyBatchById(estateId);
+            BasicApplyBatch caseData = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
             modelAndView.addObject("applyBatch", caseData);
             modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
             modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());

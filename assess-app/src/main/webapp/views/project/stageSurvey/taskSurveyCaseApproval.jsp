@@ -329,15 +329,20 @@
     function submitCase() {
         var sourceApplyBatchId = '${applyBatch.id}';
         var zTreeObj = $.fn.zTree.getZTreeObj($("#caseZtree").prop("id"));
-        var nodes = zTreeObj.getNodesByFilter(function (node) {
-            return node.checked || node.halfCheck;
-        });
+        var nodes = zTreeObj.getCheckedNodes(true);
         if (nodes.length == 0) {
             notifyInfo('提示', '勾选至少一个节点');
             return false;
         }
         $.each(nodes, function (i, node) {
             checkParentNodeRecursion(node);
+        });
+        var halfCheckNodes = zTreeObj.getNodesByFilter(function (node) {
+            return  node.getCheckStatus().half;
+        },false);
+        $.each(halfCheckNodes, function (i, node) {
+            node.halfCheck=true;
+            nodes.push(node);
         });
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/basicApplyBatchSurveySubmit",

@@ -35,8 +35,6 @@ public class BasicApplyBatch {
 
     private Boolean showTab;
 
-    private Integer caseEstateId;
-
     private String status;
 
     private Boolean draftFlag;
@@ -179,14 +177,6 @@ public class BasicApplyBatch {
 
     public void setShowTab(Boolean showTab) {
         this.showTab = showTab;
-    }
-
-    public Integer getCaseEstateId() {
-        return caseEstateId;
-    }
-
-    public void setCaseEstateId(Integer caseEstateId) {
-        this.caseEstateId = caseEstateId;
     }
 
     public String getStatus() {

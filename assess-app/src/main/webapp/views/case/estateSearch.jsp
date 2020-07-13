@@ -188,9 +188,9 @@
          * 描述:详情数据
          * @date:2018-09-13
          **/
-        findData: function (estateId) {
+        findData: function (applyBatchId) {
             var href = "${pageContext.request.contextPath}/basic/checkCaseDetail";
-            href += "?estateId=" + estateId;
+            href += "?applyBatchId=" + applyBatchId;
             window.open(href, "");
         },
 

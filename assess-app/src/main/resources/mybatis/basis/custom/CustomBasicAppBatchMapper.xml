@@ -14,7 +14,7 @@
         <result column="quote_id" property="quoteId" jdbcType="INTEGER"/>
         <result column="base_type" property="baseType" jdbcType="VARCHAR"/>
         <result column="show_tab" property="showTab" jdbcType="BIT"/>
-        <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER"/>
+        <result column="case_apply_batch_id" property="caseApplyBatchId" jdbcType="INTEGER"/>
         <result column="status" property="status" jdbcType="VARCHAR"/>
         <result column="draft_flag" property="draftFlag" jdbcType="BIT"/>
         <result column="bis_delete" property="bisDelete" jdbcType="BIT"/>
@@ -26,7 +26,7 @@
 
     <sql id="Base_Column_ListCustom">
        id, process_ins_id, plan_details_id, province, city, classify, type, estate_id, estate_name, 
-    quote_id, base_type, show_tab, case_estate_id, status, draft_flag, bis_delete, creator, 
+    quote_id, base_type, show_tab, case_apply_batch_id, status, draft_flag, bis_delete, creator,
     gmt_created, gmt_modified
     </sql>
 

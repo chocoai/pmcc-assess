@@ -84,10 +84,6 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
-    private BasicHouseTradingService basicHouseTradingService;
-    @Autowired
-    private BasicEstateLandStateService basicEstateLandStateService;
-    @Autowired
     private SurveyCommonService surveyCommonService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
@@ -97,33 +93,6 @@ public class BasicApplyBatchController extends BaseController {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private DeclareRecordService declareRecordService;
-    @Autowired
-    private AssessmentPerformanceService chksAssessmentProjectPerformanceService;
-
-    //-----------------------------------------------案例批量申请
-    @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
-    public ModelAndView basicApplyIndex(Integer estateId, String estateName) throws Exception {
-        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
-        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", boxId, "0", "");
-        BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
-        basicApplyBatch.setDraftFlag(true);
-        if (estateId != null && estateId != 0) {//大类与类型可以确定
-            BasicEstate basicEstate = basicEstateService.getBasicEstateById(estateId);
-            if (basicEstate != null) {
-                basicApplyBatch.setClassify(basicEstate.getClassify());
-                basicApplyBatch.setType(basicEstate.getType());
-                basicApplyBatch.setEstateId(basicEstate.getId());
-                basicApplyBatch.setCaseEstateId(basicEstate.getId());
-            }
-        }
-        basicApplyBatch.setEstateName(estateName);
-        basicApplyBatchService.addBasicApplyBatch(basicApplyBatch);
-        modelAndView.addObject("applyBatch", basicApplyBatch);
-        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-        return modelAndView;
-    }
 
     @RequestMapping(value = "/applyEdit", name = "返回修改页面", method = RequestMethod.GET)
     public ModelAndView basicApplyEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {

@@ -228,7 +228,7 @@ public class BasicApplyBatchService {
             ztreeDto.setTableName(item.getTableName());
             if (item.getBisFromCase() == Boolean.FALSE) {
                 ztreeDto.setTableId(item.getTableId());
-                if (basicApplyBatch.getCaseEstateId() != null && basicApplyBatch.getCaseEstateId() > 0) {
+                if (basicApplyBatch.getCaseApplyBatchId() != null && basicApplyBatch.getCaseApplyBatchId() > 0) {
                     if (item.getUpgradeTableId() != null && item.getUpgradeTableId() > 0) {
                         ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
                     } else {
@@ -277,7 +277,6 @@ public class BasicApplyBatchService {
             if (caseBasicApplyBatch != null) {
                 basicApplyBatch.setClassify(caseBasicApplyBatch.getClassify());
                 basicApplyBatch.setType(caseBasicApplyBatch.getType());
-                basicApplyBatch.setCaseEstateId(caseBasicApplyBatch.getEstateId());
                 basicApplyBatch.setCaseApplyBatchId(caseBasicApplyBatch.getId());
             }
         }

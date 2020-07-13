@@ -21,7 +21,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <c:if test="${applyBatch.caseEstateId > 0}">
+                    <c:if test="${applyBatch.caseApplyBatchId > 0}">
                         <div class="col-md-3">
                             <div class=" card" style="min-height: 300px;">
                                 <div class="card-header">
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </c:if>
-                    <div class="col-md-${applyBatch.caseEstateId > 0?9:12}">
+                    <div class="col-md-${applyBatch.caseApplyBatchId > 0?9:12}">
                         <div class=" card" style="min-height: 500px;">
                             <div class="card-header">
                                 <div class="card-head-row">
@@ -99,7 +99,7 @@
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                         <select class="form-control input-full"
-                                                                name="classify" ${applyBatch.caseEstateId > 0?'disabled="disabled"':''}
+                                                                name="classify" ${applyBatch.caseApplyBatchId > 0?'disabled="disabled"':''}
                                                                 onchange="formClassifyChange();" required>
                                                             <option value="">-请选择-</option>
                                                             <c:if test="${not empty formClassifyList}">
@@ -120,7 +120,7 @@
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                         <select class="form-control input-full"
-                                                                name="type" ${applyBatch.caseEstateId > 0?'disabled="disabled"':''}
+                                                                name="type" ${applyBatch.caseApplyBatchId > 0?'disabled="disabled"':''}
                                                                 onchange="saveBasicApplyBatch();" required>
                                                             <option value="">-请选择-</option>
                                                             <c:if test="${not empty examineFormTypeList}">
@@ -518,7 +518,7 @@
             success: function (result) {
                 if (result.ret) {
                     notifySuccess("成功", '保存成功');
-                    if ('${applyBatch.caseEstateId > 0}' == 'true') {
+                    if ('${applyBatch.caseApplyBatchId > 0}' == 'true') {
                         batchTreeTool.ztreeInit(${applyBatch.id});
                     } else {
                         var node = zTreeObj.getSelectedNodes()[0];

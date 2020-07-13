@@ -18,7 +18,6 @@
     <result column="quote_id" jdbcType="INTEGER" property="quoteId" />
     <result column="base_type" jdbcType="VARCHAR" property="baseType" />
     <result column="show_tab" jdbcType="BIT" property="showTab" />
-    <result column="case_estate_id" jdbcType="INTEGER" property="caseEstateId" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="draft_flag" jdbcType="BIT" property="draftFlag" />
     <result column="bis_case" jdbcType="BIT" property="bisCase" />
@@ -89,8 +88,8 @@
   <sql id="Base_Column_List">
     id, process_ins_id, project_id, plan_details_id, reference_apply_batch_id, case_apply_batch_id, 
     province, city, classify, type, estate_id, estate_name, building_status, quote_id, 
-    base_type, show_tab, case_estate_id, status, draft_flag, bis_case, bis_delete, creator, 
-    gmt_created, gmt_modified, remark
+    base_type, show_tab, status, draft_flag, bis_case, bis_delete, creator, gmt_created, 
+    gmt_modified, remark
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchExample" resultMap="BaseResultMap">
     select
@@ -131,19 +130,19 @@
       province, city, classify, 
       type, estate_id, estate_name, 
       building_status, quote_id, base_type, 
-      show_tab, case_estate_id, status, 
-      draft_flag, bis_case, bis_delete, 
-      creator, gmt_created, gmt_modified, 
-      remark)
+      show_tab, status, draft_flag, 
+      bis_case, bis_delete, creator, 
+      gmt_created, gmt_modified, remark
+      )
     values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{referenceApplyBatchId,jdbcType=INTEGER}, #{caseApplyBatchId,jdbcType=INTEGER}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
       #{buildingStatus,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, 
-      #{showTab,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
-      #{draftFlag,jdbcType=BIT}, #{bisCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{remark,jdbcType=VARCHAR})
+      #{showTab,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, 
+      #{bisCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -195,9 +194,6 @@
       </if>
       <if test="showTab != null">
         show_tab,
-      </if>
-      <if test="caseEstateId != null">
-        case_estate_id,
       </if>
       <if test="status != null">
         status,
@@ -269,9 +265,6 @@
       </if>
       <if test="showTab != null">
         #{showTab,jdbcType=BIT},
-      </if>
-      <if test="caseEstateId != null">
-        #{caseEstateId,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
@@ -356,9 +349,6 @@
       <if test="record.showTab != null">
         show_tab = #{record.showTab,jdbcType=BIT},
       </if>
-      <if test="record.caseEstateId != null">
-        case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
-      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -406,7 +396,6 @@
       quote_id = #{record.quoteId,jdbcType=INTEGER},
       base_type = #{record.baseType,jdbcType=VARCHAR},
       show_tab = #{record.showTab,jdbcType=BIT},
-      case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
       status = #{record.status,jdbcType=VARCHAR},
       draft_flag = #{record.draftFlag,jdbcType=BIT},
       bis_case = #{record.bisCase,jdbcType=BIT},
@@ -467,9 +456,6 @@
       <if test="showTab != null">
         show_tab = #{showTab,jdbcType=BIT},
       </if>
-      <if test="caseEstateId != null">
-        case_estate_id = #{caseEstateId,jdbcType=INTEGER},
-      </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -514,7 +500,6 @@
       quote_id = #{quoteId,jdbcType=INTEGER},
       base_type = #{baseType,jdbcType=VARCHAR},
       show_tab = #{showTab,jdbcType=BIT},
-      case_estate_id = #{caseEstateId,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
       draft_flag = #{draftFlag,jdbcType=BIT},
       bis_case = #{bisCase,jdbcType=BIT},
