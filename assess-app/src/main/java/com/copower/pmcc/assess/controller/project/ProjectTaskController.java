@@ -21,6 +21,7 @@ import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.annotation.RequestIdempotent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -46,7 +47,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/1/30
  * @time: 14:06
  */
@@ -126,6 +127,7 @@ public class ProjectTaskController extends BaseController {
     }
 
     @ResponseBody
+    @RequestIdempotent(excludeFields = {"actualHours"})
     @RequestMapping(value = "/submitTask", name = "提交工作成果数据", method = RequestMethod.POST)
     public HttpResult submitTask(ProjectTaskDto projectTaskDto) {
         try {
@@ -309,7 +311,7 @@ public class ProjectTaskController extends BaseController {
      * @param boxReActivitiId
      * @param modelAndView
      */
-    private void setCheckParams(Integer boxId, Integer boxReActivitiId, String processInsId,ModelAndView modelAndView) {
+    private void setCheckParams(Integer boxId, Integer boxReActivitiId, String processInsId, ModelAndView modelAndView) {
         //当前节点  可以查看的权限节点信息列表
         try {
             if (!modelAndView.getModelMap().containsAttribute(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()))) {
@@ -320,7 +322,7 @@ public class ProjectTaskController extends BaseController {
             }
             if (boxReActivitiId != null) {
                 //modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
-            }else {
+            } else {
                 //modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getActivityDtoListByProcessInsId(processInsId,boxId));
             }
             //modelAndView.addObject("chksExaminePeopleList", chksAssessmentProjectPerformanceService.getExaminePeopleList(processInsId,boxId));
