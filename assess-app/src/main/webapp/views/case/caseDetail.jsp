@@ -215,7 +215,6 @@
 
     function showVersionList(applyBatchDetailId) {
         var cols = [];
-        cols.push({field: 'fullName', title: '名称'});
         cols.push({field: 'version', title: '版本'});
         cols.push({
             field: 'id', title: '查看', formatter: function (value, row, index) {

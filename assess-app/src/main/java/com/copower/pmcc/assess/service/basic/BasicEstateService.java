@@ -381,17 +381,6 @@ public class BasicEstateService extends BasicEntityAbstract {
         return objectMap;
     }
 
-    /**
-     * 案例库中是否已存在该楼盘
-     *
-     * @param province
-     * @param city
-     * @param name
-     * @return
-     */
-    public Boolean isExistEstateCase(String province, String city, String name) {
-        return basicEstateDao.getBasicEstateCount(province, city, name) > 0;
-    }
 
     @Override
     public Integer saveAndUpdate(Object o, Boolean updateNull) {
