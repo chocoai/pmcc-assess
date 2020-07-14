@@ -1084,7 +1084,7 @@ public class BasicApplyBatchService {
                         if (caseBasicApplyBatchDetail != null) {
                             //原数据对应表
                             BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(caseBasicApplyBatchDetail.getType());
-                            Object entity = anAbstract.getBasicEntityById(caseBasicApplyBatchDetail.getTableId());
+                            Object entity = anAbstract.getBasicEntityById(source.getTableId());
                             Object version = anAbstract.getProperty(entity, "version");
                             anAbstract.setProperty(entity, "version", (Integer) (version == null ? 0 : version) + 1);
                             anAbstract.setProperty(entity, "bisCase", true);
