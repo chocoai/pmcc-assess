@@ -417,23 +417,18 @@
 
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
+        <td>{typeName}</td>
+        <td class="table-cell">{landLevelTypeName}</td>
         <td>
-            {typeName}
-        </td>
-        <td class="table-cell">
-            {landLevelTypeName}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td>
-            <select class="form-control input-full" name="landLevelGrade"
-                    onchange="landLevelHandle(this);" onblur="getAreaAndSeveralAmend();">
+            <input type="hidden" name="levelDetailId" value="{levelDetailId}">
+            <input type="hidden" name="type" value="{type}">
+            <input type="hidden" name="classification" value="{classification}">
+            <input type="hidden" name="category" value="{category}">
+            <select class="form-control input-full" name="landLevelGrade" onchange="landLevelHandle(this);">
                 {landLevelGradeHTML}
             </select>
         </td>
-        <td>
-            {reamark}
-        </td>
+        <td>{reamark}</td>
         <td>
             <input type="hidden" class="form-control input-full" name="dataLandLevelAchievement"
                    value="{dataLandLevelAchievement}">
@@ -442,7 +437,7 @@
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
         <td>
-            <input class="btn btn-warning" type="button" value="X"
+            <input class="btn btn-sm btn-warning" type="button" value="X"
                    onclick="landLevelEmpty(this)">
         </td>
     </tr>
@@ -471,8 +466,7 @@
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
-        }
-        else {
+        } else {
             submitToServer(JSON.stringify(formData));
         }
     }
@@ -484,21 +478,21 @@
         showVolumetricRateDetailList(${hasVolumeFractionAmendId});
         //因素条件说明及修正系数
         getLandLevelTabContent();
-        if(!'${master.areaAndSeveralAmend}'){
+        if (!'${master.areaAndSeveralAmend}') {
             $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${landFactorTotalScore}'));
-        }else{
+        } else {
             $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent('${master.areaAndSeveralAmend}'));
         }
-        if(!'${master.landLevelContent}'){
+        if (!'${master.landLevelContent}') {
             $("#landLevelContent").val('${landLevelContent}');
         }
-        if(!'${master.standardPremium}'){
+        if (!'${master.standardPremium}') {
             $("#standardPremium").val(getSomePlaces(parseFloat('${standardPremium}'), 2));
         }
-        if(!'${master.legalAge}'){
+        if (!'${master.legalAge}') {
             $("#legalAge").val(getSomePlaces(parseFloat('${legalAge}'), 2));
         }
-        if(!'${master.volumetricRate}'){
+        if (!'${master.volumetricRate}') {
             $("#volumetricRate").val(getSomePlaces(parseFloat('${volumetricRate}'), 2));
         }
 
@@ -701,14 +695,18 @@
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
                 var item = caseCommon.getLandLevelFilter(obj);
-                item.achievement=0;
-                item.grade='';
+                item.achievement = 0;
+                item.grade = '';
                 rows.push(item);
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{typeName}/g, item.typeName);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{levelDetailId}/g, AssessCommon.toString(item.levelDetailId));
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{type}/g, AssessCommon.toString(item.type));
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{classification}/g, AssessCommon.toString(item.classification));
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{category}/g, AssessCommon.toString(item.category));
                     var landLevelTypeName = "";
                     if (item.classification) {
                         landLevelTypeName += item.classification;
@@ -735,19 +733,19 @@
         var length = rows.length;// 获取当前表格中tr的个数
         var mark = 0; //要合并的单元格数
         var index = 0; //起始行数
-        if(length <= 1){
-        }else{
-            for(var i=0;i < length ;i++){
-                var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
-                var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                if(ford == behind){
-                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
-                    mark = mark +1;
-                }else if(ford != behind){
-                    index = i-mark;
-                    $("#landLevelTableList tr:gt(0):eq("+index+") td:eq(0)").attr("rowspan",mark+1);//+1 操作标识，将当前的行加入到隐藏
+        if (length <= 1) {
+        } else {
+            for (var i = 0; i < length; i++) {
+                var ford = $("#landLevelTableList tr:gt(0):eq(" + i + ") td:eq(0)").text();
+                var behind = $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").text();
+                if (ford == behind) {
+                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").hide();
+                    mark = mark + 1;
+                } else if (ford != behind) {
+                    index = i - mark;
+                    $("#landLevelTableList tr:gt(0):eq(" + index + ") td:eq(0)").attr("rowspan", mark + 1);//+1 操作标识，将当前的行加入到隐藏
                     mark = 0;
-                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i))+") td:eq(0)").hide();
+                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i)) + ") td:eq(0)").hide();
                 }
             }
         }
@@ -762,7 +760,7 @@
         var target = $("#landLevelTabContent");
         target.empty();
 
-        var rows=[]
+        var rows = []
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
@@ -803,19 +801,19 @@
         var length = rows.length;// 获取当前表格中tr的个数
         var mark = 0; //要合并的单元格数
         var index = 0; //起始行数
-        if(length <= 1){
-        }else{
-            for(var i=0;i < length ;i++){
-                var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
-                var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                if(ford == behind){
-                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
-                    mark = mark +1;
-                }else if(ford != behind){
-                    index = i-mark;
-                    $("#landLevelTableList tr:gt(0):eq("+index+") td:eq(0)").attr("rowspan",mark+1);//+1 操作标识，将当前的行加入到隐藏
+        if (length <= 1) {
+        } else {
+            for (var i = 0; i < length; i++) {
+                var ford = $("#landLevelTableList tr:gt(0):eq(" + i + ") td:eq(0)").text();
+                var behind = $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").text();
+                if (ford == behind) {
+                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").hide();
+                    mark = mark + 1;
+                } else if (ford != behind) {
+                    index = i - mark;
+                    $("#landLevelTableList tr:gt(0):eq(" + index + ") td:eq(0)").attr("rowspan", mark + 1);//+1 操作标识，将当前的行加入到隐藏
                     mark = 0;
-                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i))+") td:eq(0)").hide();
+                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i)) + ") td:eq(0)").hide();
                 }
             }
         }
@@ -886,26 +884,30 @@
         return landLevelContent;
     }
 
-    //change 事件 随着等级变化页面展示不同内容
+    //change 事件 因素分自动调整
     function landLevelHandle(that) {
-        var group = $(that).closest('.group');
-        var landLevelContent = group.find("input[name='landLevelContent']").val();
-        var obj = {};
-        try {
-            obj = JSON.parse(landLevelContent);
-        } catch (e) {
-        }
-        if (caseCommon.isNotBlankObject(obj)) {
-            AssessCommon.getDataDicInfo($(that).val(), function (item) {
-                obj.forEach(function (data, index) {
-                    if (data.gradeName == item.name) {
-                        group.find("input[name='landFactorTotalScore']").attr('data-value',data.achievement);
-                        group.find("input[name='landFactorTotalScore']").val(AssessCommon.pointToPercent(data.achievement));
-                        group.find("input[name='dataLandLevelAchievement']").val(data.id);
-                    }
-                });
-            });
-        }
+        var td = $(that).closest('td');
+        var achievement = $(that).closest('tr').find('[name=landFactorTotalScore]')
+        achievement.attr('data-value', '').val('');
+        $.ajax({
+            url: '${pageContext.request.contextPath}/dataLandLevelDetailAchievement/getAchievementByParam',
+            data: {
+                levelDetailId: td.find('[name=levelDetailId]').val(),
+                type: td.find('[name=type]').val(),
+                classification: td.find('[name=classification]').val(),
+                category: td.find('[name=category]').val(),
+                grade: $(that).val()
+            },
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret && result.data) {
+
+                    achievement.attr('data-value', result.data.achievement);
+                    AssessCommon.elementParsePercent(achievement);
+                }
+            }
+        })
     };
 </script>
 

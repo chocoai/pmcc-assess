@@ -836,6 +836,7 @@
     batchTreeTool.batchDeleteDetail = function () {
         var zTreeObj = $.fn.zTree.getZTreeObj($("#ztree").prop("id"));
         var nodes = zTreeObj.getCheckedNodes(true);
+        nodes = nodes.length == 0 ? zTreeObj.getSelectedNodes() : nodes;
         if (nodes.length == 0) {
             notifyInfo('提示', '勾选至少一个节点');
             return false;

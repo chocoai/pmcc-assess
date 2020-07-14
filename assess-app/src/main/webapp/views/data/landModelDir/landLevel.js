@@ -1039,7 +1039,7 @@ landLevel.saveDataLandDetailAchievement = function () {
     if (!landLevel.config.achievementFrm.valid()) {
         return false;
     }
-    landLevel.ajaxServerFun({formData: JSON.stringify(data)}, '/dataLandLevelDetailAchievement/save', "post", function () {
+    landLevel.ajaxServerFun({formData: JSON.stringify(data)}, '/dataLandLevelDetailAchievement/saveAchievement', "post", function () {
         landLevel.showLandDetailAchievementList(data.levelDetailId);
         landLevel.config.achievementBox.modal("hide");
     }, "save");

@@ -50,18 +50,19 @@ public class DataLandLevelDetailAchievementController {
         }
     }
 
-    @GetMapping(value = "/get/{id}", name = "restful get")
-    public HttpResult get(@PathVariable Integer id) {
+    @GetMapping(value = "/getAchievementByParam", name = "获取调整因素")
+    public HttpResult getAchievementByParam(Integer levelDetailId,Integer type,String classification,String category,Integer grade) {
         try {
-            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.getDataLandLevelDetailAchievementById(id));
+            DataLandLevelDetailAchievement achievement = LandLevelDetailAchievementService.getAchievementByParam(levelDetailId,type,classification,category,grade);
+            return HttpResult.newCorrectResult(achievement);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
         }
     }
 
-    @PostMapping(value = "/save", name = "restful post")
-    public HttpResult save(String formData) {
+    @PostMapping(value = "/saveAchievement", name = "restful post")
+    public HttpResult saveAchievement(String formData) {
         try {
             DataLandLevelDetailAchievement oo = JSON.parseObject(formData, DataLandLevelDetailAchievement.class);
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.saveDataLandLevelDetailAchievement(oo));
@@ -83,9 +84,9 @@ public class DataLandLevelDetailAchievementController {
 
 
     @GetMapping(value = "/landLevelFilter", name = "过滤 list get")
-    public HttpResult landLevelFilter(DataLandLevelDetailAchievement oo) {
+    public HttpResult landLevelFilter(Integer levelDetailId) {
         try {
-            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.landLevelFilter(oo));
+            return HttpResult.newCorrectResult(LandLevelDetailAchievementService.landLevelFilter(levelDetailId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);

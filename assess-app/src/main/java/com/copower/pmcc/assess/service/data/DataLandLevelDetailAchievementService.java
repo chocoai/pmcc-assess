@@ -481,15 +481,9 @@ public class DataLandLevelDetailAchievementService {
             if (StringUtils.isBlank(oo.getCreator())) {
                 oo.setCreator(dataLandLevelDetailAchievement.getCreator());
             }
-//            if (StringUtils.isBlank(oo.getCategory())) {
-//                oo.setCategory(dataLandLevelDetailAchievement.getCategory());
-//            }
             if (oo.getType() == null) {
                 oo.setType(dataLandLevelDetailAchievement.getType());
             }
-//            if (StringUtils.isBlank(oo.getClassification())) {
-//                oo.setClassification(dataLandLevelDetailAchievement.getClassification());
-//            }
             if (oo.getGmtCreated() == null) {
                 oo.setGmtCreated(dataLandLevelDetailAchievement.getGmtCreated());
             }
@@ -519,6 +513,19 @@ public class DataLandLevelDetailAchievementService {
         return dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementById(id);
     }
 
+    public DataLandLevelDetailAchievement getAchievementByParam(Integer levelDetailId, Integer type, String classification, String category, Integer grade) {
+        DataLandLevelDetailAchievement where = new DataLandLevelDetailAchievement();
+        where.setLevelDetailId(levelDetailId);
+        where.setType(type);
+        where.setClassification(classification);
+        where.setCategory(category);
+        where.setGrade(grade);
+        List<DataLandLevelDetailAchievement> list = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementList(where);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
+    }
+
+
     public List<DataLandLevelDetailAchievement> getDataLandLevelDetailAchievementList(DataLandLevelDetailAchievement oo) {
         return dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementList(oo);
     }
@@ -538,13 +545,48 @@ public class DataLandLevelDetailAchievementService {
     }
 
     /**
+     * 根据土地级别找出对应调整因素
+     *
+     * @return
+     */
+    public List<DataLandLevelDetailAchievement> getAchievementsByLandLevelDetailId(Integer detailId) {
+        //1.先在本级别中找调整因素，如果没有找到则到上级找挂载的调整因素
+        //2.如果上级也没有找到挂载的因素，则找上级的同级节点且名称与参数级别的名称一致的节点上的调整因素
+        //3.如何依然没有找到挂载的因素，则继续向上级查找，直到找到最顶层的级别
+        List<DataLandLevelDetailAchievement> achievements = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievements(detailId);
+        if (CollectionUtils.isNotEmpty(achievements)) return achievements;
+        DataLandLevelDetail currLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(detailId);
+        return getAchievementsRecursion(currLandLevelDetail.getId(), currLandLevelDetail);
+    }
+
+    //递归寻找调整因素
+    private List<DataLandLevelDetailAchievement> getAchievementsRecursion(Integer detailId, DataLandLevelDetail currLandLevelDetail) {
+        if (detailId == null || currLandLevelDetail == null) return null;
+        List<DataLandLevelDetailAchievement> achievements = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievements(detailId);
+        if (CollectionUtils.isNotEmpty(achievements)) return achievements;
+        achievements = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievements(currLandLevelDetail.getPid());
+        if (CollectionUtils.isNotEmpty(achievements)) return achievements;
+        DataLandLevelDetail parentLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(currLandLevelDetail.getPid());
+        if (parentLandLevelDetail == null) return null;
+        List<DataLandLevelDetail> levelDetails = dataLandLevelDetailService.getDataLandLevelDetailListByPid(parentLandLevelDetail.getPid());
+        if (CollectionUtils.isEmpty(levelDetails)) return null;
+        for (DataLandLevelDetail levelDetail : levelDetails) {
+            if (StringUtils.defaultString(levelDetail.getName()).equalsIgnoreCase(currLandLevelDetail.getName())) {
+                achievements = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievements(levelDetail.getId());
+                if (CollectionUtils.isNotEmpty(achievements)) return achievements;
+            }
+        }
+        return getAchievementsRecursion(parentLandLevelDetail.getId(), currLandLevelDetail);
+    }
+
+    /**
      * 过滤 类型
      *
      * @param oo
      * @return
      */
-    public Set<List<List<DataLandLevelDetailAchievementVo>>> landLevelFilter(DataLandLevelDetailAchievement oo) {
-        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = getDataLandLevelDetailAchievementList(oo);
+    public Set<List<List<DataLandLevelDetailAchievementVo>>> landLevelFilter(Integer levelDetailId) {
+        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = getAchievementsByLandLevelDetailId(levelDetailId);
         List<List<DataLandLevelDetailAchievementVo>> listList = landLevelFilter2(dataLandLevelDetailAchievementVoList.stream().map(po -> getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
         Set<List<List<DataLandLevelDetailAchievementVo>>> set = landLevelFilter1(listList);
         return set;
@@ -609,16 +651,7 @@ public class DataLandLevelDetailAchievementService {
                 vo.setCategoryName(baseDataDicService.getNameById(oo.getCategory()));
             }
         }
-        //vo.setAchievement(oo.getAchievement().multiply(new BigDecimal(100)));
         return vo;
-    }
-
-    public DataLandLevelDetailAchievement getDataLandLevelDetailAchievement(Integer levelDetailId, String category, Integer grade, Integer type) {
-        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievement = dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievement(levelDetailId, category, grade, type);
-        if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievement)) {
-            return dataLandLevelDetailAchievement.get(0);
-        }
-        return null;
     }
 
     /**
