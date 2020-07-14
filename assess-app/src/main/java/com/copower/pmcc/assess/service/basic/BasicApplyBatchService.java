@@ -127,6 +127,7 @@ public class BasicApplyBatchService {
         if (basicApplyBatch == null) return treeDtos;
         List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
         if (CollectionUtils.isEmpty(basicApplyBatchDetails)) return treeDtos;
+        BasicApplyBatch caseBasicApplyBatch = getCaseBasicApplyBatch(basicApplyBatch.getProvince(), basicApplyBatch.getCity(), basicApplyBatch.getEstateName());
         for (BasicApplyBatchDetail item : basicApplyBatchDetails) {
             ZtreeDto ztreeDto = new ZtreeDto();
             ztreeDto.setId(item.getId());
@@ -141,7 +142,6 @@ public class BasicApplyBatchService {
             ztreeDto.setTableName(item.getTableName());
             ztreeDto.setTableId(item.getTableId());
             if (showTag == true) {
-                BasicApplyBatch caseBasicApplyBatch = getCaseBasicApplyBatch(basicApplyBatch.getProvince(), basicApplyBatch.getCity(), basicApplyBatch.getEstateName());
                 if (caseBasicApplyBatch == null) {
                     ztreeDto.setBisAdd(true);
                     ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
@@ -157,28 +157,8 @@ public class BasicApplyBatchService {
                         }
                     }
                 }
-                if (bisDetail == true) {
-                    if (item.getBisFromCase() != true) {
-                        BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(item.getType());
-                        Object entity = anAbstract.getBasicEntityById(item.getTableId());
-                        Object version = anAbstract.getProperty(entity, "version");
-                        if ((Integer) (version == null ? 1 : version) == 1) {
-                            ztreeDto.setBisAdd(true);
-                            ztreeDto.setDisplayName(String.format("%s(新增)", item.getDisplayName()));
-                        } else {
-                            ztreeDto.setBisUpgrade(true);
-                            ztreeDto.setDisplayName(String.format("%s(升级)", item.getDisplayName()));
-                        }
-                    }
-                }
             }
-
-            if (StringUtils.isNotEmpty(item.getType())) {
-                ztreeDto.setType(item.getType());
-            } else {
-                BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(item.getTableName());
-                ztreeDto.setType(anEnum.getKey());
-            }
+            ztreeDto.setType(item.getType());
             ztreeDto.setCreator(item.getCreator());
             ztreeDto.setExecutor(item.getExecutor());
             ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
@@ -547,12 +527,16 @@ public class BasicApplyBatchService {
         applyBatchDetail.setPid(0);
         applyBatchDetail.setApplyBatchId(targetApplyBatch.getId());
         applyBatchDetail.setType(rootNode.getType());
-        applyBatchDetail.setTableId(rootNode.getTableId());
+        setTableIdByNode(applyBatchDetail,rootNode);
         applyBatchDetail.setTableName(rootNode.getTableName());
         applyBatchDetail.setName(rootNode.getName());
         applyBatchDetail.setDisplayName(rootNode.getName());
         applyBatchDetail.setExecutor(commonService.thisUserAccount());
-        applyBatchDetail.setBisFromCase(rootNode.getHalfCheck());
+        if(rootNode.getChecked()==Boolean.TRUE){
+            applyBatchDetail.setBisFromCase(false);
+        }else{
+            applyBatchDetail.setBisFromCase(rootNode.getHalfCheck());
+        }
         applyBatchDetail.setBisDelete(false);
         applyBatchDetail.setCreator(commonService.thisUserAccount());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(applyBatchDetail);
@@ -560,11 +544,11 @@ public class BasicApplyBatchService {
         targetApplyBatch.setEstateId(rootNode.getTableId());
         basicApplyBatchDao.updateInfo(targetApplyBatch);
 
-        createChildNodeRecursion(targetApplyBatch.getId(), ztreeDtoList, rootNode,applyBatchDetail.getId());
+        createChildNodeRecursion(targetApplyBatch.getId(), ztreeDtoList, rootNode, applyBatchDetail.getId());
     }
 
     //递归创建子节点
-    private void createChildNodeRecursion(Integer applyBatchId, List<ZtreeDto> ztreeDtoList, ZtreeDto parentNode,Integer newDetailId) {
+    private void createChildNodeRecursion(Integer applyBatchId, List<ZtreeDto> ztreeDtoList, ZtreeDto parentNode, Integer newDetailId) {
         List<ZtreeDto> childNodes = LangUtils.filter(ztreeDtoList, p -> p.getPid().equals(parentNode.getId()));//根节点
         if (CollectionUtils.isNotEmpty(childNodes)) {
             for (ZtreeDto childNode : childNodes) {
@@ -572,16 +556,37 @@ public class BasicApplyBatchService {
                 applyBatchDetail.setPid(newDetailId);
                 applyBatchDetail.setApplyBatchId(applyBatchId);
                 applyBatchDetail.setType(childNode.getType());
-                applyBatchDetail.setTableId(childNode.getTableId());
+                setTableIdByNode(applyBatchDetail,childNode);
                 applyBatchDetail.setTableName(childNode.getTableName());
                 applyBatchDetail.setName(childNode.getName());
                 applyBatchDetail.setDisplayName(childNode.getName());
                 applyBatchDetail.setExecutor(commonService.thisUserAccount());
-                applyBatchDetail.setBisFromCase(childNode.getHalfCheck());
+                if(childNode.getChecked()==Boolean.TRUE){
+                    applyBatchDetail.setBisFromCase(false);
+                }else{
+                    applyBatchDetail.setBisFromCase(childNode.getHalfCheck());
+                }
                 applyBatchDetail.setBisDelete(false);
                 applyBatchDetail.setCreator(commonService.thisUserAccount());
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(applyBatchDetail);
-                createChildNodeRecursion(applyBatchId, ztreeDtoList, childNode,applyBatchDetail.getId());
+                createChildNodeRecursion(applyBatchId, ztreeDtoList, childNode, applyBatchDetail.getId());
+            }
+        }
+    }
+
+    private void setTableIdByNode(BasicApplyBatchDetail applyBatchDetail, ZtreeDto node) {
+        if (applyBatchDetail == null || node == null) return;
+        if (node.getHalfCheck() == Boolean.TRUE) {
+            applyBatchDetail.setTableId(node.getTableId());
+        } else {
+            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(node.getType());
+            try{
+                Object entity = entityAbstract.copyBasicEntity(node.getTableId(), null, true);
+                if(entity!=null){
+                    applyBatchDetail.setTableId((Integer) entityAbstract.getProperty(entity,"id"));
+                }
+            }catch (Exception e){
+                log.error(e.getMessage(),e);
             }
         }
     }
@@ -1081,32 +1086,13 @@ public class BasicApplyBatchService {
                             BasicEntityAbstract anAbstract = publicBasicService.getServiceBeanByKey(caseBasicApplyBatchDetail.getType());
                             Object entity = anAbstract.getBasicEntityById(caseBasicApplyBatchDetail.getTableId());
                             Object version = anAbstract.getProperty(entity, "version");
-                            //查勘案例申请可能出现
-                            if (caseBasicApplyBatchDetail.getTableId().equals(source.getTableId())) {
-                                Object object = anAbstract.copyBasicEntity(caseBasicApplyBatchDetail.getTableId(), null, true);
-                                if (object != null) {
-                                    anAbstract.setProperty(object, "bisCase", true);
-                                    anAbstract.setProperty(object, "version", (Integer) (version == null ? 0 : version) + 1);
-                                    anAbstract.setProperty(object, "applyId", caseBasicApplyBatchDetail.getId());
-                                    anAbstract.saveAndUpdate(object, false);
+                            anAbstract.setProperty(entity, "version", (Integer) (version == null ? 0 : version) + 1);
+                            anAbstract.setProperty(entity, "bisCase", true);
+                            anAbstract.setProperty(entity, "applyId", caseBasicApplyBatchDetail.getId());
+                            anAbstract.saveAndUpdate(entity, false);
 
-                                    caseBasicApplyBatchDetail.setTableId((Integer) anAbstract.getProperty(object, "id"));
-                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
-                                }
-                            } else {
-                                //升级后对应表
-                                BasicEntityAbstract upgradeupgradeAbstract = publicBasicService.getServiceBeanByKey(source.getType());
-                                Object upgradeEntity = upgradeupgradeAbstract.getBasicEntityById(source.getTableId());
-                                if (upgradeEntity != null) {
-                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "bisCase", true);
-                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "version", (Integer) (version == null ? 0 : version) + 1);
-                                    upgradeupgradeAbstract.setProperty(upgradeEntity, "applyId", caseBasicApplyBatchDetail.getId());
-                                    upgradeupgradeAbstract.saveAndUpdate(upgradeEntity, false);
-
-                                    caseBasicApplyBatchDetail.setTableId((Integer) upgradeupgradeAbstract.getProperty(upgradeEntity, "id"));
-                                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
-                                }
-                            }
+                            caseBasicApplyBatchDetail.setTableId((Integer) anAbstract.getProperty(entity, "id"));
+                            basicApplyBatchDetailService.saveBasicApplyBatchDetail(caseBasicApplyBatchDetail);
                         } else {
                             //新增节点
                             BasicApplyBatchDetail caseParentBasicApplyBatchDetail = basicApplyBatchService.getCaseParentBatchDetail(source, caseBasicApplyBatch.getId());
