@@ -33,9 +33,11 @@
         <result column="assign_status" property="assignStatus" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="getProjectListByUserAccount" parameterType="com.copower.pmcc.assess.dto.input.project.QueryProjectInfo" resultMap="BaseResultMap">
+    <select id="getProjectListByUserAccount" parameterType="com.copower.pmcc.assess.dto.input.project.QueryProjectInfo"
+            resultMap="BaseResultMap">
         SELECT A.* FROM tb_project_info A LEFT JOIN tb_project_member B on A.id=B.project_id
-        LEFT JOIN tb_initiate_consignor D on A.id=D.project_id  LEFT JOIN tb_initiate_unit_information E on A.id=E.project_id
+        LEFT JOIN tb_initiate_consignor D on A.id=D.project_id LEFT JOIN tb_initiate_unit_information E on
+        A.id=E.project_id
         WHERE 1=1
         <if test="queryCreator!='' and queryCreator!=null">
             AND (A.creator = #{queryCreator})
@@ -93,6 +95,14 @@
         </if>
         <if test="queryProjectCategoryId!=null">
             AND A.project_category_id = #{queryProjectCategoryId}
+        </if>
+        <if test="userAccountList!=null">
+            AND B.user_account_manager in
+            <foreach item="item" index="index" collection="userAccountList" open="(" separator="," close=")">#{item,jdbcType=VARCHAR}</foreach>
+        </if>
+        <if test="departmentIdList!=null">
+            AND A.department_id in
+            <foreach item="item" index="index" collection="departmentIdList" open="(" separator="," close=")">#{item}</foreach>
         </if>
         ORDER BY A.id DESC
     </select>

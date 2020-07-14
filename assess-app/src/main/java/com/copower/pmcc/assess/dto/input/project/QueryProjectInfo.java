@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.dto.input.project;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zch on 2019-12-10.
@@ -29,6 +30,8 @@ public class QueryProjectInfo {
     private Integer queryLoanType;
     private Integer queryDepartmentId;
     private Integer queryProjectCategoryId;
+    private List<String> userAccountList;
+    private List<Integer> departmentIdList;
 
     public String getUserAccount() {
         return userAccount;
@@ -164,5 +167,21 @@ public class QueryProjectInfo {
 
     public void setQueryProjectCategoryId(Integer queryProjectCategoryId) {
         this.queryProjectCategoryId = queryProjectCategoryId;
+    }
+
+    public List<String> getUserAccountList() {
+        return userAccountList;
+    }
+
+    public void setUserAccountList(List<String> userAccountList) {
+        this.userAccountList = userAccountList;
+    }
+
+    public List<Integer> getDepartmentIdList() {
+        return departmentIdList;
+    }
+
+    public void setDepartmentIdList(List<Integer> departmentIdList) {
+        this.departmentIdList = departmentIdList;
     }
 }
