@@ -104,9 +104,9 @@
                                                                     单元数<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" name="remark" required
+                                                                    <input type="text" name="unitCount" required
                                                                            class="form-control input-full"
-                                                                           value="${basicBuilding.remark}">
+                                                                           value="${basicBuilding.unitCount}">
                                                                 </div>
                                                                 <div class="col-md-3 col-lg-offset-1 ">
                                                                     <button type="button" class="btn btn-info btn-sm"
