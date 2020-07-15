@@ -571,7 +571,7 @@ public class GenerateBaseDataService {
     public String getTotalAmountMortgageValue() throws Exception {
         BigDecimal decimal = getTotalRealEstate().subtract(getSchemeReimbursementKnowTotalPrice()).abs();
         String value = generateCommonMethod.getBigDecimalToInteger(decimal, 100);
-        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
+        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_UP).toString();
         return value;
     }
 
@@ -1853,7 +1853,7 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
                         BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
-                        temp = temp.add(bigDecimal);
+                        temp = temp.add(bigDecimal.setScale(2,RoundingMode.HALF_UP));
                     }
                 }
             }
@@ -1869,7 +1869,7 @@ public class GenerateBaseDataService {
     public String getTotalRealEstatePrice() {
         String value = generateCommonMethod.getBigDecimalRound(getTotalRealEstate(), 0, false);
         value = generateCommonMethod.getBigDecimalToInteger(new BigDecimal(value), 100);
-        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
+        value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_UP).toString();
         return value;
     }
 
@@ -7296,7 +7296,7 @@ public class GenerateBaseDataService {
                 BigDecimal one = new BigDecimal(entry.getValue().getKey());
                 BigDecimal two = new BigDecimal(entry.getValue().getValue());
                 BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(generateCommonMethod.getBigDecimalToInteger(one.multiply(two), 100));
-                String value = bigDecimal.divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
+                String value = bigDecimal.divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_UP).toString();
                 map.put(entry.getKey(), value);
             }
         }
@@ -7358,7 +7358,7 @@ public class GenerateBaseDataService {
     public synchronized String getAssessAssessTotal() {
         String value = getAssessAssessTotal2();
         if (NumberUtils.isNumber(value)) {
-            value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_DOWN).toString();
+            value = new BigDecimal(value).divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_UP).toString();
             return value;
         }
         return "/";
