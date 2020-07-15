@@ -48,6 +48,13 @@ public class SurveyAssetRightDeclareDao {
         return mapper.selectByExample(example);
     }
 
+    public List<SurveyAssetRightDeclare> getSurveyAssetRightDeclareList(SurveyAssetRightDeclare rightDeclare) {
+        SurveyAssetRightDeclareExample example = new SurveyAssetRightDeclareExample();
+        SurveyAssetRightDeclareExample.Criteria criteria = example.createCriteria();
+        MybatisUtils.convertObj2Criteria(rightDeclare,criteria);
+        return mapper.selectByExample(example);
+    }
+
     public List<SurveyAssetRightDeclare> getSurveyAssetRightDeclareListByExample(SurveyAssetRightDeclare oo) {
         SurveyAssetRightDeclareExample example = new SurveyAssetRightDeclareExample();
         SurveyAssetRightDeclareExample.Criteria criteria = example.createCriteria();

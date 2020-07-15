@@ -19,18 +19,12 @@
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header collapse-link">
+                            <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${areaGroup.areaName}
-
                                         <button onclick="repeatSchemeReimbursementInit(this);"
                                                 class="btn btn-success btn-sm" type="button">重新初始化
-                                        </button>
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
                                 </div>

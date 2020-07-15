@@ -60,7 +60,16 @@ public class SurveyAssetRightDeclareService {
         query.setProjectId(projectId);
         query.setProjectPhaseId(otherRightPhase.getId());
         List<ProjectPlanDetails> detailsList = projectPlanDetailsService.getProjectDetails(query);
-        return detailsList.get(0) ;
+        return detailsList.get(0);
+    }
+
+    public SurveyAssetRightDeclare getRightDeclareByDeclareId(Integer declareId) {
+        if (declareId == null) return null;
+        SurveyAssetRightDeclare where = new SurveyAssetRightDeclare();
+        where.setDeclareId(declareId);
+        List<SurveyAssetRightDeclare> list = surveyAssetRightDeclareDao.getSurveyAssetRightDeclareList(where);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
     }
 
     public boolean updateSurveyAssetRightDeclare(SurveyAssetRightDeclare oo, boolean updateNull) {
