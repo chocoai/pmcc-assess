@@ -246,23 +246,23 @@ public class DataLandLevelDetailAchievementService {
                 BeanUtils.copyProperties(input, landAchievement);
                 switch (i) {
                     case 3: {
-                        fiveHandle(i, "优", aRow, bRow, landAchievement, grades);
+                        fiveHandle(i, "优", aRow, bRow, landAchievement, grades, types);
                         break;
                     }
                     case 4: {
-                        fiveHandle(i, "较优", aRow, bRow, landAchievement, grades);
+                        fiveHandle(i, "较优", aRow, bRow, landAchievement, grades, types);
                         break;
                     }
                     case 5: {
-                        fiveHandle(i, "一般", aRow, bRow, landAchievement, grades);
+                        fiveHandle(i, "一般", aRow, bRow, landAchievement, grades, types);
                         break;
                     }
                     case 6: {
-                        fiveHandle(i, "较劣", aRow, bRow, landAchievement, grades);
+                        fiveHandle(i, "较劣", aRow, bRow, landAchievement, grades, types);
                         break;
                     }
                     case 7: {
-                        fiveHandle(i, "劣", aRow, bRow, landAchievement, grades);
+                        fiveHandle(i, "劣", aRow, bRow, landAchievement, grades, types);
                         break;
                     }
                     default:
@@ -295,7 +295,7 @@ public class DataLandLevelDetailAchievementService {
         }
     }
 
-    private void fiveHandle(final int i, final String name, Row aRow, Row bRow, DataLandLevelDetailAchievement landAchievement, List<BaseDataDic> grades) {
+    private void fiveHandle(final int i, final String name, Row aRow, Row bRow, DataLandLevelDetailAchievement landAchievement, List<BaseDataDic> grades, List<BaseDataDic> types) {
         if (aRow != null) {
             if (aRow.getCell(i) != null) {
                 if (org.apache.commons.lang3.StringUtils.isNotEmpty(PoiUtils.getCellValue(aRow.getCell(i)))) {
@@ -304,9 +304,9 @@ public class DataLandLevelDetailAchievementService {
             }
             if (aRow.getCell(0) != null) {
                 if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(aRow.getCell(0)))) {
-                    List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.programmeMarketCostapproachFactor);
                     BaseDataDic dataDic = baseDataDicService.getDataDicByName(types, PoiUtils.getCellValue(aRow.getCell(0)));
-                    landAchievement.setType(dataDic.getId());
+                    if (dataDic != null)
+                        landAchievement.setType(dataDic.getId());
                 }
             }
             if (aRow.getCell(1) != null) {
