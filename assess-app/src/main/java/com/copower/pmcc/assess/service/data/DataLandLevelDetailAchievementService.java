@@ -268,11 +268,6 @@ public class DataLandLevelDetailAchievementService {
                     default:
                         break;
                 }
-                if (k >= achievementDto.getOneRow()) {
-                    landAchievement.setType(types.stream().filter(baseDataDic -> Alias.equals(baseDataDic.getName())).findFirst().get().getId());
-                } else {
-                    landAchievement.setType(types.stream().filter(baseDataDic -> !Alias.equals(baseDataDic.getName())).findFirst().get().getId());
-                }
                 if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievementList)) {
                     DataLandLevelDetailAchievement target = biFunction.apply(landAchievement, dataLandLevelDetailAchievementList);
                     if (target != null) {
@@ -305,6 +300,13 @@ public class DataLandLevelDetailAchievementService {
             if (aRow.getCell(i) != null) {
                 if (org.apache.commons.lang3.StringUtils.isNotEmpty(PoiUtils.getCellValue(aRow.getCell(i)))) {
                     landAchievement.setReamark(PoiUtils.getCellValue(aRow.getCell(i)));
+                }
+            }
+            if (aRow.getCell(0) != null) {
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(aRow.getCell(0)))) {
+                    List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.programmeMarketCostapproachFactor);
+                    BaseDataDic dataDic = baseDataDicService.getDataDicByName(types, PoiUtils.getCellValue(aRow.getCell(0)));
+                    landAchievement.setType(dataDic.getId());
                 }
             }
             if (aRow.getCell(1) != null) {
