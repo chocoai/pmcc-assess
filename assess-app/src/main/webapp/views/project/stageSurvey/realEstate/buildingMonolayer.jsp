@@ -125,13 +125,13 @@
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <div class="input-group">
-                                                                        <select class="form-control form-control-sm" required
+                                                                        <select class="form-control form-control" required
                                                                                 name="reference">
                                                                             <option value="" selected="">-请选择-</option>
                                                                             <option value="楼盘内">楼盘内</option>
                                                                             <option value="楼盘大门">楼盘大门</option>
                                                                         </select>
-                                                                        <select class="form-control form-control-sm" required
+                                                                        <select class="form-control form-control" required
                                                                                 name="orientation">
                                                                             <option value="" selected="">-请选择-</option>
                                                                             <option value="左面">左面</option>
@@ -148,16 +148,6 @@
                                                                             <option value="西南面">西南面</option>
                                                                             <option value="西北面">西北面</option>
                                                                         </select>
-
-                                                                        <div class="input-group-prepend ">
-                                                                            <button class="btn btn-warning btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('select').val('');">
-                                                                                清空
-                                                                                <i class="fa "></i>
-                                                                            </button>
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <label class="col-sm-1">
@@ -276,22 +266,18 @@
                                                                 </div>
                                                                 <label class="col-sm-1">最小楼间距倍数</label>
                                                                 <div class="col-md-3">
-
                                                                     <div class="input-group">
-
                                                                         <input type="text" required="required"
                                                                                name="minimumFloorDistance" placeholder="最小楼间距倍数"
-                                                                               class="form-control form-control-sm" onblur="buildingCommon.minimumFloorDistanceEvent(this);"
+                                                                               class="form-control form-control" onblur="buildingCommon.minimumFloorDistanceEvent(this);"
                                                                                list="build_minimumFloorDistance_data"
                                                                                value="${basicBuilding.minimumFloorDistance}">
-
                                                                         <div class="input-group-append">
                                                                             <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
                                                                             <div class="dropdown-menu" id="build_minimumFloorDistance_data">
                                                                             </div>
                                                                         </div>
                                                                     </div>
-
                                                                     <input type="hidden" placeholder="楼间距描述"
                                                                            class="form-control input-full"
                                                                            name="betweenDistanceDescription"

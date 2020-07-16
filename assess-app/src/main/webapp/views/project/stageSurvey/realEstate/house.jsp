@@ -101,26 +101,16 @@
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm" required
+                                                            <select class="form-control form-control" required
                                                                     name="reference">
                                                                 <option value="" selected="">-请选择-</option>
                                                                 <option value="入户门">入户门</option>
                                                                 <option value="客厅">客厅</option>
                                                             </select>
-                                                            <select class="form-control form-control-sm orientation"
+                                                            <select class="form-control form-control orientation"
                                                                     required
                                                                     name="orientation">
                                                             </select>
-
-                                                            <div class="input-group-prepend ">
-                                                                <button class="btn btn-warning btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="$(this).closest('.input-group').find('select').val('');">
-                                                                    清空
-                                                                    <i class="fa "></i>
-                                                                </button>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <label class="col-sm-1">空间布局<span
@@ -231,7 +221,7 @@
                                                                     <div class="input-group">
                                                                         <input type="text" name="certUse"
                                                                                value="${basicHouse.certUse}"
-                                                                               class="form-control form-control-sm">
+                                                                               class="form-control form-control">
 
                                                                         <div class="input-group-append">
                                                                             <button class="btn btn-warning btn-sm dropdown-toggle"

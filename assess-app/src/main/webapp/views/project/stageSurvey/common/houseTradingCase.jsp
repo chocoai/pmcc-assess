@@ -502,9 +502,7 @@
         basicHouseTradingAppend: "basicHouseTradingAppend",
         basicHouseTradingDiv: "basicHouseTradingDiv",
         houseTradingFilePart: "houseTradingFilePart",
-
     };
-
 
     /**
      * 添加html,并且替换

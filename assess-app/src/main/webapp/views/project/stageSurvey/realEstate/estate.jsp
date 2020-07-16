@@ -166,7 +166,7 @@
                                                 <label class="col-sm-1">占地面积</label>
                                                 <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                     <div class="input-group">
-                                                        <select class="form-control form-control-sm"
+                                                        <select class="form-control form-control"
                                                                 name="coverAnAreaUnit">
                                                             <option value="">--请选择--</option>
                                                             <option value="平方米">平方米</option>
@@ -175,7 +175,7 @@
                                                         <input type="number" data-rule-maxlength="100"
                                                                data-rule-number='true'
                                                                placeholder="占地面积(请输入数字)" name="coverAnArea"
-                                                               class="form-control form-control-sm"
+                                                               class="form-control form-control"
                                                                value="${basicEstate.coverAnArea}">
                                                     </div>
                                                 </div>
@@ -328,13 +328,13 @@
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm"
+                                                            <select class="form-control form-control"
                                                                     name="eastToName">
                                                                 <option value="东至" selected="selected">东至</option>
                                                                 <option value="东南">东南</option>
                                                                 <option value="东北">东北</option>
                                                             </select>
-                                                            <input type="text" class="form-control form-control-sm"
+                                                            <input type="text" class="form-control form-control"
                                                                    required
                                                                    name="eastTo"
                                                                    value="${basicEstateLandState.eastTo}">
@@ -344,13 +344,13 @@
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm"
+                                                            <select class="form-control form-control"
                                                                     name="southToName">
                                                                 <option value="南至" selected="selected">南至</option>
                                                                 <option value="东南">东南</option>
                                                                 <option value="西南">西南</option>
                                                             </select>
-                                                            <input type="text" class="form-control form-control-sm"
+                                                            <input type="text" class="form-control form-control"
                                                                    required
                                                                    name="southTo"
                                                                    value="${basicEstateLandState.southTo}">
@@ -360,13 +360,13 @@
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm"
+                                                            <select class="form-control form-control"
                                                                     name="westToName">
                                                                 <option value="西至" selected="selected">西至</option>
                                                                 <option value="西南">西南</option>
                                                                 <option value="西北"></option>
                                                             </select>
-                                                            <input type="text" class="form-control form-control-sm"
+                                                            <input type="text" class="form-control form-control"
                                                                    required
                                                                    name="westTo"
                                                                    value="${basicEstateLandState.westTo}">
@@ -382,13 +382,13 @@
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm"
+                                                            <select class="form-control form-control"
                                                                     name="northToName">
                                                                 <option value="北至" selected="selected">北至</option>
                                                                 <option value="东北">东北</option>
                                                                 <option value="西北">西北</option>
                                                             </select>
-                                                            <input type="text" class="form-control form-control-sm"
+                                                            <input type="text" class="form-control form-control"
                                                                    required
                                                                    name="northTo"
                                                                    value="${basicEstateLandState.northTo}">
@@ -405,12 +405,12 @@
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm"
+                                                            <select class="form-control form-control"
                                                                     name="landAreaUnit">
                                                                 <option value="平方米" selected="selected">平方米</option>
                                                                 <option value="亩">亩</option>
                                                             </select>
-                                                            <input type="number" class="form-control form-control-sm"
+                                                            <input type="number" class="form-control form-control"
                                                                    data-rule-number='true' required
                                                                    placeholder="土地面积(请输入数字)" name="landArea"
                                                                    value="${basicEstateLandState.landArea}">

@@ -1,8 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--房屋交易信息--%>
-<%@include file="/views/project/stageSurvey/common/houseTradingCase.jsp" %>
-
 <%--引用案例库中的楼盘--%>
 <div id="caseEstateModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
