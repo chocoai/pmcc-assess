@@ -166,6 +166,7 @@
             url += '&formType=' + '${basicApplyBatch.type}';
             url += '&tbId=' + node.tableId;
             url += '&tbType=' + node.type;
+            url += '&applyBatchDetailId=' + node.id;
             url += '&planDetailsId=${basicApplyBatch.planDetailsId}';
             openWin(url, function () {
             })

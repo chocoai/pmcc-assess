@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
@@ -165,8 +166,7 @@ public class BasicEstateController {
     @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
     public HttpResult autoCompleteCaseEstate(String name, String province, String city) {
         try {
-            //List<CustomCaseEntity> caseEstateList = basicEstateService.autoCompleteCaseEstate(name, province, city);
-            List<BasicApplyBatch> applyBatchList = basicApplyBatchDao.getListByEstate(province, city, name);
+            List<BasicApplyBatch> applyBatchList = basicApplyBatchDao.getCaseEstateListByName(province, city, name);
             return HttpResult.newCorrectResult(applyBatchList);
         } catch (Exception e1) {
             return HttpResult.newErrorResult("异常");
@@ -174,27 +174,22 @@ public class BasicEstateController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/quoteFromAlternative", name = "引用备选案例数据", method = {RequestMethod.GET})
-    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
-        try {
-            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBatchDetailId());
-            BasicEstate basicEstate = (BasicEstate) basicEstateService.copyBasicEntity(applyBatchDetail.getTableId(), tableId, true);
-            return HttpResult.newCorrectResult(basicEstate);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/quoteCaseEstate", name = "引用案列数据", method = {RequestMethod.GET})
-    public HttpResult quoteCaseEstate(Integer sourceApplyBatchId, Integer targetId) {
+    public HttpResult quoteCaseEstate(Integer sourceApplyBatchId, Integer targetApplyBatchDetailId) {
         try {
             BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(sourceApplyBatchId);
-            BasicEstate basicEstate = (BasicEstate) basicEstateService.copyBasicEntity(applyBatch.getEstateId(), targetId, true);
-            basicEstate.setQuoteId(applyBatch.getId());
+            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(targetApplyBatchDetailId);
+            BasicEstate basicEstate = (BasicEstate) basicEstateService.copyBasicEntity(applyBatch.getEstateId(), applyBatchDetail.getTableId(), true);
             basicEstateService.saveAndUpdate(basicEstate, false);
+
+            BasicApplyBatchDetail where = new BasicApplyBatchDetail();
+            where.setApplyBatchId(sourceApplyBatchId);
+            where.setType(BasicFormClassifyEnum.ESTATE.getKey());
+            BasicApplyBatchDetail sourceApplyBatchDetail = basicApplyBatchDetailDao.getBasicApplyBatchDetail(where);
+            if (sourceApplyBatchDetail != null) {
+                applyBatchDetail.setQuoteId(sourceApplyBatchDetail.getId());
+                basicApplyBatchDetailDao.updateInfo(applyBatchDetail);
+            }
             return HttpResult.newCorrectResult(basicEstate);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);

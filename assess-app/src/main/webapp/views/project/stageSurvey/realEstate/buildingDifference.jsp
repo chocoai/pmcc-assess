@@ -25,7 +25,7 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showProjectQuoteModal();">引用备选案例
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetailId}');">引用备选案例
                                         </button>
                                     </div>
                                 </div>
@@ -245,10 +245,6 @@
     };
 
     function showCaseQuoteModal() {
-        caseFun.caseBuild.showModel(${quoteId});
-    }
-
-    function showProjectQuoteModal() {
-        projectBuild.prototype.showModel();
+        applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
     }
 </script>

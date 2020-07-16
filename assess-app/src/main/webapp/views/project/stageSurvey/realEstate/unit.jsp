@@ -25,7 +25,7 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showProjectQuoteModal();">引用备选案例
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetailId}');">引用备选案例
                                         </button>
                                     </div>
                                 </div>
@@ -129,14 +129,11 @@
         unitCommon.initById('${basicUnit.id}');
 
         $("#txt_Unit_search").apUnit({
-            type: function () {
-                return '${tbType}';
-            },
-            applyBatchId: function () {
-                return '${basicApplyBatch.id}';
+            quoteId: function () {
+                return '${quoteId}';
             },
             onSelect: function (id, name) {
-                caseFun.caseUnit.showModel(id,name);
+                applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
             }
         });
 
@@ -176,10 +173,6 @@
     };
 
     function showCaseQuoteModal() {
-        caseFun.caseUnit.showModel(${quoteId});
-    }
-
-    function showProjectQuoteModal() {
-        projectUnit.prototype.showModel();
+        applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
     }
 </script>

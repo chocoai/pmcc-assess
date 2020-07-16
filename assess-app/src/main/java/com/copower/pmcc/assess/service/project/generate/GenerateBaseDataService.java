@@ -4382,9 +4382,9 @@ public class GenerateBaseDataService {
                 BasicBuildingVo buildingVo = generateBaseExamineService.getBasicBuilding();
                 if (buildingVo != null) {
                     if (buildingVo.getCurrBuildingDifference() != null) {
-                        builder.write(buildingVo.getCurrBuildingDifference().getFloorCount());//4
+                        builder.write(String.valueOf(buildingVo.getCurrBuildingDifference().getMaxFloor()));//4
                     } else {
-                        builder.write(String.valueOf(buildingVo.getMaxFloor()));//4
+                        builder.write(String.valueOf(buildingVo.getFloorCount()));//4
                     }
                 }
 
@@ -4659,9 +4659,9 @@ public class GenerateBaseDataService {
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             BasicBuildingVo buildingVo = generateBaseExamineService.getBasicBuilding();
             if (buildingVo.getCurrBuildingDifference() != null) {
-                linkedLists.add(buildingVo.getCurrBuildingDifference().getFloorCount().toString());//4
+                linkedLists.add(String.valueOf(buildingVo.getCurrBuildingDifference().getMaxFloor()));//4
             } else {
-                linkedLists.add(buildingVo.getMaxFloor().toString());//4
+                linkedLists.add(buildingVo.getFloorCount());//4
             }
         } catch (Exception e) {
             linkedLists.add("0");

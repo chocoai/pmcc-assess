@@ -26,7 +26,7 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showProjectQuoteModal();">引用备选案例
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetailId}');">引用备选案例
                                         </button>
                                     </div>
                                 </div>
@@ -554,14 +554,11 @@
     $(function () {
         houseCommon.initById('${basicHouse.id}');
         $("#txt_House_search").apHouse({
-            type: function () {
-                return '${tbType}';
-            },
-            applyBatchId: function () {
-                return '${basicApplyBatch.id}';
+            quoteId: function () {
+                return '${quoteId}';
             },
             onSelect: function (id, name) {
-                caseFun.caseHouse.showModel(id,name);
+                applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
             }
         });
         if(${projectPhase eq 'caseStudyExtend'}){
@@ -615,10 +612,6 @@
     };
 
     function showCaseQuoteModal() {
-        caseFun.caseHouse.showModel(${quoteId});
-    }
-
-    function showProjectQuoteModal() {
-        projectHouse.prototype.showModel();
+        applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
     }
 </script>

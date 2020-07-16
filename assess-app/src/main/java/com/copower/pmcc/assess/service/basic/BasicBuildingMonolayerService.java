@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateStreetInfo;
 import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -74,23 +76,8 @@ public class BasicBuildingMonolayerService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/buildingMonolayer");
-        modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingVoById(basicFormClassifyParamDto.getTbId()));
-        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
-        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
-        Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
-        Integer tbId = basicFormClassifyParamDto.getTbId();
-        BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tbId);
-        if (basicApplyBatchDetail != null) {//获取引用id
-            basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApplyBatchDetail.getPid());
-            if (basicApplyBatchDetail != null) {
-                BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
-                Object entity = entityAbstract.getBasicEntityById(basicApplyBatchDetail.getTableId());
-                if (entity != null) {
-                    modelAndView.addObject("quoteId", entityAbstract.getProperty(entity, "quoteId"));
-                }
-            }
-        }
+        ModelAndView modelAndView = basicBuildingService.getEditModelAndView(basicFormClassifyParamDto);
+        modelAndView.setViewName("/project/stageSurvey/realEstate/buildingMonolayer");
         return modelAndView;
     }
 

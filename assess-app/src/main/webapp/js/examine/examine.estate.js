@@ -445,14 +445,6 @@
         }
     };
 
-    /**
-     * 选择案例的楼盘后处理方法
-     * @param id
-     */
-    estateCommon.onSelect = function (name) {
-        caseFun.caseEstate.showModel(name);
-
-    };
 
     /**
      * 启用自动填充,需要引入
@@ -467,7 +459,10 @@
                     return $("#txt_estate_search").closest('form').find("select[name='city']").val();
                 },
                 onSelect: function (id, name) {
-                    estateCommon.onSelect(name);
+                    var province = estateCommon.estateForm.find('[name=province]').val();
+                    var city = estateCommon.estateForm.find('[name=city]').val();
+                    var applyBatchDetailId = estateCommon.estateForm.find('[name=applyBatchDetailId]').val();
+                    applyInfoQuote.showCaseEstateModal(province,city,name);
                 }
             });
         }

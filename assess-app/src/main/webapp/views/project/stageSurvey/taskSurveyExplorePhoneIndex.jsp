@@ -12,7 +12,6 @@
         }
     </style>
 </head>
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -21,7 +20,6 @@
             <div class="page-inner">
                 <div class="row mt--2">
                     <%--<%@include file="/views/share/project/projectInfoSimple.jsp" %>--%>
-
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height" style="min-height: 300px;">
@@ -49,13 +47,10 @@
                                                 onclick=" batchTreeTool.expandAll(false);">
                                             收起
                                         </button>
-
                                     </div>
-
                                     <div class="col-md-9">
                                         <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
                                     </div>
-
                                     <div class="col-md-3">
                                         <button type="button" style="margin-left: 20px;"
                                                 class="btn btn-sm btn-primary fillInformation masterTool"
@@ -63,16 +58,10 @@
                                             进入上传附件页面
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
-
-
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
@@ -80,8 +69,6 @@
                             </button>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -99,13 +86,9 @@
             batchTreeTool.loadTree();
         }
     });
-
-
 </script>
 <script type="text/javascript">
-    
     var batchTreeTool = {} ;
-
     batchTreeTool.handleJquery = function (obj) {
         if (obj instanceof jQuery) {
             return obj;
@@ -159,16 +142,11 @@
         })
     } ;
 
-
-
-
     //全部展开或收起
     batchTreeTool.expandAll = function (flag) {
         var zTreeObj = $.fn.zTree.getZTreeObj('ztree');
         zTreeObj.expandAll(flag);
     };
-
-
 
     //进入填写信息页面
     batchTreeTool.fillInformation = function () {
@@ -186,6 +164,7 @@
         url += '&formType=' + '${basicApplyBatch.type}';
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
+        url += '&applyBatchDetailId=' + node.id;
         url += '&planDetailsId=${projectPlanDetails.id}';
         if (node.executor != '${userAccount}') {
             notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
@@ -194,6 +173,4 @@
         openWin(url, function () {
         })
     }
-
-
 </script>

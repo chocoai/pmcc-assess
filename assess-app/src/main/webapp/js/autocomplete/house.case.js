@@ -22,28 +22,21 @@
                 params.response = null;
             }
             params.source = function (request, response) {
-                var applyBatchId;
-                if (typeof defaults.applyBatchId == 'function') {
-                    applyBatchId = defaults.applyBatchId();
+                var quoteId;
+                if (typeof defaults.quoteId == 'function') {
+                    quoteId = defaults.quoteId();
                 } else {
-                    applyBatchId = defaults.applyBatchId;
-                }
-                var type;
-                if (typeof defaults.type == 'function') {
-                    type = defaults.type();
-                } else {
-                    type = defaults.type;
+                    quoteId = defaults.quoteId;
                 }
                 $.ajax({
-                    url: getContextPath() + "/basicHouse/autoCompleteCaseHouse",
+                    url: getContextPath() + "/basicApplyBatch/autoCompleteCaseOther",
                     type: "get",
                     dataType: "json",
                     data: {
                         offset: defaults.offset,
                         limit: defaults.limit,
-                        houseNumber: $(that).val(),
-                        type:type,
-                        applyBatchId:applyBatchId
+                        name: $(that).val(),
+                        quoteId:quoteId
                     },
                     success: function (result) {
                         if (result.ret,result.data) {

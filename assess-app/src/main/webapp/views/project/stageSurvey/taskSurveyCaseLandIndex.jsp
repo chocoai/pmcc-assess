@@ -83,6 +83,7 @@
                                     <div class="col-md-3">
                                         <form id="basicBatchApplyFrm" class="form-horizontal">
                                             <input type="hidden" name="id" value="${applyBatch.id}">
+                                            <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
                                             <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                                             <input type="hidden" id="estateId" name="estateId"
                                                    value="${applyBatch.estateId}">
@@ -376,8 +377,6 @@
     //初始化信息
     function initBasicApplyBatchInfo() {
         var data = formSerializeArray($("#basicBatchApplyFrm"));
-        data.planDetailsId = '${projectPlanDetails.id}';
-        data.projectId = '${projectId}';
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initBasicApplyBatchInfo",
             type: "post",
@@ -509,6 +508,7 @@
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
+        url += '&applyBatchDetailId=' + node.id;
         url += '&planDetailsId=${projectPlanDetails.id}';
         if (node.executor != '${userAccount}') {
             notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
@@ -534,6 +534,7 @@
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
+        url += '&applyBatchDetailId=' + node.id;
         url += '&planDetailsId=${projectPlanDetails.id}';
         openWin(url, function () {
         })
@@ -564,101 +565,6 @@
                 }
             }
         });
-    }
-
-    //删除备选案例
-    batchTreeTool.deleteAlternativeCase = function (id) {
-        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicAlternativeCase/deleteDataById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        notifySuccess("成功", "删除数据成功");
-                        batchTreeTool.loadAlternativeCaseList();
-                    }
-                    else {
-                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            })
-        })
-    }
-
-    //显示弹窗
-    batchTreeTool.showAlternativeCaseModal = function () {
-        batchTreeTool.loadAlternativeCaseList();
-        $('#reference_modal').modal();
-    }
-
-    //加载备选案例数据列表
-    batchTreeTool.loadAlternativeCaseList = function () {
-        var cols = [];
-        cols.push({field: 'name', title: '名称', width: '80%'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeCase(' + row.id + ')"><i class="fa fa-check"></i></button>';
-                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="删除" onclick="batchTreeTool.deleteAlternativeCase(' + row.id + ')"><i class="fa fa-minus"></i></button>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#basicAlternativeCaseList").bootstrapTable('destroy');
-        TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
-            name: $('#queryAlternativeName').val(),
-            projectId:'${projectId}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
-    }
-
-    //引用备选案例
-    batchTreeTool.referenceAlternativeCase = function (id) {
-        notifyInfo('提示', '请耐心等待....');
-        Loading.progressShow();
-        $.ajax({
-            url: '${pageContext.request.contextPath}/basicApplyBatch/deleteBatchAllById',
-            type: 'post',
-            data: {
-                applyBatchId: batchTreeTool.getApplyBatchId(),
-            },
-            dataType: 'json',
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    var data = {};
-                    data.id = id;
-                    data.projectId = "${projectInfo.id}";
-                    data.planDetailsId = "${projectPlanDetails.id}";
-                    $.ajax({
-                        url: '${pageContext.request.contextPath}/basicAlternativeCase/referenceDataById',
-                        type: 'post',
-                        data: data,
-                        dataType: 'json',
-                        success: function (result) {
-                            if (result.ret) {
-                                AlertSuccess('成功', '引用成功', function () {
-                                    window.location.href = window.location.href;
-                                })
-                            } else {
-                                AlertError('失败', '引用失败');
-                            }
-                        }
-                    })
-                }
-            }
-        })
     }
 
     //编辑明细

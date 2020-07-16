@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.BasicApplyBatchVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
@@ -18,11 +19,17 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.CacheConstant;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +40,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -391,7 +399,7 @@ public class BasicApplyBatchDetailService {
             vo.setCreatorName(publicService.getUserNameByAccount(basicApplyBatchDetail.getCreator()));
         }
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
-        if(applyBatch!=null){
+        if (applyBatch != null) {
             vo.setFormClassify(applyBatch.getClassify());
             vo.setFormType(applyBatch.getType());
         }
@@ -545,7 +553,34 @@ public class BasicApplyBatchDetailService {
                     }
                 }
             }
-
         }
+    }
+
+    /**
+     * 获取楼栋、单元、房屋案例数据
+     *
+     * @param quoteId
+     * @param name
+     * @return
+     */
+    public BootstrapTableVo getCaseOtherListByName(Integer quoteId, String name) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        if (quoteId == null) return vo;
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<BasicApplyBatchDetail> detailList = basicApplyBatchDetailDao.getBasicApplyBatchDetailList(quoteId, name);
+        BasicApplyBatchDetail parentBatchDetail = basicApplyBatchDetailDao.getInfoById(quoteId);
+        if (CollectionUtils.isNotEmpty(detailList) && parentBatchDetail != null) {
+            for (BasicApplyBatchDetail batchDetail : detailList) {
+                batchDetail.setName(parentBatchDetail.getName() + "/" + batchDetail.getName());
+            }
+        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(detailList);
+        return vo;
+    }
+
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(Integer quoteId, String name){
+        return basicApplyBatchDetailDao.getBasicApplyBatchDetailList(quoteId, name);
     }
 }

@@ -589,6 +589,7 @@
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
+        url += '&applyBatchDetailId=' + node.id;
         openWin(url, function () {
         })
     }

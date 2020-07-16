@@ -25,7 +25,7 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showProjectQuoteModal();">引用备选案例
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetailId}');">引用备选案例
                                         </button>
                                     </div>
                                 </div>
@@ -784,22 +784,17 @@
         src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
 
 <script type="text/javascript">
-
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');
         $("#txt_building_search").apBuilding({
-            type: function () {
-                return '${tbType}';
-            },
-            applyBatchId: function () {
-                return '${basicApplyBatch.id}';
+            quoteId: function () {
+                return '${quoteId}';
             },
             onSelect: function (id, name) {
-                caseFun.caseBuild.showModel(id,name);
+                applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
             }
         });
         buildingCommon.autocompleteStart();
-
 
         (function (buildingStatus) {
             if (!buildingStatus) {
@@ -814,8 +809,6 @@
                 }
             });
         }('${basicApplyBatch.buildingStatus}'));
-
-
     });
 
     //保存数据信息
@@ -863,10 +856,6 @@
     };
 
     function showCaseQuoteModal() {
-        caseFun.caseBuild.showModel(${quoteId});
-    }
-
-    function showProjectQuoteModal() {
-        projectBuild.prototype.showModel();
+        applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
     }
 </script>

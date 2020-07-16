@@ -165,7 +165,7 @@
                 }
             });
             $("#" + baseFun.config.father.caseEstate.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/basicApplyBatch/getBasicApplyBatchList", cols, {
+            TableInit(baseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/basicApplyBatch/getCaseEstateListByName", cols, {
                 name: estate.search,
                 city: estate.city,
                 province: estate.province

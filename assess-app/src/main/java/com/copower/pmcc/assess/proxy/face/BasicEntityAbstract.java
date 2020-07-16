@@ -34,7 +34,7 @@ public abstract class BasicEntityAbstract {
     }
 
     /**
-     * 为属性设置通用方法
+     * 为属性设值
      *
      * @param obj
      * @param propertyName

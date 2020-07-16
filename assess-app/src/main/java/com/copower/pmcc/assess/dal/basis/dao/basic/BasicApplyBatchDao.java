@@ -119,7 +119,7 @@ public class BasicApplyBatchDao {
         return basicApplyBatchMapper.updateByPrimaryKeySelective(basicApplyBatch) > 0;
     }
 
-    public List<BasicApplyBatch> getListByEstate(String province, String city, String estateName) {
+    public List<BasicApplyBatch> getCaseEstateListByName(String province, String city, String estateName) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(province)) {

@@ -111,20 +111,17 @@
                                                     <div class=" col-md-9">
                                                         <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
                                                     </div>
-
                                                     <div class=" col-md-3">
-                                                        <%@include
-                                                                file="/views/project/stageSurvey/common/canvasQRcodeTree.jsp" %>
+                                                        <%@include file="/views/project/stageSurvey/common/canvasQRcodeTree.jsp" %>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
                                     <div class="col-md-3">
                                         <form id="basicBatchApplyFrm" class="form-horizontal">
                                             <input type="hidden" name="id" value="${applyBatch.id}">
+                                            <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
                                             <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                                             <input type="hidden" id="estateId" name="estateId"
                                                    value="${applyBatch.estateId}">
@@ -488,8 +485,6 @@
     //初始化信息
     function initBasicApplyBatchInfo() {
         var data = formSerializeArray($("#basicBatchApplyFrm"));
-        data.planDetailsId = '${projectPlanDetails.id}';
-        data.projectId = '${projectId}';
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initBasicApplyBatchInfo",
             type: "post",
@@ -915,6 +910,7 @@
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
+        url += '&applyBatchDetailId=' + node.id;
         url += '&planDetailsId=${projectPlanDetails.id}';
         if (node.executor != '${userAccount}') {
             notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
@@ -1101,6 +1097,7 @@
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
+        url += '&applyBatchDetailId=' + node.id;
         url += '&planDetailsId=${projectPlanDetails.id}';
         openWin(url, function () {
         })

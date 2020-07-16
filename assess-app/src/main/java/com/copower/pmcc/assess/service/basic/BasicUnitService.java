@@ -396,19 +396,6 @@ public class BasicUnitService extends BasicEntityAbstract {
     public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/unit");
         modelAndView.addObject("basicUnit", getBasicUnitById(basicFormClassifyParamDto.getTbId()));
-        Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
-        Integer tbId = basicFormClassifyParamDto.getTbId();
-        BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicUnit.class), tbId);
-        if (basicApplyBatchDetail != null) {//获取引用id
-            basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApplyBatchDetail.getPid());
-            if (basicApplyBatchDetail != null) {
-                BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
-                Object entity = entityAbstract.getBasicEntityById(basicApplyBatchDetail.getTableId());
-                if (entity != null) {
-                    modelAndView.addObject("quoteId", entityAbstract.getProperty(entity, "quoteId"));
-                }
-            }
-        }
         return modelAndView;
     }
 

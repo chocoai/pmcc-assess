@@ -64,23 +64,15 @@ public class BasicApplyBatchController extends BaseController {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
-    @Autowired
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
-    private BasicBuildingService basicBuildingService;
-    @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private BasicHouseService basicHouseService;
-    @Autowired
     private BasicEstateStreetInfoService basicEstateStreetInfoService;
-    @Autowired
-    private BasicEstateService basicEstateService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
@@ -499,6 +491,12 @@ public class BasicApplyBatchController extends BaseController {
                 modelAndView.addObject("projectPhase", "caseStudyExtend");
             }
         }
+        BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(basicFormClassifyParamDto.getApplyBatchDetailId());
+        BasicApplyBatchDetail parentBatchDetail = basicApplyBatchDetailService.getDataById(applyBatchDetail.getPid());
+        if (parentBatchDetail != null) {
+            modelAndView.addObject("quoteId", parentBatchDetail.getQuoteId());
+        }
+        modelAndView.addObject("applyBatchDetailId", basicFormClassifyParamDto.getApplyBatchDetailId());
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
         modelAndView.addObject("formClassify", basicFormClassifyParamDto.getFormClassify());
         modelAndView.addObject("tbId", basicFormClassifyParamDto.getTbId());
@@ -506,16 +504,10 @@ public class BasicApplyBatchController extends BaseController {
         if (basicFormClassifyParamDto.getApplyBatchId() != null) {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicFormClassifyParamDto.getApplyBatchId());
             modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
-            //街道号
-            BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
-            basicEstateStreetInfo.setEstateId(basicApplyBatch.getEstateId());
-            List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
-            modelAndView.addObject("streetInfoList", streetInfoList);
         }
         return modelAndView;
     }
 
-    //com.copower.pmcc.assess.service.base.BaseQrcodeService.createQrCode( )  这里的参数变动必须把这个方法的参数一起变动
     @RequestMapping(value = "/informationPhoneEdit", name = "信息手机端填写", method = RequestMethod.GET)
     public ModelAndView informationPhoneEdit(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         BasicFormClassifyEnum estateTaggingTypeEnum = BasicFormClassifyEnum.getEnumByKey(basicFormClassifyParamDto.getTbType());
@@ -577,6 +569,24 @@ public class BasicApplyBatchController extends BaseController {
         return detailsModelAndView;
     }
 
+    @RequestMapping(value = "/informationView", name = "信息详情", method = RequestMethod.GET)
+    public ModelAndView informationView(Integer applyBatchDetailId, Boolean isHistory) throws Exception {
+        BasicFormClassifyParamDto dto = new BasicFormClassifyParamDto();
+        BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(applyBatchDetailId);
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchDetail.getApplyBatchId());
+        dto.setHistory(isHistory);
+        dto.setApplyBatchId(basicApplyBatch.getId());
+        dto.setTbType(applyBatchDetail.getType());
+        dto.setTbId(applyBatchDetail.getTableId());
+        dto.setTableName(applyBatchDetail.getTableName());
+        dto.setApplyBatchDetailId(applyBatchDetail.getId());
+        dto.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
+        dto.setFormClassify(basicApplyBatch.getClassify());
+        dto.setFormType(basicApplyBatch.getType());
+        ModelAndView modelAndView = informationDetail(dto);
+        return modelAndView;
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/saveDraft", name = "保存楼盘等")
@@ -591,35 +601,6 @@ public class BasicApplyBatchController extends BaseController {
             logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存信息异常");
         }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getEstateDataByPlanDetailsId", method = {RequestMethod.GET}, name = "获取查勘下楼盘列表")
-    public BootstrapTableVo getEstateDataByPlanDetailsId(Integer planDetailsId) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicEstateVo> vos = Lists.newArrayList();
-        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId);
-        if (applyBatch != null) {
-            BasicEstate estate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
-            vos.add(basicEstateService.getBasicEstateVo(estate));
-        }
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(vos) ? new ArrayList<BasicEstateVo>(10) : vos);
-        return vo;
-    }
-
-    /**
-     * 获取和编辑
-     *
-     * @param planDetailsId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getDataByPlanDetailsId", name = "通过PlanDetailsId获取", method = RequestMethod.GET)
-    public HttpResult getDataByPlanDetailsId(Integer planDetailsId) {
-        return HttpResult.newCorrectResult(basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId));
     }
 
     @ResponseBody
@@ -764,46 +745,45 @@ public class BasicApplyBatchController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getBasicApplyBatchList", name = "获取楼盘案例数据", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicApplyBatchList(String province, String city, String name) {
-        return basicApplyBatchService.getBasicApplyBatchList(province, city, name);
+    @RequestMapping(value = "/getCaseEstateListByName", name = "获取楼盘案例数据", method = RequestMethod.GET)
+    public BootstrapTableVo getCaseEstateListByName(String province, String city, String name) {
+        return basicApplyBatchService.getCaseEstateListByName(province, city, name);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getQuoteDataList", method = {RequestMethod.GET}, name = "获取案例引用数据")
-    public BootstrapTableVo getCaseBuildingList(Integer applyBatchId,String type,String name) throws Exception {
-        if (applyBatchId == null) return null;
-        BootstrapTableVo vo = null;
+    @RequestMapping(value = "/getCaseOtherListByName", name = "获取楼栋、单元、房屋案例数据", method = RequestMethod.GET)
+    public BootstrapTableVo getCaseOtherListByName(Integer quoteId, String name) {
+        return basicApplyBatchDetailService.getCaseOtherListByName(quoteId, name);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteCaseOther", name = "引用案列数据", method = {RequestMethod.GET})
+    public HttpResult quoteCaseOther(Integer sourceApplyBatchDetailId, Integer targetApplyBatchDetailId) {
         try {
-            vo = new BootstrapTableVo();
-            RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-            Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
-            BasicEstate basicEstate = basicEstateService.getBasicEstateById(applyBatch.getEstateId());
-            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailDao.getQuoteDataList(basicEstate.getQuoteId(), type, name);
-            vo.setTotal(page.getTotal());
-            vo.setRows(org.springframework.util.CollectionUtils.isEmpty(batchDetailList) ? new ArrayList<BasicApplyBatchDetail>() : batchDetailList);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
+            BasicApplyBatchDetail sourceApplyBatchDetail = basicApplyBatchDetailService.getDataById(sourceApplyBatchDetailId);
+            BasicApplyBatchDetail targeApplyBatchDetail = basicApplyBatchDetailService.getDataById(targetApplyBatchDetailId);
+            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(sourceApplyBatchDetail.getType());
+            Object o = entityAbstract.copyBasicEntity(sourceApplyBatchDetail.getTableId(), targeApplyBatchDetail.getTableId(), true);
+            if (targeApplyBatchDetail != null) {
+                targeApplyBatchDetail.setQuoteId(sourceApplyBatchDetail.getId());
+                basicApplyBatchDetailService.saveBasicApplyBatchDetail(targeApplyBatchDetail);
+            }
+            return HttpResult.newCorrectResult(o);
+        } catch (Exception e) {
+            logger.error(String.format("引用案列数据:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
         }
-        return vo;
     }
 
-    /**
-     * 获取
-     *
-     * @param id
-     * @return
-     */
     @ResponseBody
-    @RequestMapping(value = "/getApplyBatchDetailByType", name = "获取", method = RequestMethod.GET)
-    public HttpResult getApplyBatchDetailByType(Integer id,String type,Integer applyBatchId) {
-        if(type.startsWith(BasicFormClassifyEnum.ESTATE.getKey())){
-            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
-            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicEstate.class), applyBatch.getEstateId());
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.getDataById(batchDetail.getId())));
-        }else{
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.getDataById(id)));
+    @RequestMapping(value = "/autoCompleteCaseOther", method = {RequestMethod.GET}, name = "楼栋、单元、房屋信息自动补全")
+    public HttpResult autoCompleteCaseOther(Integer quoteId,String name) {
+        try {
+            List<BasicApplyBatchDetail> detailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(quoteId, name);
+            return HttpResult.newCorrectResult(detailList);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("异常");
         }
     }
 }

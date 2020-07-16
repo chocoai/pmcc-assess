@@ -9,7 +9,7 @@ public class BasicFormClassifyParamDto {
     private String tbType;
     private Integer planDetailsId;
     private Boolean isHistory;
-    private Integer assessmentPerformanceId;
+    private Integer applyBatchDetailId;
 
     public Integer getApplyBatchId() {
         return applyBatchId;
@@ -75,11 +75,11 @@ public class BasicFormClassifyParamDto {
         isHistory = history;
     }
 
-    public Integer getAssessmentPerformanceId() {
-        return assessmentPerformanceId;
+    public Integer getApplyBatchDetailId() {
+        return applyBatchDetailId;
     }
 
-    public void setAssessmentPerformanceId(Integer assessmentPerformanceId) {
-        this.assessmentPerformanceId = assessmentPerformanceId;
+    public void setApplyBatchDetailId(Integer applyBatchDetailId) {
+        this.applyBatchDetailId = applyBatchDetailId;
     }
 }

@@ -26,7 +26,7 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showProjectQuoteModal();">引用备选案例
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetailId}');">引用备选案例
                                         </button>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                             <div class="card-body">
                                 <form id="frm_estate" class="form-horizontal">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
-                                    <input type="hidden" name="quoteId" value="${basicEstate.quoteId}">
+                                    <input type="hidden" name="applyBatchDetailId" value="${applyBatchDetailId}">
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -166,7 +166,8 @@
                                                 <label class="col-sm-1">占地面积</label>
                                                 <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                     <div class="input-group">
-                                                        <select class="form-control form-control-sm" name="coverAnAreaUnit">
+                                                        <select class="form-control form-control-sm"
+                                                                name="coverAnAreaUnit">
                                                             <option value="">--请选择--</option>
                                                             <option value="平方米">平方米</option>
                                                             <option value="亩">亩</option>
@@ -326,27 +327,31 @@
                                                     <label class="col-sm-1">四至(1)<span
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
-                                                    <div class="input-group">
-                                                        <select class="form-control form-control-sm" name="eastToName">
-                                                            <option value="东至" selected="selected">东至</option>
-                                                            <option value="东南">东南</option>
-                                                            <option value="东北">东北</option>
-                                                        </select>
-                                                        <input type="text" class="form-control form-control-sm" required
-                                                               name="eastTo"
-                                                               value="${basicEstateLandState.eastTo}">
-                                                    </div>
+                                                        <div class="input-group">
+                                                            <select class="form-control form-control-sm"
+                                                                    name="eastToName">
+                                                                <option value="东至" selected="selected">东至</option>
+                                                                <option value="东南">东南</option>
+                                                                <option value="东北">东北</option>
+                                                            </select>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                   required
+                                                                   name="eastTo"
+                                                                   value="${basicEstateLandState.eastTo}">
+                                                        </div>
                                                     </div>
                                                     <label class="col-sm-1">四至(2)<span
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm" name="southToName">
+                                                            <select class="form-control form-control-sm"
+                                                                    name="southToName">
                                                                 <option value="南至" selected="selected">南至</option>
                                                                 <option value="东南">东南</option>
                                                                 <option value="西南">西南</option>
                                                             </select>
-                                                            <input type="text" class="form-control form-control-sm" required
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                   required
                                                                    name="southTo"
                                                                    value="${basicEstateLandState.southTo}">
                                                         </div>
@@ -355,12 +360,14 @@
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm" name="westToName">
+                                                            <select class="form-control form-control-sm"
+                                                                    name="westToName">
                                                                 <option value="西至" selected="selected">西至</option>
                                                                 <option value="西南">西南</option>
                                                                 <option value="西北"></option>
                                                             </select>
-                                                            <input type="text" class="form-control form-control-sm" required
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                   required
                                                                    name="westTo"
                                                                    value="${basicEstateLandState.westTo}">
                                                         </div>
@@ -375,12 +382,14 @@
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm" name="northToName">
+                                                            <select class="form-control form-control-sm"
+                                                                    name="northToName">
                                                                 <option value="北至" selected="selected">北至</option>
                                                                 <option value="东北">东北</option>
                                                                 <option value="西北">西北</option>
                                                             </select>
-                                                            <input type="text" class="form-control form-control-sm" required
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                   required
                                                                    name="northTo"
                                                                    value="${basicEstateLandState.northTo}">
                                                         </div>
@@ -396,7 +405,8 @@
                                                             class="symbol required"></span></label>
                                                     <div class=" col-xs-3  col-sm-3  col-md-3 col-lg-3">
                                                         <div class="input-group">
-                                                            <select class="form-control form-control-sm" name="landAreaUnit">
+                                                            <select class="form-control form-control-sm"
+                                                                    name="landAreaUnit">
                                                                 <option value="平方米" selected="selected">平方米</option>
                                                                 <option value="亩">亩</option>
                                                             </select>
@@ -717,15 +727,16 @@
         });
     }
 
+    //显示历史记录窗口
     function showHistoryModal() {
         historyInfo.caseEstate.showModel('${tbId}', '${formClassify}', '${tbType}', '${basicApplyBatch.id}');
     };
 
+    //显示引用案例弹窗
     function showCaseQuoteModal() {
-        caseFun.caseEstate.showModel();
-    }
-
-    function showProjectQuoteModal() {
-        projectData.prototype.showModel();
+        var province = estateCommon.estateForm.find("[name='province']").val();
+        var city = estateCommon.estateForm.find("[name='city']").val();
+        var search = estateCommon.estateForm.find("input[name='name']").val();
+        applyInfoQuote.showCaseEstateModal(province, city, search,'${applyBatchDetailId}');
     }
 </script>

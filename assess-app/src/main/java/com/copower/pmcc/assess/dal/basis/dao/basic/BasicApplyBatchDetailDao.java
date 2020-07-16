@@ -58,16 +58,16 @@ public class BasicApplyBatchDetailDao {
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByTypes(List<String> types, Integer applyBatchId,Integer pid) {
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByTypes(List<String> types, Integer applyBatchId, Integer pid) {
         BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
         BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         if (CollectionUtils.isNotEmpty(types)) {
             criteria.andTypeIn(types);
         }
-        if (applyBatchId != null){
+        if (applyBatchId != null) {
             criteria.andApplyBatchIdEqualTo(applyBatchId);
         }
-        if (pid != null){
+        if (pid != null) {
             criteria.andPidEqualTo(pid);
         }
         return basicApplyBatchDetailMapper.selectByExample(example);
@@ -80,6 +80,16 @@ public class BasicApplyBatchDetailDao {
             criteria.andApplyBatchIdIn(basicApplyBatchIds);
         if (StringUtils.isNotBlank(type))
             criteria.andTypeEqualTo(type);
+        return basicApplyBatchDetailMapper.selectByExample(example);
+    }
+
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(Integer pid, String name) {
+        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        if (pid != null)
+            criteria.andPidEqualTo(pid);
+        if (StringUtils.isNotBlank(name))
+            criteria.andNameLike(String.format("%%%s%%", name));
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
@@ -124,7 +134,7 @@ public class BasicApplyBatchDetailDao {
         return basicApplyBatchDetailMapper.updateByPrimaryKeySelective(basicApplyBatchDetail) > 0;
     }
 
-    public List<BasicApplyBatchDetail> getQuoteDataList(Integer basicApplyBatchId, String type,String name) {
+    public List<BasicApplyBatchDetail> getQuoteDataList(Integer basicApplyBatchId, String type, String name) {
         BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
         BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         if (basicApplyBatchId != null)

@@ -73,6 +73,8 @@
                                     <div class="col-md-3">
                                         <form id="basicBatchApplyFrm" class="form-horizontal">
                                             <input type="hidden" name="id" value="${applyBatch.id}">
+                                            <input type="hidden" name="projectId"
+                                                   value="${projectPlanDetails.projectId}">
                                             <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                                             <input type="hidden" id="estateId" name="estateId"
                                                    value="${applyBatch.estateId}">
@@ -295,16 +297,12 @@
 
     //初始化信息
     function initBasicApplyBatchInfo() {
+        var data = formSerializeArray($("#basicBatchApplyFrm"));
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initBasicApplyBatchInfo",
             type: "post",
             dataType: "json",
-            data: {
-                planDetailsId: '${projectPlanDetails.id}',
-                classify: $("#basicBatchApplyFrm").find('[name=classify]').val(),
-                type: $("#basicBatchApplyFrm").find('[name=type]').val(),
-                buildingStatus: $("#basicBatchApplyFrm").find('[name=buildingStatus]').val()
-            },
+            data: data,
             success: function (result) {
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
@@ -515,6 +513,7 @@
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
+        url += '&applyBatchDetailId=' + node.id;
         url += '&planDetailsId=${projectPlanDetails.id}';
         openWin(url, function () {
             batchTreeTool.ztreeInit(batchTreeTool.getApplyBatchId());
@@ -559,8 +558,7 @@
                     if (result.ret) {
                         notifySuccess("成功", "删除数据成功");
                         batchTreeTool.loadAlternativeCaseList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },

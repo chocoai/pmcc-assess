@@ -90,13 +90,13 @@ public class BasicBuildingService extends BasicEntityAbstract {
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
-    private BasicEstateService basicEstateService;
+    private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private PublicBasicService publicBasicService;
+    private BasicEstateStreetInfoService basicEstateStreetInfoService;
     @Autowired
     private BasicEstateStreetInfoDao basicEstateStreetInfoDao;
 
@@ -487,18 +487,14 @@ public class BasicBuildingService extends BasicEntityAbstract {
         modelAndView.addObject("basicBuilding", buildingVo);
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
         modelAndView.addObject("unitPropertiesList", unitPropertiesList);
-        Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
-        Integer tbId = basicFormClassifyParamDto.getTbId();
-        BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tbId);
-        if (basicApplyBatchDetail != null) {//获取引用id
-            basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApplyBatchDetail.getPid());
-            if (basicApplyBatchDetail != null) {
-                BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
-                Object entity = entityAbstract.getBasicEntityById(basicApplyBatchDetail.getTableId());
-                if (entity != null) {
-                    modelAndView.addObject("quoteId", entityAbstract.getProperty(entity, "quoteId"));
-                }
-            }
+
+        //获取街道号相关信息
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicFormClassifyParamDto.getApplyBatchId());
+        if(basicApplyBatch!=null){
+            BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+            basicEstateStreetInfo.setEstateId(basicApplyBatch.getEstateId());
+            List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
+            modelAndView.addObject("streetInfoList", streetInfoList);
         }
         return modelAndView;
     }
