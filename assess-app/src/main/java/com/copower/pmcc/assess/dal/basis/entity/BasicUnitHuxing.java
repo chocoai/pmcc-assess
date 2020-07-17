@@ -6,6 +6,10 @@ import java.util.Date;
 public class BasicUnitHuxing {
     private Integer id;
 
+    private Integer applyBatchId;
+
+    private Integer planDetailsId;
+
     private Integer houseId;
 
     private Integer estateId;
@@ -34,14 +38,6 @@ public class BasicUnitHuxing {
 
     private String description;
 
-    private Boolean bisDelete;
-
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
-
     private String spatialDistribution;
 
     private String standardHouseNumber;
@@ -60,12 +56,36 @@ public class BasicUnitHuxing {
 
     private String reference;
 
+    private Boolean bisDelete;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getApplyBatchId() {
+        return applyBatchId;
+    }
+
+    public void setApplyBatchId(Integer applyBatchId) {
+        this.applyBatchId = applyBatchId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
     }
 
     public Integer getHouseId() {
@@ -180,38 +200,6 @@ public class BasicUnitHuxing {
         this.description = description == null ? null : description.trim();
     }
 
-    public Boolean getBisDelete() {
-        return bisDelete;
-    }
-
-    public void setBisDelete(Boolean bisDelete) {
-        this.bisDelete = bisDelete;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public String getSpatialDistribution() {
         return spatialDistribution;
     }
@@ -282,5 +270,37 @@ public class BasicUnitHuxing {
 
     public void setReference(String reference) {
         this.reference = reference == null ? null : reference.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

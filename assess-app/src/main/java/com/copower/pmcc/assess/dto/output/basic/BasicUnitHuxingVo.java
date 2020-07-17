@@ -16,6 +16,7 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
     private String utilitiesMeasureName;
     private String utilitiesTypeName;
     private String spatialDistributionName;
+    private Boolean canManage;
 
     public String getUtilitiesTypeName() {
         return utilitiesTypeName;
@@ -79,5 +80,13 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
 
     public void setCreatorName(String creatorName) {
         this.creatorName = creatorName;
+    }
+
+    public Boolean getCanManage() {
+        return canManage;
+    }
+
+    public void setCanManage(Boolean canManage) {
+        this.canManage = canManage;
     }
 }

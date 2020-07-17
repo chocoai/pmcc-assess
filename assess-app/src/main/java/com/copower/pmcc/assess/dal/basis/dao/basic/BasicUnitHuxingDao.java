@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicUnitHuxingMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -44,6 +45,15 @@ public class BasicUnitHuxingDao {
         BasicUnitHuxingExample example = new BasicUnitHuxingExample();
         BasicUnitHuxingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         MybatisUtils.convertObj2Criteria(basicUnitHuxing, criteria);
+        return basicUnitHuxingMapper.selectByExample(example);
+    }
+
+    public List<BasicUnitHuxing> getHuxingList(Integer applyBatchId, String name) {
+        BasicUnitHuxingExample example = new BasicUnitHuxingExample();
+        BasicUnitHuxingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        criteria.andApplyBatchIdEqualTo(applyBatchId);
+        if (StringUtils.isNotBlank(name))
+            criteria.andNameLike(String.format("%%%s%%", name));
         return basicUnitHuxingMapper.selectByExample(example);
     }
 }

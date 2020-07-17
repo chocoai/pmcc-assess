@@ -62,10 +62,10 @@ public class BasicHouseDao {
         return basicHouseMapper.selectByExample(example);
     }
 
-    public Integer getCountByBasicHouse(BasicHouse basicHouse) {
+    public Integer getCountByHuxingId(Integer huxingId) {
         BasicHouseExample example = new BasicHouseExample();
         BasicHouseExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
-        MybatisUtils.convertObj2Criteria(basicHouse, criteria);
+        criteria.andHuxingIdEqualTo(huxingId);
         return basicHouseMapper.countByExample(example);
     }
 
@@ -79,14 +79,4 @@ public class BasicHouseDao {
         return customCaseMapper.getCaseHouseList(houseNumber, unitId);
     }
 
-    public BasicHouse getLatestVersionHouseByFullName(String fullName, Integer estateId) {
-        if (StringUtils.isBlank(fullName) || estateId == null) return null;
-        BasicHouseExample example = new BasicHouseExample();
-        BasicHouseExample.Criteria criteria = example.createCriteria();
-        criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true).andEstateIdEqualTo(estateId).andFullNameEqualTo(fullName);
-        example.setOrderByClause("version desc");
-        List<BasicHouse> basicHouseList = basicHouseMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(basicHouseList)) return null;
-        return basicHouseList.get(0);
-    }
 }

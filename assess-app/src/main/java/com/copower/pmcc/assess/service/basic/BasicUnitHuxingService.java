@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitHuxingVo;
@@ -74,7 +75,8 @@ public class BasicUnitHuxingService {
     private BasicHouseRoomService basicHouseRoomService;
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
-
+    @Autowired
+    private BasicHouseDao basicHouseDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -89,33 +91,6 @@ public class BasicUnitHuxingService {
         return basicUnitHuxingDao.getBasicUnitHuxingById(id);
     }
 
-    public String getHouseCategoryNameById(Integer id) {
-        BasicUnitHuxing huxing = basicUnitHuxingDao.getBasicUnitHuxingById(id);
-        if (huxing == null || StringUtils.isBlank(huxing.getHouseCategory())) return null;
-        StringBuilder stringBuilder = new StringBuilder();
-        JSONObject jsonObject = JSONObject.parseObject(huxing.getHouseCategory());
-        if (StringUtils.isNotBlank(jsonObject.getString("house")))
-            stringBuilder.append(String.format("%s室", jsonObject.getString("house")));
-        if (StringUtils.isNotBlank(jsonObject.getString("saloon")))
-            stringBuilder.append(String.format("%s厅", jsonObject.getString("saloon")));
-        if (StringUtils.isNotBlank(jsonObject.getString("kitchen")))
-            stringBuilder.append(String.format("%s厨", jsonObject.getString("kitchen")));
-        if (StringUtils.isNotBlank(jsonObject.getString("toilet")))
-            stringBuilder.append(String.format("%s卫", jsonObject.getString("toilet")));
-        if (StringUtils.isNotBlank(jsonObject.getString("garden")))
-            stringBuilder.append(String.format("%s花园", jsonObject.getString("garden")));
-        if (StringUtils.isNotBlank(jsonObject.getString("balcony")))
-            stringBuilder.append(String.format("%s阳台", jsonObject.getString("balcony")));
-        return stringBuilder.toString();
-    }
-
-    public BasicUnitHuxing getHuxingByHouseId(Integer houseId) {
-        BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
-        basicUnitHuxing.setHouseId(houseId);
-        List<BasicUnitHuxing> tradings = basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
-        if (org.springframework.util.CollectionUtils.isEmpty(tradings)) return null;
-        return tradings.get(0);
-    }
 
     /**
      * 新增或者修改
@@ -153,17 +128,30 @@ public class BasicUnitHuxingService {
      * @return
      * @throws Exception
      */
-    public boolean deleteBasicUnitHuxing(Integer id) throws Exception {
-        return basicUnitHuxingDao.deleteBasicUnitHuxing(id);
+    public boolean deleteBasicUnitHuxing(Integer huxingId) throws Exception {
+        //如果户型已被引用，则不允许删除
+        Integer count = basicHouseDao.getCountByHuxingId(huxingId);
+        if(count>0)
+            throw new BusinessException("已被引用，不允许删除");
+        return basicUnitHuxingDao.deleteBasicUnitHuxing(huxingId);
     }
 
-    public boolean deleteBasicHuxingByHouseId(Integer houseId) throws Exception {
-        BasicUnitHuxing huxing = new BasicUnitHuxing();
-        huxing.setHouseId(houseId);
-        List<BasicUnitHuxing> huxings = basicUnitHuxingDao.basicUnitHuxingList(huxing);
-        if (org.springframework.util.CollectionUtils.isEmpty(huxings)) return true;
-        huxings.forEach(o -> basicUnitHuxingDao.deleteBasicUnitHuxing(o.getId()));
-        return true;
+
+    /**
+     * 引用户型
+     *
+     * @param huxingId
+     * @param houseId
+     * @throws Exception
+     */
+    public void referenceHuxing(Integer huxingId, Integer houseId) throws Exception {
+        if (huxingId == null || houseId == null)
+            throw new BusinessException("参数为空");
+        BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseId);
+        if (basicHouse != null) {
+            basicHouse.setHuxingId(huxingId);
+            basicHouseService.saveAndUpdate(basicHouse, false);
+        }
     }
 
     /**
@@ -177,11 +165,11 @@ public class BasicUnitHuxingService {
         return basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BasicUnitHuxing basicUnitHuxing) throws Exception {
+    public BootstrapTableVo getBootstrapTableVo(Integer applyBatchId, String name) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
+        List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingDao.getHuxingList(applyBatchId, name);
         List<BasicUnitHuxingVo> vos = Lists.newArrayList();
         basicUnitHuxingList.forEach(oo -> vos.add(getBasicUnitHuxingVo(oo)));
         vo.setTotal(page.getTotal());
@@ -215,6 +203,8 @@ public class BasicUnitHuxingService {
         vo.setCreatorName(publicService.getUserNameByAccount(basicUnitHuxing.getCreator()));
         vo.setUtilitiesMeasureName(baseDataDicService.getNameById(basicUnitHuxing.getUtilitiesMeasure()));
         vo.setUtilitiesTypeName(baseDataDicService.getNameById(basicUnitHuxing.getUtilitiesType()));
+        if (commonService.thisUserAccount().equalsIgnoreCase(basicUnitHuxing.getCreator()))
+            vo.setCanManage(true);
         return vo;
     }
 
@@ -270,7 +260,6 @@ public class BasicUnitHuxingService {
                     list.add(unitHuxingVo);
                 }
             }
-
         }
         vo.setRows(ObjectUtils.isEmpty(list) ? Lists.newArrayList() : list);
         vo.setTotal(page.getTotal());

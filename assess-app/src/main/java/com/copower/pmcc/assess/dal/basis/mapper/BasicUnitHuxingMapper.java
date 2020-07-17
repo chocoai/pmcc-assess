@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface BasicUnitHuxingMapper {
-    int countByExample(BasicUnitHuxingExample example);
+    long countByExample(BasicUnitHuxingExample example);
 
     int deleteByExample(BasicUnitHuxingExample example);
 

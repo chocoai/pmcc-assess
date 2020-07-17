@@ -1,9 +1,13 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.dto.output.basic.BasicUnitHuxingVo;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -29,45 +33,59 @@ public class BasicUnitHuxingController {
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
-    private CommonService commonService;
+    private BasicHouseService basicHouseService;
     @Autowired
     private BasicUnitHuxingService basicUnitHuxingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/getBasicUnitHuxingById", name = "获取数据", method = {RequestMethod.GET})
-    public HttpResult getBasicUnitHuxingById(Integer id) {
+    public HttpResult getBasicUnitHuxingById(Integer huxingId) {
         try {
-            return HttpResult.newCorrectResult(200, basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxingService.getBasicUnitHuxingById(id)));
+            BasicUnitHuxingVo basicUnitHuxingVo = basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxingService.getBasicUnitHuxingById(huxingId));
+            return HttpResult.newCorrectResult(basicUnitHuxingVo);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/saveAndUpdateBasicUnitHuxing", name = "新增或者修改", method = {RequestMethod.POST})
-    public HttpResult saveAndUpdateBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing) {
+    @RequestMapping(value = "/saveBasicUnitHuxing", name = "新增或者修改", method = {RequestMethod.POST})
+    public HttpResult saveBasicUnitHuxing(String formData) {
         try {
-            return HttpResult.newCorrectResult(200, basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,true));
+            BasicUnitHuxing basicUnitHuxing = JSON.parseObject(formData, BasicUnitHuxing.class);
+            Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, true);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            logger.error(String.format("保存户型信息异常:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/deleteBasicUnitHuxing", name = "删除数据", method = {RequestMethod.POST})
-    public HttpResult deleteBasicUnitHuxing(Integer id) {
+    public HttpResult deleteBasicUnitHuxing(Integer huxingId) {
         try {
-            return HttpResult.newCorrectResult(200, basicUnitHuxingService.deleteBasicUnitHuxing(id));
+            return HttpResult.newCorrectResult(basicUnitHuxingService.deleteBasicUnitHuxing(huxingId));
         } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            logger.error(String.format("删除数据:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/referenceHuxing", name = "引用户型信息", method = {RequestMethod.POST})
+    public HttpResult referenceHuxing(Integer huxingId, Integer houseId) {
+        try {
+            basicUnitHuxingService.referenceHuxing(huxingId, houseId);
+            return HttpResult.newCorrectResult(basicUnitHuxingService.getBasicUnitHuxingById(huxingId));
+        } catch (Exception e) {
+            logger.error(String.format("引用户型信息:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicUnitHuxing basicUnitHuxing, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
+    public BootstrapTableVo getBootstrapTableVo(Integer applyBatchId, String name) {
         try {
-            return basicUnitHuxingService.getBootstrapTableVo(basicUnitHuxing);
+            return basicUnitHuxingService.getBootstrapTableVo(applyBatchId, name);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;
@@ -98,7 +116,8 @@ public class BasicUnitHuxingController {
     @GetMapping(value = "/getHuxingByHouseId", name = "获取通过HouseId")
     public HttpResult getHuxingByHouseId(Integer basicHouseId) {
         try {
-            return HttpResult.newCorrectResult(200, basicUnitHuxingService.getHuxingByHouseId(basicHouseId));
+            BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicHouseId);
+            return HttpResult.newCorrectResult(200, basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId()));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -120,7 +139,6 @@ public class BasicUnitHuxingController {
     }
 
 
-
     @RequestMapping(value = "/basicUnitHuxingList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult basicUnitHuxingList(BasicUnitHuxing basicUnitHuxing) {
         try {
@@ -132,7 +150,7 @@ public class BasicUnitHuxingController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/getAttachmentId",name = "获取附件id")
+    @GetMapping(value = "/getAttachmentId", name = "获取附件id")
     public HttpResult getAttachmentId(Integer tableId) {
         try {
             Integer attachmentId = basicUnitHuxingService.getAttachmentId(tableId);
