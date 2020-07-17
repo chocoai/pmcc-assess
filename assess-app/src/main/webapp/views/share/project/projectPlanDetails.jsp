@@ -138,12 +138,12 @@
                 CurrentStep: "${CurrentStep}",
                 StepCount: "${StepCount}",
                 viewUrl: "${viewUrl}",
+                agentUserAccount: "${agentUserAccount}",
                 formData: data,
                 actualHours: mainObj.getDiffHours(),
                 projectId: "${projectId}",
                 workStageId: "${projectPhase.workStageId}",
                 nextApproval: nextApproval
-
             },
             type: "post",
             dataType: "json",

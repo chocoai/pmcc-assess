@@ -181,14 +181,10 @@
                                         </div>
                                     </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered" id="tb_myParticipation">
-                                                <!-- cerare document add ajax data-->
-                                            </table>
-                                        </div>
-                                    </div>
                                 </form>
+                                <table class="table table-bordered" id="tb_myParticipation">
+                                    <!-- cerare document add ajax data-->
+                                </table>
                             </div>
                         </div>
                     </div>

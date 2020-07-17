@@ -211,15 +211,12 @@ public class ProjectCenterService {
      *
      * @return
      */
-    public BootstrapTableVo getMyProjectList(String queryName, String projectStatus) {
+    public BootstrapTableVo getMyProjectList(QueryProjectInfo queryProjectInfo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        ProjectInfo projectInfo = new ProjectInfo();
-        projectInfo.setCreator(processControllerComponent.getThisUser());
-        projectInfo.setProjectName(queryName);
-        projectInfo.setProjectStatus(projectStatus);
-        List<ProjectInfo> myProjectList = projectInfoDao.getMyProjectList(projectInfo);
+        queryProjectInfo.setQueryCreator(processControllerComponent.getThisUser());
+        List<ProjectInfo> myProjectList = projectInfoDao.getProjectListByUserAccount(queryProjectInfo);
         List<ProjectInfoVo> projectInfoVos = getProjectInfoVos(myProjectList);
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(projectInfoVos) ? new ArrayList<ProjectInfoVo>(10) : projectInfoVos);

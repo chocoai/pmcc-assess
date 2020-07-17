@@ -85,14 +85,20 @@ public class ProjectCenterController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/myProject");
         List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
                 ProjectStatusEnum.FINISH.getKey(), ProjectStatusEnum.CLOSE.getKey());
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         modelAndView.addObject("statusEnumList", statusEnumList);
+        //委托目的
+        List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+        modelAndView.addObject("entrustPurposeList", entrustPurposeList);
+        List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
+        modelAndView.addObject("projectCategoryList", keyValueDtoList);
         return modelAndView;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getMyProjectList", name = "取得我的立项", method = RequestMethod.GET)
-    public BootstrapTableVo getMyProjectList(String queryName, String projectStatus) {
-        return projectCenterService.getMyProjectList(queryName, projectStatus);
+    public BootstrapTableVo getMyProjectList(QueryProjectInfo queryProjectInfo) {
+        return projectCenterService.getMyProjectList(queryProjectInfo);
     }
 
     @RequestMapping(value = "/myParticipation", name = "我的参与")

@@ -672,7 +672,7 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        notifySuccess("成功", "任务已经删除");
+                        notifySuccess("成功", "任务删除成功");
                         projectStagePlan.loadProjectTaskList();
                     } else {
                         AlertError(result.errmsg);
