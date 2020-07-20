@@ -59,13 +59,15 @@
                                             计算单价
                                         </label>
                                         <div class="col-sm-2">
-                                            <input type="text" name="tempPrice" class="form-control input-full" readonly="readonly">
+                                            <input type="text" name="tempPrice" class="form-control input-full"
+                                                   readonly="readonly">
                                         </div>
                                         <label class="col-sm-1 control-label">
                                             最终单价
                                         </label>
                                         <div class="col-sm-2">
-                                            <input type="text" name="price" class="form-control input-full" readonly="readonly"
+                                            <input type="text" name="price" class="form-control input-full"
+                                                   readonly="readonly"
                                                    value="${schemeSurePrice.price}">
                                         </div>
                                         <div class="col-sm-3">
@@ -355,8 +357,7 @@
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(surePriceApply));
-        }
-        else {
+        } else {
             submitToServer(JSON.stringify(surePriceApply));
         }
     }
@@ -424,7 +425,7 @@
                         html = html.replace(/{floor}/g, item.floor);
                         html = html.replace(/{price}/g, item.price);
                         html = html.replace(/{roomNumber}/g, item.roomNumber);
-                        html = html.replace(/{price}/g,AssessCommon.toString(item.price));
+                        html = html.replace(/{price}/g, AssessCommon.toString(item.price));
                         html = html.replace(/{coefficient}/g, AssessCommon.toString(item.factor));
                         html = html.replace(/{declareRecordId}/g, item.declareRecordId);
                         html = html.replace(/{bisShow}/g, item.hasPriceAdjust ? "block" : "none");
@@ -440,7 +441,7 @@
     };
 
     //确定单价
-    surePrice.initSurePriceItem = function (judgeObjectId,isUpdatePrice) {
+    surePrice.initSurePriceItem = function (judgeObjectId, isUpdatePrice) {
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeSurePrice/initSchemeSurePriceItemList",
             data: {
@@ -465,8 +466,7 @@
                         AssessCommon.elementParsePercent($(this));
                     });
                     surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
-                }
-                else {
+                } else {
                     AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             }
@@ -498,8 +498,7 @@
                         AssessCommon.elementParsePercent($(this));
                     });
                     surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
-                }
-                else {
+                } else {
                     AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             }
@@ -550,11 +549,11 @@
     }
 
     //取值到十或百位
-    surePrice.digitValue = function(dividend){
+    surePrice.digitValue = function (dividend) {
         var tempPrice = $("#sure_price_form").find('[name=tempPrice]').val();
-        if(tempPrice){
-            var tempPrice = Math.round(tempPrice/dividend);
-            $("#sure_price_form").find('[name=price]').val(tempPrice*dividend);
+        if (tempPrice) {
+            var tempPrice = Math.round(tempPrice / dividend);
+            $("#sure_price_form").find('[name=price]').val(tempPrice * dividend);
         }
 
         var surePriceApply = {};
@@ -567,6 +566,11 @@
         surePriceApply.weightExplain = form.find('[name=weightExplain]').val();
         surePriceApply.price = form.find('[name=price]').val();
         surePriceApply.surePriceItemList = [];
+        if (dividend == 10) {
+            surePriceApply.cutPriceType='ten';
+        }else if (dividend == 100) {
+            surePriceApply.cutPriceType='hundred';
+        }
         $("#tbody_data_section tr").each(function () {
             var schemeSurePriceItem = {};
             schemeSurePriceItem.id = $(this).find('[name=id]').val();
@@ -614,8 +618,7 @@
                     $("#tbody_factor").find('.x-percent').each(function () {
                         AssessCommon.elementParsePercent($(this));
                     })
-                }
-                else {
+                } else {
                     AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             },
@@ -733,8 +736,7 @@
                     tr.find('[data-name=price]').text(result.data.price);
                     tr.find('[data-name=coefficient]').text(result.data.factor);
                     $("#modal_factor").modal('hide');
-                }
-                else {
+                } else {
                     AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             },
@@ -810,8 +812,7 @@
                     //更新元素信息
                     $(_this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
                     $(_this).closest('tr').find('[data-name=coefficient]').text(surePrice.beCopyJudgeObject.coefficient);
-                }
-                else {
+                } else {
                     AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             }
@@ -853,8 +854,7 @@
                         $(this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
                         $(this).closest('tr').find('[data-name=coefficient]').text(surePrice.beCopyJudgeObject.coefficient);
                     })
-                }
-                else {
+                } else {
                     AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             }
@@ -1021,7 +1021,7 @@
             success: function (result) {
                 if (result.ret) {
                     if (houseHuxingPrice.prototype.isNotNull(result.data)) {
-                        surePrice.loadHouseRoomList(houseId,result.data.tenementType);
+                        surePrice.loadHouseRoomList(houseId, result.data.tenementType);
                         $("#divBoxHouseRoomTable").modal("show");
                     } else {
                         notifyInfo("提示", "没有户型信息")
@@ -1034,7 +1034,7 @@
         })
     }
 
-    surePrice.loadHouseRoomList =  function (houseId,tenementType) {
+    surePrice.loadHouseRoomList = function (houseId, tenementType) {
         var cols = commonColumn.houseRoomColumn();
         var temp = [];
         if (tenementType == '住宅' || tenementType == '办公') {
@@ -1596,8 +1596,7 @@
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         houseHuxingPrice.prototype.loadDataDicList(houseId);
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1634,8 +1633,7 @@
                         notifySuccess("成功", "保存成功");
                         $('#' + houseHuxingPrice.prototype.config().box).modal('hide');
                         houseHuxingPrice.prototype.loadDataDicList(houseId);
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },

@@ -12,7 +12,6 @@
             <%@include file="/views/share/common_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">

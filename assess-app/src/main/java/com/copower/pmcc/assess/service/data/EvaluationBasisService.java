@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationBasisDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.data.SurveyDamageDto;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationBasisVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -59,6 +60,8 @@ public class EvaluationBasisService {
     private SurveyAssetInventoryService surveyAssetInventoryService;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private PublicService publicService;
 
     /**
      * 保存数据
@@ -178,23 +181,23 @@ public class EvaluationBasisService {
         for (int i = 0; i < basisList.size(); i++) {
             DataEvaluationBasis basis = basisList.get(i);
             stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, basis.getName())));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(basis.getTemplate())));
             //经济行为依据
             if (AssessReportFieldConstant.BASIS_ECONOMIC_BEHAVIOR.equals(basis.getFieldName())) {
                 DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTRUSTING_PARTY);
                 if (dataReportTemplateByField != null)
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{委托单位}", StringUtils.defaultString(unit))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{委托单位}", StringUtils.defaultString(unit))));
             }
             //法律、法规、政策性文件依据
             if (AssessReportFieldConstant.BASIS_FILE_GIST.equals(basis.getFieldName())) {
                 if (pledgeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_FILE_GIST_PLEDGE);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate()));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())));
                 } else if (imposeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_FILE_GIST_IMPOSE);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate()));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())));
                 }
             }
             //估价技术标准依据
@@ -202,7 +205,7 @@ public class EvaluationBasisService {
                 if (pledgeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_TECHNICAL_STANDARD_PLEDGE);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate()));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())));
                 }
             }
             //估价委托人提供的有关资料
@@ -210,7 +213,7 @@ public class EvaluationBasisService {
                 if (pledgeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_PERTINENT_DATA_PLEDGE);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate()));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())));
                 } else if (imposeId.equals(projectInfo.getEntrustPurpose())) {
                     StringBuilder damageContent = new StringBuilder();
                     for (SchemeJudgeObject judgeObject : judgeObjectList) {
@@ -232,13 +235,11 @@ public class EvaluationBasisService {
                                 for (SurveyDamageDto dto : entityDamegeList) {
                                     damageContent.append("项目:").append(dto.getEntityProjectName()).append(",明细").append(dto.getEntityProjectItem()).append(";");
                                 }
-
                             }
                         }
                     }
                     stringBuilder.append("（3）").append(damageContent);
                 }
-
             }
         }
         return stringBuilder.toString();

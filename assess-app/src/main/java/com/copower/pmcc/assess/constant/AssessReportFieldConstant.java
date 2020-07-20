@@ -144,4 +144,6 @@ public class AssessReportFieldConstant {
     public static final String PROGRAMME_MARKET_COSTAPPROACH_FACTOR_INDIVIDUAL = "programme.market.costApproach.factor.individual";//个别因素
     public static final String PROGRAMME_MARKET_COSTAPPROACH_FACTOR_AREA = "programme.market.costApproach.factor.area";//区域因素
 
+    public static final String SURE_CUT_PRICE_TYPE_TEN = "ten";//确定单价取整到十位
+    public static final String SURE_CUT_PRICE_TYPE_HUNDRED = "hundred";//确定单价取整到百位
 }

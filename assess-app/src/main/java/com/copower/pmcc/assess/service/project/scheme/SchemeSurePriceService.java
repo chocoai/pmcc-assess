@@ -310,6 +310,7 @@ public class SchemeSurePriceService {
         schemeSurePrice.setProcessInsId(processInsId);
         schemeSurePrice.setWeightExplain(schemeSurePriceApplyDto.getWeightExplain());
         schemeSurePrice.setPrice(schemeSurePriceApplyDto.getPrice());
+        schemeSurePrice.setCutPriceType(StringUtils.defaultString(schemeSurePriceApplyDto.getCutPriceType()));
         schemeSurePriceDao.updateSurePrice(schemeSurePrice);
 
         List<SchemeSurePriceItem> surePriceItemList = schemeSurePriceApplyDto.getSurePriceItemList();
@@ -541,16 +542,16 @@ public class SchemeSurePriceService {
         StringBuilder s = new StringBuilder();
         for (int j = 0; j < colLength; j++) {
             String key = PoiUtils.getCellValue(keyRow.getCell(j));
-            String factorName = PoiUtils.getCellValue(titleRow.getCell(j)).replace("因素","");
+            String factorName = PoiUtils.getCellValue(titleRow.getCell(j)).replace("因素", "");
             if (key.contains("factor")) {
                 String value = PoiUtils.getCellValue(row.getCell(j));
                 Integer type = ComputeDataTypeEnum.ABSOLUTE.getId();
-                if (StringUtils.isNotEmpty(value)&&isNumeric(value)) {
-                    if(ArithmeticUtils.compare("10",value)){
+                if (StringUtils.isNotEmpty(value) && isNumeric(value)) {
+                    if (ArithmeticUtils.compare("10", value)) {
                         type = ComputeDataTypeEnum.RELATIVE.getId();
                         String percent = ArithmeticUtils.getPercentileSystem(new BigDecimal(value), 4, BigDecimal.ROUND_HALF_UP);
                         s.append(factorName).append(":").append(percent).append(";");
-                    }else{
+                    } else {
                         s.append(factorName).append(":").append(value).append(";");
                     }
                     //因素子表处理

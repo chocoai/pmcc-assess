@@ -616,6 +616,76 @@ public class SchemeSurePriceExample {
             return (Criteria) this;
         }
 
+        public Criteria andCutPriceTypeIsNull() {
+            addCriterion("cut_price_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeIsNotNull() {
+            addCriterion("cut_price_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeEqualTo(String value) {
+            addCriterion("cut_price_type =", value, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeNotEqualTo(String value) {
+            addCriterion("cut_price_type <>", value, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeGreaterThan(String value) {
+            addCriterion("cut_price_type >", value, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("cut_price_type >=", value, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeLessThan(String value) {
+            addCriterion("cut_price_type <", value, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeLessThanOrEqualTo(String value) {
+            addCriterion("cut_price_type <=", value, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeLike(String value) {
+            addCriterion("cut_price_type like", value, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeNotLike(String value) {
+            addCriterion("cut_price_type not like", value, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeIn(List<String> values) {
+            addCriterion("cut_price_type in", values, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeNotIn(List<String> values) {
+            addCriterion("cut_price_type not in", values, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeBetween(String value1, String value2) {
+            addCriterion("cut_price_type between", value1, value2, "cutPriceType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCutPriceTypeNotBetween(String value1, String value2) {
+            addCriterion("cut_price_type not between", value1, value2, "cutPriceType");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationS
 import com.copower.pmcc.bpm.api.enums.ApprovalRoleTypeEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.ErpUserDataRoleEnum;
@@ -94,7 +95,7 @@ public class ProjectCenterService {
                 break;
             case DEPARTMENT:
                 List<Integer> departmentIds = erpRpcDepartmentService.getDepartmentChildenIds(thisUserInfo.getDepartmentId());
-                if (CollectionUtils.isEmpty(departmentIds)){
+                if (CollectionUtils.isEmpty(departmentIds)) {
                     departmentIds = Lists.newArrayList();
                 }
                 departmentIds.add(thisUserInfo.getDepartmentId());
@@ -102,8 +103,8 @@ public class ProjectCenterService {
                 break;
             default:
                 List<String> userAccountList = erpRpcUserService.getUserListBySuperior(thisUserInfo.getUserAccount());
-                if(CollectionUtils.isEmpty(userAccountList)){
-                    userAccountList=Lists.newArrayList();
+                if (CollectionUtils.isEmpty(userAccountList)) {
+                    userAccountList = Lists.newArrayList();
                 }
                 userAccountList.add(thisUserInfo.getUserAccount());
                 queryProjectInfo.setUserAccountList(userAccountList);
@@ -124,17 +125,26 @@ public class ProjectCenterService {
      * @return
      */
     private ErpUserDataRoleEnum getCurrentUserRole() {
-        //1.如果是超级管理员、总经理、营销部的人员可看所有项目
+        //1.如果是超级管理员、公司负责人员可看所有项目
         //2.如果是部门负责人及技术总工可看本部分项目
         //3.其它人员只能看参与项目
         SysUserDto thisUserInfo = commonService.thisUser();
         if (thisUserInfo == null) return null;
         if (erpRpcToolsService.userIsAdmin(thisUserInfo.getUserAccount()))
             return ErpUserDataRoleEnum.ADMINISTRATOR;
-        List<String> fzrList = bpmRpcBoxRoleUserService.getDepartmentBmfzr(thisUserInfo.getDepartmentId());
-        List<String> jszgList = bpmRpcBoxRoleUserService.getDepartmentJszg(thisUserInfo.getDepartmentId());
+        SysDepartmentDto departmentAssess = erpRpcDepartmentService.getDepartmentAssess();
+        //取公司层面的负责人
+        List<String> fzrList = bpmRpcBoxRoleUserService.getDepartmentBmfzr(departmentAssess.getId());
+        List<String> jszgList = bpmRpcBoxRoleUserService.getDepartmentJszg(departmentAssess.getId());
         List<String> list = Lists.newArrayList(fzrList);
         list.addAll(jszgList);
+        if (CollectionUtils.isNotEmpty(list) && list.contains(thisUserInfo.getUserAccount())) {
+            return ErpUserDataRoleEnum.ADMINISTRATOR;
+        }
+
+        list.clear();//清空
+        fzrList = bpmRpcBoxRoleUserService.getDepartmentBmfzr(thisUserInfo.getDepartmentId());
+        jszgList = bpmRpcBoxRoleUserService.getDepartmentJszg(thisUserInfo.getDepartmentId());
         if (CollectionUtils.isNotEmpty(list) && list.contains(thisUserInfo.getUserAccount())) {
             return ErpUserDataRoleEnum.DEPARTMENT;
         }

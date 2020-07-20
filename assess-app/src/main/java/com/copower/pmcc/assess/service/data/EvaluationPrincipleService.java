@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationPrincipleVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
@@ -54,7 +55,7 @@ public class EvaluationPrincipleService {
     @Autowired
     private DataReportTemplateItemService dataReportTemplateItemService;
     @Autowired
-    private SchemeJudgeObjectDao schemeJudgeObjectDao;
+    private PublicService publicService;
     @Autowired
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
     @Autowired
@@ -181,7 +182,7 @@ public class EvaluationPrincipleService {
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
             DataEvaluationPrinciple basis = principleList.get(i);
             stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, basis.getName())));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(basis.getTemplate())));
 
             //代替原则
             if (AssessReportFieldConstant.REPLACE_PRINCIPLE.equals(basis.getFieldName())) {
@@ -204,11 +205,11 @@ public class EvaluationPrincipleService {
                     }
                     for (SchemeJudgeFunction judgeFunction : applicableJudgeFunctions) {
                         BaseDataDic dataDicById = baseDataDicService.getDataDicById(judgeFunction.getMethodType());
-                        if (dataDicById == null){
+                        if (dataDicById == null) {
                             continue;
                         }
                         String fieldName = dataDicById.getFieldName();
-                        if (StringUtils.isEmpty(fieldName)){
+                        if (StringUtils.isEmpty(fieldName)) {
                             continue;
                         }
                         switch (fieldName) {
@@ -223,7 +224,7 @@ public class EvaluationPrincipleService {
                                 break;
                             case AssessReportFieldConstant.INCOME:
                                 SchemeInfo schemeInfo = schemeInfoService.getSchemeInfo(judgeFunction.getJudgeObjectId(), judgeFunction.getMethodType());
-                                if (schemeInfo !=null && schemeInfo.getMethodDataId() != null){
+                                if (schemeInfo != null && schemeInfo.getMethodDataId() != null) {
                                     MdIncome incomeById = mdIncomeDao.getIncomeById(schemeInfo.getMethodDataId());
                                     if (incomeById != null && incomeById.getOperationMode() == 0) {
                                         autotrophy.append(judgeObject.getNumber()).append(",");
@@ -240,33 +241,32 @@ public class EvaluationPrincipleService {
                     String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(compare.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.MARKET_COMPARE);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{估价对象号}", substitutionPrincipleName)));
                 }
                 if (StringUtils.isNotBlank(cost)) {
                     String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(cost.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.COST);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{估价对象号}", substitutionPrincipleName)));
                 }
                 if (StringUtils.isNotBlank(development)) {
                     String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(development.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DEVELOPMENT);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{估价对象号}", substitutionPrincipleName)));
                 }
                 if (StringUtils.isNotBlank(autotrophy)) {
                     String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(autotrophy.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INCOME_AUTOTROPHY);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{估价对象号}", substitutionPrincipleName)));
                 }
                 if (StringUtils.isNotBlank(rent)) {
                     String substitutionPrincipleName = StringUtils.defaultString(getSubstitutionPrincipleName(rent.toString()));
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INCOME_RENT);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", substitutionPrincipleName)));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{估价对象号}", substitutionPrincipleName)));
                 }
-
             }
 
             //合法原则
@@ -281,16 +281,14 @@ public class EvaluationPrincipleService {
                         case AssessReportFieldConstant.EVALUATE_RESULTS: //区位
                             DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.EVALUATE_RESULTS);
                             if (dataReportTemplateByField != null)
-                                stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{委托单位}", unit)));
+                                stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{委托单位}", unit)));
                             break;
                     }
                 }
-
             }
         }
         return stringBuilder.toString();
     }
-
 
     public String getSubstitutionPrincipleName(String str) {
         String[] s = str.toString().split(",");

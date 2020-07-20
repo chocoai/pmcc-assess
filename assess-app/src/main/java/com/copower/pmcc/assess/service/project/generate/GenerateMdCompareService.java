@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.dto.output.data.DataHousePriceIndexVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
@@ -57,7 +58,7 @@ public class GenerateMdCompareService {
     private MdMarketCompareItem evaluationItem;
     private List<MdMarketCompareItem> caseItemList;
 
-
+    private PublicService publicService;
     private BaseReportFieldService baseReportFieldService;
     private BaseAttachmentService baseAttachmentService;
     private CommonService commonService;
@@ -78,7 +79,7 @@ public class GenerateMdCompareService {
     }
 
     public GenerateMdCompareService(Integer schemeJudgeObjectId, Integer mcId, Integer areaId) throws Exception {
-
+        this.publicService = SpringContextUtils.getBean(PublicService.class);
         this.commonService = SpringContextUtils.getBean(CommonService.class);
         this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
@@ -242,7 +243,7 @@ public class GenerateMdCompareService {
             String title = fieldCompareEnum.getName();
             switch (fieldCompareEnum) {
                 case DESIGN_FORMULAS:
-                    localPath = getDesignFormulas(title);
+                    localPath = getDesignFormulas();
                     break;
                 case COMPARABLE_BASIS:
                     localPath = getComparableBasisTable(caseItemList, false);
@@ -496,7 +497,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.FLOOR_HEIGHT.getKey()) || data.getName().equals(MethodCompareFieldEnum.NET_HEIGHT.getKey())) {
-                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                        if (data.getScore().compareTo(new BigDecimal("100")) != 0) {
                             ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
@@ -511,9 +512,9 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(ratio.compareTo(new BigDecimal("1"))==0){
+                    if (ratio.compareTo(new BigDecimal("1")) == 0) {
                         builder.write("100");
-                    }else{
+                    } else {
                         builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
@@ -535,7 +536,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ELEVATOR_HOUSEHOLD_RATIO.getKey()) || data.getName().equals(MethodCompareFieldEnum.PLANE_LAYOUT.getKey())) {
-                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                        if (data.getScore().compareTo(new BigDecimal("100")) != 0) {
                             ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
@@ -544,9 +545,9 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(ratio.compareTo(new BigDecimal("1"))==0){
+                    if (ratio.compareTo(new BigDecimal("1")) == 0) {
                         builder.write("100");
-                    }else{
+                    } else {
                         builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
@@ -567,7 +568,7 @@ public class GenerateMdCompareService {
                 List<MarketCompareItemDto> dtos = JSON.parseArray(caseItem.getJsonContent(), MarketCompareItemDto.class);
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.ARCHITECTURAL_OUTFIT.getKey()) || data.getName().equals(MethodCompareFieldEnum.INTERNAL_ASSEMBLY.getKey())) {
-                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                        if (data.getScore().compareTo(new BigDecimal("100")) != 0) {
                             ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
@@ -576,9 +577,9 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(ratio.compareTo(new BigDecimal("1"))==0){
+                    if (ratio.compareTo(new BigDecimal("1")) == 0) {
                         builder.write("100");
-                    }else{
+                    } else {
                         builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
@@ -600,7 +601,7 @@ public class GenerateMdCompareService {
                 for (MarketCompareItemDto data : dtos) {
                     if (data.getName().equals(MethodCompareFieldEnum.INTELLIGENT_LEVEL.getKey()) || data.getName().equals(MethodCompareFieldEnum.WATER_SUPPLY_DRAINAGE_MODE.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEATING_MODE.getKey()) || data.getName().equals(MethodCompareFieldEnum.NETWORK.getKey())) {
-                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                        if (data.getScore().compareTo(new BigDecimal("100")) != 0) {
                             ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
@@ -609,9 +610,9 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(ratio.compareTo(new BigDecimal("1"))==0){
+                    if (ratio.compareTo(new BigDecimal("1")) == 0) {
                         builder.write("100");
-                    }else{
+                    } else {
                         builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
@@ -635,7 +636,7 @@ public class GenerateMdCompareService {
                             || data.getName().equals(MethodCompareFieldEnum.SUNSHINE.getKey()) || data.getName().equals(MethodCompareFieldEnum.SOUND_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.HEAT_PRESERVATION.getKey()) || data.getName().equals(MethodCompareFieldEnum.HEAT_INSULATION.getKey())
                             || data.getName().equals(MethodCompareFieldEnum.WATERPROOF.getKey())) {
-                        if(data.getScore().compareTo(new BigDecimal("100"))!=0){
+                        if (data.getScore().compareTo(new BigDecimal("100")) != 0) {
                             ratio = ratio.multiply(data.getRatio());
                         }
                         if (!isIndex) {
@@ -644,9 +645,9 @@ public class GenerateMdCompareService {
                     }
                 }
                 if (isIndex) {
-                    if(ratio.compareTo(new BigDecimal("1"))==0){
+                    if (ratio.compareTo(new BigDecimal("1")) == 0) {
                         builder.write("100");
-                    }else{
+                    } else {
                         builder.write(df.format(new BigDecimal("100").divide(ratio, 2, BigDecimal.ROUND_HALF_UP)));
                     }
                 } else {
@@ -1206,14 +1207,14 @@ public class GenerateMdCompareService {
      *
      * @return
      */
-    public String getDesignFormulas(String title) throws Exception {
+    public String getDesignFormulas() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         String localPath = generateCommonMethod.getLocalPath();
         //获取比较法公式
         DataMethodFormula formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.COMPARE_FORMULA);
-        if(formula!=null){
-            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(formula.getFormula())), true);
+        if (formula != null) {
+            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(publicService.tagfilter(formula.getFormula()))), true);
         }
         doc.save(localPath);
         return localPath;

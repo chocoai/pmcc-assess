@@ -1825,18 +1825,25 @@ public class GenerateBaseDataService {
                 }
                 for (SchemeSurePriceItem schemeSurePriceItem : schemeSurePriceItemList) {
                     if (StringUtils.isNotBlank(schemeSurePriceItem.getMethodName()) && schemeSurePriceItem.getTrialPrice() != null) {
-                        linkedHashSet.add(String.format("%s%s元/㎡", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
+                        linkedHashSet.add(String.format("%s计算结果为%s元/㎡", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
+                    }
+                }
+                if (schemeSurePrice != null && StringUtils.isNotBlank(schemeSurePrice.getCutPriceType())) {
+                    if(AssessReportFieldConstant.SURE_CUT_PRICE_TYPE_TEN.equals(schemeSurePrice.getCutPriceType())){
+                        linkedHashSet.add("根据报告使用单位要求单价取整到十元");
+                    }else{
+                        linkedHashSet.add("根据报告使用单位要求单价取整到百元");
                     }
                 }
                 if (schemeSurePrice != null && schemeSurePrice.getPrice() != null) {
-                    linkedHashSet.add(String.format("最终单价%s元/㎡", schemeSurePrice.getPrice().toString()));
+                    linkedHashSet.add(String.format("最终单价为%s元/㎡", schemeSurePrice.getPrice().toString()));
                 }
                 List<Integer> integerList = Lists.newArrayList();
                 if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
                     integerList.addAll(generateCommonMethod.splitIntegerListJudgeNumber(schemeJudgeObject.getNumber()));
                 }
                 String s = String.format("%s%s 。", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), StringUtils.join(linkedHashSet, "，"));
-                builder.insertHtml(generateCommonMethod.getWarpCssHtml(StringUtils.trimToEmpty(s)), false);
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(StringUtils.trimToEmpty(s))), false);
                 linkedHashSet.clear();
             }
         }
@@ -2875,7 +2882,7 @@ public class GenerateBaseDataService {
         String statementPurposeEntrustment = getSchemeAreaGroup().getRemarkEntrustPurpose();
         if (StringUtils.isNotEmpty(statementPurposeEntrustment)) {
             if (StringUtils.isNotEmpty(statementPurposeEntrustment.trim())) {
-                return statementPurposeEntrustment;
+                return generateCommonMethod.trim(statementPurposeEntrustment) ;
             }
         }
         return errorStr;
@@ -3466,116 +3473,6 @@ public class GenerateBaseDataService {
         return StringUtils.strip(generateCommonMethod.judgeEachDescExtend(map, "", ";", false), ";");
     }
 
-
-    /**
-     * 假设开发法适用原因
-     *
-     * @return
-     */
-    public String getDevelopmentAssistApplyReason() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_DEVELOPMENT, false, true, false);
-    }
-
-    /**
-     * 假设开发法不适用原因
-     *
-     * @return
-     */
-    public String getDevelopmentAssistNotApplicableReason() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_DEVELOPMENT, false, false, true);
-    }
-
-    /**
-     * 假设开发法评估思路
-     *
-     * @return
-     */
-    public String getDevelopmentAssistThink() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_DEVELOPMENT, true, false, false);
-    }
-
-
-    /**
-     * 收益法适用原因
-     *
-     * @return
-     */
-    public String getIncomeAssistApplyReason() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_INCOME, false, true, false);
-    }
-
-    /**
-     * 收益法不适用原因
-     *
-     * @return
-     */
-    public String getIncomeAssistNotApplicableReason() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_INCOME, false, false, true);
-    }
-
-    /**
-     * 收益法评估思路
-     *
-     * @return
-     */
-    public String getIncomeAssistThink() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_INCOME, true, false, false);
-    }
-
-    /**
-     * 市场比较法适用原因
-     *
-     * @return
-     */
-    public String getCompareAssistApplyReason() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_MARKET_COMPARE, false, true, false);
-    }
-
-    /**
-     * 市场比较法不适用原因
-     *
-     * @return
-     */
-    public String getCompareAssistNotApplicableReason() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_MARKET_COMPARE, false, false, true);
-    }
-
-    /**
-     * 市场比较法评估思路
-     *
-     * @return
-     */
-    public String getCompareAssistThink() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_MARKET_COMPARE, true, false, false);
-    }
-
-    /**
-     * 成本法适用原因
-     *
-     * @return
-     */
-    public String getCostAssistApplyReason() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_COST, false, true, false);
-    }
-
-    /**
-     * 成本法不适用原因
-     *
-     * @return
-     */
-    public String getCostAssistNotApplicableReason() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_COST, false, false, true);
-    }
-
-    /**
-     * 成本法评估思路
-     *
-     * @return
-     */
-    public String getCostAssistThink() {
-        return this.getAssistThinkAndApplicableReasonOrNotApplicableReason(AssessDataDicKeyConstant.MD_COST, true, false, false);
-    }
-
     /**
      * 各种评估方法的取值 (example:市场比较法适用原因)
      *
@@ -3745,7 +3642,6 @@ public class GenerateBaseDataService {
                         stringBuilder.append("故最终单价=");
                         stringBuilder.append(mdIncomeItem.getTrialPrice().toString()).append("×").append("50%").append("+").append(mdCompareItem.getTrialPrice().toString()).append("×").append("50%").append("（").append("收益法价格*权重+比较法价格*权重").append("）");
                     }
-                    evaluationExpression.append("比较法价格*权重+收益法价格*权重");
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                     List<String> stringList = Lists.newArrayList();
@@ -6387,7 +6283,7 @@ public class GenerateBaseDataService {
             dataDicList.add(baseDataDicService.getCacheDataDicByFieldName(key));
         }
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        List<KeyValueDto> keyValueDtoList = Lists.newArrayList(new KeyValueDto("text-align", "center"), new KeyValueDto("font-size", "16.0pt"));
+        List<KeyValueDto> keyValueDtoList = Lists.newArrayList(new KeyValueDto("text-align", "left"), new KeyValueDto("font-size", "14.0pt"));
         LinkedHashMap<String, String> map = Maps.newLinkedHashMap();
         LinkedHashMap<SchemeInfo, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {

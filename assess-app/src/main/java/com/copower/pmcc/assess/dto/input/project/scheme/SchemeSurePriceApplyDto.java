@@ -12,6 +12,7 @@ public class SchemeSurePriceApplyDto {
     private Integer id;
     private Integer judgeObjectId;
     private String weightExplain;
+    private String cutPriceType;
     private BigDecimal price;
     private List<SchemeSurePriceItem> surePriceItemList;
 
@@ -53,5 +54,13 @@ public class SchemeSurePriceApplyDto {
 
     public void setSurePriceItemList(List<SchemeSurePriceItem> surePriceItemList) {
         this.surePriceItemList = surePriceItemList;
+    }
+
+    public String getCutPriceType() {
+        return cutPriceType;
+    }
+
+    public void setCutPriceType(String cutPriceType) {
+        this.cutPriceType = cutPriceType;
     }
 }

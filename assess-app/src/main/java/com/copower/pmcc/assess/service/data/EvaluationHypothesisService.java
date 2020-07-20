@@ -225,7 +225,7 @@ public class EvaluationHypothesisService {
                     }
                     actualTimenumbers.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
                     BasicBuilding building = basicBuildingService.getBasicBuildingByApplyId(schemeJudgeObject.getBasicApplyId());
-                    if (building != null){
+                    if (building != null) {
                         //实际调查
                         Integer type = building.getCompletedTimeType();
                         if (type != null && baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.TIME_ACTUAL_SURVEY).getId().equals(type)) {
@@ -268,9 +268,8 @@ public class EvaluationHypothesisService {
                 }
 
                 if (CollectionUtils.isNotEmpty(actualTimenumbers) || CollectionUtils.isNotEmpty(purposeNumbers)) {
-
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(basis.getTemplate())));
                 }
                 if (CollectionUtils.isEmpty(actualTimenumbers) && CollectionUtils.isEmpty(purposeNumbers)) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
@@ -280,16 +279,16 @@ public class EvaluationHypothesisService {
                     if (group.size() == 1) {
                         for (Map.Entry<List<Integer>, String> entry : group.get(0).entrySet()) {
                             DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
-                            stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", entry.getValue()).replace("#{估价对象号}", (generateCommonMethod.convertNumber(entry.getKey()) + "号"))));
+                            stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())).replace("#{竣工日期}", entry.getValue()).replace("#{估价对象号}", (generateCommonMethod.convertNumber(entry.getKey()) + "号")));
                         }
                     } else {
                         DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{竣工日期}", String.join("、", completedTime)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号"))));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())).replace("#{竣工日期}", String.join("、", completedTime)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号")));
                     }
                 }
                 if (CollectionUtils.isNotEmpty(purposeNumbers)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_PURPOSE);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{设定用途}", settingPurpose.deleteCharAt(settingPurpose.length() - 1)).replace("#{实际用途}", actualPurpose.deleteCharAt(actualPurpose.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(purposeNumbers) + "号"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())).replace("#{设定用途}", settingPurpose.deleteCharAt(settingPurpose.length() - 1)).replace("#{实际用途}", actualPurpose.deleteCharAt(actualPurpose.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(purposeNumbers) + "号")));
                 }
             }
 
@@ -330,11 +329,10 @@ public class EvaluationHypothesisService {
                                             .replace("#{证明人}", StringUtils.defaultString(item.getVoucher()))
                                             .replace("#{证明文件}", StringUtils.defaultString(item.getCredential()))
                                             .replace("#{一致结论}", StringUtils.defaultString(item.getSureConsistent()));
-                                    stringConsistent.append(generateCommonMethod.getIndentHtml(template));
+                                    stringConsistent.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(template)));
                                 }
                             }
                         }
-
                     }
                 }
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
@@ -359,9 +357,9 @@ public class EvaluationHypothesisService {
                     }
                     BasicHouse basicHouse = basicHouseService.getHouseByApplyId(schemeJudgeObject.getBasicApplyId());
                     //对应资产清查内容
-                    SurveyAssetInventory surveyAssetInventory =surveyAssetInventories.get(0);
+                    SurveyAssetInventory surveyAssetInventory = surveyAssetInventories.get(0);
                     //参考同类（不配合）
-                    if (basicHouse != null){
+                    if (basicHouse != null) {
                         Integer type = basicHouse.getResearchType();
                         if (type != null && AssessExamineTaskConstant.EXAMINE_HOUSE_RESEARCH_REFERENCE.equals(baseDataDicService.getCacheDataDicById(type).getFieldName())) {
                             if ("正常".equals(surveyAssetInventory.getPaymentStatus())) {
@@ -377,12 +375,12 @@ public class EvaluationHypothesisService {
                 if (StringUtils.isNotBlank(paymentNormal)) {
                     String number = getSubstitutionPrincipleName(paymentNormal.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_GIST_INSUFFICIENT_REFERENCE_NORMAL);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{委估对象号}", number)));
                 }
                 if (StringUtils.isNotBlank(paymentAbnormality)) {
                     String number = getSubstitutionPrincipleName(paymentAbnormality.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_GIST_INSUFFICIENT_REFERENCE_ABNORMALITY);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{委估对象号}", number)));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{委估对象号}", number)));
                 }
                 if (StringUtils.isEmpty(paymentNormal) && StringUtils.isEmpty(paymentAbnormality)) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml("无依据不足假设"));
@@ -438,7 +436,6 @@ public class EvaluationHypothesisService {
                         }
                     }
 
-
                     //对应的他权信息
                     List<SurveyAssetRightItem> rightList = Lists.newArrayList();
                     List<SurveyAssetRightGroup> surveyAssetInventoryRightRecordList = surveyAssetRightGroupService.getSurveyAssetRightGroupByDeclareRecord(judgeObject.getDeclareRecordId(), judgeObject.getProjectId());
@@ -466,21 +463,21 @@ public class EvaluationHypothesisService {
                 if (valuationDate.compareTo(investigationsEndDate) != 0 || StringUtils.isNotBlank(surroundingsDamage) || StringUtils.isNotBlank(entityDamage)
                         || StringUtils.isNotBlank(havePledge) || StringUtils.isNotBlank(haveOther)) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(basis.getTemplate())));
                 }
                 if (valuationDate.compareTo(investigationsEndDate) != 0) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.DATE_ARE_CONSISTENT);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{查勘结束日期}", DateUtils.format(investigationsEndDate, DateUtils.DATE_CHINESE_PATTERN)).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{查勘结束日期}", DateUtils.format(investigationsEndDate, DateUtils.DATE_CHINESE_PATTERN)).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
                 }
                 if (StringUtils.isNotBlank(surroundingsDamage)) {
                     String number = getSubstitutionPrincipleName(surroundingsDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.SURROUNDINGS_CONDITION);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{估价对象号}", number).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
                 }
                 if (StringUtils.isNotBlank(entityDamage)) {
                     String number = getSubstitutionPrincipleName(entityDamage.toString());
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTITY_CONDITION);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate().replace("#{估价对象号}", number).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{估价对象号}", number).replace("#{评估基准日}", DateUtils.format(valuationDate, DateUtils.DATE_CHINESE_PATTERN))));
                 }
                 if (StringUtils.isNotBlank(havePledge)) {
                     String number = getSubstitutionPrincipleName(havePledge.toString());
@@ -568,7 +565,6 @@ public class EvaluationHypothesisService {
                             limit.append(judgeObject.getNumber()).append(",");
                         }
                     }
-
 
                     //对应的他权信息
                     List<SurveyAssetRightItem> rightList = Lists.newArrayList();
@@ -680,15 +676,15 @@ public class EvaluationHypothesisService {
                 if (!pledgeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(pledge.getName()))));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(pledge.getTemplate())));
                 } else if (pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) > 180) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_PLEDGE);
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(pledge.getName()))));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(pledge.getTemplate())));
                 } else if (pledgeId.equals(projectInfo.getEntrustPurpose()) && Math.abs(daysBetween) <= 180) {
                     DataReportTemplateItem pledge = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_NOT_PLEDGE);
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s%s", "（" + (++order3) + "）", publicService.tagfilter(pledge.getName()))));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(pledge.getTemplate()));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(pledge.getTemplate())));
                 }
                 //成交价格与报告内容
                 DataReportTemplateItem content = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_USE_RESTRICTION_CONTENT);

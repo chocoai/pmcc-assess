@@ -13,7 +13,6 @@
             <div class="page-inner mt--5">
                 <div class="row mt--2">
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default btn-sm" onclick="window.close()">
                                 关闭

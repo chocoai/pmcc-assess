@@ -190,7 +190,6 @@ public class GenerateLoactionService {
             long a2 = 0;
             long a3 = 0;
             for (BasicHouseFaceStreetVo basicHouseFaceStreetVo : basicHouseFaceStreetVoList) {
-                linkedHashSet.add(String.format("%s%s", StringUtils.defaultString(basicHouseFaceStreetVo.getPositionName()), StringUtils.defaultString(basicHouseFaceStreetVo.getStreetName())));
                 if (Objects.equal("主干道", basicHouseFaceStreetVo.getStreetLevelName())) {
                     a1++;
                 }
@@ -455,7 +454,7 @@ public class GenerateLoactionService {
             });
         }
         String value = generateCommonMethod.trim(builder.toString());
-        return value;
+        return StringUtils.defaultIfBlank(value,"无收费限制");
     }
 
     /**

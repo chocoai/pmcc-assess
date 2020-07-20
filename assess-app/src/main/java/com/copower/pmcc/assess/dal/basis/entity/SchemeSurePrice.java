@@ -20,6 +20,8 @@ public class SchemeSurePrice {
 
     private BigDecimal price;
 
+    private String cutPriceType;
+
     private String creator;
 
     private Date gmtCreated;
@@ -88,6 +90,14 @@ public class SchemeSurePrice {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getCutPriceType() {
+        return cutPriceType;
+    }
+
+    public void setCutPriceType(String cutPriceType) {
+        this.cutPriceType = cutPriceType == null ? null : cutPriceType.trim();
     }
 
     public String getCreator() {

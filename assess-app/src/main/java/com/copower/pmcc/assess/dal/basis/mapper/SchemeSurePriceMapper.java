@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface SchemeSurePriceMapper {
-    int countByExample(SchemeSurePriceExample example);
+    long countByExample(SchemeSurePriceExample example);
 
     int deleteByExample(SchemeSurePriceExample example);
 
