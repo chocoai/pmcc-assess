@@ -34,8 +34,8 @@ public class BasicAlternativeCaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicAlternativeCaseList", name = "取得备选案列信息", method = RequestMethod.GET)
-    public BootstrapTableVo getBasicAlternativeCaseList(String name, Integer applyBatchDetailId) {
-        BootstrapTableVo vo = basicAlternativeCaseService.getBasicAlternativeCaseList(name, applyBatchDetailId);
+    public BootstrapTableVo getBasicAlternativeCaseList(String name, Integer applyBatchDetailId,Integer projectId) {
+        BootstrapTableVo vo = basicAlternativeCaseService.getBasicAlternativeCaseList(name, applyBatchDetailId,projectId);
         return vo;
     }
 

@@ -7,6 +7,7 @@
     houseCommon.houseTradingForm = $('#basicTradingFrm');
     houseCommon.houseForm = $('#basicHouseFrm');
     houseCommon.houseHuxingForm = $('#basicHouseHuxing');
+    houseCommon.houseHuxingFormView = $('#basicHouseHuxingView');
     houseCommon.landCategoryInfoForm = $('#landCategoryInfoFrm');
     houseCommon.houseTradingTypeSell = 'ExamineHouseTradingSell';
     houseCommon.houseTradingTypeLease = 'ExamineHouseTradingLease';
@@ -187,15 +188,7 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDecorateSituation, data.basicHouse.decorateSituation, function (html, data) {
                 houseCommon.houseForm.find("select.decorateSituation").empty().html(html).trigger('change');
             });
-            if (!houseCommon.isNotBlank(data.basicHouse.decorateSituationDescription)) {
-                //变更
-                houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
-                    if ($(this).find('option:selected').val()) {
-                        var description = $(this).find('option:selected').text();
-                        houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
-                    }
-                });
-            }
+
             houseCommon.showUseCondition(data);
             houseCommon.showHouseDecorate(data);
 
@@ -333,6 +326,7 @@
                         $("#showHouseDecorate").show();
                     }
                 });
+
             }
         }
 
@@ -350,6 +344,8 @@
                         $("#showHouseDecorate").show();
                     }
                 });
+                var description = $(this).find('option:selected').text();
+                houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
             }
         });
     }
@@ -1270,8 +1266,9 @@
         }, function (result) {
             if (result.ret) {
                 notifySuccess('成功', '引用成功');
-                $('#divBoxHuxingManageModal').modal('hide');
+                $('#divBoxHuxingListModal').modal('hide');
                 houseCommon.showCurrHuxing(huxingId);
+                houseCommon.houseForm.find('[name=huxingId]').val(huxingId);
             } else {
                 AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }

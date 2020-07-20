@@ -49,6 +49,7 @@
                                         <div class="x_content">
                                             <form class="form-horizontal" id="basicHouseHuxingView">
                                                 <input type="hidden" name="id" >
+                                                <input type="hidden" name="huxingData" >
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
@@ -121,6 +122,10 @@
                                                 <input type="hidden" name="unitId" value="${basicHouse.unitId}">
                                                 <input type="hidden" name="estateId" value="${basicHouse.estateId}">
                                                 <input type="hidden" name="buildingId" value="${basicHouse.buildingId}">
+                                                <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
+                                                <input type="hidden" name="version" value="${basicHouse.version}">
+                                                <input type="hidden" name="bisCase" value="${basicHouse.bisCase}">
+                                                <input type="hidden" name="bisEnable" value="${basicHouse.bisEnable}">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="card-body">

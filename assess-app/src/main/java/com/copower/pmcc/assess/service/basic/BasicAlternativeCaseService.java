@@ -77,15 +77,23 @@ public class BasicAlternativeCaseService extends BaseService {
         return basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
     }
 
-    public BootstrapTableVo getBasicAlternativeCaseList(String name, Integer applyBatchDetailId) {
+    public BootstrapTableVo getBasicAlternativeCaseList(String name, Integer applyBatchDetailId, Integer projectId) {
         BootstrapTableVo vo = new BootstrapTableVo();
-        BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(applyBatchDetailId);
-        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchDetail.getApplyBatchId());
-        if (basicApplyBatch == null) return vo;
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(basicApplyBatch.getProjectId());
+        ProjectInfo projectInfo = null;
+        String type = null;
+        if (applyBatchDetailId != null) {
+            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(applyBatchDetailId);
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchDetail.getApplyBatchId());
+            if (basicApplyBatch == null) return vo;
+            projectInfo = projectInfoService.getProjectInfoById(basicApplyBatch.getProjectId());
+            type = applyBatchDetail.getType();
+        }
+        if (projectId != null) {
+            projectInfo = projectInfoService.getProjectInfoById(projectId);
+        }
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicAlternativeCase> alternativeCases = basicAlternativeCaseDao.getBasicAlternativeCaseList(name, applyBatchDetail.getType(), null, projectInfo.getProjectCategoryId());
+        List<BasicAlternativeCase> alternativeCases = basicAlternativeCaseDao.getBasicAlternativeCaseList(name, type, null, projectInfo.getProjectCategoryId());
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(alternativeCases) ? new ArrayList<BasicAlternativeCase>() : alternativeCases);
         return vo;

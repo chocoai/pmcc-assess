@@ -26,7 +26,7 @@ var houseHuxingPrice;
         loadDataDicList: function () {
             var cols = commonColumn.houseHuxingPriceColumn();
             var temp = [];
-            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
             if (tenementType == '住宅' || tenementType == '办公') {
                 temp = commonColumn.houseRoomResidence();
             } else if (tenementType == '商铺' || tenementType == '商场') {
@@ -82,7 +82,7 @@ var houseHuxingPrice;
             })
         },
         showModel: function () {
-            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
             houseHuxingPrice.prototype.init({}, tenementType);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
                 $("#" + houseHuxingPrice.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
@@ -95,7 +95,7 @@ var houseHuxingPrice;
             }
             var data = formParams(houseHuxingPrice.prototype.config().frm);
             data.houseId = houseCommon.getHouseId();
-            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
             if (tenementType == '商铺' || tenementType == '商场') {
                 var adjacentPosition = '';
                 $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
@@ -134,7 +134,7 @@ var houseHuxingPrice;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+                        var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
                         $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
                         if (houseHuxingPrice.prototype.isNotBlank(result.data)) {
                             houseHuxingPrice.prototype.init(result.data, tenementType);
@@ -2018,7 +2018,7 @@ var houseRoom;
             if (houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text() == "多层") {
                 cols.push({field: 'currentFloor', title: '所在楼层'});
             }
-            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
             if (tenementType == '住宅' || tenementType == '办公') {
                 temp = commonColumn.houseRoomResidence();
             } else if (tenementType == '商铺' || tenementType == '商场') {
@@ -2078,7 +2078,7 @@ var houseRoom;
         },
         showModel: function () {
             $("#" + houseRoom.prototype.config().frm).clearAll();
-            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
             houseRoom.prototype.init({}, tenementType);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
@@ -2195,7 +2195,7 @@ var houseRoom;
                 return false;
             }
             var data = formParams(houseRoom.prototype.config().frm);
-            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
             data.houseId = houseCommon.getHouseId();
             if (tenementType == '商铺' || tenementType == '商场') {
                 var adjacentPosition = '';
@@ -2238,10 +2238,10 @@ var houseRoom;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+                        var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
                         $("#" + houseRoom.prototype.config().frm).clearAll();
                         houseRoom.prototype.init(result.data, tenementType);
-                        var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+                        var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
                         if (tenementType == '商铺' || tenementType == '商场') {
                             if (houseRoom.prototype.isNotBlank(result.data.adjacentPosition)) {
                                 houseRoom.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
@@ -2410,7 +2410,7 @@ var houseRoom;
             houseRoom.prototype.houseShapeChange();
         },
         houseShapeChange() {
-            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            var tenementType = houseCommon.houseHuxingFormView.find('[name="tenementType"]').text();
             var houseShape = $("#" + houseRoom.prototype.config().frm).find('select[name="houseShape"]').val();
             if (houseRoom.prototype.isNotBlank(tenementType) && houseRoom.prototype.isNotBlank(tenementType)) {
                 if (tenementType == '住宅' || tenementType == '办公') {
@@ -2496,7 +2496,7 @@ var houseRoom;
         },
         //自动生成
         autoGenerate() {
-            var huxingData = houseCommon.houseHuxingForm.find("input[name='huxingData']").val();
+            var huxingData = houseCommon.houseHuxingFormView.find("[name=huxingData]").val();
             var houseId = houseCommon.getHouseId();
             if (houseRoom.prototype.isNotBlank(huxingData)) {
                 $.ajax({

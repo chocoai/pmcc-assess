@@ -78,13 +78,11 @@
                                                                 <label class="form-control input-full"
                                                                        name="utilitiesMeasureName">${basicHouseHuxing.utilitiesMeasureName}</label>
                                                             </div>
-                                                            <label class="col-sm-1 utilitiesTypeContent">水电费类型<span
-                                                                    class="symbol required"></span></label>
+                                                            <label class="col-sm-1 utilitiesTypeContent">水电费类型</label>
                                                             <div class="col-sm-3 utilitiesTypeContent">
                                                                 <label class="form-control input-full" id="utilitiesType"
                                                                        name="utilitiesTypeName">${basicHouseHuxing.utilitiesTypeName}</label>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>

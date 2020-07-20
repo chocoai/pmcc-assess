@@ -6,11 +6,11 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseRoomDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
-import com.copower.pmcc.assess.dto.input.baseDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -201,9 +201,9 @@ public class BasicHouseRoomService {
 
     public void autoGenerate(String huxingData,Integer houseId)throws Exception{
         if(!StringUtils.isEmpty(huxingData)){
-            List<baseDto> baseDtos = JSON.parseArray(huxingData, baseDto.class);
+            List<KeyValueDto> baseDtos = JSON.parseArray(huxingData, KeyValueDto.class);
             if(CollectionUtils.isNotEmpty(baseDtos)){
-                for (baseDto item:baseDtos) {
+                for (KeyValueDto item:baseDtos) {
                     for (int i = 0; i < Integer.valueOf(item.getValue()); i++) {
                         BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
                         basicHouseRoom.setHouseId(houseId);
