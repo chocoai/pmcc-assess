@@ -142,7 +142,7 @@ public class MdMarketCompareFieldService extends BaseService {
             //取得房间信息
             List<BasicHouseRoom> roomList = basicHouseRoomService.getBasicHouseRoomList(examineHouse.getId());
             //取得户型信息
-            BasicUnitHuxing unitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(examineHouse.getHuxingId());
+            BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(examineHouse.getId());
             //取得建筑功能
             List<BasicBuildingFunction> buildingFunctions = basicBuildingFunctionService.getBasicBuildingFunctionList(examineBuilding.getId());
             //取得房间供应信息(供暖；空调；新风)

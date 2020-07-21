@@ -303,7 +303,7 @@ public class SchemeJudgeObjectService {
                     if (basicHouse != null) {
                         schemeJudgeObjectVo.setFloor(basicHouse.getFloor());
                         schemeJudgeObjectVo.setRoomNumber(basicHouse.getHouseNumber());
-                        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
+                        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
                         if (unitHuxing != null) {
                             schemeJudgeObjectVo.setTenementType(unitHuxing.getTenementType());
                         }

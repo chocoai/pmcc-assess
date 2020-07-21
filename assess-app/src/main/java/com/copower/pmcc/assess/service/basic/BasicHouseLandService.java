@@ -85,6 +85,7 @@ public class BasicHouseLandService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/land/house");
         modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("landCategoryInfo", basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
@@ -94,6 +95,7 @@ public class BasicHouseLandService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/land/detail/house");
         modelAndView.addObject("basicHouse",basicHouseService.getBasicHouseVo(basicHouseService.getBasicHouseById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId())));
+        modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("landCategoryInfo", basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
@@ -108,6 +110,7 @@ public class BasicHouseLandService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/land/photo/house");
         modelAndView.addObject("basicHouse", basicHouseService.getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("landCategoryInfo", basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }

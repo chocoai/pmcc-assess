@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
@@ -75,11 +76,7 @@ public class BasicUnitService extends BasicEntityAbstract {
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
-    private BasicBuildingService basicBuildingService;
-    @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private PublicBasicService publicBasicService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -96,13 +93,6 @@ public class BasicUnitService extends BasicEntityAbstract {
 
     public List<BasicUnit> getBasicUnitListByIds(List<Integer> ids) {
         return basicUnitDao.getBasicUnitListByIds(ids);
-    }
-
-    public List<BasicUnit> getBasicUnitByUnitId(Integer buildingId) {
-        BasicUnit unit = new BasicUnit();
-        unit.setBuildingId(buildingId);
-        unit.setBisDelete(false);
-        return basicUnitDao.getBasicUnitList(unit);
     }
 
     /**
@@ -140,14 +130,6 @@ public class BasicUnitService extends BasicEntityAbstract {
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicUnitVo>(10) : transform);
         return vo;
-    }
-
-    public List<CustomCaseEntity> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingId) {
-        if (StringUtils.isBlank(unitNumber) || caseBuildingId == null) return null;
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomCaseEntity> caseEntityList = basicUnitDao.getLatestVersionUnitList(unitNumber, caseBuildingId);
-        return caseEntityList;
     }
 
     public BasicUnitVo getBasicUnitVo(BasicUnit basicUnit) {
@@ -222,23 +204,6 @@ public class BasicUnitService extends BasicEntityAbstract {
             }
         }
         return null;
-    }
-
-    /**
-     * 添加信息
-     *
-     * @return
-     * @throws Exception
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public BasicUnit addUnit(String unitNumber) throws Exception {
-        this.clearInvalidData(0);
-        BasicUnit basicUnit = new BasicUnit();
-        basicUnit.setUnitNumber(unitNumber);
-        basicUnit.setApplyId(0);
-        basicUnit.setCreator(commonService.thisUserAccount());
-        basicUnitDao.addBasicUnit(basicUnit);
-        return basicUnit;
     }
 
     @Override

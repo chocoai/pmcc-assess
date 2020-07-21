@@ -39,10 +39,6 @@
                                             <div class="card-head-row">
                                                 <div class="card-title">
                                                     户型信息
-                                                    <button type="button" class="btn btn-sm btn-primary"
-                                                            onclick="houseCommon.showHuxingListModal('${basicApplyBatch.id}');">
-                                                        选择户型
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -53,9 +49,9 @@
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
-                                                            <label class="col-sm-2">物业类型<span
+                                                            <label class="col-sm-1">物业类型<span
                                                                     class="symbol required"></span></label>
-                                                            <div class="col-sm-4">
+                                                            <div class="col-sm-3">
                                                                 <div class="input-group">
                                                                     <input type="hidden" name="priceExportColumns">
                                                                     <input type="text" required name="tenementType" class="form-control">
@@ -69,9 +65,9 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <label class="col-sm-2">户型名称<span
+                                                            <label class="col-sm-1">户型名称<span
                                                                     class="symbol required"></span></label>
-                                                            <div class="col-sm-4">
+                                                            <div class="col-sm-3">
                                                                 <div class="input-group">
                                                                     <input type="hidden" name="huxingData">
                                                                     <input type="text" placeholder="户型名称" name="name" class="form-control">
@@ -85,20 +81,20 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <label class="col-sm-1">面积(m²)<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="面积" name="area" class="form-control input-full">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
-                                                            <label class="col-sm-2">面积(m²)<span
+                                                            <label class="col-sm-1">朝向<span
                                                                     class="symbol required"></span></label>
-                                                            <div class="col-sm-4">
-                                                                <input type="text" placeholder="面积" name="area" class="form-control input-full">
-                                                            </div>
-                                                            <label class="col-sm-2">朝向<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-4">
+                                                            <div class="col-sm-3">
                                                                 <div class="input-group">
                                                                     <select class="form-control form-control" required
                                                                             name="reference">
@@ -110,21 +106,15 @@
                                                                             name="orientation"></select>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-2">空间布局<span
+                                                            <label class="col-sm-1">空间布局<span
                                                                     class="symbol required"></span></label>
-                                                            <div class="col-sm-4">
+                                                            <div class="col-sm-3">
                                                                 <select class="form-control input-full  spatialDistribution"
                                                                         name="spatialDistribution" required></select>
                                                             </div>
-                                                            <label class="col-sm-2">户数<span
+                                                            <label class="col-sm-1">户数<span
                                                                     class="symbol required"></span></label>
-                                                            <div class="col-sm-4">
+                                                            <div class="col-sm-3">
                                                                 <input type="text" placeholder="户数" name="quantity" class="form-control input-full">
                                                             </div>
                                                         </div>
@@ -133,14 +123,13 @@
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
-                                                            <label class="col-sm-2">水电费标准<span
+                                                            <label class="col-sm-1">水电费标准<span
                                                                     class="symbol required"></span></label>
-                                                            <div class="col-sm-4">
+                                                            <div class="col-sm-3">
                                                                 <select class="form-control input-full utilitiesMeasure" name="utilitiesMeasure" required></select>
                                                             </div>
-                                                            <label class="col-sm-2 utilitiesTypeContent">水电费类型<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-4 utilitiesTypeContent">
+                                                            <label class="col-sm-1 utilitiesTypeContent">水电费类型<span class="symbol required"></span></label>
+                                                            <div class="col-sm-3 utilitiesTypeContent">
                                                                 <select class="form-control input-full utilitiesType"
                                                                         name="utilitiesType" id="utilitiesType"
                                                                         required>

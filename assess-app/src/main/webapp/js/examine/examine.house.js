@@ -7,7 +7,6 @@
     houseCommon.houseTradingForm = $('#basicTradingFrm');
     houseCommon.houseForm = $('#basicHouseFrm');
     houseCommon.houseHuxingForm = $('#basicHouseHuxing');
-    houseCommon.houseHuxingFormView = $('#basicHouseHuxingView');
     houseCommon.landCategoryInfoForm = $('#landCategoryInfoFrm');
     houseCommon.houseTradingTypeSell = 'ExamineHouseTradingSell';
     houseCommon.houseTradingTypeLease = 'ExamineHouseTradingLease';
@@ -38,41 +37,42 @@
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [];
 
-    //上传文件对应key
-    houseCommon.getUploadKey = function (bisDetail) {
-        houseCommon.getFilePartHtml(AssessDicKey.examineHouseFilePart, houseCommon.houseFileControlIdArray, bisDetail);
-        houseCommon.getFilePartHtml(AssessDicKey.examineHouseTradingFilePart, houseCommon.houseFileControlIdArray, bisDetail);
+    houseCommon.getUploadKey = function(bisDetail){
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseFilePart,bisDetail);
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseHuxingFilePart,bisDetail);
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseTradingFilePart,bisDetail);
     };
 
-    //动态生成上传文件控件
-    houseCommon.getFilePartHtml = function (fieldName, controlIdArray, bisDetail, suffix) {
-        var fileDiv = $('#' + (suffix == undefined ? fieldName : fieldName + suffix));
+    houseCommon.getFilePartHtml = function(fieldName,bisDetail){
+        var fileDiv = $('#'+fieldName);
         fileDiv.empty();
         var houseFileHtml = '';
         AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
-            var groupIndex = 2;//分成2个一组
+
+            var groupIndex= 2;//分成2个一组
             var result = [];
-            for (var k = 0, len = resultData.length; k < len; k += groupIndex) {
-                result.push(resultData.slice(k, k + groupIndex));
+            for(var k=0,len=resultData.length;k<len;k+=groupIndex){
+                result.push(resultData.slice(k,k+groupIndex));
             }
-            $.each(result, function (i, data) {
+            $.each(result , function (i,data) {
                 houseFileHtml += '<div class="row form-group">';
                 houseFileHtml += '<div class="col-md-12">';
                 houseFileHtml += '<div class="form-inline x-valid">';
-                $.each(data, function (j, item) {
-                    houseFileHtml += '<label class="col-sm-1 col-md-2">' + item.name + '</label>';
+                $.each(data,function (j,item) {
+                    houseFileHtml += '<label class="col-sm-1 col-md-2">'+item.name+'</label>';
                     houseFileHtml += '<div class="col-sm-5 col-md-4">';
                     if (bisDetail != false) {
-                        houseFileHtml += '<input id="' + (suffix == undefined ? item.fieldName : item.fieldName + suffix) + '" placeholder="上传附件" class="form-control input-full" type="file">';
+                        houseFileHtml += '<input id="' + item.fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
                     }
-                    houseFileHtml += '<div id="_' + (suffix == undefined ? item.fieldName : item.fieldName + suffix) + '"></div>';
+                    houseFileHtml += '<div id="_' + item.fieldName + '"></div>';
                     houseFileHtml += '</div>';
-                    controlIdArray.push(item.fieldName);
-                });
+                    houseCommon.houseFileControlIdArray.push(item.fieldName);
+                }) ;
                 houseFileHtml += "</div>";
                 houseFileHtml += "</div>";
                 houseFileHtml += "</div>";
-            });
+            }) ;
+
         }, false);
         fileDiv.append(houseFileHtml);
     };
@@ -83,6 +83,60 @@
 
     houseCommon.getUnitId = function () {
         return houseCommon.houseForm.find('[name=unitId]').val();
+    };
+
+    //户型选择
+    houseCommon.selectHuxing = function (_this) {
+        assessHuxing.selectByBasicUnitId({
+            basicUnitId: houseCommon.getUnitId(),
+            success: function (row) {
+                //1.赋值 2.拷贝附件并显示附件数据
+                $(_this).closest('.input-group').find('[name=huxingId]').val(row.id);
+                $(_this).closest('.input-group').find(':text').val(row.name);
+                houseCommon.houseForm.find('[name=area]').val(row.area);
+                houseCommon.houseForm.find('[name=orientation]').val(row.orientation).trigger('change');
+                $.ajax({
+                    url: getContextPath() + '/basicHouse/copyHuxingPlan',
+                    data: {
+                        sourceTableId: row.id,
+                        sourceTableName: row.tableName,
+                        targetTableId: houseCommon.getHouseId(),
+                        fieldsName: houseCommon.houseFileControlIdArray[0]
+                    },
+                    success: function (result) {
+                        houseCommon.fileShow(houseCommon.houseFileControlIdArray[0], false);
+                    }
+                })
+            }
+        })
+    };
+
+    //户型选择
+    houseCommon.selectHuxingAlone = function (_this) {
+        assessHuxing.select({
+            basicApplyId: basicCommon.getApplyId(),
+            caseUnitId: null,
+            success: function (row) {
+                //1.赋值 2.拷贝附件并显示附件数据
+                $(_this).closest('.input-group').find('[name=huxingId]').val(row.id);
+                $(_this).closest('.input-group').find(':text').val(row.name);
+                houseCommon.houseForm.find('[name=area]').val(row.area);
+                houseCommon.houseForm.find('[name=orientation]').val(row.orientation).trigger('change');
+                $.ajax({
+                    url: getContextPath() + '/basicHouse/copyHuxingPlan',
+                    data: {
+                        sourceTableId: row.id,
+                        sourceTableName: row.tableName,
+                        targetTableId: houseCommon.getHouseId(),
+                        fieldsName: houseCommon.houseFileControlIdArray[0]
+                    },
+                    success: function (result) {
+                        houseCommon.fileShow(houseCommon.houseFileControlIdArray[0], false);
+                        houseCommon.deleteHouseTagging();
+                    }
+                })
+            }
+        })
     };
 
     //房屋初始化by applyId
@@ -188,7 +242,15 @@
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDecorateSituation, data.basicHouse.decorateSituation, function (html, data) {
                 houseCommon.houseForm.find("select.decorateSituation").empty().html(html).trigger('change');
             });
-
+            if (!houseCommon.isNotBlank(data.basicHouse.decorateSituationDescription)) {
+                //变更
+                houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
+                    if ($(this).find('option:selected').val()) {
+                        var description = $(this).find('option:selected').text();
+                        houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
+                    }
+                });
+            }
             houseCommon.showUseCondition(data);
             houseCommon.showHouseDecorate(data);
 
@@ -202,8 +264,6 @@
                 }
             });
         });
-
-        houseCommon.showCurrHuxing(data.basicHouse.huxingId);//显示当前户型信息
 
         //交易情况
         houseCommon.houseTradingForm.initForm(data.basicHouseTrading, function () {
@@ -249,6 +309,30 @@
             }
         });
 
+        //户型
+        houseCommon.houseHuxingForm.initForm(data.basicHouseHuxing, function () {
+            if (data.basicHouseHuxing != null) {
+                AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineHouseTenementType, null, function (html, data) {
+                    houseCommon.houseHuxingForm.find("#tenementTypeList").empty().html(html).trigger('change');
+                }, true);
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonOrientation, data.basicHouseHuxing.orientation, function (html, data) {
+                    houseCommon.houseHuxingForm.find("select.orientation").empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, data.basicHouseHuxing.spatialDistribution, function (html, data) {
+                    houseCommon.houseHuxingForm.find("select.spatialDistribution").empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUtilitiesMeasure, data.basicHouseHuxing.utilitiesMeasure, function (html, data) {
+                    houseCommon.houseHuxingForm.find("select.utilitiesMeasure").empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUtilitiesType, data.basicHouseHuxing.utilitiesType, function (html, data) {
+                    houseCommon.houseHuxingForm.find("select.utilitiesType").empty().html(html).trigger('change');
+                });
+                houseCommon.showUtilitiesType(data);
+                houseCommon.tenementTypeChange(data);
+            }
+
+        });
+
         //土地类型
         houseCommon.landCategoryInfoForm.initForm(data.landCategoryInfo, function () {
             if (data.landCategoryInfo != null) {
@@ -267,7 +351,7 @@
         }
     };
 
-    houseCommon.landUseTypeChange = function () {
+    houseCommon.landUseTypeChange = function(){
         var value = houseCommon.landCategoryInfoForm.find('[name=landUseType]').val();
         AssessCommon.getSonTextAppendDicList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
             houseCommon.landCategoryInfoForm.find("#landUseCategoryList").empty().html(html).trigger('change');
@@ -311,10 +395,9 @@
         });
     };
 
-    //显示装修信息
     houseCommon.showHouseDecorate = function (data) {
         if (houseCommon.isNotBlank(data.basicHouse.decorateSituation)) {
-            var strArr = ["清水", "毛坯"];//来自于实体描述1(1).docx中的规则
+            var strArr = ["清水","毛坯"];//来自于实体描述1(1).docx中的规则
             var decorateSituationId = data.basicHouse.decorateSituation;
             if (decorateSituationId) {
                 AssessCommon.getDataDicInfo(decorateSituationId, function (decorateSituationData) {
@@ -326,13 +409,12 @@
                         $("#showHouseDecorate").show();
                     }
                 });
-
             }
         }
 
         //绑定变更事件
         houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
-            var strArr = ["清水", "毛坯"];//来自于实体描述1(1).docx中的规则
+            var strArr = ["清水","毛坯"];//来自于实体描述1(1).docx中的规则
             var decorateSituationId = houseCommon.houseForm.find("select.decorateSituation").val();
             if (decorateSituationId) {
                 AssessCommon.getDataDicInfo(decorateSituationId, function (decorateSituationData) {
@@ -344,16 +426,14 @@
                         $("#showHouseDecorate").show();
                     }
                 });
-                var description = $(this).find('option:selected').text();
-                houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
             }
         });
     }
 
-    houseCommon.getPriceExportColumns = function (tenementType) {
+    houseCommon.getPriceExportColumns = function(tenementType){
         var temp;
         if (houseCommon.isNotBlank(tenementType)) {
-            if (tenementType == '住宅' || tenementType == '办公') {
+            if (tenementType == '住宅'|| tenementType == '办公') {
                 temp = "residence";
             }
             if (tenementType == '商铺' || tenementType == '商场') {
@@ -370,13 +450,13 @@
             }
             var columns = [];
 
-            $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("."+temp).find(".control-label").each(function () {
                 var column = {};
                 column.value = $.trim($(this).text());
-                if (houseCommon.isNotBlank($(this).next().find("input").attr("name"))) {
-                    column.key = $(this).next().find("input").attr("name");
-                } else {
-                    column.key = $(this).next().find("select").attr("name");
+                if(houseCommon.isNotBlank($(this).next().find("input").attr("name"))){
+                    column.key =  $(this).next().find("input").attr("name");
+                }else{
+                    column.key =  $(this).next().find("select").attr("name");
                 }
                 columns.push(column);
             });
@@ -385,9 +465,9 @@
         }
     };
 
-    houseCommon.tenementTypeChange = function (data) {
-        if (houseCommon.isNotBlank(data.tenementType)) {
-            houseCommon.getPriceExportColumns(data.tenementType);
+    houseCommon.tenementTypeChange = function(data){
+        if (houseCommon.isNotBlank(data.basicHouseHuxing.tenementType)) {
+            houseCommon.getPriceExportColumns(data.basicHouseHuxing.tenementType);
         }
 
         //绑定变更事件
@@ -401,9 +481,9 @@
     };
 
     houseCommon.showUtilitiesType = function (data) {
-        if (houseCommon.isNotBlank(data.utilitiesMeasure)) {
+        if (houseCommon.isNotBlank(data.basicHouseHuxing.utilitiesMeasure)) {
             var strArr = ["非标准"];//来自于实体描述1(1).docx中的规则
-            var utilitiesMeasureId = data.utilitiesMeasure;
+            var utilitiesMeasureId = data.basicHouseHuxing.utilitiesMeasure;
             if (utilitiesMeasureId) {
                 AssessCommon.getDataDicInfo(utilitiesMeasureId, function (utilitiesMeasureData) {
                     var str = strArr.join(",");
@@ -503,6 +583,14 @@
             deleteFlag: true,
             onUploadComplete: function () {
                 houseCommon.fileShow(fieldsName);
+                // if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
+                //     toolMapHandleFun.removeToolMapHandle({
+                //         type: "house",
+                //         tableId: houseCommon.getHouseId()
+                //     }, function () {
+                //
+                //     });
+                // }
             }
         });
     };
@@ -537,7 +625,17 @@
                 tableName: AssessDBKey.BasicHouse,
                 tableId: houseCommon.getHouseId()
             },
-            deleteFlag: deleteFlag == undefined ? true : deleteFlag
+            deleteFlag: deleteFlag == undefined ? true : deleteFlag,
+            // deleteSuccess: function (attachemntId) {
+            //     if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
+            //         toolMapHandleFun.removeToolMapHandle({
+            //             type: "house",
+            //             tableId: houseCommon.getHouseId()
+            //         }, function () {
+            //
+            //         });
+            //     }
+            // }
         })
     };
 
@@ -907,7 +1005,7 @@
     //计算单价
     houseCommon.computeUnitPrice = function (_this) {
         var area = houseCommon.houseForm.find('[name=area]').val();
-        if (!area) {
+        if(!area){
             area = houseCommon.houseTradingForm.find('[id=tempLandArea]').val();
         }
         var tradingTotalPrice = $(_this).closest('form').find('[name=tradingTotalPrice]').val();
@@ -928,7 +1026,12 @@
     };
 
     //户型专有字段初始化
-    houseCommon.huxingSpecialPartInit = function (tenementType) {
+    houseCommon.huxingSpecialPartInit = function () {
+        var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();
+        if (!tenementType) {
+            notifyInfo('提示', "请先填写物业类型！");
+            return;
+        }
         var html = ' <option value="">-请选择-</option>';
         if (tenementType == '住宅') {
             html += '<option value="卧室" data-desc="室">卧室</option>';
@@ -942,7 +1045,7 @@
             html += '<option value="商间">商间</option>';
             html += '<option value="商区">商区</option>';
         }
-        if (tenementType == '餐饮' || tenementType == '酒店') {
+        if (tenementType == '餐饮'||tenementType == '酒店') {
             html += '<option value="住宿" data-child="标间(普通),标间(商务),标间(高级),单间(普通),单间(商务),单间(高级),套房(普通),套房(商务),套房(高级)">住宿</option>';
             html += '<option value="商业" data-child="会议室,会议厅,商务厅,影视厅">商业</option>';
             html += '<option value="餐饮" data-child="包间(普通),包间(标准),包间(豪华),餐饮大厅,共用餐区">餐饮</option>';
@@ -1048,8 +1151,8 @@
             var value = $(item).find('[name=number]').val();
             if (value) {
                 var keyValue = {};
-                var desc = $.trim($(item).find('label').attr('data-desc'));
-                var text = $.trim($(item).find('label').text());
+                var desc=$.trim($(item).find('label').attr('data-desc'));
+                var text=$.trim($(item).find('label').text());
                 keyValue.key = text;
                 keyValue.explain = text;
                 if (desc) {
@@ -1068,24 +1171,19 @@
     //回显户型名称
     houseCommon.displayHouseHuxing = function (_this) {
         var $form = $(_this).closest('form');
-        var huxingData = $form.find('[name=huxingData]').val();
-        if (huxingData) {
-            var array = JSON.parse(huxingData);
+        var huxingData=$form.find('[name=huxingData]').val();
+        if(huxingData){
+            var array=JSON.parse(huxingData);
             $('#frmHouseHuxing').find('.item').closest('.form-group').remove();
-            $.each(array, function (i, item) {
-                houseCommon.appendHuxingItemHtml($('#frmHouseHuxing'), item.key, item.value, item.explain);
+            $.each(array,function (i,item) {
+                houseCommon.appendHuxingItemHtml($('#frmHouseHuxing'),item.key,item.value,item.explain);
             })
         }
-        var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();
-        if (!tenementType) {
-            notifyInfo('提示', "请先填写物业类型！");
-            return;
-        }
-        houseCommon.huxingSpecialPartInit(tenementType);
+        houseCommon.huxingSpecialPartInit();
         $("#divBoxHouseHuxing").modal();
     }
 
-    //户型信息管理---------------------------------------------------------------------------------------------
+    //户型信息管理--------------------------------------------------------------------------------------------
     //显示户型列表弹窗
     houseCommon.huxingFileControlArray = [];
     //户型附件上传
@@ -1268,7 +1366,6 @@
                 notifySuccess('成功', '引用成功');
                 $('#divBoxHuxingListModal').modal('hide');
                 houseCommon.showCurrHuxing(huxingId);
-                houseCommon.houseForm.find('[name=huxingId]').val(huxingId);
             } else {
                 AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
@@ -1279,20 +1376,7 @@
     houseCommon.showCurrHuxing = function (huxingId) {
         $.getJSON(getContextPath() + "/basicUnitHuxing/getBasicUnitHuxingById", {huxingId: huxingId}, function (result) {
             if (result.ret && result.data) {
-                $('#basicHouseHuxingView').initForm(result.data);//初始化表单
-                var controlArray = [];
-                houseCommon.getFilePartHtml(AssessDicKey.examineHouseHuxingFilePart, controlArray, false, "View");
-                $.each(controlArray, function (i, item) {
-                    FileUtils.getFileShows({
-                        target: item + "View",
-                        formData: {
-                            fieldsName: item,
-                            tableName: AssessDBKey.BasicUnitHuxing,
-                            tableId: huxingId == undefined ? 0 : huxingId
-                        },
-                        deleteFlag: false
-                    })
-                })
+                houseCommon.houseForm.initForm(result.data);//初始化表单
             }
         })
     }

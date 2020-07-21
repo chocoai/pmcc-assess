@@ -26,25 +26,25 @@
                                             </div>
                                         </div>
                                         <div class="x_content">
-                                            <form class="form-horizontal" id="basicHouseHuxingView">
-                                                <input type="hidden" name="id" value="${basicHouseHuxing.id}">
+                                            <form class="form-horizontal" id="basicHouseHuxing">
+                                                <input type="hidden" name="id">
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
                                                             <label class="col-sm-1 control-label">物业类型</label>
                                                             <div class="col-sm-3">
                                                                 <label class="form-control input-full"
-                                                                       name="tenementType">${basicHouseHuxing.tenementType}</label>
+                                                                       name="tenementType"></label>
                                                             </div>
                                                             <label class="col-sm-1 control-label">户型名称</label>
                                                             <div class="col-sm-3">
                                                                 <label class="form-control input-full"
-                                                                       name="name">${basicHouseHuxing.name}</label>
+                                                                       name="name"></label>
                                                             </div>
                                                             <label class="col-sm-1 control-label">面积(m²)</label>
                                                             <div class="col-sm-3">
                                                                 <label class="form-control input-full"
-                                                                       name="area">${basicHouseHuxing.area}</label>
+                                                                       name="area"></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -55,17 +55,17 @@
                                                             <label class="col-sm-1 control-label">朝向</label>
                                                             <div class="col-sm-3">
                                                                 <label class="form-control input-full"
-                                                                       name="orientationName">${basicHouseHuxing.orientationName}</label>
+                                                                       name="orientationName"></label>
                                                             </div>
                                                             <label class="col-sm-1 control-label">空间布局</label>
                                                             <div class="col-sm-3">
                                                                 <label class="form-control input-full"
-                                                                       name="spatialDistributionName">${basicHouseHuxing.spatialDistributionName}</label>
+                                                                       name="spatialDistributionName"></label>
                                                             </div>
                                                             <label class="col-sm-1">户数</label>
                                                             <div class="col-sm-3">
                                                                 <label class="form-control input-full" id="quantity"
-                                                                       name="quantity">${basicHouseHuxing.quantity}</label>
+                                                                       name="quantity"></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -76,17 +76,18 @@
                                                             <label class="col-sm-1 control-label">水电费标准</label>
                                                             <div class="col-sm-3">
                                                                 <label class="form-control input-full"
-                                                                       name="utilitiesMeasureName">${basicHouseHuxing.utilitiesMeasureName}</label>
+                                                                       name="utilitiesMeasureName"></label>
                                                             </div>
                                                             <label class="col-sm-1 utilitiesTypeContent">水电费类型</label>
                                                             <div class="col-sm-3 utilitiesTypeContent">
                                                                 <label class="form-control input-full" id="utilitiesType"
-                                                                       name="utilitiesTypeName">${basicHouseHuxing.utilitiesTypeName}</label>
+                                                                       name="utilitiesTypeName"></label>
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="houseHuxingFilePartView"></div>
+                                                <div id="houseHuxingFilePart"></div>
                                             </form>
                                         </div>
                                     </div>

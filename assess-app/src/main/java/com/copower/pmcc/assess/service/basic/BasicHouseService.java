@@ -280,8 +280,7 @@ public class BasicHouseService extends BasicEntityAbstract {
             basicHouseTradingVo.setHouseId(basicHouse.getId());
         }
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingVo);
-
-        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
+        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
         BasicUnitHuxingVo unitHuxingVo = basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing);
         if (unitHuxingVo == null) {
             unitHuxingVo = new BasicUnitHuxingVo();
@@ -407,7 +406,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(houseTrading) != null ? basicHouseTradingService.getBasicHouseTradingVo(houseTrading) : new BasicHouseTrading());
 
-        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
+        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
         objectMap.put("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) != null ? basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) : new BasicUnitHuxingVo());
 
         BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
@@ -471,6 +470,19 @@ public class BasicHouseService extends BasicEntityAbstract {
                     basicHouse.setFullName(houseDetail.getFullName());
                 }
                 Integer houseId = saveAndUpdate(basicHouse, true);
+
+                //户型
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE_HUXING.getVar());
+                BasicUnitHuxing huxing = JSONObject.parseObject(jsonContent, BasicUnitHuxing.class);
+                if (huxing != null) {
+                    BasicUnitHuxing houseHuxingOld = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
+                    if (houseHuxingOld != null) {
+                        huxing.setId(houseHuxingOld.getId());
+                        huxing.setHouseId(houseId);
+                        huxing.setEstateId(houseHuxingOld.getEstateId());
+                        basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(huxing, true);
+                    }
+                }
 
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
@@ -561,6 +573,25 @@ public class BasicHouseService extends BasicEntityAbstract {
             BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse, ignoreList.toArray(new String[ignoreList.size()]));
         }
         this.saveAndUpdate(targetBasicHouse, true);
+
+        BasicUnitHuxing sourceBasicHouseHuxing = basicUnitHuxingService.getHuxingByHouseId(sourceId);
+        if (sourceBasicHouseHuxing != null) {
+            BasicUnitHuxing targetBasicHouseHuxing = basicUnitHuxingService.getHuxingByHouseId(targetBasicHouse.getId());
+            if (targetBasicHouseHuxing == null) {
+                targetBasicHouseHuxing = new BasicUnitHuxing();
+                BeanUtils.copyProperties(sourceBasicHouseHuxing, targetBasicHouseHuxing);
+                targetBasicHouseHuxing.setId(null);
+                targetBasicHouseHuxing.setHouseId(targetBasicHouse.getId());
+                targetBasicHouseHuxing.setEstateId(targetBasicHouse.getEstateId());
+                targetBasicHouseHuxing.setCreator(commonService.thisUserAccount());
+                targetBasicHouseHuxing.setGmtCreated(null);
+                targetBasicHouseHuxing.setGmtModified(null);
+            } else {
+                BeanUtils.copyProperties(sourceBasicHouseHuxing, targetBasicHouseHuxing, "id");
+                targetBasicHouseHuxing.setHouseId(targetBasicHouse.getId());
+            }
+            basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(targetBasicHouseHuxing, true);
+        }
 
         if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetId);
@@ -738,6 +769,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/house");
         modelAndView.addObject("basicHouse", getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
 
@@ -746,6 +778,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/house");
         modelAndView.addObject("basicHouse", getBasicHouseVo(getBasicHouseById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId())));
+        modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
 
@@ -767,6 +800,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/photo/house");
         modelAndView.addObject("basicHouse", getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
 }

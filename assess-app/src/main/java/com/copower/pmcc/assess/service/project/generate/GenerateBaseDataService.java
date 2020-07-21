@@ -5605,7 +5605,7 @@ public class GenerateBaseDataService {
                 huxingName = basicHouse.getHuxingName();
             }
             if (basicHouse != null && basicHouse.getId() != null) {
-                BasicUnitHuxing huxingByHouseId = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
+                BasicUnitHuxing huxingByHouseId = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
                 if (huxingByHouseId != null && StringUtils.isNotBlank(huxingByHouseId.getName())) {
                     huxingName = huxingByHouseId.getName();
                 }

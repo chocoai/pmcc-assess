@@ -91,6 +91,14 @@ public class BasicUnitHuxingService {
         return basicUnitHuxingDao.getBasicUnitHuxingById(id);
     }
 
+    public BasicUnitHuxing getHuxingByHouseId(Integer houseId) {
+        BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+        basicUnitHuxing.setHouseId(houseId);
+        List<BasicUnitHuxing> tradings = basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
+        if (org.springframework.util.CollectionUtils.isEmpty(tradings)) return null;
+        return tradings.get(0);
+    }
+
 
     /**
      * 新增或者修改
