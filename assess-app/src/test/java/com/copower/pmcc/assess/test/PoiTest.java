@@ -648,8 +648,11 @@ public class PoiTest {
 
     @org.junit.Test
     public void testDateConvert(){
-        System.out.println(DateUtils.format(DateUtils.parse("40769"),DateUtils.DATE_PATTERN));
-        System.out.println(DateUtils.format(DateUtils.convertDate("40769"),DateUtils.DATE_PATTERN));
+        double a=123.3;
+        System.out.print(a/100);
+
+        BigDecimal b=new BigDecimal("123.3");
+        System.out.print(b.divide(new BigDecimal("100")));
 
     }
 

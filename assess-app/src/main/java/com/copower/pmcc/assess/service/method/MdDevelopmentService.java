@@ -196,7 +196,7 @@ public class MdDevelopmentService {
      * @param target
      * @return
      */
-    public synchronized String getFieldObjectValue(ReportFieldDevelopmentEnum key, MdDevelopment target) {
+    public String getFieldObjectValue(ReportFieldDevelopmentEnum key, MdDevelopment target) {
         try {
             return getFieldObjectValueHandle(key, target);
         } catch (Exception e) {
@@ -204,7 +204,7 @@ public class MdDevelopmentService {
         }
     }
 
-    public synchronized String getFieldObjectValueReport(ReportFieldDevelopmentEnum key, MdDevelopment target) {
+    public String getFieldObjectValueReport(ReportFieldDevelopmentEnum key, MdDevelopment target) {
         try {
             return getFieldObjectValueHandle(key, target);
         } catch (Exception e) {

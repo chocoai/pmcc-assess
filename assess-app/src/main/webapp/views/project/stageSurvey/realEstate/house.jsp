@@ -47,23 +47,43 @@
                                             </div>
                                         </div>
                                         <div class="x_content">
-                                            <form class="form-horizontal" id="basicHouseHuxingView">
-                                                <input type="hidden" name="id" >
-                                                <input type="hidden" name="huxingData" >
+                                            <form id="basicHouseHuxing" class="form-horizontal">
+                                                <input type="hidden" name="id">
+                                                <input type="hidden" name="applyBatchId">
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
-                                                            <label class="col-sm-1 control-label">物业类型</label>
-                                                            <div class="col-sm-3">
-                                                                <label class="form-control input-full" name="tenementType"></label>
+                                                            <label class="col-sm-2">物业类型<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-4">
+                                                                <div class="input-group">
+                                                                    <input type="hidden" name="priceExportColumns">
+                                                                    <input type="text" required name="tenementType" class="form-control">
+                                                                    <div class="input-group-append">
+                                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                                type="button" data-toggle="dropdown"
+                                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                                        </button>
+                                                                        <div class="dropdown-menu" id="tenementTypeList">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <label class="col-sm-1 control-label">户型名称</label>
-                                                            <div class="col-sm-3">
-                                                                <label class="form-control input-full" name="name"></label>
-                                                            </div>
-                                                            <label class="col-sm-1 control-label">面积(m²)</label>
-                                                            <div class="col-sm-3">
-                                                                <label class="form-control input-full" name="area"></label>
+                                                            <label class="col-sm-2">户型名称<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-4">
+                                                                <div class="input-group">
+                                                                    <input type="hidden" name="huxingData">
+                                                                    <input type="text" placeholder="户型名称" name="name" class="form-control">
+                                                                    <div class="input-group-prepend">
+                                                                        <button class="btn btn-primary btn-sm "
+                                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                type="button"
+                                                                                onclick="houseCommon.displayHouseHuxing(this);">
+                                                                            编辑
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -71,17 +91,24 @@
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
-                                                            <label class="col-sm-1 control-label">朝向</label>
-                                                            <div class="col-sm-3">
-                                                                <label class="form-control input-full" name="orientationName"></label>
+                                                            <label class="col-sm-2">面积(m²)<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-4">
+                                                                <input type="text" placeholder="面积" name="area" class="form-control input-full">
                                                             </div>
-                                                            <label class="col-sm-1 control-label">空间布局</label>
-                                                            <div class="col-sm-3">
-                                                                <label class="form-control input-full" name="spatialDistributionName"></label>
-                                                            </div>
-                                                            <label class="col-sm-1">户数</label>
-                                                            <div class="col-sm-3">
-                                                                <label class="form-control input-full" id="quantity" name="quantity"></label>
+                                                            <label class="col-sm-2">朝向<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-4">
+                                                                <div class="input-group">
+                                                                    <select class="form-control form-control" required
+                                                                            name="reference">
+                                                                        <option value="" selected="">-请选择-</option>
+                                                                        <option value="入户门">入户门</option>
+                                                                        <option value="客厅">客厅</option>
+                                                                    </select>
+                                                                    <select class="form-control form-control orientation" required
+                                                                            name="orientation"></select>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -89,19 +116,40 @@
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
-                                                            <label class="col-sm-1 control-label">水电费标准</label>
-                                                            <div class="col-sm-3">
-                                                                <label class="form-control input-full"
-                                                                       name="utilitiesMeasureName"></label>
+                                                            <label class="col-sm-2">空间布局<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-4">
+                                                                <select class="form-control input-full  spatialDistribution"
+                                                                        name="spatialDistribution" required></select>
                                                             </div>
-                                                            <label class="col-sm-1">水电费类型</label>
-                                                            <div class="col-sm-3 utilitiesTypeContent">
-                                                                <label class="form-control input-full" name="utilitiesTypeName"></label>
+                                                            <label class="col-sm-2">户数<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-4">
+                                                                <input type="text" placeholder="户数" name="quantity" class="form-control input-full">
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="houseHuxingFilePartView"></div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-2">水电费标准<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-4">
+                                                                <select class="form-control input-full utilitiesMeasure" name="utilitiesMeasure" required></select>
+                                                            </div>
+                                                            <label class="col-sm-2 utilitiesTypeContent">水电费类型<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-sm-4 utilitiesTypeContent">
+                                                                <select class="form-control input-full utilitiesType"
+                                                                        name="utilitiesType" id="utilitiesType"
+                                                                        required>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="houseHuxingFilePart"></div>
                                             </form>
                                         </div>
                                     </div>
@@ -364,11 +412,6 @@
                                         <span class="btn-label"><i class="fa fa-search"></i></span>
                                         查询
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-success"
-                                            onclick="houseCommon.showHuxingManageModal();">
-                                        <span class="btn-label"><i class="fa fa-plus"></i></span>
-                                        新增户型
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -379,134 +422,6 @@
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<%--户型管理--%>
-<div id="divBoxHuxingManageModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">户型</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form id="basicHouseHuxing" class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <input type="hidden" name="applyBatchId">
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2">物业类型<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <input type="hidden" name="priceExportColumns">
-                                        <input type="text" required name="tenementType" class="form-control">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-warning btn-sm dropdown-toggle"
-                                                    type="button" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">选择
-                                            </button>
-                                            <div class="dropdown-menu" id="tenementTypeList">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <label class="col-sm-2">户型名称<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <input type="hidden" name="huxingData">
-                                        <input type="text" placeholder="户型名称" name="name" class="form-control">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-primary btn-sm "
-                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                    type="button"
-                                                    onclick="houseCommon.displayHouseHuxing(this);">
-                                                编辑
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2">面积(m²)<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="面积" name="area" class="form-control input-full">
-                                </div>
-                                <label class="col-sm-2">朝向<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <select class="form-control form-control" required
-                                                name="reference">
-                                            <option value="" selected="">-请选择-</option>
-                                            <option value="入户门">入户门</option>
-                                            <option value="客厅">客厅</option>
-                                        </select>
-                                        <select class="form-control form-control orientation" required
-                                                name="orientation"></select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2">空间布局<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-4">
-                                    <select class="form-control input-full  spatialDistribution"
-                                            name="spatialDistribution" required></select>
-                                </div>
-                                <label class="col-sm-2">户数<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-4">
-                                    <input type="text" placeholder="户数" name="quantity" class="form-control input-full">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2">水电费标准<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-4">
-                                    <select class="form-control input-full utilitiesMeasure" name="utilitiesMeasure" required></select>
-                                </div>
-                                <label class="col-sm-2 utilitiesTypeContent">水电费类型<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-4 utilitiesTypeContent">
-                                    <select class="form-control input-full utilitiesType"
-                                            name="utilitiesType" id="utilitiesType"
-                                            required>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="houseHuxingFilePart"></div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.saveHuxing(this)">
-                    保存
                 </button>
             </div>
         </div>

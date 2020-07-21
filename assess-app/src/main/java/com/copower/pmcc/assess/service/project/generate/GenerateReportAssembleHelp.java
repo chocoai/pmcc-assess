@@ -485,10 +485,6 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldEnum.NotSelectionValuationMethod.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNotSelectionValuationMethod());
         }
-        //分类评估单价计算试
-        if (Objects.equal(ReportFieldEnum.EvaluationExpression.getName(), name)) {
-            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationExpression());
-        }
         //变现分析税费
         if (Objects.equal(ReportFieldEnum.LIQUIDATION_ANALYSIS.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidationAnalysis());

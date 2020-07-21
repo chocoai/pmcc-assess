@@ -47,7 +47,6 @@ public enum ReportFieldEnum implements Serializable {
 
     SelectionValuationMethod("估价对象选择估价方法"),
     NotSelectionValuationMethod("估价对象不选择估价方法"),
-    EvaluationExpression("分类评估单价计算试"),
     EvaluationMethodResult("分类评估方法结果"),
 
 

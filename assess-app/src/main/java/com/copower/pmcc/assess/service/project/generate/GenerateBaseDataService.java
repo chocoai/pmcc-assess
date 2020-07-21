@@ -1799,13 +1799,6 @@ public class GenerateBaseDataService {
 
 
     /**
-     * 分类评估单价计算试
-     */
-    public String getEvaluationExpression() {
-        return "比较法价格*权重+收益法价格*权重";
-    }
-
-    /**
      * 分类评估方法结果
      */
     public String getEvaluationMethodResult() throws Exception {
@@ -1813,38 +1806,40 @@ public class GenerateBaseDataService {
         Document doc = new Document();
         DocumentBuilder builder = new DocumentBuilder(doc);
         generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
-        LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
+        StringBuilder stringBuilder = new StringBuilder();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (int k = 0; k < schemeJudgeObjectList.size(); k++) {
-                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(k);
-                List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.initSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
+            //1.循环每个估价对象，并找出每个估价对象所采用的方法，如果是两种方法则需将对应的计算权重信息同步描述
+            //2.如果涉及到单价取整则需将，取整要求进行描述
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSchemeSurePriceBySchemeJudgeObjectId(schemeJudgeObject.getId());
-                if (CollectionUtils.isEmpty(schemeSurePriceItemList)) {
-                    continue;
-                }
-                for (SchemeSurePriceItem schemeSurePriceItem : schemeSurePriceItemList) {
-                    if (StringUtils.isNotBlank(schemeSurePriceItem.getMethodName()) && schemeSurePriceItem.getTrialPrice() != null) {
-                        linkedHashSet.add(String.format("%s计算结果为%s元/㎡", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
+                List<SchemeSurePriceItem> priceItemList = schemeSurePriceService.getSchemeSurePriceItemList(schemeJudgeObject.getId());
+                if (CollectionUtils.isEmpty(priceItemList)) continue;
+                if (priceItemList.size() <= 1) {
+                    SchemeSurePriceItem schemeSurePriceItem = priceItemList.get(0);
+                    stringBuilder.append(String.format("%s计算结果为%s元/㎡，", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
+                } else {
+                    StringBuilder formulaString = new StringBuilder();
+                    for (SchemeSurePriceItem schemeSurePriceItem : priceItemList) {
+                        stringBuilder.append(String.format("%s计算结果为%s元/㎡，", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
+                        if (schemeSurePriceItem.getWeight() != null)
+                            stringBuilder.append(String.format("权重为%s%%；", schemeSurePriceItem.getWeight().multiply(new BigDecimal("100")).setScale(2,RoundingMode.HALF_UP)));
+                        formulaString.append("(").append(schemeSurePriceItem.getMethodName()).append("×权重)＋");
                     }
+                    stringBuilder.append(String.format("计算公式为%s，", StringUtils.stripEnd(formulaString.toString(), "＋")));
                 }
                 if (schemeSurePrice != null && StringUtils.isNotBlank(schemeSurePrice.getCutPriceType())) {
-                    if(AssessReportFieldConstant.SURE_CUT_PRICE_TYPE_TEN.equals(schemeSurePrice.getCutPriceType())){
-                        linkedHashSet.add("根据报告使用单位要求单价取整到十元");
-                    }else{
-                        linkedHashSet.add("根据报告使用单位要求单价取整到百元");
+                    if (AssessReportFieldConstant.SURE_CUT_PRICE_TYPE_TEN.equals(schemeSurePrice.getCutPriceType())) {
+                        stringBuilder.append("根据报告使用单位要求单价取整到十元，");
+                    } else {
+                        stringBuilder.append("根据报告使用单位要求单价取整到百元，");
                     }
                 }
                 if (schemeSurePrice != null && schemeSurePrice.getPrice() != null) {
-                    linkedHashSet.add(String.format("最终单价为%s元/㎡", schemeSurePrice.getPrice().toString()));
+                    stringBuilder.append(String.format("最终单价为%s元/㎡", schemeSurePrice.getPrice().toString()));
                 }
-                List<Integer> integerList = Lists.newArrayList();
-                if (StringUtils.isNotBlank(schemeJudgeObject.getNumber())) {
-                    integerList.addAll(generateCommonMethod.splitIntegerListJudgeNumber(schemeJudgeObject.getNumber()));
-                }
-                String s = String.format("%s%s 。", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), StringUtils.join(linkedHashSet, "，"));
+                String s = String.format("%s%s 。", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), stringBuilder.toString());
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(StringUtils.trimToEmpty(s))), false);
-                linkedHashSet.clear();
             }
         }
         doc.save(localPath);
@@ -1860,7 +1855,7 @@ public class GenerateBaseDataService {
                 if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
                     if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
                         BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
-                        temp = temp.add(bigDecimal.setScale(2,RoundingMode.HALF_UP));
+                        temp = temp.add(bigDecimal.setScale(2, RoundingMode.HALF_UP));
                     }
                 }
             }
@@ -2882,7 +2877,7 @@ public class GenerateBaseDataService {
         String statementPurposeEntrustment = getSchemeAreaGroup().getRemarkEntrustPurpose();
         if (StringUtils.isNotEmpty(statementPurposeEntrustment)) {
             if (StringUtils.isNotEmpty(statementPurposeEntrustment.trim())) {
-                return generateCommonMethod.trim(statementPurposeEntrustment) ;
+                return generateCommonMethod.trim(statementPurposeEntrustment);
             }
         }
         return errorStr;
@@ -3526,146 +3521,7 @@ public class GenerateBaseDataService {
      * @date: 2019/2/26 16:25
      */
     public String getDeterminationMarketValueValuationObject() throws Exception {
-        String localPath = getLocalPath();
-        Document doc = new Document();
-        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
-        StringBuilder stringBuilder = new StringBuilder(8);
-        StringBuilder evaluationExpression = new StringBuilder(8);
-        BaseDataDic mdIncome = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
-        BaseDataDic mdCost = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
-        BaseDataDic mdDevelopment = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
-        BaseDataDic mdCompare = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
-        final int TEN = 10;
-        List<KeyValueDto> keyValueDtoList = new ArrayList<>(3);
-        keyValueDtoList.add(new KeyValueDto("font-family", "仿宋_GB2312"));
-        keyValueDtoList.add(new KeyValueDto("font-size", "14.0pt"));
-        keyValueDtoList.add(new KeyValueDto("line-height", "150%"));
-        keyValueDtoList.add(new KeyValueDto("text-indent", "2em"));
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        Map<SchemeJudgeObject, List<SchemeSurePriceItem>> objectListMap = Maps.newHashMap();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.initSchemeSurePriceItemList(schemeJudgeObject.getId(), false);
-                if (CollectionUtils.isNotEmpty(schemeSurePriceItemList)) {
-                    objectListMap.put(schemeJudgeObject, schemeSurePriceItemList);
-                }
-            }
-        }
-        if (!objectListMap.isEmpty()) {
-            for (Map.Entry<SchemeJudgeObject, List<SchemeSurePriceItem>> entry : objectListMap.entrySet()) {
-                if (CollectionUtils.isEmpty(entry.getValue())) {
-                    continue;
-                }
-                List<SchemeSurePriceItem> schemeSurePriceItemList = entry.getValue();
-                List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getChildrenJudgeObject(entry.getKey().getId());
-                SchemeSurePriceItem mdIncomeItem = null;
-                SchemeSurePriceItem mdCompareItem = null;
-                SchemeSurePriceItem mdDevelopmentItem = null;
-                SchemeSurePriceItem mdCostItem = null;
-                final int size = schemeSurePriceItemList.size();
-                List<SchemeSurePriceItem> incomePriceItems = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodType().equals(mdIncome.getId())).collect(Collectors.toList());
-                List<SchemeSurePriceItem> comparePriceItems = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodType().equals(mdCompare.getId())).collect(Collectors.toList());
-                List<SchemeSurePriceItem> costPriceItems = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodType().equals(mdCost.getId())).collect(Collectors.toList());
-                List<SchemeSurePriceItem> developmentPriceItems = schemeSurePriceItemList.stream().filter(schemeSurePriceItem -> schemeSurePriceItem.getMethodType().equals(mdDevelopment.getId())).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(incomePriceItems)) {
-                    mdIncomeItem = incomePriceItems.get(0);
-                }
-                if (CollectionUtils.isNotEmpty(comparePriceItems)) {
-                    mdCompareItem = comparePriceItems.get(0);
-                }
-                if (CollectionUtils.isNotEmpty(costPriceItems)) {
-                    mdCostItem = costPriceItems.get(0);
-                }
-                if (CollectionUtils.isNotEmpty(developmentPriceItems)) {
-                    mdDevelopmentItem = developmentPriceItems.get(0);
-                }
-                stringBuilder.delete(0, stringBuilder.toString().length());
-                if (mdCompare == null && mdIncomeItem == null && mdCostItem == null && mdDevelopmentItem == null) {
-                    continue;
-                }
-                if (objectListMap.size() > 1) {
-                    stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(entry.getKey(), schemeJudgeObjectList));
-                }
-                if (size == 1) {
-                    if (mdCompareItem != null) {
-                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，比较法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(mdCompareItem.getTrialPrice(), 2, false)).append("元/㎡");
-                    }
-                    if (mdIncomeItem != null) {
-                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，收益法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(mdIncomeItem.getTrialPrice(), 2, false)).append("元/㎡");
-                    }
-                    if (mdCostItem != null) {
-                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，收益法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(mdCostItem.getTrialPrice(), 2, false)).append("元/㎡");
-                    }
-                    if (mdDevelopmentItem != null) {
-                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，收益法的试算结果能反映估价对象市场价值。故最终单价=").append(generateCommonMethod.getBigDecimalRound(mdDevelopmentItem.getTrialPrice(), 2, false)).append("元/㎡");
-                    }
-                }
-                //刚好收益法和市场比较法 选择的情况
-                if (mdIncomeItem != null && mdCompareItem != null) {
-                    final int computeDifference = publicService.computeDifference(mdIncomeItem.getTrialPrice(), mdCompareItem.getTrialPrice());
-                    stringBuilder.append(mdIncome.getName()).append("与").append(mdCompare.getName());
-                    if (computeDifference > TEN) {
-                        stringBuilder.append("测算结果有一定差异").append("，");
-                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素，").append(mdCompare.getName()).append("的试算结果更接近市场状况。");
-                        stringBuilder.append("故最终单价=");
-                        double[] doubles = new double[]{mdIncomeItem.getTrialPrice().doubleValue(), mdCompareItem.getTrialPrice().doubleValue()};
-                        double max = Arrays.stream(doubles).max().getAsDouble();
-                        double min = Arrays.stream(doubles).min().getAsDouble();
-                        double d = min / max;
-                        stringBuilder.append(mdIncomeItem.getTrialPrice().toString()).append("×");
-                        if (mdIncomeItem.getWeight() != null) {
-                            BigDecimal bigDecimal = mdIncomeItem.getWeight().multiply(new BigDecimal(100));
-                            bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
-                            stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
-                        } else {
-                            BigDecimal bigDecimal = new BigDecimal((d * 100)).multiply(new BigDecimal(100));
-                            bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
-                            stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
-                        }
-                        stringBuilder.append("+").append(mdCompareItem.getTrialPrice().toString()).append("×");
-                        if (mdCompareItem.getWeight() != null) {
-                            BigDecimal bigDecimal = mdCompareItem.getWeight().multiply(new BigDecimal(100));
-                            bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
-                            stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
-                        } else {
-                            BigDecimal bigDecimal = new BigDecimal(((1 - d) * 100)).multiply(new BigDecimal(100));
-                            bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
-                            stringBuilder.append(String.format("%s%s", bigDecimal.toString(), "%"));
-                        }
-                        stringBuilder.append("（").append("收益法价格*权重+比较法价格*权重").append("）");
-                    }
-                    if (computeDifference <= TEN) {
-                        stringBuilder.append("测算结果相近，");
-                        stringBuilder.append("通过对该区域的调查，考虑估价对象在该区域内的具体位置等因素").append("，");
-                        stringBuilder.append(mdIncome.getName()).append("的试算结果与").append(mdCompare.getName());
-                        stringBuilder.append("试算结果均能反映估价对象市场价值").append("。");
-                        stringBuilder.append("故最终单价=");
-                        stringBuilder.append(mdIncomeItem.getTrialPrice().toString()).append("×").append("50%").append("+").append(mdCompareItem.getTrialPrice().toString()).append("×").append("50%").append("（").append("收益法价格*权重+比较法价格*权重").append("）");
-                    }
-                }
-                if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                    List<String> stringList = Lists.newArrayList();
-                    judgeObjectList.stream().forEach(oo -> {
-                        SchemeJudgeObjectVo schemeJudgeObjectVo = schemeJudgeObjectService.getSchemeJudgeObjectVo(oo);
-                        if (StringUtils.isNotBlank(schemeJudgeObjectVo.getFactor())) {
-                            stringList.add(String.format("%s标准价基础上经%s", generateCommonMethod.getSchemeJudgeObjectShowName(oo, schemeJudgeObjectList), schemeJudgeObjectVo.getFactor()));
-                        }
-                    });
-                    stringBuilder.append(StringUtils.join(stringList, "，")).append("估价对象结果如下表");
-                }
-                AsposeUtils.insertHtml(documentBuilder, AsposeUtils.getWarpCssHtml(stringBuilder.toString(), keyValueDtoList));
-                if (StringUtils.isNotEmpty(evaluationExpression.toString())) {
-                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(evaluationExpression.toString())), true);
-                }
-                //当为合并对象的时候,需要写入单价调整表
-                if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                    List<SchemeJudgeObjectVo> voList = judgeObjectList.stream().map(oo -> schemeJudgeObjectService.getSchemeJudgeObjectVo(oo)).collect(Collectors.toList());
-                    documentBuilder.insertDocument(getUnitPriceAdjustmentDocument(voList), ImportFormatMode.KEEP_DIFFERENT_STYLES);
-                }
-            }
-        }
-        doc.save(localPath);
-        return localPath;
+        return null;
     }
 
     /**
