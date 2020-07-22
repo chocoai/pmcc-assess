@@ -121,18 +121,20 @@
                                                         项目拿号
                                                     </button>
                                                 </div>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-info btn-sm" type="button"
-                                                            onclick="projectDetails.projectXlxPigeonhole()">
-                                                        项目归档
-                                                    </button>
-                                                </div>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-info btn-sm" type="button"
-                                                            onclick="projectDetails.projectXlxCommission()">
-                                                        项目提成
-                                                    </button>
-                                                </div>
+                                                <c:if test="${companyName eq 'xinglx'}">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-info btn-sm" type="button"
+                                                                onclick="projectDetails.projectXlxPigeonhole()">
+                                                            项目归档
+                                                        </button>
+                                                    </div>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-info btn-sm" type="button"
+                                                                onclick="projectDetails.projectXlxCommission()">
+                                                            项目提成
+                                                        </button>
+                                                    </div>
+                                                </c:if>
                                             </div>
                                         </small>
                                     </div>
@@ -174,14 +176,18 @@
                                                data-table-id="tb_projectStopList" data-toggle="pill"
                                                href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
                                                aria-selected="false">项目终止</a>
-                                            <a class="nav-link" onclick="projectDetails.loadProjectPigeonhole(this)"
-                                               data-table-id="tb_projectStopList" data-toggle="pill"
-                                               href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
-                                               aria-selected="false">项目归档</a>
-                                            <a class="nav-link" onclick="projectDetails.loadProjectCommission(this)"
-                                               data-table-id="tb_projectStopList" data-toggle="pill"
-                                               href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
-                                               aria-selected="false">项目提成</a>
+                                            <c:if test="${companyName eq 'xinglx'}">
+                                                <a class="nav-link" onclick="projectDetails.loadProjectPigeonhole(this)"
+                                                   data-table-id="tb_projectStopList" data-toggle="pill"
+                                                   href="#div_projectStopList" role="tab"
+                                                   aria-controls="v-pills-messages"
+                                                   aria-selected="false">项目归档</a>
+                                                <a class="nav-link" onclick="projectDetails.loadProjectCommission(this)"
+                                                   data-table-id="tb_projectStopList" data-toggle="pill"
+                                                   href="#div_projectStopList" role="tab"
+                                                   aria-controls="v-pills-messages"
+                                                   aria-selected="false">项目提成</a>
+                                            </c:if>
                                         </div>
                                     </div>
                                     <div class="col-md-10">
@@ -271,8 +277,7 @@
                     if (result.ret) {
                         var url = "${pageContext.request.contextPath}/projectStop/apply?projectId=" + ${projectInfo.id};
                         window.open(url, '_blank');
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -294,8 +299,7 @@
                 success: function (result) {
                     if (result.ret) {
                         AlertSuccess("操作成功", "项目正常完成");
-                    }
-                    else {
+                    } else {
                         AlertError("操作失败,失败原因:" + result.errmsg);
                     }
                 },

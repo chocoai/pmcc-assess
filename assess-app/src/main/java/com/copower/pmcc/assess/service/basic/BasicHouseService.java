@@ -633,7 +633,6 @@ public class BasicHouseService extends BasicEntityAbstract {
                         targetLease.setTradingId(targetBasicHouseTrading.getId());
                         basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(targetLease,true);
                     }
-
                 }
                 //附件拷贝
                 baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), source.getId(), targetBasicHouseTrading.getId());

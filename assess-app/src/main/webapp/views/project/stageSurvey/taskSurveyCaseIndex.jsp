@@ -54,6 +54,10 @@
                                                 onclick="batchTreeTool.showAddModal()">
                                             新增
                                         </button>
+                                        <button class="btn btn-sm btn-primary masterTool"
+                                                onclick=" batchTreeTool.getAndEditDetail();">
+                                            编辑
+                                        </button>
                                         <button type="button" class="btn btn-sm btn-warning deleteTool"
                                                 onclick=" batchTreeTool.deleteDetail();">
                                             删除
@@ -190,6 +194,45 @@
                     确定
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+<div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">编辑</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frm_detail_b" class="form-horizontal">
+                    <input type="hidden" name="id" value="0">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1">名称<span class="symbol required"></span></label>
+                                <div class="col-sm-5">
+                                    <input type="text" data-rule-maxlength="100" placeholder="名称"
+                                           name="name" class="form-control input-full" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="batchTreeTool.updateItemData()">
+                    确定
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -431,8 +474,73 @@
                 }
             }
         })
-
     }
+
+    //编辑明细
+    batchTreeTool.getAndEditDetail = function () {
+        var node = zTreeObj.getSelectedNodes()[0];
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/getAndEditDetail",
+            data: {id: node.id},
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    batchTreeTool.showEditModal(result.data);
+                }
+            }
+        })
+    }
+
+    //编辑数据打开modal
+    batchTreeTool.showEditModal = function (data) {
+        var node = zTreeObj.getSelectedNodes()[0];
+        var type = node.type;
+        $("#frm_detail_b").clearAll();
+        $("#frm_detail_b").initForm(data);
+        $("#detail_modal_b").modal();
+    }
+
+    //保存编辑明细
+    batchTreeTool.updateItemData = function () {
+        if (!$("#frm_detail_b").valid()) {
+            return false;
+        }
+        var formData = formParams("frm_detail_b");
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/updateItemData",
+            type: "post",
+            dataType: "json",
+            data: {
+                formData: JSON.stringify(formData),
+                planDetailsId: '${projectPlanDetails.id}'
+            },
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess('成功', '保存成功');
+                    var node = zTreeObj.getSelectedNodes()[0];
+                    node.id = result.data.id;
+                    node.name = result.data.name;
+                    node.displayName = result.data.displayName + '(' + result.data.executorName + ')';
+                    node.pid = result.data.pid;
+                    node.type = result.data.type;
+                    node.executor = result.data.executor;
+                    node.creator = result.data.creator;
+                    node.creatorName = result.data.creatorName;
+                    node.executorName = result.data.executorName;
+                    node.declareRecordId = result.data.declareRecordId;
+                    node.applyBatchId = result.data.applyBatchId;
+                    node.declareRecordName = result.data.declareRecordName;
+                    zTreeObj.updateNode(node, false);
+                    $('#detail_modal_b').modal('hide');
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            }
+        });
+    }
+
 
     //保存明细
     batchTreeTool.saveItemData = function () {

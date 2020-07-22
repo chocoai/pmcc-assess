@@ -136,8 +136,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -152,15 +150,12 @@
                                                             <th style="width: 7%"></th>
                                                         </tr>
                                                         </thead>
-                                                        <tbody>
-
-                                                        </tbody>
+                                                        <tbody></tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">

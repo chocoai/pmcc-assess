@@ -18,7 +18,10 @@ public enum BaseParameterEnum {
     SYS_URL_KEY("sys.url.key", "系统链接地址key", "sys"),
     SYS_ASSESS_VERSION("sys.assess.version", "系统更新版本号", "sys"),
     SYS_CLIMBING_NET_CASE("sys.climbing.net.case", "自动爬取网络案例数据", "sys"),
+    LEGWORK_BONUS_ASSESSMENT("legwork.bonus.assessment", "外勤加分考核任务", "sys"),
     PROJECTINITVIEWURL("project.init.view.url", "项目立项视图路径", "sys"),
+    COMPANY_NAME("company.name", "公司名称", "sys"),
+
     PROJECT_AUTOMATIC_GENERATE_CASE_KEY("project.automatic.generate.case.key", "自动处理案例", "sys"),
     CSR_PROJECT_APPLY_PROCESS_KEY("csr.project.apply.process.key", "债权项目立项流程key", "box"),
     PROJECT_FORM_TASK_PROCESS_KEY("project.form.task.process.key", "项目立项审批流程key", "box"),

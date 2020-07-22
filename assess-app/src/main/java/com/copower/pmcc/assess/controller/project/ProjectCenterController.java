@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -10,6 +11,7 @@ import com.copower.pmcc.assess.dto.input.project.QueryProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
@@ -21,6 +23,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.lang.reflect.Parameter;
 import java.util.List;
 
 /**
@@ -63,6 +67,8 @@ public class ProjectCenterController {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private BaseParameterService baseParameterService;
 
     @RequestMapping(value = "/projectNew", name = "新建项目")
     public ModelAndView projectNew() {
@@ -154,7 +160,7 @@ public class ProjectCenterController {
     }
 
     @RequestMapping(value = "/projectInfo", name = "项目详情页面")
-    public ModelAndView projectInfo(Integer projectId) {
+    public ModelAndView projectInfo(Integer projectId) throws BusinessException {
         String viewUrl = "/project/detailInfo/projectDetailInfo";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(viewUrl);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
@@ -179,9 +185,10 @@ public class ProjectCenterController {
         //项目经理
         String manager = projectMemberService.getProjectManager(projectId);
         String thisUser = processControllerComponent.getThisUser();
-        if(manager.contains(thisUser)){
+        if (manager.contains(thisUser)) {
             modelAndView.addObject("showLimitBtn", true);
         }
+        modelAndView.addObject("companyName", baseParameterService.getBaseParameter(BaseParameterEnum.COMPANY_NAME));
         return modelAndView;
     }
 
