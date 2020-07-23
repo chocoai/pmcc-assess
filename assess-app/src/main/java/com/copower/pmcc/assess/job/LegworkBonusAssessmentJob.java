@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.job;
 
+import com.aspose.words.ConvertUtil;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -13,7 +14,11 @@ import com.copower.pmcc.assess.service.project.ProjectAssessmentBonusService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -37,6 +42,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2019-7-8.
@@ -68,6 +74,8 @@ public class LegworkBonusAssessmentJob {
     private BasicEstateService basicEstateService;
     @Autowired
     private DataAreaAssessmentBonusService dataAreaAssessmentBonusService;
+    @Autowired
+    private ChksRpcAssessmentPerformanceService assessmentPerformanceService;
 
     /**
      * 执行任务
@@ -130,7 +138,27 @@ public class LegworkBonusAssessmentJob {
                     BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
                     DataAreaAssessmentBonus bonus = dataAreaAssessmentBonusService.getDataAreaAssessmentBonusByArea(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict());
                     if (bonus == null) continue;
+                    //找出该楼盘下的工时考核得分
+                    List<AssessmentPerformanceDto> resultPerformanceDtos = Lists.newArrayList();
+                    AssessmentPerformanceDto where = new AssessmentPerformanceDto();
+                    where.setProjectId(projectInfo.getId());
+                    where.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
+                    where.setBisEffective(true);
+                    where.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
+                    List<AssessmentPerformanceDto> performanceDtos = assessmentPerformanceService.getPerformancesByParam(where);
+                    if (CollectionUtils.isNotEmpty(performanceDtos))
+                        resultPerformanceDtos.addAll(performanceDtos);
+                    BasicApplyBatch refBatch = basicApplyBatchService.getBasicApplyBatchByRefId(basicApplyBatch.getId());
+                    if (refBatch != null) {
+                        where.setPlanDetailsId(refBatch.getPlanDetailsId());
+                        performanceDtos = assessmentPerformanceService.getPerformancesByParam(where);
+                        if (CollectionUtils.isNotEmpty(performanceDtos))
+                            resultPerformanceDtos.addAll(performanceDtos);
+                    }
+                    //找出各个人员的工时得分情况
+                    if(CollectionUtils.isNotEmpty(resultPerformanceDtos)){
 
+                    }
                 }
             }
         }
@@ -153,5 +181,10 @@ public class LegworkBonusAssessmentJob {
         List<BasicApplyBatch> batchs = basicApplyBatchService.getBasicApplyBatchsByPlanDetailsIds(LangUtils.transform(detailsList, o -> o.getId()));
         if (CollectionUtils.isEmpty(batchs)) return null;
         return LangUtils.filter(batchs, o -> o.getReferenceApplyBatchId() == null);
+    }
+
+    private List<KeyValueDto> aa(){
+
+        return null;
     }
 }

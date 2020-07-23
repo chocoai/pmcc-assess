@@ -324,6 +324,17 @@ public class BasicApplyBatchService {
         return null;
     }
 
+    public BasicApplyBatch getBasicApplyBatchByRefId(Integer refId) {
+        BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
+        basicApplyBatch.setReferenceApplyBatchId(refId);
+        basicApplyBatch.setBisCase(false);
+        List<BasicApplyBatch> basicApplyBatches = basicApplyBatchDao.getInfoList(basicApplyBatch);
+        if (CollectionUtils.isNotEmpty(basicApplyBatches)) {
+            return basicApplyBatches.get(0);
+        }
+        return null;
+    }
+
     public BasicApplyBatch getBasicApplyBatchByPlanDetailsId(Integer planDetailsId) {
         BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
         basicApplyBatch.setPlanDetailsId(planDetailsId);
