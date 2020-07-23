@@ -181,7 +181,7 @@ public class EvaluationBasisService {
         for (int i = 0; i < basisList.size(); i++) {
             DataEvaluationBasis basis = basisList.get(i);
             stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, basis.getName())));
-            stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(basis.getTemplate())));
+            stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
             //经济行为依据
             if (AssessReportFieldConstant.BASIS_ECONOMIC_BEHAVIOR.equals(basis.getFieldName())) {
                 DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.ENTRUSTING_PARTY);
@@ -193,11 +193,11 @@ public class EvaluationBasisService {
                 if (pledgeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_FILE_GIST_PLEDGE);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate()));
                 } else if (imposeId.equals(projectInfo.getEntrustPurpose())) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.BASIS_FILE_GIST_IMPOSE);
                     if (dataReportTemplateByField != null)
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())));
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(dataReportTemplateByField.getTemplate()));
                 }
             }
             //估价技术标准依据

@@ -38,19 +38,6 @@ public class ProjectReportController {
     private BaseService baseService;
     private final String error = "生成报告,或者出具报告";
 
-//    @PostMapping(value = "/generate", name = "生成报告")
-//    public HttpResult generate(String ids, String fomData) {
-//        //生成报告信息
-//        try {
-//            GenerateReportInfo generateReportGeneration = JSONObject.parseObject(fomData, GenerateReportInfo.class);
-//            generateReportService.createReportWord(ids, generateReportGeneration);
-//            return HttpResult.newCorrectResult(200, generateReportGeneration);
-//        } catch (Exception e) {
-//            baseService.writeExceptionInfo(e, error);
-//            return HttpResult.newErrorResult(500, e.getMessage());
-//        }
-//    }
-
     @PostMapping(value = "/generate", name = "生成报告")
     public HttpResult generate(String ids, String group, String info) {
         //生成报告信息
@@ -58,10 +45,10 @@ public class ProjectReportController {
             GenerateReportInfo generateReportInfo = JSONObject.parseObject(info, GenerateReportInfo.class);
             GenerateReportGroup reportGroup = JSONObject.parseObject(group, GenerateReportGroup.class);
             generateReportService.createReportWord(ids, generateReportInfo, reportGroup);
-            return HttpResult.newCorrectResult(200, generateReportInfo);
+            return HttpResult.newCorrectResult( generateReportInfo);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, error);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult( e.getMessage());
         }
     }
 
@@ -71,10 +58,10 @@ public class ProjectReportController {
         //生成单一的结果集
         try {
             generateReportService.resultSheetReportNew(fieldsName, tableName, projectId);
-            return HttpResult.newCorrectResult(200, "success");
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "生成单一的结果集");
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult( e.getMessage());
         }
     }
 
@@ -85,14 +72,14 @@ public class ProjectReportController {
             GenerateReportGroup reportGroup = JSONObject.parseObject(group, GenerateReportGroup.class);
             try {
                 generateReportService.generateReportAttachment(ids, generateReportInfo, reportGroup);
-                return HttpResult.newCorrectResult(200, generateReportInfo);
+                return HttpResult.newCorrectResult(generateReportInfo);
             } catch (BusinessException ex) {
                 //取模板错误  不需要抛出异常!
-                return HttpResult.newCorrectResult(200, null);
+                return HttpResult.newCorrectResult(null);
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "生成报告的附件");
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -101,10 +88,10 @@ public class ProjectReportController {
         GenerateReportInfo generateReportGeneration = null;
         try {
             generateReportGeneration = generateReportGenerationService.getGenerateReportInfoByAreaGroupId(areaGroupId, projectPlanId);
-            return HttpResult.newCorrectResult(200, generateReportGeneration);
+            return HttpResult.newCorrectResult( generateReportGeneration);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, error);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult( e.getMessage());
         }
     }
 
@@ -117,10 +104,10 @@ public class ProjectReportController {
                     generateReportGenerationService.saveGenerateReportInfo(generateReportGeneration);
                 }
             }
-            return HttpResult.newCorrectResult(200, list);
+            return HttpResult.newCorrectResult(list);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, error);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 

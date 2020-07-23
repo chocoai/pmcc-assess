@@ -3,17 +3,28 @@ package com.copower.pmcc.assess.job;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.data.DataAreaAssessmentBonusService;
+import com.copower.pmcc.assess.service.project.ProjectAssessmentBonusService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import com.copower.pmcc.hr.api.dto.HrLegworkDto;
 import com.copower.pmcc.hr.api.provider.HrRpcToolService;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RLock;
@@ -43,6 +54,20 @@ public class LegworkBonusAssessmentJob {
     private HrRpcToolService hrRpcToolService;
     @Autowired
     private ErpRpcProjectService erpRpcProjectService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectAssessmentBonusService projectAssessmentBonusService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private DataAreaAssessmentBonusService dataAreaAssessmentBonusService;
 
     /**
      * 执行任务
@@ -71,34 +96,62 @@ public class LegworkBonusAssessmentJob {
     }
 
     public void resave() {
-        //1.先读取已经完成的外勤信息，以外勤结束时间作为基准，找出上一个月的外勤信息
-        //2.
         Date today = DateUtils.today();
         String firstDayOfMonth = DateUtils.getFirstDayOfMonth(DateUtils.getYear(today), DateUtils.getMonth(today));
         Date firstDate = DateUtils.convertDate(firstDayOfMonth);//本月第一天
-        Date preMonthLastDay=DateUtils.addDay(firstDate,-1);//上月的最后一天
-        Date preMonthFirstDay= DateUtils.convertDate(DateUtils.getFirstDayOfMonth(DateUtils.getYear(preMonthLastDay), DateUtils.getMonth(preMonthLastDay)));
+        Date preMonthLastDay = DateUtils.addDay(firstDate, -1);//上月的最后一天
+        Date preMonthFirstDay = DateUtils.convertDate(DateUtils.getFirstDayOfMonth(DateUtils.getYear(preMonthLastDay), DateUtils.getMonth(preMonthLastDay)));
         List<HrLegworkDto> legworkDtoList = hrRpcToolService.getHrLegworkListByEndDate(preMonthFirstDay, firstDate);
-        if(CollectionUtils.isEmpty(legworkDtoList)) return;
-        //AssessPhaseKeyConstant.SCENE_EXPLORE
+        if (CollectionUtils.isEmpty(legworkDtoList)) return;
+        ProjectAssessmentBonus assessmentBonus = new ProjectAssessmentBonus();
+        assessmentBonus.setYear(DateUtils.getYear(preMonthFirstDay));
+        assessmentBonus.setMonth(DateUtils.getMonth(preMonthFirstDay));
+        assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
+        projectAssessmentBonusService.saveAssessmentBonus(assessmentBonus);
 
+        List<String> managerList = Lists.newArrayList();
         for (HrLegworkDto dto : legworkDtoList) {
-            if(StringUtils.isBlank(dto.getProjectId())) continue;//没关联项目直接跳过
+            if (StringUtils.isBlank(dto.getProjectId())) continue;//没关联项目直接跳过
 
             List<Integer> list = FormatUtils.transformString2Integer(dto.getProjectId());
             List<SysProjectDto> projectDtoList = erpRpcProjectService.getProjectInfoListByProjectIds(list, applicationConstant.getAppKey());
-            if(CollectionUtils.isEmpty(projectDtoList)) continue;
+            if (CollectionUtils.isEmpty(projectDtoList)) continue;
             for (SysProjectDto sysProjectDto : projectDtoList) {
                 //1.找出该项目中的查勘信息，先确定该项目查勘了几个楼盘，再根据配置和楼盘的区域确定是否做加分处理
                 //2.如果需要加分则需找出该项目查勘中所获取的工时得分，及各个成员的工时得分，将总的工时得分乘以系数得到对应加分值
                 //3.再根据各个成员工时得分的占比，将加分值分摊到成员上，将相关数据写入到对应的表中
+                if (projectAssessmentBonusService.getAssessmentBonusItemCount(sysProjectDto.getProjectId()) > 0) {
+                    continue;//每个项目只计算一次
+                }
+                ProjectInfo projectInfo = projectInfoService.getProjectInfoById(sysProjectDto.getProjectId());
+                List<BasicApplyBatch> basicApplyBatchList = getBasicApplyBatchList(projectInfo);
+                if (CollectionUtils.isEmpty(basicApplyBatchList)) continue;
+                for (BasicApplyBatch basicApplyBatch : basicApplyBatchList) {
+                    BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+                    DataAreaAssessmentBonus bonus = dataAreaAssessmentBonusService.getDataAreaAssessmentBonusByArea(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict());
+                    if (bonus == null) continue;
 
-
+                }
             }
         }
+
         //1.针对相关的项目经理，都发起一个待处理任务，项目经理确认调整各个项目中的加分值
         //2.发起一个审核流程到技术负责人，可看到本次所有相关的项目的加分值及各个项目经理处理的情况
         //3.技术负责人提交流程后大部分负责人审核，当审核完成后将相关数据写入到考核系统中的考核记录表中
+        if (CollectionUtils.isNotEmpty(managerList)) {
+            for (String manager : managerList) {
 
+            }
+        }
+    }
+
+    //确定本项目查勘了几个楼盘
+    private List<BasicApplyBatch> getBasicApplyBatchList(ProjectInfo projectInfo) {
+        String sceneExploreKey = AssessPhaseKeyConstant.SCENE_EXPLORE;
+        List<ProjectPlanDetails> detailsList = projectPlanDetailsService.getProjectPlanDetailsByPhaseKey(projectInfo.getId(), projectInfo.getProjectCategoryId(), sceneExploreKey);
+        if (CollectionUtils.isEmpty(detailsList)) return null;
+        List<BasicApplyBatch> batchs = basicApplyBatchService.getBasicApplyBatchsByPlanDetailsIds(LangUtils.transform(detailsList, o -> o.getId()));
+        if (CollectionUtils.isEmpty(batchs)) return null;
+        return LangUtils.filter(batchs, o -> o.getReferenceApplyBatchId() == null);
     }
 }

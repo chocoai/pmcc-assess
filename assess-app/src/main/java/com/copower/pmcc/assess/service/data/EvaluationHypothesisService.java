@@ -76,10 +76,6 @@ public class EvaluationHypothesisService {
     @Autowired
     private SurveyAssetInventoryContentDao surveyAssetInventoryContentDao;
     @Autowired
-    private SurveyAssetInventoryService surveyAssetInventoryService;
-    @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private GenerateReportInfoService generateReportGenerationService;
@@ -209,12 +205,9 @@ public class EvaluationHypothesisService {
             //未定事项假设
             if (AssessReportFieldConstant.HYPOTHESIS_UNCERTAIN_MATTER.equals(basis.getFieldName())) {
                 List<Integer> actualTimenumbers = new ArrayList<>();
-
                 Set<String> times = new HashSet();
-
                 List<Map<Integer, String>> maps = Lists.newArrayList();
                 List<Map<List<Integer>, String>> group = Lists.newArrayList();
-
                 Set<String> completedTime = Sets.newHashSet();
                 List<Integer> purposeNumbers = new ArrayList<>();
                 StringBuilder actualPurpose = new StringBuilder();
@@ -245,26 +238,27 @@ public class EvaluationHypothesisService {
                     surveyAsset.setInventoryContent(purpose);
                     surveyAsset.setProjectId(projectInfo.getId());
                     SurveyAssetInventoryContent singleObject = surveyAssetInventoryContentDao.getSingleObject(surveyAsset);
-                    if (StringUtils.isEmpty(singleObject.getRegistration()) || "无".equals(singleObject.getRegistration().trim())) {
+                    if (singleObject != null && (StringUtils.isEmpty(singleObject.getRegistration()) || "无".equals(singleObject.getRegistration().trim()))) {
                         purposeNumbers.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
                         SchemeJudgeObjectVo schemeJudgeObjectVo = schemeJudgeObjectService.getSchemeJudgeObjectVo(schemeJudgeObject);
                         actualPurpose.append(schemeJudgeObject.getPracticalUse()).append("、");
                         settingPurpose.append(schemeJudgeObjectVo.getSetUseName()).append("、");
                     }
                 }
-
-                for (String time : times) {
-                    Map<List<Integer>, String> map = Maps.newHashMap();
-                    List<Integer> number = new ArrayList<>();
-                    for (int k = 0; k < maps.size(); k++) {
-                        if (maps.get(k).containsValue(time)) {
-                            for (Integer key : maps.get(k).keySet()) {
-                                number.add(key);
+                if (CollectionUtils.isNotEmpty(times)) {
+                    for (String time : times) {
+                        Map<List<Integer>, String> map = Maps.newHashMap();
+                        List<Integer> number = new ArrayList<>();
+                        for (int k = 0; k < maps.size(); k++) {
+                            if (maps.get(k).containsValue(time)) {
+                                for (Integer key : maps.get(k).keySet()) {
+                                    number.add(key);
+                                }
                             }
                         }
+                        map.put(number, time);
+                        group.add(map);
                     }
-                    map.put(number, time);
-                    group.add(map);
                 }
 
                 if (CollectionUtils.isNotEmpty(actualTimenumbers) || CollectionUtils.isNotEmpty(purposeNumbers)) {
@@ -700,21 +694,6 @@ public class EvaluationHypothesisService {
 
         }
         return stringBuilder.toString();
-    }
-
-    public DataEvaluationHypothesis getEvaluationHypothesis(String filedName) {
-        DataEvaluationHypothesis data = new DataEvaluationHypothesis();
-        data.setFieldName(filedName);
-        return evaluationHypothesisDao.getSingleObject(data);
-    }
-
-    private List<SysAttachmentDto> getSysAttachmentDtos(Integer id, String tableName) {
-        SysAttachmentDto bidSysAttachmentDto = new SysAttachmentDto();
-        bidSysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPhase.class));
-        bidSysAttachmentDto.setTableName(tableName);
-        bidSysAttachmentDto.setTableId(id);
-        bidSysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        return baseAttachmentService.getAttachmentList(bidSysAttachmentDto);
     }
 
     public String getSubstitutionPrincipleName(String str) {

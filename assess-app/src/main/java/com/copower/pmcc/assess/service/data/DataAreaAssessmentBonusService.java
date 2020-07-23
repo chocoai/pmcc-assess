@@ -106,12 +106,13 @@ public class DataAreaAssessmentBonusService {
     /**
      * 根据区域获取配置信息
      * 当区县未找到对应配置则需到市级寻找
+     *
      * @param province
      * @param city
      * @param distric
      * @return
      */
-    public List<DataAreaAssessmentBonus> getDataAreaAssessmentBonusListByArea(String province, String city, String distric) {
+    public DataAreaAssessmentBonus getDataAreaAssessmentBonusByArea(String province, String city, String distric) {
         if (StringUtils.isBlank(province) || StringUtils.isBlank(city)) return null;
         DataAreaAssessmentBonus dataAreaAssessmentBonus = new DataAreaAssessmentBonus();
         dataAreaAssessmentBonus.setProvince(province);
@@ -120,19 +121,21 @@ public class DataAreaAssessmentBonusService {
             dataAreaAssessmentBonus.setDistrict(distric);
             List<DataAreaAssessmentBonus> list = dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(dataAreaAssessmentBonus);
             if (CollectionUtils.isEmpty(list))
-                return getAssessmentBonusListByArea(province, city);
+                return getAssessmentBonusByArea(province, city);
             else
-                return list;
+                return list.get(0);
         } else {
-            return getAssessmentBonusListByArea(province, city);
+            return getAssessmentBonusByArea(province, city);
         }
     }
 
-    public List<DataAreaAssessmentBonus> getAssessmentBonusListByArea(String province, String city) {
+    public DataAreaAssessmentBonus getAssessmentBonusByArea(String province, String city) {
         if (StringUtils.isBlank(province) || StringUtils.isBlank(city)) return null;
         DataAreaAssessmentBonus dataAreaAssessmentBonus = new DataAreaAssessmentBonus();
         dataAreaAssessmentBonus.setProvince(province);
         dataAreaAssessmentBonus.setCity(city);
-        return dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(dataAreaAssessmentBonus);
+        List<DataAreaAssessmentBonus> list = dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(dataAreaAssessmentBonus);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
     }
 }

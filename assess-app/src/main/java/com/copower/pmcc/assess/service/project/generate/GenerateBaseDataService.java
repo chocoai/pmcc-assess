@@ -3178,7 +3178,7 @@ public class GenerateBaseDataService {
             }
         }
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result));
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result),true);
         AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
@@ -4083,6 +4083,7 @@ public class GenerateBaseDataService {
     public void buildResultSetTable(ProjectInfo projectInfo, List<SchemeJudgeObject> schemeJudgeObjectList, DocumentBuilder builder) throws Exception {
         //1.当项目为抵押评估时有法定优先受偿款和抵押价值，否则表格没有这两项
         boolean mortgageFlag = Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId());
+        builder.startTable();
         generateCommonMethod.settingBuildingTable(builder);
         //头
         builder.insertCell();
@@ -4197,6 +4198,7 @@ public class GenerateBaseDataService {
             builder.write(mortgagePriceTotal.toString());
         }
         builder.endRow();
+        builder.endTable();
     }
 
 
