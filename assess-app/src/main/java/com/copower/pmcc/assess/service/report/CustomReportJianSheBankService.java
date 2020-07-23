@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
@@ -69,7 +70,7 @@ public class CustomReportJianSheBankService {
     @Autowired
     private InitiatePossessorService initiatePossessorService;
     @Autowired
-    private SurveyCommonService surveyCommonService;
+    private BasicApplyService basicApplyService;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
@@ -143,7 +144,7 @@ public class CustomReportJianSheBankService {
                     vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
                     //估价对象坐落位置
                     vo.setSeat(judgeObjectList.get(0).getSeat());
-                    BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObjectList.get(0).getDeclareRecordId());
+                    BasicApply basicApply =  basicApplyService.getByBasicApplyId(judgeObjectList.get(0).getBasicApplyId());
                     if (basicApply != null) {
                         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
                         if (basicEstate != null) {

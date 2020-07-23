@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeIncomeApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
@@ -59,6 +60,8 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private BasicBuildingService basicBuildingService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -147,7 +150,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         modelAndView.addObject("judgeObject", judgeObject);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
         if (declareRecord != null) {
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
+            BasicApply basicApply =  basicApplyService.getByBasicApplyId(judgeObject.getBasicApplyId());
             if (basicApply != null) {
                 BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
                 if (basicBuilding != null) {

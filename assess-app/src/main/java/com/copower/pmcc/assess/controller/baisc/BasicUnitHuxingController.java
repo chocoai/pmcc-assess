@@ -116,8 +116,7 @@ public class BasicUnitHuxingController {
     @GetMapping(value = "/getHuxingByHouseId", name = "获取通过HouseId")
     public HttpResult getHuxingByHouseId(Integer basicHouseId) {
         try {
-            BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicHouseId);
-            return HttpResult.newCorrectResult(200, basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId()));
+            return HttpResult.newCorrectResult(200, basicUnitHuxingService.getHuxingByHouseId(basicHouseId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

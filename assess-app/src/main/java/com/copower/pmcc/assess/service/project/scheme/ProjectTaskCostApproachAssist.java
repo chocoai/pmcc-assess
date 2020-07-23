@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachTaxesDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
@@ -45,9 +46,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private BasicEstateLandStateService basicEstateLandStateService;
-    @Autowired
-    private SurveyCommonService surveyCommonService;
+    private BasicApplyService basicApplyService;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
@@ -160,7 +159,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         modelAndView.addObject("judgeObject", schemeJudgeObject);
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+        BasicApply basicApply =  basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
         BasicEstate basicEstate = null;
         try {
             basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());

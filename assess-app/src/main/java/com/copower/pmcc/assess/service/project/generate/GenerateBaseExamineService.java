@@ -145,12 +145,9 @@ public class GenerateBaseExamineService {
         return basicUnit;
     }
 
-    public BasicUnitHuxing getBasicUnitHuxing() {
-        BasicUnitHuxing query = new BasicUnitHuxing();
-        query.setHouseId(getBasicHouse().getId());
-        List<BasicUnitHuxing> basicUnitHuxings = basicUnitHuxingService.basicUnitHuxingList(query);
-        if (CollectionUtils.isEmpty(basicUnitHuxings)) return null;
-        return basicUnitHuxings.get(0);
+    public BasicUnitHuxingVo getBasicUnitHuxing() {
+        BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getHuxingByHouseId(getBasicHouse().getId());
+        return basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxing);
     }
 
     public List<BasicUnitElevator> getBasicUnitElevatorList() {

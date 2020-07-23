@@ -22,60 +22,26 @@ public class DataBuildingInstallCostDao {
     private DataBuildingInstallCostMapper dataBuildingInstallCostMapper;
 
     public Integer addDataBuildingInstallCost(DataBuildingInstallCost dataBuildingInstallCost) {
-        try {
-            dataBuildingInstallCostMapper.insertSelective(dataBuildingInstallCost);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        dataBuildingInstallCostMapper.insertSelective(dataBuildingInstallCost);
         return dataBuildingInstallCost.getId();
     }
 
     public DataBuildingInstallCost getDataBuildingInstallCostById(Integer id) {
-        if (id == null) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
         return dataBuildingInstallCostMapper.selectByPrimaryKey(id);
     }
 
     public boolean updateDataBuildingInstallCost(DataBuildingInstallCost dataBuildingInstallCost) {
-        try {
-            return dataBuildingInstallCostMapper.updateByPrimaryKeySelective(dataBuildingInstallCost) == 1;
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
-        return false;
+        return dataBuildingInstallCostMapper.updateByPrimaryKeySelective(dataBuildingInstallCost) == 1;
     }
 
     public void removeDataBuildingInstallCost(DataBuildingInstallCost dataBuildingInstallCost) {
         DataBuildingInstallCostExample example = new DataBuildingInstallCostExample();
         MybatisUtils.convertObj2Example(dataBuildingInstallCost, example);
-        try {
-            dataBuildingInstallCostMapper.deleteByExample(example);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        dataBuildingInstallCostMapper.deleteByExample(example);
     }
 
     public List<DataBuildingInstallCost> getDataBuildingInstallCostList(DataBuildingInstallCost dataBuildingInstallCost) {
         DataBuildingInstallCostExample example = new DataBuildingInstallCostExample();
-        if (dataBuildingInstallCost == null) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
         MybatisUtils.convertObj2Example(dataBuildingInstallCost, example);
         return dataBuildingInstallCostMapper.selectByExample(example);
     }

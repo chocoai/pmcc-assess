@@ -80,7 +80,7 @@ public class MdBaseLandPriceController {
     public HttpResult getLevelDetailId(Integer judgeObjectId) {
         try {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
             BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
             BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
             return HttpResult.newCorrectResult(landStateByEstateId.getLandLevel());

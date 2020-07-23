@@ -220,12 +220,15 @@ public class GenerateHouseEntityService {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             BasicUnit unit = generateBaseExamineService.getBasicUnit();
-            BasicUnitHuxing huxing = generateBaseExamineService.getBasicUnitHuxing();
+            BasicUnitHuxingVo huxing = generateBaseExamineService.getBasicUnitHuxing();
             if (unit != null && StringUtils.isNotBlank(unit.getElevatorHouseholdRatio())) {
                 stringBuilder.append("梯户比").append(unit.getElevatorHouseholdRatio()).append(",");
             }
             if (huxing != null && StringUtils.isNotBlank(huxing.getName())) {
-                stringBuilder.append(huxing.getName());
+                stringBuilder.append(huxing.getName()).append(",");
+            }
+            if (huxing != null && StringUtils.isNotBlank(huxing.getSpatialDistributionName())) {
+                stringBuilder.append(huxing.getSpatialDistributionName());
             }
             if (StringUtils.isNotBlank(stringBuilder.toString())) {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());

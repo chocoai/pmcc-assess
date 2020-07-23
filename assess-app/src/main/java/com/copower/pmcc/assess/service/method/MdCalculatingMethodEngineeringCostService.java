@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCalculatingMethodEngineeringCostDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -48,7 +49,7 @@ public class MdCalculatingMethodEngineeringCostService {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private SurveyCommonService surveyCommonService;
+    private BasicApplyService basicApplyService;
 
     /**
      * copy 工程费
@@ -109,7 +110,7 @@ public class MdCalculatingMethodEngineeringCostService {
     public void setMdCalculatingMethodEngineeringCost(Integer planDetailsId, String type) {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+        BasicApply basicApply =  basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
         BigDecimal area = schemeJudgeObject.getFloorArea() != null ? schemeJudgeObject.getFloorArea() : schemeJudgeObject.getEvaluationArea();
         setMdCalculatingMethodEngineeringCost2(projectPlanDetails, basicApply, area, type);
     }

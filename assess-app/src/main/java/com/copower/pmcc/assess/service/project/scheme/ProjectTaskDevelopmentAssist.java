@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dto.output.data.InfrastructureVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.data.DataInfrastructureService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
@@ -45,7 +46,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     @Autowired
     private DataInfrastructureService dataInfrastructureService;
     @Autowired
-    private SurveyCommonService surveyCommonService;
+    private BasicApplyService basicApplyService;
     @Autowired
     private BaseService baseService;
     @Autowired
@@ -151,7 +152,7 @@ public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
             }
         }
         try {
-            BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId( surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId()));
+            BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoByAppId(  basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()));
             modelAndView.addObject(StringUtils.uncapitalize(BasicHouseVo.class.getSimpleName()), basicHouseVo);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);

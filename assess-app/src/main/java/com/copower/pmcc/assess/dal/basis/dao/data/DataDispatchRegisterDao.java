@@ -21,60 +21,26 @@ public class DataDispatchRegisterDao {
     private DataDispatchRegisterMapper dataDispatchRegisterMapper;
 
     public Integer addDataDispatchRegister(DataDispatchRegister dataDispatchRegister) {
-        try {
-            dataDispatchRegisterMapper.insertSelective(dataDispatchRegister);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        dataDispatchRegisterMapper.insertSelective(dataDispatchRegister);
         return dataDispatchRegister.getId();
     }
 
     public DataDispatchRegister getDataDispatchRegisterById(Integer id) {
-        if (id == null) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
         return dataDispatchRegisterMapper.selectByPrimaryKey(id);
     }
 
     public boolean updateDataDispatchRegister(DataDispatchRegister dataDispatchRegister) {
-        try {
-            return dataDispatchRegisterMapper.updateByPrimaryKeySelective(dataDispatchRegister) == 1;
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
-        return false;
+        return dataDispatchRegisterMapper.updateByPrimaryKeySelective(dataDispatchRegister) == 1;
     }
 
     public void removeDataDispatchRegister(DataDispatchRegister dataDispatchRegister) {
         DataDispatchRegisterExample example = new DataDispatchRegisterExample();
         MybatisUtils.convertObj2Example(dataDispatchRegister, example);
-        try {
-            dataDispatchRegisterMapper.deleteByExample(example);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        dataDispatchRegisterMapper.deleteByExample(example);
     }
 
     public List<DataDispatchRegister> getDataDispatchRegisterList(DataDispatchRegister dataDispatchRegister) {
         DataDispatchRegisterExample example = new DataDispatchRegisterExample();
-        if (dataDispatchRegister == null) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
         MybatisUtils.convertObj2Example(dataDispatchRegister, example);
         return dataDispatchRegisterMapper.selectByExample(example);
     }

@@ -22,60 +22,26 @@ public class DataBlockDao {
     private DataBlockMapper dataBlockMapper;
 
     public Integer addDataBlock(DataBlock dataBlock) {
-        try {
-            dataBlockMapper.insertSelective(dataBlock);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        dataBlockMapper.insertSelective(dataBlock);
         return dataBlock.getId();
     }
 
     public DataBlock getDataBlockById(Integer id) {
-        if (id == null) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
         return dataBlockMapper.selectByPrimaryKey(id);
     }
 
     public boolean updateDataBlock(DataBlock dataBlock) {
-        try {
-            return dataBlockMapper.updateByPrimaryKeySelective(dataBlock) == 1;
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
-        return false;
+        return dataBlockMapper.updateByPrimaryKeySelective(dataBlock) == 1;
     }
 
     public void removeDataBlock(DataBlock dataBlock) {
         DataBlockExample example = new DataBlockExample();
         MybatisUtils.convertObj2Example(dataBlock, example);
-        try {
-            dataBlockMapper.deleteByExample(example);
-        } catch (Exception e1) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
+        dataBlockMapper.deleteByExample(example);
     }
 
     public List<DataBlock> getDataBlockList(DataBlock dataBlock) {
         DataBlockExample example = new DataBlockExample();
-        if (dataBlock == null) {
-            try {
-                throw new SQLException("exception");
-            } catch (SQLException e) {
-            }
-        }
         MybatisUtils.convertObj2Example(dataBlock, example);
         return dataBlockMapper.selectByExample(example);
     }

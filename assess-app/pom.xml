@@ -57,12 +57,12 @@
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>erp-api</artifactId>
-            <version>1.2.25</version>
+            <version>1.2.26</version>
         </dependency>
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>hr-api</artifactId>
-            <version>1.0.35</version>
+            <version>1.0.36</version>
             <exclusions>
                 <exclusion>
                     <artifactId>erp-api</artifactId>

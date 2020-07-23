@@ -1406,15 +1406,7 @@ public class GenerateCommonMethod {
         if (schemeJudgeObject.getDeclareRecordId() == null) {
             return null;
         }
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        if (declareRecord == null) {
-            return null;
-        }
-        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-        if (basicApply == null) {
-            return null;
-        }
-        return basicApply;
+        return  basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
     }
 
     public BasicApplyBatch getBasicApplyBatchBySchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {

@@ -712,7 +712,7 @@ public class GenerateLoactionService {
         Map<Integer, String> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
+                BasicApply basicApply =  basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
                 if (basicApply != null) {
                     if (judgeObjectList.size() != 1) {
                         stringBuffer.append("位于");

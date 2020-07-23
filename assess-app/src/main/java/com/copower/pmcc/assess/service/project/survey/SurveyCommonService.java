@@ -48,27 +48,11 @@ import java.util.Map;
 public class SurveyCommonService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private CommonService commonService;
-    @Autowired
-    private ApplicationConstant applicationConstant;
-    @Autowired
-    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
-    @Autowired
     private DeclareRecordService declareRecordService;
-    @Autowired
-    private ProjectPhaseService projectPhaseService;
-    @Autowired
-    private ProjectInfoService projectInfoService;
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
-    @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    @Autowired
-    private BasicBuildingService basicBuildingService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -96,23 +80,6 @@ public class SurveyCommonService {
         keyValueDto.setValue(BasicApplyTypeEnum.INDUSTRY.getName());
         keyValueDtoList.add(keyValueDto);
         return keyValueDtoList;
-    }
-
-    /**
-     * 获取查勘过程申请表信息
-     *
-     * @param declareId
-     * @return
-     */
-    public BasicApply getSceneExploreBasicApply(Integer declareId) {
-        try {
-            List<BasicApply> applyList = getSceneExploreBasicApplyList(declareId);
-            if (CollectionUtils.isEmpty(applyList)) return null;
-            return applyList.get(0);
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-            return null;
-        }
     }
 
     /**
