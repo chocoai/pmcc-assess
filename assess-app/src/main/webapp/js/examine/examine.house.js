@@ -439,7 +439,7 @@
             if (tenementType == '商铺' || tenementType == '商场') {
                 temp = "store";
             }
-            if (tenementType == '餐饮酒店') {
+            if (tenementType == '餐饮'||tenementType == '酒店') {
                 temp = "hotel";
             }
             if (tenementType == '生产') {

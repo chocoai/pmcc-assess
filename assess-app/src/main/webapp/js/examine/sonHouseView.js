@@ -31,7 +31,7 @@ var houseHuxingPrice;
                 temp = commonColumn.houseRoomResidence();
             } else if (tenementType == '商铺' || tenementType == '商场') {
                 temp = commonColumn.houseRoomStore();
-            } else if (tenementType == '餐饮酒店') {
+            } else if (tenementType == '餐饮'||tenementType == '酒店') {
                 temp = commonColumn.houseRoomHotel();
             } else if (tenementType == '生产') {
                 temp = commonColumn.houseRoomProduction();
@@ -177,7 +177,7 @@ var houseHuxingPrice;
                     $("#" + houseHuxingPrice.prototype.config().frm).find(".store").find("input").attr("disabled", false);
 
                 }
-                if (tenementType == '餐饮酒店') {
+                if (tenementType == '餐饮'||tenementType == '酒店') {
                     $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").show();
                     $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").find("input").attr("disabled", false);
                 }
@@ -2023,7 +2023,7 @@ var houseRoom;
                 temp = commonColumn.houseRoomResidence();
             } else if (tenementType == '商铺' || tenementType == '商场') {
                 temp = commonColumn.houseRoomStore();
-            } else if (tenementType == '餐饮酒店') {
+            } else if (tenementType == '餐饮'||tenementType == '酒店') {
                 temp = commonColumn.houseRoomHotel();
             } else if (tenementType == '生产') {
                 temp = commonColumn.houseRoomProduction();
@@ -2329,7 +2329,7 @@ var houseRoom;
                         $("#" + houseRoom.prototype.config().frm).find(".store.base").find("input").attr("disabled", false);
 
                     }
-                    if (tenementType == '餐饮酒店') {
+                    if (tenementType == '餐饮'||tenementType == '酒店') {
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.base").show();
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.base").find("input").attr("disabled", false);
                     }
@@ -2439,7 +2439,7 @@ var houseRoom;
                         $("#" + houseRoom.prototype.config().frm).find(".store.rule").find("input").attr("disabled", false);
                     }
                 }
-                if (tenementType == '餐饮酒店') {
+                if (tenementType == '餐饮'||tenementType == '酒店') {
                     if (houseShape == '不规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").hide();
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").find("input").attr("disabled", true);
