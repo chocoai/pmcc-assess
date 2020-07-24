@@ -14,7 +14,7 @@ public class ProjectAssessmentBonusItem {
 
     private String projectManager;
 
-    private String memberScore;
+    private String memberScoreCondition;
 
     private BigDecimal totalScore;
 
@@ -66,12 +66,12 @@ public class ProjectAssessmentBonusItem {
         this.projectManager = projectManager == null ? null : projectManager.trim();
     }
 
-    public String getMemberScore() {
-        return memberScore;
+    public String getMemberScoreCondition() {
+        return memberScoreCondition;
     }
 
-    public void setMemberScore(String memberScore) {
-        this.memberScore = memberScore == null ? null : memberScore.trim();
+    public void setMemberScoreCondition(String memberScoreCondition) {
+        this.memberScoreCondition = memberScoreCondition == null ? null : memberScoreCondition.trim();
     }
 
     public BigDecimal getTotalScore() {

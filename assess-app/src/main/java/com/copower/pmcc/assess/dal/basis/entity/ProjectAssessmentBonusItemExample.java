@@ -426,73 +426,73 @@ public class ProjectAssessmentBonusItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreIsNull() {
-            addCriterion("member_score is null");
+        public Criteria andMemberScoreConditionIsNull() {
+            addCriterion("member_score_condition is null");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreIsNotNull() {
-            addCriterion("member_score is not null");
+        public Criteria andMemberScoreConditionIsNotNull() {
+            addCriterion("member_score_condition is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreEqualTo(String value) {
-            addCriterion("member_score =", value, "memberScore");
+        public Criteria andMemberScoreConditionEqualTo(String value) {
+            addCriterion("member_score_condition =", value, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreNotEqualTo(String value) {
-            addCriterion("member_score <>", value, "memberScore");
+        public Criteria andMemberScoreConditionNotEqualTo(String value) {
+            addCriterion("member_score_condition <>", value, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreGreaterThan(String value) {
-            addCriterion("member_score >", value, "memberScore");
+        public Criteria andMemberScoreConditionGreaterThan(String value) {
+            addCriterion("member_score_condition >", value, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreGreaterThanOrEqualTo(String value) {
-            addCriterion("member_score >=", value, "memberScore");
+        public Criteria andMemberScoreConditionGreaterThanOrEqualTo(String value) {
+            addCriterion("member_score_condition >=", value, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreLessThan(String value) {
-            addCriterion("member_score <", value, "memberScore");
+        public Criteria andMemberScoreConditionLessThan(String value) {
+            addCriterion("member_score_condition <", value, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreLessThanOrEqualTo(String value) {
-            addCriterion("member_score <=", value, "memberScore");
+        public Criteria andMemberScoreConditionLessThanOrEqualTo(String value) {
+            addCriterion("member_score_condition <=", value, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreLike(String value) {
-            addCriterion("member_score like", value, "memberScore");
+        public Criteria andMemberScoreConditionLike(String value) {
+            addCriterion("member_score_condition like", value, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreNotLike(String value) {
-            addCriterion("member_score not like", value, "memberScore");
+        public Criteria andMemberScoreConditionNotLike(String value) {
+            addCriterion("member_score_condition not like", value, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreIn(List<String> values) {
-            addCriterion("member_score in", values, "memberScore");
+        public Criteria andMemberScoreConditionIn(List<String> values) {
+            addCriterion("member_score_condition in", values, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreNotIn(List<String> values) {
-            addCriterion("member_score not in", values, "memberScore");
+        public Criteria andMemberScoreConditionNotIn(List<String> values) {
+            addCriterion("member_score_condition not in", values, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreBetween(String value1, String value2) {
-            addCriterion("member_score between", value1, value2, "memberScore");
+        public Criteria andMemberScoreConditionBetween(String value1, String value2) {
+            addCriterion("member_score_condition between", value1, value2, "memberScoreCondition");
             return (Criteria) this;
         }
 
-        public Criteria andMemberScoreNotBetween(String value1, String value2) {
-            addCriterion("member_score not between", value1, value2, "memberScore");
+        public Criteria andMemberScoreConditionNotBetween(String value1, String value2) {
+            addCriterion("member_score_condition not between", value1, value2, "memberScoreCondition");
             return (Criteria) this;
         }
 

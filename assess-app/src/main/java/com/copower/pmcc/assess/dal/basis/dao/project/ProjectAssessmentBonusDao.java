@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemExampl
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectAssessmentBonusItemMapper;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectAssessmentBonusMapper;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +34,7 @@ public class ProjectAssessmentBonusDao {
         return i >= 0;
     }
 
-    public ProjectAssessmentBonus getAssessmentBonusProcessInsId(String processInsId) {
+    public ProjectAssessmentBonus getAssessmentBonusByProcessInsId(String processInsId) {
         ProjectAssessmentBonusExample example = new ProjectAssessmentBonusExample();
         example.createCriteria().andProcessInsIdEqualTo(processInsId);
         List<ProjectAssessmentBonus> projectAssessmentBonuss = projectAssessmentBonusMapper.selectByExample(example);
@@ -60,9 +61,28 @@ public class ProjectAssessmentBonusDao {
         return i >= 0;
     }
 
-    public Long getAssessmentBonusItemCount(Integer projectId){
+    public List<ProjectAssessmentBonusItem> getAssessmentBonusItemList(Integer bonusId, String projectManager) {
+        ProjectAssessmentBonusItemExample example = new ProjectAssessmentBonusItemExample();
+        ProjectAssessmentBonusItemExample.Criteria criteria = example.createCriteria();
+        if (bonusId != null) {
+            criteria.andMasterIdEqualTo(bonusId);
+        }
+        if (StringUtils.isNotBlank(projectManager)) {
+            criteria.andProjectManagerEqualTo(projectManager);
+        }
+        return null;
+    }
+
+    public Long getAssessmentBonusItemCount(Integer projectId) {
         ProjectAssessmentBonusItemExample example = new ProjectAssessmentBonusItemExample();
         example.createCriteria().andProjectIdEqualTo(projectId);
+        return projectAssessmentBonusItemMapper.countByExample(example);
+    }
+
+    public Long getAssessmentBonusItemCountByStatus(Integer masterId, String status) {
+        ProjectAssessmentBonusItemExample example = new ProjectAssessmentBonusItemExample();
+        ProjectAssessmentBonusItemExample.Criteria criteria = example.createCriteria().andMasterIdEqualTo(masterId);
+        criteria.andStatusEqualTo(status);
         return projectAssessmentBonusItemMapper.countByExample(example);
     }
 }

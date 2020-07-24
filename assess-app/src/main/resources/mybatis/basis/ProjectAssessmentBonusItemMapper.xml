@@ -7,7 +7,7 @@
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="project_manager" jdbcType="VARCHAR" property="projectManager" />
-    <result column="member_score" jdbcType="VARCHAR" property="memberScore" />
+    <result column="member_score_condition" jdbcType="VARCHAR" property="memberScoreCondition" />
     <result column="total_score" jdbcType="DECIMAL" property="totalScore" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -73,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, master_id, project_id, project_name, project_manager, member_score, total_score, 
-    status, creator, gmt_created, gmt_modified
+    id, master_id, project_id, project_name, project_manager, member_score_condition, 
+    total_score, status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemExample" resultMap="BaseResultMap">
     select
@@ -111,11 +111,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_assessment_bonus_item (master_id, project_id, project_name, 
-      project_manager, member_score, total_score, 
+      project_manager, member_score_condition, total_score, 
       status, creator, gmt_created, 
       gmt_modified)
     values (#{masterId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
-      #{projectManager,jdbcType=VARCHAR}, #{memberScore,jdbcType=VARCHAR}, #{totalScore,jdbcType=DECIMAL}, 
+      #{projectManager,jdbcType=VARCHAR}, #{memberScoreCondition,jdbcType=VARCHAR}, #{totalScore,jdbcType=DECIMAL}, 
       #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -137,8 +137,8 @@
       <if test="projectManager != null">
         project_manager,
       </if>
-      <if test="memberScore != null">
-        member_score,
+      <if test="memberScoreCondition != null">
+        member_score_condition,
       </if>
       <if test="totalScore != null">
         total_score,
@@ -169,8 +169,8 @@
       <if test="projectManager != null">
         #{projectManager,jdbcType=VARCHAR},
       </if>
-      <if test="memberScore != null">
-        #{memberScore,jdbcType=VARCHAR},
+      <if test="memberScoreCondition != null">
+        #{memberScoreCondition,jdbcType=VARCHAR},
       </if>
       <if test="totalScore != null">
         #{totalScore,jdbcType=DECIMAL},
@@ -213,8 +213,8 @@
       <if test="record.projectManager != null">
         project_manager = #{record.projectManager,jdbcType=VARCHAR},
       </if>
-      <if test="record.memberScore != null">
-        member_score = #{record.memberScore,jdbcType=VARCHAR},
+      <if test="record.memberScoreCondition != null">
+        member_score_condition = #{record.memberScoreCondition,jdbcType=VARCHAR},
       </if>
       <if test="record.totalScore != null">
         total_score = #{record.totalScore,jdbcType=DECIMAL},
@@ -243,7 +243,7 @@
       project_id = #{record.projectId,jdbcType=INTEGER},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       project_manager = #{record.projectManager,jdbcType=VARCHAR},
-      member_score = #{record.memberScore,jdbcType=VARCHAR},
+      member_score_condition = #{record.memberScoreCondition,jdbcType=VARCHAR},
       total_score = #{record.totalScore,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -268,8 +268,8 @@
       <if test="projectManager != null">
         project_manager = #{projectManager,jdbcType=VARCHAR},
       </if>
-      <if test="memberScore != null">
-        member_score = #{memberScore,jdbcType=VARCHAR},
+      <if test="memberScoreCondition != null">
+        member_score_condition = #{memberScoreCondition,jdbcType=VARCHAR},
       </if>
       <if test="totalScore != null">
         total_score = #{totalScore,jdbcType=DECIMAL},
@@ -295,7 +295,7 @@
       project_id = #{projectId,jdbcType=INTEGER},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_manager = #{projectManager,jdbcType=VARCHAR},
-      member_score = #{memberScore,jdbcType=VARCHAR},
+      member_score_condition = #{memberScoreCondition,jdbcType=VARCHAR},
       total_score = #{totalScore,jdbcType=DECIMAL},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

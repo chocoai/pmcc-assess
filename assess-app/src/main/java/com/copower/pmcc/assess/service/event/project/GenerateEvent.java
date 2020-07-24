@@ -72,24 +72,20 @@ public class GenerateEvent extends BaseProcessEvent {
                 sysProjectDto.setStatus(ProjectStatusEnum.FINISH.getKey());
                 reportNumberList = projectNumberRecordService.getReportNumberRecordList(projectPlanDetails.getProjectId(), null, null);
             }
-            switch (processStatusEnum) {
-                case FINISH:
-                    projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
-                    projectPlan.setFinishDate(new Date());
-                    projectPlanService.updateProjectPlan(projectPlan);
-                    if (CollectionUtils.isEmpty(reportNumberList)) return;
-                    reportNumberList = LangUtils.filter(reportNumberList, o -> o.getAreaId() > 0);
-                    List<String> transform = LangUtils.transform(reportNumberList, p -> p.getNumberValue());
-                    String s = StringUtils.join(transform, ',');
-                    sysProjectDto.setProjectDocumentNumber(s);
-                    erpRpcProjectService.saveProject(sysProjectDto);
-                    for (ProjectNumberRecord record : reportNumberList) {
-                        erpRpcToolsService.bindSymbol(applicationConstant.getAppKey(), record.getNumberValue(), projectInfo.getPublicProjectId(), record.getId(), FormatUtils.entityNameConvertToTableName(ProjectNumberRecord.class));
-                        erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), record.getNumberValue());
-                    }
-                    break;
-                case CLOSE:
-                    break;
+            if(processStatusEnum.isFinish()){
+                projectPlan.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
+                projectPlan.setFinishDate(new Date());
+                projectPlanService.updateProjectPlan(projectPlan);
+                if (CollectionUtils.isEmpty(reportNumberList)) return;
+                reportNumberList = LangUtils.filter(reportNumberList, o -> o.getAreaId() > 0);
+                List<String> transform = LangUtils.transform(reportNumberList, p -> p.getNumberValue());
+                String s = StringUtils.join(transform, ',');
+                sysProjectDto.setProjectDocumentNumber(s);
+                erpRpcProjectService.saveProject(sysProjectDto);
+                for (ProjectNumberRecord record : reportNumberList) {
+                    erpRpcToolsService.bindSymbol(applicationConstant.getAppKey(), record.getNumberValue(), projectInfo.getPublicProjectId(), record.getId(), FormatUtils.entityNameConvertToTableName(ProjectNumberRecord.class));
+                    erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), record.getNumberValue());
+                }
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "生成报告Event");

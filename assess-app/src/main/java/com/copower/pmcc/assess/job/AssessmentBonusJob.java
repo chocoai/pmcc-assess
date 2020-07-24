@@ -1,25 +1,29 @@
 package com.copower.pmcc.assess.job;
 
-import com.aspose.words.ConvertUtil;
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
-import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.service.NetInfoRecordService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataAreaAssessmentBonusService;
-import com.copower.pmcc.assess.service.project.ProjectAssessmentBonusService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.*;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -30,6 +34,8 @@ import com.copower.pmcc.erp.constant.CacheConstant;
 import com.copower.pmcc.hr.api.dto.HrLegworkDto;
 import com.copower.pmcc.hr.api.provider.HrRpcToolService;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RLock;
@@ -39,17 +45,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2019-7-8.
  */
 @Component
-public class LegworkBonusAssessmentJob {
-    private final static Logger logger = LoggerFactory.getLogger(LegworkBonusAssessmentJob.class);
+public class AssessmentBonusJob {
+    private final static Logger logger = LoggerFactory.getLogger(AssessmentBonusJob.class);
     @Autowired
     private RedissonClient redissonClient;
     @Autowired
@@ -76,6 +84,16 @@ public class LegworkBonusAssessmentJob {
     private DataAreaAssessmentBonusService dataAreaAssessmentBonusService;
     @Autowired
     private ChksRpcAssessmentPerformanceService assessmentPerformanceService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private ErpRpcDepartmentService erpRpcDepartmentService;
+    @Autowired
+    private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
+    @Autowired
+    private PublicService publicService;
 
     /**
      * 执行任务
@@ -83,7 +101,7 @@ public class LegworkBonusAssessmentJob {
     public void execute() throws BusinessException {
         String parameter = baseParameterService.getBaseParameter(BaseParameterEnum.LEGWORK_BONUS_ASSESSMENT);
         if (StringUtils.isNotBlank(parameter) && Boolean.valueOf(parameter).equals(Boolean.TRUE)) {
-            String lockKey = CacheConstant.getCostsKeyPrefix(LegworkBonusAssessmentJob.class.getSimpleName(), applicationConstant.getAppKey());
+            String lockKey = CacheConstant.getCostsKeyPrefix(AssessmentBonusJob.class.getSimpleName(), applicationConstant.getAppKey());
             RLock lock = redissonClient.getLock(lockKey);
             boolean res = false;
             try {
@@ -117,7 +135,7 @@ public class LegworkBonusAssessmentJob {
         assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
         projectAssessmentBonusService.saveAssessmentBonus(assessmentBonus);
 
-        List<String> managerList = Lists.newArrayList();
+        Set<String> managerList = Sets.newHashSet();
         for (HrLegworkDto dto : legworkDtoList) {
             if (StringUtils.isBlank(dto.getProjectId())) continue;//没关联项目直接跳过
 
@@ -132,6 +150,8 @@ public class LegworkBonusAssessmentJob {
                     continue;//每个项目只计算一次
                 }
                 ProjectInfo projectInfo = projectInfoService.getProjectInfoById(sysProjectDto.getProjectId());
+                String projectManager = projectMemberService.getProjectManager(projectInfo.getId());//项目经理
+                managerList.add(projectManager);
                 List<BasicApplyBatch> basicApplyBatchList = getBasicApplyBatchList(projectInfo);
                 if (CollectionUtils.isEmpty(basicApplyBatchList)) continue;
                 for (BasicApplyBatch basicApplyBatch : basicApplyBatchList) {
@@ -156,23 +176,68 @@ public class LegworkBonusAssessmentJob {
                             resultPerformanceDtos.addAll(performanceDtos);
                     }
                     //找出各个人员的工时得分情况
-                    if(CollectionUtils.isNotEmpty(resultPerformanceDtos)){
-
+                    if (CollectionUtils.isNotEmpty(resultPerformanceDtos)) {
+                        Map<String, BigDecimal> map = statisticalScoreByUser(resultPerformanceDtos);
+                        if (!map.isEmpty()) {
+                            BigDecimal totalBonusScore = BigDecimal.ZERO;
+                            KeyValueDto keyValueDto = new KeyValueDto();
+                            for (Map.Entry<String, BigDecimal> entry : map.entrySet()) {
+                                BigDecimal bonusScore = entry.getValue().multiply(bonus.getCoefficient());
+                                totalBonusScore = totalBonusScore.add(bonusScore);
+                                keyValueDto.setKey(entry.getKey());
+                                keyValueDto.setValue(String.valueOf(bonusScore));
+                                keyValueDto.setExplain(publicService.getUserNameByAccount(entry.getKey()));
+                            }
+                            ProjectAssessmentBonusItem assessmentBonusItem = new ProjectAssessmentBonusItem();
+                            assessmentBonusItem.setMasterId(assessmentBonus.getId());
+                            assessmentBonusItem.setProjectId(projectInfo.getId());
+                            assessmentBonusItem.setProjectName(projectInfo.getProjectName());
+                            assessmentBonusItem.setProjectManager(projectManager);
+                            assessmentBonusItem.setMemberScoreCondition(JSON.toJSONString(keyValueDto));
+                            assessmentBonusItem.setTotalScore(totalBonusScore);
+                            assessmentBonusItem.setStatus(ProjectStatusEnum.WAIT.getKey());
+                            projectAssessmentBonusService.saveAssessmentBonusItem(assessmentBonusItem);
+                        }
                     }
                 }
             }
         }
 
         //1.针对相关的项目经理，都发起一个待处理任务，项目经理确认调整各个项目中的加分值
-        //2.发起一个审核流程到技术负责人，可看到本次所有相关的项目的加分值及各个项目经理处理的情况
+        //2.发起一个待处理任务到技术负责人，可看到本次所有相关的项目的加分值及各个项目经理处理的情况
         //3.技术负责人提交流程后大部分负责人审核，当审核完成后将相关数据写入到考核系统中的考核记录表中
         if (CollectionUtils.isNotEmpty(managerList)) {
-            for (String manager : managerList) {
-
+            for (String manager : managerList) {//为项目经理添加任务
+                ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                String url = String.format("/%s/projectAssessmentBonus/index?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
+                ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                projectPlanResponsibility.setProjectName(String.format("%s外勤加分考核",DateUtils.formatDate(preMonthFirstDay,DateUtils.MONTH_PATTERN)));
+                projectPlanResponsibility.setUserAccount(manager);
+                projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
+                projectPlanResponsibility.setCreator(manager);
+                projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+                projectPlanResponsibility.setUrl(url);
+                bpmRpcProjectTaskService.saveProjectTask(projectResponsibilityDto);
+            }
+        }
+        //为技术负责人添加任务
+        SysDepartmentDto departmentAssess = erpRpcDepartmentService.getDepartmentAssess();
+        List<String> jszgList = bpmRpcBoxRoleUserService.getDepartmentJszg(departmentAssess.getId());//技术负责人
+        if(CollectionUtils.isNotEmpty(jszgList)){
+            for (String s : jszgList) {
+                ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                String url = String.format("/%s/projectAssessmentBonus/apply?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
+                ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                projectPlanResponsibility.setProjectName(String.format("%s外勤加分考核",DateUtils.formatDate(preMonthFirstDay,DateUtils.MONTH_PATTERN)));
+                projectPlanResponsibility.setUserAccount(s);
+                projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
+                projectPlanResponsibility.setCreator(s);
+                projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+                projectPlanResponsibility.setUrl(url);
+                bpmRpcProjectTaskService.saveProjectTask(projectResponsibilityDto);
             }
         }
     }
-
     //确定本项目查勘了几个楼盘
     private List<BasicApplyBatch> getBasicApplyBatchList(ProjectInfo projectInfo) {
         String sceneExploreKey = AssessPhaseKeyConstant.SCENE_EXPLORE;
@@ -183,8 +248,19 @@ public class LegworkBonusAssessmentJob {
         return LangUtils.filter(batchs, o -> o.getReferenceApplyBatchId() == null);
     }
 
-    private List<KeyValueDto> aa(){
-
-        return null;
+    //统计项目各个成员得分
+    private Map<String, BigDecimal> statisticalScoreByUser(List<AssessmentPerformanceDto> performanceDtos) {
+        Map<String, BigDecimal> map = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(performanceDtos)) {
+            for (AssessmentPerformanceDto performanceDto : performanceDtos) {
+                if (map.containsKey(performanceDto.getByExaminePeople())) {
+                    BigDecimal bigDecimal = map.get(performanceDto.getByExaminePeople());
+                    map.put(performanceDto.getByExaminePeople(), performanceDto.getExamineScore().add(bigDecimal));
+                } else {
+                    map.put(performanceDto.getByExaminePeople(), performanceDto.getExamineScore());
+                }
+            }
+        }
+        return map;
     }
 }
