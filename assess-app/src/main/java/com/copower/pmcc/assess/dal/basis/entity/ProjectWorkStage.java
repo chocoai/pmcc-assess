@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProjectWorkStage {
@@ -17,15 +18,15 @@ public class ProjectWorkStage {
 
     private String boxName;
 
+    private BigDecimal managerReviewScore;
+
+    private BigDecimal ceReviewScore;
+
     private Integer stageSort;
 
     private Boolean bisEnable;
 
     private Boolean bisLoadDefalut;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
 
     private String boxRoleType;
 
@@ -40,6 +41,10 @@ public class ProjectWorkStage {
     private Integer specificGravity;
 
     private String reviewBoxName;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -97,6 +102,22 @@ public class ProjectWorkStage {
         this.boxName = boxName == null ? null : boxName.trim();
     }
 
+    public BigDecimal getManagerReviewScore() {
+        return managerReviewScore;
+    }
+
+    public void setManagerReviewScore(BigDecimal managerReviewScore) {
+        this.managerReviewScore = managerReviewScore;
+    }
+
+    public BigDecimal getCeReviewScore() {
+        return ceReviewScore;
+    }
+
+    public void setCeReviewScore(BigDecimal ceReviewScore) {
+        this.ceReviewScore = ceReviewScore;
+    }
+
     public Integer getStageSort() {
         return stageSort;
     }
@@ -119,22 +140,6 @@ public class ProjectWorkStage {
 
     public void setBisLoadDefalut(Boolean bisLoadDefalut) {
         this.bisLoadDefalut = bisLoadDefalut;
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
     }
 
     public String getBoxRoleType() {
@@ -191,5 +196,21 @@ public class ProjectWorkStage {
 
     public void setReviewBoxName(String reviewBoxName) {
         this.reviewBoxName = reviewBoxName == null ? null : reviewBoxName.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

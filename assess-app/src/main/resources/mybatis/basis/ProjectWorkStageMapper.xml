@@ -1,46 +1,48 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectWorkStageMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_class_id" property="projectClassId" jdbcType="INTEGER" />
-    <result column="project_type_id" property="projectTypeId" jdbcType="INTEGER" />
-    <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
-    <result column="work_stage_name" property="workStageName" jdbcType="VARCHAR" />
-    <result column="stage_form" property="stageForm" jdbcType="VARCHAR" />
-    <result column="box_name" property="boxName" jdbcType="VARCHAR" />
-    <result column="stage_sort" property="stageSort" jdbcType="INTEGER" />
-    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
-    <result column="bis_load_defalut" property="bisLoadDefalut" jdbcType="BIT" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="box_role_type" property="boxRoleType" jdbcType="VARCHAR" />
-    <result column="box_role_id" property="boxRoleId" jdbcType="INTEGER" />
-    <result column="box_role_key" property="boxRoleKey" jdbcType="VARCHAR" />
-    <result column="box_role_name" property="boxRoleName" jdbcType="VARCHAR" />
-    <result column="allow_issued" property="allowIssued" jdbcType="BIT" />
-    <result column="specific_gravity" property="specificGravity" jdbcType="INTEGER" />
-    <result column="review_box_name" property="reviewBoxName" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectWorkStageMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_class_id" jdbcType="INTEGER" property="projectClassId" />
+    <result column="project_type_id" jdbcType="INTEGER" property="projectTypeId" />
+    <result column="project_category_id" jdbcType="INTEGER" property="projectCategoryId" />
+    <result column="work_stage_name" jdbcType="VARCHAR" property="workStageName" />
+    <result column="stage_form" jdbcType="VARCHAR" property="stageForm" />
+    <result column="box_name" jdbcType="VARCHAR" property="boxName" />
+    <result column="manager_review_score" jdbcType="DECIMAL" property="managerReviewScore" />
+    <result column="ce_review_score" jdbcType="DECIMAL" property="ceReviewScore" />
+    <result column="stage_sort" jdbcType="INTEGER" property="stageSort" />
+    <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
+    <result column="bis_load_defalut" jdbcType="BIT" property="bisLoadDefalut" />
+    <result column="box_role_type" jdbcType="VARCHAR" property="boxRoleType" />
+    <result column="box_role_id" jdbcType="INTEGER" property="boxRoleId" />
+    <result column="box_role_key" jdbcType="VARCHAR" property="boxRoleKey" />
+    <result column="box_role_name" jdbcType="VARCHAR" property="boxRoleName" />
+    <result column="allow_issued" jdbcType="BIT" property="allowIssued" />
+    <result column="specific_gravity" jdbcType="INTEGER" property="specificGravity" />
+    <result column="review_box_name" jdbcType="VARCHAR" property="reviewBoxName" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -51,25 +53,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -80,250 +82,269 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, project_class_id, project_type_id, project_category_id, work_stage_name, stage_form, 
-    box_name, stage_sort, bis_enable, bis_load_defalut, gmt_created, gmt_modified, box_role_type, 
-    box_role_id, box_role_key, box_role_name, allow_issued, specific_gravity, review_box_name
+    box_name, manager_review_score, ce_review_score, stage_sort, bis_enable, bis_load_defalut, 
+    box_role_type, box_role_id, box_role_key, box_role_name, allow_issued, specific_gravity, 
+    review_box_name, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_project_work_stage
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_project_work_stage
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_project_work_stage
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageExample">
     delete from tb_project_work_stage
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_work_stage (project_class_id, project_type_id, project_category_id, 
       work_stage_name, stage_form, box_name, 
-      stage_sort, bis_enable, bis_load_defalut, 
-      gmt_created, gmt_modified, box_role_type, 
+      manager_review_score, ce_review_score, stage_sort, 
+      bis_enable, bis_load_defalut, box_role_type, 
       box_role_id, box_role_key, box_role_name, 
-      allow_issued, specific_gravity, review_box_name
-      )
+      allow_issued, specific_gravity, review_box_name, 
+      gmt_created, gmt_modified)
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{workStageName,jdbcType=VARCHAR}, #{stageForm,jdbcType=VARCHAR}, #{boxName,jdbcType=VARCHAR}, 
-      #{stageSort,jdbcType=INTEGER}, #{bisEnable,jdbcType=BIT}, #{bisLoadDefalut,jdbcType=BIT}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{boxRoleType,jdbcType=VARCHAR}, 
+      #{managerReviewScore,jdbcType=DECIMAL}, #{ceReviewScore,jdbcType=DECIMAL}, #{stageSort,jdbcType=INTEGER}, 
+      #{bisEnable,jdbcType=BIT}, #{bisLoadDefalut,jdbcType=BIT}, #{boxRoleType,jdbcType=VARCHAR}, 
       #{boxRoleId,jdbcType=INTEGER}, #{boxRoleKey,jdbcType=VARCHAR}, #{boxRoleName,jdbcType=VARCHAR}, 
-      #{allowIssued,jdbcType=BIT}, #{specificGravity,jdbcType=INTEGER}, #{reviewBoxName,jdbcType=VARCHAR}
-      )
+      #{allowIssued,jdbcType=BIT}, #{specificGravity,jdbcType=INTEGER}, #{reviewBoxName,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_work_stage
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="projectClassId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectClassId != null">
         project_class_id,
       </if>
-      <if test="projectTypeId != null" >
+      <if test="projectTypeId != null">
         project_type_id,
       </if>
-      <if test="projectCategoryId != null" >
+      <if test="projectCategoryId != null">
         project_category_id,
       </if>
-      <if test="workStageName != null" >
+      <if test="workStageName != null">
         work_stage_name,
       </if>
-      <if test="stageForm != null" >
+      <if test="stageForm != null">
         stage_form,
       </if>
-      <if test="boxName != null" >
+      <if test="boxName != null">
         box_name,
       </if>
-      <if test="stageSort != null" >
+      <if test="managerReviewScore != null">
+        manager_review_score,
+      </if>
+      <if test="ceReviewScore != null">
+        ce_review_score,
+      </if>
+      <if test="stageSort != null">
         stage_sort,
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         bis_enable,
       </if>
-      <if test="bisLoadDefalut != null" >
+      <if test="bisLoadDefalut != null">
         bis_load_defalut,
       </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-      <if test="boxRoleType != null" >
+      <if test="boxRoleType != null">
         box_role_type,
       </if>
-      <if test="boxRoleId != null" >
+      <if test="boxRoleId != null">
         box_role_id,
       </if>
-      <if test="boxRoleKey != null" >
+      <if test="boxRoleKey != null">
         box_role_key,
       </if>
-      <if test="boxRoleName != null" >
+      <if test="boxRoleName != null">
         box_role_name,
       </if>
-      <if test="allowIssued != null" >
+      <if test="allowIssued != null">
         allow_issued,
       </if>
-      <if test="specificGravity != null" >
+      <if test="specificGravity != null">
         specific_gravity,
       </if>
-      <if test="reviewBoxName != null" >
+      <if test="reviewBoxName != null">
         review_box_name,
       </if>
+      <if test="gmtCreated != null">
+        gmt_created,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="projectClassId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectClassId != null">
         #{projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="projectTypeId != null" >
+      <if test="projectTypeId != null">
         #{projectTypeId,jdbcType=INTEGER},
       </if>
-      <if test="projectCategoryId != null" >
+      <if test="projectCategoryId != null">
         #{projectCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="workStageName != null" >
+      <if test="workStageName != null">
         #{workStageName,jdbcType=VARCHAR},
       </if>
-      <if test="stageForm != null" >
+      <if test="stageForm != null">
         #{stageForm,jdbcType=VARCHAR},
       </if>
-      <if test="boxName != null" >
+      <if test="boxName != null">
         #{boxName,jdbcType=VARCHAR},
       </if>
-      <if test="stageSort != null" >
+      <if test="managerReviewScore != null">
+        #{managerReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="ceReviewScore != null">
+        #{ceReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="stageSort != null">
         #{stageSort,jdbcType=INTEGER},
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         #{bisEnable,jdbcType=BIT},
       </if>
-      <if test="bisLoadDefalut != null" >
+      <if test="bisLoadDefalut != null">
         #{bisLoadDefalut,jdbcType=BIT},
       </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="boxRoleType != null" >
+      <if test="boxRoleType != null">
         #{boxRoleType,jdbcType=VARCHAR},
       </if>
-      <if test="boxRoleId != null" >
+      <if test="boxRoleId != null">
         #{boxRoleId,jdbcType=INTEGER},
       </if>
-      <if test="boxRoleKey != null" >
+      <if test="boxRoleKey != null">
         #{boxRoleKey,jdbcType=VARCHAR},
       </if>
-      <if test="boxRoleName != null" >
+      <if test="boxRoleName != null">
         #{boxRoleName,jdbcType=VARCHAR},
       </if>
-      <if test="allowIssued != null" >
+      <if test="allowIssued != null">
         #{allowIssued,jdbcType=BIT},
       </if>
-      <if test="specificGravity != null" >
+      <if test="specificGravity != null">
         #{specificGravity,jdbcType=INTEGER},
       </if>
-      <if test="reviewBoxName != null" >
+      <if test="reviewBoxName != null">
         #{reviewBoxName,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStageExample" resultType="java.lang.Long">
     select count(*) from tb_project_work_stage
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_project_work_stage
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.projectClassId != null" >
+      <if test="record.projectClassId != null">
         project_class_id = #{record.projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="record.projectTypeId != null" >
+      <if test="record.projectTypeId != null">
         project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
       </if>
-      <if test="record.projectCategoryId != null" >
+      <if test="record.projectCategoryId != null">
         project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="record.workStageName != null" >
+      <if test="record.workStageName != null">
         work_stage_name = #{record.workStageName,jdbcType=VARCHAR},
       </if>
-      <if test="record.stageForm != null" >
+      <if test="record.stageForm != null">
         stage_form = #{record.stageForm,jdbcType=VARCHAR},
       </if>
-      <if test="record.boxName != null" >
+      <if test="record.boxName != null">
         box_name = #{record.boxName,jdbcType=VARCHAR},
       </if>
-      <if test="record.stageSort != null" >
+      <if test="record.managerReviewScore != null">
+        manager_review_score = #{record.managerReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ceReviewScore != null">
+        ce_review_score = #{record.ceReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stageSort != null">
         stage_sort = #{record.stageSort,jdbcType=INTEGER},
       </if>
-      <if test="record.bisEnable != null" >
+      <if test="record.bisEnable != null">
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
-      <if test="record.bisLoadDefalut != null" >
+      <if test="record.bisLoadDefalut != null">
         bis_load_defalut = #{record.bisLoadDefalut,jdbcType=BIT},
       </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.boxRoleType != null" >
+      <if test="record.boxRoleType != null">
         box_role_type = #{record.boxRoleType,jdbcType=VARCHAR},
       </if>
-      <if test="record.boxRoleId != null" >
+      <if test="record.boxRoleId != null">
         box_role_id = #{record.boxRoleId,jdbcType=INTEGER},
       </if>
-      <if test="record.boxRoleKey != null" >
+      <if test="record.boxRoleKey != null">
         box_role_key = #{record.boxRoleKey,jdbcType=VARCHAR},
       </if>
-      <if test="record.boxRoleName != null" >
+      <if test="record.boxRoleName != null">
         box_role_name = #{record.boxRoleName,jdbcType=VARCHAR},
       </if>
-      <if test="record.allowIssued != null" >
+      <if test="record.allowIssued != null">
         allow_issued = #{record.allowIssued,jdbcType=BIT},
       </if>
-      <if test="record.specificGravity != null" >
+      <if test="record.specificGravity != null">
         specific_gravity = #{record.specificGravity,jdbcType=INTEGER},
       </if>
-      <if test="record.reviewBoxName != null" >
+      <if test="record.reviewBoxName != null">
         review_box_name = #{record.reviewBoxName,jdbcType=VARCHAR},
       </if>
+      <if test="record.gmtCreated != null">
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_project_work_stage
     set id = #{record.id,jdbcType=INTEGER},
       project_class_id = #{record.projectClassId,jdbcType=INTEGER},
@@ -332,83 +353,91 @@
       work_stage_name = #{record.workStageName,jdbcType=VARCHAR},
       stage_form = #{record.stageForm,jdbcType=VARCHAR},
       box_name = #{record.boxName,jdbcType=VARCHAR},
+      manager_review_score = #{record.managerReviewScore,jdbcType=DECIMAL},
+      ce_review_score = #{record.ceReviewScore,jdbcType=DECIMAL},
       stage_sort = #{record.stageSort,jdbcType=INTEGER},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_load_defalut = #{record.bisLoadDefalut,jdbcType=BIT},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       box_role_type = #{record.boxRoleType,jdbcType=VARCHAR},
       box_role_id = #{record.boxRoleId,jdbcType=INTEGER},
       box_role_key = #{record.boxRoleKey,jdbcType=VARCHAR},
       box_role_name = #{record.boxRoleName,jdbcType=VARCHAR},
       allow_issued = #{record.allowIssued,jdbcType=BIT},
       specific_gravity = #{record.specificGravity,jdbcType=INTEGER},
-      review_box_name = #{record.reviewBoxName,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
+      review_box_name = #{record.reviewBoxName,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage">
     update tb_project_work_stage
-    <set >
-      <if test="projectClassId != null" >
+    <set>
+      <if test="projectClassId != null">
         project_class_id = #{projectClassId,jdbcType=INTEGER},
       </if>
-      <if test="projectTypeId != null" >
+      <if test="projectTypeId != null">
         project_type_id = #{projectTypeId,jdbcType=INTEGER},
       </if>
-      <if test="projectCategoryId != null" >
+      <if test="projectCategoryId != null">
         project_category_id = #{projectCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="workStageName != null" >
+      <if test="workStageName != null">
         work_stage_name = #{workStageName,jdbcType=VARCHAR},
       </if>
-      <if test="stageForm != null" >
+      <if test="stageForm != null">
         stage_form = #{stageForm,jdbcType=VARCHAR},
       </if>
-      <if test="boxName != null" >
+      <if test="boxName != null">
         box_name = #{boxName,jdbcType=VARCHAR},
       </if>
-      <if test="stageSort != null" >
+      <if test="managerReviewScore != null">
+        manager_review_score = #{managerReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="ceReviewScore != null">
+        ce_review_score = #{ceReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="stageSort != null">
         stage_sort = #{stageSort,jdbcType=INTEGER},
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
-      <if test="bisLoadDefalut != null" >
+      <if test="bisLoadDefalut != null">
         bis_load_defalut = #{bisLoadDefalut,jdbcType=BIT},
       </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="boxRoleType != null" >
+      <if test="boxRoleType != null">
         box_role_type = #{boxRoleType,jdbcType=VARCHAR},
       </if>
-      <if test="boxRoleId != null" >
+      <if test="boxRoleId != null">
         box_role_id = #{boxRoleId,jdbcType=INTEGER},
       </if>
-      <if test="boxRoleKey != null" >
+      <if test="boxRoleKey != null">
         box_role_key = #{boxRoleKey,jdbcType=VARCHAR},
       </if>
-      <if test="boxRoleName != null" >
+      <if test="boxRoleName != null">
         box_role_name = #{boxRoleName,jdbcType=VARCHAR},
       </if>
-      <if test="allowIssued != null" >
+      <if test="allowIssued != null">
         allow_issued = #{allowIssued,jdbcType=BIT},
       </if>
-      <if test="specificGravity != null" >
+      <if test="specificGravity != null">
         specific_gravity = #{specificGravity,jdbcType=INTEGER},
       </if>
-      <if test="reviewBoxName != null" >
+      <if test="reviewBoxName != null">
         review_box_name = #{reviewBoxName,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage">
     update tb_project_work_stage
     set project_class_id = #{projectClassId,jdbcType=INTEGER},
       project_type_id = #{projectTypeId,jdbcType=INTEGER},
@@ -416,18 +445,20 @@
       work_stage_name = #{workStageName,jdbcType=VARCHAR},
       stage_form = #{stageForm,jdbcType=VARCHAR},
       box_name = #{boxName,jdbcType=VARCHAR},
+      manager_review_score = #{managerReviewScore,jdbcType=DECIMAL},
+      ce_review_score = #{ceReviewScore,jdbcType=DECIMAL},
       stage_sort = #{stageSort,jdbcType=INTEGER},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_load_defalut = #{bisLoadDefalut,jdbcType=BIT},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       box_role_type = #{boxRoleType,jdbcType=VARCHAR},
       box_role_id = #{boxRoleId,jdbcType=INTEGER},
       box_role_key = #{boxRoleKey,jdbcType=VARCHAR},
       box_role_name = #{boxRoleName,jdbcType=VARCHAR},
       allow_issued = #{allowIssued,jdbcType=BIT},
       specific_gravity = #{specificGravity,jdbcType=INTEGER},
-      review_box_name = #{reviewBoxName,jdbcType=VARCHAR}
+      review_box_name = #{reviewBoxName,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

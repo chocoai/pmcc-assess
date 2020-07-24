@@ -41,7 +41,6 @@ import java.util.List;
 
 @Service
 public class ProjectAssessmentBonusService {
-    private final static Logger logger = LoggerFactory.getLogger(ProjectAssessmentBonusService.class);
     @Autowired
     private ProjectAssessmentBonusDao projectAssessmentBonusDao;
     @Autowired

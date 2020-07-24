@@ -121,6 +121,12 @@
                                                         项目拿号
                                                     </button>
                                                 </div>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-info btn-sm" type="button"
+                                                            onclick="projectDetails.projectReviewScore()">
+                                                        项目工分
+                                                    </button>
+                                                </div>
                                                 <c:if test="${companyName eq 'xinglx'}">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-info btn-sm" type="button"
@@ -262,6 +268,11 @@
         //项目拿号
         projectTakeNumber: function () {
             var url = "${pageContext.request.contextPath}/projectTakeNumber/apply?projectId=" + ${projectInfo.id};
+            window.open(url, '_blank');
+        },
+        //项目工分
+        projectReviewScore: function () {
+            var url = "${pageContext.request.contextPath}/projectReviewScore/apply?projectId=" + ${projectInfo.id};
             window.open(url, '_blank');
         },
         //终止

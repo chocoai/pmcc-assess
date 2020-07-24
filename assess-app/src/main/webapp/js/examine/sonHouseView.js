@@ -2496,7 +2496,7 @@ var houseRoom;
         },
         //自动生成
         autoGenerate() {
-            var huxingData = houseCommon.houseHuxingFormView.find("[name=huxingData]").val();
+            var huxingData = houseCommon.houseHuxingForm.find("[name=huxingData]").val();
             var houseId = houseCommon.getHouseId();
             if (houseRoom.prototype.isNotBlank(huxingData)) {
                 $.ajax({

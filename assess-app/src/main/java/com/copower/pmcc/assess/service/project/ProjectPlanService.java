@@ -62,37 +62,17 @@ public class ProjectPlanService {
     @Autowired
     private ProjectPlanDao projectPlanDao;
     @Autowired
-    private ProjectPhaseService projectPhaseService;
-    @Autowired
-    private ProjectPlanDetailsDao projectPlanDetailsDao;
-    @Autowired
     private ProjectWorkStageService projectWorkStageService;
-    @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
-    private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
-    @Autowired
-    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-    @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
-    @Autowired
-    private ErpRpcProjectService erpRpcProjectService;
-    @Autowired
-    private DdlMySqlAssist ddlMySqlAssist;
-    @Autowired
-    private ProjectInfoDao projectInfoDao;
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private RedissonClient redissonClient;
-    @Autowired
-    private CommonService commonService;
 
     public ProjectPlan getProjectplanByProcessInsId(String processInsId) {
         return projectPlanDao.getProjectPlanByProcessInsId(processInsId);
@@ -106,133 +86,8 @@ public class ProjectPlanService {
         return projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), status);
     }
 
-    public List<ProjectPlan> getProjectPlanList2(Integer projectId, Integer workStageId, Integer categoryId) {
-        return projectPlanDao.getProjectPlanList2(projectId, workStageId, categoryId);
-    }
-
     public List<ProjectPlan> getProjectPlanList(Integer projectId) {
         return projectPlanDao.getProjectPlanList(projectId);
-    }
-
-    public ProjectPlan getProjectPlan(Integer projectId, Integer stageSort) {
-        ProjectPlan where = new ProjectPlan();
-        where.setProjectId(projectId);
-        where.setStageSort(stageSort);
-        List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlan(where);
-        if (CollectionUtils.isNotEmpty(projectPlans)) return projectPlans.get(0);
-        return null;
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public Boolean initProjectPlanDetails(Integer planId) throws BusinessException {
-        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(planId);
-
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        if (!projectWorkStage.getBisLoadDefalut()) {
-            return false;//如果不加载默认工作事项，则不进行添加
-        }
-        List<ProjectPhase> projectPhases = projectPhaseService.getCacheProjectPhaseByCategoryId(projectPlan.getCategoryId());
-        List<ProjectPhase> filter = LangUtils.filter(projectPhases, o -> {
-            return o.getWorkStageId().equals(projectPlan.getWorkStageId());
-        });
-
-        for (ProjectPhase item : filter) {
-            ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-            projectPlanDetails.setProjectPhaseName(item.getProjectPhaseName());
-            projectPlanDetails.setPlanHours(item.getPhaseTime());
-            projectPlanDetails.setPlanId(projectPlan.getId());
-            projectPlanDetails.setProjectId(projectPlan.getProjectId());
-            projectPlanDetails.setProjectPhaseId(item.getId());
-            projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-            projectPlanDetails.setSorting(item.getPhaseSort());
-            projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());
-            projectPlanDetails.setFirstPid(0);
-            if (item.getPid() > 0) {
-                projectPlanDetails.setPid(item.getPid());
-            }
-            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-        }
-        // ddlMySqlAssist.customTableDdl(sql);//更新数据
-        //更新PID
-        List<ProjectPlanDetails> projectPlanDetailsByPlanAndPid = projectPlanDetailsDao.getProjectPlanDetailsByPlanAndPid(projectPlan.getId());
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsByPlanAndPid)) {
-            for (ProjectPlanDetails item : projectPlanDetailsByPlanAndPid) {
-
-                ProjectPlanDetails projectPlanDetailsPid = new ProjectPlanDetails();
-                projectPlanDetailsPid.setPlanId(item.getPlanId());
-                projectPlanDetailsPid.setProjectPhaseId(item.getPid());
-
-                List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsPid);
-                if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                    item.setPid(projectPlanDetailsList.get(0).getId());
-                    item.setBisLastLayer(true);
-                    projectPlanDetailsDao.updateProjectPlanDetails(item);
-                }
-                updatePid(item.getPid());
-            }
-        }
-        return true;
-    }
-
-    public void updateDetailsSorting(String detailsSoring) {
-        List<KeyValueDto> keyValueDtos = JSON.parseArray(detailsSoring, KeyValueDto.class);
-
-        StringBuilder stringBuilder = new StringBuilder();
-        String sql = "UPDATE tb_project_plan_details SET sorting=%s WHERE id=%s;";
-
-        for (KeyValueDto item : keyValueDtos) {
-            int sorting = 0;
-            Integer pid = Integer.valueOf(item.getExplain());
-            if (Integer.valueOf(item.getExplain()) > 0) {
-                sorting = Integer.valueOf(item.getValue()) - pid * 100;
-            } else {
-                sorting = Integer.valueOf(item.getValue()) - 1000;
-            }
-            String format = String.format(sql, sorting, item.getKey());
-            stringBuilder.append(format);
-        }
-        if (StringUtils.isNotBlank(stringBuilder.toString())) {
-            ddlMySqlAssist.customTableDdl(stringBuilder.toString());//更新数据
-        }
-    }
-
-    private void updatePid(Integer pid) {
-        if (pid > 0) {
-            //更新相应父级信息
-            ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
-            projectPlanDetailsWhere.setPid(pid);
-            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
-
-            if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pid);
-                projectPlanDetails.setBisLastLayer(false);
-                projectPlanDetails.setBisEnable(true);
-                projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-                updatePid(projectPlanDetails.getPid());
-            }
-        }
-    }
-
-    public void deletePlan(Integer detailsId) throws BusinessException {
-
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(detailsId);
-        int pid = projectPlanDetails.getPid();
-
-        //删除当前行，如果当前行是目录下的最后一行，则将上级设置为一级
-        if (!projectPlanDetailsDao.deleteProjectPlanDetails(detailsId)) {
-            throw new BusinessException(HttpReturnEnum.DELETEFAIL.getName());
-        }
-        if (pid > 0) {
-            ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
-            projectPlanDetailsWhere.setPid(pid);
-            List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
-            if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
-                projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pid);
-                projectPlanDetails.setBisLastLayer(true);
-                projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-            }
-        }
-
     }
 
     /**
@@ -360,7 +215,6 @@ public class ProjectPlanService {
             projectPlanWhere.setProjectId(projectPlan.getProjectId());
             projectPlanWhere.setBisRestart(false);
             List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlan(projectPlanWhere);
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
             List<ProjectPlan> filter = LangUtils.filter(projectPlans, o -> {
                 return (o.getStageSort().equals(currStageSort) && !o.getProjectStatus().equals(ProjectStatusEnum.FINISH.getKey()) && !o.getProjectStatus().equals(ProjectStatusEnum.CLOSE.getKey()));
             });
