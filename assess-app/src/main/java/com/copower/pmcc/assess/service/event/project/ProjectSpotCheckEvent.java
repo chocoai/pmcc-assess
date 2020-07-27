@@ -1,11 +1,9 @@
 package com.copower.pmcc.assess.service.event.project;
 
-import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScore;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
-import com.copower.pmcc.assess.service.project.ProjectAssessmentBonusService;
-import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectReviewScoreService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
@@ -13,18 +11,12 @@ import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @Component
-public class ProjectReviewScoreEvent extends BaseProcessEvent {
+public class ProjectSpotCheckEvent extends BaseProcessEvent {
     @Autowired
     private BaseService baseService;
     @Autowired

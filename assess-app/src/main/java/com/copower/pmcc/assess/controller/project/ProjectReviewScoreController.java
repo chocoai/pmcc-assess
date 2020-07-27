@@ -22,8 +22,13 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -115,11 +120,11 @@ public class ProjectReviewScoreController {
     @RequestMapping(value = "/getHistroyList", name = "获取历史数据列表")
     public BootstrapTableVo getHistroyList(Integer reviewId) {
         BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectReviewScoreItem> scoreItems = projectReviewScoreService.getHistoryReviewScoreItemsByMasterId(reviewId);
-        if(CollectionUtils.isNotEmpty(scoreItems)){
-            vo.setTotal((long) scoreItems.size());
-            vo.setRows(scoreItems);
-        }
+        vo.setTotal(page.getTotal());
+        vo.setRows(scoreItems);
         return vo;
     }
 

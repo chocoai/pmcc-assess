@@ -1,18 +1,18 @@
 <%--
   Created by IntelliJ IDEA.
   User: huhao
-  Date: 2018/01/29
-  Time: 15:50
+  Date: 2018/9/3
+  Time: 11:07
   To change this template use File | Settings | File Templates.
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>复核工时</title>
+    <title>外勤考核</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md">
+<body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -47,18 +47,9 @@
                                         <tbody>
                                         <c:forEach items="${keyValueDtos}" var="item">
                                             <tr>
-                                                <td scope="col">
-                                                        ${item.key}<input type="hidden" name="key" value="${item.key}">
-                                                </td>
-                                                <td scope="col">
-                                                    <input type="text" data-rule-number="true" required
-                                                           class="form-control input-full"
-                                                           name="value" value="${item.value}">
-                                                </td>
-                                                <td scope="col">
-                                                    <input type="text" class="form-control input-full"
-                                                           name="explain" value="${item.explain}">
-                                                </td>
+                                                <td scope="col">${item.key}</td>
+                                                <td scope="col">${item.value}</td>
+                                                <td scope="col">${item.explain}</td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -86,23 +77,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-                        <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                                取消
-                            </button>
-                            <button id="commit_btn" style="margin-left: 10px;" class="btn btn-primary"
-                                    onclick="applySumit();">
-                                提交
-                            </button>
-                        </div>
-                    </div>
-                    <c:if test="${not empty processInsId and processInsId != 0}">
-                        <%@include file="/views/share/form_log.jsp" %>
-                        <form id="process_variable_form">
-                            <%@include file="/views/share/form_edit.jsp" %>
-                        </form>
-                    </c:if>
+                    <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
         </div>
@@ -113,12 +88,9 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        reviewScore.loadHistoryList();
+        loadHistoryList();
     })
-
-    var reviewScore = {};
-
-    reviewScore.loadHistoryList = function () {
+    function loadHistoryList() {
         var cols = [];
         cols.push({field: 'creatorName', title: '填写人', width: '10%'});
         cols.push({
@@ -131,12 +103,13 @@
                 var str = '';
                 if (value) {
                     var json = JSON.parse(value);
-                    $.each(json, function (i, item) {
-                        str += item.key + "【" + item.value + "】" + item.explain + '<br/>';
+                    $.each(json,function (i,item) {
+                        str+=item.key+"【"+item.value+"】"+item.explain+'<br/>';
                     })
                 }
                 return str;
             }
+
         });
         $("#tbHistoryList").bootstrapTable('destroy');
         TableInit("tbHistoryList", "${pageContext.request.contextPath}/projectReviewScore/getHistroyList", cols, {
@@ -149,54 +122,5 @@
                 $(".tooltips").tooltip();
             }
         });
-    }
-
-    function applySumit() {
-        if (!$('#frmRevieScore').valid()) {
-            return false;
-        }
-        var trs = $('#frmRevieScore').find('tbody tr');
-        var data = {};
-        var contentArray = [];
-        var totalScore = null;
-        trs.each(function (i, item) {
-            var keyValue = {};
-            keyValue.key = $(item).find('[name=key]').val();
-            keyValue.value = $(item).find('[name=value]').val();
-            keyValue.explain = $(item).find('[name=explain]').val();
-            if (keyValue.value) {
-                totalScore += parseFloat(keyValue.value);
-            }
-            contentArray.push(keyValue);
-        })
-        data.content = contentArray;
-        data.totalScore = totalScore;
-        if ('${processInsId}' == '' || '${processInsId}' == '0') {
-            $.post('${pageContext.request.contextPath}/projectReviewScore/applyCommit', {
-                formData: JSON.stringify(data),
-                projectId: '${projectInfo.id}'
-            }, function (result) {
-                if (result.ret) {
-                    AlertSuccess('成功', '提交成功', function () {
-                        window.close();
-                    })
-                } else {
-                    AlertError('失败', result.errmsg);
-                }
-            }, 'json');
-        } else {
-            data.masterId = '${projectReviewScore.id}';
-            var jsonData = formSerializeArray($("#process_variable_form"));
-            jsonData.formData = JSON.stringify(data);
-            $.post('${pageContext.request.contextPath}/projectReviewScore/editCommit', jsonData, function (result) {
-                if (result.ret) {
-                    AlertSuccess('成功', '提交成功', function () {
-                        window.close();
-                    })
-                } else {
-                    AlertError('失败', result.errmsg);
-                }
-            }, 'json');
-        }
     }
 </script>
