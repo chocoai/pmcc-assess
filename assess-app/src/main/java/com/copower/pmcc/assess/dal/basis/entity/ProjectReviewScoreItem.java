@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProjectReviewScoreItem {
@@ -8,6 +9,8 @@ public class ProjectReviewScoreItem {
     private Integer masterId;
 
     private String content;
+
+    private BigDecimal totalScore;
 
     private Boolean bisEnable;
 
@@ -39,6 +42,14 @@ public class ProjectReviewScoreItem {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public BigDecimal getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(BigDecimal totalScore) {
+        this.totalScore = totalScore;
     }
 
     public Boolean getBisEnable() {

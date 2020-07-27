@@ -48,6 +48,10 @@ public enum BaseParameterEnum {
     ASSESSMENT_TASK_GENERATE_DATE("assessment.task.generate.date", "生成考核任务时间", "sys"),
     ASSESSMENT_TASK_GENERATE_PROJECT_ID("assessment.task.generate.project.id", "生成考核任务项目id", "box"),
 
+    PROJECT_REVIEW_PROCESS_KEY("project.review.process.key", "复核工时考核流程", "box"),
+    PROJECT_LEGWORK_PROCESS_KEY("project.legwork.process.key", "外勤加分考核流程", "box"),
+    PROJECT_SPOT_CHECK_PROCESS_KEY("project.spot.check.process.key", "项目抽查考核流程", "box"),
+
     NET_INFO_COMPLEMENT_PROCESS_KEY("net.info.complement.process.key", "拍卖信息补全", "box"),
     NET_INFO_UPGRADE_PROCESS_KEY("net.info.upgrade.process.key", "拍卖信息升级", "box"),
     CASE_BASE_INFO_APPLY_KEY("case.base.info.apply.key", "案例信息申请key", "box"),

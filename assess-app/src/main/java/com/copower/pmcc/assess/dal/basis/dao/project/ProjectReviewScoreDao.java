@@ -72,6 +72,12 @@ public class ProjectReviewScoreDao {
         return projectReviewScoreMapper.updateByExampleSelective(record, example);
     }
 
+    public Long getProjectReviewScoreCount(Integer projectId) {
+        ProjectReviewScoreExample example = new ProjectReviewScoreExample();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+        return projectReviewScoreMapper.countByExample(example);
+    }
+
     //----------------------------------------------------------------------------------
 
     public ProjectReviewScoreItem getProjectReviewScoreItemById(Integer id){

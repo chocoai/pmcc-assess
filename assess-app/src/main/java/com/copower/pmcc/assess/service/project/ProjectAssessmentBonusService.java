@@ -57,7 +57,7 @@ public class ProjectAssessmentBonusService {
     }
 
     public void saveAssessmentBonus(ProjectAssessmentBonus assessmentBonus) {
-        if (assessmentBonus.getId() != null || assessmentBonus.getId() > 0) {
+        if (assessmentBonus.getId() != null && assessmentBonus.getId() > 0) {
             projectAssessmentBonusDao.updateAssessmentBonus(assessmentBonus);
         } else {
             assessmentBonus.setCreator(commonService.thisUserAccount());
@@ -66,7 +66,7 @@ public class ProjectAssessmentBonusService {
     }
 
     public void saveAssessmentBonusItem(ProjectAssessmentBonusItem assessmentBonusItem) {
-        if (assessmentBonusItem.getId() != null || assessmentBonusItem.getId() > 0) {
+        if (assessmentBonusItem.getId() != null && assessmentBonusItem.getId() > 0) {
             projectAssessmentBonusDao.updateAssessmentBonusItem(assessmentBonusItem);
         } else {
             assessmentBonusItem.setCreator(commonService.thisUserAccount());

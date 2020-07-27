@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="master_id" jdbcType="INTEGER" property="masterId" />
     <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="total_score" jdbcType="DECIMAL" property="totalScore" />
     <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, master_id, content, bis_enable, creator, gmt_created, gmt_modified
+    id, master_id, content, total_score, bis_enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItemExample" resultMap="BaseResultMap">
     select
@@ -105,12 +106,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_review_score_item (master_id, content, bis_enable, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{masterId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_project_review_score_item (master_id, content, total_score, 
+      bis_enable, creator, gmt_created, 
+      gmt_modified)
+    values (#{masterId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{totalScore,jdbcType=DECIMAL}, 
+      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -123,6 +124,9 @@
       </if>
       <if test="content != null">
         content,
+      </if>
+      <if test="totalScore != null">
+        total_score,
       </if>
       <if test="bisEnable != null">
         bis_enable,
@@ -143,6 +147,9 @@
       </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="totalScore != null">
+        #{totalScore,jdbcType=DECIMAL},
       </if>
       <if test="bisEnable != null">
         #{bisEnable,jdbcType=BIT},
@@ -176,6 +183,9 @@
       <if test="record.content != null">
         content = #{record.content,jdbcType=VARCHAR},
       </if>
+      <if test="record.totalScore != null">
+        total_score = #{record.totalScore,jdbcType=DECIMAL},
+      </if>
       <if test="record.bisEnable != null">
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
@@ -198,6 +208,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       master_id = #{record.masterId,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
+      total_score = #{record.totalScore,jdbcType=DECIMAL},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -214,6 +225,9 @@
       </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="totalScore != null">
+        total_score = #{totalScore,jdbcType=DECIMAL},
       </if>
       <if test="bisEnable != null">
         bis_enable = #{bisEnable,jdbcType=BIT},
@@ -234,6 +248,7 @@
     update tb_project_review_score_item
     set master_id = #{masterId,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
+      total_score = #{totalScore,jdbcType=DECIMAL},
       bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
