@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -512,6 +513,126 @@ public class ProjectSpotCheckExample {
 
         public Criteria andProcessInsIdNotBetween(String value1, String value2) {
             addCriterion("process_ins_id not between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreIsNull() {
+            addCriterion("work_hour_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreIsNotNull() {
+            addCriterion("work_hour_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreEqualTo(BigDecimal value) {
+            addCriterion("work_hour_score =", value, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreNotEqualTo(BigDecimal value) {
+            addCriterion("work_hour_score <>", value, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreGreaterThan(BigDecimal value) {
+            addCriterion("work_hour_score >", value, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("work_hour_score >=", value, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreLessThan(BigDecimal value) {
+            addCriterion("work_hour_score <", value, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("work_hour_score <=", value, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreIn(List<BigDecimal> values) {
+            addCriterion("work_hour_score in", values, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreNotIn(List<BigDecimal> values) {
+            addCriterion("work_hour_score not in", values, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("work_hour_score between", value1, value2, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("work_hour_score not between", value1, value2, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreIsNull() {
+            addCriterion("quality_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreIsNotNull() {
+            addCriterion("quality_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreEqualTo(BigDecimal value) {
+            addCriterion("quality_score =", value, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreNotEqualTo(BigDecimal value) {
+            addCriterion("quality_score <>", value, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreGreaterThan(BigDecimal value) {
+            addCriterion("quality_score >", value, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("quality_score >=", value, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreLessThan(BigDecimal value) {
+            addCriterion("quality_score <", value, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("quality_score <=", value, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreIn(List<BigDecimal> values) {
+            addCriterion("quality_score in", values, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreNotIn(List<BigDecimal> values) {
+            addCriterion("quality_score not in", values, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("quality_score between", value1, value2, "qualityScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("quality_score not between", value1, value2, "qualityScore");
             return (Criteria) this;
         }
 

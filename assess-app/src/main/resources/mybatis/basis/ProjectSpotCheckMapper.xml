@@ -8,6 +8,8 @@
     <result column="spot_month" jdbcType="VARCHAR" property="spotMonth" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="process_ins_id" jdbcType="VARCHAR" property="processInsId" />
+    <result column="work_hour_score" jdbcType="DECIMAL" property="workHourScore" />
+    <result column="quality_score" jdbcType="DECIMAL" property="qualityScore" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
@@ -72,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, title, by_spot_user, spot_month, remark, process_ins_id, status, creator, gmt_created, 
-    gmt_modified
+    id, title, by_spot_user, spot_month, remark, process_ins_id, work_hour_score, quality_score, 
+    status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckExample" resultMap="BaseResultMap">
     select
@@ -110,13 +112,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_spot_check (title, by_spot_user, spot_month, 
-      remark, process_ins_id, status, 
-      creator, gmt_created, gmt_modified
-      )
+      remark, process_ins_id, work_hour_score, 
+      quality_score, status, creator, 
+      gmt_created, gmt_modified)
     values (#{title,jdbcType=VARCHAR}, #{bySpotUser,jdbcType=VARCHAR}, #{spotMonth,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{remark,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, #{workHourScore,jdbcType=DECIMAL}, 
+      #{qualityScore,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -138,6 +140,12 @@
       </if>
       <if test="processInsId != null">
         process_ins_id,
+      </if>
+      <if test="workHourScore != null">
+        work_hour_score,
+      </if>
+      <if test="qualityScore != null">
+        quality_score,
       </if>
       <if test="status != null">
         status,
@@ -167,6 +175,12 @@
       </if>
       <if test="processInsId != null">
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="workHourScore != null">
+        #{workHourScore,jdbcType=DECIMAL},
+      </if>
+      <if test="qualityScore != null">
+        #{qualityScore,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
@@ -209,6 +223,12 @@
       <if test="record.processInsId != null">
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.workHourScore != null">
+        work_hour_score = #{record.workHourScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.qualityScore != null">
+        quality_score = #{record.qualityScore,jdbcType=DECIMAL},
+      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -234,6 +254,8 @@
       spot_month = #{record.spotMonth,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      work_hour_score = #{record.workHourScore,jdbcType=DECIMAL},
+      quality_score = #{record.qualityScore,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -260,6 +282,12 @@
       <if test="processInsId != null">
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="workHourScore != null">
+        work_hour_score = #{workHourScore,jdbcType=DECIMAL},
+      </if>
+      <if test="qualityScore != null">
+        quality_score = #{qualityScore,jdbcType=DECIMAL},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -282,6 +310,8 @@
       spot_month = #{spotMonth,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      work_hour_score = #{workHourScore,jdbcType=DECIMAL},
+      quality_score = #{qualityScore,jdbcType=DECIMAL},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

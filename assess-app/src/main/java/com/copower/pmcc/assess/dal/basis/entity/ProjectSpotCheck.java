@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProjectSpotCheck {
@@ -14,6 +15,10 @@ public class ProjectSpotCheck {
     private String remark;
 
     private String processInsId;
+
+    private BigDecimal workHourScore;
+
+    private BigDecimal qualityScore;
 
     private String status;
 
@@ -69,6 +74,22 @@ public class ProjectSpotCheck {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public BigDecimal getWorkHourScore() {
+        return workHourScore;
+    }
+
+    public void setWorkHourScore(BigDecimal workHourScore) {
+        this.workHourScore = workHourScore;
+    }
+
+    public BigDecimal getQualityScore() {
+        return qualityScore;
+    }
+
+    public void setQualityScore(BigDecimal qualityScore) {
+        this.qualityScore = qualityScore;
     }
 
     public String getStatus() {
