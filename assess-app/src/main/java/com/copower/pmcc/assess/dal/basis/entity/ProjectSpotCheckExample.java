@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.dal.basis.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class ProjectSpotCheckExample {
@@ -104,32 +103,6 @@ public class ProjectSpotCheckExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -342,53 +315,63 @@ public class ProjectSpotCheckExample {
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthEqualTo(Date value) {
-            addCriterionForJDBCDate("spot_month =", value, "spotMonth");
+        public Criteria andSpotMonthEqualTo(String value) {
+            addCriterion("spot_month =", value, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthNotEqualTo(Date value) {
-            addCriterionForJDBCDate("spot_month <>", value, "spotMonth");
+        public Criteria andSpotMonthNotEqualTo(String value) {
+            addCriterion("spot_month <>", value, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthGreaterThan(Date value) {
-            addCriterionForJDBCDate("spot_month >", value, "spotMonth");
+        public Criteria andSpotMonthGreaterThan(String value) {
+            addCriterion("spot_month >", value, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("spot_month >=", value, "spotMonth");
+        public Criteria andSpotMonthGreaterThanOrEqualTo(String value) {
+            addCriterion("spot_month >=", value, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthLessThan(Date value) {
-            addCriterionForJDBCDate("spot_month <", value, "spotMonth");
+        public Criteria andSpotMonthLessThan(String value) {
+            addCriterion("spot_month <", value, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("spot_month <=", value, "spotMonth");
+        public Criteria andSpotMonthLessThanOrEqualTo(String value) {
+            addCriterion("spot_month <=", value, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthIn(List<Date> values) {
-            addCriterionForJDBCDate("spot_month in", values, "spotMonth");
+        public Criteria andSpotMonthLike(String value) {
+            addCriterion("spot_month like", value, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthNotIn(List<Date> values) {
-            addCriterionForJDBCDate("spot_month not in", values, "spotMonth");
+        public Criteria andSpotMonthNotLike(String value) {
+            addCriterion("spot_month not like", value, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("spot_month between", value1, value2, "spotMonth");
+        public Criteria andSpotMonthIn(List<String> values) {
+            addCriterion("spot_month in", values, "spotMonth");
             return (Criteria) this;
         }
 
-        public Criteria andSpotMonthNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("spot_month not between", value1, value2, "spotMonth");
+        public Criteria andSpotMonthNotIn(List<String> values) {
+            addCriterion("spot_month not in", values, "spotMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotMonthBetween(String value1, String value2) {
+            addCriterion("spot_month between", value1, value2, "spotMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpotMonthNotBetween(String value1, String value2) {
+            addCriterion("spot_month not between", value1, value2, "spotMonth");
             return (Criteria) this;
         }
 

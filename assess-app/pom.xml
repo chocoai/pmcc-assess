@@ -10,8 +10,6 @@
     <packaging>war</packaging>
     <name>assess-app Maven Webapp</name>
     <url>http://maven.apache.org</url>
-
-
     <properties>
         <file_encoding>UTF-8</file_encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -221,31 +219,27 @@
             <version>16.4.0</version>
         </dependency>
 
+        <!-- pdf 组件 -->
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <version>${pdfbox.version}</version>
         </dependency>
-
-        <!-- pdf 组件 -->
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>fontbox</artifactId>
             <version>${pdfbox.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>xmpbox</artifactId>
             <version>${pdfbox.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>preflight</artifactId>
             <version>${pdfbox.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox-tools</artifactId>

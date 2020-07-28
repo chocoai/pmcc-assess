@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
@@ -20,6 +21,7 @@ import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -28,9 +30,11 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +69,7 @@ public class ProjectSpotCheckController {
     @RequestMapping(value = "/index", name = "项目抽查信息页面", method = {RequestMethod.GET})
     public ModelAndView index() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/assessment/spotCheckIndex");
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         return modelAndView;
     }
 
@@ -74,8 +79,21 @@ public class ProjectSpotCheckController {
         return projectSpotCheckService.getProjectSpotCheckList();
     }
 
+    @ResponseBody
+    @PostMapping(value = "/saveSpotCheck", name = "保存抽查主表")
+    public HttpResult saveSpotCheck(String formData) {
+        try {
+            ProjectSpotCheck spotCheck = JSON.parseObject(formData, ProjectSpotCheck.class);
+            projectSpotCheckService.saveSpotCheck(spotCheck);
+            return HttpResult.newCorrectResult(spotCheck);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
     @RequestMapping(value = "/apply", name = "申请页面")
-    public ModelAndView apply() throws BusinessException {
+    public ModelAndView apply(Integer spotId) throws BusinessException {
         String boxKey = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_SPOT_CHECK_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxKey);
         if (boxReDto == null || boxReDto.getId() == null) {
@@ -95,43 +113,66 @@ public class ProjectSpotCheckController {
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
         List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
         modelAndView.addObject("projectCategoryList", keyValueDtoList);
+
+        modelAndView.addObject("projectSpotCheck", projectSpotCheckService.getSpotCheckVoById(spotId));
         return modelAndView;
     }
 
     @RequestMapping(value = "/edit", name = "返回修改页面")
     public ModelAndView edit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/spotCheckApply", processInsId, boxId, taskId, agentUserAccount);
-        setModelViewParam(modelAndView, processInsId);
+        ProjectSpotCheck projectSpotCheck = projectSpotCheckService.getSpotCheckByProcessInsId(processInsId);
+        modelAndView.addObject("projectSpotCheck", projectSpotCheckService.getSpotCheckVo(projectSpotCheck));
         return modelAndView;
     }
 
     @RequestMapping(value = "/approval", name = "审核页面")
     public ModelAndView approval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/spotCheckApproval", processInsId, boxId, taskId, agentUserAccount);
-        setModelViewParam(modelAndView, processInsId);
+        ProjectSpotCheck projectSpotCheck = projectSpotCheckService.getSpotCheckByProcessInsId(processInsId);
+        modelAndView.addObject("projectSpotCheck", projectSpotCheckService.getSpotCheckVo(projectSpotCheck));
         return modelAndView;
     }
 
     @RequestMapping(value = "/detail", name = "详情页面")
-    public ModelAndView detail(String processInsId, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/spotCheckDetail", processInsId, boxId, "-1", "agentUserAccount");
-        setModelViewParam(modelAndView, processInsId);
+    public ModelAndView detail(String processInsId, Integer boxId, Integer spotId) throws BusinessException {
+        ModelAndView modelAndView= null;
+        if (StringUtils.isNotBlank(processInsId)) {
+            modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/spotCheckDetail", processInsId, boxId, "-1", "");
+            ProjectSpotCheck projectSpotCheck = projectSpotCheckService.getSpotCheckByProcessInsId(processInsId);
+            modelAndView.addObject("projectSpotCheck", projectSpotCheckService.getSpotCheckVo(projectSpotCheck));
+        } else if (spotId != null) {
+            String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_SPOT_CHECK_PROCESS_KEY);
+            BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
+            modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/spotCheckDetail", "0", boxReDto.getId(), "-1", "");
+            modelAndView.addObject("projectSpotCheck", projectSpotCheckService.getSpotCheckVoById(spotId));
+        }
         return modelAndView;
     }
 
-    private void setModelViewParam(ModelAndView modelAndView, String processInsId) {
-        ProjectSpotCheck spotCheck = projectSpotCheckService.getSpotCheckByProcessInsId(processInsId);
-        ProjectSpotCheckItem spotCheckItem = projectSpotCheckService.getEnableSpotCheckItemsByMasterId(spotCheck.getId());
-        if (spotCheckItem != null) {
-            modelAndView.addObject("keyValueDtos", projectSpotCheckService.getSpotCheckItemVo(spotCheckItem).getKeyValueDtos());
+    @ResponseBody
+    @PostMapping(value = "/selectProject", name = "选择项目")
+    public HttpResult selectProject(String projectIds, Integer spotId) {
+        try {
+            projectSpotCheckService.selectProject(projectIds, spotId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getHistroyList", name = "获取历史数据列表")
-    public BootstrapTableVo getHistroyList(Integer reviewId) {
+    @RequestMapping(value = "/getProjectSpotCheckItemList", name = "获取抽查项目数据列表")
+    public BootstrapTableVo getProjectSpotCheckItemList(Integer spotId) {
+        return projectSpotCheckService.getProjectSpotCheckItemList(spotId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getHistroyScoreList", name = "获取历史数据列表")
+    public BootstrapTableVo getHistroyScoreList(Integer itemId) {
         BootstrapTableVo vo = new BootstrapTableVo();
-        List<ProjectSpotCheckItem> scoreItems = projectSpotCheckService.getHistorySpotCheckItemsByMasterId(reviewId);
+        List<ProjectSpotCheckScore> scoreItems = projectSpotCheckService.getHistoryScoresByItemId(itemId);
         if (CollectionUtils.isNotEmpty(scoreItems)) {
             vo.setTotal((long) scoreItems.size());
             vo.setRows(scoreItems);
@@ -140,10 +181,22 @@ public class ProjectSpotCheckController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/applyCommit", name = "申请提交")
-    public HttpResult applyCommit(String formData, Integer projectId) {
+    @RequestMapping(value = "/getSpotCheckScoreContent", name = "获取内容信息")
+    public HttpResult getSpotCheckScoreContent(Integer itemId, Integer projectId) {
         try {
-            projectSpotCheckService.applyCommit(formData, projectId);
+            List<KeyValueDto> content = projectSpotCheckService.getSpotCheckScoreContent(itemId, projectId);
+            return HttpResult.newCorrectResult(content);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/applyCommit", name = "申请提交")
+    public HttpResult applyCommit(String formData) {
+        try {
+            projectSpotCheckService.applyCommit(formData);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -155,8 +208,8 @@ public class ProjectSpotCheckController {
     @PostMapping(value = "/editCommit", name = "返回修改提交")
     public HttpResult editCommit(String formData, ApprovalModelDto approvalModelDto) {
         try {
-            ProjectSpotCheckItem projectSpotCheckItem = JSON.parseObject(formData, ProjectSpotCheckItem.class);
-            projectSpotCheckService.addSpotCheckItem(projectSpotCheckItem);
+            ProjectSpotCheck spotCheck = JSON.parseObject(formData, ProjectSpotCheck.class);
+            projectSpotCheckService.saveSpotCheck(spotCheck);
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
@@ -177,12 +230,12 @@ public class ProjectSpotCheckController {
         }
     }
 
-    @PostMapping(value = "/saveSpotCheckItem", name = "保存抽查明细数据")
+    @PostMapping(value = "/saveSpotCheckScore", name = "保存抽查得分数据")
     @ResponseBody
-    public HttpResult saveSpotCheckItem(String formData) {
+    public HttpResult saveSpotCheckScore(String formData) {
         try {
-            ProjectSpotCheckItem projectSpotCheckItem = JSON.parseObject(formData, ProjectSpotCheckItem.class);
-            projectSpotCheckService.addSpotCheckItem(projectSpotCheckItem);
+            ProjectSpotCheckScore projectSpotCheckScore = JSON.parseObject(formData, ProjectSpotCheckScore.class);
+            projectSpotCheckService.addSpotCheckScore(projectSpotCheckScore);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存抽查明细数据失败", e);

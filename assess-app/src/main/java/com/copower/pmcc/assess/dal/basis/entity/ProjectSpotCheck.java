@@ -9,7 +9,7 @@ public class ProjectSpotCheck {
 
     private String bySpotUser;
 
-    private Date spotMonth;
+    private String spotMonth;
 
     private String remark;
 
@@ -47,12 +47,12 @@ public class ProjectSpotCheck {
         this.bySpotUser = bySpotUser == null ? null : bySpotUser.trim();
     }
 
-    public Date getSpotMonth() {
+    public String getSpotMonth() {
         return spotMonth;
     }
 
-    public void setSpotMonth(Date spotMonth) {
-        this.spotMonth = spotMonth;
+    public void setSpotMonth(String spotMonth) {
+        this.spotMonth = spotMonth == null ? null : spotMonth.trim();
     }
 
     public String getRemark() {

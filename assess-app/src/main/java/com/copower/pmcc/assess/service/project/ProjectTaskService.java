@@ -42,6 +42,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +64,7 @@ import java.util.List;
  */
 @Service
 public class ProjectTaskService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
@@ -182,8 +185,10 @@ public class ProjectTaskService {
                 bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
             }
         } catch (BusinessException e) {
+            logger.error(e.getMessage(),e);
             throw new BusinessException(e.getMessage());
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
                 bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());
             }

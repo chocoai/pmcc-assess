@@ -40,7 +40,7 @@
                                             查询
                                         </button>
                                         <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                onclick="openWindow();"><span class="btn-label"><i
+                                                onclick="showSpotCheckModal();"><span class="btn-label"><i
                                                 class="fa fa-plus"></i></span>
                                             新增
                                         </button>
@@ -57,29 +57,109 @@
     </div>
 </div>
 </body>
+<%--填写考核基础信息--%>
+<div id="spotCheckModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">抽查考核</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmSpotCheck" class="form-horizontal">
+                    <div class="form-group form-inline">
+                        <label class="col-sm-2 col-form-label">抽查月份<span class="symbol required"></span></label>
+                        <div class="col-sm-10">
+                            <input type="text" data-rule-maxlength="50" placeholder="抽查月份"
+                                   name="spotMonth" readonly="readonly" required
+                                   class="form-control input-full date-picker dbdate-month"
+                                   data-date-format="yyyy-mm">
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label class="col-sm-2 col-form-label">被抽查人<span class="symbol required"></span></label>
+                        <div class="col-sm-10">
+                            <input type="hidden" name="bySpotUser" data-title="account">
+                            <input type="text" data-rule-maxlength="50" placeholder="被抽查人"
+                                   name="bySpotUserName" required data-title="name"
+                                   readonly="readonly" onclick="selectUser(this);"
+                                   class="form-control input-full">
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label class="col-sm-2 col-form-label">标题<span
+                                class="symbol required"></span></label>
+                        <div class="col-sm-10">
+                            <input type="text" data-rule-maxlength="100" onfocus="titleFocus(this);" placeholder="标题"
+                                   name="title"
+                                   class="form-control input-full">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveSpotCheck();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     $(function () {
         loadProjectSpotCheckList();
+
+        //月份选择处理
+        DatepickerUtils.initDate($('.dbdate-month'), {
+            autoclose: true,
+            todayBtn: "linked",
+            language: "zh-CN",
+            clearBtn: true,
+            format: 'yyyy-mm',
+            startView: 4,
+            minView: 3
+        });
     });
 
     //加载抽查数据列表
     function loadProjectSpotCheckList() {
         var cols = [];
-        cols.push({field: 'creatorName', title: '填写人', width: '10%'});
+        cols.push({field: 'title', title: '标题', width: '40%'});
+        cols.push({field: 'bySpotUserName', title: '被抽查人', width: '20%'});
         cols.push({
-            field: 'gmtCreated', title: '填写时间', width: '14%', formatter: function (value, row, index) {
+            field: 'gmtCreated', title: '抽查时间', width: '20%', formatter: function (value, row, index) {
                 return formatDate(row.gmtCreated, true);
             }
         });
         cols.push({
-            field: 'content', title: '内容', width: '70%', formatter: function (value, row, index) {
-                var str = '';
-                if (value) {
-                    var json = JSON.parse(value);
-                    $.each(json, function (i, item) {
-                        str += item.key + "【" + item.value + "】" + item.explain + '<br/>';
-                    })
+            field: 'status', title: '状态',  width: '10%', formatter: function (value, row, index) {
+                var str = "";
+                switch (value) {
+                    case "runing": {
+                        str = "<span class='label label-info'>" + "进行中" + "</span>";
+                        break;
+                    }
+                    case "finish": {
+                        str = "<span class='label label-success'>" + "已完成" + "</span>";
+                        break;
+                    }
                 }
+                return str;
+            }
+        });
+        cols.push({
+            field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
+                var str = '';
+                str += '<button type="button" onclick="viewDetail(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -96,9 +176,57 @@
         });
     }
 
-    //新增批次
-    function openWindow() {
-        window.open("${pageContext.request.contextPath}/projectSpotCheck/apply");
+    //选择人员
+    function selectUser(_this) {
+        var div = $(_this).closest("div");
+        erpEmployee.select({
+            currOrgId: '${companyId}',
+            showAllUser: 2,
+            onSelected: function (data) {
+                div.find("input[data-title='name']").val(data.name);
+                div.find("input[data-title='account']").val(data.account);
+            }
+        });
+    }
+
+    //自动生成标题
+    function titleFocus(_this) {
+        var form = $(_this).closest('form');
+        var spotMonth = form.find('[name=spotMonth]').val();
+        var name = form.find('[name=bySpotUserName]').val();
+        form.find('[name=title]').val(spotMonth + name + "项目抽查考核");
+    }
+
+    //显示窗口
+    function showSpotCheckModal() {
+        $('#frmSpotCheck').clearAll();
+        $('#spotCheckModal').modal();
+    }
+
+    //保存数据
+    function saveSpotCheck() {
+        if (!$('#frmSpotCheck').valid()) {
+            return false;
+        }
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheck',
+            data: {formData: JSON.stringify(formSerializeArray($('#frmSpotCheck')))},
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    $('#spotCheckModal').modal('hide');
+                    window.open("${pageContext.request.contextPath}/projectSpotCheck/apply?spotId=" + result.data.id);
+                } else {
+                    AlertError('错误', result.errmsg);
+                }
+            }
+        })
+    }
+
+    //查看详情
+    function viewDetail(id) {
+        window.open('${pageContext.request.contextPath}/projectSpotCheck/detail?spotId='+id)
     }
 </script>
 

@@ -1,15 +1,18 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
-public class ProjectSpotCheckItem {
+public class ProjectSpotCheckScore {
     private Integer id;
 
-    private Integer spotId;
+    private Integer spotItemId;
 
-    private Integer projectId;
+    private String content;
 
-    private String projectName;
+    private BigDecimal totalScore;
+
+    private Boolean bisEnable;
 
     private String creator;
 
@@ -25,28 +28,36 @@ public class ProjectSpotCheckItem {
         this.id = id;
     }
 
-    public Integer getSpotId() {
-        return spotId;
+    public Integer getSpotItemId() {
+        return spotItemId;
     }
 
-    public void setSpotId(Integer spotId) {
-        this.spotId = spotId;
+    public void setSpotItemId(Integer spotItemId) {
+        this.spotItemId = spotItemId;
     }
 
-    public Integer getProjectId() {
-        return projectId;
+    public String getContent() {
+        return content;
     }
 
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
-    public String getProjectName() {
-        return projectName;
+    public BigDecimal getTotalScore() {
+        return totalScore;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName == null ? null : projectName.trim();
+    public void setTotalScore(BigDecimal totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public String getCreator() {

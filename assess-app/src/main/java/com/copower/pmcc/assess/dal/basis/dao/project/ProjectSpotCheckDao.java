@@ -1,11 +1,9 @@
 package com.copower.pmcc.assess.dal.basis.dao.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckExample;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItem;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemExample;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectSpotCheckItemMapper;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectSpotCheckMapper;
+import com.copower.pmcc.assess.dal.basis.mapper.ProjectSpotCheckScoreMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,6 +24,8 @@ public class ProjectSpotCheckDao {
     private ProjectSpotCheckMapper projectSpotCheckMapper;
     @Autowired
     private ProjectSpotCheckItemMapper projectSpotCheckItemMapper;
+    @Autowired
+    private ProjectSpotCheckScoreMapper projectSpotCheckScoreMapper;
 
     public ProjectSpotCheck getProjectSpotCheckById(Integer id){
         return projectSpotCheckMapper.selectByPrimaryKey(id);
@@ -117,5 +117,52 @@ public class ProjectSpotCheckDao {
         ProjectSpotCheckItemExample example = new ProjectSpotCheckItemExample();
         MybatisUtils.convertObj2Example(where, example);
         return projectSpotCheckItemMapper.updateByExampleSelective(record, example);
+    }
+
+    //------------------------------------------------------------------------------------------------
+
+    public ProjectSpotCheckScore getProjectSpotCheckScoreById(Integer id){
+        return projectSpotCheckScoreMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * @param where
+     * @return
+     */
+    public List<ProjectSpotCheckScore> getProjectSpotCheckScoreList(ProjectSpotCheckScore where) {
+        ProjectSpotCheckScoreExample example = new ProjectSpotCheckScoreExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return projectSpotCheckScoreMapper.selectByExample(example);
+    }
+
+
+    /**
+     * 新增数据
+     * @param record
+     * @return
+     */
+    public boolean addProjectSpotCheckScore(ProjectSpotCheckScore record) {
+        return projectSpotCheckScoreMapper.insertSelective(record) == 1;
+    }
+
+    /**
+     * 更新数据
+     * @param record
+     * @return
+     */
+    public boolean modifyProjectSpotCheckScore(ProjectSpotCheckScore record) {
+        return projectSpotCheckScoreMapper.updateByPrimaryKeySelective(record) == 1;
+    }
+
+    /**
+     * 根据条件更新
+     * @param record
+     * @param where
+     * @return
+     */
+    public int modifyProjectSpotCheckScore(ProjectSpotCheckScore record, ProjectSpotCheckScore where) {
+        ProjectSpotCheckScoreExample example = new ProjectSpotCheckScoreExample();
+        MybatisUtils.convertObj2Example(where, example);
+        return projectSpotCheckScoreMapper.updateByExampleSelective(record, example);
     }
 }

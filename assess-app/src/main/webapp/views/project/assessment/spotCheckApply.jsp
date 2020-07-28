@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>项目抽查</title>
+    <title>抽查考核</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body class="nav-md">
@@ -30,6 +30,7 @@
                             </div>
                             <div class="card-body">
                                 <form id="frmSpotCheck" class="form-horizontal">
+                                    <input type="hidden" name="id" value="${projectSpotCheck.id}">
                                     <div class="form-group form-inline">
                                         <label class="col-sm-1 col-form-label">抽查月份<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
@@ -52,7 +53,8 @@
                                         <label class="col-sm-1 col-form-label">标题<span
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text" data-rule-maxlength="50" onfocus="spotCheck.titleFocus(this);"
+                                            <input type="text" data-rule-maxlength="50"
+                                                   onfocus="spotCheck.titleFocus(this);"
                                                    placeholder="标题" name="title" value="${projectSpotCheck.title}"
                                                    class="form-control input-full">
                                         </div>
@@ -94,7 +96,7 @@
                                 取消
                             </button>
                             <button id="commit_btn" style="margin-left: 10px;" class="btn btn-primary"
-                                    onclick="applySumit();">
+                                    onclick="spotCheck.applySumit();">
                                 提交
                             </button>
                         </div>
@@ -113,6 +115,7 @@
 </div>
 </body>
 </html>
+<%--选择项目窗口--%>
 <div id="projectListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 90%;">
@@ -194,14 +197,12 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="form-inline x-valid">
-
                                     <label class="col-md-1 col-form-label">报告使用单位</label>
                                     <div class="col-md-2 p-0">
                                         <input type="text"
@@ -259,11 +260,71 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="dataObjFun.saveMaster()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="spotCheck.selectProject();">
                     选择
                 </button>
             </div>
+        </div>
+    </div>
+</div>
 
+<%--填写工时考核窗口--%>
+<div id="editSpotCheckScoreModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">工时考核</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmSpotCheckScore" class="form-horizontal">
+                    <input type="hidden" name="spotItemId">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" width="20%">阶段</th>
+                            <th scope="col" width="20%">得分</th>
+                            <th scope="col" width="60%">说明</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="spotCheck.saveSpotCheckScore();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--历史考核列表窗口--%>
+<div id="historyScoreListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">历史记录</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tbHistoryScoreList"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -289,15 +350,9 @@
 
     spotCheck.loadSpotCheckItemList = function () {
         var cols = [];
-        cols.push({field: 'projectName', title: '项目名称', width: '10%'});
-        cols.push({field: 'creatorName', title: '填写人', width: '10%'});
+        cols.push({field: 'projectName', title: '项目名称', width: '20%'});
         cols.push({
-            field: 'gmtCreated', title: '填写时间', width: '14%', formatter: function (value, row, index) {
-                return formatDate(row.gmtCreated, true);
-            }
-        });
-        cols.push({
-            field: 'content', title: '内容', width: '70%', formatter: function (value, row, index) {
+            field: 'content', title: '内容', width: '50%', formatter: function (value, row, index) {
                 var str = '';
                 if (value) {
                     var json = JSON.parse(value);
@@ -308,47 +363,32 @@
                 return str;
             }
         });
+        cols.push({field: 'examineName', title: '考核人', width: '10%'});
+        cols.push({
+            field: 'examineDate', title: '考核时间', width: '14%', formatter: function (value, row, index) {
+                return formatDate(row.examineDate, true);
+            }
+        });
+        cols.push({
+            field: 'opt', title: '操作', width: '14%', formatter: function (value, row, index) {
+                var str = '';
+                str += '<button type="button" onclick="spotCheck.showEditScoreModal(' + row.id + ',' + row.projectId + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button type="button" onclick="spotCheck.showHistoryScoreListModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
+                str += '<i class="fa fa-history"></i>';
+                str += '</button>';
+                return str;
+            }
+        });
         $("#tbSpotCheckItemList").bootstrapTable('destroy');
-        TableInit("tbSpotCheckItemList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyList", cols, {
-            reviewId: '${projectSpotCheck.id}'
+        TableInit("tbSpotCheckItemList", "${pageContext.request.contextPath}/projectSpotCheck/getProjectSpotCheckItemList", cols, {
+            spotId: '${projectSpotCheck.id}'
         }, {
             showColumns: false,
             showRefresh: false,
             search: false,
             toolBar: '#spotCheckBar',
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();
-            }
-        });
-    }
-
-    spotCheck.loadHistoryList = function () {
-        var cols = [];
-        cols.push({field: 'creatorName', title: '填写人', width: '10%'});
-        cols.push({
-            field: 'gmtCreated', title: '填写时间', width: '14%', formatter: function (value, row, index) {
-                return formatDate(row.gmtCreated, true);
-            }
-        });
-        cols.push({
-            field: 'content', title: '内容', width: '70%', formatter: function (value, row, index) {
-                var str = '';
-                if (value) {
-                    var json = JSON.parse(value);
-                    $.each(json, function (i, item) {
-                        str += item.key + "【" + item.value + "】" + item.explain + '<br/>';
-                    })
-                }
-                return str;
-            }
-        });
-        $("#tbHistoryList").bootstrapTable('destroy');
-        TableInit("tbHistoryList", "${pageContext.request.contextPath}/projectReviewScore/getHistroyList", cols, {
-            reviewId: '${projectReviewScore.id}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -369,7 +409,7 @@
     }
 
     //选择部门
-    spotCheck.selectDepartment=function(this_) {
+    spotCheck.selectDepartment = function (this_) {
         var div = $(this_).closest("div");
         var options = {
             onSelected: function (nodes) {
@@ -385,7 +425,7 @@
         var form = $(_this).closest('form');
         var spotMonth = form.find('[name=spotMonth]').val();
         var name = form.find('[name=bySpotUserName]').val();
-        form.find('[name=title]').val(name + spotMonth + "项目抽查考核");
+        form.find('[name=title]').val(spotMonth + name + "项目抽查考核");
     }
 
     //显示项目列表弹窗
@@ -460,12 +500,56 @@
         }, true);
     }
 
+    //选择项目
+    spotCheck.selectProject = function () {
+        var projectIds = [];
+        var $table = $("#tb_projectList")
+        var rows = $table.bootstrapTable('getSelections');
+        $.each(rows, function (i, item) {
+            projectIds.push(item.id);
+        })
+        $.post('${pageContext.request.contextPath}/projectSpotCheck/selectProject', {
+            projectIds: projectIds.join(','),
+            spotId: $('#frmSpotCheck').find('[name=id]').val()
+        }, function (result) {
+            if (result.ret) {
+                notifySuccess('提示', '选择成功');
+                $table.bootstrapTable('uncheckAll');
+                spotCheck.loadSpotCheckItemList();
+            } else {
+                AlertError('错误', result.errmsg);
+            }
+        }, 'json');
+    }
 
-    function applySumit() {
-        if (!$('#frmRevieScore').valid()) {
+    //显示填写工分窗口
+    spotCheck.showEditScoreModal = function (itemId, projectId) {
+        var modal = $('#editSpotCheckScoreModal');
+        modal.find('tbody').empty();
+        $.getJSON('${pageContext.request.contextPath}/projectSpotCheck/getSpotCheckScoreContent', {
+            itemId: itemId,
+            projectId: projectId
+        }, function (result) {
+            if (result.ret && result.data) {
+                $.each(result.data, function (i, item) {
+                    var html = '';
+                    html += '<tr><td scope="col">' + item.key + '<input type="hidden" name="key" value="' + item.key + '"></td>';
+                    html += '<td scope="col"><input type="text" data-rule-number="true" required class="form-control input-full" name="value" value="' + AssessCommon.toString(item.value) + '"></td>';
+                    html += '<td scope="col"><input type="text" class="form-control input-full" name="explain" value="' + AssessCommon.toString(item.explain) + '"></td></tr>';
+                    modal.find('tbody').append(html);
+                })
+            }
+        })
+        $('#frmSpotCheckScore').find('[name=spotItemId]').val(itemId);
+        modal.modal();
+    }
+
+    //保存工分
+    spotCheck.saveSpotCheckScore = function () {
+        if (!$('#frmSpotCheckScore').valid()) {
             return false;
         }
-        var trs = $('#frmRevieScore').find('tbody tr');
+        var trs = $('#frmSpotCheckScore').find('tbody tr');
         var data = {};
         var contentArray = [];
         var totalScore = null;
@@ -478,13 +562,72 @@
                 totalScore += parseFloat(keyValue.value);
             }
             contentArray.push(keyValue);
-        })
+        });
+        data.spotItemId = $('#frmSpotCheckScore').find('[name=spotItemId]').val();
         data.content = contentArray;
         data.totalScore = totalScore;
+        $.post('${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheckScore', {
+            formData: JSON.stringify(data)
+        }, function (result) {
+            if (result.ret) {
+                notifySuccess('提示', '保存成功');
+                spotCheck.loadSpotCheckItemList();
+                $('#editSpotCheckScoreModal').modal('hide');
+            } else {
+                AlertError('失败', result.errmsg);
+            }
+        }, 'json');
+    }
+
+    //显示历史得分列表弹窗
+    spotCheck.showHistoryScoreListModal = function (itemId) {
+        spotCheck.loadHistoryScoreList(itemId);
+        $('#historyScoreListModal').modal();
+    }
+
+    //加载历史工分数据
+    spotCheck.loadHistoryScoreList = function (itemId) {
+        var cols = [];
+        cols.push({field: 'creatorName', title: '考核人', width: '10%'});
+        cols.push({
+            field: 'gmtCreated', title: '考核时间', width: '20%', formatter: function (value, row, index) {
+                return formatDate(row.gmtCreated, true);
+            }
+        });
+        cols.push({
+            field: 'content', title: '内容', width: '70%', formatter: function (value, row, index) {
+                var str = '';
+                if (value) {
+                    var json = JSON.parse(value);
+                    $.each(json, function (i, item) {
+                        str += item.key + "【" + item.value + "】" + item.explain + '<br/>';
+                    })
+                }
+                return str;
+            }
+        });
+        $("#tbHistoryScoreList").bootstrapTable('destroy');
+        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyScoreList", cols, {
+            itemId: itemId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+    //提交流程
+    spotCheck.applySumit = function () {
+        if (!$('#frmSpotCheck').valid()) {
+            return false;
+        }
+        var data = formSerializeArray($('#frmSpotCheck'));
         if ('${processInsId}' == '' || '${processInsId}' == '0') {
-            $.post('${pageContext.request.contextPath}/projectReviewScore/applyCommit', {
-                formData: JSON.stringify(data),
-                projectId: '${projectInfo.id}'
+            $.post('${pageContext.request.contextPath}/projectSpotCheck/applyCommit', {
+                formData: JSON.stringify(data)
             }, function (result) {
                 if (result.ret) {
                     AlertSuccess('成功', '提交成功', function () {
@@ -495,10 +638,9 @@
                 }
             }, 'json');
         } else {
-            data.masterId = '${projectReviewScore.id}';
             var jsonData = formSerializeArray($("#process_variable_form"));
             jsonData.formData = JSON.stringify(data);
-            $.post('${pageContext.request.contextPath}/projectReviewScore/editCommit', jsonData, function (result) {
+            $.post('${pageContext.request.contextPath}/projectSpotCheck/editCommit', jsonData, function (result) {
                 if (result.ret) {
                     AlertSuccess('成功', '提交成功', function () {
                         window.close();

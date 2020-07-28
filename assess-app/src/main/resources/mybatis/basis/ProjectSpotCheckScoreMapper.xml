@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectSpotCheckMapper">
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectSpotCheckScoreMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScore">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="by_spot_user" jdbcType="VARCHAR" property="bySpotUser" />
-    <result column="spot_month" jdbcType="VARCHAR" property="spotMonth" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="process_ins_id" jdbcType="VARCHAR" property="processInsId" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="spot_item_id" jdbcType="INTEGER" property="spotItemId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="total_score" jdbcType="DECIMAL" property="totalScore" />
+    <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
@@ -72,16 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, title, by_spot_user, spot_month, remark, process_ins_id, status, creator, gmt_created, 
-    gmt_modified
+    id, spot_item_id, content, total_score, bis_enable, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScoreExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_project_spot_check
+    from tb_project_spot_check_score
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,55 +89,47 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tb_project_spot_check
+    from tb_project_spot_check_score
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_project_spot_check
+    delete from tb_project_spot_check_score
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckExample">
-    delete from tb_project_spot_check
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScoreExample">
+    delete from tb_project_spot_check_score
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck">
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScore">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_spot_check (title, by_spot_user, spot_month, 
-      remark, process_ins_id, status, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{title,jdbcType=VARCHAR}, #{bySpotUser,jdbcType=VARCHAR}, #{spotMonth,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_project_spot_check_score (spot_item_id, content, total_score, 
+      bis_enable, creator, gmt_created, 
+      gmt_modified)
+    values (#{spotItemId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{totalScore,jdbcType=DECIMAL}, 
+      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck">
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScore">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_spot_check
+    insert into tb_project_spot_check_score
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="title != null">
-        title,
+      <if test="spotItemId != null">
+        spot_item_id,
       </if>
-      <if test="bySpotUser != null">
-        by_spot_user,
+      <if test="content != null">
+        content,
       </if>
-      <if test="spotMonth != null">
-        spot_month,
+      <if test="totalScore != null">
+        total_score,
       </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="processInsId != null">
-        process_ins_id,
-      </if>
-      <if test="status != null">
-        status,
+      <if test="bisEnable != null">
+        bis_enable,
       </if>
       <if test="creator != null">
         creator,
@@ -153,23 +142,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
+      <if test="spotItemId != null">
+        #{spotItemId,jdbcType=INTEGER},
       </if>
-      <if test="bySpotUser != null">
-        #{bySpotUser,jdbcType=VARCHAR},
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
       </if>
-      <if test="spotMonth != null">
-        #{spotMonth,jdbcType=VARCHAR},
+      <if test="totalScore != null">
+        #{totalScore,jdbcType=DECIMAL},
       </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="processInsId != null">
-        #{processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
+      <if test="bisEnable != null">
+        #{bisEnable,jdbcType=BIT},
       </if>
       <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
@@ -182,35 +165,29 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckExample" resultType="java.lang.Long">
-    select count(*) from tb_project_spot_check
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScoreExample" resultType="java.lang.Long">
+    select count(*) from tb_project_spot_check_score
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tb_project_spot_check
+    update tb_project_spot_check_score
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.title != null">
-        title = #{record.title,jdbcType=VARCHAR},
+      <if test="record.spotItemId != null">
+        spot_item_id = #{record.spotItemId,jdbcType=INTEGER},
       </if>
-      <if test="record.bySpotUser != null">
-        by_spot_user = #{record.bySpotUser,jdbcType=VARCHAR},
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
       </if>
-      <if test="record.spotMonth != null">
-        spot_month = #{record.spotMonth,jdbcType=VARCHAR},
+      <if test="record.totalScore != null">
+        total_score = #{record.totalScore,jdbcType=DECIMAL},
       </if>
-      <if test="record.remark != null">
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.processInsId != null">
-        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null">
-        status = #{record.status,jdbcType=VARCHAR},
+      <if test="record.bisEnable != null">
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
       <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -227,14 +204,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tb_project_spot_check
+    update tb_project_spot_check_score
     set id = #{record.id,jdbcType=INTEGER},
-      title = #{record.title,jdbcType=VARCHAR},
-      by_spot_user = #{record.bySpotUser,jdbcType=VARCHAR},
-      spot_month = #{record.spotMonth,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
+      spot_item_id = #{record.spotItemId,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=VARCHAR},
+      total_score = #{record.totalScore,jdbcType=DECIMAL},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -242,26 +217,20 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck">
-    update tb_project_spot_check
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScore">
+    update tb_project_spot_check_score
     <set>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
+      <if test="spotItemId != null">
+        spot_item_id = #{spotItemId,jdbcType=INTEGER},
       </if>
-      <if test="bySpotUser != null">
-        by_spot_user = #{bySpotUser,jdbcType=VARCHAR},
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
       </if>
-      <if test="spotMonth != null">
-        spot_month = #{spotMonth,jdbcType=VARCHAR},
+      <if test="totalScore != null">
+        total_score = #{totalScore,jdbcType=DECIMAL},
       </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="processInsId != null">
-        process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
+      <if test="bisEnable != null">
+        bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
       <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
@@ -275,14 +244,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck">
-    update tb_project_spot_check
-    set title = #{title,jdbcType=VARCHAR},
-      by_spot_user = #{bySpotUser,jdbcType=VARCHAR},
-      spot_month = #{spotMonth,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScore">
+    update tb_project_spot_check_score
+    set spot_item_id = #{spotItemId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      total_score = #{totalScore,jdbcType=DECIMAL},
+      bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

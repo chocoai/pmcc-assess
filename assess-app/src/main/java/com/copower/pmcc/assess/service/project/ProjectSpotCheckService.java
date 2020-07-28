@@ -5,13 +5,15 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectSpotCheckDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItem;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckItemVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckScoreVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectSpotCheckEvent;
+import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
@@ -32,6 +34,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -57,13 +60,24 @@ public class ProjectSpotCheckService {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private ProjectWorkStageService projectWorkStageService;
 
-    public ProjectSpotCheck getSpotCheckById(Integer id) {
-        return projectSpotCheckDao.getProjectSpotCheckById(id);
+    public ProjectSpotCheckVo getSpotCheckVoById(Integer id) {
+        return getSpotCheckVo(projectSpotCheckDao.getProjectSpotCheckById(id));
+    }
+
+    public ProjectSpotCheckVo getSpotCheckVo(ProjectSpotCheck projectSpotCheck) {
+        if (projectSpotCheck == null) return null;
+        ProjectSpotCheckVo vo = new ProjectSpotCheckVo();
+        BeanUtils.copyProperties(projectSpotCheck,vo);
+        vo.setBySpotUserName(publicService.getUserNameByAccount(projectSpotCheck.getBySpotUser()));
+        return vo;
     }
 
     /**
      * 获取抽查数据列表
+     *
      * @return
      */
     public BootstrapTableVo getProjectSpotCheckList() {
@@ -72,8 +86,9 @@ public class ProjectSpotCheckService {
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         ProjectSpotCheck projectSpotCheck = new ProjectSpotCheck();
         List<ProjectSpotCheck> spotChecks = projectSpotCheckDao.getProjectSpotCheckList(projectSpotCheck);
+        List<ProjectSpotCheckVo> vos = LangUtils.transform(spotChecks, o -> getSpotCheckVo(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(spotChecks);
+        vo.setRows(vos);
         return vo;
     }
 
@@ -96,24 +111,76 @@ public class ProjectSpotCheckService {
     }
 
     /**
+     * 选择项目
+     *
+     * @param projectIds
+     */
+    public void selectProject(String projectIds, Integer spotId) {
+        if (StringUtils.isBlank(projectIds)) return;
+        List<Integer> list = FormatUtils.transformString2Integer(projectIds);
+        for (Integer projectId : list) {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+            ProjectSpotCheckItem spotCheckItem = new ProjectSpotCheckItem();
+            spotCheckItem.setSpotId(spotId);
+            spotCheckItem.setProjectId(projectId);
+            spotCheckItem.setProjectName(projectInfo.getProjectName());
+            spotCheckItem.setCreator(commonService.thisUserAccount());
+            projectSpotCheckDao.addProjectSpotCheckItem(spotCheckItem);
+        }
+    }
+
+    /**
+     * 获取抽查项目数据列表
+     *
+     * @return
+     */
+    public BootstrapTableVo getProjectSpotCheckItemList(Integer spotId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        ProjectSpotCheckItem where = new ProjectSpotCheckItem();
+        if (spotId != null && spotId > 0) {
+            where.setSpotId(spotId);
+        } else {
+            where.setSpotId(0);
+            where.setCreator(commonService.thisUserAccount());
+        }
+        List<ProjectSpotCheckItem> spotChecks = projectSpotCheckDao.getProjectSpotCheckItemList(where);
+        List<ProjectSpotCheckItemVo> spotCheckVos = LangUtils.transform(spotChecks, o -> getProjectSpotCheckItemVo(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(spotCheckVos);
+        return vo;
+    }
+
+    public ProjectSpotCheckItemVo getProjectSpotCheckItemVo(ProjectSpotCheckItem projectSpotCheckItem) {
+        if (projectSpotCheckItem == null) return null;
+        ProjectSpotCheckItemVo vo = new ProjectSpotCheckItemVo();
+        BeanUtils.copyProperties(projectSpotCheckItem, vo);
+        ProjectSpotCheckScore spotCheckScore = getEnableScoresByItemId(projectSpotCheckItem.getId());
+        if (spotCheckScore != null) {
+            vo.setExamineDate(spotCheckScore.getGmtCreated());
+            vo.setExamineName(publicService.getUserNameByAccount(spotCheckScore.getCreator()));
+            vo.setContent(spotCheckScore.getContent());
+        }
+        return vo;
+    }
+
+    /**
      * 申请提交
      *
      * @param formData
-     * @param projectId
      */
-    public void applyCommit(String formData, Integer projectId) throws BusinessException, BpmException {
-        if (StringUtils.isBlank(formData) || projectId == null)
+    public void applyCommit(String formData) throws BusinessException, BpmException {
+        if (StringUtils.isBlank(formData) )
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        ProjectSpotCheck spotCheck = new ProjectSpotCheck();
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectSpotCheck spotCheck = JSON.parseObject(formData,ProjectSpotCheck.class);
         spotCheck.setStatus(ProcessStatusEnum.RUN.getValue());
         saveSpotCheck(spotCheck);
 
         ProcessInfo processInfo = new ProcessInfo();
-        String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_REVIEW_PROCESS_KEY);
+        String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_SPOT_CHECK_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
-        SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
-        processInfo.setFolio(String.format("%s【复核工时考核】%s", thisUserInfo.getUserName(), projectInfo.getProjectName()));//流程描述
+        processInfo.setFolio(String.format("%s【抽查考核】", spotCheck.getTitle()));//流程描述
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectSpotCheck.class));
@@ -126,54 +193,68 @@ public class ProjectSpotCheckService {
 
         spotCheck.setProcessInsId(processUserDto.getProcessInsId());
         saveSpotCheck(spotCheck);
-
-        ProjectSpotCheckItem projectSpotCheckItem = JSON.parseObject(formData, ProjectSpotCheckItem.class);
-        projectSpotCheckItem.setMasterId(spotCheck.getId());
-        projectSpotCheckItem.setBisEnable(true);
-        addSpotCheckItem(projectSpotCheckItem);
     }
 
     //----------------------------------------------------------------------------------------------------
 
-    public void addSpotCheckItem(ProjectSpotCheckItem SpotCheckItem) {
+    public void addSpotCheckScore(ProjectSpotCheckScore spotCheckScore) {
         //先将上一条数据置为无效状态
-        ProjectSpotCheckItem scoreItem = getEnableSpotCheckItemsByMasterId(SpotCheckItem.getMasterId());
+        ProjectSpotCheckScore scoreItem = getEnableScoresByItemId(spotCheckScore.getSpotItemId());
         if (scoreItem != null) {
             scoreItem.setBisEnable(false);
-            projectSpotCheckDao.modifyProjectSpotCheckItem(scoreItem);
+            projectSpotCheckDao.modifyProjectSpotCheckScore(scoreItem);
         }
-        SpotCheckItem.setBisEnable(true);
-        SpotCheckItem.setCreator(commonService.thisUserAccount());
-        projectSpotCheckDao.addProjectSpotCheckItem(SpotCheckItem);
+        spotCheckScore.setBisEnable(true);
+        spotCheckScore.setCreator(commonService.thisUserAccount());
+        projectSpotCheckDao.addProjectSpotCheckScore(spotCheckScore);
     }
 
-    public ProjectSpotCheckItem getEnableSpotCheckItemsByMasterId(Integer masterId) {
-        if (masterId == null) return null;
-        ProjectSpotCheckItem where = new ProjectSpotCheckItem();
+    public ProjectSpotCheckScore getEnableScoresByItemId(Integer itemId) {
+        if (itemId == null) return null;
+        ProjectSpotCheckScore where = new ProjectSpotCheckScore();
         where.setBisEnable(true);
-        where.setMasterId(masterId);
-        List<ProjectSpotCheckItem> list = projectSpotCheckDao.getProjectSpotCheckItemList(where);
+        where.setSpotItemId(itemId);
+        List<ProjectSpotCheckScore> list = projectSpotCheckDao.getProjectSpotCheckScoreList(where);
         if (CollectionUtils.isEmpty(list)) return null;
         return list.get(0);
     }
 
-    public List<ProjectSpotCheckItem> getHistorySpotCheckItemsByMasterId(Integer masterId) {
-        if (masterId == null) return null;
-        ProjectSpotCheckItem where = new ProjectSpotCheckItem();
-        where.setBisEnable(false);
-        where.setMasterId(masterId);
-        List<ProjectSpotCheckItem> list = projectSpotCheckDao.getProjectSpotCheckItemList(where);
-        if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list, o -> getSpotCheckItemVo(o));
+    //获取内容信息
+    public List<KeyValueDto> getSpotCheckScoreContent(Integer itemId,Integer projectId) {
+        ProjectSpotCheckScore spotCheckScore = getEnableScoresByItemId(itemId);
+        if (spotCheckScore == null) {
+            List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
+            if (CollectionUtils.isEmpty(projectPlanList)) return null;
+            List<KeyValueDto> keyValueDtos = LangUtils.transform(projectPlanList, o -> {
+                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(o.getWorkStageId());
+                KeyValueDto keyValueDto = new KeyValueDto();
+                keyValueDto.setKey(o.getPlanName());
+                keyValueDto.setValue(String.valueOf(projectWorkStage.getCeReviewScore()));
+                return keyValueDto;
+            });
+            return keyValueDtos;
+        } else {
+            return getSpotCheckScoreVo(spotCheckScore).getKeyValueDtos();
+        }
     }
 
-    public ProjectSpotCheckItemVo getSpotCheckItemVo(ProjectSpotCheckItem SpotCheckItem) {
-        if (SpotCheckItem == null) return null;
-        ProjectSpotCheckItemVo vo = new ProjectSpotCheckItemVo();
-        BeanUtils.copyProperties(SpotCheckItem, vo);
-        vo.setCreatorName(publicService.getUserNameByAccount(SpotCheckItem.getCreator()));
-        if (StringUtils.isNotBlank(SpotCheckItem.getContent())) {
-            vo.setKeyValueDtos(JSON.parseArray(SpotCheckItem.getContent(), KeyValueDto.class));
+    public List<ProjectSpotCheckScore> getHistoryScoresByItemId(Integer itemId) {
+        if (itemId == null) return null;
+        ProjectSpotCheckScore where = new ProjectSpotCheckScore();
+        where.setBisEnable(false);
+        where.setSpotItemId(itemId);
+        List<ProjectSpotCheckScore> list = projectSpotCheckDao.getProjectSpotCheckScoreList(where);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return LangUtils.transform(list, o -> getSpotCheckScoreVo(o));
+    }
+
+    public ProjectSpotCheckScoreVo getSpotCheckScoreVo(ProjectSpotCheckScore spotCheckScore) {
+        if (spotCheckScore == null) return null;
+        ProjectSpotCheckScoreVo vo = new ProjectSpotCheckScoreVo();
+        BeanUtils.copyProperties(spotCheckScore, vo);
+        vo.setCreatorName(publicService.getUserNameByAccount(spotCheckScore.getCreator()));
+        if (StringUtils.isNotBlank(spotCheckScore.getContent())) {
+            vo.setKeyValueDtos(JSON.parseArray(spotCheckScore.getContent(), KeyValueDto.class));
         }
         return vo;
     }
