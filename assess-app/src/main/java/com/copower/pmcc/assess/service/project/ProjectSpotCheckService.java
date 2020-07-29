@@ -21,6 +21,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -62,6 +63,8 @@ public class ProjectSpotCheckService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private ChksRpcAssessmentPerformanceService performanceService;
 
     public ProjectSpotCheckVo getSpotCheckVoById(Integer id) {
         return getSpotCheckVo(projectSpotCheckDao.getProjectSpotCheckById(id));
@@ -99,6 +102,17 @@ public class ProjectSpotCheckService {
         List<ProjectSpotCheck> projectSpotCheckList = projectSpotCheckDao.getProjectSpotCheckList(where);
         if (CollectionUtils.isEmpty(projectSpotCheckList)) return null;
         return projectSpotCheckList.get(0);
+    }
+
+    /**
+     * 获取运行中的批次
+     * @return
+     */
+    public List<ProjectSpotCheck> getRuningSpotCheckList(){
+        ProjectSpotCheck where = new ProjectSpotCheck();
+        where.setStatus(ProcessStatusEnum.RUN.getValue());
+        List<ProjectSpotCheck> projectSpotCheckList = projectSpotCheckDao.getProjectSpotCheckList(where);
+        return  projectSpotCheckList;
     }
 
     public void saveSpotCheck(ProjectSpotCheck spotCheck) {
@@ -258,4 +272,6 @@ public class ProjectSpotCheckService {
         }
         return vo;
     }
+
+
 }

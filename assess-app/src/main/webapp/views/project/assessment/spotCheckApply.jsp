@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered" id="tbHistoryList"></table>
+                                <table class="table table-bordered" id="tbQualityList"></table>
                             </div>
                         </div>
                     </div>
@@ -333,7 +333,7 @@
 <script type="text/javascript">
     $(function () {
         spotCheck.loadSpotCheckItemList();
-
+        spotCheck.loadQualityList();
         //月份选择处理
         DatepickerUtils.initDate($('.dbdate-month'), {
             autoclose: true,
@@ -609,6 +609,23 @@
         $("#tbHistoryScoreList").bootstrapTable('destroy');
         TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyScoreList", cols, {
             itemId: itemId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+    //加载质量考核数据
+    spotCheck.loadQualityList=function(){
+        var cols = [];
+        cols.push({field: 'projectName', title: '项目名称', width: '10%'});
+        $("#tbQualityList").bootstrapTable('destroy');
+        TableInit("tbQualityList", "${pageContext.request.contextPath}/assessmentPerformance/getPerformanceListBySpotBatchId", cols, {
+            spotBatchId: '${projectSpotCheck.id}'
         }, {
             showColumns: false,
             showRefresh: false,

@@ -33,6 +33,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.copower.pmcc.erp.http.RequestParam;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
@@ -72,6 +73,8 @@ public class AssessmentPerformanceService {
     @Autowired
     private AssessmentCommonService assessmentCommonService;
 
+    private final static String pageStatusDetail = "details";
+
 
     public BootstrapTableVo getPerformanceList(AssessmentPerformanceDto where, Integer boxId, String reActivityName, String flog) {
         //1.管理员与抽查组可查看所有质量考核数据
@@ -81,13 +84,13 @@ public class AssessmentPerformanceService {
         List<BoxReActivityDto> activityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
         if (CollectionUtils.isEmpty(activityDtos)) return bootstrapTableVo;
         Integer currMaxSorting = -1;
+        Boolean isAdmin = processControllerComponent.userIsAdmin(commonService.thisUserAccount());
         if (TaskHandleStateEnum.AGREE.getValue().equals(flog)) {
             BoxReActivityDto currActivity = bpmRpcBoxService.getBoxReActivityInfoByName(reActivityName, boxId);
             if (currActivity != null) {
                 if (currActivity.getBisViewChk() == Boolean.FALSE) {//如果该节点不具有查看考核的权限则直接返回
                     return bootstrapTableVo;
                 }
-
                 for (BoxReActivityDto activityDto : activityDtos) {
                     if (activityDto.getSortMultilevel() <= currActivity.getSortMultilevel()) {
                         activityList.add(activityDto.getId());
@@ -108,7 +111,7 @@ public class AssessmentPerformanceService {
         where.setActivityId(null);
         where.setSpotId(0);
         where.setAdjustId(0);
-        if (processControllerComponent.userIsAdmin(commonService.thisUserAccount())) {//管理员可查看全部数据
+        if (isAdmin) {//管理员可查看全部数据
             bootstrapTableVo = performanceService.getPerformanceDtoListByParam(where, null, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         } else {
             if (CollectionUtils.isEmpty(activityList)) return bootstrapTableVo;
@@ -117,18 +120,23 @@ public class AssessmentPerformanceService {
 
         List<AssessmentPerformanceDto> rows = bootstrapTableVo.getRows();
         if (CollectionUtils.isNotEmpty(rows)) {
+            Boolean isSpotGroupUser = assessmentCommonService.isSpotGroupUser(boxId, commonService.thisUserAccount());
             for (AssessmentPerformanceDto row : rows) {
                 if (row.getBisCounted() == Boolean.TRUE) continue;
                 //状态为运行中，审核页面时
                 if (ProcessStatusEnum.RUN.getValue().equalsIgnoreCase(row.getExamineStatus())) {
                     Boolean approvlFill = TaskHandleStateEnum.AGREE.getValue().equals(flog) && (commonService.thisUserAccount().equalsIgnoreCase(row.getExaminePeople()) || StringUtils.isBlank(row.getExaminePeople()));
-                    Boolean detailFill = "details".equals(flog) && (commonService.thisUserAccount().equalsIgnoreCase(row.getExaminePeople()));
+                    Boolean detailFill = pageStatusDetail.equals(flog) && (commonService.thisUserAccount().equalsIgnoreCase(row.getExaminePeople()));
                     row.setCanFill(approvlFill || detailFill);
                 }
-
                 //状态为结束，并且为当前人的下级节点数据可调整
                 if (ProcessStatusEnum.FINISH.getValue().equalsIgnoreCase(row.getExamineStatus()) && row.getSorting() <= currMaxSorting) {
                     row.setCanAdjust(true);
+                }
+                //状态为结束，管理员、抽查组成员可查看或抽查数据--只针对质量考核
+                if (ProcessStatusEnum.FINISH.getValue().equalsIgnoreCase(row.getExamineStatus()) &&
+                        AssessmentTypeEnum.QUALITY.getValue().equalsIgnoreCase(row.getAssessmentType()) && (isAdmin || isSpotGroupUser)) {
+                    row.setCanSpot(true);
                 }
             }
         }
@@ -411,7 +419,7 @@ public class AssessmentPerformanceService {
             try {
                 pasteData(copyObj, assessmentProjectPerformanceDetailDtoList, performanceService.getPerformanceById(integerList.get(i)));
             } catch (BusinessException e) {
-                stringBuilder.append("第").append(i+1).append("条数据粘贴失败,"+e.getMessage()).append(";");
+                stringBuilder.append("第").append(i + 1).append("条数据粘贴失败," + e.getMessage()).append(";");
             }
         }
         return stringBuilder.toString();
@@ -446,7 +454,7 @@ public class AssessmentPerformanceService {
     }
 
     /**
-     * 获取调整数据
+     * 获取历史调整数据
      *
      * @param performanceId
      * @return
@@ -455,7 +463,9 @@ public class AssessmentPerformanceService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         AssessmentPerformanceDto where = new AssessmentPerformanceDto();
         where.setAdjustId(performanceId);
+        where.setBisEffective(false);
         List<AssessmentPerformanceDto> list = performanceService.getPerformancesByParam(where);
+        list = CollectionUtils.isEmpty(list) ? Lists.newArrayList() : list;
         bootstrapTableVo.setRows(list);
         bootstrapTableVo.setTotal((long) list.size());
         return bootstrapTableVo;
@@ -471,7 +481,9 @@ public class AssessmentPerformanceService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         AssessmentPerformanceDto where = new AssessmentPerformanceDto();
         where.setSpotId(performanceId);
+        where.setBisEffective(false);
         List<AssessmentPerformanceDto> list = performanceService.getPerformancesByParam(where);
+        list = CollectionUtils.isEmpty(list) ? Lists.newArrayList() : list;
         bootstrapTableVo.setRows(list);
         bootstrapTableVo.setTotal((long) list.size());
         return bootstrapTableVo;
@@ -519,6 +531,7 @@ public class AssessmentPerformanceService {
         BeanUtils.copyProperties(performanceDto, spotPerformance);
         spotPerformance.setId(null);
         spotPerformance.setSpotId(assessmentPerformanceDto.getId());
+        spotPerformance.setSpotBatchId(assessmentPerformanceDto.getSpotBatchId());
         spotPerformance.setExaminePeople(commonService.thisUserAccount());
         spotPerformance.setByExaminePeople(performanceDto.getExaminePeople());
         spotPerformance.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
@@ -531,8 +544,18 @@ public class AssessmentPerformanceService {
         spotPerformance.setCreated(DateUtils.now());
         spotPerformance.setCreator(commonService.thisUserAccount());
         spotPerformance.setModified(DateUtils.now());
+        //将上一条抽查记录置为无效状态
+        AssessmentPerformanceDto where = new AssessmentPerformanceDto();
+        where.setSpotId(assessmentPerformanceDto.getId());
+        where.setBisEffective(true);
+        List<AssessmentPerformanceDto> dtoList = performanceService.getPerformancesByParam(where);
+        if (CollectionUtils.isNotEmpty(dtoList)) {
+            for (AssessmentPerformanceDto dto : dtoList) {
+                dto.setBisEffective(false);
+                performanceService.saveAndUpdatePerformanceDto(dto, false);
+            }
+        }
         Integer spotPerformanceId = performanceService.saveAndUpdatePerformanceDto(spotPerformance, false);
-
         if (CollectionUtils.isNotEmpty(detailDtoList)) {
             for (AssessmentPerformanceDetailDto detailDto : detailDtoList) {
                 AssessmentItemDto assessmentItemDto = bpmRpcBoxService.getAssessmentItem(detailDto.getContentId());
@@ -548,5 +571,20 @@ public class AssessmentPerformanceService {
                 performanceService.savePerformanceDetailDto(detailDto);
             }
         }
+    }
+
+    /**
+     * 获取抽查数据 by抽查批次id
+     *
+     * @param spotBatchId
+     * @return
+     */
+    public BootstrapTableVo getPerformanceListBySpotBatchId(Integer spotBatchId) {
+        if (spotBatchId == null) return null;
+        AssessmentPerformanceDto where = new AssessmentPerformanceDto();
+        where.setSpotBatchId(spotBatchId);
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        BootstrapTableVo vo = performanceService.getPerformanceDtoListByParam(where, null, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        return vo;
     }
 }

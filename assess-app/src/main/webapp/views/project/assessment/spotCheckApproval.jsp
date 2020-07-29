@@ -55,17 +55,17 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        历史数据
+                                        质量考核数据
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                        <button class="btn btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered" id="tbHistoryList"></table>
+                                <table class="table table-bordered" id="tbQualityList"></table>
                             </div>
                         </div>
                     </div>
@@ -143,6 +143,7 @@
 <script type="text/javascript">
     $(function () {
         spotCheck.loadSpotCheckItemList();
+        spotCheck.loadQualityList();
     })
 
     var spotCheck = {};
@@ -281,6 +282,23 @@
         $("#tbHistoryScoreList").bootstrapTable('destroy');
         TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyScoreList", cols, {
             itemId: itemId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+    //加载质量考核数据
+    spotCheck.loadQualityList=function(){
+        var cols = [];
+        cols.push({field: 'projectName', title: '项目名称', width: '10%'});
+        $("#tbQualityList").bootstrapTable('destroy');
+        TableInit("tbQualityList", "${pageContext.request.contextPath}/assessmentPerformance/getPerformanceListBySpotBatchId", cols, {
+            spotBatchId: '${projectSpotCheck.id}'
         }, {
             showColumns: false,
             showRefresh: false,

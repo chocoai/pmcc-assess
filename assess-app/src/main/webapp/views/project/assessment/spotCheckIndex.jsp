@@ -139,7 +139,7 @@
             }
         });
         cols.push({
-            field: 'status', title: '状态',  width: '10%', formatter: function (value, row, index) {
+            field: 'status', title: '状态', width: '10%', formatter: function (value, row, index) {
                 var str = "";
                 switch (value) {
                     case "runing": {
@@ -208,9 +208,11 @@
         if (!$('#frmSpotCheck').valid()) {
             return false;
         }
+        var data = formSerializeArray($('#frmSpotCheck'));
+        data.status = 'runing';
         $.ajax({
             url: '${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheck',
-            data: {formData: JSON.stringify(formSerializeArray($('#frmSpotCheck')))},
+            data: {formData: JSON.stringify()},
             type: 'post',
             dataType: 'json',
             success: function (result) {
@@ -226,7 +228,7 @@
 
     //查看详情
     function viewDetail(id) {
-        window.open('${pageContext.request.contextPath}/projectSpotCheck/detail?spotId='+id)
+        window.open('${pageContext.request.contextPath}/projectSpotCheck/detail?spotId=' + id)
     }
 </script>
 

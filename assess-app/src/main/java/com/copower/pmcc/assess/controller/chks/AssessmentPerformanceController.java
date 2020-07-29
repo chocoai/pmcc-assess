@@ -68,6 +68,11 @@ public class AssessmentPerformanceController {
         return assessmentPerformanceService.getSpotRecordListByPerformanceId(performanceId);
     }
 
+    @GetMapping(value = "/getPerformanceListBySpotBatchId", name = "获取抽查记录列表by批次Id")
+    public BootstrapTableVo getPerformanceListBySpotBatchId(Integer spotBatchId) {
+        return assessmentPerformanceService.getPerformanceListBySpotBatchId(spotBatchId);
+    }
+
     @GetMapping(value = "/getPerformanceById", name = "根据id获取考核数据")
     public HttpResult getPerformanceById(Integer id) {
         try {
@@ -89,7 +94,7 @@ public class AssessmentPerformanceController {
     }
 
     @PostMapping(value = "/saveAssessmentServer", name = "保存考核信息")
-    public HttpResult saveAssessmentServer(String fomData, String chksScore, String processInsId, Boolean isSpot) {
+    public HttpResult saveAssessmentServer(String fomData, String chksScore, Boolean isSpot) {
         try {
             AssessmentPerformanceDto performanceDto = JSONObject.parseObject(fomData, AssessmentPerformanceDto.class);
             List<AssessmentPerformanceDetailDto> detailDtoList = JSONObject.parseArray(chksScore, AssessmentPerformanceDetailDto.class);

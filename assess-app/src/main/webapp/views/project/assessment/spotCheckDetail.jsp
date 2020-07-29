@@ -55,7 +55,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        历史数据
+                                        质量考核数据
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered" id="tbHistoryList"></table>
+                                <table class="table table-bordered" id="tbQualityList"></table>
                             </div>
                         </div>
                     </div>
@@ -105,6 +105,7 @@
 <script type="text/javascript">
     $(function () {
         spotCheck.loadSpotCheckItemList();
+        spotCheck.loadQualityList();
     })
 
     var spotCheck = {};
@@ -183,6 +184,36 @@
         $("#tbHistoryScoreList").bootstrapTable('destroy');
         TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyScoreList", cols, {
             itemId: itemId
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        });
+    }
+
+    //加载质量考核数据
+    spotCheck.loadQualityList = function () {
+        var cols = [];
+        cols.push({field: 'projectName', title: '项目名称', width: '20%'});
+        cols.push({field: 'planName', title: '阶段事项名称', width: '20%'});
+        cols.push({field: 'businessKey', title: '名称', width: '20%'});
+        cols.push({field: 'byExaminePeopleName', title: '被抽查人', width: '10%'});
+        cols.push({field: 'examineScore', title: '得分', width: '10%'});
+        cols.push({
+            field: 'bisQualified', title: '是否合格', width: '10%', formatter: function (value, row, index) {
+                if (value) {
+                    return '是';
+                } else {
+                    return false;
+                }
+            }
+        });
+        $("#tbQualityList").bootstrapTable('destroy');
+        TableInit("tbQualityList", "${pageContext.request.contextPath}/assessmentPerformance/getPerformanceListBySpotBatchId", cols, {
+            spotBatchId: '${projectSpotCheck.id}'
         }, {
             showColumns: false,
             showRefresh: false,

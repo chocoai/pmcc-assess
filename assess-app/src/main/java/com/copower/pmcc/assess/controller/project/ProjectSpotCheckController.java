@@ -39,10 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -239,6 +236,17 @@ public class ProjectSpotCheckController {
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存抽查明细数据失败", e);
+            return HttpResult.newErrorResult(e);
+        }
+    }
+
+    @GetMapping(value = "/getRuningSpotCheckList", name = "获取运行中批次")
+    @ResponseBody
+    public HttpResult getRuningSpotCheckList() {
+        try {
+            return HttpResult.newCorrectResult(projectSpotCheckService.getRuningSpotCheckList());
+        } catch (Exception e) {
+            logger.error("获取运行中批次失败", e);
             return HttpResult.newErrorResult(e);
         }
     }
