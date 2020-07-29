@@ -622,7 +622,20 @@
     //加载质量考核数据
     spotCheck.loadQualityList=function(){
         var cols = [];
-        cols.push({field: 'projectName', title: '项目名称', width: '10%'});
+        cols.push({field: 'projectName', title: '项目名称', width: '20%'});
+        cols.push({field: 'planName', title: '阶段事项名称', width: '20%'});
+        cols.push({field: 'businessKey', title: '名称', width: '20%'});
+        cols.push({field: 'byExaminePeopleName', title: '被抽查人', width: '10%'});
+        cols.push({field: 'examineScore', title: '得分', width: '10%'});
+        cols.push({
+            field: 'bisQualified', title: '是否合格', width: '10%', formatter: function (value, row, index) {
+                if (value) {
+                    return '是';
+                } else {
+                    return false;
+                }
+            }
+        });
         $("#tbQualityList").bootstrapTable('destroy');
         TableInit("tbQualityList", "${pageContext.request.contextPath}/assessmentPerformance/getPerformanceListBySpotBatchId", cols, {
             spotBatchId: '${projectSpotCheck.id}'
