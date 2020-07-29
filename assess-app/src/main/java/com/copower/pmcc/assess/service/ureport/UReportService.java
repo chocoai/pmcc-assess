@@ -157,7 +157,7 @@ public class UReportService {
             sql.append(String.format(" AND (C.cs_entrustment_unit LIKE '%s%s%s' OR C.cs_name LIKE '%s%s%s')", "%", queryConsignorName, "%", "%", queryConsignorName, "%"));
         }
         if (StringUtil.isNotEmpty(queryReportUseUnitName)) {
-            sql.append(String.format(" AND D.u_use_unit = %s", queryReportUseUnitName));
+            sql.append(String.format(" AND D.u_use_unit_name LIKE '%s%s%s'","%", queryReportUseUnitName,"%"));
         }
         if (StringUtil.isNotEmpty(queryReportNumber)) {
             sql.append(String.format(" AND A.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));

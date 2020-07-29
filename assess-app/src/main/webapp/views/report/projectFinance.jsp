@@ -82,11 +82,8 @@
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">报告使用单位</label>
                                         <div class="col-md-3 p-0">
-                                            <input id="queryReportUseUnitName" name="queryReportUseUnitName"
-                                                   class="form-control input-full" type="hidden"/>
                                             <input id="queryUseUnitName" name="queryUseUnitName" class="form-control input-full"
-                                                   placeholder="报告使用单位"
-                                                   onclick="selectCustomer(this)" readonly="readonly"/>
+                                                   placeholder="报告使用单位" />
                                         </div>
                                         <label class="col-md-1 col-form-label">报告文号</label>
                                         <div class="col-md-3 p-0">
@@ -147,7 +144,7 @@
     function statisticsByCondition() {
         var data = formParams("query_form");
         document.getElementById('report_iframe').src = "${pageContext.request.contextPath}/ureport/preview?_u=erp:projectFinance.ureport.xml&_i=1&_r=1&queryProjectName=" + data.queryProjectName + "&queryConsignorName=" + data.queryConsignorName +
-            "&queryReportUseUnitName=" + data.queryReportUseUnitName + "&queryReportNumber=" + data.queryReportNumber + "&queryStartTime=" + data.queryStartTime + "&queryEndTime=" + data.queryEndTime + "&queryUserAccount=" + data.queryUserAccount +
+            "&queryReportUseUnitName=" + data.queryUseUnitName + "&queryReportNumber=" + data.queryReportNumber + "&queryStartTime=" + data.queryStartTime + "&queryEndTime=" + data.queryEndTime + "&queryUserAccount=" + data.queryUserAccount +
             "&queryEntrustment=" + data.queryEntrustment + "&queryLoanType=" + data.queryLoanType + "&queryDepartmentId=" + data.queryDepartmentId + "&queryServiceExplain=" + data.queryServiceExplain;
     }
 
