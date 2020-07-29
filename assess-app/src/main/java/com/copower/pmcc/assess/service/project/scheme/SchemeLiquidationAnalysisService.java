@@ -620,6 +620,7 @@ public class SchemeLiquidationAnalysisService {
 
     //获取选择的SchemeJudgeObject的id集合
     public List<Integer> getSchemeJudgeObjIds(Integer groupId) {
+        if(groupId==null) return null;
         SchemeLiquidationAnalysisJudge data = new SchemeLiquidationAnalysisJudge();
         data.setGroupId(groupId);
         List<SchemeLiquidationAnalysisJudge> dataList = schemeLiquidationAnalysisJudgeDao.getSchemeLiquidationAnalysisJudgeList(data);

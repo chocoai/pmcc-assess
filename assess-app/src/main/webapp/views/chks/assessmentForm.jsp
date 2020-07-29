@@ -152,29 +152,7 @@
     </div>
 </div>
 
-<%--抽查记录列表弹窗--%>
-<div id="divSpotListModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 65%;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">抽查记录列表</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <table class="table" id="assessmentSpotList">
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <%--调整记录列表弹窗--%>
 <div id="divAdjustListModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
@@ -213,7 +191,7 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
-                    <input type="hidden" name="id">assessmentType
+                    <input type="hidden" name="id">
                     <input type="hidden" name="adjustId">
                     <input type="hidden" name="assessmentType">
                     <div class="row form-group">
@@ -230,7 +208,6 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-
                                         </tbody>
                                         <tfoot>
                                         <tr>
@@ -430,6 +407,159 @@
     </div>
 </div>
 
+<%--质量抽查考核记录填写--%>
+<div id="divQualitySpotPerformanceModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">质量抽查考核</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="adjustId">
+                    <input type="hidden" name="assessmentType">
+                    <div class="row form-group">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th width="3%">序号</th>
+                                            <th width="50%">考核标准</th>
+                                            <th width="10%">打分(分值)</th>
+                                            <th width="30%">说明</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="5" style="color: red;">
+                                                <span data-name="qualityStandard">${boxReDto.qualityStandard}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <select class="form-control input-full" name="bisQualified" required>
+                                                    <option value="">-请选择-</option>
+                                                    <option value="true">合格</option>
+                                                    <option value="false">不合格</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                <textarea class="form-control input-full" name="remarks" placeholder="考核综合说明"></textarea></td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="assessmentCommonHandle.savePerformanceData(this);">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<%--质量抽查考核记录查看--%>
+<div id="divQualitySpotPerformanceModalDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">质量考核信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th width="3%">序号</th>
+                                            <th width="50%">考核标准</th>
+                                            <th width="10%">打分(分值)</th>
+                                            <th width="30%">说明</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="5" style="color: red;">
+                                                <span data-name="qualityStandard">${boxReDto.qualityStandard}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                <label class="btn btn-info" data-name="bisQualified"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                <span data-name="remarks"></span>
+                                            </td>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<%--质量抽查考核记录列表弹窗--%>
+<div id="divSpotListModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">抽查记录列表</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="assessmentSpotList">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%--考核html模板--%>
 <script type="text/html" id="assessmentItemTemplateHTML">
     <tr>
@@ -574,6 +704,7 @@
                 }
                 str += "【" + row.assessmentTypeName + "】";
                 str += '<button type="button" class="btn  btn-xs btn-info" style="margin-left: 5px;" data-placement="bottom" data-original-title="调整记录" onclick="assessmentCommonHandle.showAdjustRecordListModal(' + row.id + ')" > <i class="fa fa-tasks fa-white"></i></button>';
+                str += '<button type="button" class="btn  btn-xs btn-info" style="margin-left: 5px;" data-placement="bottom" data-original-title="调整记录" onclick="assessmentCommonHandle.showAdjustRecordListModal(' + row.id + ')" > <i class="fa fa-tasks fa-white"></i></button>';
                 return str;
             }
         });
@@ -626,6 +757,9 @@
                 }
                 if (value == 'finish') {//完成之后可查看
                     str += '<button type="button" onclick="assessmentCommonHandle.showPerformanceDetailModal(' + row.id + ',\'' + row.assessmentType + '\')" style="margin-left: 5px;" data-placement="top" data-original-title="考核查看" class="btn btn-xs btn-info"  ><i class="fa fa-search fa-white"></i></button>';
+                    if (row.assessmentType == 'quality') {
+                        str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="抽查考核" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + row.assessmentType + '\',' + row.id + ')" > <i class="fa fa-eraser fa-white"></i></button>';
+                    }
                 }
                 return str;
             }
