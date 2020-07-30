@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ProjectReviewScoreItem {
+public class ProjectSpotCheckItemScore {
     private Integer id;
 
     private Integer groupId;
@@ -13,8 +13,6 @@ public class ProjectReviewScoreItem {
     private String planName;
 
     private BigDecimal score;
-
-    private Boolean bisEnable;
 
     private String creator;
 
@@ -62,14 +60,6 @@ public class ProjectReviewScoreItem {
 
     public void setScore(BigDecimal score) {
         this.score = score;
-    }
-
-    public Boolean getBisEnable() {
-        return bisEnable;
-    }
-
-    public void setBisEnable(Boolean bisEnable) {
-        this.bisEnable = bisEnable;
     }
 
     public String getCreator() {

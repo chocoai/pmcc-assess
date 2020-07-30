@@ -114,12 +114,12 @@
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称', width: '20%'});
         cols.push({
-            field: 'content', title: '内容', width: '50%', formatter: function (value, row, index) {
+            field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
                 var str = '';
                 if (value) {
-                    var json = JSON.parse(value);
-                    $.each(json, function (i, item) {
-                        str += item.key + "【" + item.value + "】" + item.explain + '<br/>';
+                    $.each(value, function (i, item) {
+                        str += item.planName + "【" + item.score + "】";
+                        str += AssessCommon.toString(item.remark) + '<br/>';
                     })
                 }
                 return str;
@@ -170,19 +170,19 @@
             }
         });
         cols.push({
-            field: 'content', title: '内容', width: '70%', formatter: function (value, row, index) {
+            field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
                 var str = '';
                 if (value) {
-                    var json = JSON.parse(value);
-                    $.each(json, function (i, item) {
-                        str += item.key + "【" + item.value + "】" + item.explain + '<br/>';
+                    $.each(value, function (i, item) {
+                        str += item.planName + "【" + item.score + "】";
+                        str += AssessCommon.toString(item.remark) + '<br/>';
                     })
                 }
                 return str;
             }
         });
         $("#tbHistoryScoreList").bootstrapTable('destroy');
-        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyScoreList", cols, {
+        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistoryGroupsByItemId", cols, {
             itemId: itemId
         }, {
             showColumns: false,

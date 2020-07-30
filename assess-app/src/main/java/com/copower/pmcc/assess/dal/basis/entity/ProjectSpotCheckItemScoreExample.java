@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProjectReviewScoreItemExample {
+public class ProjectSpotCheckItemScoreExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ProjectReviewScoreItemExample() {
+    public ProjectSpotCheckItemScoreExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -413,66 +413,6 @@ public class ProjectReviewScoreItemExample {
 
         public Criteria andScoreNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("score not between", value1, value2, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableIsNull() {
-            addCriterion("bis_enable is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableIsNotNull() {
-            addCriterion("bis_enable is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableEqualTo(Boolean value) {
-            addCriterion("bis_enable =", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableNotEqualTo(Boolean value) {
-            addCriterion("bis_enable <>", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableGreaterThan(Boolean value) {
-            addCriterion("bis_enable >", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_enable >=", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableLessThan(Boolean value) {
-            addCriterion("bis_enable <", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_enable <=", value, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableIn(List<Boolean> values) {
-            addCriterion("bis_enable in", values, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableNotIn(List<Boolean> values) {
-            addCriterion("bis_enable not in", values, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_enable between", value1, value2, "bisEnable");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_enable not between", value1, value2, "bisEnable");
             return (Criteria) this;
         }
 

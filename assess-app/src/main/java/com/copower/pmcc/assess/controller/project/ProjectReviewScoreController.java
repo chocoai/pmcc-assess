@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectReviewScoreGroupVo;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectAssessmentBonusEvent;
 import com.copower.pmcc.assess.service.project.ProjectAssessmentBonusService;
@@ -69,18 +70,19 @@ public class ProjectReviewScoreController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/reviewScoreApply", boxReDto.getId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
-        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+        List<ProjectReviewScoreItem> scoreItems = Lists.newArrayList();
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         if (CollectionUtils.isNotEmpty(projectPlanList)) {
             for (ProjectPlanVo projectPlanVo : projectPlanList) {
-                KeyValueDto keyValueDto = new KeyValueDto();
-                keyValueDto.setKey(projectPlanVo.getPlanName());
+                ProjectReviewScoreItem scoreItem = new ProjectReviewScoreItem();
+                scoreItem.setPlanId(projectPlanVo.getId());
+                scoreItem.setPlanName(projectPlanVo.getPlanName());
                 ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanVo.getWorkStageId());
-                keyValueDto.setValue(String.valueOf(projectWorkStage.getManagerReviewScore()));
-                keyValueDtos.add(keyValueDto);
+                scoreItem.setScore(projectWorkStage.getManagerReviewScore());
+                scoreItems.add(scoreItem);
             }
         }
-        modelAndView.addObject("keyValueDtos", keyValueDtos);
+        modelAndView.addObject("projectReviewScoreItems", scoreItems);
         return modelAndView;
     }
 
@@ -110,9 +112,9 @@ public class ProjectReviewScoreController {
         modelAndView.addObject("projectReviewScore", reviewScore);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(reviewScore.getProjectId());
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
-        ProjectReviewScoreItem reviewScoreItem = projectReviewScoreService.getEnableReviewScoreItemsByMasterId(reviewScore.getId());
-        if(reviewScoreItem!=null){
-            modelAndView.addObject("keyValueDtos", projectReviewScoreService.getReviewScoreItemVo(reviewScoreItem).getKeyValueDtos());
+        ProjectReviewScoreGroupVo reviewScoreGroupVo = projectReviewScoreService.getEnableReviewScoreGroupByReviewId(reviewScore.getId());
+        if(reviewScoreGroupVo!=null){
+            modelAndView.addObject("projectReviewScoreItems", reviewScoreGroupVo.getReviewScoreItemList());
         }
     }
 
@@ -122,7 +124,7 @@ public class ProjectReviewScoreController {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectReviewScoreItem> scoreItems = projectReviewScoreService.getHistoryReviewScoreItemsByMasterId(reviewId);
+        List<ProjectReviewScoreGroup> scoreItems = projectReviewScoreService.getHistoryReviewScoreItemsByReviewId(reviewId);
         vo.setTotal(page.getTotal());
         vo.setRows(scoreItems);
         return vo;
@@ -148,8 +150,8 @@ public class ProjectReviewScoreController {
     @PostMapping(value = "/editCommit", name = "返回修改提交")
     public HttpResult editCommit(String formData, ApprovalModelDto approvalModelDto) {
         try {
-            ProjectReviewScoreItem projectReviewScoreItem = JSON.parseObject(formData, ProjectReviewScoreItem.class);
-            projectReviewScoreService.addReviewScoreItem(projectReviewScoreItem);
+            ProjectReviewScoreGroupVo projectReviewScoreGroup = JSON.parseObject(formData, ProjectReviewScoreGroupVo.class);
+            projectReviewScoreService.addReviewScoreGroup(projectReviewScoreGroup);
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
@@ -170,12 +172,12 @@ public class ProjectReviewScoreController {
         }
     }
 
-    @PostMapping(value = "/saveReviewScoreItem", name = "保存复核工时明细数据")
+    @PostMapping(value = "/saveReviewScoreGroup", name = "保存复核工时明细数据")
     @ResponseBody
-    public HttpResult saveReviewScoreItem(String formData) {
+    public HttpResult saveReviewScoreGroup(String formData) {
         try {
-            ProjectReviewScoreItem projectReviewScoreItem = JSON.parseObject(formData, ProjectReviewScoreItem.class);
-            projectReviewScoreService.addReviewScoreItem(projectReviewScoreItem);
+            ProjectReviewScoreGroupVo projectReviewScoreGroupVo = JSON.parseObject(formData, ProjectReviewScoreGroupVo.class);
+            projectReviewScoreService.addReviewScoreGroup(projectReviewScoreGroupVo);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存复核工时明细数据失败", e);

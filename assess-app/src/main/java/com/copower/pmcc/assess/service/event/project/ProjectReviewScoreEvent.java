@@ -47,16 +47,16 @@ public class ProjectReviewScoreEvent extends BaseProcessEvent {
                 //将项目经理的工时得分写入到考核系统中，
                 ProjectReviewScore reviewScore = projectReviewScoreService.getReviewScoreByProcessInsId(processExecution.getProcessInstanceId());
                 if (reviewScore == null) return;
-                ProjectReviewScoreItem reviewScoreItem = projectReviewScoreService.getEnableReviewScoreItemsByMasterId(reviewScore.getId());
-                if (reviewScoreItem == null) return;
+                ProjectReviewScoreGroup reviewScoreGroup = projectReviewScoreService.getEnableReviewScoreGroupByReviewId(reviewScore.getId());
+                if (reviewScoreGroup == null) return;
                 AssessmentPerformanceDto performanceDto = new AssessmentPerformanceDto();
                 performanceDto.setProjectId(reviewScore.getProjectId());
                 performanceDto.setAppKey(applicationConstant.getAppKey());
                 performanceDto.setProjectName(reviewScore.getProjectName());
                 performanceDto.setProcessInsId(processExecution.getProcessInstanceId());
                 performanceDto.setByExaminePeople(projectMemberService.getProjectManager(reviewScore.getProjectId()));
-                performanceDto.setExaminePeople(reviewScoreItem.getCreator());
-                performanceDto.setExamineScore(reviewScoreItem.getTotalScore());
+                performanceDto.setExaminePeople(reviewScoreGroup.getCreator());
+                performanceDto.setExamineScore(reviewScoreGroup.getTotalScore());
                 performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
                 performanceDto.setBusinessKey("项目经理复核工分");
                 performanceDto.setExamineStatus(ProcessStatusEnum.FINISH.getValue());

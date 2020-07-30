@@ -1,33 +1,23 @@
 package com.copower.pmcc.assess.dto.output.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItem;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemGroup;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckScore;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
-import java.util.Date;
 import java.util.List;
 
-public class ProjectSpotCheckItemVo extends ProjectSpotCheckItem {
-    private String examineName;
-    private Date examineDate;
+public class ProjectSpotCheckItemGroupVo extends ProjectSpotCheckItemGroup {
+    private String creatorName;
     private List<ProjectSpotCheckItemScore> projectSpotCheckItemScoreList;
 
-    public String getExamineName() {
-        return examineName;
+    public String getCreatorName() {
+        return creatorName;
     }
 
-    public void setExamineName(String examineName) {
-        this.examineName = examineName;
-    }
-
-    public void setExamineDate(Date examineDate) {
-        this.examineDate = examineDate;
-    }
-
-    public Date getExamineDate() {
-        return examineDate;
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 
     public List<ProjectSpotCheckItemScore> getProjectSpotCheckItemScoreList() {

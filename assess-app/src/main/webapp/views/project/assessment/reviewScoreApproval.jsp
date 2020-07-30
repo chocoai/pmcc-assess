@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>外勤考核</title>
+    <title>复核工时考核</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body>
@@ -42,19 +42,20 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${keyValueDtos}" var="item">
-                                            <tr>
-                                                <td scope="col">
-                                                        ${item.key}<input type="hidden" name="key" value="${item.key}">
+                                        <c:forEach items="${projectReviewScoreItems}" var="item" varStatus="status">
+                                            <tr class="reviewRow">
+                                                <td scope="col">${item.planName}
+                                                    <input type="hidden" name="planId" value="${item.planId}">
+                                                    <input type="hidden" name="planName" value="${item.planName}">
                                                 </td>
                                                 <td scope="col">
                                                     <input type="text" data-rule-number="true" required
                                                            class="form-control input-full"
-                                                           name="value" value="${item.value}">
+                                                           name="score" value="${item.score}">
                                                 </td>
                                                 <td scope="col">
-                                                    <input type="text" class="form-control input-full"
-                                                           name="explain" value="${item.explain}">
+                                                    <textarea id="remark${status.index}"
+                                                              name="remark">${item.remark}</textarea>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -93,8 +94,24 @@
 </body>
 </html>
 <script type="text/javascript">
+    var ueContainer = [];
     $(function () {
         loadHistoryList();
+        $('#frmRevieScoreItem').find('[name=remark]').each(function (i, item) {
+            var id = $(this).attr('id');
+            var ueItem = UE.getEditor(id, {
+                toolbars: [
+                    ['fullscreen', 'source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+                ],
+                initialFrameWidth: 700,
+                initialFrameHeight: 120,
+                elementPathEnabled: false,//是否启用元素路径，默认是true显示
+                wordCount: false, //是否开启字数统计
+                autoHeightEnabled: false,
+                autoFloatEnabled: true
+            });
+            ueContainer[i] = ueItem;
+        })
     })
 
     function saveform() {
@@ -134,12 +151,12 @@
             }
         });
         cols.push({
-            field: 'content', title: '内容', width: '70%', formatter: function (value, row, index) {
+            field: 'reviewScoreItemList', title: '内容', width: '50%', formatter: function (value, row, index) {
                 var str = '';
                 if (value) {
-                    var json = JSON.parse(value);
-                    $.each(json,function (i,item) {
-                        str+=item.key+"【"+item.value+"】"+item.explain+'<br/>';
+                    $.each(value, function (i, item) {
+                        str += item.planName + "【" + item.score + "】";
+                        str += item.remark + '<br/>';
                     })
                 }
                 return str;
@@ -162,24 +179,25 @@
         if (!$('#frmRevieScoreItem').valid()) {
             return false;
         }
-        var trs = $('#frmRevieScoreItem').find('tbody tr');
+        var trs = $('#frmRevieScoreItem').find('.reviewRow');
         var data = {};
-        var contentArray = [];
+        var reviewScoreItemList = [];
         var totalScore = null;
         trs.each(function (i, item) {
-            var keyValue = {};
-            keyValue.key = $(item).find('[name=key]').val();
-            keyValue.value = $(item).find('[name=value]').val();
-            keyValue.explain = $(item).find('[name=explain]').val();
-            if (keyValue.value) {
-                totalScore += parseFloat(keyValue.value);
+            var reviewScoreItem = {};
+            reviewScoreItem.planId = $(item).find('[name=planId]').val();
+            reviewScoreItem.planName = $(item).find('[name=planName]').val();
+            reviewScoreItem.score = $(item).find('[name=score]').val();
+            reviewScoreItem.remark = ueContainer[i].getContent();
+            if (reviewScoreItem.score) {
+                totalScore += parseFloat(reviewScoreItem.score);
             }
-            contentArray.push(keyValue);
+            reviewScoreItemList.push(reviewScoreItem);
         })
-        data.masterId = '${projectReviewScore.id}';
-        data.content = contentArray;
+        data.reviewId = '${projectReviewScore.id}';
+        data.reviewScoreItemList = reviewScoreItemList;
         data.totalScore = totalScore;
-        $.post('${pageContext.request.contextPath}/projectReviewScore/saveReviewScoreItem', {
+        $.post('${pageContext.request.contextPath}/projectReviewScore/saveReviewScoreGroup', {
             formData: JSON.stringify(data)
         }, function (result) {
             if (result.ret) {

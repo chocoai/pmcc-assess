@@ -3,16 +3,12 @@ package com.copower.pmcc.assess.dal.basis.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ProjectReviewScoreItem {
+public class ProjectSpotCheckItemGroup {
     private Integer id;
 
-    private Integer groupId;
+    private Integer itemId;
 
-    private Integer planId;
-
-    private String planName;
-
-    private BigDecimal score;
+    private BigDecimal totalScore;
 
     private Boolean bisEnable;
 
@@ -22,8 +18,6 @@ public class ProjectReviewScoreItem {
 
     private Date gmtModified;
 
-    private String remark;
-
     public Integer getId() {
         return id;
     }
@@ -32,36 +26,20 @@ public class ProjectReviewScoreItem {
         this.id = id;
     }
 
-    public Integer getGroupId() {
-        return groupId;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
-    public Integer getPlanId() {
-        return planId;
+    public BigDecimal getTotalScore() {
+        return totalScore;
     }
 
-    public void setPlanId(Integer planId) {
-        this.planId = planId;
-    }
-
-    public String getPlanName() {
-        return planName;
-    }
-
-    public void setPlanName(String planName) {
-        this.planName = planName == null ? null : planName.trim();
-    }
-
-    public BigDecimal getScore() {
-        return score;
-    }
-
-    public void setScore(BigDecimal score) {
-        this.score = score;
+    public void setTotalScore(BigDecimal totalScore) {
+        this.totalScore = totalScore;
     }
 
     public Boolean getBisEnable() {
@@ -94,13 +72,5 @@ public class ProjectReviewScoreItem {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
     }
 }

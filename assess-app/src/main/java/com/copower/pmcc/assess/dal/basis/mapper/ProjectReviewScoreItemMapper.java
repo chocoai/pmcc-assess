@@ -16,15 +16,21 @@ public interface ProjectReviewScoreItemMapper {
 
     int insertSelective(ProjectReviewScoreItem record);
 
+    List<ProjectReviewScoreItem> selectByExampleWithBLOBs(ProjectReviewScoreItemExample example);
+
     List<ProjectReviewScoreItem> selectByExample(ProjectReviewScoreItemExample example);
 
     ProjectReviewScoreItem selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") ProjectReviewScoreItem record, @Param("example") ProjectReviewScoreItemExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") ProjectReviewScoreItem record, @Param("example") ProjectReviewScoreItemExample example);
+
     int updateByExample(@Param("record") ProjectReviewScoreItem record, @Param("example") ProjectReviewScoreItemExample example);
 
     int updateByPrimaryKeySelective(ProjectReviewScoreItem record);
+
+    int updateByPrimaryKeyWithBLOBs(ProjectReviewScoreItem record);
 
     int updateByPrimaryKey(ProjectReviewScoreItem record);
 }

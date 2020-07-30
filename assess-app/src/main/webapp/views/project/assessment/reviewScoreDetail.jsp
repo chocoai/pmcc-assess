@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>外勤考核</title>
+    <title>复核工时考核</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body>
@@ -45,11 +45,11 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${keyValueDtos}" var="item">
+                                        <c:forEach items="${projectReviewScoreItems}" var="item">
                                             <tr>
-                                                <td scope="col">${item.key}</td>
-                                                <td scope="col">${item.value}</td>
-                                                <td scope="col">${item.explain}</td>
+                                                <td scope="col">${item.planName}</td>
+                                                <td scope="col">${item.score}</td>
+                                                <td scope="col">${item.remark}</td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -86,10 +86,30 @@
 </div>
 </body>
 </html>
+
+<%--查看信息--%>
+<div id="viewReviewItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">查看说明</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html"></script>
 <script type="text/javascript">
     $(function () {
         loadHistoryList();
     })
+
     function loadHistoryList() {
         var cols = [];
         cols.push({field: 'creatorName', title: '填写人', width: '10%'});
@@ -99,17 +119,16 @@
             }
         });
         cols.push({
-            field: 'content', title: '内容', width: '70%', formatter: function (value, row, index) {
+            field: 'reviewScoreItemList', title: '内容', width: '50%', formatter: function (value, row, index) {
                 var str = '';
                 if (value) {
-                    var json = JSON.parse(value);
-                    $.each(json,function (i,item) {
-                        str+=item.key+"【"+item.value+"】"+item.explain+'<br/>';
+                    $.each(value, function (i, item) {
+                        str += item.planName + "【" + item.score + "】";
+                        str += item.remark + '<br/>';
                     })
                 }
                 return str;
             }
-
         });
         $("#tbHistoryList").bootstrapTable('destroy');
         TableInit("tbHistoryList", "${pageContext.request.contextPath}/projectReviewScore/getHistroyList", cols, {
@@ -122,5 +141,22 @@
                 $(".tooltips").tooltip();
             }
         });
+    }
+
+    function viewItemRemark(_this) {
+        var html = $(_this).closest("td").find("[name=remark]").html();
+        $('#viewReviewItemModal').find('.modal-body').append(encodeHtml(html));
+        $('#viewReviewItemModal').modal();
+    }
+
+    function encodeHtml(str) {
+        var encodedStr = "";
+        if (str == "") return encodedStr;
+        else {
+            for (var i = 0; i < str.length; i++) {
+                encodedStr += "&#" + str.substring(i, i + 1).charCodeAt().toString(10) + ";";
+            }
+        }
+        return encodedStr;
     }
 </script>

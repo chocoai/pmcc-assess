@@ -80,7 +80,7 @@
 </html>
 
 <%--填写工时考核窗口--%>
-<div id="editSpotCheckScoreModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="editSpotCheckItemGroupModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -91,8 +91,8 @@
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form id="frmSpotCheckScore" class="form-horizontal">
-                    <input type="hidden" name="spotItemId">
+                <form id="frmSpotCheckItemGroup" class="form-horizontal">
+                    <input type="hidden" name="itemId">
                     <table class="table">
                         <thead>
                         <tr>
@@ -147,17 +147,33 @@
     })
 
     var spotCheck = {};
-
+    spotCheck.ueContainer = [];
+    spotCheck.initUEditor = function (id, index) {
+        UE.delEditor(id);
+        var ueItem = UE.getEditor(id, {
+            toolbars: [
+                ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+            ],
+            zIndex: 11009,
+            initialFrameWidth: 500,
+            initialFrameHeight: 120,
+            elementPathEnabled: false,//是否启用元素路径，默认是true显示
+            wordCount: false, //是否开启字数统计
+            autoHeightEnabled: false,
+            autoFloatEnabled: true
+        });
+        spotCheck.ueContainer[index] = ueItem;
+    }
     spotCheck.loadSpotCheckItemList = function () {
         var cols = [];
         cols.push({field: 'projectName', title: '项目名称', width: '20%'});
         cols.push({
-            field: 'content', title: '内容', width: '50%', formatter: function (value, row, index) {
+            field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
                 var str = '';
                 if (value) {
-                    var json = JSON.parse(value);
-                    $.each(json, function (i, item) {
-                        str += item.key + "【" + item.value + "】" + item.explain + '<br/>';
+                    $.each(value, function (i, item) {
+                        str += item.planName + "【" + item.score + "】";
+                        str += AssessCommon.toString(item.remark) + '<br/>';
                     })
                 }
                 return str;
@@ -197,47 +213,53 @@
 
     //显示填写工分窗口
     spotCheck.showEditScoreModal = function (itemId, projectId) {
-        var modal = $('#editSpotCheckScoreModal');
+        var modal = $('#editSpotCheckItemGroupModal');
         modal.find('tbody').empty();
         $.getJSON('${pageContext.request.contextPath}/projectSpotCheck/getSpotCheckScoreContent', {
             itemId: itemId,
             projectId: projectId
         }, function (result) {
             if (result.ret && result.data) {
+                spotCheck.ueContainer = [];
                 $.each(result.data, function (i, item) {
                     var html = '';
-                    html += '<tr><td scope="col">' + item.key + '<input type="hidden" name="key" value="' + item.key + '"></td>';
-                    html += '<td scope="col"><input type="text" data-rule-number="true" required class="form-control input-full" name="value" value="' + AssessCommon.toString(item.value) + '"></td>';
-                    html += '<td scope="col"><input type="text" class="form-control input-full" name="explain" value="' + AssessCommon.toString(item.explain) + '"></td></tr>';
+                    html += '<tr class="reviewRow"><td scope="col">' + item.planName + '<input type="hidden" name="planId" value="' + item.planId + '"><input type="hidden" name="planName" value="' + item.planName + '"></td>';
+                    html += '<td scope="col"><input type="text" data-rule-number="true" required class="form-control input-full" name="score" value="' + AssessCommon.toString(item.score) + '"></td>';
+                    html += '<td scope="col"><textarea type="text" id="remark' + i + '" name="remark" >' + AssessCommon.toString(item.remark) + '</textarea></td></tr>';
                     modal.find('tbody').append(html);
+
+                })
+                $.each(result.data, function (i, item) {
+                    spotCheck.initUEditor("remark" + i, i);//初始化ueditor
                 })
             }
         })
-        $('#frmSpotCheckScore').find('[name=spotItemId]').val(itemId);
+        $('#frmSpotCheckItemGroup').find('[name=itemId]').val(itemId);
         modal.modal();
     }
 
     //保存工分
     spotCheck.saveSpotCheckScore = function () {
-        if (!$('#frmSpotCheckScore').valid()) {
+        if (!$('#frmSpotCheckItemGroup').valid()) {
             return false;
         }
-        var trs = $('#frmSpotCheckScore').find('tbody tr');
+        var trs = $('#frmSpotCheckItemGroup').find('.reviewRow');
         var data = {};
-        var contentArray = [];
+        var projectSpotCheckItemScoreList = [];
         var totalScore = null;
         trs.each(function (i, item) {
-            var keyValue = {};
-            keyValue.key = $(item).find('[name=key]').val();
-            keyValue.value = $(item).find('[name=value]').val();
-            keyValue.explain = $(item).find('[name=explain]').val();
-            if (keyValue.value) {
-                totalScore += parseFloat(keyValue.value);
+            var projectSpotCheckItemScore = {};
+            projectSpotCheckItemScore.planId = $(item).find('[name=planId]').val();
+            projectSpotCheckItemScore.planName = $(item).find('[name=planName]').val();
+            projectSpotCheckItemScore.score = $(item).find('[name=score]').val();
+            projectSpotCheckItemScore.remark = spotCheck.ueContainer[i].getContent();
+            if (projectSpotCheckItemScore.score) {
+                totalScore += parseFloat(projectSpotCheckItemScore.score);
             }
-            contentArray.push(keyValue);
+            projectSpotCheckItemScoreList.push(projectSpotCheckItemScore);
         });
-        data.spotItemId = $('#frmSpotCheckScore').find('[name=spotItemId]').val();
-        data.content = contentArray;
+        data.itemId = $('#frmSpotCheckItemGroup').find('[name=itemId]').val();
+        data.projectSpotCheckItemScoreList = projectSpotCheckItemScoreList;
         data.totalScore = totalScore;
         $.post('${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheckScore', {
             formData: JSON.stringify(data)
@@ -245,7 +267,7 @@
             if (result.ret) {
                 notifySuccess('提示', '保存成功');
                 spotCheck.loadSpotCheckItemList();
-                $('#editSpotCheckScoreModal').modal('hide');
+                $('#editSpotCheckItemGroupModal').modal('hide');
             } else {
                 AlertError('失败', result.errmsg);
             }
@@ -268,19 +290,19 @@
             }
         });
         cols.push({
-            field: 'content', title: '内容', width: '70%', formatter: function (value, row, index) {
+            field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
                 var str = '';
                 if (value) {
-                    var json = JSON.parse(value);
-                    $.each(json, function (i, item) {
-                        str += item.key + "【" + item.value + "】" + item.explain + '<br/>';
+                    $.each(value, function (i, item) {
+                        str += item.planName + "【" + item.score + "】";
+                        str += AssessCommon.toString(item.remark) + '<br/>';
                     })
                 }
                 return str;
             }
         });
         $("#tbHistoryScoreList").bootstrapTable('destroy');
-        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyScoreList", cols, {
+        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistoryGroupsByItemId", cols, {
             itemId: itemId
         }, {
             showColumns: false,

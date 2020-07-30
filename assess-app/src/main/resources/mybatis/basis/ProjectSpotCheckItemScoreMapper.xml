@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectReviewScoreItemMapper">
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectSpotCheckItemScoreMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="group_id" jdbcType="INTEGER" property="groupId" />
     <result column="plan_id" jdbcType="INTEGER" property="planId" />
     <result column="plan_name" jdbcType="VARCHAR" property="planName" />
     <result column="score" jdbcType="DECIMAL" property="score" />
-    <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore">
     <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -74,12 +73,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, group_id, plan_id, plan_name, score, bis_enable, creator, gmt_created, gmt_modified
+    id, group_id, plan_id, plan_name, score, creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List">
     remark
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItemExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScoreExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
@@ -87,7 +86,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from tb_project_review_score_item
+    from tb_project_spot_check_item_score
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,13 +94,13 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItemExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScoreExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_project_review_score_item
+    from tb_project_spot_check_item_score
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -114,37 +113,35 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from tb_project_review_score_item
+    from tb_project_spot_check_item_score
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_project_review_score_item
+    delete from tb_project_spot_check_item_score
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItemExample">
-    delete from tb_project_review_score_item
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScoreExample">
+    delete from tb_project_spot_check_item_score
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_review_score_item (group_id, plan_id, plan_name, 
-      score, bis_enable, creator, 
-      gmt_created, gmt_modified, remark
-      )
+    insert into tb_project_spot_check_item_score (group_id, plan_id, plan_name, 
+      score, creator, gmt_created, 
+      gmt_modified, remark)
     values (#{groupId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{planName,jdbcType=VARCHAR}, 
-      #{score,jdbcType=DECIMAL}, #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=LONGVARCHAR}
-      )
+      #{score,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_review_score_item
+    insert into tb_project_spot_check_item_score
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="groupId != null">
         group_id,
@@ -157,9 +154,6 @@
       </if>
       <if test="score != null">
         score,
-      </if>
-      <if test="bisEnable != null">
-        bis_enable,
       </if>
       <if test="creator != null">
         creator,
@@ -187,9 +181,6 @@
       <if test="score != null">
         #{score,jdbcType=DECIMAL},
       </if>
-      <if test="bisEnable != null">
-        #{bisEnable,jdbcType=BIT},
-      </if>
       <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -204,14 +195,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItemExample" resultType="java.lang.Long">
-    select count(*) from tb_project_review_score_item
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScoreExample" resultType="java.lang.Long">
+    select count(*) from tb_project_spot_check_item_score
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tb_project_review_score_item
+    update tb_project_spot_check_item_score
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -227,9 +218,6 @@
       </if>
       <if test="record.score != null">
         score = #{record.score,jdbcType=DECIMAL},
-      </if>
-      <if test="record.bisEnable != null">
-        bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
       <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -249,13 +237,12 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
-    update tb_project_review_score_item
+    update tb_project_spot_check_item_score
     set id = #{record.id,jdbcType=INTEGER},
       group_id = #{record.groupId,jdbcType=INTEGER},
       plan_id = #{record.planId,jdbcType=INTEGER},
       plan_name = #{record.planName,jdbcType=VARCHAR},
       score = #{record.score,jdbcType=DECIMAL},
-      bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
@@ -265,13 +252,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tb_project_review_score_item
+    update tb_project_spot_check_item_score
     set id = #{record.id,jdbcType=INTEGER},
       group_id = #{record.groupId,jdbcType=INTEGER},
       plan_id = #{record.planId,jdbcType=INTEGER},
       plan_name = #{record.planName,jdbcType=VARCHAR},
       score = #{record.score,jdbcType=DECIMAL},
-      bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -279,8 +265,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
-    update tb_project_review_score_item
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore">
+    update tb_project_spot_check_item_score
     <set>
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=INTEGER},
@@ -293,9 +279,6 @@
       </if>
       <if test="score != null">
         score = #{score,jdbcType=DECIMAL},
-      </if>
-      <if test="bisEnable != null">
-        bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
       <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
@@ -312,26 +295,24 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
-    update tb_project_review_score_item
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore">
+    update tb_project_spot_check_item_score
     set group_id = #{groupId,jdbcType=INTEGER},
       plan_id = #{planId,jdbcType=INTEGER},
       plan_name = #{planName,jdbcType=VARCHAR},
       score = #{score,jdbcType=DECIMAL},
-      bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       remark = #{remark,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
-    update tb_project_review_score_item
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore">
+    update tb_project_spot_check_item_score
     set group_id = #{groupId,jdbcType=INTEGER},
       plan_id = #{planId,jdbcType=INTEGER},
       plan_name = #{planName,jdbcType=VARCHAR},
       score = #{score,jdbcType=DECIMAL},
-      bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

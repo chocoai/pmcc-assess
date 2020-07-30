@@ -157,7 +157,7 @@
         cols.push({
             field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
                 var str = '';
-                str += '<button type="button" onclick="viewDetail(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                str += '<button type="button" onclick="viewDetail(' + row.id + ',\''+row.processInsId+'\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
                 return str;
@@ -212,7 +212,7 @@
         data.status = 'runing';
         $.ajax({
             url: '${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheck',
-            data: {formData: JSON.stringify()},
+            data: {formData: JSON.stringify(data)},
             type: 'post',
             dataType: 'json',
             success: function (result) {

@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProjectReviewScoreItemExample {
+public class ProjectSpotCheckItemGroupExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ProjectReviewScoreItemExample() {
+    public ProjectSpotCheckItemGroupExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -166,253 +166,123 @@ public class ProjectReviewScoreItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdIsNull() {
-            addCriterion("group_id is null");
+        public Criteria andItemIdIsNull() {
+            addCriterion("item_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdIsNotNull() {
-            addCriterion("group_id is not null");
+        public Criteria andItemIdIsNotNull() {
+            addCriterion("item_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdEqualTo(Integer value) {
-            addCriterion("group_id =", value, "groupId");
+        public Criteria andItemIdEqualTo(Integer value) {
+            addCriterion("item_id =", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdNotEqualTo(Integer value) {
-            addCriterion("group_id <>", value, "groupId");
+        public Criteria andItemIdNotEqualTo(Integer value) {
+            addCriterion("item_id <>", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdGreaterThan(Integer value) {
-            addCriterion("group_id >", value, "groupId");
+        public Criteria andItemIdGreaterThan(Integer value) {
+            addCriterion("item_id >", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("group_id >=", value, "groupId");
+        public Criteria andItemIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("item_id >=", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdLessThan(Integer value) {
-            addCriterion("group_id <", value, "groupId");
+        public Criteria andItemIdLessThan(Integer value) {
+            addCriterion("item_id <", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdLessThanOrEqualTo(Integer value) {
-            addCriterion("group_id <=", value, "groupId");
+        public Criteria andItemIdLessThanOrEqualTo(Integer value) {
+            addCriterion("item_id <=", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdIn(List<Integer> values) {
-            addCriterion("group_id in", values, "groupId");
+        public Criteria andItemIdIn(List<Integer> values) {
+            addCriterion("item_id in", values, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdNotIn(List<Integer> values) {
-            addCriterion("group_id not in", values, "groupId");
+        public Criteria andItemIdNotIn(List<Integer> values) {
+            addCriterion("item_id not in", values, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdBetween(Integer value1, Integer value2) {
-            addCriterion("group_id between", value1, value2, "groupId");
+        public Criteria andItemIdBetween(Integer value1, Integer value2) {
+            addCriterion("item_id between", value1, value2, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("group_id not between", value1, value2, "groupId");
+        public Criteria andItemIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("item_id not between", value1, value2, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdIsNull() {
-            addCriterion("plan_id is null");
+        public Criteria andTotalScoreIsNull() {
+            addCriterion("total_score is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdIsNotNull() {
-            addCriterion("plan_id is not null");
+        public Criteria andTotalScoreIsNotNull() {
+            addCriterion("total_score is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdEqualTo(Integer value) {
-            addCriterion("plan_id =", value, "planId");
+        public Criteria andTotalScoreEqualTo(BigDecimal value) {
+            addCriterion("total_score =", value, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdNotEqualTo(Integer value) {
-            addCriterion("plan_id <>", value, "planId");
+        public Criteria andTotalScoreNotEqualTo(BigDecimal value) {
+            addCriterion("total_score <>", value, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdGreaterThan(Integer value) {
-            addCriterion("plan_id >", value, "planId");
+        public Criteria andTotalScoreGreaterThan(BigDecimal value) {
+            addCriterion("total_score >", value, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("plan_id >=", value, "planId");
+        public Criteria andTotalScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("total_score >=", value, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdLessThan(Integer value) {
-            addCriterion("plan_id <", value, "planId");
+        public Criteria andTotalScoreLessThan(BigDecimal value) {
+            addCriterion("total_score <", value, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdLessThanOrEqualTo(Integer value) {
-            addCriterion("plan_id <=", value, "planId");
+        public Criteria andTotalScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("total_score <=", value, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdIn(List<Integer> values) {
-            addCriterion("plan_id in", values, "planId");
+        public Criteria andTotalScoreIn(List<BigDecimal> values) {
+            addCriterion("total_score in", values, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdNotIn(List<Integer> values) {
-            addCriterion("plan_id not in", values, "planId");
+        public Criteria andTotalScoreNotIn(List<BigDecimal> values) {
+            addCriterion("total_score not in", values, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdBetween(Integer value1, Integer value2) {
-            addCriterion("plan_id between", value1, value2, "planId");
+        public Criteria andTotalScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("total_score between", value1, value2, "totalScore");
             return (Criteria) this;
         }
 
-        public Criteria andPlanIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("plan_id not between", value1, value2, "planId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameIsNull() {
-            addCriterion("plan_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameIsNotNull() {
-            addCriterion("plan_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameEqualTo(String value) {
-            addCriterion("plan_name =", value, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameNotEqualTo(String value) {
-            addCriterion("plan_name <>", value, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameGreaterThan(String value) {
-            addCriterion("plan_name >", value, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameGreaterThanOrEqualTo(String value) {
-            addCriterion("plan_name >=", value, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameLessThan(String value) {
-            addCriterion("plan_name <", value, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameLessThanOrEqualTo(String value) {
-            addCriterion("plan_name <=", value, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameLike(String value) {
-            addCriterion("plan_name like", value, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameNotLike(String value) {
-            addCriterion("plan_name not like", value, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameIn(List<String> values) {
-            addCriterion("plan_name in", values, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameNotIn(List<String> values) {
-            addCriterion("plan_name not in", values, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameBetween(String value1, String value2) {
-            addCriterion("plan_name between", value1, value2, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanNameNotBetween(String value1, String value2) {
-            addCriterion("plan_name not between", value1, value2, "planName");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreIsNull() {
-            addCriterion("score is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreIsNotNull() {
-            addCriterion("score is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreEqualTo(BigDecimal value) {
-            addCriterion("score =", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreNotEqualTo(BigDecimal value) {
-            addCriterion("score <>", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreGreaterThan(BigDecimal value) {
-            addCriterion("score >", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("score >=", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreLessThan(BigDecimal value) {
-            addCriterion("score <", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("score <=", value, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreIn(List<BigDecimal> values) {
-            addCriterion("score in", values, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreNotIn(List<BigDecimal> values) {
-            addCriterion("score not in", values, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("score between", value1, value2, "score");
-            return (Criteria) this;
-        }
-
-        public Criteria andScoreNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("score not between", value1, value2, "score");
+        public Criteria andTotalScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("total_score not between", value1, value2, "totalScore");
             return (Criteria) this;
         }
 
