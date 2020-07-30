@@ -127,7 +127,7 @@ public class ProjectTaskController extends BaseController {
     }
 
     @ResponseBody
-    @RequestIdempotent(excludeFields = {"actualHours"})
+    @RequestIdempotent(excludeFields = {"actualHours"}, validSeconds = 10)
     @RequestMapping(value = "/submitTask", name = "提交工作成果数据", method = RequestMethod.POST)
     public HttpResult submitTask(ProjectTaskDto projectTaskDto) {
         try {

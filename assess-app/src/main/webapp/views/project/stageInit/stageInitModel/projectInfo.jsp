@@ -115,7 +115,52 @@
                 </div>
             </div>
         </div>
-
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline">
+                    <label class="col-sm-1 col-form-label">
+                        执业部门
+                    </label>
+                    <div class="col-sm-3 x-valid">
+                        <div class="input-group">
+                            <input type="hidden" name="departmentId"
+                                   value="${projectInfo.departmentId}">
+                            <input class='form-control' name="departmentName" required
+                                   readonly="readonly" onclick="objProject.selectDepartment(this);"
+                                   value="${projectInfo.departmentName}">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                    清空
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-primary btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="objProject.selectDepartment(this);">选择
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-1 col-form-label">
+                        业务来源
+                    </label>
+                    <div class="col-sm-3 x-valid">
+                        <select name="serviceComeFrom" class="form-control input-full search-select select2"
+                                required="required">
+                        </select>
+                    </div>
+                    <label class="col-sm-1 col-form-label">
+                        业务来源说明
+                    </label>
+                    <div class="col-sm-3">
+                        <input name="serviceComeFromExplain" class="form-control input-full" placeholder="业务来源说明"
+                               value="${projectInfo.serviceComeFromExplain}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline">
@@ -184,34 +229,11 @@
                         </div>
                     </div>
 
-                    <label class="col-sm-1 col-form-label">
-                        执业部门
-                    </label>
-                    <div class="col-sm-3 x-valid">
-                        <div class="input-group">
-                            <input type="hidden" name="departmentId"
-                                   value="${projectInfo.departmentId}">
-                            <input class='form-control' name="departmentName" required
-                                   readonly="readonly" onclick="objProject.selectDepartment(this);"
-                                   value="${projectInfo.departmentName}">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-warning btn-sm "
-                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
-                                    清空
-                                </button>
-                            </div>
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary btn-sm "
-                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button" onclick="objProject.selectDepartment(this);">选择
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
+
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline x-valid">
@@ -281,27 +303,6 @@
                     <div class="col-sm-3">
                         <select name="loanType" class="form-control input-full search-select select2 loanType">
                         </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-                <div class="form-inline">
-                    <label class="col-sm-1 col-form-label">
-                        业务来源
-                    </label>
-                    <div class="col-sm-3 x-valid">
-                        <select name="serviceComeFrom" class="form-control input-full search-select select2"
-                                required="required">
-                        </select>
-                    </div>
-                    <label class="col-sm-1 col-form-label">
-                        业务来源说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input name="serviceComeFromExplain" class="form-control input-full" placeholder="业务来源说明"
-                               value="${projectInfo.serviceComeFromExplain}"/>
                     </div>
                 </div>
             </div>

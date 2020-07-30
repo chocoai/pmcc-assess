@@ -18,7 +18,7 @@
             <form id="project_info_form" class="form-horizontal">
                 <input type="hidden" name="id">
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
                             <label class="col-sm-1 control-label">
                                 项目名称

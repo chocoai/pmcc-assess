@@ -23,7 +23,6 @@
                                 </label>
                                 <div class="col-sm-11">
                                     <textarea class="form-control input-full" id="changeReason" name="changeReason" rows="4" required data-rule-maxlength="255" placeholder="项目信息变更原因">${costsProjectChangeLog.changeReason}</textarea>
-
                                 </div>
                             </div>
                         </div>

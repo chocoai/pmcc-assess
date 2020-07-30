@@ -99,6 +99,30 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12">
+                        <div class="form-inline">
+                            <label class="col-sm-1 col-form-label">
+                                执业部门
+                            </label>
+                            <div class="col-sm-3 x-valid">
+                                <label class="form-control input-full">${projectInfo.departmentName}</label>
+                            </div>
+                            <label class="col-sm-1 col-form-label">
+                                业务来源
+                            </label>
+                            <div class="col-sm-3 x-valid">
+                                <label class="form-control input-full">${projectInfo.serviceComeFromName}</label>
+                            </div>
+                            <label class="col-sm-1 col-form-label">
+                                业务来源说明
+                            </label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full">${projectInfo.serviceComeFromExplain}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
                             <label class="col-sm-1 col-form-label">项目负责人</label>
                             <div class="col-sm-3">
@@ -107,12 +131,6 @@
                             <label class="col-sm-1 col-form-label">项目成员</label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.projectMemberVo.userAccountMemberName}</label>
-                            </div>
-                            <label class="col-sm-1 col-form-label">
-                                执业部门
-                            </label>
-                            <div class="col-sm-3 x-valid">
-                                <label class="form-control input-full">${projectInfo.departmentName}</label>
                             </div>
                         </div>
                     </div>
@@ -172,24 +190,6 @@
                             </label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.loanTypeName}</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline">
-                            <label class="col-sm-1 col-form-label">
-                                业务来源
-                            </label>
-                            <div class="col-sm-3 x-valid">
-                                <label class="form-control input-full">${projectInfo.serviceComeFromName}</label>
-                            </div>
-                            <label class="col-sm-1 col-form-label">
-                                业务来源说明
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control input-full">${projectInfo.serviceComeFromExplain}</label>
                             </div>
                         </div>
                     </div>
