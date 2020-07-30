@@ -73,6 +73,8 @@ public class ProjectPlanService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private RedissonClient redissonClient;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     public ProjectPlan getProjectplanByProcessInsId(String processInsId) {
         return projectPlanDao.getProjectPlanByProcessInsId(processInsId);
@@ -235,6 +237,10 @@ public class ProjectPlanService {
                             }
                         }
                     }
+                } else {
+                    ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
+                    projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
+                    projectInfoService.updateProjectInfo(projectInfo);
                 }
             }
         } catch (InterruptedException e) {

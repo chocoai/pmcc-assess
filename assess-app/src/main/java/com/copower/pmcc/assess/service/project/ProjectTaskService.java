@@ -203,10 +203,6 @@ public class ProjectTaskService {
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
             if (isReStart == Boolean.FALSE) {
                 projectPlanService.enterNextStage(projectPlanDetails.getPlanId()); //结束当前阶段进入下一阶段
-                if (projectPlanService.isAllPlanFinish(projectInfo.getId())) {//当所有阶段都结束时，将项目状态置为完成
-                    projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
-                    projectInfoService.saveProjectInfo(projectInfo);
-                }
             }
         }
         bpmRpcProjectTaskService.deleteProjectTask(projectTaskDto.getResponsibilityId());
