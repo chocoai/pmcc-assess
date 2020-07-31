@@ -27,7 +27,7 @@ public class ProjectSpotCheckDao {
     @Autowired
     private ProjectSpotCheckItemScoreMapper projectSpotCheckItemScoreMapper;
 
-    public ProjectSpotCheck getProjectSpotCheckById(Integer id){
+    public ProjectSpotCheck getProjectSpotCheckById(Integer id) {
         return projectSpotCheckMapper.selectByPrimaryKey(id);
     }
 
@@ -44,6 +44,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 新增数据
+     *
      * @param record
      * @return
      */
@@ -53,6 +54,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 更新数据
+     *
      * @param record
      * @return
      */
@@ -62,6 +64,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 根据条件更新
+     *
      * @param record
      * @param where
      * @return
@@ -74,7 +77,7 @@ public class ProjectSpotCheckDao {
 
     //----------------------------------------------------------------------------------
 
-    public ProjectSpotCheckItem getProjectSpotCheckItemById(Integer id){
+    public ProjectSpotCheckItem getProjectSpotCheckItemById(Integer id) {
         return projectSpotCheckItemMapper.selectByPrimaryKey(id);
     }
 
@@ -91,6 +94,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 新增数据
+     *
      * @param record
      * @return
      */
@@ -100,6 +104,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 更新数据
+     *
      * @param record
      * @return
      */
@@ -109,6 +114,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 根据条件更新
+     *
      * @param record
      * @param where
      * @return
@@ -121,7 +127,7 @@ public class ProjectSpotCheckDao {
 
     //------------------------------------------------------------------------------------------------
 
-    public ProjectSpotCheckItemGroup getProjectSpotCheckItemGroupById(Integer id){
+    public ProjectSpotCheckItemGroup getProjectSpotCheckItemGroupById(Integer id) {
         return projectSpotCheckItemGroupMapper.selectByPrimaryKey(id);
     }
 
@@ -135,9 +141,16 @@ public class ProjectSpotCheckDao {
         return projectSpotCheckItemGroupMapper.selectByExample(example);
     }
 
+    public List<ProjectSpotCheckItemGroup> getProjectSpotCheckItemGroupList(List<Integer> itemIds) {
+        ProjectSpotCheckItemGroupExample example = new ProjectSpotCheckItemGroupExample();
+        example.createCriteria().andBisEnableEqualTo(true).andItemIdIn(itemIds);
+        return projectSpotCheckItemGroupMapper.selectByExample(example);
+    }
+
 
     /**
      * 新增数据
+     *
      * @param record
      * @return
      */
@@ -147,6 +160,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 更新数据
+     *
      * @param record
      * @return
      */
@@ -156,6 +170,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 根据条件更新
+     *
      * @param record
      * @param where
      * @return
@@ -168,7 +183,7 @@ public class ProjectSpotCheckDao {
 
     //------------------------------------------------------------------------------------------------
 
-    public ProjectSpotCheckItemScore getProjectSpotCheckItemScoreById(Integer id){
+    public ProjectSpotCheckItemScore getProjectSpotCheckItemScoreById(Integer id) {
         return projectSpotCheckItemScoreMapper.selectByPrimaryKey(id);
     }
 
@@ -185,6 +200,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 新增数据
+     *
      * @param record
      * @return
      */
@@ -194,6 +210,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 更新数据
+     *
      * @param record
      * @return
      */
@@ -203,6 +220,7 @@ public class ProjectSpotCheckDao {
 
     /**
      * 根据条件更新
+     *
      * @param record
      * @param where
      * @return

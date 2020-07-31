@@ -150,6 +150,10 @@
                         str = "<span class='label label-success'>" + "已完成" + "</span>";
                         break;
                     }
+                    case "close": {
+                        str = "<span class='label label-warning'>" + "关闭" + "</span>";
+                        break;
+                    }
                 }
                 return str;
             }

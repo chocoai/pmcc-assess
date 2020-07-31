@@ -8,6 +8,8 @@ public class ProjectSpotCheckItemGroup {
 
     private Integer itemId;
 
+    private BigDecimal standardTotalScore;
+
     private BigDecimal totalScore;
 
     private Boolean bisEnable;
@@ -32,6 +34,14 @@ public class ProjectSpotCheckItemGroup {
 
     public void setItemId(Integer itemId) {
         this.itemId = itemId;
+    }
+
+    public BigDecimal getStandardTotalScore() {
+        return standardTotalScore;
+    }
+
+    public void setStandardTotalScore(BigDecimal standardTotalScore) {
+        this.standardTotalScore = standardTotalScore;
     }
 
     public BigDecimal getTotalScore() {

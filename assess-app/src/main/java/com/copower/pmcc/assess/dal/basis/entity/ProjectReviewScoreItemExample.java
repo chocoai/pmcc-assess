@@ -356,6 +356,66 @@ public class ProjectReviewScoreItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andStandardScoreIsNull() {
+            addCriterion("standard_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreIsNotNull() {
+            addCriterion("standard_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreEqualTo(BigDecimal value) {
+            addCriterion("standard_score =", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreNotEqualTo(BigDecimal value) {
+            addCriterion("standard_score <>", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreGreaterThan(BigDecimal value) {
+            addCriterion("standard_score >", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("standard_score >=", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreLessThan(BigDecimal value) {
+            addCriterion("standard_score <", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("standard_score <=", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreIn(List<BigDecimal> values) {
+            addCriterion("standard_score in", values, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreNotIn(List<BigDecimal> values) {
+            addCriterion("standard_score not in", values, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("standard_score between", value1, value2, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("standard_score not between", value1, value2, "standardScore");
+            return (Criteria) this;
+        }
+
         public Criteria andScoreIsNull() {
             addCriterion("score is null");
             return (Criteria) this;

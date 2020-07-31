@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.basis.dao.project;
 
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectPlanDetailCount;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomProjectMapper;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetailsExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectPlanDetailsMapper;
@@ -20,6 +22,8 @@ import java.util.List;
 public class ProjectPlanDetailsDao {
     @Autowired
     private ProjectPlanDetailsMapper projectPlanDetailsMapper;
+    @Autowired
+    private CustomProjectMapper customProjectMapper;
 
     /**
      * 获取数据列表
@@ -190,5 +194,9 @@ public class ProjectPlanDetailsDao {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         example.createCriteria().andPlanIdEqualTo(planId);
         return projectPlanDetailsMapper.countByExample(example);
+    }
+
+    public List<CustomProjectPlanDetailCount> getPlanDetailsCountByMonth(String startMonth,String endMonth){
+        return customProjectMapper.getPlanDetailsCountByMonth(startMonth, endMonth);
     }
 }

@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectPlanCount;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
@@ -297,18 +298,7 @@ public class ProjectPlanService {
         return list;
     }
 
-    /**
-     * @param projectId
-     * @return
-     */
-    public Boolean isAllPlanFinish(Integer projectId) {
-        if (projectId == null) return false;
-        List<ProjectPlan> projectPlanList = projectPlanDao.getProjectPlanList(projectId);
-        if (CollectionUtils.isEmpty(projectPlanList)) return false;
-        for (ProjectPlan projectPlan : projectPlanList) {
-            if (!ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(projectPlan.getProjectStatus()))
-                return false;
-        }
-        return true;
+    public List<CustomProjectPlanCount> getPlanCountByMonth(String startMonth, String endMonth){
+        return projectPlanDao.getPlanCountByMonth(startMonth, endMonth);
     }
 }

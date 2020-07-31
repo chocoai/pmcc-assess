@@ -6,6 +6,7 @@
     <result column="group_id" jdbcType="INTEGER" property="groupId" />
     <result column="plan_id" jdbcType="INTEGER" property="planId" />
     <result column="plan_name" jdbcType="VARCHAR" property="planName" />
+    <result column="standard_score" jdbcType="DECIMAL" property="standardScore" />
     <result column="score" jdbcType="DECIMAL" property="score" />
     <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -74,7 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, group_id, plan_id, plan_name, score, bis_enable, creator, gmt_created, gmt_modified
+    id, group_id, plan_id, plan_name, standard_score, score, bis_enable, creator, gmt_created, 
+    gmt_modified
   </sql>
   <sql id="Blob_Column_List">
     remark
@@ -132,13 +134,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_review_score_item (group_id, plan_id, plan_name, 
-      score, bis_enable, creator, 
-      gmt_created, gmt_modified, remark
-      )
+      standard_score, score, bis_enable, 
+      creator, gmt_created, gmt_modified, 
+      remark)
     values (#{groupId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{planName,jdbcType=VARCHAR}, 
-      #{score,jdbcType=DECIMAL}, #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=LONGVARCHAR}
-      )
+      #{standardScore,jdbcType=DECIMAL}, #{score,jdbcType=DECIMAL}, #{bisEnable,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -154,6 +156,9 @@
       </if>
       <if test="planName != null">
         plan_name,
+      </if>
+      <if test="standardScore != null">
+        standard_score,
       </if>
       <if test="score != null">
         score,
@@ -183,6 +188,9 @@
       </if>
       <if test="planName != null">
         #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="standardScore != null">
+        #{standardScore,jdbcType=DECIMAL},
       </if>
       <if test="score != null">
         #{score,jdbcType=DECIMAL},
@@ -225,6 +233,9 @@
       <if test="record.planName != null">
         plan_name = #{record.planName,jdbcType=VARCHAR},
       </if>
+      <if test="record.standardScore != null">
+        standard_score = #{record.standardScore,jdbcType=DECIMAL},
+      </if>
       <if test="record.score != null">
         score = #{record.score,jdbcType=DECIMAL},
       </if>
@@ -254,6 +265,7 @@
       group_id = #{record.groupId,jdbcType=INTEGER},
       plan_id = #{record.planId,jdbcType=INTEGER},
       plan_name = #{record.planName,jdbcType=VARCHAR},
+      standard_score = #{record.standardScore,jdbcType=DECIMAL},
       score = #{record.score,jdbcType=DECIMAL},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -270,6 +282,7 @@
       group_id = #{record.groupId,jdbcType=INTEGER},
       plan_id = #{record.planId,jdbcType=INTEGER},
       plan_name = #{record.planName,jdbcType=VARCHAR},
+      standard_score = #{record.standardScore,jdbcType=DECIMAL},
       score = #{record.score,jdbcType=DECIMAL},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -290,6 +303,9 @@
       </if>
       <if test="planName != null">
         plan_name = #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="standardScore != null">
+        standard_score = #{standardScore,jdbcType=DECIMAL},
       </if>
       <if test="score != null">
         score = #{score,jdbcType=DECIMAL},
@@ -317,6 +333,7 @@
     set group_id = #{groupId,jdbcType=INTEGER},
       plan_id = #{planId,jdbcType=INTEGER},
       plan_name = #{planName,jdbcType=VARCHAR},
+      standard_score = #{standardScore,jdbcType=DECIMAL},
       score = #{score,jdbcType=DECIMAL},
       bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
@@ -330,6 +347,7 @@
     set group_id = #{groupId,jdbcType=INTEGER},
       plan_id = #{planId,jdbcType=INTEGER},
       plan_name = #{planName,jdbcType=VARCHAR},
+      standard_score = #{standardScore,jdbcType=DECIMAL},
       score = #{score,jdbcType=DECIMAL},
       bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

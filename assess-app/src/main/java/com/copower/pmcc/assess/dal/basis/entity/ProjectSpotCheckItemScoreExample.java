@@ -356,6 +356,66 @@ public class ProjectSpotCheckItemScoreExample {
             return (Criteria) this;
         }
 
+        public Criteria andStandardScoreIsNull() {
+            addCriterion("standard_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreIsNotNull() {
+            addCriterion("standard_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreEqualTo(BigDecimal value) {
+            addCriterion("standard_score =", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreNotEqualTo(BigDecimal value) {
+            addCriterion("standard_score <>", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreGreaterThan(BigDecimal value) {
+            addCriterion("standard_score >", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("standard_score >=", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreLessThan(BigDecimal value) {
+            addCriterion("standard_score <", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("standard_score <=", value, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreIn(List<BigDecimal> values) {
+            addCriterion("standard_score in", values, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreNotIn(List<BigDecimal> values) {
+            addCriterion("standard_score not in", values, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("standard_score between", value1, value2, "standardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("standard_score not between", value1, value2, "standardScore");
+            return (Criteria) this;
+        }
+
         public Criteria andScoreIsNull() {
             addCriterion("score is null");
             return (Criteria) this;
@@ -413,6 +473,66 @@ public class ProjectSpotCheckItemScoreExample {
 
         public Criteria andScoreNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("score not between", value1, value2, "score");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedIsNull() {
+            addCriterion("bis_checked is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedIsNotNull() {
+            addCriterion("bis_checked is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedEqualTo(Boolean value) {
+            addCriterion("bis_checked =", value, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedNotEqualTo(Boolean value) {
+            addCriterion("bis_checked <>", value, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedGreaterThan(Boolean value) {
+            addCriterion("bis_checked >", value, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_checked >=", value, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedLessThan(Boolean value) {
+            addCriterion("bis_checked <", value, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_checked <=", value, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedIn(List<Boolean> values) {
+            addCriterion("bis_checked in", values, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedNotIn(List<Boolean> values) {
+            addCriterion("bis_checked not in", values, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_checked between", value1, value2, "bisChecked");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCheckedNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_checked not between", value1, value2, "bisChecked");
             return (Criteria) this;
         }
 

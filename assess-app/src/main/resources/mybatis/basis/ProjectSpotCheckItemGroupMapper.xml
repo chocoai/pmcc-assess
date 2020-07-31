@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemGroup">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="item_id" jdbcType="INTEGER" property="itemId" />
+    <result column="standard_total_score" jdbcType="DECIMAL" property="standardTotalScore" />
     <result column="total_score" jdbcType="DECIMAL" property="totalScore" />
     <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -69,7 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, item_id, total_score, bis_enable, creator, gmt_created, gmt_modified
+    id, item_id, standard_total_score, total_score, bis_enable, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemGroupExample" resultMap="BaseResultMap">
     select
@@ -105,12 +107,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_spot_check_item_group (item_id, total_score, bis_enable, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{itemId,jdbcType=INTEGER}, #{totalScore,jdbcType=DECIMAL}, #{bisEnable,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_project_spot_check_item_group (item_id, standard_total_score, total_score, 
+      bis_enable, creator, gmt_created, 
+      gmt_modified)
+    values (#{itemId,jdbcType=INTEGER}, #{standardTotalScore,jdbcType=DECIMAL}, #{totalScore,jdbcType=DECIMAL}, 
+      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemGroup">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -120,6 +122,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="itemId != null">
         item_id,
+      </if>
+      <if test="standardTotalScore != null">
+        standard_total_score,
       </if>
       <if test="totalScore != null">
         total_score,
@@ -140,6 +145,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="itemId != null">
         #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="standardTotalScore != null">
+        #{standardTotalScore,jdbcType=DECIMAL},
       </if>
       <if test="totalScore != null">
         #{totalScore,jdbcType=DECIMAL},
@@ -173,6 +181,9 @@
       <if test="record.itemId != null">
         item_id = #{record.itemId,jdbcType=INTEGER},
       </if>
+      <if test="record.standardTotalScore != null">
+        standard_total_score = #{record.standardTotalScore,jdbcType=DECIMAL},
+      </if>
       <if test="record.totalScore != null">
         total_score = #{record.totalScore,jdbcType=DECIMAL},
       </if>
@@ -197,6 +208,7 @@
     update tb_project_spot_check_item_group
     set id = #{record.id,jdbcType=INTEGER},
       item_id = #{record.itemId,jdbcType=INTEGER},
+      standard_total_score = #{record.standardTotalScore,jdbcType=DECIMAL},
       total_score = #{record.totalScore,jdbcType=DECIMAL},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -211,6 +223,9 @@
     <set>
       <if test="itemId != null">
         item_id = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="standardTotalScore != null">
+        standard_total_score = #{standardTotalScore,jdbcType=DECIMAL},
       </if>
       <if test="totalScore != null">
         total_score = #{totalScore,jdbcType=DECIMAL},
@@ -233,6 +248,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemGroup">
     update tb_project_spot_check_item_group
     set item_id = #{itemId,jdbcType=INTEGER},
+      standard_total_score = #{standardTotalScore,jdbcType=DECIMAL},
       total_score = #{totalScore,jdbcType=DECIMAL},
       bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

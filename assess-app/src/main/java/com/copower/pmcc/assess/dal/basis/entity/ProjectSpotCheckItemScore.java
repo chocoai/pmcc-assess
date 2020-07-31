@@ -12,7 +12,11 @@ public class ProjectSpotCheckItemScore {
 
     private String planName;
 
+    private BigDecimal standardScore;
+
     private BigDecimal score;
+
+    private Boolean bisChecked;
 
     private String creator;
 
@@ -54,12 +58,28 @@ public class ProjectSpotCheckItemScore {
         this.planName = planName == null ? null : planName.trim();
     }
 
+    public BigDecimal getStandardScore() {
+        return standardScore;
+    }
+
+    public void setStandardScore(BigDecimal standardScore) {
+        this.standardScore = standardScore;
+    }
+
     public BigDecimal getScore() {
         return score;
     }
 
     public void setScore(BigDecimal score) {
         this.score = score;
+    }
+
+    public Boolean getBisChecked() {
+        return bisChecked;
+    }
+
+    public void setBisChecked(Boolean bisChecked) {
+        this.bisChecked = bisChecked;
     }
 
     public String getCreator() {

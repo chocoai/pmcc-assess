@@ -104,6 +104,21 @@ public class ProjectSpotCheckService {
     }
 
     /**
+     * 获取当月完成的批次
+     *
+     * @param month
+     * @return
+     */
+    public List<ProjectSpotCheck> getFinishSpotCheckListByMonth(String userAccount, String month) {
+        ProjectSpotCheck where = new ProjectSpotCheck();
+        where.setStatus(ProcessStatusEnum.FINISH.getValue());
+        where.setBySpotUser(userAccount);
+        where.setSpotMonth(month);
+        List<ProjectSpotCheck> projectSpotCheckList = projectSpotCheckDao.getProjectSpotCheckList(where);
+        return projectSpotCheckList;
+    }
+
+    /**
      * 获取运行中的批次
      *
      * @return
@@ -166,6 +181,13 @@ public class ProjectSpotCheckService {
         return vo;
     }
 
+    public List<ProjectSpotCheckItem> getProjectSpotCheckItemsBySpotId(Integer spotId) {
+        if (spotId == null) return null;
+        ProjectSpotCheckItem where = new ProjectSpotCheckItem();
+        where.setSpotId(spotId);
+        return projectSpotCheckDao.getProjectSpotCheckItemList(where);
+    }
+
     public ProjectSpotCheckItemVo getProjectSpotCheckItemVo(ProjectSpotCheckItem projectSpotCheckItem) {
         if (projectSpotCheckItem == null) return null;
         ProjectSpotCheckItemVo vo = new ProjectSpotCheckItemVo();
@@ -175,7 +197,7 @@ public class ProjectSpotCheckService {
             ProjectSpotCheckItemGroupVo spotCheckItemGroupVo = getSpotCheckItemGroupVo(spotCheckItemGroup);
             vo.setExamineDate(spotCheckItemGroup.getGmtCreated());
             vo.setExamineName(spotCheckItemGroupVo.getCreatorName());
-            vo.setProjectSpotCheckItemScoreList( spotCheckItemGroupVo.getProjectSpotCheckItemScoreList());
+            vo.setProjectSpotCheckItemScoreList(spotCheckItemGroupVo.getProjectSpotCheckItemScoreList());
         }
         return vo;
     }
@@ -244,20 +266,26 @@ public class ProjectSpotCheckService {
         return list.get(0);
     }
 
+    public List<ProjectSpotCheckItemGroup> getProjectSpotCheckItemGroupList(List<Integer> itemIds) {
+        return projectSpotCheckDao.getProjectSpotCheckItemGroupList(itemIds);
+    }
+
     //获取内容信息
     public List<ProjectSpotCheckItemScore> getSpotCheckScoreContent(Integer itemId, Integer projectId) {
         ProjectSpotCheckItemGroup spotCheckItemGroup = getEnableItemGroupByItemId(itemId);
         if (spotCheckItemGroup == null) {
             List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
             if (CollectionUtils.isEmpty(projectPlanList)) return null;
-            List<ProjectSpotCheckItemScore> keyValueDtos = LangUtils.transform(projectPlanList, o -> {
+            List<ProjectSpotCheckItemScore> itemScores = LangUtils.transform(projectPlanList, o -> {
                 ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(o.getWorkStageId());
                 ProjectSpotCheckItemScore spotCheckItemScore = new ProjectSpotCheckItemScore();
+                spotCheckItemScore.setPlanId(o.getId());
                 spotCheckItemScore.setPlanName(o.getPlanName());
+                spotCheckItemScore.setStandardScore(projectWorkStage.getCeReviewScore());
                 spotCheckItemScore.setScore(projectWorkStage.getCeReviewScore());
                 return spotCheckItemScore;
             });
-            return keyValueDtos;
+            return itemScores;
         } else {
             return getSpotCheckItemGroupVo(spotCheckItemGroup).getProjectSpotCheckItemScoreList();
         }

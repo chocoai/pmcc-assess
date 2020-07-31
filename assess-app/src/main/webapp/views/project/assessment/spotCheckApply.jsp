@@ -272,7 +272,7 @@
 <div id="editSpotCheckItemGroupModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">工时考核</h4>
@@ -373,8 +373,10 @@
                 var str = '';
                 if (value) {
                     $.each(value, function (i, item) {
-                        str += item.planName + "【" + item.score + "】";
-                        str += AssessCommon.toString(item.remark) + '<br/>';
+                        if (item.bisChecked) {
+                            str += item.planName + "【" + item.score + "】";
+                            str += AssessCommon.toString(item.remark) + '<br/>';
+                        }
                     })
                 }
                 return str;
@@ -550,20 +552,34 @@
             if (result.ret && result.data) {
                 spotCheck.ueContainer = [];
                 $.each(result.data, function (i, item) {
-                    var html = '';
-                    html += '<tr class="reviewRow"><td scope="col">' + item.planName + '<input type="hidden" name="planId" value="' + item.planId + '"><input type="hidden" name="planName" value="' + item.planName + '"></td>';
-                    html += '<td scope="col"><input type="text" data-rule-number="true" required class="form-control input-full" name="score" value="' + AssessCommon.toString(item.score) + '"></td>';
+                    var html = '<tr class="reviewRow">';
+                    html += '<td scope="col"><div class="form-check" onclick="spotCheck.toggleScore(this);" style="justify-content:left"><label class="form-check-label"><input class="form-check-input" type="checkbox" checked="checked" name="bisEnable" value="true">\n' +
+                        '<span class="form-check-sign">' + item.planName + '</span></label></div>' +
+                        '<input type="hidden" name="planId" value="' + item.planId + '"><input type="hidden" name="planName" value="' + item.planName + '"></td>';
+                    html += '<td scope="col"><input type="hidden" name="standardScore" value="' + item.standardScore + '">' +
+                        '<input type="text" data-rule-number="true" required class="form-control input-full" name="score" value="' + AssessCommon.toString(item.score) + '"></td>';
                     html += '<td scope="col"><textarea type="text" id="remark' + i + '" name="remark" >' + AssessCommon.toString(item.remark) + '</textarea></td></tr>';
                     modal.find('tbody').append(html);
-
-                })
+                    if (item.bisChecked == false) {
+                        modal.find('tbody').find('tr:last').find('td:eq(0)').find(':checkbox').trigger('click');
+                    }
+                });
                 $.each(result.data, function (i, item) {
                     spotCheck.initUEditor("remark" + i, i);//初始化ueditor
-                })
+                });
             }
         })
         $('#frmSpotCheckItemGroup').find('[name=itemId]').val(itemId);
         modal.modal();
+    }
+
+    spotCheck.toggleScore = function (_this) {
+        var checked = $(_this).closest('td').find(':checkbox').prop('checked');
+        if (checked) {
+            $(_this).closest('td').siblings().show();
+        } else {
+            $(_this).closest('td').siblings().hide();
+        }
     }
 
     //保存工分
@@ -575,14 +591,19 @@
         var data = {};
         var projectSpotCheckItemScoreList = [];
         var totalScore = null;
+        var totalStandardScore = null;
         trs.each(function (i, item) {
+            var checked = $(item).find('td:eq(0)').find(':checkbox').prop('checked');
             var projectSpotCheckItemScore = {};
+            projectSpotCheckItemScore.bisChecked = checked;
             projectSpotCheckItemScore.planId = $(item).find('[name=planId]').val();
             projectSpotCheckItemScore.planName = $(item).find('[name=planName]').val();
+            projectSpotCheckItemScore.standardScore = $(item).find('[name=standardScore]').val();
             projectSpotCheckItemScore.score = $(item).find('[name=score]').val();
             projectSpotCheckItemScore.remark = spotCheck.ueContainer[i].getContent();
-            if (projectSpotCheckItemScore.score) {
+            if (projectSpotCheckItemScore.score && checked) {
                 totalScore += parseFloat(projectSpotCheckItemScore.score);
+                totalStandardScore += parseFloat(projectSpotCheckItemScore.standardScore);
             }
             projectSpotCheckItemScoreList.push(projectSpotCheckItemScore);
         });

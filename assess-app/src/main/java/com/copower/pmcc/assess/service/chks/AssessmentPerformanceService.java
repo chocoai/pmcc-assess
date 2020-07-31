@@ -481,7 +481,6 @@ public class AssessmentPerformanceService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         AssessmentPerformanceDto where = new AssessmentPerformanceDto();
         where.setSpotId(performanceId);
-        where.setBisEffective(false);
         List<AssessmentPerformanceDto> list = performanceService.getPerformancesByParam(where);
         list = CollectionUtils.isEmpty(list) ? Lists.newArrayList() : list;
         bootstrapTableVo.setRows(list);

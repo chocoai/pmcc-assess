@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectPlanDetailCount;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -683,5 +684,9 @@ public class ProjectPlanDetailsService {
         where.setProjectId(projectId);
         where.setProjectPhaseId(projectPhase.getId());
         return getProjectDetails(where);
+    }
+
+    public List<CustomProjectPlanDetailCount> getPlanDetailsCountByMonth(String startMonth, String endMonth){
+        return projectPlanDetailsDao.getPlanDetailsCountByMonth(startMonth, endMonth);
     }
 }

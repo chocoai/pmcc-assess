@@ -226,6 +226,66 @@ public class ProjectSpotCheckItemGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andStandardTotalScoreIsNull() {
+            addCriterion("standard_total_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreIsNotNull() {
+            addCriterion("standard_total_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreEqualTo(BigDecimal value) {
+            addCriterion("standard_total_score =", value, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreNotEqualTo(BigDecimal value) {
+            addCriterion("standard_total_score <>", value, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreGreaterThan(BigDecimal value) {
+            addCriterion("standard_total_score >", value, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("standard_total_score >=", value, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreLessThan(BigDecimal value) {
+            addCriterion("standard_total_score <", value, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("standard_total_score <=", value, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreIn(List<BigDecimal> values) {
+            addCriterion("standard_total_score in", values, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreNotIn(List<BigDecimal> values) {
+            addCriterion("standard_total_score not in", values, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("standard_total_score between", value1, value2, "standardTotalScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTotalScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("standard_total_score not between", value1, value2, "standardTotalScore");
+            return (Criteria) this;
+        }
+
         public Criteria andTotalScoreIsNull() {
             addCriterion("total_score is null");
             return (Criteria) this;

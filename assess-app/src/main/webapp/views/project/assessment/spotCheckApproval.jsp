@@ -83,7 +83,7 @@
 <div id="editSpotCheckItemGroupModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">工时考核</h4>

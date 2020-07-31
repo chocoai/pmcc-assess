@@ -78,6 +78,7 @@ public class ProjectReviewScoreController {
                 scoreItem.setPlanId(projectPlanVo.getId());
                 scoreItem.setPlanName(projectPlanVo.getPlanName());
                 ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanVo.getWorkStageId());
+                scoreItem.setStandardScore(projectWorkStage.getManagerReviewScore());
                 scoreItem.setScore(projectWorkStage.getManagerReviewScore());
                 scoreItems.add(scoreItem);
             }
