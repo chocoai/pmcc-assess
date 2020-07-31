@@ -74,30 +74,34 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
                 if (CollectionUtils.isNotEmpty(performances)) {
                     for (AssessmentPerformanceDto performance : performances) {
                         performance.setBisEffective(false);
-                        performanceService.updatePerformanceDto(performance,false);
+                        performanceService.updatePerformanceDto(performance, false);
                     }
                 }
                 List<ProjectSpotCheck> spotChecks = projectSpotCheckService.getFinishSpotCheckListByMonth(spotCheck.getBySpotUser(), spotCheck.getSpotMonth());
                 AssessmentPerformanceDto performanceDto = new AssessmentPerformanceDto();
                 performanceDto.setAppKey(applicationConstant.getAppKey());
+                performanceDto.setProjectName(spotCheck.getTitle());
                 performanceDto.setProcessInsId(processExecution.getProcessInstanceId());
                 performanceDto.setByExaminePeople(spotCheck.getBySpotUser());
                 performanceDto.setExaminePeople(spotCheck.getCreator());
                 performanceDto.setExamineScore(getWorkHoursScore(spotChecks));//需计算
+                performanceDto.setExamineDate(endDate);
                 performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
                 performanceDto.setAssessmentKey("SpotAssessment");
-                performanceDto.setBusinessKey("抽查考核工分");
+                performanceDto.setBusinessKey("抽查考核工时得分");
                 performanceDto.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
                 performanceDto.setBisEffective(true);
                 performanceDto.setBisQualified(true);
                 performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
+
                 performanceDto.setExamineScore(getQualityScore(spotChecks));//需计算
                 performanceDto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
-                performanceDto.setBusinessKey("抽查考核工分");
+                performanceDto.setBusinessKey("抽查考核质量得分");
                 performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "ProjectSpotCheckEvent");
+            throw e;
         }
     }
 
@@ -129,10 +133,13 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
         String endMonth = DateUtils.format(DateUtils.addMonth(DateUtils.convertDate(startMonth + "-01"), 1), DateUtils.MONTH_PATTERN);
         List<CustomProjectPlanCount> projectPlanCounts = projectPlanService.getPlanCountByMonth(startMonth, endMonth);
         BigDecimal monthTotalScore = BigDecimal.ZERO;//本月标准总得分
-        for (CustomProjectPlanCount projectPlanCount : projectPlanCounts) {
-            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanCount.getWorkStageId());
-            if (projectWorkStage != null && projectWorkStage.getCeReviewScore() != null) {
-                monthTotalScore = monthTotalScore.add(projectWorkStage.getCeReviewScore().multiply(new BigDecimal(projectPlanCount.getPlanCount())));
+        if(CollectionUtils.isNotEmpty(projectPlanCounts)){
+            for (CustomProjectPlanCount projectPlanCount : projectPlanCounts) {
+                if (projectPlanCount.getWorkStageId() == null) continue;
+                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanCount.getWorkStageId());
+                if (projectWorkStage != null && projectWorkStage.getCeReviewScore() != null) {
+                    monthTotalScore = monthTotalScore.add(projectWorkStage.getCeReviewScore().multiply(new BigDecimal(projectPlanCount.getPlanCount())));
+                }
             }
         }
         return ratio.multiply(monthTotalScore).setScale(2, RoundingMode.HALF_UP);
@@ -164,6 +171,7 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
         BigDecimal monthTotalScore = BigDecimal.ZERO;//本月标准总得分
         for (CustomProjectPlanDetailCount planDetailCount : planDetailCounts) {
             //找出标准得分 找到模型下抽查的质量分
+            if (planDetailCount.getProjectPhaseId() == null) continue;
             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(planDetailCount.getProjectPhaseId());
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(projectPhase.getBoxName());
             if (boxReDto == null) continue;
@@ -177,25 +185,5 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
             }
         }
         return ratio.multiply(monthTotalScore).setScale(2, RoundingMode.HALF_UP);
-    }
-
-
-    private void exScore(ProjectSpotCheck spotCheck) {
-        //1.计算得分，先找出抽查月份的该人员的所有抽查数据，并根据抽查的数据计算出该人员应该得到的分
-        //2.通过实际得到的分数，与应该得到的分数进行比较得出一个系数
-        //3.找出本月完成的阶段数据，计算出本月正常应该得到分值乘以系数可得到该人员的最终得分
-
-        //本月该人员被抽查的所有批次
-        List<ProjectSpotCheck> listAll = Lists.newArrayList(spotCheck);
-        List<ProjectSpotCheck> list = projectSpotCheckService.getFinishSpotCheckListByMonth(spotCheck.getBySpotUser(), spotCheck.getSpotMonth());
-        if (CollectionUtils.isNotEmpty(list))
-            listAll.addAll(list);
-
-        AssessmentPerformanceDto where = new AssessmentPerformanceDto();
-
-        List<AssessmentPerformanceDto> performanceDtoList = performanceService.getPerformancesByParam(where);
-        if (CollectionUtils.isEmpty(performanceDtoList)) return;
-
-
     }
 }

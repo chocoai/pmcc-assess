@@ -591,7 +591,7 @@
         var data = {};
         var projectSpotCheckItemScoreList = [];
         var totalScore = null;
-        var totalStandardScore = null;
+        var standardTotalScore = null;
         trs.each(function (i, item) {
             var checked = $(item).find('td:eq(0)').find(':checkbox').prop('checked');
             var projectSpotCheckItemScore = {};
@@ -603,13 +603,14 @@
             projectSpotCheckItemScore.remark = spotCheck.ueContainer[i].getContent();
             if (projectSpotCheckItemScore.score && checked) {
                 totalScore += parseFloat(projectSpotCheckItemScore.score);
-                totalStandardScore += parseFloat(projectSpotCheckItemScore.standardScore);
+                standardTotalScore += parseFloat(projectSpotCheckItemScore.standardScore);
             }
             projectSpotCheckItemScoreList.push(projectSpotCheckItemScore);
         });
         data.itemId = $('#frmSpotCheckItemGroup').find('[name=itemId]').val();
         data.projectSpotCheckItemScoreList = projectSpotCheckItemScoreList;
         data.totalScore = totalScore;
+        data.standardTotalScore = standardTotalScore;
         $.post('${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheckScore', {
             formData: JSON.stringify(data)
         }, function (result) {

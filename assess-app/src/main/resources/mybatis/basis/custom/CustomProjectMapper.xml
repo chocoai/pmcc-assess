@@ -9,8 +9,8 @@
         <result column="project_phase_id" property="projectPhaseId" jdbcType="INTEGER"/>
         <result column="plan_details_count" property="planDetailsCount" jdbcType="INTEGER"/>
     </resultMap>
-    <select id="getPlanCountByMonth" parameterType="map" resultMap="PlanDetailsResultMap">
-        SELECT work_stage_id,count(*) as plan_count FROM tb_project_plan where status='finish'
+    <select id="getPlanCountByMonth" parameterType="map" resultMap="PlanResultMap">
+        SELECT work_stage_id,count(*) as plan_count FROM tb_project_plan where project_status='finish'
         <if test="startMonth != null and startMonth!=''">
             and finish_date <![CDATA[ >= ]]>   #{startMonth}
         </if>
