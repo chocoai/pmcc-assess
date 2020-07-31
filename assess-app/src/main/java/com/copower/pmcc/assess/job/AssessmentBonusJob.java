@@ -114,14 +114,12 @@ public class AssessmentBonusJob {
                 return;
             }
             logger.info("----LegworkBonusAssessmentJob, start---------");
-            //开始处理数据
-
-
+            launchAssessmentBonusTask();//发起任务
             logger.info("----LegworkBonusAssessmentJob, end---------");
         }
     }
 
-    public void resave() {
+    public void launchAssessmentBonusTask() {
         Date today = DateUtils.today();
         String firstDayOfMonth = DateUtils.getFirstDayOfMonth(DateUtils.getYear(today), DateUtils.getMonth(today));
         Date firstDate = DateUtils.convertDate(firstDayOfMonth);//本月第一天
