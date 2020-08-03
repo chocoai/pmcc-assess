@@ -196,7 +196,7 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.countByExample(example);
     }
 
-    public List<CustomProjectPlanDetailCount> getPlanDetailsCountByMonth(String startMonth,String endMonth){
-        return customProjectMapper.getPlanDetailsCountByMonth(startMonth, endMonth);
+    public List<CustomProjectPlanDetailCount> getPlanDetailsCountByMonth(String startMonth,String endMonth,List<Integer> projectIds){
+        return customProjectMapper.getPlanDetailsCountByMonth(startMonth, endMonth,projectIds);
     }
 }

@@ -119,7 +119,7 @@ public class AssessmentBonusJob {
         }
     }
 
-    public void launchAssessmentBonusTask() {
+    public void launchAssessmentBonusTask() throws BusinessException {
         Date today = DateUtils.today();
         String firstDayOfMonth = DateUtils.getFirstDayOfMonth(DateUtils.getYear(today), DateUtils.getMonth(today));
         Date firstDate = DateUtils.convertDate(firstDayOfMonth);//本月第一天
@@ -132,18 +132,23 @@ public class AssessmentBonusJob {
         assessmentBonus.setMonth(DateUtils.getMonth(preMonthFirstDay));
         assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
         projectAssessmentBonusService.saveAssessmentBonus(assessmentBonus);
-
         Set<String> managerList = Sets.newHashSet();
+        String parameter = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
+        List<Integer> projectIds = FormatUtils.transformString2Integer(parameter);
         for (HrLegworkDto dto : legworkDtoList) {
             if (StringUtils.isBlank(dto.getProjectId())) continue;//没关联项目直接跳过
-
             List<Integer> list = FormatUtils.transformString2Integer(dto.getProjectId());
             List<SysProjectDto> projectDtoList = erpRpcProjectService.getProjectInfoListByProjectIds(list, applicationConstant.getAppKey());
             if (CollectionUtils.isEmpty(projectDtoList)) continue;
+            //只取评估系统的外勤数据
+            projectDtoList = LangUtils.filter(projectDtoList, o -> applicationConstant.getAppKey().equalsIgnoreCase(o.getAppKey()));
             for (SysProjectDto sysProjectDto : projectDtoList) {
                 //1.找出该项目中的查勘信息，先确定该项目查勘了几个楼盘，再根据配置和楼盘的区域确定是否做加分处理
                 //2.如果需要加分则需找出该项目查勘中所获取的工时得分，及各个成员的工时得分，将总的工时得分乘以系数得到对应加分值
                 //3.再根据各个成员工时得分的占比，将加分值分摊到成员上，将相关数据写入到对应的表中
+                if(CollectionUtils.isNotEmpty(projectIds)&&!projectIds.contains(sysProjectDto.getProjectId()))
+                    continue;//不处理
+
                 if (projectAssessmentBonusService.getAssessmentBonusItemCount(sysProjectDto.getProjectId()) > 0) {
                     continue;//每个项目只计算一次
                 }
@@ -209,7 +214,7 @@ public class AssessmentBonusJob {
                 ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
                 String url = String.format("/%s/projectAssessmentBonus/index?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
                 ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
-                projectPlanResponsibility.setProjectName(String.format("%s外勤加分考核",DateUtils.formatDate(preMonthFirstDay,DateUtils.MONTH_PATTERN)));
+                projectPlanResponsibility.setProjectName(String.format("%s外勤加分考核", DateUtils.formatDate(preMonthFirstDay, DateUtils.MONTH_PATTERN)));
                 projectPlanResponsibility.setUserAccount(manager);
                 projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
                 projectPlanResponsibility.setCreator(manager);
@@ -217,25 +222,27 @@ public class AssessmentBonusJob {
                 projectPlanResponsibility.setUrl(url);
                 bpmRpcProjectTaskService.saveProjectTask(projectResponsibilityDto);
             }
-        }
-        //为技术负责人添加任务
-        SysDepartmentDto departmentAssess = erpRpcDepartmentService.getDepartmentAssess();
-        List<String> jszgList = bpmRpcBoxRoleUserService.getDepartmentJszg(departmentAssess.getId());//技术负责人
-        if(CollectionUtils.isNotEmpty(jszgList)){
-            for (String s : jszgList) {
-                ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-                String url = String.format("/%s/projectAssessmentBonus/apply?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
-                ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
-                projectPlanResponsibility.setProjectName(String.format("%s外勤加分考核",DateUtils.formatDate(preMonthFirstDay,DateUtils.MONTH_PATTERN)));
-                projectPlanResponsibility.setUserAccount(s);
-                projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
-                projectPlanResponsibility.setCreator(s);
-                projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-                projectPlanResponsibility.setUrl(url);
-                bpmRpcProjectTaskService.saveProjectTask(projectResponsibilityDto);
+
+            //为技术负责人添加任务
+            SysDepartmentDto departmentAssess = erpRpcDepartmentService.getDepartmentAssess();
+            List<String> jszgList = bpmRpcBoxRoleUserService.getDepartmentJszg(departmentAssess.getId());//技术负责人
+            if (CollectionUtils.isNotEmpty(jszgList)) {
+                for (String s : jszgList) {
+                    ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                    String url = String.format("/%s/projectAssessmentBonus/apply?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
+                    ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                    projectPlanResponsibility.setProjectName(String.format("%s外勤加分考核", DateUtils.formatDate(preMonthFirstDay, DateUtils.MONTH_PATTERN)));
+                    projectPlanResponsibility.setUserAccount(s);
+                    projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
+                    projectPlanResponsibility.setCreator(s);
+                    projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+                    projectPlanResponsibility.setUrl(url);
+                    bpmRpcProjectTaskService.saveProjectTask(projectResponsibilityDto);
+                }
             }
         }
     }
+
     //确定本项目查勘了几个楼盘
     private List<BasicApplyBatch> getBasicApplyBatchList(ProjectInfo projectInfo) {
         String sceneExploreKey = AssessPhaseKeyConstant.SCENE_EXPLORE;

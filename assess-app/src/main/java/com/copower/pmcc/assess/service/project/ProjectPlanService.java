@@ -298,7 +298,7 @@ public class ProjectPlanService {
         return list;
     }
 
-    public List<CustomProjectPlanCount> getPlanCountByMonth(String startMonth, String endMonth){
-        return projectPlanDao.getPlanCountByMonth(startMonth, endMonth);
+    public List<CustomProjectPlanCount> getPlanCountByMonth(String startMonth, String endMonth,List<Integer> projectIds){
+        return projectPlanDao.getPlanCountByMonth(startMonth, endMonth,projectIds);
     }
 }

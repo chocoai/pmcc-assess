@@ -23,7 +23,7 @@ public interface CustomProjectMapper {
      * @param endMonth
      * @return
      */
-    public List<CustomProjectPlanCount> getPlanCountByMonth(@Param("startMonth") String startMonth, @Param("endMonth") String endMonth);
+    public List<CustomProjectPlanCount> getPlanCountByMonth(@Param("startMonth") String startMonth, @Param("endMonth") String endMonth, @Param("projectIds") List<Integer> projectIds);
 
 
     /**
@@ -33,7 +33,7 @@ public interface CustomProjectMapper {
      * @param endMonth
      * @return
      */
-    public List<CustomProjectPlanDetailCount> getPlanDetailsCountByMonth(@Param("startMonth") String startMonth,@Param("endMonth") String endMonth);
+    public List<CustomProjectPlanDetailCount> getPlanDetailsCountByMonth(@Param("startMonth") String startMonth,@Param("endMonth") String endMonth, @Param("projectIds") List<Integer> projectIds);
 
 
 }
