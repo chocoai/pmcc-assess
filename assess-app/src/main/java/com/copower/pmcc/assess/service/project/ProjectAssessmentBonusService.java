@@ -5,10 +5,7 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectAssessmentBonusDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonus;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItem;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectAssessmentBonusItemVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.service.PublicService;
@@ -67,6 +64,11 @@ public class ProjectAssessmentBonusService {
 
     public void saveAssessmentBonusItem(ProjectAssessmentBonusItem assessmentBonusItem) {
         if (assessmentBonusItem.getId() != null && assessmentBonusItem.getId() > 0) {
+            ProjectAssessmentBonusItemHistory history = new ProjectAssessmentBonusItemHistory();
+            BeanUtils.copyProperties(assessmentBonusItem, history);
+            history.setItemId(assessmentBonusItem.getId());
+            projectAssessmentBonusDao.addAssessmentBonusItemHistory(history);//存档到历史
+
             projectAssessmentBonusDao.updateAssessmentBonusItem(assessmentBonusItem);
         } else {
             assessmentBonusItem.setCreator(commonService.thisUserAccount());
@@ -93,11 +95,8 @@ public class ProjectAssessmentBonusService {
      */
     public BootstrapTableVo getAssessmentBonusItems(Integer bonusId, String projectManager) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectAssessmentBonusItem> bonusItemList = projectAssessmentBonusDao.getAssessmentBonusItemList(bonusId, projectManager);
         List<ProjectAssessmentBonusItemVo> itemVos = LangUtils.transform(bonusItemList, o -> getAssessmentBonusItemVo(o));
-        bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(itemVos);
         return bootstrapTableVo;
     }
@@ -122,11 +121,24 @@ public class ProjectAssessmentBonusService {
 
     /**
      * 是否全部完成
+     *
      * @param masterId
      * @return
      */
     public Boolean isAllFinish(Integer masterId) {
         Long count = projectAssessmentBonusDao.getAssessmentBonusItemCountByStatus(masterId, ProjectStatusEnum.WAIT.getKey());
         return count <= 0;
+    }
+
+    /**
+     * 获取历史数据信息
+     * @param itemId
+     * @return
+     */
+    public BootstrapTableVo getAssessmentBonusItemHistorys(Integer itemId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        List<ProjectAssessmentBonusItemHistory> bonusItemHistories = projectAssessmentBonusDao.getAssessmentBonusItemHistoryList(itemId);
+        bootstrapTableVo.setRows(bonusItemHistories);
+        return bootstrapTableVo;
     }
 }

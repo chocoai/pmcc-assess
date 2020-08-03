@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.job.AssessmentBonusJob;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.ureport.WorkLogService;
@@ -15,6 +16,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -39,17 +41,15 @@ import java.util.List;
 @RequestMapping("/home")
 public class HomeController {
     @Autowired
-    private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
-    @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
     private PublicService publicService;
     @Autowired
-    private BpmRpcToolsService bpmRpcToolsService;
-    @Autowired
     private WorkLogService workLogService;
+    @Autowired
+    private AssessmentBonusJob assessmentBonusJob;
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public ModelAndView homeMain() {
@@ -59,10 +59,9 @@ public class HomeController {
 
     @ResponseBody
     @RequestMapping(value = "/getMyProcessGroup", method = RequestMethod.GET)
-    public HttpResult getMyProcessGroup() {
-
-        List<ProcessGroupDto> myProcessGroup = bpmRpcProcessInsManagerService.getMyProcessGroup("", "");
-        return HttpResult.newCorrectResult(myProcessGroup);
+    public HttpResult getMyProcessGroup() throws BusinessException {
+        assessmentBonusJob.launchAssessmentBonusTask();
+        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody

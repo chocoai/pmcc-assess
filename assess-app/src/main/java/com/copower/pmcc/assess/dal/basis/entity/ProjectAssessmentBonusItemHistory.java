@@ -3,10 +3,10 @@ package com.copower.pmcc.assess.dal.basis.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ProjectAssessmentBonusItem {
+public class ProjectAssessmentBonusItemHistory {
     private Integer id;
 
-    private Integer masterId;
+    private Integer itemId;
 
     private Integer projectId;
 
@@ -36,12 +36,12 @@ public class ProjectAssessmentBonusItem {
         this.id = id;
     }
 
-    public Integer getMasterId() {
-        return masterId;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setMasterId(Integer masterId) {
-        this.masterId = masterId;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     public Integer getProjectId() {

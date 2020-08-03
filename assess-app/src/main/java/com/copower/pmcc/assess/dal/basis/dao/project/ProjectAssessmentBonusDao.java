@@ -1,9 +1,7 @@
 package com.copower.pmcc.assess.dal.basis.dao.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonus;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusExample;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItem;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemExample;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.mapper.ProjectAssessmentBonusItemHistoryMapper;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectAssessmentBonusItemMapper;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectAssessmentBonusMapper;
 import org.apache.commons.collections.CollectionUtils;
@@ -19,6 +17,8 @@ public class ProjectAssessmentBonusDao {
     private ProjectAssessmentBonusMapper projectAssessmentBonusMapper;
     @Autowired
     private ProjectAssessmentBonusItemMapper projectAssessmentBonusItemMapper;
+    @Autowired
+    private ProjectAssessmentBonusItemHistoryMapper projectAssessmentBonusItemHistoryMapper;
 
     public Boolean addAssessmentBonus(ProjectAssessmentBonus projectAssessmentBonus) {
         int i = projectAssessmentBonusMapper.insertSelective(projectAssessmentBonus);
@@ -70,7 +70,7 @@ public class ProjectAssessmentBonusDao {
         if (StringUtils.isNotBlank(projectManager)) {
             criteria.andProjectManagerEqualTo(projectManager);
         }
-        return null;
+        return projectAssessmentBonusItemMapper.selectByExample(example);
     }
 
     public Long getAssessmentBonusItemCount(Integer projectId) {
@@ -84,5 +84,24 @@ public class ProjectAssessmentBonusDao {
         ProjectAssessmentBonusItemExample.Criteria criteria = example.createCriteria().andMasterIdEqualTo(masterId);
         criteria.andStatusEqualTo(status);
         return projectAssessmentBonusItemMapper.countByExample(example);
+    }
+
+    //-------------------------------------------------------------------------
+    public Boolean addAssessmentBonusItemHistory(ProjectAssessmentBonusItemHistory projectAssessmentBonusItemHistory) {
+        int i = projectAssessmentBonusItemHistoryMapper.insertSelective(projectAssessmentBonusItemHistory);
+        return i == 1;
+    }
+
+    public ProjectAssessmentBonusItemHistory getAssessmentBonusItemHistoryById(Integer id) {
+        return projectAssessmentBonusItemHistoryMapper.selectByPrimaryKey(id);
+    }
+
+    public List<ProjectAssessmentBonusItemHistory> getAssessmentBonusItemHistoryList(Integer itemId) {
+        ProjectAssessmentBonusItemHistoryExample example = new ProjectAssessmentBonusItemHistoryExample();
+        ProjectAssessmentBonusItemHistoryExample.Criteria criteria = example.createCriteria();
+        if (itemId != null) {
+            criteria.andItemIdEqualTo(itemId);
+        }
+        return projectAssessmentBonusItemHistoryMapper.selectByExample(example);
     }
 }

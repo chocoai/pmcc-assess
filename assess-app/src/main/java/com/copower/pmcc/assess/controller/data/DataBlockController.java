@@ -14,6 +14,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.MessageTypeEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.message.model.MessageResponse;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.google.common.collect.Lists;
@@ -48,12 +49,10 @@ public class DataBlockController extends BaseController {
 
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
-    public ModelAndView index() {
+    public ModelAndView index() throws BusinessException {
         String view = "/data/dataBlockView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject("ProvinceList", erpAreaService.getProvinceList());//所有省份
-
-        //assessmentBonusJob.launchAssessmentBonusTask();
         return modelAndView;
     }
 

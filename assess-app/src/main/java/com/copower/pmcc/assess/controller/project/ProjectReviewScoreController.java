@@ -103,7 +103,7 @@ public class ProjectReviewScoreController {
 
     @RequestMapping(value = "/detail", name = "详情页面")
     public ModelAndView detail(String processInsId,  Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/reviewScoreDetail", processInsId, boxId, "-1", "agentUserAccount");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/reviewScoreDetail", processInsId, boxId, "-1", "");
         setModelViewParam(modelAndView,processInsId);
         return modelAndView;
     }

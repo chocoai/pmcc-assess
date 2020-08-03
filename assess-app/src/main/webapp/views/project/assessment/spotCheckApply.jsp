@@ -391,10 +391,10 @@
         cols.push({
             field: 'opt', title: '操作', width: '14%', formatter: function (value, row, index) {
                 var str = '';
-                str += '<button type="button" onclick="spotCheck.showEditScoreModal(' + row.id + ',' + row.projectId + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
+                str += '<button type="button" onclick="spotCheck.showEditScoreModal(' + row.id + ',' + row.projectId + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="填写">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                str += '<button type="button" onclick="spotCheck.showHistoryScoreListModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
+                str += '<button type="button" onclick="spotCheck.showHistoryScoreListModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="历史数据">';
                 str += '<i class="fa fa-history"></i>';
                 str += '</button>';
                 return str;

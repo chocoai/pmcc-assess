@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectAssessmentBonusItemMapper">
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItem">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectAssessmentBonusItemHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemHistory">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="master_id" jdbcType="INTEGER" property="masterId" />
+    <result column="item_id" jdbcType="INTEGER" property="itemId" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="project_manager" jdbcType="VARCHAR" property="projectManager" />
@@ -74,16 +74,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, master_id, project_id, project_name, project_manager, member_score_condition, 
-    total_score, status, remark, creator, gmt_created, gmt_modified
+    id, item_id, project_id, project_name, project_manager, member_score_condition, total_score, 
+    status, remark, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemHistoryExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_project_assessment_bonus_item
+    from tb_project_assessment_bonus_item_history
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,40 +94,40 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tb_project_assessment_bonus_item
+    from tb_project_assessment_bonus_item_history
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_project_assessment_bonus_item
+    delete from tb_project_assessment_bonus_item_history
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemExample">
-    delete from tb_project_assessment_bonus_item
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemHistoryExample">
+    delete from tb_project_assessment_bonus_item_history
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItem">
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemHistory">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_assessment_bonus_item (master_id, project_id, project_name, 
+    insert into tb_project_assessment_bonus_item_history (item_id, project_id, project_name, 
       project_manager, member_score_condition, total_score, 
       status, remark, creator, 
       gmt_created, gmt_modified)
-    values (#{masterId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
+    values (#{itemId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
       #{projectManager,jdbcType=VARCHAR}, #{memberScoreCondition,jdbcType=VARCHAR}, #{totalScore,jdbcType=DECIMAL}, 
       #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItem">
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemHistory">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_assessment_bonus_item
+    insert into tb_project_assessment_bonus_item_history
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="masterId != null">
-        master_id,
+      <if test="itemId != null">
+        item_id,
       </if>
       <if test="projectId != null">
         project_id,
@@ -161,8 +161,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="masterId != null">
-        #{masterId,jdbcType=INTEGER},
+      <if test="itemId != null">
+        #{itemId,jdbcType=INTEGER},
       </if>
       <if test="projectId != null">
         #{projectId,jdbcType=INTEGER},
@@ -196,20 +196,20 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemExample" resultType="java.lang.Long">
-    select count(*) from tb_project_assessment_bonus_item
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemHistoryExample" resultType="java.lang.Long">
+    select count(*) from tb_project_assessment_bonus_item_history
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tb_project_assessment_bonus_item
+    update tb_project_assessment_bonus_item_history
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.masterId != null">
-        master_id = #{record.masterId,jdbcType=INTEGER},
+      <if test="record.itemId != null">
+        item_id = #{record.itemId,jdbcType=INTEGER},
       </if>
       <if test="record.projectId != null">
         project_id = #{record.projectId,jdbcType=INTEGER},
@@ -247,9 +247,9 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tb_project_assessment_bonus_item
+    update tb_project_assessment_bonus_item_history
     set id = #{record.id,jdbcType=INTEGER},
-      master_id = #{record.masterId,jdbcType=INTEGER},
+      item_id = #{record.itemId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       project_manager = #{record.projectManager,jdbcType=VARCHAR},
@@ -264,11 +264,11 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItem">
-    update tb_project_assessment_bonus_item
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemHistory">
+    update tb_project_assessment_bonus_item_history
     <set>
-      <if test="masterId != null">
-        master_id = #{masterId,jdbcType=INTEGER},
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=INTEGER},
       </if>
       <if test="projectId != null">
         project_id = #{projectId,jdbcType=INTEGER},
@@ -303,9 +303,9 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItem">
-    update tb_project_assessment_bonus_item
-    set master_id = #{masterId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusItemHistory">
+    update tb_project_assessment_bonus_item_history
+    set item_id = #{itemId,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_manager = #{projectManager,jdbcType=VARCHAR},

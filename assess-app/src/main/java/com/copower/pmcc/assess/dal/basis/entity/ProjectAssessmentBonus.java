@@ -7,6 +7,8 @@ public class ProjectAssessmentBonus {
 
     private String processInsId;
 
+    private String title;
+
     private Integer year;
 
     private Integer month;
@@ -33,6 +35,14 @@ public class ProjectAssessmentBonus {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
     }
 
     public Integer getYear() {
