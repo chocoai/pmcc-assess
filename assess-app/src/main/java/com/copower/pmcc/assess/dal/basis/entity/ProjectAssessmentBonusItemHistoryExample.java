@@ -496,6 +496,76 @@ public class ProjectAssessmentBonusItemHistoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andExamineUserNameIsNull() {
+            addCriterion("examine_user_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameIsNotNull() {
+            addCriterion("examine_user_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameEqualTo(String value) {
+            addCriterion("examine_user_name =", value, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameNotEqualTo(String value) {
+            addCriterion("examine_user_name <>", value, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameGreaterThan(String value) {
+            addCriterion("examine_user_name >", value, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameGreaterThanOrEqualTo(String value) {
+            addCriterion("examine_user_name >=", value, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameLessThan(String value) {
+            addCriterion("examine_user_name <", value, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameLessThanOrEqualTo(String value) {
+            addCriterion("examine_user_name <=", value, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameLike(String value) {
+            addCriterion("examine_user_name like", value, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameNotLike(String value) {
+            addCriterion("examine_user_name not like", value, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameIn(List<String> values) {
+            addCriterion("examine_user_name in", values, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameNotIn(List<String> values) {
+            addCriterion("examine_user_name not in", values, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameBetween(String value1, String value2) {
+            addCriterion("examine_user_name between", value1, value2, "examineUserName");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamineUserNameNotBetween(String value1, String value2) {
+            addCriterion("examine_user_name not between", value1, value2, "examineUserName");
+            return (Criteria) this;
+        }
+
         public Criteria andTotalScoreIsNull() {
             addCriterion("total_score is null");
             return (Criteria) this;

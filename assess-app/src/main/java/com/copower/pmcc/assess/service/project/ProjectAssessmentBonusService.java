@@ -64,11 +64,14 @@ public class ProjectAssessmentBonusService {
 
     public void saveAssessmentBonusItem(ProjectAssessmentBonusItem assessmentBonusItem) {
         if (assessmentBonusItem.getId() != null && assessmentBonusItem.getId() > 0) {
+            ProjectAssessmentBonusItem bonusItem = projectAssessmentBonusDao.getAssessmentBonusItemById(assessmentBonusItem.getId());
             ProjectAssessmentBonusItemHistory history = new ProjectAssessmentBonusItemHistory();
-            BeanUtils.copyProperties(assessmentBonusItem, history);
+            BeanUtils.copyProperties(bonusItem, history);
             history.setItemId(assessmentBonusItem.getId());
             projectAssessmentBonusDao.addAssessmentBonusItemHistory(history);//存档到历史
 
+            assessmentBonusItem.setExamineUserAccount(commonService.thisUserAccount());
+            assessmentBonusItem.setExamineUserName(commonService.thisUser().getUserName());
             projectAssessmentBonusDao.updateAssessmentBonusItem(assessmentBonusItem);
         } else {
             assessmentBonusItem.setCreator(commonService.thisUserAccount());

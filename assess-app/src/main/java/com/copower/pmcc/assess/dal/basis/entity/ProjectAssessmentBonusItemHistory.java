@@ -16,6 +16,8 @@ public class ProjectAssessmentBonusItemHistory {
 
     private String memberScoreCondition;
 
+    private String examineUserName;
+
     private BigDecimal totalScore;
 
     private String status;
@@ -74,6 +76,14 @@ public class ProjectAssessmentBonusItemHistory {
 
     public void setMemberScoreCondition(String memberScoreCondition) {
         this.memberScoreCondition = memberScoreCondition == null ? null : memberScoreCondition.trim();
+    }
+
+    public String getExamineUserName() {
+        return examineUserName;
+    }
+
+    public void setExamineUserName(String examineUserName) {
+        this.examineUserName = examineUserName == null ? null : examineUserName.trim();
     }
 
     public BigDecimal getTotalScore() {

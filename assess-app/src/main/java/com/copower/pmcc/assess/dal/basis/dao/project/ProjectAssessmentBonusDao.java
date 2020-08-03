@@ -46,7 +46,6 @@ public class ProjectAssessmentBonusDao {
     }
 
     //--------------------------------------------------------------------------
-
     public Boolean addAssessmentBonusItem(ProjectAssessmentBonusItem projectAssessmentBonusItem) {
         int i = projectAssessmentBonusItemMapper.insertSelective(projectAssessmentBonusItem);
         return i == 1;
@@ -87,6 +86,8 @@ public class ProjectAssessmentBonusDao {
     }
 
     //-------------------------------------------------------------------------
+
+
     public Boolean addAssessmentBonusItemHistory(ProjectAssessmentBonusItemHistory projectAssessmentBonusItemHistory) {
         int i = projectAssessmentBonusItemHistoryMapper.insertSelective(projectAssessmentBonusItemHistory);
         return i == 1;

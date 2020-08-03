@@ -142,6 +142,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pagination: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -157,6 +158,7 @@
     //加载数据列表
     function loadAssementBonusItemHistoryList(itemId) {
         var cols = [];
+        cols.push({field: 'examineUserName', title: '考核人', width: '10%'});
         cols.push({field: 'totalScore', title: '总得分', width: '10%'});
         cols.push({
             field: 'memberScoreCondition', title: '成员得分', width: '30%', formatter: function (value, row, index) {
@@ -180,6 +182,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
+            pagination: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }

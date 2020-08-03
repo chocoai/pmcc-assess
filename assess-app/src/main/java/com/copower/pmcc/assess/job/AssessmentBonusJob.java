@@ -210,6 +210,8 @@ public class AssessmentBonusJob {
                 assessmentBonusItem.setProjectId(projectInfo.getId());
                 assessmentBonusItem.setProjectName(projectInfo.getProjectName());
                 assessmentBonusItem.setProjectManager(projectManager);
+                assessmentBonusItem.setExamineUserAccount(projectManager);
+                assessmentBonusItem.setExamineUserName(publicService.getUserNameByAccount(projectManager));
                 assessmentBonusItem.setMemberScoreCondition(JSON.toJSONString(keyValueDtoList));
                 assessmentBonusItem.setTotalScore(totalBonusScore);
                 assessmentBonusItem.setStatus(ProjectStatusEnum.WAIT.getKey());
