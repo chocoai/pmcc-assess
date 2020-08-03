@@ -1823,7 +1823,7 @@ public class GenerateBaseDataService {
                     for (SchemeSurePriceItem schemeSurePriceItem : priceItemList) {
                         stringBuilder.append(String.format("%s计算结果为%s元/㎡，", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
                         if (schemeSurePriceItem.getWeight() != null)
-                            stringBuilder.append(String.format("权重为%s%%；", schemeSurePriceItem.getWeight().multiply(new BigDecimal("100")).setScale(2,RoundingMode.HALF_UP)));
+                            stringBuilder.append(String.format("权重为%s%%；", schemeSurePriceItem.getWeight().multiply(new BigDecimal("100")).setScale(2, RoundingMode.HALF_UP)));
                         formulaString.append("(").append(schemeSurePriceItem.getMethodName()).append("×权重)＋");
                     }
                     stringBuilder.append(String.format("计算公式为%s，", StringUtils.stripEnd(formulaString.toString(), "＋")));
@@ -3178,7 +3178,7 @@ public class GenerateBaseDataService {
             }
         }
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result),true);
+        builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
         AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
@@ -3607,20 +3607,16 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeJudgeFunction> functions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isNotEmpty(functions)) {
-                    for (SchemeJudgeFunction function : functions) {
-                        DataMethodFormula formula = dataMethodFormulaService.getDataMethodFormulaByType(function.getMethodType());
-                        if (formula != null) {
-                            switch (type) {
-                                case "参数":
-                                    map.put(schemeJudgeObject.getNumber(), formula.getRelevantParameter());
-                                    break;
-                                case "公式":
-                                    map.put(schemeJudgeObject.getNumber(), formula.getFormula());
-                                    break;
-                            }
-
-                        }
+                if (CollectionUtils.isEmpty(functions)) continue;
+                for (SchemeJudgeFunction function : functions) {
+                    DataMethodFormula formula = dataMethodFormulaService.getDataMethodFormulaByType(function.getMethodType());
+                    if (formula == null) continue;
+                    String text = "参数".equalsIgnoreCase(type) ? formula.getRelevantParameter() : formula.getFormula();
+                    if (map.containsKey(schemeJudgeObject.getNumber())) {
+                        String s = map.get(schemeJudgeObject.getNumber());
+                        map.put(schemeJudgeObject.getNumber(), s + text);
+                    } else {
+                        map.put(schemeJudgeObject.getNumber(), text);
                     }
                 }
             }
