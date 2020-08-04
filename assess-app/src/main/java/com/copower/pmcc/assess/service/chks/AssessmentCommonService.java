@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
@@ -62,7 +63,7 @@ public class AssessmentCommonService {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private ProjectPhaseService projectPhaseService;
+    private ProjectInfoService projectInfoService;
     @Autowired
     private ChksRpcAssessmentPerformanceService performanceService;
 
@@ -73,15 +74,11 @@ public class AssessmentCommonService {
     public void generateAssessmentTask(String processInsId, Integer boxId, String taskId, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         try {
             //根据设定的参数确定是否生成考核任务
-            String generateDate = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_DATE);
-            String generateProjectId = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
-            if (StringUtils.isNotBlank(generateDate)) {
-                Date date = DateUtils.convertDate(generateDate);
-                if (DateUtils.compareDate(date, projectInfo.getGmtCreated()) > 0) return;
+            if (!projectInfoService.chksValidInitDate(projectInfo)) {
+                return;
             }
-            if (StringUtils.isNotBlank(generateProjectId)) {
-                List<Integer> list = FormatUtils.transformString2Integer(generateProjectId);
-                if (!list.contains(projectInfo.getId())) return;
+            if (!projectInfoService.chksValidProject(projectInfo.getId())) {
+                return;
             }
 
             BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);

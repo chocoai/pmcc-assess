@@ -9,6 +9,9 @@
        default-autowire="byName">
 
     <task:scheduled-tasks>
+        <!--每天1点执行-->
         <task:scheduled ref="climbingCaseJob" method="climbing" cron="0 0 1 * * ?"/>
+        <!--每月2号执行-->
+        <task:scheduled ref="assessmentBonusJob" method="execute" cron="0 0 0 2 * ?"/>
     </task:scheduled-tasks>
 </beans>

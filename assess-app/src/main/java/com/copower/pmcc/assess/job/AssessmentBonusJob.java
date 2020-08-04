@@ -70,8 +70,6 @@ public class AssessmentBonusJob {
     @Autowired
     private ErpRpcProjectService erpRpcProjectService;
     @Autowired
-    private ProjectPhaseService projectPhaseService;
-    @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;

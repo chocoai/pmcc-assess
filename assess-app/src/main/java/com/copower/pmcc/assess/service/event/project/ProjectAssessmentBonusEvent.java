@@ -53,6 +53,7 @@ public class ProjectAssessmentBonusEvent extends BaseProcessEvent {
                 ProjectAssessmentBonus assessmentBonus = projectAssessmentBonusService.getAssessmentBonusByProcessInsId(processExecution.getProcessInstanceId());
                 if (assessmentBonus == null) return;
                 List<ProjectAssessmentBonusItem> bonusItemList = projectAssessmentBonusService.getAssessmentBonusItemsByMasterId(assessmentBonus.getId());
+                String lastDayOfMonth = DateUtils.getLastDayOfMonth(assessmentBonus.getYear(), assessmentBonus.getMonth());
                 if (CollectionUtils.isNotEmpty(bonusItemList)) {
                     for (ProjectAssessmentBonusItem assessmentBonusItem : bonusItemList) {
                         String memberScoreCondition = assessmentBonusItem.getMemberScoreCondition();
@@ -66,7 +67,7 @@ public class ProjectAssessmentBonusEvent extends BaseProcessEvent {
                             performanceDto.setBusinessKey(assessmentBonusItem.getProjectName());
                             performanceDto.setByExaminePeople(keyValueDto.getKey());
                             performanceDto.setExaminePeople(assessmentBonusItem.getProjectManager());
-                            performanceDto.setExamineDate(DateUtils.now());
+                            performanceDto.setExamineDate(DateUtils.convertDate(lastDayOfMonth));
                             performanceDto.setExamineScore(new BigDecimal(keyValueDto.getValue()));
                             performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
                             performanceDto.setAssessmentKey(AssessmentTypeEnum.WORK_HOURS.getValue());

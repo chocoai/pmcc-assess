@@ -51,6 +51,7 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -903,4 +904,44 @@ public class ProjectInfoService {
         return value;
     }
 
+
+    /**
+     * 验证当前时间是否在配置的立项有效时间内
+     *
+     * @return
+     */
+    public Boolean chksValidInitDate(ProjectInfo projectInfo) {
+        try {
+            String parameter = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_DATE);
+            if (org.apache.commons.lang3.StringUtils.isBlank(parameter)) return true;
+            Date date = DateUtils.convertDate(parameter);
+            if (DateUtils.compareDate(date, projectInfo.getGmtCreated()) > 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (BusinessException e) {
+            return false;
+        }
+    }
+
+    /**
+     * 验证当前项目是否在配置的有效项目内
+     *
+     * @return
+     */
+    public Boolean chksValidProject(Integer projectId) {
+        try {
+            String projectIds = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
+            if(org.apache.commons.lang3.StringUtils.isBlank(projectIds)) return true;
+            List<Integer> list = FormatUtils.transformString2Integer(projectIds);
+            if (list.contains(projectId)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (BusinessException e) {
+            return false;
+        }
+    }
 }

@@ -139,6 +139,13 @@ public class ProjectReviewScoreController {
             if (count > 0) {//一个项目只能提交一次
                 return HttpResult.newErrorResult("请不要重复提交");
             }
+            //验证时间、验证项目是否能考核
+            if (!projectInfoService.chksValidInitDate(projectInfoService.getProjectInfoById(projectId))) {
+                return HttpResult.newErrorResult("该项目不允许申请");
+            }
+            if (!projectInfoService.chksValidProject(projectId)) {
+                return HttpResult.newErrorResult("该项目不允许申请");
+            }
             projectReviewScoreService.applyCommit(formData, projectId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
