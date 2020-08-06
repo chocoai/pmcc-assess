@@ -2,7 +2,8 @@
  * Created by kings on 2018-11-9.
  */
 
-var houseHuxingPrice = function () {};
+var houseHuxingPrice = function () {
+};
 houseHuxingPrice.num = 0;
 houseHuxingPrice.prototype = {
     config: function () {
@@ -27,7 +28,7 @@ houseHuxingPrice.prototype = {
             temp = commonColumn.houseRoomResidence();
         } else if (tenementType == '商铺' || tenementType == '商场') {
             temp = commonColumn.houseRoomStore();
-        } else if (tenementType == '餐饮'||tenementType == '酒店') {
+        } else if (tenementType == '餐饮' || tenementType == '酒店') {
             temp = commonColumn.houseRoomHotel();
         } else if (tenementType == '生产') {
             temp = commonColumn.houseRoomProduction();
@@ -42,7 +43,7 @@ houseHuxingPrice.prototype = {
                 var str = '<div class="btn-margin">';
                 str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
                 str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                // str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="装修" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-store-alt"></i></button>';
+                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="装修" onclick="houseHuxingPrice.prototype.showDecorateListModal(' + row.id + ')"><i class="fa fa-store-alt"></i></button>';
                 str += '</div>';
                 return str;
             }
@@ -174,7 +175,7 @@ houseHuxingPrice.prototype = {
                 $("#" + houseHuxingPrice.prototype.config().frm).find(".store").find("input").attr("disabled", false);
 
             }
-            if (tenementType == '餐饮'||tenementType == '酒店') {
+            if (tenementType == '餐饮' || tenementType == '酒店') {
                 $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").show();
                 $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").find("input").attr("disabled", false);
             }
@@ -327,25 +328,29 @@ houseHuxingPrice.prototype = {
         $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").show();
     },
 
-    //显示装修弹窗
-    showDecorateListModal:function (id) {
+    //处理装修信息-------------------------------------------------------------------
+
+    //显示装修列表弹窗
+    showDecorateListModal: function (id) {
+        $('#huxingPriceDecorateListModal').find('[name=huxingPriceId]').val(id);
         this.loadDecorateList();
+        $('#huxingPriceDecorateListModal').modal();
     },
     //加载装修信息
-    loadDecorateList:function () {
+    loadDecorateList: function () {
         var cols = commonColumn.houseRoomDecorateColumn();
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoomDecorate.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoomDecorate.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.showDecorateModal(' + row.id + ')"><i class="fa fa-pen"></i></button>';
+                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.deleteDecorateInfo(' + row.id + ')"><i class="fa fa-minus"></i></button>';
                 str += '</div>';
                 return str;
             }
         });
-        $("#" + houseRoomDecorate.prototype.config().table).bootstrapTable('destroy');
-        TableInit(houseRoomDecorate.prototype.config().table, getContextPath() + "/basicHouseRoomDecorate/getBootstrapTableVo", cols, {
-            huxingPriceId: $('#').find('[name=huxingPriceId]').val()
+        $("#housePriceDecorateList").bootstrapTable('destroy');
+        TableInit("housePriceDecorateList", getContextPath() + "/basicHouseRoomDecorate/getBootstrapTableVo", cols, {
+            huxingPriceId: $('#huxingPriceDecorateListModal').find('[name=huxingPriceId]').val()
         }, {
             showColumns: false,
             showRefresh: false,
@@ -356,9 +361,77 @@ houseHuxingPrice.prototype = {
         });
     },
 
-    //保存装修信息
-    saveDecorateInfo:function () {
+    //显示装修弹窗
+    showDecorateModal: function (id) {
+        $('#frmHuxingPriceDecorate').clearAll();
+        if (id) {
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoomDecorate/getBasicHouseRoomDecorateById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        if (houseRoomDecorate.prototype.isNotBlank(result.data)) {
+                            houseRoomDecorate.prototype.init(result.data, $('#frmHuxingPriceDecorate'));
+                        } else {
+                            houseRoomDecorate.prototype.init({}, $('#frmHuxingPriceDecorate'));
+                        }
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }else {
+            houseRoomDecorate.prototype.init({}, $('#frmHuxingPriceDecorate'));
+        }
+        $('#huxingPriceDecorateModal').modal();
+    },
 
+    //保存装修信息
+    saveDecorateInfo: function () {
+        if (!$('#frmHuxingPriceDecorate').valid()) {
+            return false;
+        }
+        var data = formSerializeArray($('#frmHuxingPriceDecorate'));
+        data.huxingPriceId = $('#huxingPriceDecorateListModal').find('[name=huxingPriceId]').val();
+        $.ajax({
+            url: getContextPath() + "/basicHouseRoomDecorate/saveAndUpdateBasicHouseRoomDecorate",
+            data: data,
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess("成功", "保存成功");
+                    $('#huxingPriceDecorateModal').modal('hide');
+                    houseHuxingPrice.prototype.loadDecorateList();
+                } else {
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                }
+            }
+        })
+    },
+
+    //删除装修信息
+    deleteDecorateInfo: function (id) {
+        $.ajax({
+            url: getContextPath() + "/basicHouseRoomDecorate/deleteBasicHouseRoomDecorate",
+            type: "post",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess("成功", "删除成功");
+                    houseHuxingPrice.prototype.loadDecorateList();
+                } else {
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
     }
 }
 $(function () {
@@ -1293,7 +1366,7 @@ var houseIntelligent;
                     fieldName: AssessDicKey.examine_house_lamps_lanterns
                 },
                 success: function (result) {
-                    if (result.ret&&result.data) {
+                    if (result.ret && result.data) {
                         var retHtml = '';
                         $.each(result.data, function (i, item) {
                             retHtml += '<option key="' + item.fieldName + '" title="' + item.remark + '" value="' + item.id + '"';
@@ -1768,31 +1841,33 @@ var houseRoomDecorate;
                 }
             })
         },
-        init: function (item) {
-            $("#" + houseRoomDecorate.prototype.config().frm).clearAll();
-            $("#" + houseRoomDecorate.prototype.config().frm).initForm(item);
-            $("#" + houseRoomDecorate.prototype.config().frm).find('select.material').off('change').on('change', function () {
+        init: function (item, $form) {
+            if (!$form) {
+                $form = $("#" + houseRoomDecorate.prototype.config().frm);
+            }
+            $form.clearAll();
+            $form.initForm(item);
+            $form.find('select.material').off('change').on('change', function () {
                 AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
-                    $("#" + houseRoomDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
+                    $form.find('select.constructionTechnology').empty().html(html).trigger('change');
                 });
                 item.constructionTechnology = null;
             });
-            $("#" + houseRoomDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').on('change', function () {
+            $form.find('select.constructionTechnology').off('change').on('change', function () {
                 AssessCommon.loadDataDicByPid($(this).val(), item.materialPrice, function (html, data) {
-                    $("#" + houseRoomDecorate.prototype.config().frm).find('select.materialPrice').empty().html(html).trigger('change');
+                    $form.find('select.materialPrice').empty().html(html).trigger('change');
                 });
                 item.materialPrice = null;
             });
-
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_material, item.material, function (html, data) {
-                $("#" + houseRoomDecorate.prototype.config().frm).find('select.material').empty().html(html).trigger('change');
+                $form.find('select.material').empty().html(html).trigger('change');
             });
 
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_part, item.part, function (html, data) {
-                $("#" + houseRoomDecorate.prototype.config().frm).find('select.part').empty().html(html).trigger('change');
+                $form.find('select.part').empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_level, item.level, function (html, data) {
-                $("#" + houseRoomDecorate.prototype.config().frm).find('select.level').empty().html(html).trigger('change');
+                $form.find('select.level').empty().html(html).trigger('change');
             });
         },
         openLocationModal: function (_this) {
@@ -2052,7 +2127,7 @@ var houseRoom;
                 temp = commonColumn.houseRoomResidence();
             } else if (tenementType == '商铺' || tenementType == '商场') {
                 temp = commonColumn.houseRoomStore();
-            } else if (tenementType == '餐饮'||tenementType == '酒店') {
+            } else if (tenementType == '餐饮' || tenementType == '酒店') {
                 temp = commonColumn.houseRoomHotel();
             } else if (tenementType == '生产') {
                 temp = commonColumn.houseRoomProduction();
@@ -2358,7 +2433,7 @@ var houseRoom;
                         $("#" + houseRoom.prototype.config().frm).find(".store.base").find("input").attr("disabled", false);
 
                     }
-                    if (tenementType == '餐饮'||tenementType == '酒店') {
+                    if (tenementType == '餐饮' || tenementType == '酒店') {
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.base").show();
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.base").find("input").attr("disabled", false);
                     }
@@ -2468,7 +2543,7 @@ var houseRoom;
                         $("#" + houseRoom.prototype.config().frm).find(".store.rule").find("input").attr("disabled", false);
                     }
                 }
-                if (tenementType == '餐饮'||tenementType == '酒店') {
+                if (tenementType == '餐饮' || tenementType == '酒店') {
                     if (houseShape == '不规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").hide();
                         $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").find("input").attr("disabled", true);
