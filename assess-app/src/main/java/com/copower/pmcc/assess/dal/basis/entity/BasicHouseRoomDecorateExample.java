@@ -285,6 +285,66 @@ public class BasicHouseRoomDecorateExample {
             return (Criteria) this;
         }
 
+        public Criteria andHuxingPriceIdIsNull() {
+            addCriterion("huxing_price_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdIsNotNull() {
+            addCriterion("huxing_price_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdEqualTo(Integer value) {
+            addCriterion("huxing_price_id =", value, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdNotEqualTo(Integer value) {
+            addCriterion("huxing_price_id <>", value, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdGreaterThan(Integer value) {
+            addCriterion("huxing_price_id >", value, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("huxing_price_id >=", value, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdLessThan(Integer value) {
+            addCriterion("huxing_price_id <", value, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdLessThanOrEqualTo(Integer value) {
+            addCriterion("huxing_price_id <=", value, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdIn(List<Integer> values) {
+            addCriterion("huxing_price_id in", values, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdNotIn(List<Integer> values) {
+            addCriterion("huxing_price_id not in", values, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdBetween(Integer value1, Integer value2) {
+            addCriterion("huxing_price_id between", value1, value2, "huxingPriceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingPriceIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("huxing_price_id not between", value1, value2, "huxingPriceId");
+            return (Criteria) this;
+        }
+
         public Criteria andPartIsNull() {
             addCriterion("part is null");
             return (Criteria) this;

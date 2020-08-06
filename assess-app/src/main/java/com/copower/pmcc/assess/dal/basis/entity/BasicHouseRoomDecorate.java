@@ -9,6 +9,8 @@ public class BasicHouseRoomDecorate {
 
     private Integer houseId;
 
+    private Integer huxingPriceId;
+
     private Integer part;
 
     private Integer material;
@@ -53,6 +55,14 @@ public class BasicHouseRoomDecorate {
 
     public void setHouseId(Integer houseId) {
         this.houseId = houseId;
+    }
+
+    public Integer getHuxingPriceId() {
+        return huxingPriceId;
+    }
+
+    public void setHuxingPriceId(Integer huxingPriceId) {
+        this.huxingPriceId = huxingPriceId;
     }
 
     public Integer getPart() {

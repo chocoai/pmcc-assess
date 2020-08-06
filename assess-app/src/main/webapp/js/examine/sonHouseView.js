@@ -2,342 +2,371 @@
  * Created by kings on 2018-11-9.
  */
 
-var houseHuxingPrice;
-(function () {
-    houseHuxingPrice = function () {
-
-    };
-    houseHuxingPrice.num = 0;
-    houseHuxingPrice.prototype = {
-        config: function () {
-            var data = {};
-            data.table = "HouseHuxingPriceList";
-            data.box = "divBoxHouseHuxingPrice";
-            data.frm = "frmHouseHuxingPrice";
-            data.type = "null";//
-            return data;
-        },
-        isNotBlank: function (item) {
-            if (item) {
-                return true;
-            }
-            return false;
-        },
-        loadDataDicList: function () {
-            var cols = commonColumn.houseHuxingPriceColumn();
-            var temp = [];
-            var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
-            if (tenementType == '住宅' || tenementType == '办公') {
-                temp = commonColumn.houseRoomResidence();
-            } else if (tenementType == '商铺' || tenementType == '商场') {
-                temp = commonColumn.houseRoomStore();
-            } else if (tenementType == '餐饮'||tenementType == '酒店') {
-                temp = commonColumn.houseRoomHotel();
-            } else if (tenementType == '生产') {
-                temp = commonColumn.houseRoomProduction();
-            } else if (tenementType == '仓储') {
-                temp = commonColumn.houseRoomStorage();
-            }
-            $.each(temp, function (i, item) {
-                cols.push(item);
-            })
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                    str += '</div>';
-                    return str;
-                }
-            });
-            $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
-                houseId: houseCommon.getHouseId()
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: getContextPath() + "/basicHouseHuxingPrice/deleteBasicHouseHuxingPrice",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        notifySuccess("成功", "删除成功");
-                        houseHuxingPrice.prototype.loadDataDicList();
-                    } else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        showModel: function () {
-            var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
-            houseHuxingPrice.prototype.init({}, tenementType);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
-            });
-            $('#' + houseHuxingPrice.prototype.config().box).modal("show");
-        },
-        saveData: function () {
-            if (!$("#" + houseHuxingPrice.prototype.config().frm).valid()) {
-                return false;
-            }
-            var data = formParams(houseHuxingPrice.prototype.config().frm);
-            data.houseId = houseCommon.getHouseId();
-            var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
-            if (tenementType == '商铺' || tenementType == '商场') {
-                var adjacentPosition = '';
-                $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
-                    adjacentPosition += $(this).val() + ',';
-                })
-                data.adjacentPosition = adjacentPosition;
-                var distance = '';
-                $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=distance]').each(function () {
-                    distance += $(this).val() + ',';
-                })
-            }
-            $.ajax({
-                url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        notifySuccess("成功", "保存成功");
-                        $('#' + houseHuxingPrice.prototype.config().box).modal('hide');
-                        houseHuxingPrice.prototype.loadDataDicList();
-                    } else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        getAndInit: function (id) {
-            $.ajax({
-                url: getContextPath() + "/basicHouseHuxingPrice/getBasicHouseHuxingPriceById",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
-                        $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
-                        if (houseHuxingPrice.prototype.isNotBlank(result.data)) {
-                            houseHuxingPrice.prototype.init(result.data, tenementType);
-                            if (tenementType == '商铺' || tenementType == '商场') {
-                                if (houseHuxingPrice.prototype.isNotBlank(result.data.adjacentPosition)) {
-                                    houseHuxingPrice.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
-                                } else {
-                                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
-                                        $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
-                                    }, false);
-                                }
-                            }
-                        } else {
-                            houseHuxingPrice.prototype.init({}, tenementType);
-                        }
-
-                        $('#' + houseHuxingPrice.prototype.config().box).modal("show");//
-                    }
-                },
-                error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        init: function (item, tenementType) {
-            $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
-            if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").attr("style", "display:none");
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").find("input").attr("disabled", true);
-
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".common").show();
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".common").find("input").attr("disabled", false);
-
-                if (tenementType == '住宅' || tenementType == '办公') {
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").show();
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").find("input").attr("disabled", false);
-                }
-                if (tenementType == '商铺' || tenementType == '商场') {
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".store").show();
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".store").find("input").attr("disabled", false);
-
-                }
-                if (tenementType == '餐饮'||tenementType == '酒店') {
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").show();
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").find("input").attr("disabled", false);
-                }
-                if (tenementType == '生产') {
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".production").show();
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".production").find("input").attr("disabled", false);
-                }
-                if (tenementType == '仓储') {
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".storage").show();
-                }
-            } else {
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".common").show();
-            }
-            $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_orientation, item.orientation, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select.orientation2").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_standard_measure, item.standardMeasure, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select.standardMeasure2").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_storage_request, item.storageRequest, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select.storageRequest2").empty().html(html).trigger('change');
-            });
-            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceAerationList").empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceLightingList").empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceSunshineList").empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceSoundInsulationList").empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("#productionAerationList").empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("#hotelAerationList").empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("#hotelLightingList").empty().html(html).trigger('change');
-            }, true);
-            AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("#productionLightingList").empty().html(html).trigger('change');
-            }, true);
-
-        },
-        importData: function (planDetailsId) {
-            $.ajaxFileUpload({
-                type: "POST",
-                url: getContextPath() + "/basicHouseHuxingPrice/importData",
-                data: {
-                    houseId: houseCommon.getHouseId(),
-                    planDetailsId: planDetailsId
-                },//要传到后台的参数，没有可以不写
-                secureuri: false,//是否启用安全提交，默认为false
-                fileElementId: 'ajaxFileUpload',//文件选择框的id属性
-                dataType: 'json',//服务器返回的格式
-                async: false,
-                success: function (result) {
-                    if (result.ret) {
-                        houseHuxingPrice.prototype.loadDataDicList();
-                        notifySuccess("成功", result.data);
-                    }
-                },
-                error: function (result, status, e) {
-                    Loading.progressHide();
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
-                }
-            });
-        },
-        appendHTML: function () {
-            var html = "<div class='row form-group store base'>";
-            html += '<div class="col-sm-12">';
-            html += '<div class="form-inline x-valid">';
-
-            html += "<label class='col-sm-2 control-label'>相邻位置<span class='symbol required'></span></label>";
-            html += "<div class='col-sm-4'>";
-            html += '<select class="form-control input-full adjacentPosition" name="adjacentPosition' + houseHuxingPrice.num + '" required>';
-            html += "</select>";
-            html += "</div>";
-
-            html += "<label class='col-sm-2 control-label'>距离(m)<span class='symbol required'></span></label>";
-            html += "<div class='col-sm-3'>";
-            html += '<input type="text" placeholder="距离" name="distance' + houseHuxingPrice.num + '" class="form-control input-full" required>';
-            html += "</div>";
-
-            html += "<div class='col-sm-1'>";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='houseHuxingPrice.prototype.cleanHTMLData(this)'>" + "</span>";
-            html += "</div>";
-
-            html += "</div>";
-            html += "</div>";
-            html += "</div>";
-            $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").append(html);
-            var name = "select[name='adjacentPosition" + houseHuxingPrice.num + "']";
-            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find(name).empty().html(html).trigger('change');
-            });
-            houseHuxingPrice.num++;
-        },
-        cleanHTMLData: function (item) {
-            $(item).closest('.form-group').remove();
-        },
-        writeHTMLData: function (adjacentPositions, distances) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").empty();
-
-            var strs = adjacentPositions.split(",");
-            var strs2 = distances.split(",");
-            var length = strs.length;
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, strs[0], function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
-            }, false);
-            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='distance']").val(strs2[0]);
-            for (var j = 1; j < length; j++) {
-                if (houseHuxingPrice.prototype.isNotBlank(strs[j])) {
-                    var html = "<div class='row form-group'>";
-                    html += '<div class="col-sm-12">';
-                    html += '<div class="form-inline x-valid">';
-
-                    html += "<label class='col-sm-2 control-label'>相邻位置<span class='symbol required'></span></label>";
-                    html += "<div class='col-sm-4'>";
-                    html += '<select class="form-control input-full adjacentPosition' + j + '" name="adjacentPosition' + j + '" required >';
-                    html += "</select>";
-                    html += "</div>";
-
-                    html += "<label class='col-sm-2 control-label'>距离(m)<span class='symbol required'></span></label>";
-                    html += "<div class='col-sm-3'>";
-                    html += '<input type="text" placeholder="距离" name="distance' + j + '" class="form-control input-full" required value="' + strs2[j] + '">';
-                    html += "</div>";
-
-                    html += "<div class='col-sm-1'>";
-                    html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='houseHuxingPrice.prototype.cleanHTMLData(this)'>" + "</span>";
-                    html += "</div>";
-
-                    html += "</div>";
-                    html += "</div>";
-                    html += "</div>";
-                    $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").append(html);
-                    var name = "select[name='adjacentPosition" + j + "']";
-                    if (j > 0) {
-                        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, strs[j], function (html, data) {
-                            $("#" + houseHuxingPrice.prototype.config().frm).find(name).empty().html(html).trigger('change');
-                        }, false);
-                    }
-                }
-
-            }
-
-            $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").show();
+var houseHuxingPrice = function () {};
+houseHuxingPrice.num = 0;
+houseHuxingPrice.prototype = {
+    config: function () {
+        var data = {};
+        data.table = "HouseHuxingPriceList";
+        data.box = "divBoxHouseHuxingPrice";
+        data.frm = "frmHouseHuxingPrice";
+        data.type = "null";//
+        return data;
+    },
+    isNotBlank: function (item) {
+        if (item) {
+            return true;
         }
-    }
+        return false;
+    },
+    loadDataDicList: function () {
+        var cols = commonColumn.houseHuxingPriceColumn();
+        var temp = [];
+        var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
+        if (tenementType == '住宅' || tenementType == '办公') {
+            temp = commonColumn.houseRoomResidence();
+        } else if (tenementType == '商铺' || tenementType == '商场') {
+            temp = commonColumn.houseRoomStore();
+        } else if (tenementType == '餐饮'||tenementType == '酒店') {
+            temp = commonColumn.houseRoomHotel();
+        } else if (tenementType == '生产') {
+            temp = commonColumn.houseRoomProduction();
+        } else if (tenementType == '仓储') {
+            temp = commonColumn.houseRoomStorage();
+        }
+        $.each(temp, function (i, item) {
+            cols.push(item);
+        })
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                // str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="装修" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-store-alt"></i></button>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+        TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
+            houseId: houseCommon.getHouseId()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    },
+    removeData: function (id) {
+        $.ajax({
+            url: getContextPath() + "/basicHouseHuxingPrice/deleteBasicHouseHuxingPrice",
+            type: "post",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess("成功", "删除成功");
+                    houseHuxingPrice.prototype.loadDataDicList();
+                } else {
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    },
+    showModel: function () {
+        var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
+        houseHuxingPrice.prototype.init({}, tenementType);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
+        });
+        $('#' + houseHuxingPrice.prototype.config().box).modal("show");
+    },
+    saveData: function () {
+        if (!$("#" + houseHuxingPrice.prototype.config().frm).valid()) {
+            return false;
+        }
+        var data = formParams(houseHuxingPrice.prototype.config().frm);
+        data.houseId = houseCommon.getHouseId();
+        var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
+        if (tenementType == '商铺' || tenementType == '商场') {
+            var adjacentPosition = '';
+            $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
+                adjacentPosition += $(this).val() + ',';
+            })
+            data.adjacentPosition = adjacentPosition;
+            var distance = '';
+            $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=distance]').each(function () {
+                distance += $(this).val() + ',';
+            })
+        }
+        $.ajax({
+            url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
+            type: "post",
+            dataType: "json",
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess("成功", "保存成功");
+                    $('#' + houseHuxingPrice.prototype.config().box).modal('hide');
+                    houseHuxingPrice.prototype.loadDataDicList();
+                } else {
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    },
+    getAndInit: function (id) {
+        $.ajax({
+            url: getContextPath() + "/basicHouseHuxingPrice/getBasicHouseHuxingPriceById",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
+                    $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
+                    if (houseHuxingPrice.prototype.isNotBlank(result.data)) {
+                        houseHuxingPrice.prototype.init(result.data, tenementType);
+                        if (tenementType == '商铺' || tenementType == '商场') {
+                            if (houseHuxingPrice.prototype.isNotBlank(result.data.adjacentPosition)) {
+                                houseHuxingPrice.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
+                            } else {
+                                AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
+                                    $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
+                                }, false);
+                            }
+                        }
+                    } else {
+                        houseHuxingPrice.prototype.init({}, tenementType);
+                    }
 
+                    $('#' + houseHuxingPrice.prototype.config().box).modal("show");//
+                }
+            },
+            error: function (result) {
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    },
+    init: function (item, tenementType) {
+        $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
+        if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").attr("style", "display:none");
+            $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").find("input").attr("disabled", true);
+
+            $("#" + houseHuxingPrice.prototype.config().frm).find(".common").show();
+            $("#" + houseHuxingPrice.prototype.config().frm).find(".common").find("input").attr("disabled", false);
+
+            if (tenementType == '住宅' || tenementType == '办公') {
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").show();
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").find("input").attr("disabled", false);
+            }
+            if (tenementType == '商铺' || tenementType == '商场') {
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".store").show();
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".store").find("input").attr("disabled", false);
+
+            }
+            if (tenementType == '餐饮'||tenementType == '酒店') {
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").show();
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").find("input").attr("disabled", false);
+            }
+            if (tenementType == '生产') {
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".production").show();
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".production").find("input").attr("disabled", false);
+            }
+            if (tenementType == '仓储') {
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".storage").show();
+            }
+        } else {
+            $("#" + houseHuxingPrice.prototype.config().frm).find(".common").show();
+        }
+        $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_orientation, item.orientation, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("select.orientation2").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_standard_measure, item.standardMeasure, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("select.standardMeasure2").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_storage_request, item.storageRequest, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("select.storageRequest2").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceAerationList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceLightingList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceSunshineList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceSoundInsulationList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("#productionAerationList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("#hotelAerationList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("#hotelLightingList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("#productionLightingList").empty().html(html).trigger('change');
+        }, true);
+
+    },
+    importData: function (planDetailsId) {
+        $.ajaxFileUpload({
+            type: "POST",
+            url: getContextPath() + "/basicHouseHuxingPrice/importData",
+            data: {
+                houseId: houseCommon.getHouseId(),
+                planDetailsId: planDetailsId
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: 'ajaxFileUpload',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    houseHuxingPrice.prototype.loadDataDicList();
+                    notifySuccess("成功", result.data);
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        });
+    },
+    appendHTML: function () {
+        var html = "<div class='row form-group store base'>";
+        html += '<div class="col-sm-12">';
+        html += '<div class="form-inline x-valid">';
+
+        html += "<label class='col-sm-2 control-label'>相邻位置<span class='symbol required'></span></label>";
+        html += "<div class='col-sm-4'>";
+        html += '<select class="form-control input-full adjacentPosition" name="adjacentPosition' + houseHuxingPrice.num + '" required>';
+        html += "</select>";
+        html += "</div>";
+
+        html += "<label class='col-sm-2 control-label'>距离(m)<span class='symbol required'></span></label>";
+        html += "<div class='col-sm-3'>";
+        html += '<input type="text" placeholder="距离" name="distance' + houseHuxingPrice.num + '" class="form-control input-full" required>';
+        html += "</div>";
+
+        html += "<div class='col-sm-1'>";
+        html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='houseHuxingPrice.prototype.cleanHTMLData(this)'>" + "</span>";
+        html += "</div>";
+
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
+        $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").append(html);
+        var name = "select[name='adjacentPosition" + houseHuxingPrice.num + "']";
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find(name).empty().html(html).trigger('change');
+        });
+        houseHuxingPrice.num++;
+    },
+    cleanHTMLData: function (item) {
+        $(item).closest('.form-group').remove();
+    },
+    writeHTMLData: function (adjacentPositions, distances) {
+        $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").empty();
+
+        var strs = adjacentPositions.split(",");
+        var strs2 = distances.split(",");
+        var length = strs.length;
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, strs[0], function (html, data) {
+            $("#" + houseHuxingPrice.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
+        }, false);
+        $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='distance']").val(strs2[0]);
+        for (var j = 1; j < length; j++) {
+            if (houseHuxingPrice.prototype.isNotBlank(strs[j])) {
+                var html = "<div class='row form-group'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
+
+                html += "<label class='col-sm-2 control-label'>相邻位置<span class='symbol required'></span></label>";
+                html += "<div class='col-sm-4'>";
+                html += '<select class="form-control input-full adjacentPosition' + j + '" name="adjacentPosition' + j + '" required >';
+                html += "</select>";
+                html += "</div>";
+
+                html += "<label class='col-sm-2 control-label'>距离(m)<span class='symbol required'></span></label>";
+                html += "<div class='col-sm-3'>";
+                html += '<input type="text" placeholder="距离" name="distance' + j + '" class="form-control input-full" required value="' + strs2[j] + '">';
+                html += "</div>";
+
+                html += "<div class='col-sm-1'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='houseHuxingPrice.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").append(html);
+                var name = "select[name='adjacentPosition" + j + "']";
+                if (j > 0) {
+                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, strs[j], function (html, data) {
+                        $("#" + houseHuxingPrice.prototype.config().frm).find(name).empty().html(html).trigger('change');
+                    }, false);
+                }
+            }
+        }
+        $("#" + houseHuxingPrice.prototype.config().frm).find(".streetNumbers").show();
+    },
+
+    //显示装修弹窗
+    showDecorateListModal:function (id) {
+        this.loadDecorateList();
+    },
+    //加载装修信息
+    loadDecorateList:function () {
+        var cols = commonColumn.houseRoomDecorateColumn();
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoomDecorate.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoomDecorate.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#" + houseRoomDecorate.prototype.config().table).bootstrapTable('destroy');
+        TableInit(houseRoomDecorate.prototype.config().table, getContextPath() + "/basicHouseRoomDecorate/getBootstrapTableVo", cols, {
+            huxingPriceId: $('#').find('[name=huxingPriceId]').val()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    },
+
+    //保存装修信息
+    saveDecorateInfo:function () {
+
+    }
+}
+$(function () {
     //绑定事件
     $('#' + houseHuxingPrice.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseHuxingPrice.prototype.loadDataDicList();
     })
-})();
+});
 
 var houseHeating;
 (function () {

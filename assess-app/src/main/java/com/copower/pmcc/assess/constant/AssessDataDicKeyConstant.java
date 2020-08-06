@@ -3,11 +3,15 @@ package com.copower.pmcc.assess.constant;
 /**
  * 描述:数据配置定义
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/1/3
  * @time: 13:45
  */
 public class AssessDataDicKeyConstant {
+
+    public static final String PROJECT_DECLARE_ACQUISITION_TYPE = "project.declare.acquisition.type";//土地取得方式
+    public static final String PROJECT_DECLARE_ROOM_TYPE = "project.declare.room.type";//房屋性质
+
     /*
      * 基础数据
      */

@@ -427,8 +427,8 @@ public class DeclarePublicService {
         //数据字典 map
         Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
         baseMap.put("type", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE));
-        baseMap.put("landAcquisition", baseDataDicService.getCacheDataDicList("project.declare.use.right.type"));
-        baseMap.put("nature", baseDataDicService.getCacheDataDicList("project.declare.room.type"));
+        baseMap.put("landAcquisition", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_ACQUISITION_TYPE));
+        baseMap.put("nature", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_ROOM_TYPE));
         baseMap.put("publicSituation", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_COMMON_SITUATION));
         boolean check = excelImportHelp(classArrayListMultimap, declareRealtyHouseCert, builder, row, baseMap, requiredList);
         if (declareRealtyHouseCert.getAutoInitNumber() == null || declareRealtyHouseCert.getAutoInitNumber() == 0){

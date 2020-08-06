@@ -44,10 +44,7 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_project_assessment_bonus_item" domainObjectName="ProjectAssessmentBonusItem" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_project_assessment_bonus_item_history" domainObjectName="ProjectAssessmentBonusItemHistory" >
+        <table tableName="tb_basic_house_room_decorate" domainObjectName="BasicHouseRoomDecorate" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 <!--        <table tableName="tb_basic_estate_land_state" >-->

@@ -63,7 +63,7 @@ public class BasicHouseRoomDecorateController {
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval){
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate){
         try {
             return basicHouseRoomDecorateService.getBootstrapTableVo(basicHouseRoomDecorate);
         } catch (Exception e) {
