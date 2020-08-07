@@ -56,7 +56,8 @@ public class DataAreaAssessmentBonusService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataAreaAssessmentBonusVo> vos = dataAreaAssessmentBonusVos(province, city, district);
+        String search = requestBaseParam.getSearch();
+        List<DataAreaAssessmentBonusVo> vos = dataAreaAssessmentBonusVos(province, city, district ,search);
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
@@ -73,8 +74,8 @@ public class DataAreaAssessmentBonusService {
         return vos;
     }
 
-    public List<DataAreaAssessmentBonusVo> dataAreaAssessmentBonusVos(String province, String city, String district) {
-        List<DataAreaAssessmentBonus> dataAreaAssessmentBonuss = dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(province, city, district);
+    public List<DataAreaAssessmentBonusVo> dataAreaAssessmentBonusVos(String province, String city, String district ,String departmentName) {
+        List<DataAreaAssessmentBonus> dataAreaAssessmentBonuss = dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(province, city, district ,departmentName);
         List<DataAreaAssessmentBonusVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(dataAreaAssessmentBonuss)) {
             for (DataAreaAssessmentBonus landLevel : dataAreaAssessmentBonuss) {

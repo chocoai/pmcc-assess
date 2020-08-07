@@ -46,7 +46,7 @@ public class DataAreaAssessmentBonusDao {
         return dataAreaAssessmentBonusMapper.selectByExample(example);
     }
 
-    public List<DataAreaAssessmentBonus> getDataAreaAssessmentBonusList(String province, String city, String district) {
+    public List<DataAreaAssessmentBonus>  getDataAreaAssessmentBonusList(String province, String city, String district ,String departmentName) {
         DataAreaAssessmentBonusExample example = new DataAreaAssessmentBonusExample();
         DataAreaAssessmentBonusExample.Criteria criteria = example.createCriteria();
         if(!StringUtils.isEmpty(province)){
@@ -57,6 +57,9 @@ public class DataAreaAssessmentBonusDao {
         }
         if(!StringUtils.isEmpty(district)){
             criteria.andDistrictEqualTo(district);
+        }
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(departmentName)) {
+            criteria.andDepartmentNameLike(String.format("%%%s%%", departmentName));
         }
         example.setOrderByClause("province,city,district");
         return dataAreaAssessmentBonusMapper.selectByExample(example);

@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectChangeTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
@@ -32,10 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -57,6 +55,14 @@ public class ProjectAssessmentBonusController {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+
+
+    @RequestMapping(value = "/taskIndex", name = "通过外勤记录发起任务 ", method = {RequestMethod.GET})
+    public ModelAndView taskIndex() {
+        String view = "/project/assessment/assessmentBonusIndex";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/index", name = "外勤加分调整页面（项目经理）")
     public ModelAndView index(Integer bonusId, Integer responsibilityId) {
@@ -198,9 +204,53 @@ public class ProjectAssessmentBonusController {
         }
     }
 
+    @PostMapping(value = "/launchAssessmentBonusTask", name = "外勤加分考核")
+    @ResponseBody
+    public HttpResult launchAssessmentBonusTask(String formData) {
+        try {
+            ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData,ProjectAssessmentBonus.class) ;
+            projectAssessmentBonusService.launchAssessmentBonusTask(assessmentBonus);
+            return HttpResult.newCorrectResult(200,assessmentBonus);
+        } catch (Exception e) {
+            logger.error("外勤加分考核失败", e);
+            return HttpResult.newErrorResult(500,e);
+        }
+    }
+
+    @PostMapping(value = "/afreshAssessmentBonusTask", name = "外勤加分考核 重新发起 会删除之前在作业过程中的所有数据")
+    @ResponseBody
+    public HttpResult afreshAssessmentBonusTask(String formData) {
+        try {
+            ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData,ProjectAssessmentBonus.class) ;
+            projectAssessmentBonusService.afreshAssessmentBonusTask(assessmentBonus);
+            return HttpResult.newCorrectResult(200,assessmentBonus);
+        } catch (Exception e) {
+            logger.error("外勤加分考核失败", e);
+            return HttpResult.newErrorResult(500,e);
+        }
+    }
+
+    @GetMapping(value = "/getHrLegworkDtoList", name = "获取 外勤记录 用作页面检测是否可以发起考核流程")
+    @ResponseBody
+    public HttpResult getHrLegworkDtoList(String formData) {
+        try {
+            ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData,ProjectAssessmentBonus.class) ;
+            return HttpResult.newCorrectResult(200, projectAssessmentBonusService.getHrLegworkDtoList(assessmentBonus));
+        } catch (Exception e) {
+            logger.error("外勤加分考核失败", e);
+            return HttpResult.newErrorResult(500,e);
+        }
+    }
+
     @ResponseBody
     @RequestMapping(value = "/getAssessmentBonusItemHistorys", name = "获取历史数据列表")
     public BootstrapTableVo getAssessmentBonusItemHistorys(Integer itemId) {
         return projectAssessmentBonusService.getAssessmentBonusItemHistorys(itemId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getProjectAssessmentBonusDataList", name = "获取外勤考核记录",method = {RequestMethod.GET})
+    public BootstrapTableVo getProjectAssessmentBonusDataList(String processInsId, String title, String status, String creator, Integer year, Integer month){
+        return projectAssessmentBonusService.getProjectAssessmentBonusDataList(processInsId, title, status, creator, year, month);
     }
 }

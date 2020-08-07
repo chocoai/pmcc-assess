@@ -113,7 +113,7 @@ public class AssessmentBonusJob {
                 return;
             }
             logger.info("----LegworkBonusAssessmentJob, start---------");
-            launchAssessmentBonusTask();//发起任务
+//            launchAssessmentBonusTask();//发起任务   不再使用次  定时任务发任务了
             logger.info("----LegworkBonusAssessmentJob, end---------");
         }
     }

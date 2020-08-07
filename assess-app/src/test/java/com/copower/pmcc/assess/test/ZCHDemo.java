@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.*;
 import jodd.util.URLDecoder;
 import org.apache.commons.collections.CollectionUtils;
@@ -431,13 +432,28 @@ public class ZCHDemo {
 
     @org.junit.Test
     public void testA() {
-        double d = 1831.62;
-        int n = new BigDecimal(d).intValue() % 1;
-        int n1 = new BigDecimal(d).intValue() % 10;
-        int n2 = new BigDecimal(d).intValue() % 100;
-        System.out.println("n:" + n);
-        System.out.println("n1:" + n1);
-        System.out.println("n2:" + n2);
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.set(Calendar.YEAR,2000);
+        startCalendar.set(Calendar.MONTH, 7 - 1);
+        startCalendar.set(Calendar.DATE, 0);
+        startCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        startCalendar.set(Calendar.MINUTE, 59);
+        startCalendar.set(Calendar.SECOND, 59);
+        startCalendar.set(Calendar.MILLISECOND, 999);
+        Date startDate = startCalendar.getTime();
+
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.set(Calendar.YEAR, 2000);
+        endCalendar.set(Calendar.MONTH, 7);
+        endCalendar.set(Calendar.DATE, 0);
+        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        endCalendar.set(Calendar.MINUTE, 59);
+        endCalendar.set(Calendar.SECOND, 59);
+        endCalendar.set(Calendar.MILLISECOND, 999);
+        Date endDate = endCalendar.getTime();
+        //上面得出的结果是这样的比如说是2000年7月 开始时间是2000-06-30 23:59:59 差一毫秒就到7月了，因为getHrLegworkListByEndDate的开始日期是大于开始日期的所以一定是在7月的开始处
+        //结束时间是 2000-07-31 23:59:59 差一毫秒就到8月了  因为getHrLegworkListByEndDate的
+        System.out.println(DateUtils.format(startDate,DateUtils.DATETIME_PATTERN));
     }
 
     @Test
