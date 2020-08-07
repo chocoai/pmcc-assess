@@ -14,17 +14,21 @@ public interface DataAreaAssessmentBonusMapper {
 
     int insert(DataAreaAssessmentBonus record);
 
-    int insertSelective(DataAreaAssessmentBonus record);
+    int insertSelective(@Param("record") DataAreaAssessmentBonus record, @Param("selective") DataAreaAssessmentBonus.Column ... selective);
 
     List<DataAreaAssessmentBonus> selectByExample(DataAreaAssessmentBonusExample example);
 
     DataAreaAssessmentBonus selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DataAreaAssessmentBonus record, @Param("example") DataAreaAssessmentBonusExample example);
+    int updateByExampleSelective(@Param("record") DataAreaAssessmentBonus record, @Param("example") DataAreaAssessmentBonusExample example, @Param("selective") DataAreaAssessmentBonus.Column ... selective);
 
     int updateByExample(@Param("record") DataAreaAssessmentBonus record, @Param("example") DataAreaAssessmentBonusExample example);
 
-    int updateByPrimaryKeySelective(DataAreaAssessmentBonus record);
+    int updateByPrimaryKeySelective(@Param("record") DataAreaAssessmentBonus record, @Param("selective") DataAreaAssessmentBonus.Column ... selective);
 
     int updateByPrimaryKey(DataAreaAssessmentBonus record);
+
+    int batchInsert(@Param("list") List<DataAreaAssessmentBonus> list);
+
+    int batchInsertSelective(@Param("list") List<DataAreaAssessmentBonus> list, @Param("selective") DataAreaAssessmentBonus.Column ... selective);
 }

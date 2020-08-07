@@ -20,6 +20,31 @@ public class ProjectAssessmentBonusDao {
     @Autowired
     private ProjectAssessmentBonusItemHistoryMapper projectAssessmentBonusItemHistoryMapper;
 
+
+    public List<ProjectAssessmentBonus> getProjectAssessmentBonusByWhere(String processInsId, String title, String status, String creator, Integer year, Integer month) {
+        ProjectAssessmentBonusExample example = new ProjectAssessmentBonusExample();
+        ProjectAssessmentBonusExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(processInsId)) {
+            criteria.andProcessInsIdEqualTo(processInsId);
+        }
+        if (StringUtils.isNotBlank(status)) {
+            criteria.andStatusEqualTo(status);
+        }
+        if (StringUtils.isNotBlank(creator)) {
+            criteria.andCreatorEqualTo(creator);
+        }
+        if (year != null) {
+            criteria.andYearEqualTo(year);
+        }
+        if (month != null) {
+            criteria.andMonthEqualTo(month);
+        }
+        if (StringUtils.isNotBlank(title)) {
+            criteria.andTitleLike(String.format("%%%s%%", title));
+        }
+        return projectAssessmentBonusMapper.selectByExample(example) ;
+    }
+
     public Boolean addAssessmentBonus(ProjectAssessmentBonus projectAssessmentBonus) {
         int i = projectAssessmentBonusMapper.insertSelective(projectAssessmentBonus);
         return i == 1;
@@ -49,6 +74,13 @@ public class ProjectAssessmentBonusDao {
     public Boolean addAssessmentBonusItem(ProjectAssessmentBonusItem projectAssessmentBonusItem) {
         int i = projectAssessmentBonusItemMapper.insertSelective(projectAssessmentBonusItem);
         return i == 1;
+    }
+
+    public boolean deleteProjectAssessmentBonusItemByMasterId(Integer masterId){
+        ProjectAssessmentBonusItemExample example = new ProjectAssessmentBonusItemExample();
+        ProjectAssessmentBonusItemExample.Criteria criteria = example.createCriteria();
+        criteria.andMasterIdEqualTo(masterId) ;
+        return projectAssessmentBonusItemMapper.deleteByExample(example) > 0;
     }
 
     public ProjectAssessmentBonusItem getAssessmentBonusItemById(Integer id) {

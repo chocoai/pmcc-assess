@@ -104,6 +104,7 @@
         });
         cols.push({field: 'coefficient', title: '系数'});
         cols.push({field: 'maxScore', title: '最高分'});
+        cols.push({field: 'departmentName', title: '部门'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<button onclick="dataObjFun.editDataById(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
@@ -121,7 +122,7 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false,
+            search: true,
             onLoadSuccess: function () {
                 $('.tooltips').tooltip();
             }
@@ -218,6 +219,26 @@
             }
         })
     }
+
+    dataObjFun.selectDepartment = function(this_){
+        var options = {
+            onSelected: function (nodes) {
+                $(this_).closest('.input-group').find("input[name='departmentId']").val(nodes[0].id);
+                if (nodes[0].text) {
+                    $(this_).closest('.input-group').find("input[name='departmentName']").val(nodes[0].text);
+                }
+                if (nodes[0].name) {
+                    $(this_).closest('.input-group').find("input[name='departmentName']").val(nodes[0].name);
+                }
+            },
+            companyId:'${baseViewDto.thisUser.companyId}'
+        };
+        if ("${departmentAssess.id}".length > 0) {
+            options.currOrgId = "${departmentAssess.id}";
+        }
+        erpDepartment.select(options);
+    } ;
+
     /**
      * @author:  zch
      * 描述:显示添加数据的模型
@@ -303,6 +324,35 @@
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
+
+                                            <label class="col-sm-2 col-form-label">
+                                                执业部门
+                                            </label>
+                                            <div class="col-sm-10 x-valid">
+                                                <div class="input-group">
+                                                    <input type="hidden" name="departmentId">
+                                                    <input class='form-control' name="departmentName" required
+                                                           readonly="readonly" onclick="dataObjFun.selectDepartment(this);">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-warning btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                        </button>
+                                                    </div>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button" onclick="dataObjFun.selectDepartment(this);">选择
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+
                                             <label class="col-sm-2 col-form-label">
                                                 最高分
                                             </label>

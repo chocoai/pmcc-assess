@@ -6,6 +6,8 @@
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
     <result column="max_score" jdbcType="DECIMAL" property="maxScore" />
     <result column="coefficient" jdbcType="DECIMAL" property="coefficient" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -71,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, province, city, district, max_score, coefficient, creator, gmt_created, gmt_modified
+    id, province, city, district, department_name, department_id, max_score, coefficient, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAreaAssessmentBonusExample" resultMap="BaseResultMap">
     select
@@ -108,69 +111,103 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_area_assessment_bonus (province, city, district, 
-      max_score, coefficient, creator, 
-      gmt_created, gmt_modified)
+      department_name, department_id, max_score, 
+      coefficient, creator, gmt_created, 
+      gmt_modified)
     values (#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{maxScore,jdbcType=DECIMAL}, #{coefficient,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{departmentName,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, #{maxScore,jdbcType=DECIMAL}, 
+      #{coefficient,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAreaAssessmentBonus">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_data_area_assessment_bonus
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="province != null">
-        province,
-      </if>
-      <if test="city != null">
-        city,
-      </if>
-      <if test="district != null">
-        district,
-      </if>
-      <if test="maxScore != null">
-        max_score,
-      </if>
-      <if test="coefficient != null">
-        coefficient,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="gmtCreated != null">
-        gmt_created,
-      </if>
-      <if test="gmtModified != null">
-        gmt_modified,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="province != null">
-        #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null">
-        #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="district != null">
-        #{district,jdbcType=VARCHAR},
-      </if>
-      <if test="maxScore != null">
-        #{maxScore,jdbcType=DECIMAL},
-      </if>
-      <if test="coefficient != null">
-        #{coefficient,jdbcType=DECIMAL},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null">
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null">
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.province != null">
+            province,
+          </if>
+          <if test="record.city != null">
+            city,
+          </if>
+          <if test="record.district != null">
+            district,
+          </if>
+          <if test="record.departmentName != null">
+            department_name,
+          </if>
+          <if test="record.departmentId != null">
+            department_id,
+          </if>
+          <if test="record.maxScore != null">
+            max_score,
+          </if>
+          <if test="record.coefficient != null">
+            coefficient,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.province != null">
+            #{record.province,jdbcType=VARCHAR},
+          </if>
+          <if test="record.city != null">
+            #{record.city,jdbcType=VARCHAR},
+          </if>
+          <if test="record.district != null">
+            #{record.district,jdbcType=VARCHAR},
+          </if>
+          <if test="record.departmentName != null">
+            #{record.departmentName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.departmentId != null">
+            #{record.departmentId,jdbcType=INTEGER},
+          </if>
+          <if test="record.maxScore != null">
+            #{record.maxScore,jdbcType=DECIMAL},
+          </if>
+          <if test="record.coefficient != null">
+            #{record.coefficient,jdbcType=DECIMAL},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAreaAssessmentBonusExample" resultType="java.lang.Long">
     select count(*) from tb_data_area_assessment_bonus
@@ -180,35 +217,51 @@
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update tb_data_area_assessment_bonus
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.province != null">
-        province = #{record.province,jdbcType=VARCHAR},
-      </if>
-      <if test="record.city != null">
-        city = #{record.city,jdbcType=VARCHAR},
-      </if>
-      <if test="record.district != null">
-        district = #{record.district,jdbcType=VARCHAR},
-      </if>
-      <if test="record.maxScore != null">
-        max_score = #{record.maxScore,jdbcType=DECIMAL},
-      </if>
-      <if test="record.coefficient != null">
-        coefficient = #{record.coefficient,jdbcType=DECIMAL},
-      </if>
-      <if test="record.creator != null">
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null">
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null">
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.province != null">
+            province = #{record.province,jdbcType=VARCHAR},
+          </if>
+          <if test="record.city != null">
+            city = #{record.city,jdbcType=VARCHAR},
+          </if>
+          <if test="record.district != null">
+            district = #{record.district,jdbcType=VARCHAR},
+          </if>
+          <if test="record.departmentName != null">
+            department_name = #{record.departmentName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.departmentId != null">
+            department_id = #{record.departmentId,jdbcType=INTEGER},
+          </if>
+          <if test="record.maxScore != null">
+            max_score = #{record.maxScore,jdbcType=DECIMAL},
+          </if>
+          <if test="record.coefficient != null">
+            coefficient = #{record.coefficient,jdbcType=DECIMAL},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -219,6 +272,8 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       district = #{record.district,jdbcType=VARCHAR},
+      department_name = #{record.departmentName,jdbcType=VARCHAR},
+      department_id = #{record.departmentId,jdbcType=INTEGER},
       max_score = #{record.maxScore,jdbcType=DECIMAL},
       coefficient = #{record.coefficient,jdbcType=DECIMAL},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -228,41 +283,59 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAreaAssessmentBonus">
+  <update id="updateByPrimaryKeySelective" parameterType="map">
     update tb_data_area_assessment_bonus
-    <set>
-      <if test="province != null">
-        province = #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null">
-        city = #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="district != null">
-        district = #{district,jdbcType=VARCHAR},
-      </if>
-      <if test="maxScore != null">
-        max_score = #{maxScore,jdbcType=DECIMAL},
-      </if>
-      <if test="coefficient != null">
-        coefficient = #{coefficient,jdbcType=DECIMAL},
-      </if>
-      <if test="creator != null">
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null">
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null">
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.province != null">
+            province = #{record.province,jdbcType=VARCHAR},
+          </if>
+          <if test="record.city != null">
+            city = #{record.city,jdbcType=VARCHAR},
+          </if>
+          <if test="record.district != null">
+            district = #{record.district,jdbcType=VARCHAR},
+          </if>
+          <if test="record.departmentName != null">
+            department_name = #{record.departmentName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.departmentId != null">
+            department_id = #{record.departmentId,jdbcType=INTEGER},
+          </if>
+          <if test="record.maxScore != null">
+            max_score = #{record.maxScore,jdbcType=DECIMAL},
+          </if>
+          <if test="record.coefficient != null">
+            coefficient = #{record.coefficient,jdbcType=DECIMAL},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataAreaAssessmentBonus">
     update tb_data_area_assessment_bonus
     set province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       district = #{district,jdbcType=VARCHAR},
+      department_name = #{departmentName,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=INTEGER},
       max_score = #{maxScore,jdbcType=DECIMAL},
       coefficient = #{coefficient,jdbcType=DECIMAL},
       creator = #{creator,jdbcType=VARCHAR},
@@ -270,4 +343,60 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_data_area_assessment_bonus
+    (province, city, district, department_name, department_id, max_score, coefficient, 
+      creator, gmt_created, gmt_modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.province,jdbcType=VARCHAR}, #{item.city,jdbcType=VARCHAR}, #{item.district,jdbcType=VARCHAR}, 
+        #{item.departmentName,jdbcType=VARCHAR}, #{item.departmentId,jdbcType=INTEGER}, 
+        #{item.maxScore,jdbcType=DECIMAL}, #{item.coefficient,jdbcType=DECIMAL}, #{item.creator,jdbcType=VARCHAR}, 
+        #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_data_area_assessment_bonus (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'province'.toString() == column.value">
+          #{item.province,jdbcType=VARCHAR}
+        </if>
+        <if test="'city'.toString() == column.value">
+          #{item.city,jdbcType=VARCHAR}
+        </if>
+        <if test="'district'.toString() == column.value">
+          #{item.district,jdbcType=VARCHAR}
+        </if>
+        <if test="'department_name'.toString() == column.value">
+          #{item.departmentName,jdbcType=VARCHAR}
+        </if>
+        <if test="'department_id'.toString() == column.value">
+          #{item.departmentId,jdbcType=INTEGER}
+        </if>
+        <if test="'max_score'.toString() == column.value">
+          #{item.maxScore,jdbcType=DECIMAL}
+        </if>
+        <if test="'coefficient'.toString() == column.value">
+          #{item.coefficient,jdbcType=DECIMAL}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>
