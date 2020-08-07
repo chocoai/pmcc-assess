@@ -33,7 +33,11 @@ public class BasicApplyBatchDetail {
 
     private Integer upgradeTableId;
 
+    private String modifyContent;
+
     private Boolean bisFromCase;
+
+    private Boolean bisModified;
 
     private Boolean bisDelete;
 
@@ -163,12 +167,28 @@ public class BasicApplyBatchDetail {
         this.upgradeTableId = upgradeTableId;
     }
 
+    public String getModifyContent() {
+        return modifyContent;
+    }
+
+    public void setModifyContent(String modifyContent) {
+        this.modifyContent = modifyContent == null ? null : modifyContent.trim();
+    }
+
     public Boolean getBisFromCase() {
         return bisFromCase;
     }
 
     public void setBisFromCase(Boolean bisFromCase) {
         this.bisFromCase = bisFromCase;
+    }
+
+    public Boolean getBisModified() {
+        return bisModified;
+    }
+
+    public void setBisModified(Boolean bisModified) {
+        this.bisModified = bisModified;
     }
 
     public Boolean getBisDelete() {

@@ -367,7 +367,11 @@
 
     spotCheck.loadSpotCheckItemList = function () {
         var cols = [];
-        cols.push({field: 'projectName', title: '项目名称', width: '20%'});
+        cols.push({
+            field: 'projectName', title: '项目名称', width: '20%', formatter: function (value, row, index) {
+                return '<a href="${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=' + row.projectId + '" target="_blank">' + value + '</a>';
+            }
+        });
         cols.push({
             field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
                 var str = '';

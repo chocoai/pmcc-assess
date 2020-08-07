@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>复核工时考核</title>
+    <title>复核与指导工时考核</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body>
@@ -24,7 +24,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        复核工时
+                                        复核与指导工时考核
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span

@@ -126,7 +126,7 @@ public class AssessmentBonusJob {
         Date preMonthFirstDay = DateUtils.convertDate(DateUtils.getFirstDayOfMonth(DateUtils.getYear(preMonthLastDay), DateUtils.getMonth(preMonthLastDay)));
         List<HrLegworkDto> legworkDtoList = hrRpcToolService.getHrLegworkListByEndDate(preMonthFirstDay, firstDate);
         if (CollectionUtils.isEmpty(legworkDtoList)) return;
-        String title=String.format("%s外勤加分考核", DateUtils.formatDate(preMonthFirstDay, DateUtils.MONTH_PATTERN));
+        String title = String.format("%s外勤加分考核", DateUtils.formatDate(preMonthFirstDay, DateUtils.MONTH_PATTERN));
         ProjectAssessmentBonus assessmentBonus = new ProjectAssessmentBonus();
         assessmentBonus.setTitle(title);
         assessmentBonus.setYear(DateUtils.getYear(preMonthFirstDay));
@@ -192,7 +192,7 @@ public class AssessmentBonusJob {
                                 totalBonusScore = totalBonusScore.add(bonusScore);
                                 if (valueDto == null) {
                                     keyValueDto.setKey(entry.getKey());
-                                    keyValueDto.setValue(String.valueOf(bonusScore.setScale(2,BigDecimal.ROUND_HALF_UP)));
+                                    keyValueDto.setValue(String.valueOf(bonusScore.setScale(2, BigDecimal.ROUND_HALF_UP)));
                                     keyValueDto.setExplain(publicService.getUserNameByAccount(entry.getKey()));
                                     keyValueDtoList.add(keyValueDto);
                                 } else {

@@ -17,7 +17,9 @@
     <result column="executor" jdbcType="VARCHAR" property="executor" />
     <result column="quote_id" jdbcType="INTEGER" property="quoteId" />
     <result column="upgrade_table_id" jdbcType="INTEGER" property="upgradeTableId" />
+    <result column="modify_content" jdbcType="VARCHAR" property="modifyContent" />
     <result column="bis_from_case" jdbcType="BIT" property="bisFromCase" />
+    <result column="bis_modified" jdbcType="BIT" property="bisModified" />
     <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
@@ -84,7 +86,7 @@
   <sql id="Base_Column_List">
     id, pid, plan_details_id, apply_batch_id, declare_record_id, declare_record_name, 
     table_name, table_id, type, name, display_name, full_name, executor, quote_id, upgrade_table_id, 
-    bis_from_case, bis_delete, creator, gmt_created, gmt_modified
+    modify_content, bis_from_case, bis_modified, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample" resultMap="BaseResultMap">
     select
@@ -124,16 +126,18 @@
       declare_record_id, declare_record_name, table_name, 
       table_id, type, name, 
       display_name, full_name, executor, 
-      quote_id, upgrade_table_id, bis_from_case, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified)
+      quote_id, upgrade_table_id, modify_content, 
+      bis_from_case, bis_modified, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{applyBatchId,jdbcType=INTEGER}, 
       #{declareRecordId,jdbcType=INTEGER}, #{declareRecordName,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, 
       #{tableId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{displayName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{executor,jdbcType=VARCHAR}, 
-      #{quoteId,jdbcType=INTEGER}, #{upgradeTableId,jdbcType=INTEGER}, #{bisFromCase,jdbcType=BIT}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{quoteId,jdbcType=INTEGER}, #{upgradeTableId,jdbcType=INTEGER}, #{modifyContent,jdbcType=VARCHAR}, 
+      #{bisFromCase,jdbcType=BIT}, #{bisModified,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -183,8 +187,14 @@
       <if test="upgradeTableId != null">
         upgrade_table_id,
       </if>
+      <if test="modifyContent != null">
+        modify_content,
+      </if>
       <if test="bisFromCase != null">
         bis_from_case,
+      </if>
+      <if test="bisModified != null">
+        bis_modified,
       </if>
       <if test="bisDelete != null">
         bis_delete,
@@ -242,8 +252,14 @@
       <if test="upgradeTableId != null">
         #{upgradeTableId,jdbcType=INTEGER},
       </if>
+      <if test="modifyContent != null">
+        #{modifyContent,jdbcType=VARCHAR},
+      </if>
       <if test="bisFromCase != null">
         #{bisFromCase,jdbcType=BIT},
+      </if>
+      <if test="bisModified != null">
+        #{bisModified,jdbcType=BIT},
       </if>
       <if test="bisDelete != null">
         #{bisDelete,jdbcType=BIT},
@@ -313,8 +329,14 @@
       <if test="record.upgradeTableId != null">
         upgrade_table_id = #{record.upgradeTableId,jdbcType=INTEGER},
       </if>
+      <if test="record.modifyContent != null">
+        modify_content = #{record.modifyContent,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisFromCase != null">
         bis_from_case = #{record.bisFromCase,jdbcType=BIT},
+      </if>
+      <if test="record.bisModified != null">
+        bis_modified = #{record.bisModified,jdbcType=BIT},
       </if>
       <if test="record.bisDelete != null">
         bis_delete = #{record.bisDelete,jdbcType=BIT},
@@ -350,7 +372,9 @@
       executor = #{record.executor,jdbcType=VARCHAR},
       quote_id = #{record.quoteId,jdbcType=INTEGER},
       upgrade_table_id = #{record.upgradeTableId,jdbcType=INTEGER},
+      modify_content = #{record.modifyContent,jdbcType=VARCHAR},
       bis_from_case = #{record.bisFromCase,jdbcType=BIT},
+      bis_modified = #{record.bisModified,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -404,8 +428,14 @@
       <if test="upgradeTableId != null">
         upgrade_table_id = #{upgradeTableId,jdbcType=INTEGER},
       </if>
+      <if test="modifyContent != null">
+        modify_content = #{modifyContent,jdbcType=VARCHAR},
+      </if>
       <if test="bisFromCase != null">
         bis_from_case = #{bisFromCase,jdbcType=BIT},
+      </if>
+      <if test="bisModified != null">
+        bis_modified = #{bisModified,jdbcType=BIT},
       </if>
       <if test="bisDelete != null">
         bis_delete = #{bisDelete,jdbcType=BIT},
@@ -438,7 +468,9 @@
       executor = #{executor,jdbcType=VARCHAR},
       quote_id = #{quoteId,jdbcType=INTEGER},
       upgrade_table_id = #{upgradeTableId,jdbcType=INTEGER},
+      modify_content = #{modifyContent,jdbcType=VARCHAR},
       bis_from_case = #{bisFromCase,jdbcType=BIT},
+      bis_modified = #{bisModified,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

@@ -1075,6 +1075,76 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andModifyContentIsNull() {
+            addCriterion("modify_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentIsNotNull() {
+            addCriterion("modify_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentEqualTo(String value) {
+            addCriterion("modify_content =", value, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentNotEqualTo(String value) {
+            addCriterion("modify_content <>", value, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentGreaterThan(String value) {
+            addCriterion("modify_content >", value, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentGreaterThanOrEqualTo(String value) {
+            addCriterion("modify_content >=", value, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentLessThan(String value) {
+            addCriterion("modify_content <", value, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentLessThanOrEqualTo(String value) {
+            addCriterion("modify_content <=", value, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentLike(String value) {
+            addCriterion("modify_content like", value, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentNotLike(String value) {
+            addCriterion("modify_content not like", value, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentIn(List<String> values) {
+            addCriterion("modify_content in", values, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentNotIn(List<String> values) {
+            addCriterion("modify_content not in", values, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentBetween(String value1, String value2) {
+            addCriterion("modify_content between", value1, value2, "modifyContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyContentNotBetween(String value1, String value2) {
+            addCriterion("modify_content not between", value1, value2, "modifyContent");
+            return (Criteria) this;
+        }
+
         public Criteria andBisFromCaseIsNull() {
             addCriterion("bis_from_case is null");
             return (Criteria) this;
@@ -1132,6 +1202,66 @@ public class BasicApplyBatchDetailExample {
 
         public Criteria andBisFromCaseNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_from_case not between", value1, value2, "bisFromCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedIsNull() {
+            addCriterion("bis_modified is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedIsNotNull() {
+            addCriterion("bis_modified is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedEqualTo(Boolean value) {
+            addCriterion("bis_modified =", value, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedNotEqualTo(Boolean value) {
+            addCriterion("bis_modified <>", value, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedGreaterThan(Boolean value) {
+            addCriterion("bis_modified >", value, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_modified >=", value, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedLessThan(Boolean value) {
+            addCriterion("bis_modified <", value, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_modified <=", value, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedIn(List<Boolean> values) {
+            addCriterion("bis_modified in", values, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedNotIn(List<Boolean> values) {
+            addCriterion("bis_modified not in", values, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_modified between", value1, value2, "bisModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisModifiedNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_modified not between", value1, value2, "bisModified");
             return (Criteria) this;
         }
 
