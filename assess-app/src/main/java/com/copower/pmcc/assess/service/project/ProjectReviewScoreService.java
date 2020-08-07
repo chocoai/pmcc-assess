@@ -60,6 +60,15 @@ public class ProjectReviewScoreService {
         return projectReviewScoreDao.getProjectReviewScoreById(id);
     }
 
+    public ProjectReviewScore getReviewScoreByProjectId(Integer projectId) {
+        if (projectId==null) return null;
+        ProjectReviewScore where = new ProjectReviewScore();
+        where.setProjectId(projectId);
+        List<ProjectReviewScore> projectReviewScoreList = projectReviewScoreDao.getProjectReviewScoreList(where);
+        if (CollectionUtils.isEmpty(projectReviewScoreList)) return null;
+        return projectReviewScoreList.get(0);
+    }
+
     public ProjectReviewScore getReviewScoreByProcessInsId(String processInsId) {
         if (StringUtils.isBlank(processInsId)) return null;
         ProjectReviewScore where = new ProjectReviewScore();

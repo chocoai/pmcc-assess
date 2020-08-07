@@ -20,7 +20,11 @@ public class ProjectWorkStage {
 
     private BigDecimal managerReviewScore;
 
+    private String managerReviewStandard;
+
     private BigDecimal ceReviewScore;
+
+    private String ceReviewStandard;
 
     private Integer stageSort;
 
@@ -110,12 +114,28 @@ public class ProjectWorkStage {
         this.managerReviewScore = managerReviewScore;
     }
 
+    public String getManagerReviewStandard() {
+        return managerReviewStandard;
+    }
+
+    public void setManagerReviewStandard(String managerReviewStandard) {
+        this.managerReviewStandard = managerReviewStandard == null ? null : managerReviewStandard.trim();
+    }
+
     public BigDecimal getCeReviewScore() {
         return ceReviewScore;
     }
 
     public void setCeReviewScore(BigDecimal ceReviewScore) {
         this.ceReviewScore = ceReviewScore;
+    }
+
+    public String getCeReviewStandard() {
+        return ceReviewStandard;
+    }
+
+    public void setCeReviewStandard(String ceReviewStandard) {
+        this.ceReviewStandard = ceReviewStandard == null ? null : ceReviewStandard.trim();
     }
 
     public Integer getStageSort() {

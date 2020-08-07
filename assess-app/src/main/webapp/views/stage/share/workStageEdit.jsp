@@ -58,7 +58,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
@@ -83,7 +82,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
@@ -100,7 +98,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6" id="div_roleId" style="display: none">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
@@ -132,7 +129,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
@@ -189,7 +185,32 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 col-form-label">
+                                                项目经理标准
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <div class="input-group">
+                                                    <textarea class="form-control input-full" name="managerReviewStandard"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 col-form-label">
+                                                技术总工标准
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <textarea class="form-control input-full" name="ceReviewStandard"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row form-group">
                                     <div class="col-md-4">
                                         <div class="form-inline x-valid">

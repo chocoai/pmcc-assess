@@ -7,26 +7,20 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectReviewScoreGroupVo;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
-import com.copower.pmcc.assess.service.event.project.ProjectAssessmentBonusEvent;
-import com.copower.pmcc.assess.service.project.ProjectAssessmentBonusService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.ProjectReviewScoreService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
-import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
+import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -36,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -74,13 +69,16 @@ public class ProjectReviewScoreController {
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         if (CollectionUtils.isNotEmpty(projectPlanList)) {
             for (ProjectPlanVo projectPlanVo : projectPlanList) {
-                ProjectReviewScoreItem scoreItem = new ProjectReviewScoreItem();
-                scoreItem.setPlanId(projectPlanVo.getId());
-                scoreItem.setPlanName(projectPlanVo.getPlanName());
-                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanVo.getWorkStageId());
-                scoreItem.setStandardScore(projectWorkStage.getManagerReviewScore());
-                scoreItem.setScore(projectWorkStage.getManagerReviewScore());
-                scoreItems.add(scoreItem);
+                if (ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(projectPlanVo.getProjectStatus())) {
+                    ProjectReviewScoreItem scoreItem = new ProjectReviewScoreItem();
+                    scoreItem.setPlanId(projectPlanVo.getId());
+                    scoreItem.setPlanName(projectPlanVo.getPlanName());
+                    ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanVo.getWorkStageId());
+                    scoreItem.setStandard(projectWorkStage.getManagerReviewStandard());
+                    scoreItem.setStandardScore(projectWorkStage.getManagerReviewScore());
+                    scoreItem.setScore(projectWorkStage.getManagerReviewScore());
+                    scoreItems.add(scoreItem);
+                }
             }
         }
         modelAndView.addObject("projectReviewScoreItems", scoreItems);
@@ -90,31 +88,36 @@ public class ProjectReviewScoreController {
     @RequestMapping(value = "/edit", name = "返回修改页面")
     public ModelAndView edit(String processInsId, String taskId, Integer boxId, String agentUserAccount, Integer projectId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/reviewScoreApply", processInsId, boxId, taskId, agentUserAccount);
-        setModelViewParam(modelAndView,processInsId);
+        setModelViewParam(modelAndView, processInsId);
         return modelAndView;
     }
 
     @RequestMapping(value = "/approval", name = "审核页面")
     public ModelAndView approval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/reviewScoreApproval", processInsId, boxId, taskId, agentUserAccount);
-        setModelViewParam(modelAndView,processInsId);
+        setModelViewParam(modelAndView, processInsId);
         return modelAndView;
     }
 
     @RequestMapping(value = "/detail", name = "详情页面")
-    public ModelAndView detail(String processInsId,  Integer boxId) {
+    public ModelAndView detail(String processInsId, Integer boxId) {
+        if (boxId == null) {
+            BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
+            boxId = boxRuDto.getBoxId();
+        }
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/reviewScoreDetail", processInsId, boxId, "-1", "");
-        setModelViewParam(modelAndView,processInsId);
+        setModelViewParam(modelAndView, processInsId);
         return modelAndView;
     }
 
-    private void setModelViewParam(ModelAndView modelAndView,String processInsId){
+
+    private void setModelViewParam(ModelAndView modelAndView, String processInsId) {
         ProjectReviewScore reviewScore = projectReviewScoreService.getReviewScoreByProcessInsId(processInsId);
         modelAndView.addObject("projectReviewScore", reviewScore);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(reviewScore.getProjectId());
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         ProjectReviewScoreGroupVo reviewScoreGroupVo = projectReviewScoreService.getEnableReviewScoreGroupByReviewId(reviewScore.getId());
-        if(reviewScoreGroupVo!=null){
+        if (reviewScoreGroupVo != null) {
             modelAndView.addObject("projectReviewScoreItems", reviewScoreGroupVo.getReviewScoreItemList());
         }
     }
@@ -187,6 +190,18 @@ public class ProjectReviewScoreController {
             ProjectReviewScoreGroupVo projectReviewScoreGroupVo = JSON.parseObject(formData, ProjectReviewScoreGroupVo.class);
             projectReviewScoreService.addReviewScoreGroup(projectReviewScoreGroupVo);
             return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("保存复核工时明细数据失败", e);
+            return HttpResult.newErrorResult(e);
+        }
+    }
+
+    @GetMapping(value = "/getReviewScoreByProjectId", name = "获取复核得分by项目id")
+    @ResponseBody
+    public HttpResult getReviewScoreByProjectId(Integer projectId) {
+        try {
+            ProjectReviewScore projectReviewScore = projectReviewScoreService.getReviewScoreByProjectId(projectId);
+            return HttpResult.newCorrectResult(projectReviewScore);
         } catch (Exception e) {
             logger.error("保存复核工时明细数据失败", e);
             return HttpResult.newErrorResult(e);

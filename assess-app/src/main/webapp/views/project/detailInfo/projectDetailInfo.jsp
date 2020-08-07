@@ -272,8 +272,15 @@
         },
         //项目工分
         projectReviewScore: function () {
-            var url = "${pageContext.request.contextPath}/projectReviewScore/apply?projectId=" + ${projectInfo.id};
-            window.open(url, '_blank');
+            //先查看是否有记录
+            $.getJSON('${pageContext.request.contextPath}/projectReviewScore/getReviewScoreByProjectId',{projectId:'${projectInfo.id}'},function (result) {
+                if(result.ret&&result.data){
+                    var url = "${pageContext.request.contextPath}/projectReviewScore/detail?processInsId=" + result.data.processInsId;
+                }else{
+                    var url = "${pageContext.request.contextPath}/projectReviewScore/apply?projectId=" + ${projectInfo.id};
+                }
+                window.open(url, '_blank');
+            })
         },
         //终止
         stopProject: function () {

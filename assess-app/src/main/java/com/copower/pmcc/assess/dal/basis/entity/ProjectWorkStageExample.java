@@ -616,6 +616,76 @@ public class ProjectWorkStageExample {
             return (Criteria) this;
         }
 
+        public Criteria andManagerReviewStandardIsNull() {
+            addCriterion("manager_review_standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardIsNotNull() {
+            addCriterion("manager_review_standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardEqualTo(String value) {
+            addCriterion("manager_review_standard =", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardNotEqualTo(String value) {
+            addCriterion("manager_review_standard <>", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardGreaterThan(String value) {
+            addCriterion("manager_review_standard >", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardGreaterThanOrEqualTo(String value) {
+            addCriterion("manager_review_standard >=", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardLessThan(String value) {
+            addCriterion("manager_review_standard <", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardLessThanOrEqualTo(String value) {
+            addCriterion("manager_review_standard <=", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardLike(String value) {
+            addCriterion("manager_review_standard like", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardNotLike(String value) {
+            addCriterion("manager_review_standard not like", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardIn(List<String> values) {
+            addCriterion("manager_review_standard in", values, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardNotIn(List<String> values) {
+            addCriterion("manager_review_standard not in", values, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardBetween(String value1, String value2) {
+            addCriterion("manager_review_standard between", value1, value2, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardNotBetween(String value1, String value2) {
+            addCriterion("manager_review_standard not between", value1, value2, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
         public Criteria andCeReviewScoreIsNull() {
             addCriterion("ce_review_score is null");
             return (Criteria) this;
@@ -673,6 +743,76 @@ public class ProjectWorkStageExample {
 
         public Criteria andCeReviewScoreNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("ce_review_score not between", value1, value2, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardIsNull() {
+            addCriterion("ce_review_standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardIsNotNull() {
+            addCriterion("ce_review_standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardEqualTo(String value) {
+            addCriterion("ce_review_standard =", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardNotEqualTo(String value) {
+            addCriterion("ce_review_standard <>", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardGreaterThan(String value) {
+            addCriterion("ce_review_standard >", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardGreaterThanOrEqualTo(String value) {
+            addCriterion("ce_review_standard >=", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardLessThan(String value) {
+            addCriterion("ce_review_standard <", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardLessThanOrEqualTo(String value) {
+            addCriterion("ce_review_standard <=", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardLike(String value) {
+            addCriterion("ce_review_standard like", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardNotLike(String value) {
+            addCriterion("ce_review_standard not like", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardIn(List<String> values) {
+            addCriterion("ce_review_standard in", values, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardNotIn(List<String> values) {
+            addCriterion("ce_review_standard not in", values, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardBetween(String value1, String value2) {
+            addCriterion("ce_review_standard between", value1, value2, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardNotBetween(String value1, String value2) {
+            addCriterion("ce_review_standard not between", value1, value2, "ceReviewStandard");
             return (Criteria) this;
         }
 

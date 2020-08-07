@@ -356,6 +356,76 @@ public class ProjectReviewScoreItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andStandardIsNull() {
+            addCriterion("standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardIsNotNull() {
+            addCriterion("standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardEqualTo(String value) {
+            addCriterion("standard =", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardNotEqualTo(String value) {
+            addCriterion("standard <>", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardGreaterThan(String value) {
+            addCriterion("standard >", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardGreaterThanOrEqualTo(String value) {
+            addCriterion("standard >=", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardLessThan(String value) {
+            addCriterion("standard <", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardLessThanOrEqualTo(String value) {
+            addCriterion("standard <=", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardLike(String value) {
+            addCriterion("standard like", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardNotLike(String value) {
+            addCriterion("standard not like", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardIn(List<String> values) {
+            addCriterion("standard in", values, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardNotIn(List<String> values) {
+            addCriterion("standard not in", values, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardBetween(String value1, String value2) {
+            addCriterion("standard between", value1, value2, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardNotBetween(String value1, String value2) {
+            addCriterion("standard not between", value1, value2, "standard");
+            return (Criteria) this;
+        }
+
         public Criteria andStandardScoreIsNull() {
             addCriterion("standard_score is null");
             return (Criteria) this;

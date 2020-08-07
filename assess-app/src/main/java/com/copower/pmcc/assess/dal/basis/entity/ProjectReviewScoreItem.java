@@ -12,6 +12,8 @@ public class ProjectReviewScoreItem {
 
     private String planName;
 
+    private String standard;
+
     private BigDecimal standardScore;
 
     private BigDecimal score;
@@ -56,6 +58,14 @@ public class ProjectReviewScoreItem {
 
     public void setPlanName(String planName) {
         this.planName = planName == null ? null : planName.trim();
+    }
+
+    public String getStandard() {
+        return standard;
+    }
+
+    public void setStandard(String standard) {
+        this.standard = standard == null ? null : standard.trim();
     }
 
     public BigDecimal getStandardScore() {
