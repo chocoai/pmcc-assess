@@ -686,7 +686,14 @@ public class ProjectPlanDetailsService {
         return getProjectDetails(where);
     }
 
-    public List<CustomProjectPlanDetailCount> getPlanDetailsCountByMonth(String startMonth, String endMonth,List<Integer> projectIds){
-        return projectPlanDetailsDao.getPlanDetailsCountByMonth(startMonth, endMonth,projectIds);
+    public List<CustomProjectPlanDetailCount> getPlanDetailsCountByMonth(String startMonth, String endMonth, List<Integer> projectIds) {
+        return projectPlanDetailsDao.getPlanDetailsCountByMonth(startMonth, endMonth, projectIds);
+    }
+
+    public List<ProjectPhase> getProjectPhaseListByPlanId(Integer planId) {
+        if (planId == null) return null;
+        List<ProjectPlanDetails> detailsList = projectPlanDetailsDao.getProjectPlanDetailsByPlanId(planId);
+        List<ProjectPhase> projectPhases = projectPhaseService.getProjectPhaseListByIds(LangUtils.transform(detailsList, o -> o.getProjectPhaseId()));
+        return projectPhases;
     }
 }

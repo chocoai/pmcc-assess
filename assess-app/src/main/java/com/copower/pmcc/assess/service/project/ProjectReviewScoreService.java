@@ -5,11 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectReviewScoreDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScore;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreGroup;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem;
-import com.copower.pmcc.assess.dto.output.project.ProjectReviewScoreGroupVo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.ProjectReviewScoreItemVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectReviewScoreEvent;
@@ -27,6 +24,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -55,13 +53,15 @@ public class ProjectReviewScoreService {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     public ProjectReviewScore getReviewScoreById(Integer id) {
         return projectReviewScoreDao.getProjectReviewScoreById(id);
     }
 
     public ProjectReviewScore getReviewScoreByProjectId(Integer projectId) {
-        if (projectId==null) return null;
+        if (projectId == null) return null;
         ProjectReviewScore where = new ProjectReviewScore();
         where.setProjectId(projectId);
         List<ProjectReviewScore> projectReviewScoreList = projectReviewScoreDao.getProjectReviewScoreList(where);
@@ -94,17 +94,14 @@ public class ProjectReviewScoreService {
     /**
      * 申请提交
      *
-     * @param formData
      * @param projectId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void applyCommit(String formData, Integer projectId) throws BusinessException, BpmException {
-        if (StringUtils.isBlank(formData) || projectId == null)
+    public void applyCommit( Integer projectId) throws BusinessException, BpmException {
+        if (projectId == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        ProjectReviewScore reviewScore = new ProjectReviewScore();
-        reviewScore.setProjectId(projectId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        reviewScore.setProjectName(projectInfo.getProjectName());
+        ProjectReviewScore reviewScore = getReviewScoreByProjectId(projectId);
         reviewScore.setStatus(ProcessStatusEnum.RUN.getValue());
         saveReviewScore(reviewScore);
 
@@ -125,11 +122,6 @@ public class ProjectReviewScoreService {
         try {
             reviewScore.setProcessInsId(processUserDto.getProcessInsId());
             saveReviewScore(reviewScore);
-
-            ProjectReviewScoreGroupVo projectReviewScoreGroup = JSON.parseObject(formData, ProjectReviewScoreGroupVo.class);
-            projectReviewScoreGroup.setReviewId(reviewScore.getId());
-            projectReviewScoreGroup.setBisEnable(true);
-            addReviewScoreGroup(projectReviewScoreGroup);
         } catch (Exception ex) {//关闭无效流程
             bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());
             throw ex;
@@ -138,55 +130,81 @@ public class ProjectReviewScoreService {
 
     //----------------------------------------------------------------------------------------------------
 
-    public void addReviewScoreGroup(ProjectReviewScoreGroupVo reviewScoreGroupVo) {
-        //先将上一条数据置为无效状态
-        ProjectReviewScoreGroup scoreGroup = getEnableReviewScoreGroupByReviewId(reviewScoreGroupVo.getReviewId());
-        if (scoreGroup != null) {
-            scoreGroup.setBisEnable(false);
-            projectReviewScoreDao.modifyProjectReviewScoreGroup(scoreGroup);
-        }
-        reviewScoreGroupVo.setBisEnable(true);
-        reviewScoreGroupVo.setCreator(commonService.thisUserAccount());
-        projectReviewScoreDao.addProjectReviewScoreGroup(reviewScoreGroupVo);
-
-        //并添加子项数据
-        if (CollectionUtils.isNotEmpty(reviewScoreGroupVo.getReviewScoreItemList())) {
-            for (ProjectReviewScoreItem scoreItem : reviewScoreGroupVo.getReviewScoreItemList()) {
-                scoreItem.setGroupId(reviewScoreGroupVo.getId());
-                scoreItem.setCreator(commonService.thisUserAccount());
-                projectReviewScoreDao.addProjectReviewScoreItem(scoreItem);
-            }
-        }
+    public ProjectReviewScoreItem getReviewScoreItemById(Integer id){
+        return projectReviewScoreDao.getProjectReviewScoreItemById(id);
     }
 
-    public ProjectReviewScoreGroupVo getEnableReviewScoreGroupByReviewId(Integer reviewId) {
+    public List<ProjectReviewScoreItemVo> getEnableItemsByReviewId(Integer reviewId) {
         if (reviewId == null) return null;
-        ProjectReviewScoreGroup where = new ProjectReviewScoreGroup();
+        ProjectReviewScoreItem where = new ProjectReviewScoreItem();
         where.setBisEnable(true);
         where.setReviewId(reviewId);
-        List<ProjectReviewScoreGroup> list = projectReviewScoreDao.getProjectReviewScoreGroupList(where);
+        List<ProjectReviewScoreItem> list = projectReviewScoreDao.getProjectReviewScoreItemList(where);
         if (CollectionUtils.isEmpty(list)) return null;
-        return getReviewScoreGroupVo(list.get(0));
+        return LangUtils.transform(list,o->getReviewScoreItemVo(o));
     }
 
-    public List<ProjectReviewScoreGroup> getHistoryReviewScoreItemsByReviewId(Integer reviewId) {
+    public List<ProjectReviewScoreItemVo> getHistoryItemsByProjectPhaseId(Integer reviewId,Integer projectPhaseId) {
         if (reviewId == null) return null;
-        ProjectReviewScoreGroup where = new ProjectReviewScoreGroup();
+        ProjectReviewScoreItem where = new ProjectReviewScoreItem();
         where.setBisEnable(false);
         where.setReviewId(reviewId);
-        List<ProjectReviewScoreGroup> list = projectReviewScoreDao.getProjectReviewScoreGroupList(where);
+        where.setProjectPhaseId(projectPhaseId);
+        List<ProjectReviewScoreItem> list = projectReviewScoreDao.getProjectReviewScoreItemList(where);
         if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list, o -> getReviewScoreGroupVo(o));
+        return LangUtils.transform(list,o->getReviewScoreItemVo(o));
     }
 
-    public ProjectReviewScoreGroupVo getReviewScoreGroupVo(ProjectReviewScoreGroup reviewScoreGroup) {
-        if (reviewScoreGroup == null) return null;
-        ProjectReviewScoreGroupVo vo = new ProjectReviewScoreGroupVo();
-        BeanUtils.copyProperties(reviewScoreGroup, vo);
-        vo.setCreatorName(publicService.getUserNameByAccount(reviewScoreGroup.getCreator()));
-        ProjectReviewScoreItem where = new ProjectReviewScoreItem();
-        where.setGroupId(reviewScoreGroup.getId());
-        vo.setReviewScoreItemList(projectReviewScoreDao.getProjectReviewScoreItemList(where));
+    public ProjectReviewScoreItemVo getReviewScoreItemVo(ProjectReviewScoreItem reviewScoreItem) {
+        if (reviewScoreItem == null) return null;
+        ProjectReviewScoreItemVo vo = new ProjectReviewScoreItemVo();
+        BeanUtils.copyProperties(reviewScoreItem, vo);
+        vo.setCreatorName(publicService.getUserNameByAccount(reviewScoreItem.getCreator()));
         return vo;
+    }
+
+    public List<ProjectReviewScoreItemVo> getReviewScoreItemVoListByPlanId(Integer reviewId, Integer planId) {
+        ProjectReviewScoreItem where = new ProjectReviewScoreItem();
+        where.setBisEnable(true);
+        where.setReviewId(reviewId);
+        where.setPlanId(planId);
+        List<ProjectReviewScoreItem> list = projectReviewScoreDao.getProjectReviewScoreItemList(where);
+        if (CollectionUtils.isEmpty(list)) {
+            list = Lists.newArrayList();
+            List<ProjectPhase> projectPhaseList = projectPlanDetailsService.getProjectPhaseListByPlanId(planId);
+            if (CollectionUtils.isNotEmpty(projectPhaseList)) {
+                for (ProjectPhase projectPhase : projectPhaseList) {
+                    ProjectReviewScoreItem item = new ProjectReviewScoreItem();
+                    item.setPlanId(planId);
+                    item.setProjectPhaseId(projectPhase.getId());
+                    item.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                    item.setStandard(projectPhase.getManagerReviewStandard());
+                    item.setStandardScore(projectPhase.getManagerReviewScore());
+                    list.add(item);
+                }
+            }
+        }
+        return LangUtils.transform(list, o -> getReviewScoreItemVo(o));
+    }
+
+    /**
+     * 保存数据
+     * @param reviewScoreItem
+     */
+    public void saveReviewScoreItem(ProjectReviewScoreItem reviewScoreItem) {
+        if (reviewScoreItem == null) return;
+        if (reviewScoreItem.getId() == null || reviewScoreItem.getId() <= 0) {
+            reviewScoreItem.setCreator(commonService.thisUserAccount());
+            reviewScoreItem.setBisEnable(true);
+            projectReviewScoreDao.addProjectReviewScoreItem(reviewScoreItem);
+        } else {
+            //先将上个版本数据存档一份
+            ProjectReviewScoreItem scoreItem = projectReviewScoreDao.getProjectReviewScoreItemById(reviewScoreItem.getId());
+            scoreItem.setId(null);
+            scoreItem.setBisEnable(false);
+            projectReviewScoreDao.addProjectReviewScoreItem(scoreItem);
+
+            projectReviewScoreDao.modifyProjectReviewScoreItem(reviewScoreItem);//更新
+        }
     }
 }

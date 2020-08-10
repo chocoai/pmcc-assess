@@ -3,9 +3,10 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectReviewScoreItemMapper">
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="review_id" jdbcType="INTEGER" property="reviewId" />
     <result column="plan_id" jdbcType="INTEGER" property="planId" />
-    <result column="plan_name" jdbcType="VARCHAR" property="planName" />
+    <result column="project_phase_id" jdbcType="INTEGER" property="projectPhaseId" />
+    <result column="project_phase_name" jdbcType="VARCHAR" property="projectPhaseName" />
     <result column="standard" jdbcType="VARCHAR" property="standard" />
     <result column="standard_score" jdbcType="DECIMAL" property="standardScore" />
     <result column="score" jdbcType="DECIMAL" property="score" />
@@ -76,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, group_id, plan_id, plan_name, standard, standard_score, score, bis_enable, creator, 
-    gmt_created, gmt_modified
+    id, review_id, plan_id, project_phase_id, project_phase_name, standard, standard_score, 
+    score, bis_enable, creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List">
     remark
@@ -134,14 +135,16 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_review_score_item (group_id, plan_id, plan_name, 
-      standard, standard_score, score, 
-      bis_enable, creator, gmt_created, 
-      gmt_modified, remark)
-    values (#{groupId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{planName,jdbcType=VARCHAR}, 
-      #{standard,jdbcType=VARCHAR}, #{standardScore,jdbcType=DECIMAL}, #{score,jdbcType=DECIMAL}, 
-      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=LONGVARCHAR})
+    insert into tb_project_review_score_item (review_id, plan_id, project_phase_id, 
+      project_phase_name, standard, standard_score, 
+      score, bis_enable, creator, 
+      gmt_created, gmt_modified, remark
+      )
+    values (#{reviewId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{projectPhaseId,jdbcType=INTEGER}, 
+      #{projectPhaseName,jdbcType=VARCHAR}, #{standard,jdbcType=VARCHAR}, #{standardScore,jdbcType=DECIMAL}, 
+      #{score,jdbcType=DECIMAL}, #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -149,14 +152,17 @@
     </selectKey>
     insert into tb_project_review_score_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="groupId != null">
-        group_id,
+      <if test="reviewId != null">
+        review_id,
       </if>
       <if test="planId != null">
         plan_id,
       </if>
-      <if test="planName != null">
-        plan_name,
+      <if test="projectPhaseId != null">
+        project_phase_id,
+      </if>
+      <if test="projectPhaseName != null">
+        project_phase_name,
       </if>
       <if test="standard != null">
         standard,
@@ -184,14 +190,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="groupId != null">
-        #{groupId,jdbcType=INTEGER},
+      <if test="reviewId != null">
+        #{reviewId,jdbcType=INTEGER},
       </if>
       <if test="planId != null">
         #{planId,jdbcType=INTEGER},
       </if>
-      <if test="planName != null">
-        #{planName,jdbcType=VARCHAR},
+      <if test="projectPhaseId != null">
+        #{projectPhaseId,jdbcType=INTEGER},
+      </if>
+      <if test="projectPhaseName != null">
+        #{projectPhaseName,jdbcType=VARCHAR},
       </if>
       <if test="standard != null">
         #{standard,jdbcType=VARCHAR},
@@ -231,14 +240,17 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.groupId != null">
-        group_id = #{record.groupId,jdbcType=INTEGER},
+      <if test="record.reviewId != null">
+        review_id = #{record.reviewId,jdbcType=INTEGER},
       </if>
       <if test="record.planId != null">
         plan_id = #{record.planId,jdbcType=INTEGER},
       </if>
-      <if test="record.planName != null">
-        plan_name = #{record.planName,jdbcType=VARCHAR},
+      <if test="record.projectPhaseId != null">
+        project_phase_id = #{record.projectPhaseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectPhaseName != null">
+        project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
       </if>
       <if test="record.standard != null">
         standard = #{record.standard,jdbcType=VARCHAR},
@@ -272,9 +284,10 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update tb_project_review_score_item
     set id = #{record.id,jdbcType=INTEGER},
-      group_id = #{record.groupId,jdbcType=INTEGER},
+      review_id = #{record.reviewId,jdbcType=INTEGER},
       plan_id = #{record.planId,jdbcType=INTEGER},
-      plan_name = #{record.planName,jdbcType=VARCHAR},
+      project_phase_id = #{record.projectPhaseId,jdbcType=INTEGER},
+      project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
       standard = #{record.standard,jdbcType=VARCHAR},
       standard_score = #{record.standardScore,jdbcType=DECIMAL},
       score = #{record.score,jdbcType=DECIMAL},
@@ -290,9 +303,10 @@
   <update id="updateByExample" parameterType="map">
     update tb_project_review_score_item
     set id = #{record.id,jdbcType=INTEGER},
-      group_id = #{record.groupId,jdbcType=INTEGER},
+      review_id = #{record.reviewId,jdbcType=INTEGER},
       plan_id = #{record.planId,jdbcType=INTEGER},
-      plan_name = #{record.planName,jdbcType=VARCHAR},
+      project_phase_id = #{record.projectPhaseId,jdbcType=INTEGER},
+      project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
       standard = #{record.standard,jdbcType=VARCHAR},
       standard_score = #{record.standardScore,jdbcType=DECIMAL},
       score = #{record.score,jdbcType=DECIMAL},
@@ -307,14 +321,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
     update tb_project_review_score_item
     <set>
-      <if test="groupId != null">
-        group_id = #{groupId,jdbcType=INTEGER},
+      <if test="reviewId != null">
+        review_id = #{reviewId,jdbcType=INTEGER},
       </if>
       <if test="planId != null">
         plan_id = #{planId,jdbcType=INTEGER},
       </if>
-      <if test="planName != null">
-        plan_name = #{planName,jdbcType=VARCHAR},
+      <if test="projectPhaseId != null">
+        project_phase_id = #{projectPhaseId,jdbcType=INTEGER},
+      </if>
+      <if test="projectPhaseName != null">
+        project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
       </if>
       <if test="standard != null">
         standard = #{standard,jdbcType=VARCHAR},
@@ -345,9 +362,10 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
     update tb_project_review_score_item
-    set group_id = #{groupId,jdbcType=INTEGER},
+    set review_id = #{reviewId,jdbcType=INTEGER},
       plan_id = #{planId,jdbcType=INTEGER},
-      plan_name = #{planName,jdbcType=VARCHAR},
+      project_phase_id = #{projectPhaseId,jdbcType=INTEGER},
+      project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
       standard = #{standard,jdbcType=VARCHAR},
       standard_score = #{standardScore,jdbcType=DECIMAL},
       score = #{score,jdbcType=DECIMAL},
@@ -360,9 +378,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem">
     update tb_project_review_score_item
-    set group_id = #{groupId,jdbcType=INTEGER},
+    set review_id = #{reviewId,jdbcType=INTEGER},
       plan_id = #{planId,jdbcType=INTEGER},
-      plan_name = #{planName,jdbcType=VARCHAR},
+      project_phase_id = #{projectPhaseId,jdbcType=INTEGER},
+      project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
       standard = #{standard,jdbcType=VARCHAR},
       standard_score = #{standardScore,jdbcType=DECIMAL},
       score = #{score,jdbcType=DECIMAL},

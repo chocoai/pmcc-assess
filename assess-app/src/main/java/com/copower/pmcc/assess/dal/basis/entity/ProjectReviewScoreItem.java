@@ -6,11 +6,13 @@ import java.util.Date;
 public class ProjectReviewScoreItem {
     private Integer id;
 
-    private Integer groupId;
+    private Integer reviewId;
 
     private Integer planId;
 
-    private String planName;
+    private Integer projectPhaseId;
+
+    private String projectPhaseName;
 
     private String standard;
 
@@ -36,12 +38,12 @@ public class ProjectReviewScoreItem {
         this.id = id;
     }
 
-    public Integer getGroupId() {
-        return groupId;
+    public Integer getReviewId() {
+        return reviewId;
     }
 
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
+    public void setReviewId(Integer reviewId) {
+        this.reviewId = reviewId;
     }
 
     public Integer getPlanId() {
@@ -52,12 +54,20 @@ public class ProjectReviewScoreItem {
         this.planId = planId;
     }
 
-    public String getPlanName() {
-        return planName;
+    public Integer getProjectPhaseId() {
+        return projectPhaseId;
     }
 
-    public void setPlanName(String planName) {
-        this.planName = planName == null ? null : planName.trim();
+    public void setProjectPhaseId(Integer projectPhaseId) {
+        this.projectPhaseId = projectPhaseId;
+    }
+
+    public String getProjectPhaseName() {
+        return projectPhaseName;
+    }
+
+    public void setProjectPhaseName(String projectPhaseName) {
+        this.projectPhaseName = projectPhaseName == null ? null : projectPhaseName.trim();
     }
 
     public String getStandard() {

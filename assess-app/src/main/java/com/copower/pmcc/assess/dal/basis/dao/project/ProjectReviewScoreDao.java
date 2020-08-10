@@ -74,7 +74,7 @@ public class ProjectReviewScoreDao {
 
     public Long getProjectReviewScoreCount(Integer projectId) {
         ProjectReviewScoreExample example = new ProjectReviewScoreExample();
-        example.createCriteria().andProjectIdEqualTo(projectId);
+        example.createCriteria().andProjectIdEqualTo(projectId).andStatusIsNotNull();
         return projectReviewScoreMapper.countByExample(example);
     }
 

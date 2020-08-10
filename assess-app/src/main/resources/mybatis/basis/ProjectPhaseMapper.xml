@@ -15,13 +15,17 @@
     <result column="box_name" jdbcType="VARCHAR" property="boxName" />
     <result column="phase_key" jdbcType="VARCHAR" property="phaseKey" />
     <result column="phase_sort" jdbcType="INTEGER" property="phaseSort" />
+    <result column="service_bean" jdbcType="VARCHAR" property="serviceBean" />
+    <result column="manager_review_score" jdbcType="DECIMAL" property="managerReviewScore" />
+    <result column="manager_review_standard" jdbcType="VARCHAR" property="managerReviewStandard" />
+    <result column="ce_review_score" jdbcType="DECIMAL" property="ceReviewScore" />
+    <result column="ce_review_standard" jdbcType="VARCHAR" property="ceReviewStandard" />
     <result column="bis_wait" jdbcType="BIT" property="bisWait" />
     <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
     <result column="bis_use_box" jdbcType="BIT" property="bisUseBox" />
     <result column="bis_can_return" jdbcType="BIT" property="bisCanReturn" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-    <result column="service_bean" jdbcType="VARCHAR" property="serviceBean" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -83,8 +87,9 @@
   </sql>
   <sql id="Base_Column_List">
     id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, assets_setting_id, 
-    project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, bis_wait, 
-    bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified, service_bean
+    project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, service_bean, 
+    manager_review_score, manager_review_standard, ce_review_score, ce_review_standard, 
+    bis_wait, bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" resultMap="BaseResultMap">
     select
@@ -124,16 +129,18 @@
       project_category_id, work_stage_id, assets_setting_id, 
       project_phase_name, phase_time, phase_form, 
       box_name, phase_key, phase_sort, 
-      bis_wait, bis_enable, bis_use_box, 
-      bis_can_return, gmt_created, gmt_modified, 
-      service_bean)
+      service_bean, manager_review_score, manager_review_standard, 
+      ce_review_score, ce_review_standard, bis_wait, 
+      bis_enable, bis_use_box, bis_can_return, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
       #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{assetsSettingId,jdbcType=INTEGER}, 
       #{projectPhaseName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, 
       #{boxName,jdbcType=VARCHAR}, #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, 
-      #{bisWait,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, 
-      #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{serviceBean,jdbcType=VARCHAR})
+      #{serviceBean,jdbcType=VARCHAR}, #{managerReviewScore,jdbcType=DECIMAL}, #{managerReviewStandard,jdbcType=VARCHAR}, 
+      #{ceReviewScore,jdbcType=DECIMAL}, #{ceReviewStandard,jdbcType=VARCHAR}, #{bisWait,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, #{bisCanReturn,jdbcType=BIT}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -177,6 +184,21 @@
       <if test="phaseSort != null">
         phase_sort,
       </if>
+      <if test="serviceBean != null">
+        service_bean,
+      </if>
+      <if test="managerReviewScore != null">
+        manager_review_score,
+      </if>
+      <if test="managerReviewStandard != null">
+        manager_review_standard,
+      </if>
+      <if test="ceReviewScore != null">
+        ce_review_score,
+      </if>
+      <if test="ceReviewStandard != null">
+        ce_review_standard,
+      </if>
       <if test="bisWait != null">
         bis_wait,
       </if>
@@ -194,9 +216,6 @@
       </if>
       <if test="gmtModified != null">
         gmt_modified,
-      </if>
-      <if test="serviceBean != null">
-        service_bean,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -236,6 +255,21 @@
       <if test="phaseSort != null">
         #{phaseSort,jdbcType=INTEGER},
       </if>
+      <if test="serviceBean != null">
+        #{serviceBean,jdbcType=VARCHAR},
+      </if>
+      <if test="managerReviewScore != null">
+        #{managerReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="managerReviewStandard != null">
+        #{managerReviewStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="ceReviewScore != null">
+        #{ceReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="ceReviewStandard != null">
+        #{ceReviewStandard,jdbcType=VARCHAR},
+      </if>
       <if test="bisWait != null">
         #{bisWait,jdbcType=BIT},
       </if>
@@ -253,9 +287,6 @@
       </if>
       <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="serviceBean != null">
-        #{serviceBean,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -307,6 +338,21 @@
       <if test="record.phaseSort != null">
         phase_sort = #{record.phaseSort,jdbcType=INTEGER},
       </if>
+      <if test="record.serviceBean != null">
+        service_bean = #{record.serviceBean,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerReviewScore != null">
+        manager_review_score = #{record.managerReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.managerReviewStandard != null">
+        manager_review_standard = #{record.managerReviewStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ceReviewScore != null">
+        ce_review_score = #{record.ceReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ceReviewStandard != null">
+        ce_review_standard = #{record.ceReviewStandard,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisWait != null">
         bis_wait = #{record.bisWait,jdbcType=BIT},
       </if>
@@ -324,9 +370,6 @@
       </if>
       <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.serviceBean != null">
-        service_bean = #{record.serviceBean,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -348,13 +391,17 @@
       box_name = #{record.boxName,jdbcType=VARCHAR},
       phase_key = #{record.phaseKey,jdbcType=VARCHAR},
       phase_sort = #{record.phaseSort,jdbcType=INTEGER},
+      service_bean = #{record.serviceBean,jdbcType=VARCHAR},
+      manager_review_score = #{record.managerReviewScore,jdbcType=DECIMAL},
+      manager_review_standard = #{record.managerReviewStandard,jdbcType=VARCHAR},
+      ce_review_score = #{record.ceReviewScore,jdbcType=DECIMAL},
+      ce_review_standard = #{record.ceReviewStandard,jdbcType=VARCHAR},
       bis_wait = #{record.bisWait,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_use_box = #{record.bisUseBox,jdbcType=BIT},
       bis_can_return = #{record.bisCanReturn,jdbcType=BIT},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      service_bean = #{record.serviceBean,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -398,6 +445,21 @@
       <if test="phaseSort != null">
         phase_sort = #{phaseSort,jdbcType=INTEGER},
       </if>
+      <if test="serviceBean != null">
+        service_bean = #{serviceBean,jdbcType=VARCHAR},
+      </if>
+      <if test="managerReviewScore != null">
+        manager_review_score = #{managerReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="managerReviewStandard != null">
+        manager_review_standard = #{managerReviewStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="ceReviewScore != null">
+        ce_review_score = #{ceReviewScore,jdbcType=DECIMAL},
+      </if>
+      <if test="ceReviewStandard != null">
+        ce_review_standard = #{ceReviewStandard,jdbcType=VARCHAR},
+      </if>
       <if test="bisWait != null">
         bis_wait = #{bisWait,jdbcType=BIT},
       </if>
@@ -416,9 +478,6 @@
       <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="serviceBean != null">
-        service_bean = #{serviceBean,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -436,13 +495,17 @@
       box_name = #{boxName,jdbcType=VARCHAR},
       phase_key = #{phaseKey,jdbcType=VARCHAR},
       phase_sort = #{phaseSort,jdbcType=INTEGER},
+      service_bean = #{serviceBean,jdbcType=VARCHAR},
+      manager_review_score = #{managerReviewScore,jdbcType=DECIMAL},
+      manager_review_standard = #{managerReviewStandard,jdbcType=VARCHAR},
+      ce_review_score = #{ceReviewScore,jdbcType=DECIMAL},
+      ce_review_standard = #{ceReviewStandard,jdbcType=VARCHAR},
       bis_wait = #{bisWait,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_use_box = #{bisUseBox,jdbcType=BIT},
       bis_can_return = #{bisCanReturn,jdbcType=BIT},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      service_bean = #{serviceBean,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

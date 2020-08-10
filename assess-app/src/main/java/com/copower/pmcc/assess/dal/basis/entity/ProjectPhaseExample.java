@@ -926,6 +926,336 @@ public class ProjectPhaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andServiceBeanIsNull() {
+            addCriterion("service_bean is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanIsNotNull() {
+            addCriterion("service_bean is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanEqualTo(String value) {
+            addCriterion("service_bean =", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanNotEqualTo(String value) {
+            addCriterion("service_bean <>", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanGreaterThan(String value) {
+            addCriterion("service_bean >", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanGreaterThanOrEqualTo(String value) {
+            addCriterion("service_bean >=", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanLessThan(String value) {
+            addCriterion("service_bean <", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanLessThanOrEqualTo(String value) {
+            addCriterion("service_bean <=", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanLike(String value) {
+            addCriterion("service_bean like", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanNotLike(String value) {
+            addCriterion("service_bean not like", value, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanIn(List<String> values) {
+            addCriterion("service_bean in", values, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanNotIn(List<String> values) {
+            addCriterion("service_bean not in", values, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanBetween(String value1, String value2) {
+            addCriterion("service_bean between", value1, value2, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceBeanNotBetween(String value1, String value2) {
+            addCriterion("service_bean not between", value1, value2, "serviceBean");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreIsNull() {
+            addCriterion("manager_review_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreIsNotNull() {
+            addCriterion("manager_review_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreEqualTo(BigDecimal value) {
+            addCriterion("manager_review_score =", value, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreNotEqualTo(BigDecimal value) {
+            addCriterion("manager_review_score <>", value, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreGreaterThan(BigDecimal value) {
+            addCriterion("manager_review_score >", value, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("manager_review_score >=", value, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreLessThan(BigDecimal value) {
+            addCriterion("manager_review_score <", value, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("manager_review_score <=", value, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreIn(List<BigDecimal> values) {
+            addCriterion("manager_review_score in", values, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreNotIn(List<BigDecimal> values) {
+            addCriterion("manager_review_score not in", values, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("manager_review_score between", value1, value2, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("manager_review_score not between", value1, value2, "managerReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardIsNull() {
+            addCriterion("manager_review_standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardIsNotNull() {
+            addCriterion("manager_review_standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardEqualTo(String value) {
+            addCriterion("manager_review_standard =", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardNotEqualTo(String value) {
+            addCriterion("manager_review_standard <>", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardGreaterThan(String value) {
+            addCriterion("manager_review_standard >", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardGreaterThanOrEqualTo(String value) {
+            addCriterion("manager_review_standard >=", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardLessThan(String value) {
+            addCriterion("manager_review_standard <", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardLessThanOrEqualTo(String value) {
+            addCriterion("manager_review_standard <=", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardLike(String value) {
+            addCriterion("manager_review_standard like", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardNotLike(String value) {
+            addCriterion("manager_review_standard not like", value, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardIn(List<String> values) {
+            addCriterion("manager_review_standard in", values, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardNotIn(List<String> values) {
+            addCriterion("manager_review_standard not in", values, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardBetween(String value1, String value2) {
+            addCriterion("manager_review_standard between", value1, value2, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerReviewStandardNotBetween(String value1, String value2) {
+            addCriterion("manager_review_standard not between", value1, value2, "managerReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreIsNull() {
+            addCriterion("ce_review_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreIsNotNull() {
+            addCriterion("ce_review_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreEqualTo(BigDecimal value) {
+            addCriterion("ce_review_score =", value, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreNotEqualTo(BigDecimal value) {
+            addCriterion("ce_review_score <>", value, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreGreaterThan(BigDecimal value) {
+            addCriterion("ce_review_score >", value, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("ce_review_score >=", value, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreLessThan(BigDecimal value) {
+            addCriterion("ce_review_score <", value, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("ce_review_score <=", value, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreIn(List<BigDecimal> values) {
+            addCriterion("ce_review_score in", values, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreNotIn(List<BigDecimal> values) {
+            addCriterion("ce_review_score not in", values, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("ce_review_score between", value1, value2, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("ce_review_score not between", value1, value2, "ceReviewScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardIsNull() {
+            addCriterion("ce_review_standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardIsNotNull() {
+            addCriterion("ce_review_standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardEqualTo(String value) {
+            addCriterion("ce_review_standard =", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardNotEqualTo(String value) {
+            addCriterion("ce_review_standard <>", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardGreaterThan(String value) {
+            addCriterion("ce_review_standard >", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardGreaterThanOrEqualTo(String value) {
+            addCriterion("ce_review_standard >=", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardLessThan(String value) {
+            addCriterion("ce_review_standard <", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardLessThanOrEqualTo(String value) {
+            addCriterion("ce_review_standard <=", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardLike(String value) {
+            addCriterion("ce_review_standard like", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardNotLike(String value) {
+            addCriterion("ce_review_standard not like", value, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardIn(List<String> values) {
+            addCriterion("ce_review_standard in", values, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardNotIn(List<String> values) {
+            addCriterion("ce_review_standard not in", values, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardBetween(String value1, String value2) {
+            addCriterion("ce_review_standard between", value1, value2, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andCeReviewStandardNotBetween(String value1, String value2) {
+            addCriterion("ce_review_standard not between", value1, value2, "ceReviewStandard");
+            return (Criteria) this;
+        }
+
         public Criteria andBisWaitIsNull() {
             addCriterion("bis_wait is null");
             return (Criteria) this;
@@ -1283,76 +1613,6 @@ public class ProjectPhaseExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanIsNull() {
-            addCriterion("service_bean is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanIsNotNull() {
-            addCriterion("service_bean is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanEqualTo(String value) {
-            addCriterion("service_bean =", value, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanNotEqualTo(String value) {
-            addCriterion("service_bean <>", value, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanGreaterThan(String value) {
-            addCriterion("service_bean >", value, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanGreaterThanOrEqualTo(String value) {
-            addCriterion("service_bean >=", value, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanLessThan(String value) {
-            addCriterion("service_bean <", value, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanLessThanOrEqualTo(String value) {
-            addCriterion("service_bean <=", value, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanLike(String value) {
-            addCriterion("service_bean like", value, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanNotLike(String value) {
-            addCriterion("service_bean not like", value, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanIn(List<String> values) {
-            addCriterion("service_bean in", values, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanNotIn(List<String> values) {
-            addCriterion("service_bean not in", values, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanBetween(String value1, String value2) {
-            addCriterion("service_bean between", value1, value2, "serviceBean");
-            return (Criteria) this;
-        }
-
-        public Criteria andServiceBeanNotBetween(String value1, String value2) {
-            addCriterion("service_bean not between", value1, value2, "serviceBean");
             return (Criteria) this;
         }
     }

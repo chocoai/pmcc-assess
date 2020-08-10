@@ -1,80 +1,81 @@
 <%--
   Created by IntelliJ IDEA.
   User: huhao
-  Date: 2018/9/3
-  Time: 11:07
+  Date: 2018/01/29
+  Time: 15:50
   To change this template use File | Settings | File Templates.
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>复核与指导工时考核</title>
-    <%@include file="/views/share/main_css.jsp" %>
-</head>
-<body>
-<div class="wrapper">
-    <div class="main-panel" style="width: 100%">
-        <div class="content" style="margin-top: 0px;">
-            <%@include file="/views/share/form_head.jsp" %>
-            <div class="page-inner mt--5">
-                <div class="row mt--2">
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        复核与指导工时考核
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-2 col-md-2">
-                                        <div id="navPlanList"
-                                             class="nav flex-column nav-pills nav-secondary nav-pills-no-bd"
-                                             role="tablist" aria-orientation="vertical">
-                                            <c:forEach items="${projectPlanList}" var="item"
-                                                       varStatus="status">
-                                                <a class="nav-link show" data-toggle="pill" href="#tabPane${item.id}"
-                                                   role="tab"
-                                                   onclick="reviewScore.loadProjectPhaseList($('#tbPlanPhaseList${item.id}'),${item.id})"
-                                                   aria-controls="v-pills-home-nobd"
-                                                   aria-selected="true">${item.planName}</a>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
-                                    <div class="col-10 col-md-10">
-                                        <div class="tab-content" id="v-pills-without-border-tabContent">
-                                            <c:forEach items="${projectPlanList}" var="item" varStatus="status">
-                                                <div class="tab-pane fade" id="tabPane${item.id}" role="tabpanel"
-                                                     aria-labelledby="v-pills-messages-tab-nobd">
-                                                    <div class="card-body">
-                                                        <table class="table table-bordered"
-                                                               id="tbPlanPhaseList${item.id}"></table>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <%@include file="/views/share/form_approval.jsp" %>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-2 col-md-2">
+        <div id="navPlanList"
+             class="nav flex-column nav-pills nav-secondary nav-pills-no-bd"
+             role="tablist" aria-orientation="vertical">
+            <c:forEach items="${projectPlanList}" var="item"
+                       varStatus="status">
+                <a class="nav-link show" data-toggle="pill" href="#tabPane${item.id}"
+                   role="tab"
+                   onclick="reviewScore.loadProjectPhaseList($('#tbPlanPhaseList${item.id}'),${item.id})"
+                   aria-controls="v-pills-home-nobd"
+                   aria-selected="true">${item.planName}</a>
+            </c:forEach>
         </div>
-        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+    <div class="col-10 col-md-10">
+        <div class="tab-content" id="v-pills-without-border-tabContent">
+            <c:forEach items="${projectPlanList}" var="item" varStatus="status">
+                <div class="tab-pane fade" id="tabPane${item.id}" role="tabpanel"
+                     aria-labelledby="v-pills-messages-tab-nobd">
+                    <div class="card-body">
+                        <table class="table table-bordered"
+                               id="tbPlanPhaseList${item.id}"></table>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
     </div>
 </div>
-</body>
-</html>
+<%--填写工时考核窗口--%>
+<div id="editReviewScoreItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">工时考核</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmReviewScoreItem" class="form-horizontal">
+                    <div class="form-group form-inline">
+                        <label class="col-sm-1 col-form-label">得分<span class="symbol required"></span></label>
+                        <div class="col-sm-3">
+                            <input type="text" data-rule-number="true" placeholder="得分" name="score"
+                                   class="form-control input-full">
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label class="col-sm-1 col-form-label">说明</label>
+                        <div class="col-sm-11">
+                            <textarea id="UERemark" name="remark"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="reviewScore.saveReivewScoreItem();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%--历史考核列表窗口--%>
 <div id="historyScoreListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -99,8 +100,22 @@
 </div>
 
 <script type="text/javascript">
+    var UERemark;
     $(function () {
         $('#navPlanList a:first').trigger('click');
+
+        UERemark = UE.getEditor('UERemark', {
+            toolbars: [
+                ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+            ],
+            zIndex: 11009,
+            initialFrameWidth: '80%',
+            initialFrameHeight: 220,
+            elementPathEnabled: false,//是否启用元素路径，默认是true显示
+            wordCount: false, //是否开启字数统计
+            autoHeightEnabled: false,
+            autoFloatEnabled: true
+        });
     })
 
     var reviewScore = {};
@@ -125,6 +140,9 @@
         cols.push({
             field: 'opt', title: '操作', width: '15%', formatter: function (value, row, index) {
                 var str = '';
+                str += '<button type="button" onclick="reviewScore.showReivewScoreItemModal(' + row.id + ',' + planId + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="填写">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
                 str += '<button type="button" onclick="reviewScore.showHistoryItemModal(' + row.projectPhaseId + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="历史数据">';
                 str += '<i class="fa fa-history"></i>';
                 str += '</button>';
@@ -228,6 +246,45 @@
         });
     }
 
+    //显示弹窗
+    reviewScore.showReivewScoreItemModal = function (id, planId) {
+        var row = $('#tbPlanPhaseList' + planId).bootstrapTable('getRowByUniqueId', id);
+        reviewScore.currProjectPhase = row;
+        $('#frmReviewScoreItem').clearAll().initForm(row);
+        if(row.score==undefined||row.score==null){
+            $('#frmReviewScoreItem').find('[name=score]').val(row.standardScore);
+        }
+        UERemark.setContent(AssessCommon.toString(row.remark));
+        $('#editReviewScoreItemModal').modal();
+    }
+
+    //保存数据
+    reviewScore.saveReivewScoreItem = function () {
+        if (!$('#frmReviewScoreItem').valid()) {
+            return false;
+        }
+        var data = reviewScore.currProjectPhase;
+        data.reviewId = '${projectReviewScore.id}';
+        data.score = $('#frmReviewScoreItem').find('[name=score]').val();
+        data.remark = UERemark.getContent();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectReviewScore/saveReviewScoreItem',
+            type: 'post',
+            data: {formData: JSON.stringify(data)},
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess('提示', '保存成功');
+                    var planId = reviewScore.currProjectPhase.planId;
+                    reviewScore.loadProjectPhaseList($('#tbPlanPhaseList' + planId), planId);
+                    $('#editReviewScoreItemModal').modal('hide');
+                } else {
+                    AlertError('失败', result.errmsg);
+                }
+            }
+        })
+    }
+
     //显示历史数据弹窗
     reviewScore.showHistoryItemModal = function (projectPhaseId) {
         reviewScore.loadHistoryList(projectPhaseId);
@@ -280,5 +337,6 @@
                 })
             }
         })
+
     }
 </script>

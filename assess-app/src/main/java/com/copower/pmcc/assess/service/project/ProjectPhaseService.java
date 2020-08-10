@@ -49,12 +49,12 @@ public class ProjectPhaseService {
         projectPhaseDao.updateProjectPhaseById(projectPhase);
     }
 
-    public ProjectPhaseVo getProjectPhaseVo(ProjectPhase projectPhase){
-        if (projectPhase == null){
+    public ProjectPhaseVo getProjectPhaseVo(ProjectPhase projectPhase) {
+        if (projectPhase == null) {
             return null;
         }
-        ProjectPhaseVo vo = new ProjectPhaseVo() ;
-        BeanUtils.copyProperties(projectPhase,vo);
+        ProjectPhaseVo vo = new ProjectPhaseVo();
+        BeanUtils.copyProperties(projectPhase, vo);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPhase.getWorkStageId());
         vo.setWorkStageName(projectWorkStage.getWorkStageName());
         return vo;
@@ -130,6 +130,7 @@ public class ProjectPhaseService {
 
     /**
      * 根据key和类别的引用id
+     *
      * @param key
      * @param categoryId
      * @return
@@ -195,7 +196,12 @@ public class ProjectPhaseService {
         return resultPhaseList;
     }
 
-    public List<ProjectPhase> getProjectPhaseList(ProjectPhase projectPhase){
-        return projectPhaseDao.getProjectPhaseList(projectPhase) ;
+    public List<ProjectPhase> getProjectPhaseList(ProjectPhase projectPhase) {
+        return projectPhaseDao.getProjectPhaseList(projectPhase);
+    }
+
+    public List<ProjectPhase> getProjectPhaseListByIds(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) return null;
+        return projectPhaseDao.getProjectPhaseListByIds(ids);
     }
 }

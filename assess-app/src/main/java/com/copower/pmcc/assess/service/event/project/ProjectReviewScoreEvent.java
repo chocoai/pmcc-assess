@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.event.project;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.ProjectReviewScoreItemVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectAssessmentBonusService;
@@ -47,22 +48,24 @@ public class ProjectReviewScoreEvent extends BaseProcessEvent {
                 //将项目经理的工时得分写入到考核系统中，
                 ProjectReviewScore reviewScore = projectReviewScoreService.getReviewScoreByProcessInsId(processExecution.getProcessInstanceId());
                 if (reviewScore == null) return;
-                ProjectReviewScoreGroup reviewScoreGroup = projectReviewScoreService.getEnableReviewScoreGroupByReviewId(reviewScore.getId());
-                if (reviewScoreGroup == null) return;
-                AssessmentPerformanceDto performanceDto = new AssessmentPerformanceDto();
-                performanceDto.setProjectId(reviewScore.getProjectId());
-                performanceDto.setAppKey(applicationConstant.getAppKey());
-                performanceDto.setProjectName(reviewScore.getProjectName());
-                performanceDto.setProcessInsId(processExecution.getProcessInstanceId());
-                performanceDto.setByExaminePeople(projectMemberService.getProjectManager(reviewScore.getProjectId()));
-                performanceDto.setExaminePeople(reviewScoreGroup.getCreator());
-                performanceDto.setExamineScore(reviewScoreGroup.getTotalScore());
-                performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
-                performanceDto.setBusinessKey("项目经理复核工分");
-                performanceDto.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
-                performanceDto.setBisEffective(true);
-                performanceDto.setBisQualified(true);
-                performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
+                List<ProjectReviewScoreItemVo> reviewScoreItemVoList = projectReviewScoreService.getEnableItemsByReviewId(reviewScore.getId());
+                if(CollectionUtils.isEmpty(reviewScoreItemVoList)) return;
+                for (ProjectReviewScoreItemVo projectReviewScoreItemVo : reviewScoreItemVoList) {
+                    AssessmentPerformanceDto performanceDto = new AssessmentPerformanceDto();
+                    performanceDto.setProjectId(reviewScore.getProjectId());
+                    performanceDto.setAppKey(applicationConstant.getAppKey());
+                    performanceDto.setProjectName(reviewScore.getProjectName());
+                    performanceDto.setProcessInsId(processExecution.getProcessInstanceId());
+                    performanceDto.setByExaminePeople(projectMemberService.getProjectManager(reviewScore.getProjectId()));
+                    performanceDto.setExaminePeople(projectReviewScoreItemVo.getCreator());
+                    performanceDto.setExamineScore(projectReviewScoreItemVo.getScore());
+                    performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
+                    performanceDto.setBusinessKey("项目经理复核与指导工分");
+                    performanceDto.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
+                    performanceDto.setBisEffective(true);
+                    performanceDto.setBisQualified(true);
+                    performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
+                }
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "ProjectAssessmentBonusEvent");

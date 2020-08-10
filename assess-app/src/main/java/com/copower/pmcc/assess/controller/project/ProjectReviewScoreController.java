@@ -5,7 +5,7 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectReviewScoreGroupVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectReviewScoreItemVo;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectReviewScoreService;
@@ -30,10 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -52,8 +49,6 @@ public class ProjectReviewScoreController {
     private BaseParameterService baseParameterService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
-    @Autowired
-    private ProjectWorkStageService projectWorkStageService;
 
     @RequestMapping(value = "/apply", name = "申请页面")
     public ModelAndView apply(Integer projectId) throws BusinessException {
@@ -65,24 +60,29 @@ public class ProjectReviewScoreController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/reviewScoreApply", boxReDto.getId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
-        List<ProjectReviewScoreItem> scoreItems = Lists.newArrayList();
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
-        if (CollectionUtils.isNotEmpty(projectPlanList)) {
-            for (ProjectPlanVo projectPlanVo : projectPlanList) {
-                if (ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(projectPlanVo.getProjectStatus())) {
-                    ProjectReviewScoreItem scoreItem = new ProjectReviewScoreItem();
-                    scoreItem.setPlanId(projectPlanVo.getId());
-                    scoreItem.setPlanName(projectPlanVo.getPlanName());
-                    ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanVo.getWorkStageId());
-                    scoreItem.setStandard(projectWorkStage.getManagerReviewStandard());
-                    scoreItem.setStandardScore(projectWorkStage.getManagerReviewScore());
-                    scoreItem.setScore(projectWorkStage.getManagerReviewScore());
-                    scoreItems.add(scoreItem);
-                }
-            }
+        modelAndView.addObject("projectPlanList", projectPlanList);
+        ProjectReviewScore projectReviewScore = projectReviewScoreService.getReviewScoreByProjectId(projectId);
+        if (projectReviewScore == null) {
+            projectReviewScore=new ProjectReviewScore();
+            projectReviewScore.setProjectId(projectId);
+            projectReviewScore.setProjectName(projectInfo.getProjectName());
+            projectReviewScore.setCreator(processControllerComponent.getThisUser());
+            projectReviewScoreService.saveReviewScore(projectReviewScore);
         }
-        modelAndView.addObject("projectReviewScoreItems", scoreItems);
+        modelAndView.addObject("projectReviewScore", projectReviewScore);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/getReviewScoreItemVoListByPlanId", name = "获取该阶段下的数据", method = RequestMethod.GET)
+    @ResponseBody
+    public BootstrapTableVo getReviewScoreItemVoListByPlanId(Integer reviewId, Integer planId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        List<ProjectReviewScoreItemVo> scoreItemVos = projectReviewScoreService.getReviewScoreItemVoListByPlanId(reviewId, planId);
+        scoreItemVos = CollectionUtils.isEmpty(scoreItemVos) ? Lists.newArrayList() : scoreItemVos;
+        bootstrapTableVo.setRows(scoreItemVos);
+        bootstrapTableVo.setTotal((long) scoreItemVos.size());
+        return bootstrapTableVo;
     }
 
     @RequestMapping(value = "/edit", name = "返回修改页面")
@@ -110,33 +110,30 @@ public class ProjectReviewScoreController {
         return modelAndView;
     }
 
-
     private void setModelViewParam(ModelAndView modelAndView, String processInsId) {
         ProjectReviewScore reviewScore = projectReviewScoreService.getReviewScoreByProcessInsId(processInsId);
         modelAndView.addObject("projectReviewScore", reviewScore);
+        List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(reviewScore.getProjectId());
+        modelAndView.addObject("projectPlanList", projectPlanList);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(reviewScore.getProjectId());
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
-        ProjectReviewScoreGroupVo reviewScoreGroupVo = projectReviewScoreService.getEnableReviewScoreGroupByReviewId(reviewScore.getId());
-        if (reviewScoreGroupVo != null) {
-            modelAndView.addObject("projectReviewScoreItems", reviewScoreGroupVo.getReviewScoreItemList());
-        }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getHistroyList", name = "获取历史数据列表")
-    public BootstrapTableVo getHistroyList(Integer reviewId) {
+    public BootstrapTableVo getHistroyList(Integer reviewId, Integer projectPhaseId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectReviewScoreGroup> scoreItems = projectReviewScoreService.getHistoryReviewScoreItemsByReviewId(reviewId);
+        List<ProjectReviewScoreItemVo> scoreItemList = projectReviewScoreService.getHistoryItemsByProjectPhaseId(reviewId, projectPhaseId);
         vo.setTotal(page.getTotal());
-        vo.setRows(scoreItems);
+        vo.setRows(scoreItemList);
         return vo;
     }
 
     @ResponseBody
     @PostMapping(value = "/applyCommit", name = "申请提交")
-    public HttpResult applyCommit(String formData, Integer projectId) {
+    public HttpResult applyCommit(Integer projectId) {
         try {
             Long count = projectReviewScoreService.getProjectReviewScoreCount(projectId);
             if (count > 0) {//一个项目只能提交一次
@@ -149,7 +146,7 @@ public class ProjectReviewScoreController {
             if (!projectInfoService.chksValidProject(projectId)) {
                 return HttpResult.newErrorResult("该项目不允许申请");
             }
-            projectReviewScoreService.applyCommit(formData, projectId);
+            projectReviewScoreService.applyCommit(projectId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -159,10 +156,8 @@ public class ProjectReviewScoreController {
 
     @ResponseBody
     @PostMapping(value = "/editCommit", name = "返回修改提交")
-    public HttpResult editCommit(String formData, ApprovalModelDto approvalModelDto) {
+    public HttpResult editCommit(ApprovalModelDto approvalModelDto) {
         try {
-            ProjectReviewScoreGroupVo projectReviewScoreGroup = JSON.parseObject(formData, ProjectReviewScoreGroupVo.class);
-            projectReviewScoreService.addReviewScoreGroup(projectReviewScoreGroup);
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
@@ -183,19 +178,6 @@ public class ProjectReviewScoreController {
         }
     }
 
-    @PostMapping(value = "/saveReviewScoreGroup", name = "保存复核工时明细数据")
-    @ResponseBody
-    public HttpResult saveReviewScoreGroup(String formData) {
-        try {
-            ProjectReviewScoreGroupVo projectReviewScoreGroupVo = JSON.parseObject(formData, ProjectReviewScoreGroupVo.class);
-            projectReviewScoreService.addReviewScoreGroup(projectReviewScoreGroupVo);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            logger.error("保存复核工时明细数据失败", e);
-            return HttpResult.newErrorResult(e);
-        }
-    }
-
     @GetMapping(value = "/getReviewScoreByProjectId", name = "获取复核得分by项目id")
     @ResponseBody
     public HttpResult getReviewScoreByProjectId(Integer projectId) {
@@ -203,7 +185,32 @@ public class ProjectReviewScoreController {
             ProjectReviewScore projectReviewScore = projectReviewScoreService.getReviewScoreByProjectId(projectId);
             return HttpResult.newCorrectResult(projectReviewScore);
         } catch (Exception e) {
+            logger.error("获取复核得分by项目id失败", e);
+            return HttpResult.newErrorResult(e);
+        }
+    }
+
+    @PostMapping(value = "/saveReviewScoreItem", name = "保存复核工时明细数据")
+    @ResponseBody
+    public HttpResult saveReviewScoreItem(String formData) {
+        try {
+            ProjectReviewScoreItem reviewScoreItem = JSON.parseObject(formData, ProjectReviewScoreItem.class);
+            projectReviewScoreService.saveReviewScoreItem(reviewScoreItem);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
             logger.error("保存复核工时明细数据失败", e);
+            return HttpResult.newErrorResult(e);
+        }
+    }
+
+    @GetMapping(value = "/getReviewScoreItemById", name = "获取数据id")
+    @ResponseBody
+    public HttpResult getReviewScoreItemById(Integer id) {
+        try {
+            ProjectReviewScoreItem reviewScoreItem = projectReviewScoreService.getReviewScoreItemById(id);
+            return HttpResult.newCorrectResult(reviewScoreItem);
+        } catch (Exception e) {
+            logger.error("获取复核得分by项目id失败", e);
             return HttpResult.newErrorResult(e);
         }
     }

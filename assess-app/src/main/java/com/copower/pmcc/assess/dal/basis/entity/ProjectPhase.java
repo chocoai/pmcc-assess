@@ -30,6 +30,16 @@ public class ProjectPhase {
 
     private Integer phaseSort;
 
+    private String serviceBean;
+
+    private BigDecimal managerReviewScore;
+
+    private String managerReviewStandard;
+
+    private BigDecimal ceReviewScore;
+
+    private String ceReviewStandard;
+
     private Boolean bisWait;
 
     private Boolean bisEnable;
@@ -41,8 +51,6 @@ public class ProjectPhase {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String serviceBean;
 
     public Integer getId() {
         return id;
@@ -148,6 +156,46 @@ public class ProjectPhase {
         this.phaseSort = phaseSort;
     }
 
+    public String getServiceBean() {
+        return serviceBean;
+    }
+
+    public void setServiceBean(String serviceBean) {
+        this.serviceBean = serviceBean == null ? null : serviceBean.trim();
+    }
+
+    public BigDecimal getManagerReviewScore() {
+        return managerReviewScore;
+    }
+
+    public void setManagerReviewScore(BigDecimal managerReviewScore) {
+        this.managerReviewScore = managerReviewScore;
+    }
+
+    public String getManagerReviewStandard() {
+        return managerReviewStandard;
+    }
+
+    public void setManagerReviewStandard(String managerReviewStandard) {
+        this.managerReviewStandard = managerReviewStandard == null ? null : managerReviewStandard.trim();
+    }
+
+    public BigDecimal getCeReviewScore() {
+        return ceReviewScore;
+    }
+
+    public void setCeReviewScore(BigDecimal ceReviewScore) {
+        this.ceReviewScore = ceReviewScore;
+    }
+
+    public String getCeReviewStandard() {
+        return ceReviewStandard;
+    }
+
+    public void setCeReviewStandard(String ceReviewStandard) {
+        this.ceReviewStandard = ceReviewStandard == null ? null : ceReviewStandard.trim();
+    }
+
     public Boolean getBisWait() {
         return bisWait;
     }
@@ -194,13 +242,5 @@ public class ProjectPhase {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getServiceBean() {
-        return serviceBean;
-    }
-
-    public void setServiceBean(String serviceBean) {
-        this.serviceBean = serviceBean == null ? null : serviceBean.trim();
     }
 }

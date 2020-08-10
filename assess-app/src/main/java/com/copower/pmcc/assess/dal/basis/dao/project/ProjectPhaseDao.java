@@ -31,6 +31,17 @@ public class ProjectPhaseDao {
 
     }
 
+    public List<ProjectPhase> getProjectPhaseListByIds(List<Integer> ids) {
+        ProjectPhaseExample example = new ProjectPhaseExample();
+        ProjectPhaseExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
+        if (CollectionUtils.isNotEmpty(ids)) {
+            criteria.andIdIn(ids);
+        }
+        example.setOrderByClause("work_stage_id,phase_sort");
+        return projectPhaseMapper.selectByExample(example);
+
+    }
+
 
     public ProjectPhase getProjectPhaseByCategoryId(Integer categoryId, String phaseKey) {
         ProjectPhaseExample example = new ProjectPhaseExample();
@@ -55,7 +66,7 @@ public class ProjectPhaseDao {
         return null;
     }
 
-    public ProjectPhase getProjectPhaseByKey(String key,Integer categoryId) {
+    public ProjectPhase getProjectPhaseByKey(String key, Integer categoryId) {
         ProjectPhaseExample example = new ProjectPhaseExample();
         example.createCriteria().andPhaseKeyEqualTo(key).andProjectCategoryIdEqualTo(categoryId);
         List<ProjectPhase> projectPhases = projectPhaseMapper.selectByExample(example);
@@ -91,18 +102,19 @@ public class ProjectPhaseDao {
         return projectPhaseMapper.selectByExample(example);
     }
 
-    public List<ProjectPhase> getProjectPhaseList(ProjectPhase projectPhase){
+    public List<ProjectPhase> getProjectPhaseList(ProjectPhase projectPhase) {
         ProjectPhaseExample example = new ProjectPhaseExample();
-        MybatisUtils.convertObj2Example(projectPhase,example) ;
-        return projectPhaseMapper.selectByExample(example) ;
+        MybatisUtils.convertObj2Example(projectPhase, example);
+        return projectPhaseMapper.selectByExample(example);
     }
 
     /**
      * 获取
+     *
      * @param workStageId
      * @return
      */
-    public List<ProjectPhase> getProjectPhaseByWorkStageId(Integer workStageId){
+    public List<ProjectPhase> getProjectPhaseByWorkStageId(Integer workStageId) {
         ProjectPhaseExample example = new ProjectPhaseExample();
         example.createCriteria().andBisEnableEqualTo(true).andWorkStageIdEqualTo(workStageId);
         example.setOrderByClause("work_stage_id,phase_sort");
