@@ -6,52 +6,60 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_panel">
 
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>项目重启变更</h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-        <div class="row">
-            <div class="panel-body">
-                <form id="project_restart_form" class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <div class="form-group">
-                        <div>
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    项目重启变更
+                </div>
+                <div class="card-tools">
+                    <button class="btn  btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form id="project_restart_form" class="form-horizontal">
+                <input type="hidden" name="id">
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 col-form-label">
                                 重启时间
                             </label>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                                <input placeholder="选择时间" id="restartTime" name="restartTime"
-                                       data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
+                            <div class="col-sm-3">
+                                <input placeholder="重启时间" id="restartTime" name="restartTime"
+                                       data-date-format="yyyy-mm-dd" class="form-control input-full date-picker dbdate"
                                        readonly="readonly">
                             </div>
                         </div>
-
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 重启原因
                             </label>
-                            <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="changeReason" name="changeReason" rows="4" required data-rule-maxlength="255" placeholder=""></textarea>
+                            <div class="col-sm-11">
+                                        <textarea class="form-control input-full" id="changeReason" name="changeReason" rows="4"
+                                                  required
+                                                  data-rule-maxlength="255" placeholder=""></textarea>
                             </div>
                         </div>
                     </div>
-
-                </form>
-
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
 <script type="application/javascript">
     var projectRestartApplyObj = {
         projectRestartForm: $('#project_restart_form'),
@@ -76,16 +84,15 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
-                }
-                else {
-                    Alert("提交数据失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败","提交数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败","提交数据失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -109,28 +116,27 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
-                }
-                else {
-                    Alert("提交数据失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败","提交数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
 
     };
-    
+
 
     $(function () {
 
         //var json = '${el:toJsonString(projectInfo)}';
         var newRecord = '${costsProjectChangeLog.newRecord}';
 
-        if(newRecord != ""){
+        if (newRecord != "") {
             //变更的信息
             var projectInfo = JSON.parse(newRecord);
             console.log(projectInfo);
@@ -142,7 +148,7 @@
     });
 
     //format oldRecord的date类型数据
-    projectRestartApplyObj.formatDate = function(projectInfo) {
+    projectRestartApplyObj.formatDate = function (projectInfo) {
         projectInfo.serviceStart = projectRestartApplyObj.formatDates(projectInfo.serviceStart);
         projectInfo.serviceEnd = projectRestartApplyObj.formatDates(projectInfo.serviceEnd);
         projectInfo.created = projectRestartApplyObj.formatDateTime(projectInfo.created);
@@ -152,7 +158,7 @@
     }
 
     //日期
-    projectRestartApplyObj.formatDates = function(inputTime) {
+    projectRestartApplyObj.formatDates = function (inputTime) {
         var date = new Date(inputTime);
         var y = date.getFullYear();
         var m = date.getMonth() + 1;
@@ -163,7 +169,7 @@
     }
 
     //时间
-    projectRestartApplyObj.formatDateTime = function(inputTime) {
+    projectRestartApplyObj.formatDateTime = function (inputTime) {
         var date = new Date(inputTime);
         var y = date.getFullYear();
         var m = date.getMonth() + 1;
