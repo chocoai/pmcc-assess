@@ -152,4 +152,11 @@ public class ProjectAssessmentBonusDao {
         }
         return projectAssessmentBonusItemHistoryMapper.selectByExample(example);
     }
+
+    public boolean deleteProjectAssessmentBonusItemHistoryByItemIds(List<Integer> itemIds){
+        ProjectAssessmentBonusItemHistoryExample example = new ProjectAssessmentBonusItemHistoryExample();
+        ProjectAssessmentBonusItemHistoryExample.Criteria criteria = example.createCriteria();
+        criteria.andItemIdIn(itemIds);
+        return projectAssessmentBonusItemHistoryMapper.deleteByExample(example) > 0 ;
+    }
 }

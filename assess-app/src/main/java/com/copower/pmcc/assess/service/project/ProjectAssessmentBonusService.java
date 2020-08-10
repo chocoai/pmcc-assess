@@ -99,13 +99,14 @@ public class ProjectAssessmentBonusService {
 
     /**
      * 相同标题  相同年  相同月  视为一个组合主键  不能与其相同
+     *
      * @param title
      * @param year
      * @param month
      * @return
      */
-    public Long getProjectAssessmentBonusByCount( String title ,Integer year,Integer month){
-        return projectAssessmentBonusDao.getProjectAssessmentBonusByCount(title, year, month) ;
+    public Long getProjectAssessmentBonusByCount(String title, Integer year, Integer month) {
+        return projectAssessmentBonusDao.getProjectAssessmentBonusByCount(title, year, month);
     }
 
     public BootstrapTableVo<ProjectAssessmentBonus> getProjectAssessmentBonusDataList(String processInsId, String title, String status, String creator, Integer year, Integer month) {
@@ -235,11 +236,32 @@ public class ProjectAssessmentBonusService {
         if (assessmentBonus == null) {
             throw new BusinessException("参数异常");
         }
+        //删除历史数据
+        List<ProjectAssessmentBonusItem> assessmentBonusItemList = projectAssessmentBonusDao.getAssessmentBonusItemList(assessmentBonus.getId(), null);
+        if (CollectionUtils.isNotEmpty(assessmentBonusItemList)) {
+            List<Integer> integerList = LangUtils.transform(assessmentBonusItemList, obj -> obj.getId());
+            projectAssessmentBonusDao.deleteProjectAssessmentBonusItemHistoryByItemIds(integerList);
+        }
         //删除 子数据
         projectAssessmentBonusDao.deleteProjectAssessmentBonusItemByMasterId(assessmentBonus.getId());
-        //删除任务
 
+        //删除任务
+        String url = String.format("/%s/projectAssessmentBonus/index?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
+        ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+//        projectPlanResponsibility.setProjectName(assessmentBonus.getTitle());
+        projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
+        projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+        projectPlanResponsibility.setUrl(url);
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectPlanResponsibility);
+        if (CollectionUtils.isNotEmpty(projectTaskList)) {
+            List<Integer> integerList = LangUtils.transform(projectTaskList, obj -> obj.getId());
+            //无批量删除方法 暂时就一个一个得删除
+            for (Integer integer : integerList) {
+                bpmRpcProjectTaskService.deleteProjectTask(integer);
+            }
+        }
         //删除 已经填了的考核数据
+        assessmentPerformanceService.deletePerformanceByProcessInsId(assessmentBonus.getProcessInsId(), null);
 
         //删除完毕 重新发起 外勤加分考核
         launchAssessmentBonusTask(assessmentBonus);
