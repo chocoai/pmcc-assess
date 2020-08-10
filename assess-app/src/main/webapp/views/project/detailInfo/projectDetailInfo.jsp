@@ -36,6 +36,14 @@
                                                         </button>
                                                     </div>
                                                 </c:if>
+                                                <c:if test="${projectStatusEnum != 'close' and showLimitBtn == true}">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-info btn-sm" type="button"
+                                                                onclick="projectDetails.restartProject()"><span
+                                                                class="btn-label"><i class="fa fa-star"></i></span>重启
+                                                        </button>
+                                                    </div>
+                                                </c:if>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info btn-sm dropdown-toggle" type="button"
                                                             data-toggle="dropdown" aria-haspopup="true"
@@ -294,6 +302,28 @@
                 success: function (result) {
                     if (result.ret) {
                         var url = "${pageContext.request.contextPath}/projectStop/apply?projectId=" + ${projectInfo.id};
+                        window.open(url, '_blank');
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            });
+        },
+        restartProject: function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectRestart/isChanging",
+                data: {
+                    projectId: "${projectInfo.id}",
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        var url = "${pageContext.request.contextPath}/projectRestart/apply?projectId=" + ${projectInfo.id};
                         window.open(url, '_blank');
                     } else {
                         AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);

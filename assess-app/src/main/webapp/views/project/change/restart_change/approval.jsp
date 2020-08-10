@@ -15,27 +15,32 @@
 </head>
 <body class="nav-md">
 
-
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0px">
-            <!-- 公共模块引用 -->
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <!-- 公共模块end -->
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <!-- 公共模块引用 -->
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <!-- 公共模块end -->
 
-            <%@include file="/views/project/change/restart_change/modules/restart_approval.jsp" %>
-            <!-- 公共尾部模块引用 -->
-            <!-- 审批用 -->
-            <%@include file="/views/share/form_approval.jsp" %>
-            <!-- 尾部end -->
+                    <%@include file="/views/project/change/restart_change/modules/restart_approval.jsp" %>
+                    <!-- 公共尾部模块引用 -->
+                    <!-- 审批用 -->
+                    <%@include file="/views/share/form_approval.jsp" %>
+                    <!-- 尾部end -->
+                </div>
+            </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
+
 </div>
 
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+
 </body>
 </html>
 <script type="text/javascript">
@@ -53,12 +58,12 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
