@@ -155,7 +155,7 @@
         cols.push({
             field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
                 var str = '';
-                if (row.processInsId){
+                if (row.processInsId && row.processInsId != '0'){
                     str += '<button type="button" onclick="viewDetail(' + row.processInsId + ',\'' + row.processInsId + '\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';

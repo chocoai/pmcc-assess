@@ -203,10 +203,16 @@
                 keyValue.value = $(item).find('[data-name=value]').val();
                 keyValue.explain = $(item).find('[data-name=explain]').val();
                 keyValueArray.push(keyValue);
-            })
+            });
             bonusItem.memberScoreCondition = JSON.stringify(keyValueArray);
             bonusItemArray.push(bonusItem);
-        })
+        });
+        if ('${projectManager}' && '${projectResponsibilityDto}'){
+            if ('${projectManager}' != '${projectResponsibilityDto.userAccount}'){
+                AlertSuccess("提示", "该任务不属于当前登陆人");
+                return false ;
+            }
+        }
         $.ajax({
             url: '${pageContext.request.contextPath}/projectAssessmentBonus/projectManagerCommit',
             type: 'post',

@@ -236,7 +236,7 @@ public class ProjectAssessmentBonusService {
         if (assessmentBonus == null) {
             throw new BusinessException("参数异常");
         }
-        //删除历史数据
+        //删除 子数据 历史数据
         List<ProjectAssessmentBonusItem> assessmentBonusItemList = projectAssessmentBonusDao.getAssessmentBonusItemList(assessmentBonus.getId(), null);
         if (CollectionUtils.isNotEmpty(assessmentBonusItemList)) {
             List<Integer> integerList = LangUtils.transform(assessmentBonusItemList, obj -> obj.getId());
@@ -244,25 +244,19 @@ public class ProjectAssessmentBonusService {
         }
         //删除 子数据
         projectAssessmentBonusDao.deleteProjectAssessmentBonusItemByMasterId(assessmentBonus.getId());
-
-        //删除任务
-        String url = String.format("/%s/projectAssessmentBonus/index?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
-        ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
-//        projectPlanResponsibility.setProjectName(assessmentBonus.getTitle());
-        projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
-        projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-        projectPlanResponsibility.setUrl(url);
-        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectPlanResponsibility);
-        if (CollectionUtils.isNotEmpty(projectTaskList)) {
-            List<Integer> integerList = LangUtils.transform(projectTaskList, obj -> obj.getId());
-            //无批量删除方法 暂时就一个一个得删除
-            for (Integer integer : integerList) {
-                bpmRpcProjectTaskService.deleteProjectTask(integer);
-            }
-        }
         //删除 已经填了的考核数据
-        assessmentPerformanceService.deletePerformanceByProcessInsId(assessmentBonus.getProcessInsId(), null);
-
+        AssessmentPerformanceDto performanceDto = new AssessmentPerformanceDto();
+        performanceDto.setAppKey(applicationConstant.getAppKey());
+        performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
+        performanceDto.setAssessmentKey(AssessmentTypeEnum.WORK_HOURS.getValue());
+        performanceDto.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
+        performanceDto.setProcessInsId(assessmentBonus.getProcessInsId());
+        List<AssessmentPerformanceDto> performanceDtoList = assessmentPerformanceService.getPerformancesByParam(performanceDto);
+        if (CollectionUtils.isNotEmpty(performanceDtoList)) {
+            List<Integer> integerList = LangUtils.transform(performanceDtoList, obj -> obj.getId());
+            assessmentPerformanceService.deletePerformanceByIds(integerList);
+        }
+        assessmentBonus.setProcessInsId("0");
         //删除完毕 重新发起 外勤加分考核
         launchAssessmentBonusTask(assessmentBonus);
     }
@@ -317,11 +311,11 @@ public class ProjectAssessmentBonusService {
                 //1.找出该项目中的查勘信息，先确定该项目查勘了几个楼盘，再根据配置和楼盘的区域确定是否做加分处理
                 //2.如果需要加分则需找出该项目查勘中所获取的工时得分，及各个成员的工时得分，将总的工时得分乘以系数得到对应加分值
                 //3.再根据各个成员工时得分的占比，将加分值分摊到成员上，将相关数据写入到对应的表中
-                if (CollectionUtils.isNotEmpty(projectIds) && !projectIds.contains(sysProjectDto.getProjectId()))
+                if (CollectionUtils.isNotEmpty(projectIds) && !projectIds.contains(sysProjectDto.getProjectId())){
                     continue;//不处理
-
+                }
                 if (getAssessmentBonusItemCount(sysProjectDto.getProjectId()) > 0) {
-//                    continue;//每个项目只计算一次
+                    continue;//每个项目只计算一次
                 }
                 ProjectInfo projectInfo = projectInfoService.getProjectInfoById(sysProjectDto.getProjectId());
                 String projectManager = projectMemberService.getProjectManager(projectInfo.getId());//项目经理
@@ -401,6 +395,8 @@ public class ProjectAssessmentBonusService {
                 projectPlanResponsibility.setCreator(manager);
                 projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
                 projectPlanResponsibility.setUrl(url);
+                projectPlanResponsibility.setPlanEndTime(new Date());
+                projectPlanResponsibility.setProjectId(0);
                 bpmRpcProjectTaskService.saveProjectTask(projectPlanResponsibility);
             }
 
@@ -418,6 +414,8 @@ public class ProjectAssessmentBonusService {
                     projectPlanResponsibility.setCreator(s);
                     projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
                     projectPlanResponsibility.setUrl(url);
+                    projectPlanResponsibility.setProjectId(0);
+                    projectPlanResponsibility.setPlanEndTime(new Date());
                     bpmRpcProjectTaskService.saveProjectTask(projectPlanResponsibility);
                 }
             }
