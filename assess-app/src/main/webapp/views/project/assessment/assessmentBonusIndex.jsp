@@ -74,7 +74,7 @@
                         <label class="col-sm-2 col-form-label">年份<span class="symbol required"></span></label>
                         <div class="col-sm-10">
                             <input type="text" data-rule-maxlength="50" placeholder="年份"
-                                   name="year"  required data-rule-number='true'
+                                   name="year" required data-rule-number='true'
                                    class="form-control input-full ">
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <label class="col-sm-2 col-form-label">月份<span class="symbol required"></span></label>
                         <div class="col-sm-10">
                             <input type="text" data-rule-maxlength="50" placeholder="月份"
-                                   name="month"  required data-rule-number='true'
+                                   name="month" required data-rule-number='true'
                                    class="form-control input-full ">
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <label class="col-sm-2 col-form-label">标题<span
                                 class="symbol required"></span></label>
                         <div class="col-sm-10">
-                            <input type="text" data-rule-maxlength="100"  placeholder="标题"
+                            <input type="text" data-rule-maxlength="100" placeholder="标题"
                                    name="title"
                                    class="form-control input-full">
                         </div>
@@ -155,9 +155,16 @@
         cols.push({
             field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
                 var str = '';
-                str += '<button type="button" onclick="viewDetail(' + row.id + ',\''+row.processInsId+'\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
-                str += '<i class="fa fa-search"></i>';
-                str += '</button>';
+                if (row.processInsId){
+                    str += '<button type="button" onclick="viewDetail(' + row.processInsId + ',\'' + row.processInsId + '\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                    str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
+                }
+                if (row.status == 'finish') {
+                    str += '<button type="button" onclick="cleanProjectAssessmentBonus(' + row.id +  ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="重新发起">';
+                    str += '<i class="fa fa-reply fa-white"></i>';
+                    str += '</button>';
+                }
                 return str;
             }
         });
@@ -174,26 +181,9 @@
         });
     }
 
-    //选择人员
-    function selectUser(_this) {
-        var div = $(_this).closest("div");
-        erpEmployee.select({
-            currOrgId: '${companyId}',
-            showAllUser: 2,
-            onSelected: function (data) {
-                div.find("input[data-title='name']").val(data.name);
-                div.find("input[data-title='account']").val(data.account);
-            }
-        });
-    }
 
-    //自动生成标题
-    function titleFocus(_this) {
-        var form = $(_this).closest('form');
-        var spotMonth = form.find('[name=spotMonth]').val();
-        var name = form.find('[name=bySpotUserName]').val();
-        form.find('[name=title]').val(spotMonth + name + "项目抽查考核");
-    }
+
+
 
     //显示窗口
     function showSpotCheckModal() {
@@ -202,32 +192,93 @@
         $('#spotCheckModal').modal();
     }
 
+    function getProjectAssessmentBonusByCount(data,callback) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectAssessmentBonus/getProjectAssessmentBonusByCount',
+            data: data,
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                   if (callback){
+                       callback(result.data) ;
+                   }
+                } else {
+                    AlertError('错误', result.errmsg);
+                }
+            }
+        });
+    }
+
+    function cleanProjectAssessmentBonus(id) {
+        AlertConfirm("是否确认重新发起", "重新发起后会删除之前考核的数据", function (flag) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/projectAssessmentBonus/afreshAssessmentBonusTask',
+                data: {id:id},
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("提示", "重新发起成功!");
+                        loadProjectSpotCheckList();
+                    } else {
+                        AlertError('错误', result.errmsg);
+                    }
+                }
+            });
+        });
+    }
+
     //保存数据
     function saveSpotCheck() {
         if (!$('#frmSpotCheck').valid()) {
             return false;
         }
         var data = formSerializeArray($('#frmSpotCheck'));
-        data.status = 'runing';
-        $.ajax({
-            url: '${pageContext.request.contextPath}/projectAssessmentBonus/launchAssessmentBonusTask',
-            data: {formData: JSON.stringify(data)},
-            type: 'post',
-            dataType: 'json',
-            success: function (result) {
-                if (result.ret) {
-                    $('#spotCheckModal').modal('hide');
-                    notifySuccess("成功", "保存数据成功!");
-                } else {
-                    AlertError('错误', result.errmsg);
-                }
+        getProjectAssessmentBonusByCount(data ,function (item) {
+            if (Number(item) >= 1){
+                notifyInfo("提示", "重复考核!");
+                return false;
             }
-        })
+            $.ajax({
+                url: '${pageContext.request.contextPath}/projectAssessmentBonus/getHrLegworkDtoList',
+                data: {formData: JSON.stringify(data)},
+                type: 'get',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.ret) {
+                        if (result.data) {
+                            if (result.data.length == 0) {
+                                notifyInfo("提示", "无外勤数据!");
+                                return false;
+                            }
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/projectAssessmentBonus/launchAssessmentBonusTask',
+                                data: {formData: JSON.stringify(data)},
+                                type: 'post',
+                                dataType: 'json',
+                                success: function (result) {
+                                    if (result.ret) {
+                                        $('#spotCheckModal').modal('hide');
+                                        notifySuccess("成功", "保存数据成功!");
+                                        loadProjectSpotCheckList();
+                                    } else {
+                                        AlertError('错误', result.errmsg);
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        AlertError('错误', result.errmsg);
+                    }
+                }
+            });
+        }) ;
     }
 
     //查看详情
     function viewDetail(id) {
-        window.open('${pageContext.request.contextPath}/projectSpotCheck/detail?spotId=' + id)
+        window.open('${pageContext.request.contextPath}/projectAssessmentBonus/detail?boxId=0&processInsId=' + id)
     }
 </script>
 

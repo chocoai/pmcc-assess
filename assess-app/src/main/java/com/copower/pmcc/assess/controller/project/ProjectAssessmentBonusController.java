@@ -219,9 +219,9 @@ public class ProjectAssessmentBonusController {
 
     @PostMapping(value = "/afreshAssessmentBonusTask", name = "外勤加分考核 重新发起 会删除之前在作业过程中的所有数据")
     @ResponseBody
-    public HttpResult afreshAssessmentBonusTask(String formData) {
+    public HttpResult afreshAssessmentBonusTask(Integer id) {
         try {
-            ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData,ProjectAssessmentBonus.class) ;
+            ProjectAssessmentBonus assessmentBonus =  projectAssessmentBonusService.getAssessmentBonusById(id);
             projectAssessmentBonusService.afreshAssessmentBonusTask(assessmentBonus);
             return HttpResult.newCorrectResult(200,assessmentBonus);
         } catch (Exception e) {
@@ -236,6 +236,17 @@ public class ProjectAssessmentBonusController {
         try {
             ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData,ProjectAssessmentBonus.class) ;
             return HttpResult.newCorrectResult(200, projectAssessmentBonusService.getHrLegworkDtoList(assessmentBonus));
+        } catch (Exception e) {
+            logger.error("外勤加分考核失败", e);
+            return HttpResult.newErrorResult(500,e);
+        }
+    }
+
+    @GetMapping(value = "/getProjectAssessmentBonusByCount", name = "相同标题  相同年  相同月  视为一个组合主键  不能与其相同")
+    @ResponseBody
+    public HttpResult getProjectAssessmentBonusByCount(String title ,Integer year,Integer month) {
+        try {
+            return HttpResult.newCorrectResult(200, projectAssessmentBonusService.getProjectAssessmentBonusByCount(title, year, month));
         } catch (Exception e) {
             logger.error("外勤加分考核失败", e);
             return HttpResult.newErrorResult(500,e);

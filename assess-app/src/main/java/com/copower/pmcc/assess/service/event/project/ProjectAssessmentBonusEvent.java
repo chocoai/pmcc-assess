@@ -72,6 +72,7 @@ public class ProjectAssessmentBonusEvent extends BaseProcessEvent {
                             performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
                             performanceDto.setAssessmentKey(AssessmentTypeEnum.WORK_HOURS.getValue());
                             performanceDto.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
+                            performanceDto.setProcessInsId(assessmentBonus.getProcessInsId());
                             performanceDto.setBisEffective(true);
                             performanceDto.setBisQualified(true);
                             performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
