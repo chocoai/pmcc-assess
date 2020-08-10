@@ -346,6 +346,7 @@
                                     </c:if>
                                     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseHuxingPrice.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/common/estateSurveyRecord.jsp" %>
                                 </div>
                             </div>
                         </div>

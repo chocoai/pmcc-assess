@@ -47,6 +47,7 @@ AssessDBKey.BasicUnitCommonPart = "tb_basic_unit_common_part";
 AssessDBKey.BasicUnitStairs = "tb_basic_unit_stairs";
 AssessDBKey.BasicUnitElevator = "tb_basic_unit_elevator";
 AssessDBKey.BasicUnitDecorate = "tb_basic_unit_decorate";
+AssessDBKey.BasicEstateSurveyRecord = "tb_basic_estate_survey_record";
 
 AssessDBKey.SurveyExaminePurenessLand = "tb_survey_examine_pureness_land";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
