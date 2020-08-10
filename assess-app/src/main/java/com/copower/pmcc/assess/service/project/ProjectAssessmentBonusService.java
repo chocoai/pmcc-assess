@@ -97,6 +97,17 @@ public class ProjectAssessmentBonusService {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
 
+    /**
+     * 相同标题  相同年  相同月  视为一个组合主键  不能与其相同
+     * @param title
+     * @param year
+     * @param month
+     * @return
+     */
+    public Long getProjectAssessmentBonusByCount( String title ,Integer year,Integer month){
+        return projectAssessmentBonusDao.getProjectAssessmentBonusByCount(title, year, month) ;
+    }
+
     public BootstrapTableVo<ProjectAssessmentBonus> getProjectAssessmentBonusDataList(String processInsId, String title, String status, String creator, Integer year, Integer month) {
         BootstrapTableVo<ProjectAssessmentBonus> bootstrapTableVo = new BootstrapTableVo<>();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -219,6 +230,7 @@ public class ProjectAssessmentBonusService {
      * @param assessmentBonus
      * @throws BusinessException
      */
+    @Transactional(rollbackFor = {Exception.class})
     public void afreshAssessmentBonusTask(ProjectAssessmentBonus assessmentBonus) throws BusinessException {
         if (assessmentBonus == null) {
             throw new BusinessException("参数异常");
@@ -235,6 +247,7 @@ public class ProjectAssessmentBonusService {
 
     /**
      * 获取 外勤记录
+     *
      * @param assessmentBonus
      * @return
      * @throws BusinessException
@@ -261,10 +274,10 @@ public class ProjectAssessmentBonusService {
         if (assessmentBonus == null) {
             throw new BusinessException("参数异常");
         }
-        List<HrLegworkDto> legworkDtoList =getHrLegworkDtoList(assessmentBonus);
+        List<HrLegworkDto> legworkDtoList = getHrLegworkDtoList(assessmentBonus);
         if (CollectionUtils.isEmpty(legworkDtoList)) return;
         if (StringUtils.isBlank(assessmentBonus.getTitle())) {
-            assessmentBonus.setTitle(String.format("%s年-%s月外勤加分考核",String.valueOf(assessmentBonus.getYear()) ,String.valueOf(assessmentBonus.getMonth()) ));
+            assessmentBonus.setTitle(String.format("%s年-%s月外勤加分考核", String.valueOf(assessmentBonus.getYear()), String.valueOf(assessmentBonus.getMonth())));
         }
         assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
         saveAssessmentBonus(assessmentBonus);
@@ -286,7 +299,7 @@ public class ProjectAssessmentBonusService {
                     continue;//不处理
 
                 if (getAssessmentBonusItemCount(sysProjectDto.getProjectId()) > 0) {
-                    continue;//每个项目只计算一次
+//                    continue;//每个项目只计算一次
                 }
                 ProjectInfo projectInfo = projectInfoService.getProjectInfoById(sysProjectDto.getProjectId());
                 String projectManager = projectMemberService.getProjectManager(projectInfo.getId());//项目经理

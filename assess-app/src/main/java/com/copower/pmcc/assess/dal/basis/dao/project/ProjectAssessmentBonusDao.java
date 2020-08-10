@@ -20,6 +20,21 @@ public class ProjectAssessmentBonusDao {
     @Autowired
     private ProjectAssessmentBonusItemHistoryMapper projectAssessmentBonusItemHistoryMapper;
 
+    public Long getProjectAssessmentBonusByCount( String title ,Integer year,Integer month){
+        ProjectAssessmentBonusExample example = new ProjectAssessmentBonusExample();
+        ProjectAssessmentBonusExample.Criteria criteria = example.createCriteria();
+        if (year != null) {
+            criteria.andYearEqualTo(year);
+        }
+        if (month != null) {
+            criteria.andMonthEqualTo(month);
+        }
+        if (StringUtils.isNotBlank(title)){
+            criteria.andTitleEqualTo(title);
+        }
+        return projectAssessmentBonusMapper.countByExample(example) ;
+    }
+
 
     public List<ProjectAssessmentBonus> getProjectAssessmentBonusByWhere(String processInsId, String title, String status, String creator, Integer year, Integer month) {
         ProjectAssessmentBonusExample example = new ProjectAssessmentBonusExample();
