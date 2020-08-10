@@ -106,6 +106,8 @@ public class BasicHouseService extends BasicEntityAbstract {
     private PublicBasicService publicBasicService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private BasicEstateSurveyRecordService basicEstateSurveyRecordService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
