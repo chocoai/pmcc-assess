@@ -71,6 +71,8 @@ public class ProjectAssessmentBonusController {
         modelAndView.addObject("projectAssessmentBonus", projectAssessmentBonus);
         modelAndView.addObject("projectManager", commonService.thisUserAccount());
         modelAndView.addObject("responsibilityId", responsibilityId);
+        //页面上判断任务执行人和当前登陆人必须一致,否则不允许提交
+        modelAndView.addObject("projectResponsibilityDto", bpmRpcProjectTaskService.getProjectTaskById(responsibilityId));
         return modelAndView;
     }
 

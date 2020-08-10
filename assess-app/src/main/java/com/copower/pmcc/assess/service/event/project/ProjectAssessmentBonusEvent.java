@@ -75,6 +75,7 @@ public class ProjectAssessmentBonusEvent extends BaseProcessEvent {
                             performanceDto.setProcessInsId(assessmentBonus.getProcessInsId());
                             performanceDto.setBisEffective(true);
                             performanceDto.setBisQualified(true);
+                            performanceDto.setTableId(assessmentBonusItem.getId());
                             performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
                         }
                     }
