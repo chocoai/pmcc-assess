@@ -3,36 +3,27 @@ package com.copower.pmcc.assess.controller.project;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckItemGroupVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectReviewScoreItemVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckItemScoreVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.event.project.ProjectAssessmentBonusEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.ProjectSpotCheckService;
-import com.copower.pmcc.assess.service.project.ProjectSpotCheckService;
-import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
-import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
-import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -63,6 +54,8 @@ public class ProjectSpotCheckController {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @RequestMapping(value = "/index", name = "项目抽查信息页面", method = {RequestMethod.GET})
     public ModelAndView index() {
@@ -116,6 +109,17 @@ public class ProjectSpotCheckController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/getSpotCheckItemScoreVoListByPlanId", name = "获取该阶段下的数据", method = RequestMethod.GET)
+    @ResponseBody
+    public BootstrapTableVo getSpotCheckItemScoreVoListByPlanId(Integer itemId, Integer planId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        List<ProjectSpotCheckItemScoreVo> checkItemScoreVos = projectSpotCheckService.getSpotCheckItemScoreVoListByPlanId(itemId, planId);
+        checkItemScoreVos = CollectionUtils.isEmpty(checkItemScoreVos) ? Lists.newArrayList() : checkItemScoreVos;
+        bootstrapTableVo.setRows(checkItemScoreVos);
+        bootstrapTableVo.setTotal((long) checkItemScoreVos.size());
+        return bootstrapTableVo;
+    }
+
     @RequestMapping(value = "/edit", name = "返回修改页面")
     public ModelAndView edit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/spotCheckApply", processInsId, boxId, taskId, agentUserAccount);
@@ -149,6 +153,26 @@ public class ProjectSpotCheckController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/projectSpotModify", name = "项目抽查填写页面", method = {RequestMethod.GET})
+    public ModelAndView projectSpotModify(Integer projectId) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/assessment/spotCheckProjectModify");
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
+        modelAndView.addObject("projectPlanList", projectPlanList);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/projectSpotDetail", name = "项目抽查信息页面", method = {RequestMethod.GET})
+    public ModelAndView projectSpotDetail(Integer projectId) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/assessment/spotCheckProjectDetail");
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
+        modelAndView.addObject("projectPlanList", projectPlanList);
+        return modelAndView;
+    }
+
     @ResponseBody
     @PostMapping(value = "/selectProject", name = "选择项目")
     public HttpResult selectProject(String projectIds, Integer spotId) {
@@ -165,30 +189,6 @@ public class ProjectSpotCheckController {
     @RequestMapping(value = "/getProjectSpotCheckItemList", name = "获取抽查项目数据列表")
     public BootstrapTableVo getProjectSpotCheckItemList(Integer spotId) {
         return projectSpotCheckService.getProjectSpotCheckItemList(spotId);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getHistoryGroupsByItemId", name = "获取历史数据列表")
-    public BootstrapTableVo getHistoryGroupsByItemId(Integer itemId) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        List<ProjectSpotCheckItemGroup> scoreItems = projectSpotCheckService.getHistoryGroupsByItemId(itemId);
-        if (CollectionUtils.isNotEmpty(scoreItems)) {
-            vo.setTotal((long) scoreItems.size());
-            vo.setRows(scoreItems);
-        }
-        return vo;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getSpotCheckScoreContent", name = "获取内容信息")
-    public HttpResult getSpotCheckScoreContent(Integer itemId, Integer projectId) {
-        try {
-            List<ProjectSpotCheckItemScore> content = projectSpotCheckService.getSpotCheckScoreContent(itemId, projectId);
-            return HttpResult.newCorrectResult(content);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
     }
 
     @ResponseBody
@@ -233,8 +233,7 @@ public class ProjectSpotCheckController {
     @ResponseBody
     public HttpResult saveSpotCheckScore(String formData) {
         try {
-            ProjectSpotCheckItemGroupVo projectSpotCheckScore = JSON.parseObject(formData, ProjectSpotCheckItemGroupVo.class);
-            projectSpotCheckService.addSpotCheckItemGroup(projectSpotCheckScore);
+            ProjectSpotCheckItemScoreVo projectSpotCheckScore = JSON.parseObject(formData, ProjectSpotCheckItemScoreVo.class);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存抽查明细数据失败", e);

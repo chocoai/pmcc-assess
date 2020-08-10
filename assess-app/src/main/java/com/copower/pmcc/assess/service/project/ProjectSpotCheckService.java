@@ -6,10 +6,7 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectSpotCheckDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckItemVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckItemGroupVo;
-import com.copower.pmcc.assess.dto.output.project.ProjectSpotCheckVo;
+import com.copower.pmcc.assess.dto.output.project.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.project.ProjectSpotCheckEvent;
@@ -22,7 +19,6 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -34,6 +30,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -61,7 +58,7 @@ public class ProjectSpotCheckService {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private ProjectWorkStageService projectWorkStageService;
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private ChksRpcAssessmentPerformanceService performanceService;
 
@@ -192,13 +189,6 @@ public class ProjectSpotCheckService {
         if (projectSpotCheckItem == null) return null;
         ProjectSpotCheckItemVo vo = new ProjectSpotCheckItemVo();
         BeanUtils.copyProperties(projectSpotCheckItem, vo);
-        ProjectSpotCheckItemGroup spotCheckItemGroup = getEnableItemGroupByItemId(projectSpotCheckItem.getId());
-        if (spotCheckItemGroup != null) {
-            ProjectSpotCheckItemGroupVo spotCheckItemGroupVo = getSpotCheckItemGroupVo(spotCheckItemGroup);
-            vo.setExamineDate(spotCheckItemGroup.getGmtCreated());
-            vo.setExamineName(spotCheckItemGroupVo.getCreatorName());
-            vo.setProjectSpotCheckItemScoreList(spotCheckItemGroupVo.getProjectSpotCheckItemScoreList());
-        }
         return vo;
     }
 
@@ -234,27 +224,7 @@ public class ProjectSpotCheckService {
 
     //----------------------------------------------------------------------------------------------------
 
-    @Transactional(rollbackFor = Exception.class)
-    public void addSpotCheckItemGroup(ProjectSpotCheckItemGroupVo spotCheckItemGroup) {
-        //先将上一条数据置为无效状态
-        ProjectSpotCheckItemGroup projectSpotCheckItemGroup = getEnableItemGroupByItemId(spotCheckItemGroup.getItemId());
-        if (projectSpotCheckItemGroup != null) {
-            projectSpotCheckItemGroup.setBisEnable(false);
-            projectSpotCheckDao.modifyProjectSpotCheckItemGroup(projectSpotCheckItemGroup);
-        }
-        spotCheckItemGroup.setBisEnable(true);
-        spotCheckItemGroup.setCreator(commonService.thisUserAccount());
-        projectSpotCheckDao.addProjectSpotCheckItemGroup(spotCheckItemGroup);
 
-        //添加得分数据
-        if (CollectionUtils.isNotEmpty(spotCheckItemGroup.getProjectSpotCheckItemScoreList())) {
-            for (ProjectSpotCheckItemScore spotCheckItemScore : spotCheckItemGroup.getProjectSpotCheckItemScoreList()) {
-                spotCheckItemScore.setCreator(commonService.thisUserAccount());
-                spotCheckItemScore.setGroupId(spotCheckItemGroup.getId());
-                projectSpotCheckDao.addProjectSpotCheckItemScore(spotCheckItemScore);
-            }
-        }
-    }
 
     public ProjectSpotCheckItemGroup getEnableItemGroupByItemId(Integer itemId) {
         if (itemId == null) return null;
@@ -270,47 +240,57 @@ public class ProjectSpotCheckService {
         return projectSpotCheckDao.getProjectSpotCheckItemGroupList(itemIds);
     }
 
-    //获取内容信息
-    public List<ProjectSpotCheckItemScore> getSpotCheckScoreContent(Integer itemId, Integer projectId) {
-        ProjectSpotCheckItemGroup spotCheckItemGroup = getEnableItemGroupByItemId(itemId);
-        if (spotCheckItemGroup == null) {
-            List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
-            if (CollectionUtils.isEmpty(projectPlanList)) return null;
-            List<ProjectSpotCheckItemScore> itemScores = LangUtils.transform(projectPlanList, o -> {
-                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(o.getWorkStageId());
-                ProjectSpotCheckItemScore spotCheckItemScore = new ProjectSpotCheckItemScore();
-                spotCheckItemScore.setPlanId(o.getId());
-                spotCheckItemScore.setPlanName(o.getPlanName());
-                spotCheckItemScore.setStandardScore(projectWorkStage.getCeReviewScore());
-                spotCheckItemScore.setScore(projectWorkStage.getCeReviewScore());
-                return spotCheckItemScore;
-            });
-            return itemScores;
-        } else {
-            return getSpotCheckItemGroupVo(spotCheckItemGroup).getProjectSpotCheckItemScoreList();
-        }
-    }
-
-    public List<ProjectSpotCheckItemGroup> getHistoryGroupsByItemId(Integer itemId) {
+    public List<ProjectSpotCheckItemScoreVo> getEnableItemScoresByItemId(Integer itemId) {
         if (itemId == null) return null;
-        ProjectSpotCheckItemGroup where = new ProjectSpotCheckItemGroup();
-        where.setBisEnable(false);
+        ProjectSpotCheckItemScore where = new ProjectSpotCheckItemScore();
+        where.setBisChecked(true);
         where.setItemId(itemId);
-        List<ProjectSpotCheckItemGroup> list = projectSpotCheckDao.getProjectSpotCheckItemGroupList(where);
+        List<ProjectSpotCheckItemScore> list = projectSpotCheckDao.getProjectSpotCheckItemScoreList(where);
         if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list, o -> getSpotCheckItemGroupVo(o));
+        return LangUtils.transform(list,o->getSpotCheckItemScoreVo(o));
     }
 
-    public ProjectSpotCheckItemGroupVo getSpotCheckItemGroupVo(ProjectSpotCheckItemGroup spotCheckItemGroup) {
-        if (spotCheckItemGroup == null) return null;
-        ProjectSpotCheckItemGroupVo vo = new ProjectSpotCheckItemGroupVo();
-        BeanUtils.copyProperties(spotCheckItemGroup, vo);
-        vo.setCreatorName(publicService.getUserNameByAccount(spotCheckItemGroup.getCreator()));
+
+    public List<ProjectSpotCheckItemScoreVo> getHistoryItemScoresByProjectPhaseId(Integer itemId, Integer projectPhaseId) {
+        if (itemId == null) return null;
         ProjectSpotCheckItemScore where = new ProjectSpotCheckItemScore();
-        where.setGroupId(spotCheckItemGroup.getId());
-        vo.setProjectSpotCheckItemScoreList(projectSpotCheckDao.getProjectSpotCheckItemScoreList(where));
+        where.setBisChecked(false);
+        where.setItemId(itemId);
+        where.setProjectPhaseId(projectPhaseId);
+        List<ProjectSpotCheckItemScore> list = projectSpotCheckDao.getProjectSpotCheckItemScoreList(where);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return LangUtils.transform(list,o->getSpotCheckItemScoreVo(o));
+    }
+
+    public ProjectSpotCheckItemScoreVo getSpotCheckItemScoreVo(ProjectSpotCheckItemScore spotCheckItemScore) {
+        if (spotCheckItemScore == null) return null;
+        ProjectSpotCheckItemScoreVo vo = new ProjectSpotCheckItemScoreVo();
+        BeanUtils.copyProperties(spotCheckItemScore, vo);
+        vo.setCreatorName(publicService.getUserNameByAccount(spotCheckItemScore.getCreator()));
         return vo;
     }
 
-
+    public List<ProjectSpotCheckItemScoreVo> getSpotCheckItemScoreVoListByPlanId(Integer itemId, Integer planId) {
+        ProjectSpotCheckItemScore where = new ProjectSpotCheckItemScore();
+        where.setBisChecked(true);
+        where.setItemId(itemId);
+        where.setPlanId(planId);
+        List<ProjectSpotCheckItemScore> list = projectSpotCheckDao.getProjectSpotCheckItemScoreList(where);
+        if (CollectionUtils.isEmpty(list)) {
+            list = Lists.newArrayList();
+            List<ProjectPhase> projectPhaseList = projectPlanDetailsService.getProjectPhaseListByPlanId(planId);
+            if (CollectionUtils.isNotEmpty(projectPhaseList)) {
+                for (ProjectPhase projectPhase : projectPhaseList) {
+                    ProjectSpotCheckItemScore item = new ProjectSpotCheckItemScore();
+                    item.setPlanId(planId);
+                    item.setProjectPhaseId(projectPhase.getId());
+                    item.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                    item.setStandard(projectPhase.getManagerReviewStandard());
+                    item.setStandardScore(projectPhase.getManagerReviewScore());
+                    list.add(item);
+                }
+            }
+        }
+        return LangUtils.transform(list, o -> getSpotCheckItemScoreVo(o));
+    }
 }

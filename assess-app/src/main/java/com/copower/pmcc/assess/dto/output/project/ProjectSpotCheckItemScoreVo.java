@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.dto.output.project;
 
-import com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreItem;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 
-public class ProjectReviewScoreItemVo extends ProjectReviewScoreItem {
+import java.util.List;
+
+public class ProjectSpotCheckItemScoreVo extends ProjectReviewScoreItem {
     private String creatorName;
 
     public String getCreatorName() {

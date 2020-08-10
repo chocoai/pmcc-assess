@@ -6,11 +6,15 @@ import java.util.Date;
 public class ProjectSpotCheckItemScore {
     private Integer id;
 
-    private Integer groupId;
+    private Integer itemId;
 
     private Integer planId;
 
-    private String planName;
+    private Integer projectPhaseId;
+
+    private String projectPhaseName;
+
+    private String standard;
 
     private BigDecimal standardScore;
 
@@ -34,12 +38,12 @@ public class ProjectSpotCheckItemScore {
         this.id = id;
     }
 
-    public Integer getGroupId() {
-        return groupId;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     public Integer getPlanId() {
@@ -50,12 +54,28 @@ public class ProjectSpotCheckItemScore {
         this.planId = planId;
     }
 
-    public String getPlanName() {
-        return planName;
+    public Integer getProjectPhaseId() {
+        return projectPhaseId;
     }
 
-    public void setPlanName(String planName) {
-        this.planName = planName == null ? null : planName.trim();
+    public void setProjectPhaseId(Integer projectPhaseId) {
+        this.projectPhaseId = projectPhaseId;
+    }
+
+    public String getProjectPhaseName() {
+        return projectPhaseName;
+    }
+
+    public void setProjectPhaseName(String projectPhaseName) {
+        this.projectPhaseName = projectPhaseName == null ? null : projectPhaseName.trim();
+    }
+
+    public String getStandard() {
+        return standard;
+    }
+
+    public void setStandard(String standard) {
+        this.standard = standard == null ? null : standard.trim();
     }
 
     public BigDecimal getStandardScore() {

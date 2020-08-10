@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.project;
 
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dal.basis.mapper.ProjectReviewScoreGroupMapper;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectReviewScoreItemMapper;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectReviewScoreMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
@@ -22,8 +21,6 @@ import java.util.List;
 public class ProjectReviewScoreDao {
     @Autowired
     private ProjectReviewScoreMapper projectReviewScoreMapper;
-    @Autowired
-    private ProjectReviewScoreGroupMapper projectReviewScoreGroupMapper;
     @Autowired
     private ProjectReviewScoreItemMapper projectReviewScoreItemMapper;
 
@@ -77,54 +74,6 @@ public class ProjectReviewScoreDao {
         example.createCriteria().andProjectIdEqualTo(projectId).andStatusIsNotNull();
         return projectReviewScoreMapper.countByExample(example);
     }
-
-    //----------------------------------------------------------------------------------
-
-    public ProjectReviewScoreGroup getProjectReviewScoreGroupById(Integer id){
-        return projectReviewScoreGroupMapper.selectByPrimaryKey(id);
-    }
-
-    /**
-     * @param where
-     * @return
-     */
-    public List<ProjectReviewScoreGroup> getProjectReviewScoreGroupList(ProjectReviewScoreGroup where) {
-        ProjectReviewScoreGroupExample example = new ProjectReviewScoreGroupExample();
-        MybatisUtils.convertObj2Example(where, example);
-        return projectReviewScoreGroupMapper.selectByExample(example);
-    }
-
-
-    /**
-     * 新增数据
-     * @param record
-     * @return
-     */
-    public boolean addProjectReviewScoreGroup(ProjectReviewScoreGroup record) {
-        return projectReviewScoreGroupMapper.insertSelective(record) == 1;
-    }
-
-    /**
-     * 更新数据
-     * @param record
-     * @return
-     */
-    public boolean modifyProjectReviewScoreGroup(ProjectReviewScoreGroup record) {
-        return projectReviewScoreGroupMapper.updateByPrimaryKeySelective(record) == 1;
-    }
-
-    /**
-     * 根据条件更新
-     * @param record
-     * @param where
-     * @return
-     */
-    public int modifyProjectReviewScoreGroup(ProjectReviewScoreGroup record, ProjectReviewScoreGroup where) {
-        ProjectReviewScoreGroupExample example = new ProjectReviewScoreGroupExample();
-        MybatisUtils.convertObj2Example(where, example);
-        return projectReviewScoreGroupMapper.updateByExampleSelective(record, example);
-    }
-
 
     //----------------------------------------------------------------------------------
 

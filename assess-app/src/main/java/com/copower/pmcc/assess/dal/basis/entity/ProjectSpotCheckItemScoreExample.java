@@ -166,63 +166,63 @@ public class ProjectSpotCheckItemScoreExample {
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdIsNull() {
-            addCriterion("group_id is null");
+        public Criteria andItemIdIsNull() {
+            addCriterion("item_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdIsNotNull() {
-            addCriterion("group_id is not null");
+        public Criteria andItemIdIsNotNull() {
+            addCriterion("item_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdEqualTo(Integer value) {
-            addCriterion("group_id =", value, "groupId");
+        public Criteria andItemIdEqualTo(Integer value) {
+            addCriterion("item_id =", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdNotEqualTo(Integer value) {
-            addCriterion("group_id <>", value, "groupId");
+        public Criteria andItemIdNotEqualTo(Integer value) {
+            addCriterion("item_id <>", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdGreaterThan(Integer value) {
-            addCriterion("group_id >", value, "groupId");
+        public Criteria andItemIdGreaterThan(Integer value) {
+            addCriterion("item_id >", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("group_id >=", value, "groupId");
+        public Criteria andItemIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("item_id >=", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdLessThan(Integer value) {
-            addCriterion("group_id <", value, "groupId");
+        public Criteria andItemIdLessThan(Integer value) {
+            addCriterion("item_id <", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdLessThanOrEqualTo(Integer value) {
-            addCriterion("group_id <=", value, "groupId");
+        public Criteria andItemIdLessThanOrEqualTo(Integer value) {
+            addCriterion("item_id <=", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdIn(List<Integer> values) {
-            addCriterion("group_id in", values, "groupId");
+        public Criteria andItemIdIn(List<Integer> values) {
+            addCriterion("item_id in", values, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdNotIn(List<Integer> values) {
-            addCriterion("group_id not in", values, "groupId");
+        public Criteria andItemIdNotIn(List<Integer> values) {
+            addCriterion("item_id not in", values, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdBetween(Integer value1, Integer value2) {
-            addCriterion("group_id between", value1, value2, "groupId");
+        public Criteria andItemIdBetween(Integer value1, Integer value2) {
+            addCriterion("item_id between", value1, value2, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andGroupIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("group_id not between", value1, value2, "groupId");
+        public Criteria andItemIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("item_id not between", value1, value2, "itemId");
             return (Criteria) this;
         }
 
@@ -286,73 +286,203 @@ public class ProjectSpotCheckItemScoreExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameIsNull() {
-            addCriterion("plan_name is null");
+        public Criteria andProjectPhaseIdIsNull() {
+            addCriterion("project_phase_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameIsNotNull() {
-            addCriterion("plan_name is not null");
+        public Criteria andProjectPhaseIdIsNotNull() {
+            addCriterion("project_phase_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameEqualTo(String value) {
-            addCriterion("plan_name =", value, "planName");
+        public Criteria andProjectPhaseIdEqualTo(Integer value) {
+            addCriterion("project_phase_id =", value, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameNotEqualTo(String value) {
-            addCriterion("plan_name <>", value, "planName");
+        public Criteria andProjectPhaseIdNotEqualTo(Integer value) {
+            addCriterion("project_phase_id <>", value, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameGreaterThan(String value) {
-            addCriterion("plan_name >", value, "planName");
+        public Criteria andProjectPhaseIdGreaterThan(Integer value) {
+            addCriterion("project_phase_id >", value, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameGreaterThanOrEqualTo(String value) {
-            addCriterion("plan_name >=", value, "planName");
+        public Criteria andProjectPhaseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("project_phase_id >=", value, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameLessThan(String value) {
-            addCriterion("plan_name <", value, "planName");
+        public Criteria andProjectPhaseIdLessThan(Integer value) {
+            addCriterion("project_phase_id <", value, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameLessThanOrEqualTo(String value) {
-            addCriterion("plan_name <=", value, "planName");
+        public Criteria andProjectPhaseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("project_phase_id <=", value, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameLike(String value) {
-            addCriterion("plan_name like", value, "planName");
+        public Criteria andProjectPhaseIdIn(List<Integer> values) {
+            addCriterion("project_phase_id in", values, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameNotLike(String value) {
-            addCriterion("plan_name not like", value, "planName");
+        public Criteria andProjectPhaseIdNotIn(List<Integer> values) {
+            addCriterion("project_phase_id not in", values, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameIn(List<String> values) {
-            addCriterion("plan_name in", values, "planName");
+        public Criteria andProjectPhaseIdBetween(Integer value1, Integer value2) {
+            addCriterion("project_phase_id between", value1, value2, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameNotIn(List<String> values) {
-            addCriterion("plan_name not in", values, "planName");
+        public Criteria andProjectPhaseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("project_phase_id not between", value1, value2, "projectPhaseId");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameBetween(String value1, String value2) {
-            addCriterion("plan_name between", value1, value2, "planName");
+        public Criteria andProjectPhaseNameIsNull() {
+            addCriterion("project_phase_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andPlanNameNotBetween(String value1, String value2) {
-            addCriterion("plan_name not between", value1, value2, "planName");
+        public Criteria andProjectPhaseNameIsNotNull() {
+            addCriterion("project_phase_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameEqualTo(String value) {
+            addCriterion("project_phase_name =", value, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameNotEqualTo(String value) {
+            addCriterion("project_phase_name <>", value, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameGreaterThan(String value) {
+            addCriterion("project_phase_name >", value, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameGreaterThanOrEqualTo(String value) {
+            addCriterion("project_phase_name >=", value, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameLessThan(String value) {
+            addCriterion("project_phase_name <", value, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameLessThanOrEqualTo(String value) {
+            addCriterion("project_phase_name <=", value, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameLike(String value) {
+            addCriterion("project_phase_name like", value, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameNotLike(String value) {
+            addCriterion("project_phase_name not like", value, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameIn(List<String> values) {
+            addCriterion("project_phase_name in", values, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameNotIn(List<String> values) {
+            addCriterion("project_phase_name not in", values, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameBetween(String value1, String value2) {
+            addCriterion("project_phase_name between", value1, value2, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectPhaseNameNotBetween(String value1, String value2) {
+            addCriterion("project_phase_name not between", value1, value2, "projectPhaseName");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardIsNull() {
+            addCriterion("standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardIsNotNull() {
+            addCriterion("standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardEqualTo(String value) {
+            addCriterion("standard =", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardNotEqualTo(String value) {
+            addCriterion("standard <>", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardGreaterThan(String value) {
+            addCriterion("standard >", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardGreaterThanOrEqualTo(String value) {
+            addCriterion("standard >=", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardLessThan(String value) {
+            addCriterion("standard <", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardLessThanOrEqualTo(String value) {
+            addCriterion("standard <=", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardLike(String value) {
+            addCriterion("standard like", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardNotLike(String value) {
+            addCriterion("standard not like", value, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardIn(List<String> values) {
+            addCriterion("standard in", values, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardNotIn(List<String> values) {
+            addCriterion("standard not in", values, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardBetween(String value1, String value2) {
+            addCriterion("standard between", value1, value2, "standard");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardNotBetween(String value1, String value2) {
+            addCriterion("standard not between", value1, value2, "standard");
             return (Criteria) this;
         }
 
