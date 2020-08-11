@@ -23,8 +23,6 @@ public class ProjectSpotCheckDao {
     @Autowired
     private ProjectSpotCheckItemMapper projectSpotCheckItemMapper;
     @Autowired
-    private ProjectSpotCheckItemGroupMapper projectSpotCheckItemGroupMapper;
-    @Autowired
     private ProjectSpotCheckItemScoreMapper projectSpotCheckItemScoreMapper;
 
     public ProjectSpotCheck getProjectSpotCheckById(Integer id) {
@@ -127,62 +125,6 @@ public class ProjectSpotCheckDao {
 
     //------------------------------------------------------------------------------------------------
 
-    public ProjectSpotCheckItemGroup getProjectSpotCheckItemGroupById(Integer id) {
-        return projectSpotCheckItemGroupMapper.selectByPrimaryKey(id);
-    }
-
-    /**
-     * @param where
-     * @return
-     */
-    public List<ProjectSpotCheckItemGroup> getProjectSpotCheckItemGroupList(ProjectSpotCheckItemGroup where) {
-        ProjectSpotCheckItemGroupExample example = new ProjectSpotCheckItemGroupExample();
-        MybatisUtils.convertObj2Example(where, example);
-        return projectSpotCheckItemGroupMapper.selectByExample(example);
-    }
-
-    public List<ProjectSpotCheckItemGroup> getProjectSpotCheckItemGroupList(List<Integer> itemIds) {
-        ProjectSpotCheckItemGroupExample example = new ProjectSpotCheckItemGroupExample();
-        example.createCriteria().andBisEnableEqualTo(true).andItemIdIn(itemIds);
-        return projectSpotCheckItemGroupMapper.selectByExample(example);
-    }
-
-
-    /**
-     * 新增数据
-     *
-     * @param record
-     * @return
-     */
-    public boolean addProjectSpotCheckItemGroup(ProjectSpotCheckItemGroup record) {
-        return projectSpotCheckItemGroupMapper.insertSelective(record) == 1;
-    }
-
-    /**
-     * 更新数据
-     *
-     * @param record
-     * @return
-     */
-    public boolean modifyProjectSpotCheckItemGroup(ProjectSpotCheckItemGroup record) {
-        return projectSpotCheckItemGroupMapper.updateByPrimaryKeySelective(record) == 1;
-    }
-
-    /**
-     * 根据条件更新
-     *
-     * @param record
-     * @param where
-     * @return
-     */
-    public int modifyProjectSpotCheckItemGroup(ProjectSpotCheckItemGroup record, ProjectSpotCheckItemGroup where) {
-        ProjectSpotCheckItemGroupExample example = new ProjectSpotCheckItemGroupExample();
-        MybatisUtils.convertObj2Example(where, example);
-        return projectSpotCheckItemGroupMapper.updateByExampleSelective(record, example);
-    }
-
-    //------------------------------------------------------------------------------------------------
-
     public ProjectSpotCheckItemScore getProjectSpotCheckItemScoreById(Integer id) {
         return projectSpotCheckItemScoreMapper.selectByPrimaryKey(id);
     }
@@ -216,6 +158,12 @@ public class ProjectSpotCheckDao {
      */
     public boolean modifyProjectSpotCheckItemScore(ProjectSpotCheckItemScore record) {
         return projectSpotCheckItemScoreMapper.updateByPrimaryKeySelective(record) == 1;
+    }
+
+    public List<ProjectSpotCheckItemScore> getSpotCheckItemScoreListByItemIds(List<Integer> itemIds){
+        ProjectSpotCheckItemScoreExample example = new ProjectSpotCheckItemScoreExample();
+        example.createCriteria().andItemIdIn(itemIds);
+        return projectSpotCheckItemScoreMapper.selectByExampleWithBLOBs(example);
     }
 
     /**

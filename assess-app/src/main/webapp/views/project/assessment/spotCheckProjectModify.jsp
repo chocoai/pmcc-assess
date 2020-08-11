@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>复核与指导工时考核</title>
+    <title>${projectInfo.projectName}</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body class="nav-md">
@@ -63,7 +63,7 @@
 </body>
 </html>
 <%--填写工时考核窗口--%>
-<div id="editspotCheckProjectItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="editSpotCheckItemScoreModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 70%">
@@ -74,7 +74,7 @@
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form id="frmspotCheckProjectItem" class="form-horizontal">
+                <form id="frmSpotCheckItemScore" class="form-horizontal">
                     <div class="form-group form-inline">
                         <label class="col-sm-1 col-form-label">得分<span class="symbol required"></span></label>
                         <div class="col-sm-3">
@@ -94,7 +94,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="spotCheckProject.saveReivewScoreItem();">
+                <button type="button" class="btn btn-primary btn-sm" onclick="spotCheckProject.saveSpotCheckItemScore();">
                     保存
                 </button>
             </div>
@@ -176,7 +176,7 @@
         });
         $list.bootstrapTable('destroy');
         TableInit($list, "${pageContext.request.contextPath}/projectSpotCheck/getSpotCheckItemScoreVoListByPlanId", cols, {
-            reviewId: '${projectspotCheckProject.id}',
+            itemId: '${projectSpotCheckItem.id}',
             planId: planId
         }, {
             showColumns: false,
@@ -275,25 +275,25 @@
     spotCheckProject.showReivewScoreItemModal = function (id, planId) {
         var row = $('#tbPlanPhaseList' + planId).bootstrapTable('getRowByUniqueId', id);
         spotCheckProject.currProjectPhase = row;
-        $('#frmspotCheckProjectItem').clearAll().initForm(row);
+        $('#frmSpotCheckItemScore').clearAll().initForm(row);
         if(row.score==undefined||row.score==null){
-            $('#frmspotCheckProjectItem').find('[name=score]').val(row.standardScore);
+            $('#frmSpotCheckItemScore').find('[name=score]').val(row.standardScore);
         }
         UERemark.setContent(AssessCommon.toString(row.remark));
-        $('#editspotCheckProjectItemModal').modal();
+        $('#editSpotCheckItemScoreModal').modal();
     }
 
     //保存数据
-    spotCheckProject.saveReivewScoreItem = function () {
-        if (!$('#frmspotCheckProjectItem').valid()) {
+    spotCheckProject.saveSpotCheckItemScore = function () {
+        if (!$('#frmSpotCheckItemScore').valid()) {
             return false;
         }
         var data = spotCheckProject.currProjectPhase;
-        data.reviewId = '${projectspotCheckProject.id}';
-        data.score = $('#frmspotCheckProjectItem').find('[name=score]').val();
+        data.itemId = '${projectSpotCheckItem.id}';
+        data.score = $('#frmSpotCheckItemScore').find('[name=score]').val();
         data.remark = UERemark.getContent();
         $.ajax({
-            url: '${pageContext.request.contextPath}/projectspotCheckProject/savespotCheckProjectItem',
+            url: '${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheckItemScore',
             type: 'post',
             data: {formData: JSON.stringify(data)},
             dataType: 'json',
@@ -302,7 +302,7 @@
                     notifySuccess('提示', '保存成功');
                     var planId = spotCheckProject.currProjectPhase.planId;
                     spotCheckProject.loadProjectPhaseList($('#tbPlanPhaseList' + planId), planId);
-                    $('#editspotCheckProjectItemModal').modal('hide');
+                    $('#editSpotCheckItemScoreModal').modal('hide');
                 } else {
                     AlertError('失败', result.errmsg);
                 }
@@ -336,8 +336,8 @@
             }
         });
         $("#tbHistoryScoreList").bootstrapTable('destroy');
-        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectspotCheckProject/getHistroyList", cols, {
-            reviewId: '${projectspotCheckProject.id}',
+        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyList", cols, {
+            spotId: '${projectSpotCheckItem.id}',
             projectPhaseId: projectPhaseId
         }, {
             showColumns: false,
@@ -352,7 +352,7 @@
 
     //显示说明信息
     spotCheckProject.showRemarkInfo = function (id) {
-        $.getJSON('${pageContext.request.contextPath}/projectspotCheckProject/getspotCheckProjectItemById', {id: id}, function (result) {
+        $.getJSON('${pageContext.request.contextPath}/projectSpotCheck/getSpotCheckItemScoreById', {id: id}, function (result) {
             if (result.ret) {
                 layer.open({
                     type: 1,

@@ -178,6 +178,10 @@ public class ProjectSpotCheckService {
         return vo;
     }
 
+    public ProjectSpotCheckItem getProjectSpotCheckItemById(Integer id) {
+        return projectSpotCheckDao.getProjectSpotCheckItemById(id);
+    }
+
     public List<ProjectSpotCheckItem> getProjectSpotCheckItemsBySpotId(Integer spotId) {
         if (spotId == null) return null;
         ProjectSpotCheckItem where = new ProjectSpotCheckItem();
@@ -225,19 +229,26 @@ public class ProjectSpotCheckService {
     //----------------------------------------------------------------------------------------------------
 
 
+    /**
+     * 保存数据
+     *
+     * @param spotCheckItemScore
+     */
+    public void saveSpotCheckItemScore(ProjectSpotCheckItemScore spotCheckItemScore) {
+        if (spotCheckItemScore == null) return;
+        if (spotCheckItemScore.getId() == null || spotCheckItemScore.getId() <= 0) {
+            spotCheckItemScore.setCreator(commonService.thisUserAccount());
+            spotCheckItemScore.setBisChecked(true);
+            projectSpotCheckDao.addProjectSpotCheckItemScore(spotCheckItemScore);
+        } else {
+            //先将上个版本数据存档一份
+            ProjectSpotCheckItemScore checkItemScore = projectSpotCheckDao.getProjectSpotCheckItemScoreById(spotCheckItemScore.getId());
+            checkItemScore.setId(null);
+            checkItemScore.setBisChecked(false);
+            projectSpotCheckDao.addProjectSpotCheckItemScore(checkItemScore);
 
-    public ProjectSpotCheckItemGroup getEnableItemGroupByItemId(Integer itemId) {
-        if (itemId == null) return null;
-        ProjectSpotCheckItemGroup where = new ProjectSpotCheckItemGroup();
-        where.setBisEnable(true);
-        where.setItemId(itemId);
-        List<ProjectSpotCheckItemGroup> list = projectSpotCheckDao.getProjectSpotCheckItemGroupList(where);
-        if (CollectionUtils.isEmpty(list)) return null;
-        return list.get(0);
-    }
-
-    public List<ProjectSpotCheckItemGroup> getProjectSpotCheckItemGroupList(List<Integer> itemIds) {
-        return projectSpotCheckDao.getProjectSpotCheckItemGroupList(itemIds);
+            projectSpotCheckDao.modifyProjectSpotCheckItemScore(spotCheckItemScore);//更新
+        }
     }
 
     public List<ProjectSpotCheckItemScoreVo> getEnableItemScoresByItemId(Integer itemId) {
@@ -247,9 +258,12 @@ public class ProjectSpotCheckService {
         where.setItemId(itemId);
         List<ProjectSpotCheckItemScore> list = projectSpotCheckDao.getProjectSpotCheckItemScoreList(where);
         if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list,o->getSpotCheckItemScoreVo(o));
+        return LangUtils.transform(list, o -> getSpotCheckItemScoreVo(o));
     }
 
+    public ProjectSpotCheckItemScore getSpotCheckItemScoreById(Integer id) {
+        return projectSpotCheckDao.getProjectSpotCheckItemScoreById(id);
+    }
 
     public List<ProjectSpotCheckItemScoreVo> getHistoryItemScoresByProjectPhaseId(Integer itemId, Integer projectPhaseId) {
         if (itemId == null) return null;
@@ -259,7 +273,7 @@ public class ProjectSpotCheckService {
         where.setProjectPhaseId(projectPhaseId);
         List<ProjectSpotCheckItemScore> list = projectSpotCheckDao.getProjectSpotCheckItemScoreList(where);
         if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list,o->getSpotCheckItemScoreVo(o));
+        return LangUtils.transform(list, o -> getSpotCheckItemScoreVo(o));
     }
 
     public ProjectSpotCheckItemScoreVo getSpotCheckItemScoreVo(ProjectSpotCheckItemScore spotCheckItemScore) {
@@ -285,12 +299,17 @@ public class ProjectSpotCheckService {
                     item.setPlanId(planId);
                     item.setProjectPhaseId(projectPhase.getId());
                     item.setProjectPhaseName(projectPhase.getProjectPhaseName());
-                    item.setStandard(projectPhase.getManagerReviewStandard());
-                    item.setStandardScore(projectPhase.getManagerReviewScore());
+                    item.setStandard(projectPhase.getCeReviewStandard());
+                    item.setStandardScore(projectPhase.getCeReviewScore());
                     list.add(item);
                 }
             }
         }
         return LangUtils.transform(list, o -> getSpotCheckItemScoreVo(o));
+    }
+
+    public List<ProjectSpotCheckItemScore> getSpotCheckItemScoreListByItemIds(List<Integer> itemIds) {
+        if (CollectionUtils.isEmpty(itemIds)) return null;
+        return projectSpotCheckDao.getSpotCheckItemScoreListByItemIds(itemIds);
     }
 }
