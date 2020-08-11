@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.event.project.ProjectSpotCheckEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -25,6 +26,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -38,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -60,7 +63,8 @@ public class ProjectSpotCheckService {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
-    private ChksRpcAssessmentPerformanceService performanceService;
+    private BasicApplyBatchService basicApplyBatchService;
+
 
     public ProjectSpotCheckVo getSpotCheckVoById(Integer id) {
         return getSpotCheckVo(projectSpotCheckDao.getProjectSpotCheckById(id));
@@ -141,12 +145,30 @@ public class ProjectSpotCheckService {
      *
      * @param projectIds
      */
-    public void selectProject(String projectIds, Integer spotId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void selectProject(String projectIds, Integer spotId) throws BusinessException {
         if (StringUtils.isBlank(projectIds)) return;
         List<Integer> list = FormatUtils.transformString2Integer(projectIds);
+        //1.同一个项目只能抽查一次，同一个楼盘一个月不超过3次
+        ProjectSpotCheck spotCheck = projectSpotCheckDao.getProjectSpotCheckById(spotId);
+        Date startDate = DateUtils.convertDate(spotCheck.getSpotMonth() + "-01");
+        Date endDate = DateUtils.convertDate(DateUtils.getLastDayOfMonth(DateUtils.getYear(startDate), DateUtils.getMonth(startDate)));
         for (Integer projectId : list) {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+            if (projectSpotCheckDao.getSpotCheckItemCountByProjectId(projectId) > 0) {
+                throw new BusinessException(String.format("【%s】已被抽查过，同一个项目不能重复抽查", projectInfo.getProjectName()));
+            }
             ProjectSpotCheckItem spotCheckItem = new ProjectSpotCheckItem();
+            List<String> estateNameList = basicApplyBatchService.getEstateNameListByProjectId(projectId);
+            if (CollectionUtils.isNotEmpty(estateNameList)) {
+                for (String estateName : estateNameList) {
+                    long count = projectSpotCheckDao.getSpotCheckItemCountByEstateName(startDate, endDate, estateName);
+                    if (count > 3) {
+                        throw new BusinessException(String.format("【%s】该楼盘当月已被多次抽查，请选择其他楼盘", estateName));
+                    }
+                }
+                spotCheckItem.setEstateName(FormatUtils.transformListString(estateNameList));
+            }
             spotCheckItem.setSpotId(spotId);
             spotCheckItem.setProjectId(projectId);
             spotCheckItem.setProjectName(projectInfo.getProjectName());
