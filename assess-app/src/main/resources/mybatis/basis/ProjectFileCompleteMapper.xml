@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectFileCompleteMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectFileComplete">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="file_sort" jdbcType="INTEGER" property="fileSort" />
+    <result column="file_date" jdbcType="TIMESTAMP" property="fileDate" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="file_number" jdbcType="VARCHAR" property="fileNumber" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="bis_paper" jdbcType="BIT" property="bisPaper" />
+    <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="modified" jdbcType="TIMESTAMP" property="modified" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, project_id, year, file_sort, file_date, file_type, file_number, file_name, bis_paper, 
+    bis_enable, creator, created, modified
+  </sql>
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectFileCompleteExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_project_file_complete
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_project_file_complete
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_project_file_complete
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectFileCompleteExample">
+    delete from tb_project_file_complete
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectFileComplete">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_file_complete (project_id, year, file_sort, 
+      file_date, file_type, file_number, 
+      file_name, bis_paper, bis_enable, 
+      creator, created, modified
+      )
+    values (#{projectId,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, #{fileSort,jdbcType=INTEGER}, 
+      #{fileDate,jdbcType=TIMESTAMP}, #{fileType,jdbcType=VARCHAR}, #{fileNumber,jdbcType=VARCHAR}, 
+      #{fileName,jdbcType=VARCHAR}, #{bisPaper,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_file_complete
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.projectId != null">
+            project_id,
+          </if>
+          <if test="record.year != null">
+            year,
+          </if>
+          <if test="record.fileSort != null">
+            file_sort,
+          </if>
+          <if test="record.fileDate != null">
+            file_date,
+          </if>
+          <if test="record.fileType != null">
+            file_type,
+          </if>
+          <if test="record.fileNumber != null">
+            file_number,
+          </if>
+          <if test="record.fileName != null">
+            file_name,
+          </if>
+          <if test="record.bisPaper != null">
+            bis_paper,
+          </if>
+          <if test="record.bisEnable != null">
+            bis_enable,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.created != null">
+            created,
+          </if>
+          <if test="record.modified != null">
+            modified,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.projectId != null">
+            #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.year != null">
+            #{record.year,jdbcType=INTEGER},
+          </if>
+          <if test="record.fileSort != null">
+            #{record.fileSort,jdbcType=INTEGER},
+          </if>
+          <if test="record.fileDate != null">
+            #{record.fileDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.fileType != null">
+            #{record.fileType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.fileNumber != null">
+            #{record.fileNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.fileName != null">
+            #{record.fileName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.bisPaper != null">
+            #{record.bisPaper,jdbcType=BIT},
+          </if>
+          <if test="record.bisEnable != null">
+            #{record.bisEnable,jdbcType=BIT},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.created != null">
+            #{record.created,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.modified != null">
+            #{record.modified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectFileCompleteExample" resultType="java.lang.Long">
+    select count(*) from tb_project_file_complete
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_project_file_complete
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.year != null">
+            year = #{record.year,jdbcType=INTEGER},
+          </if>
+          <if test="record.fileSort != null">
+            file_sort = #{record.fileSort,jdbcType=INTEGER},
+          </if>
+          <if test="record.fileDate != null">
+            file_date = #{record.fileDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.fileType != null">
+            file_type = #{record.fileType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.fileNumber != null">
+            file_number = #{record.fileNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.fileName != null">
+            file_name = #{record.fileName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.bisPaper != null">
+            bis_paper = #{record.bisPaper,jdbcType=BIT},
+          </if>
+          <if test="record.bisEnable != null">
+            bis_enable = #{record.bisEnable,jdbcType=BIT},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.created != null">
+            created = #{record.created,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.modified != null">
+            modified = #{record.modified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_project_file_complete
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      year = #{record.year,jdbcType=INTEGER},
+      file_sort = #{record.fileSort,jdbcType=INTEGER},
+      file_date = #{record.fileDate,jdbcType=TIMESTAMP},
+      file_type = #{record.fileType,jdbcType=VARCHAR},
+      file_number = #{record.fileNumber,jdbcType=VARCHAR},
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      bis_paper = #{record.bisPaper,jdbcType=BIT},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      modified = #{record.modified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="map">
+    update tb_project_file_complete
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.year != null">
+            year = #{record.year,jdbcType=INTEGER},
+          </if>
+          <if test="record.fileSort != null">
+            file_sort = #{record.fileSort,jdbcType=INTEGER},
+          </if>
+          <if test="record.fileDate != null">
+            file_date = #{record.fileDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.fileType != null">
+            file_type = #{record.fileType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.fileNumber != null">
+            file_number = #{record.fileNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.fileName != null">
+            file_name = #{record.fileName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.bisPaper != null">
+            bis_paper = #{record.bisPaper,jdbcType=BIT},
+          </if>
+          <if test="record.bisEnable != null">
+            bis_enable = #{record.bisEnable,jdbcType=BIT},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.created != null">
+            created = #{record.created,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.modified != null">
+            modified = #{record.modified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectFileComplete">
+    update tb_project_file_complete
+    set project_id = #{projectId,jdbcType=INTEGER},
+      year = #{year,jdbcType=INTEGER},
+      file_sort = #{fileSort,jdbcType=INTEGER},
+      file_date = #{fileDate,jdbcType=TIMESTAMP},
+      file_type = #{fileType,jdbcType=VARCHAR},
+      file_number = #{fileNumber,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      bis_paper = #{bisPaper,jdbcType=BIT},
+      bis_enable = #{bisEnable,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      modified = #{modified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_project_file_complete
+    (project_id, year, file_sort, file_date, file_type, file_number, file_name, bis_paper, 
+      bis_enable, creator, created, modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.projectId,jdbcType=INTEGER}, #{item.year,jdbcType=INTEGER}, #{item.fileSort,jdbcType=INTEGER}, 
+        #{item.fileDate,jdbcType=TIMESTAMP}, #{item.fileType,jdbcType=VARCHAR}, #{item.fileNumber,jdbcType=VARCHAR}, 
+        #{item.fileName,jdbcType=VARCHAR}, #{item.bisPaper,jdbcType=BIT}, #{item.bisEnable,jdbcType=BIT}, 
+        #{item.creator,jdbcType=VARCHAR}, #{item.created,jdbcType=TIMESTAMP}, #{item.modified,jdbcType=TIMESTAMP}
+        )
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_project_file_complete (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'project_id'.toString() == column.value">
+          #{item.projectId,jdbcType=INTEGER}
+        </if>
+        <if test="'year'.toString() == column.value">
+          #{item.year,jdbcType=INTEGER}
+        </if>
+        <if test="'file_sort'.toString() == column.value">
+          #{item.fileSort,jdbcType=INTEGER}
+        </if>
+        <if test="'file_date'.toString() == column.value">
+          #{item.fileDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'file_type'.toString() == column.value">
+          #{item.fileType,jdbcType=VARCHAR}
+        </if>
+        <if test="'file_number'.toString() == column.value">
+          #{item.fileNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="'file_name'.toString() == column.value">
+          #{item.fileName,jdbcType=VARCHAR}
+        </if>
+        <if test="'bis_paper'.toString() == column.value">
+          #{item.bisPaper,jdbcType=BIT}
+        </if>
+        <if test="'bis_enable'.toString() == column.value">
+          #{item.bisEnable,jdbcType=BIT}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'created'.toString() == column.value">
+          #{item.created,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'modified'.toString() == column.value">
+          #{item.modified,jdbcType=TIMESTAMP}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
+</mapper>
