@@ -32,6 +32,19 @@ public class BasicEstateSurveyRecordService {
         }
     }
 
+    public BasicEstateSurveyRecord getEstateSurveyRecordByHouseId(Integer houseId){
+        if (houseId == null){
+            return null;
+        }
+        BasicEstateSurveyRecord query = new BasicEstateSurveyRecord();
+        query.setHouseId(houseId);
+        List<BasicEstateSurveyRecord> basicEstateSurveyRecordList = getBasicEstateSurveyRecordList(query);
+        if (CollectionUtils.isNotEmpty(basicEstateSurveyRecordList)){
+            return basicEstateSurveyRecordList.get(0) ;
+        }
+        return null;
+    }
+
     public void deleteBasicEstateSurveyRecordByHouseId(Integer houseId){
         basicEstateSurveyRecordDao.deleteBasicEstateSurveyRecordByHouseId(houseId);
     }

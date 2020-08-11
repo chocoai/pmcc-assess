@@ -1,12 +1,11 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomBasicAppBatchMapper;
@@ -26,7 +25,6 @@ import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
-import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -36,7 +34,6 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -964,6 +961,7 @@ public class BasicApplyBatchService {
             newApplyBatchDetail.setName(sourceApplyBatchDetail.getName());
             newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());
             newApplyBatchDetail.setExecutor(commonService.thisUserAccount());
+            newApplyBatchDetail.setModifyType(BasicDataHandleEnum.BASIC_DATA_HANDLE_REFERENCE_ENUM.getKey());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
             try {
                 basicApplyBatchDetailService.insertBasicApply(newApplyBatchDetail, planDetailsId);

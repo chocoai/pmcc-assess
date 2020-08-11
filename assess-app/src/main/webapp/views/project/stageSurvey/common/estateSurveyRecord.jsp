@@ -55,13 +55,13 @@
 </html>
 <script>
     $(document).ready(function () {
-        (function (fieldsName) {
+        (function (fieldsName ,tableId) {
             FileUtils.getFileShows({
                 target: fieldsName,
                 formData: {
                     fieldsName: fieldsName,
                     tableName: AssessDBKey.BasicEstateSurveyRecord,
-                    tableId: "${basicEstateSurveyRecord == null?'0':basicEstateSurveyRecord.id}"
+                    tableId: tableId
                 },
                 deleteFlag: true
             }) ;
@@ -71,13 +71,14 @@
                 formData: {
                     fieldsName: fieldsName,
                     tableName: AssessDBKey.BasicEstateSurveyRecord,
-                    tableId: "${basicEstateSurveyRecord == null?'0':basicEstateSurveyRecord.id}"
+                    tableId: tableId
                 },
                 deleteFlag: true,
                 onUploadComplete: function () {
                 }
             });
-        }('estateSurveyRecordFileId')) ;
+            // console.log("tableId:"+tableId) ;
+        }('estateSurveyRecordFileId',"${basicEstateSurveyRecord == null?'0':basicEstateSurveyRecord.id}")) ;
     }) ;
 </script>
 

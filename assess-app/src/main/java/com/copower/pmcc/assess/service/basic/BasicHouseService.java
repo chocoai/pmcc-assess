@@ -260,6 +260,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -679,6 +680,10 @@ public class BasicHouseService extends BasicEntityAbstract {
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//土地类型sql
 
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//查勘记录表sql
+
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
 
             BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
@@ -771,6 +776,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouse", getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicEstateSurveyRecord", basicEstateSurveyRecordService.getEstateSurveyRecordByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
 
@@ -780,6 +786,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouse", getBasicHouseVo(getBasicHouseById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicEstateSurveyRecord", basicEstateSurveyRecordService.getEstateSurveyRecordByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
 
@@ -802,6 +809,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouse", getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicEstateSurveyRecord", basicEstateSurveyRecordService.getEstateSurveyRecordByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
     }
 }

@@ -372,6 +372,7 @@
 </html>
 <%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
 <%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
+<%@include file="/views/project/stageSurvey/common/basicReference.jsp" %>
 <%--户型选择--%>
 <div id="divBoxHuxingListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -547,7 +548,6 @@
 
     //保存数据信息
     function saveDataInfo() {
-        Loading.progressShow();
         var data = examineCommon.getFormData();
         data.basicHouseTradingGroups = [];
 
@@ -562,28 +562,33 @@
         });
 
         var formData = JSON.stringify(data);
-
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/saveDraft",
-            type: "post",
-            dataType: "json",
-            async: false,
-            data: {
-                formData: formData,
-                formClassify: '${tbType}',
-                planDetailsId: '${planDetailsId}'
-            },
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    AlertSuccess("成功", "保存数据成功", function () {
-                        window.close();
-                    });
-                } else {
-                    AlertError("保存失败,失败原因:" + result.errmsg);
+        openBasicDataHandleReference(function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicApplyBatch/saveDraft",
+                type: "post",
+                dataType: "json",
+                async: false,
+                data: {
+                    formData: formData,
+                    formClassify: '${tbType}',
+                    planDetailsId: '${planDetailsId}'
+                },
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        //成功之后才保存  修改内容  这样可以解决核心数据没有保存却保存了修改内容的问题
+                        saveBasicDataHandleReferenceData(function () {
+                            AlertSuccess("成功", "保存数据成功", function () {
+                                window.close();
+                            });
+                        }) ;
+                    } else {
+                        AlertError("保存失败,失败原因:" + result.errmsg);
+                    }
                 }
-            }
-        });
+            });
+        }) ;
     }
 
     function showHistoryModal() {
