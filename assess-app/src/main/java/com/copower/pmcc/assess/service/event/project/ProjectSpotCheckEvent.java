@@ -127,13 +127,13 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
             if (CollectionUtils.isNotEmpty(spotCheckItems))
                 spotCheckItemAll.addAll(spotCheckItems);
         }
-        List<ProjectSpotCheckItemGroup> itemGroupList = projectSpotCheckService.getProjectSpotCheckItemGroupList(LangUtils.transform(spotCheckItemAll, o -> o.getId()));
-        if (CollectionUtils.isEmpty(itemGroupList)) return BigDecimal.ZERO;
+        List<ProjectSpotCheckItemScore> itemScoreList =projectSpotCheckService.getSpotCheckItemScoreListByItemIds(LangUtils.transform(spotCheckItemAll, o -> o.getId()));
+        if (CollectionUtils.isEmpty(itemScoreList)) return BigDecimal.ZERO;
         BigDecimal standardScore = BigDecimal.ZERO;//标准得分
         BigDecimal score = BigDecimal.ZERO;//实际得分
-        for (ProjectSpotCheckItemGroup spotCheckItemGroup : itemGroupList) {
-            standardScore = standardScore.add(spotCheckItemGroup.getStandardTotalScore());
-            score = score.add(spotCheckItemGroup.getTotalScore());
+        for (ProjectSpotCheckItemScore spotCheckItemScore : itemScoreList) {
+            standardScore = standardScore.add(spotCheckItemScore.getStandardScore());
+            score = score.add(spotCheckItemScore.getScore());
         }
         BigDecimal ratio = score.divide(standardScore, 2, RoundingMode.HALF_UP);//得出系数
         //找出本月应该获取的分值

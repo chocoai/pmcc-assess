@@ -150,8 +150,8 @@
                         str = "<span class='label label-success'>" + "已完成" + "</span>";
                         break;
                     }
-                    case "close": {
-                        str = "<span class='label label-warning'>" + "关闭" + "</span>";
+                    case "draft": {
+                        str = "<span class='label label-warning'>" + "草稿" + "</span>";
                         break;
                     }
                 }
@@ -161,6 +161,11 @@
         cols.push({
             field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
                 var str = '';
+                if(row.status=='draft'){
+                    str += '<button type="button" onclick="fillInfo(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
+                }
                 str += '<button type="button" onclick="viewDetail(' + row.id + ',\''+row.processInsId+'\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
@@ -213,7 +218,6 @@
             return false;
         }
         var data = formSerializeArray($('#frmSpotCheck'));
-        data.status = 'runing';
         $.ajax({
             url: '${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheck',
             data: {formData: JSON.stringify(data)},
@@ -228,6 +232,11 @@
                 }
             }
         })
+    }
+
+    //继续填写
+    function fillInfo(id) {
+        window.open('${pageContext.request.contextPath}/projectSpotCheck/apply?spotId=' + id)
     }
 
     //查看详情

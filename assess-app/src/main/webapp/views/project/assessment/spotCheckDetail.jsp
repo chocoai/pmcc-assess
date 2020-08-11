@@ -79,29 +79,6 @@
 </body>
 </html>
 
-<%--历史考核列表窗口--%>
-<div id="historyScoreListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">历史记录</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered" id="tbHistoryScoreList"></table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type="text/javascript">
     $(function () {
         spotCheck.loadSpotCheckItemList();
@@ -118,28 +95,10 @@
             }
         });
         cols.push({
-            field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
-                var str = '';
-                if (value) {
-                    $.each(value, function (i, item) {
-                        str += item.planName + "【" + item.score + "】";
-                        str += AssessCommon.toString(item.remark) + '<br/>';
-                    })
-                }
-                return str;
-            }
-        });
-        cols.push({field: 'examineName', title: '考核人', width: '10%'});
-        cols.push({
-            field: 'examineDate', title: '考核时间', width: '14%', formatter: function (value, row, index) {
-                return formatDate(row.examineDate, true);
-            }
-        });
-        cols.push({
             field: 'opt', title: '操作', width: '14%', formatter: function (value, row, index) {
                 var str = '';
-                str += '<button type="button" onclick="spotCheck.showHistoryScoreListModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
-                str += '<i class="fa fa-history"></i>';
+                str += '<button type="button" onclick="spotCheck.openSpotCheckProjectDetailUrl(' + row.projectId + ',' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="历史数据">';
+                str += '<i class="fa fa-search"></i>';
                 str += '</button>';
                 return str;
             }
@@ -158,45 +117,11 @@
         });
     }
 
-    //显示历史得分列表弹窗
-    spotCheck.showHistoryScoreListModal = function (itemId) {
-        spotCheck.loadHistoryScoreList(itemId);
-        $('#historyScoreListModal').modal();
+    //项目抽查工分详情
+    spotCheck.openSpotCheckProjectDetailUrl = function (projectId, itemId) {
+        window.open('${pageContext.request.contextPath}/projectSpotCheck/projectSpotDetail?projectId=' + projectId + '&itemId=' + itemId);
     }
 
-    //加载历史工分数据
-    spotCheck.loadHistoryScoreList = function (itemId) {
-        var cols = [];
-        cols.push({field: 'creatorName', title: '考核人', width: '10%'});
-        cols.push({
-            field: 'gmtCreated', title: '考核时间', width: '20%', formatter: function (value, row, index) {
-                return formatDate(row.gmtCreated, true);
-            }
-        });
-        cols.push({
-            field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
-                var str = '';
-                if (value) {
-                    $.each(value, function (i, item) {
-                        str += item.planName + "【" + item.score + "】";
-                        str += AssessCommon.toString(item.remark) + '<br/>';
-                    })
-                }
-                return str;
-            }
-        });
-        $("#tbHistoryScoreList").bootstrapTable('destroy');
-        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistoryGroupsByItemId", cols, {
-            itemId: itemId
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();
-            }
-        });
-    }
 
     //加载质量考核数据
     spotCheck.loadQualityList = function () {

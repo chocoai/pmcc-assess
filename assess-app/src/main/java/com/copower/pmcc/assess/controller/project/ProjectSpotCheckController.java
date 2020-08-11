@@ -23,7 +23,12 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -75,6 +80,7 @@ public class ProjectSpotCheckController {
     public HttpResult saveSpotCheck(String formData) {
         try {
             ProjectSpotCheck spotCheck = JSON.parseObject(formData, ProjectSpotCheck.class);
+            spotCheck.setStatus(ProjectStatusEnum.DRAFT.getKey());
             projectSpotCheckService.saveSpotCheck(spotCheck);
             return HttpResult.newCorrectResult(spotCheck);
         } catch (Exception e) {
@@ -154,22 +160,24 @@ public class ProjectSpotCheckController {
     }
 
     @RequestMapping(value = "/projectSpotModify", name = "项目抽查填写页面", method = {RequestMethod.GET})
-    public ModelAndView projectSpotModify(Integer projectId) {
+    public ModelAndView projectSpotModify(Integer projectId,Integer itemId) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/assessment/spotCheckProjectModify");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         modelAndView.addObject("projectPlanList", projectPlanList);
+        modelAndView.addObject("projectSpotCheckItem", projectSpotCheckService.getProjectSpotCheckItemById(itemId));
         return modelAndView;
     }
 
     @RequestMapping(value = "/projectSpotDetail", name = "项目抽查信息页面", method = {RequestMethod.GET})
-    public ModelAndView projectSpotDetail(Integer projectId) {
+    public ModelAndView projectSpotDetail(Integer projectId,Integer itemId) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/assessment/spotCheckProjectDetail");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         modelAndView.addObject("projectPlanList", projectPlanList);
+        modelAndView.addObject("projectSpotCheckItem", projectSpotCheckService.getProjectSpotCheckItemById(itemId));
         return modelAndView;
     }
 
@@ -229,11 +237,13 @@ public class ProjectSpotCheckController {
         }
     }
 
-    @PostMapping(value = "/saveSpotCheckScore", name = "保存抽查得分数据")
+
+    @PostMapping(value = "/saveSpotCheckItemScore", name = "保存抽查得分明细数据")
     @ResponseBody
-    public HttpResult saveSpotCheckScore(String formData) {
+    public HttpResult saveSpotCheckItemScore(String formData) {
         try {
-            ProjectSpotCheckItemScoreVo projectSpotCheckScore = JSON.parseObject(formData, ProjectSpotCheckItemScoreVo.class);
+            ProjectSpotCheckItemScore spotCheckItemScore = JSON.parseObject(formData, ProjectSpotCheckItemScore.class);
+            projectSpotCheckService.saveSpotCheckItemScore(spotCheckItemScore);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("保存抽查明细数据失败", e);
@@ -248,6 +258,30 @@ public class ProjectSpotCheckController {
             return HttpResult.newCorrectResult(projectSpotCheckService.getRuningSpotCheckList());
         } catch (Exception e) {
             logger.error("获取运行中批次失败", e);
+            return HttpResult.newErrorResult(e);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getHistroyList", name = "获取历史数据列表")
+    public BootstrapTableVo getHistroyList(Integer spotId, Integer projectPhaseId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<ProjectSpotCheckItemScoreVo> checkItemScoreVos = projectSpotCheckService.getHistoryItemScoresByProjectPhaseId(spotId, projectPhaseId);
+        vo.setTotal(page.getTotal());
+        vo.setRows(checkItemScoreVos);
+        return vo;
+    }
+
+    @GetMapping(value = "/getSpotCheckItemScoreById", name = "获取数据id")
+    @ResponseBody
+    public HttpResult getSpotCheckItemScoreById(Integer id) {
+        try {
+            ProjectSpotCheckItemScore spotCheckItemScore = projectSpotCheckService.getSpotCheckItemScoreById(id);
+            return HttpResult.newCorrectResult(spotCheckItemScore);
+        } catch (Exception e) {
+            logger.error("获取复核得分by项目id失败", e);
             return HttpResult.newErrorResult(e);
         }
     }

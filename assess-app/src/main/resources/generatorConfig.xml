@@ -44,7 +44,7 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_project_spot_check_item_score" domainObjectName="ProjectSpotCheckItemScore" >
+        <table tableName="tb_project_spot_check_item" domainObjectName="ProjectSpotCheckItem" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 <!--        <table tableName="tb_basic_estate_land_state" >-->

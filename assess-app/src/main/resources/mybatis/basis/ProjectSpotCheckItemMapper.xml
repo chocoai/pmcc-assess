@@ -6,6 +6,7 @@
     <result column="spot_id" jdbcType="INTEGER" property="spotId" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="estate_name" jdbcType="VARCHAR" property="estateName" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, spot_id, project_id, project_name, creator, gmt_created, gmt_modified
+    id, spot_id, project_id, project_name, estate_name, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemExample" resultMap="BaseResultMap">
     select
@@ -106,11 +107,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_spot_check_item (spot_id, project_id, project_name, 
-      creator, gmt_created, gmt_modified
-      )
+      estate_name, creator, gmt_created, 
+      gmt_modified)
     values (#{spotId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{estateName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItem">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -126,6 +127,9 @@
       </if>
       <if test="projectName != null">
         project_name,
+      </if>
+      <if test="estateName != null">
+        estate_name,
       </if>
       <if test="creator != null">
         creator,
@@ -146,6 +150,9 @@
       </if>
       <if test="projectName != null">
         #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="estateName != null">
+        #{estateName,jdbcType=VARCHAR},
       </if>
       <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
@@ -179,6 +186,9 @@
       <if test="record.projectName != null">
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
+      <if test="record.estateName != null">
+        estate_name = #{record.estateName,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -199,6 +209,7 @@
       spot_id = #{record.spotId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       project_name = #{record.projectName,jdbcType=VARCHAR},
+      estate_name = #{record.estateName,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -218,6 +229,9 @@
       <if test="projectName != null">
         project_name = #{projectName,jdbcType=VARCHAR},
       </if>
+      <if test="estateName != null">
+        estate_name = #{estateName,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -235,6 +249,7 @@
     set spot_id = #{spotId,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       project_name = #{projectName,jdbcType=VARCHAR},
+      estate_name = #{estateName,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

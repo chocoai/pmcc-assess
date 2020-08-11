@@ -9,104 +9,51 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>抽查考核</title>
+    <title>${projectInfo.projectName}</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body class="nav-md">
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <%@include file="/views/share/form_head.jsp" %>
+            <%@include file="/views/share/common_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        项目抽查
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-2 col-md-2">
+                                        <div id="navPlanList"
+                                             class="nav flex-column nav-pills nav-secondary nav-pills-no-bd"
+                                             role="tablist" aria-orientation="vertical">
+                                            <c:forEach items="${projectPlanList}" var="item"
+                                                       varStatus="status">
+                                                <a class="nav-link show" data-toggle="pill" href="#tabPane${item.id}"
+                                                   role="tab"
+                                                   onclick="spotCheckProject.loadProjectPhaseList($('#tbPlanPhaseList${item.id}'),${item.id})"
+                                                   aria-controls="v-pills-home-nobd"
+                                                   aria-selected="true">${item.planName}</a>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                    <div class="col-10 col-md-10">
+                                        <div class="tab-content" id="v-pills-without-border-tabContent">
+                                            <c:forEach items="${projectPlanList}" var="item" varStatus="status">
+                                                <div class="tab-pane fade" id="tabPane${item.id}" role="tabpanel"
+                                                     aria-labelledby="v-pills-messages-tab-nobd">
+                                                    <div class="card-body">
+                                                        <table class="table table-bordered"
+                                                               id="tbPlanPhaseList${item.id}"></table>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <form id="frmSpotCheck" class="form-horizontal">
-                                    <input type="hidden" name="id" value="${projectSpotCheck.id}">
-                                    <div class="form-group form-inline">
-                                        <label class="col-sm-1 col-form-label">抽查月份<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text" data-rule-maxlength="50" placeholder="抽查月份"
-                                                   name="spotMonth" readonly="readonly" required
-                                                   class="form-control input-full date-picker dbdate-month"
-                                                   data-date-format="yyyy-mm"
-                                                   value="${projectSpotCheck.spotMonth}">
-                                        </div>
-                                        <label class="col-sm-1 col-form-label">被抽查人<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="hidden" name="bySpotUser" data-title="account"
-                                                   value="${projectSpotCheck.bySpotUser}">
-                                            <input type="text" data-rule-maxlength="50" placeholder="被抽查人"
-                                                   name="bySpotUserName" required data-title="name"
-                                                   readonly="readonly" onclick="spotCheck.selectUser(this);"
-                                                   class="form-control input-full"
-                                                   value="${projectSpotCheck.bySpotUserName}">
-                                        </div>
-                                        <label class="col-sm-1 col-form-label">标题<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text" data-rule-maxlength="50"
-                                                   onfocus="spotCheck.titleFocus(this);"
-                                                   placeholder="标题" name="title" value="${projectSpotCheck.title}"
-                                                   class="form-control input-full">
-                                        </div>
-                                    </div>
-                                </form>
-                                <p id="spotCheckBar">
-                                    <button class="btn btn-success btn-sm" type="button"
-                                            onclick="spotCheck.showProjectListModal();"><span class="btn-label"><i
-                                            class="fa fa-plus"></i></span>
-                                        选择项目
-                                    </button>
-                                </p>
-                                <table class="table table-bordered" id="tbSpotCheckItemList"></table>
-                            </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        质量考核数据
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-bordered" id="tbQualityList"></table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-                        <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                                取消
-                            </button>
-                            <button id="commit_btn" style="margin-left: 10px;" class="btn btn-primary"
-                                    onclick="spotCheck.applySumit();">
-                                提交
-                            </button>
-                        </div>
-                    </div>
-                    <c:if test="${not empty processInsId and processInsId != 0}">
-                        <%@include file="/views/share/form_log.jsp" %>
-                        <form id="process_variable_form">
-                            <%@include file="/views/share/form_edit.jsp" %>
-                        </form>
-                    </c:if>
                 </div>
             </div>
         </div>
@@ -115,196 +62,6 @@
 </div>
 </body>
 </html>
-<%--选择项目窗口--%>
-<div id="projectListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 90%;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">项目列表</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form id="frmQuery" class="form-horizontal">
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <label class="col-md-1 col-form-label">项目名称</label>
-                                <div class="col-md-2 p-0">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="项目名称" name="projectName"
-                                           class="form-control input-full">
-                                </div>
-                                <label class="col-md-1 col-form-label">项目经理</label>
-                                <div class="col-md-2 p-0">
-                                    <input type="hidden" name="queryManager" data-title="account">
-                                    <input type="text" readonly="readonly" onclick="spotCheck.selectUser(this);"
-                                           placeholder="项目经理" name="queryManagerName"
-                                           class="form-control input-full" data-title="name">
-                                </div>
-                                <button style="margin-left: 10px" class="btn btn-info  btn-sm"
-                                        type="button"
-                                        onclick="spotCheck.loadProjectList();">
-											<span class="btn-label">
-												<i class="fa fa-search"></i>
-											</span>
-                                    查询
-                                </button>
-                                <button style="margin-left: 10px" class="btn btn-info  btn-sm"
-                                        type="button"
-                                        onclick="$('#frmQuery').clearAll()">
-                                                    <span class="fa fa-undo-alt" aria-hidden="true"
-                                                          class="-space"></span>
-                                    重置
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="showOtherQuery">
-                        <div class="row form-group">
-                            <div class="col-md-12">
-                                <div class="form-inline x-valid">
-                                    <label class="col-md-1 col-form-label">开始时间</label>
-                                    <div class="col-md-2 p-0">
-                                        <input type="text"
-                                               class="form-control input-full date-picker dbdate"
-                                               data-date-format="yyyy-mm-dd" name="queryTimeStart"
-                                               placeholder="开始时间"/>
-                                    </div>
-                                    <label class="col-md-1 col-form-label">结束时间</label>
-                                    <div class="col-md-2 p-0">
-                                        <input type="text"
-                                               class="form-control input-full date-picker dbdate"
-                                               data-date-format="yyyy-mm-dd" name="queryTimeEnd"
-                                               placeholder="结束时间"/>
-                                    </div>
-                                    <label class="col-md-1 col-form-label">状态</label>
-                                    <div class="col-md-2 p-0">
-                                        <select name="projectStatus" class="form-control input-full">
-                                            <option value="">--请选择--</option>
-                                            <c:forEach var="item" items="${statusEnumList}">
-                                                <option value="${item.key}">${item.value}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <label class="col-md-1 col-form-label">委托目的</label>
-                                    <div class="col-md-2 p-0">
-                                        <select name="entrustPurpose" class="form-control input-full">
-                                            <option value="">--请选择--</option>
-                                            <c:forEach var="item" items="${entrustPurposeList}">
-                                                <option value="${item.id}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-md-12">
-                                <div class="form-inline x-valid">
-                                    <label class="col-md-1 col-form-label">报告使用单位</label>
-                                    <div class="col-md-2 p-0">
-                                        <input type="text"
-                                               placeholder="单位" class="form-control input-full"
-                                               name="queryUseUnitName">
-                                    </div>
-                                    <label class="col-md-1 col-form-label">评估部门</label>
-                                    <div class="col-md-2 p-0">
-                                        <input name="queryDepartmentId" class="form-control input-full"
-                                               type="hidden"/>
-                                        <input name="queryDepartmentName"
-                                               class="form-control input-full"
-                                               placeholder="评估部门"
-                                               onclick="spotCheck.selectDepartment(this);" readonly="readonly"/>
-                                    </div>
-                                    <label class="col-md-1 col-form-label">贷款类型</label>
-                                    <div class="col-md-2 p-0">
-                                        <select name="queryLoanType" class="form-control input-full">
-                                            <option value="">--请选择--</option>
-                                            <c:forEach var="item" items="${loanTypeList}">
-                                                <option value="${item.id}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <label class="col-md-1 col-form-label">项目类型</label>
-                                    <div class="col-md-2 p-0">
-                                        <select class="form-control input-full"
-                                                name="queryProjectCategoryId">
-                                            <option value="">--请选择--</option>
-                                            <c:forEach var="classItem" items="${projectCategoryList}">
-                                                <c:forEach var="typeItem"
-                                                           items="${classItem.keyValueDtos}">
-                                                    <c:if test="${not empty typeItem.keyValueDtos}">
-                                                        <c:forEach var="categoryItem"
-                                                                   items="${typeItem.keyValueDtos}">
-                                                            <option value="${categoryItem.key}">${categoryItem.value}</option>
-                                                        </c:forEach>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <table class="table table-bordered" id="tb_projectList"></table>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="spotCheck.selectProject();">
-                    选择
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<%--填写工时考核窗口--%>
-<div id="editSpotCheckItemGroupModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 70%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">工时考核</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form id="frmSpotCheckItemGroup" class="form-horizontal">
-                    <input type="hidden" name="itemId">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col" width="20%">阶段</th>
-                            <th scope="col" width="20%">得分</th>
-                            <th scope="col" width="60%">说明</th>
-                        </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="spotCheck.saveSpotCheckScore();">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <%--历史考核列表窗口--%>
 <div id="historyScoreListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
@@ -328,406 +85,201 @@
         </div>
     </div>
 </div>
-
-
 <script type="text/javascript">
+    var UERemark;
     $(function () {
-        spotCheck.loadSpotCheckItemList();
-        spotCheck.loadQualityList();
-        //月份选择处理
-        DatepickerUtils.initDate($('.dbdate-month'), {
-            autoclose: true,
-            todayBtn: "linked",
-            language: "zh-CN",
-            clearBtn: true,
-            format: 'yyyy-mm',
-            startView: 4,
-            minView: 3
-        });
-    })
+        $('#navPlanList a:first').trigger('click');
 
-    var spotCheck = {};
-    spotCheck.ueContainer = [];
-    spotCheck.initUEditor = function (id, index) {
-        UE.delEditor(id);
-        var ueItem = UE.getEditor(id, {
+        UERemark = UE.getEditor('UERemark', {
             toolbars: [
                 ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
             ],
             zIndex: 11009,
-            initialFrameWidth: 500,
-            initialFrameHeight: 120,
+            initialFrameWidth: '80%',
+            initialFrameHeight: 220,
             elementPathEnabled: false,//是否启用元素路径，默认是true显示
             wordCount: false, //是否开启字数统计
             autoHeightEnabled: false,
             autoFloatEnabled: true
         });
-        spotCheck.ueContainer[index] = ueItem;
-    }
+    })
 
-    spotCheck.loadSpotCheckItemList = function () {
+    var spotCheckProject = {};
+    spotCheckProject.currProjectPhase = undefined;//当前工作事项
+
+    //加载工作事项
+    spotCheckProject.loadProjectPhaseList = function ($list, planId) {
         var cols = [];
+        cols.push({field: 'id', title: 'id', visible: false});
+        cols.push({field: 'projectPhaseName', title: '名称', width: '10%'});
+        cols.push({field: 'standard', title: '标准', width: '30%'});
+        cols.push({field: 'score', title: '得分', width: '10%'});
         cols.push({
-            field: 'projectName', title: '项目名称', width: '20%', formatter: function (value, row, index) {
-                return '<a href="${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=' + row.projectId + '" target="_blank">' + value + '</a>';
-            }
-        });
-        cols.push({
-            field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
-                var str = '';
-                if (value) {
-                    $.each(value, function (i, item) {
-                        if (item.bisChecked) {
-                            str += item.planName + "【" + item.score + "】";
-                            str += AssessCommon.toString(item.remark) + '<br/>';
-                        }
-                    })
+            field: 'remark', title: '说明', width: '30%', formatter: function (value, row, index) {
+                if (value && value.indexOf('<img') >= 0) {
+                    return '<button type="button" onclick="spotCheckProject.showRemarkInfo(' + row.id + ');" class="btn btn-sm btn-info">查看说明</button>';
+                } else {
+                    return value;
                 }
-                return str;
-            }
-        });
-        cols.push({field: 'examineName', title: '考核人', width: '10%'});
-        cols.push({
-            field: 'examineDate', title: '考核时间', width: '14%', formatter: function (value, row, index) {
-                return formatDate(row.examineDate, true);
             }
         });
         cols.push({
-            field: 'opt', title: '操作', width: '14%', formatter: function (value, row, index) {
+            field: 'opt', title: '操作', width: '15%', formatter: function (value, row, index) {
                 var str = '';
-                str += '<button type="button" onclick="spotCheck.showEditScoreModal(' + row.id + ',' + row.projectId + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="填写">';
-                str += '<i class="fa fa-pen"></i>';
-                str += '</button>';
-                str += '<button type="button" onclick="spotCheck.showHistoryScoreListModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="历史数据">';
+                str += '<button type="button" onclick="spotCheckProject.showHistoryItemModal(' + row.projectPhaseId + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="历史数据">';
                 str += '<i class="fa fa-history"></i>';
                 str += '</button>';
                 return str;
             }
         });
-        $("#tbSpotCheckItemList").bootstrapTable('destroy');
-        TableInit("tbSpotCheckItemList", "${pageContext.request.contextPath}/projectSpotCheck/getProjectSpotCheckItemList", cols, {
-            spotId: '${projectSpotCheck.id}'
+        $list.bootstrapTable('destroy');
+        TableInit($list, "${pageContext.request.contextPath}/projectSpotCheck/getSpotCheckItemScoreVoListByPlanId", cols, {
+            itemId: '${projectSpotCheckItem.id}',
+            planId: planId
         }, {
             showColumns: false,
             showRefresh: false,
             search: false,
-            toolBar: '#spotCheckBar',
+            uniqueId: 'id',
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
         });
     }
 
-    //选择人员
-    spotCheck.selectUser = function (_this) {
-        var div = $(_this).closest("div");
-        erpEmployee.select({
-            currOrgId: '${companyId}',
-            showAllUser: 2,
-            onSelected: function (data) {
-                div.find("input[data-title='name']").val(data.name);
-                div.find("input[data-title='account']").val(data.account);
-            }
-        });
-    }
-
-    //选择部门
-    spotCheck.selectDepartment = function (this_) {
-        var div = $(this_).closest("div");
-        var options = {
-            onSelected: function (nodes) {
-                div.find("[name='queryDepartmentId']").val(nodes[0].id);
-                div.find("[name='queryDepartmentName']").val(nodes[0].name);
-            }
-        };
-        erpDepartment.select(options);
-    };
-
-    //标题文本框focus
-    spotCheck.titleFocus = function (_this) {
-        var form = $(_this).closest('form');
-        var spotMonth = form.find('[name=spotMonth]').val();
-        var name = form.find('[name=bySpotUserName]').val();
-        form.find('[name=title]').val(spotMonth + name + "项目抽查考核");
-    }
-
-    //显示项目列表弹窗
-    spotCheck.showProjectListModal = function () {
-        spotCheck.loadProjectList();
-        $('#projectListModal').modal();
-    }
-
-    //加载项目列表
-    spotCheck.loadProjectList = function () {
-        var selectObj = formSerializeArray($("#frmQuery"));
+    //加载任务
+    spotCheckProject.loadPlanDetailsList = function ($list, planId) {
         var cols = [];
+        cols.push({field: 'id', title: 'id', visible: false});
         cols.push({
-            field: 'projectName', title: '项目名称', width: '30%', formatter: function (value, row, index) {
-                var str = value;
-                str += '<span style="margin-left: 2px;background-color: #868b9e;" class="label label-default">' + row.useUnitName + '</span>';
-                str += '<span style="margin-left: 2px;background-color: #9ed2a0;" class="label label-success">' + row.departmentName + '</span>';
-                str += '<span style="margin-left: 2px;background-color: #b3b0e2;" class="label label-secondary">' + row.entrustPurposeName + '</span>';
-                str += '<span style="margin-left: 2px;background-color: #accfea;" class="label label-info">' + row.loanTypeName + '</span>';
+            field: 'projectPhaseName', title: '名称', width: '35%', formatter: function (value, row, index) {
+                var str = row.projectPhaseName;
+                if (row.planRemarks) {
+                    str += "<span style='font-size: 10px;'>(" + row.planRemarks + ")</span>";
+                }
                 return str;
             }
         });
         cols.push({
-            field: 'serviceEnd', title: '项目成员', width: '15%', formatter: function (value, row, index) {
-                var s = "";
-                if (row.userAccountManagerName) {
-                    s += "<span class='label label-primary'>" + row.userAccountManagerName.split("_")[0] + "</span>"
-                }
-                if (row.userAccountMemberName) {
-                    s += " " + row.userAccountMemberName.split("_")[0];
+            field: 'executeUserName', title: '责任人/审批人', width: '15%', formatter: function (value, row, index) {
+                var s = value;
+                if (row.approverUserName) {
+                    s += '/' + row.approverUserName;
                 }
                 return s;
             }
         });
         cols.push({
-            field: 'projectClassName', title: '类型', width: '8%', formatter: function (value, row, index) {
-                return row.projectCategoryName;
-            }
-        });
-        cols.push({field: 'projectStatus', title: '状态', width: '10%'});
-        cols.push({
-            field: 'finishPre', title: '项目进度', width: '15%', formatter: function (value, row, index) {
-                var s = "<div class='progress progress-sm' style='margin-bottom: 0px;'>";
-                s += "<div class='progress-bar bg-success' role='progressbar'  style='width: " + value + "%;'></div>";
-                s += "</div>";
-                s += "<small>完成" + value + "%</small>";
-                return s;
-            }
-        });
-        cols.push({
-            field: 'gmtCreated', title: '立项时间', width: '14%', formatter: function (value, row, index) {
-                return formatDate(row.gmtCreated, true);
-            }
-        });
-        cols.push({
-            field: 'id', title: '操作', width: '7%', formatter: function (value, row, index) {
+            field: 'status', title: '状态', formatter: function (value, row, index) {
                 var str = "";
-                str += '<button type="button" onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
-                str += '<i class="fa fa-search"></i>';
-                str += '</button>';
+                switch (value) {
+                    case "runing": {
+                        str = "<span class='label label-info'>" + "进行中" + "</span>";
+                        break;
+                    }
+                    case "finish": {
+                        str = "<span class='label label-success'>" + "已完成" + "</span>";
+                        break;
+                    }
+                    case "close": {
+                        str = "<span class='label label-warning'>" + "关闭" + "</span>";
+                        break;
+                    }
+                    case "none": {
+                        str = "<span class='label label-default'>" + row.projectPhaseName + "</span>";
+                        break;
+                    }
+                }
                 return str;
             }
         });
-        $("#tb_projectList").bootstrapTable('destroy');
-        TableInit("tb_projectList", "${pageContext.request.contextPath}/projectCenter/getProjectList", cols, selectObj, {
+        cols.push({
+            field: 'planStartDate', title: '开始日期', width: '10%', formatter: function (value, row, index) {
+                return formatDate(value, false);
+            }
+        });
+        cols.push({
+            field: 'planEndDate', title: '结束日期', width: '10%', formatter: function (value, row, index) {
+                return formatDate(value, false);
+            }
+        });
+        cols.push({
+            field: 'opt', title: '操作', width: '7%', formatter: function (value, row, index) {
+                var str = "";
+                if (row.displayUrl) {
+                    str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' title='查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
+                }
+                return str;
+            }
+        });
+        var select = {
+            projectId: "${projectInfo.id}",
+            planId: planId
+        };
+        $list.bootstrapTable('destroy');
+        TableInit($list, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, {
+            formData: JSON.stringify(select)
+        }, {
             showColumns: false,
             showRefresh: false,
             search: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
-        }, true);
-    }
-
-    //选择项目
-    spotCheck.selectProject = function () {
-        var projectIds = [];
-        var $table = $("#tb_projectList")
-        var rows = $table.bootstrapTable('getSelections');
-        $.each(rows, function (i, item) {
-            projectIds.push(item.id);
-        })
-        $.post('${pageContext.request.contextPath}/projectSpotCheck/selectProject', {
-            projectIds: projectIds.join(','),
-            spotId: $('#frmSpotCheck').find('[name=id]').val()
-        }, function (result) {
-            if (result.ret) {
-                notifySuccess('提示', '选择成功');
-                $table.bootstrapTable('uncheckAll');
-                spotCheck.loadSpotCheckItemList();
-            } else {
-                AlertError('错误', result.errmsg);
-            }
-        }, 'json');
-    }
-
-    //显示填写工分窗口
-    spotCheck.showEditScoreModal = function (itemId, projectId) {
-        var modal = $('#editSpotCheckItemGroupModal');
-        modal.find('tbody').empty();
-        $.getJSON('${pageContext.request.contextPath}/projectSpotCheck/getSpotCheckScoreContent', {
-            itemId: itemId,
-            projectId: projectId
-        }, function (result) {
-            if (result.ret && result.data) {
-                spotCheck.ueContainer = [];
-                $.each(result.data, function (i, item) {
-                    var html = '<tr class="reviewRow">';
-                    html += '<td scope="col"><div class="form-check" onclick="spotCheck.toggleScore(this);" style="justify-content:left"><label class="form-check-label"><input class="form-check-input" type="checkbox" checked="checked" name="bisEnable" value="true">\n' +
-                        '<span class="form-check-sign">' + item.planName + '</span></label></div>' +
-                        '<input type="hidden" name="planId" value="' + item.planId + '"><input type="hidden" name="planName" value="' + item.planName + '"></td>';
-                    html += '<td scope="col"><input type="hidden" name="standardScore" value="' + item.standardScore + '">' +
-                        '<input type="text" data-rule-number="true" required class="form-control input-full" name="score" value="' + AssessCommon.toString(item.score) + '"></td>';
-                    html += '<td scope="col"><textarea type="text" id="remark' + i + '" name="remark" >' + AssessCommon.toString(item.remark) + '</textarea></td></tr>';
-                    modal.find('tbody').append(html);
-                    if (item.bisChecked == false) {
-                        modal.find('tbody').find('tr:last').find('td:eq(0)').find(':checkbox').trigger('click');
-                    }
-                });
-                $.each(result.data, function (i, item) {
-                    spotCheck.initUEditor("remark" + i, i);//初始化ueditor
-                });
-            }
-        })
-        $('#frmSpotCheckItemGroup').find('[name=itemId]').val(itemId);
-        modal.modal();
-    }
-
-    spotCheck.toggleScore = function (_this) {
-        var checked = $(_this).closest('td').find(':checkbox').prop('checked');
-        if (checked) {
-            $(_this).closest('td').siblings().show();
-        } else {
-            $(_this).closest('td').siblings().hide();
-        }
-    }
-
-    //保存工分
-    spotCheck.saveSpotCheckScore = function () {
-        if (!$('#frmSpotCheckItemGroup').valid()) {
-            return false;
-        }
-        var trs = $('#frmSpotCheckItemGroup').find('.reviewRow');
-        var data = {};
-        var projectSpotCheckItemScoreList = [];
-        var totalScore = null;
-        var standardTotalScore = null;
-        trs.each(function (i, item) {
-            var checked = $(item).find('td:eq(0)').find(':checkbox').prop('checked');
-            var projectSpotCheckItemScore = {};
-            projectSpotCheckItemScore.bisChecked = checked;
-            projectSpotCheckItemScore.planId = $(item).find('[name=planId]').val();
-            projectSpotCheckItemScore.planName = $(item).find('[name=planName]').val();
-            projectSpotCheckItemScore.standardScore = $(item).find('[name=standardScore]').val();
-            projectSpotCheckItemScore.score = $(item).find('[name=score]').val();
-            projectSpotCheckItemScore.remark = spotCheck.ueContainer[i].getContent();
-            if (projectSpotCheckItemScore.score && checked) {
-                totalScore += parseFloat(projectSpotCheckItemScore.score);
-                standardTotalScore += parseFloat(projectSpotCheckItemScore.standardScore);
-            }
-            projectSpotCheckItemScoreList.push(projectSpotCheckItemScore);
         });
-        data.itemId = $('#frmSpotCheckItemGroup').find('[name=itemId]').val();
-        data.projectSpotCheckItemScoreList = projectSpotCheckItemScoreList;
-        data.totalScore = totalScore;
-        data.standardTotalScore = standardTotalScore;
-        $.post('${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheckScore', {
-            formData: JSON.stringify(data)
-        }, function (result) {
-            if (result.ret) {
-                notifySuccess('提示', '保存成功');
-                spotCheck.loadSpotCheckItemList();
-                $('#editSpotCheckItemGroupModal').modal('hide');
-            } else {
-                AlertError('失败', result.errmsg);
-            }
-        }, 'json');
     }
 
-    //显示历史得分列表弹窗
-    spotCheck.showHistoryScoreListModal = function (itemId) {
-        spotCheck.loadHistoryScoreList(itemId);
+    //显示历史数据弹窗
+    spotCheckProject.showHistoryItemModal = function (projectPhaseId) {
+        spotCheckProject.loadHistoryList(projectPhaseId);
         $('#historyScoreListModal').modal();
     }
 
-    //加载历史工分数据
-    spotCheck.loadHistoryScoreList = function (itemId) {
+    //加载历史记录
+    spotCheckProject.loadHistoryList = function (projectPhaseId) {
         var cols = [];
-        cols.push({field: 'creatorName', title: '考核人', width: '10%'});
+        cols.push({field: 'creatorName', title: '填写人', width: '10%'});
         cols.push({
-            field: 'gmtCreated', title: '考核时间', width: '20%', formatter: function (value, row, index) {
+            field: 'gmtCreated', title: '填写时间', width: '14%', formatter: function (value, row, index) {
                 return formatDate(row.gmtCreated, true);
             }
         });
+        cols.push({field: 'score', title: '得分', width: '10%'});
         cols.push({
-            field: 'projectSpotCheckItemScoreList', title: '内容', width: '50%', formatter: function (value, row, index) {
-                var str = '';
-                if (value) {
-                    $.each(value, function (i, item) {
-                        str += item.planName + "【" + item.score + "】";
-                        str += AssessCommon.toString(item.remark) + '<br/>';
-                    })
+            field: 'remark', title: '说明', width: '30%', formatter: function (value, row, index) {
+                if (value && value.indexOf('<img') >= 0) {
+                    return '<button type="button" onclick="spotCheckProject.showRemarkInfo(' + row.id + ');" class="btn btn-sm btn-info">查看说明</button>';
+                } else {
+                    return value;
                 }
-                return str;
             }
         });
         $("#tbHistoryScoreList").bootstrapTable('destroy');
-        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistoryGroupsByItemId", cols, {
-            itemId: itemId
+        TableInit("tbHistoryScoreList", "${pageContext.request.contextPath}/projectSpotCheck/getHistroyList", cols, {
+            spotId: '${projectSpotCheckItem.id}',
+            projectPhaseId: projectPhaseId
         }, {
             showColumns: false,
             showRefresh: false,
             search: false,
+            uniqueId: 'id',
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
         });
     }
 
-    //加载质量考核数据
-    spotCheck.loadQualityList = function () {
-        var cols = [];
-        cols.push({field: 'projectName', title: '项目名称', width: '20%'});
-        cols.push({field: 'planName', title: '阶段事项名称', width: '20%'});
-        cols.push({field: 'businessKey', title: '名称', width: '20%'});
-        cols.push({field: 'byExaminePeopleName', title: '被抽查人', width: '10%'});
-        cols.push({field: 'examineScore', title: '得分', width: '10%'});
-        cols.push({
-            field: 'bisQualified', title: '是否合格', width: '10%', formatter: function (value, row, index) {
-                if (value) {
-                    return '是';
-                } else {
-                    return false;
-                }
+    //显示说明信息
+    spotCheckProject.showRemarkInfo = function (id) {
+        $.getJSON('${pageContext.request.contextPath}/projectSpotCheck/getSpotCheckItemScoreById', {id: id}, function (result) {
+            if (result.ret) {
+                layer.open({
+                    type: 1,
+                    area: ['80%', '70%'],
+                    maxmin: true,
+                    content: result.data.remark
+                })
             }
-        });
-        $("#tbQualityList").bootstrapTable('destroy');
-        TableInit("tbQualityList", "${pageContext.request.contextPath}/assessmentPerformance/getPerformanceListBySpotBatchId", cols, {
-            spotBatchId: '${projectSpotCheck.id}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();
-            }
-        });
-    }
-
-    //提交流程
-    spotCheck.applySumit = function () {
-        if (!$('#frmSpotCheck').valid()) {
-            return false;
-        }
-        var data = formSerializeArray($('#frmSpotCheck'));
-        if ('${processInsId}' == '' || '${processInsId}' == '0') {
-            $.post('${pageContext.request.contextPath}/projectSpotCheck/applyCommit', {
-                formData: JSON.stringify(data)
-            }, function (result) {
-                if (result.ret) {
-                    AlertSuccess('成功', '提交成功', function () {
-                        window.close();
-                    })
-                } else {
-                    AlertError('失败', result.errmsg);
-                }
-            }, 'json');
-        } else {
-            var jsonData = formSerializeArray($("#process_variable_form"));
-            jsonData.formData = JSON.stringify(data);
-            $.post('${pageContext.request.contextPath}/projectSpotCheck/editCommit', jsonData, function (result) {
-                if (result.ret) {
-                    AlertSuccess('成功', '提交成功', function () {
-                        window.close();
-                    })
-                } else {
-                    AlertError('失败', result.errmsg);
-                }
-            }, 'json');
-        }
+        })
     }
 </script>
