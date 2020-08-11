@@ -26,9 +26,11 @@ import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -96,6 +98,8 @@ public class ProjectAssessmentBonusService {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
 
     /**
      * 相同标题  相同年  相同月  视为一个组合主键  不能与其相同
@@ -293,7 +297,7 @@ public class ProjectAssessmentBonusService {
         List<HrLegworkDto> legworkDtoList = getHrLegworkDtoList(assessmentBonus);
         if (CollectionUtils.isEmpty(legworkDtoList)) return;
         if (StringUtils.isBlank(assessmentBonus.getTitle())) {
-            assessmentBonus.setTitle(String.format("%s年-%s月外勤加分考核", String.valueOf(assessmentBonus.getYear()), String.valueOf(assessmentBonus.getMonth())));
+            assessmentBonus.setTitle(String.format("%s年-%s月外勤加分考核", assessmentBonus.getYear(), assessmentBonus.getMonth()));
         }
         assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
         saveAssessmentBonus(assessmentBonus);
@@ -311,7 +315,7 @@ public class ProjectAssessmentBonusService {
                 //1.找出该项目中的查勘信息，先确定该项目查勘了几个楼盘，再根据配置和楼盘的区域确定是否做加分处理
                 //2.如果需要加分则需找出该项目查勘中所获取的工时得分，及各个成员的工时得分，将总的工时得分乘以系数得到对应加分值
                 //3.再根据各个成员工时得分的占比，将加分值分摊到成员上，将相关数据写入到对应的表中
-                if (CollectionUtils.isNotEmpty(projectIds) && !projectIds.contains(sysProjectDto.getProjectId())){
+                if (CollectionUtils.isNotEmpty(projectIds) && !projectIds.contains(sysProjectDto.getProjectId())) {
                     continue;//不处理
                 }
                 if (getAssessmentBonusItemCount(sysProjectDto.getProjectId()) > 0) {
@@ -326,8 +330,6 @@ public class ProjectAssessmentBonusService {
                 List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
                 for (BasicApplyBatch basicApplyBatch : basicApplyBatchList) {
                     BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
-                    DataAreaAssessmentBonus bonus = dataAreaAssessmentBonusService.getDataAreaAssessmentBonusByArea(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict());
-                    if (bonus == null) continue;
                     //找出该楼盘下的工时考核得分
                     List<AssessmentPerformanceDto> resultPerformanceDtos = Lists.newArrayList();
                     AssessmentPerformanceDto where = new AssessmentPerformanceDto();
@@ -351,6 +353,9 @@ public class ProjectAssessmentBonusService {
                         if (!map.isEmpty()) {
                             KeyValueDto keyValueDto = new KeyValueDto();
                             for (Map.Entry<String, BigDecimal> entry : map.entrySet()) {
+                                SysUserDto sysUser = erpRpcUserService.getSysUser(entry.getKey());
+                                DataAreaAssessmentBonus bonus = dataAreaAssessmentBonusService.getDataAreaAssessmentBonusByArea(sysUser.getDepartmentId(),basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict());
+                                if (bonus == null) continue;
                                 KeyValueDto valueDto = getKeyValueDtoByKey(keyValueDtoList, entry.getKey());
                                 BigDecimal bonusScore = entry.getValue().multiply(bonus.getCoefficient());
                                 totalBonusScore = totalBonusScore.add(bonusScore);
@@ -383,7 +388,7 @@ public class ProjectAssessmentBonusService {
 
         //1.针对相关的项目经理，都发起一个待处理任务，项目经理确认调整各个项目中的加分值
         //2.发起一个待处理任务到技术负责人，可看到本次所有相关的项目的加分值及各个项目经理处理的情况
-        //3.技术负责人提交流程后大部分负责人审核，当审核完成后将相关数据写入到考核系统中的考核记录表中
+        //3.技术负责人提交流程后到部门负责人审核，当审核完成后将相关数据写入到考核系统中的考核记录表中
         if (CollectionUtils.isNotEmpty(managerList)) {
             for (String manager : managerList) {//为项目经理添加任务
                 String url = String.format("/%s/projectAssessmentBonus/index?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
@@ -425,7 +430,14 @@ public class ProjectAssessmentBonusService {
     //确定本项目查勘了几个楼盘
     private List<BasicApplyBatch> getBasicApplyBatchList(ProjectInfo projectInfo) {
         String sceneExploreKey = AssessPhaseKeyConstant.SCENE_EXPLORE;
-        List<ProjectPlanDetails> detailsList = projectPlanDetailsService.getProjectPlanDetailsByPhaseKey(projectInfo.getId(), projectInfo.getProjectCategoryId(), sceneExploreKey);
+        String caseStudyExtend = AssessPhaseKeyConstant.CASE_STUDY_EXTEND;
+        List<ProjectPlanDetails> detailsList = Lists.newArrayList();
+        List<ProjectPlanDetails> sceneDetailsList = projectPlanDetailsService.getProjectPlanDetailsByPhaseKey(projectInfo.getId(), projectInfo.getProjectCategoryId(), sceneExploreKey);
+        List<ProjectPlanDetails> caseDetailsList = projectPlanDetailsService.getProjectPlanDetailsByPhaseKey(projectInfo.getId(), projectInfo.getProjectCategoryId(), caseStudyExtend);
+        if (CollectionUtils.isNotEmpty(sceneDetailsList))
+            detailsList.addAll(sceneDetailsList);
+        if (CollectionUtils.isNotEmpty(caseDetailsList))
+            detailsList.addAll(caseDetailsList);
         if (CollectionUtils.isEmpty(detailsList)) return null;
         List<BasicApplyBatch> batchs = basicApplyBatchService.getBasicApplyBatchsByPlanDetailsIds(LangUtils.transform(detailsList, o -> o.getId()));
         if (CollectionUtils.isEmpty(batchs)) return null;

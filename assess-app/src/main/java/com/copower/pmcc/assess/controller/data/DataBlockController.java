@@ -1,32 +1,20 @@
 package com.copower.pmcc.assess.controller.data;
 
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.controller.BaseController;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
-import com.copower.pmcc.assess.job.AssessmentBonusJob;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.NetUrlConfigService;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.enums.MessageTypeEnum;
-import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.message.model.MessageResponse;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Map;
 
 /**
  * @Auther: zch
@@ -44,8 +32,6 @@ public class DataBlockController extends BaseController {
     private ErpAreaService erpAreaService;
     @Autowired
     private NetUrlConfigService netUrlConfigService;
-    @Autowired
-    private AssessmentBonusJob assessmentBonusJob;
 
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})

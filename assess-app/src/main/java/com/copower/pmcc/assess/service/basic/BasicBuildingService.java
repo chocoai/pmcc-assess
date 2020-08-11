@@ -208,14 +208,6 @@ public class BasicBuildingService extends BasicEntityAbstract {
         return vo;
     }
 
-    public List<CustomCaseEntity> autoCompleteCaseBuilding(String buildingNumber, Integer estateId) {
-        if (StringUtils.isBlank(buildingNumber) || estateId == null) return null;
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomCaseEntity> entities = basicBuildingDao.getLatestVersionBuildingList(buildingNumber, estateId);
-        return entities;
-    }
-
     public BasicBuildingVo getBasicBuildingVo(BasicBuilding basicBuilding) {
         if (basicBuilding == null) {
             return null;

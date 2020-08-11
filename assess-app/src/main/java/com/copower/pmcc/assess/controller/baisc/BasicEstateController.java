@@ -8,10 +8,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
-import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -40,7 +37,7 @@ public class BasicEstateController {
     @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
-    private BasicAlternativeCaseDao basicAlternativeCaseDao;
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     @Autowired
@@ -188,7 +185,7 @@ public class BasicEstateController {
             BasicApplyBatchDetail sourceApplyBatchDetail = basicApplyBatchDetailDao.getBasicApplyBatchDetail(where);
             if (sourceApplyBatchDetail != null) {
                 applyBatchDetail.setQuoteId(sourceApplyBatchDetail.getId());
-                basicApplyBatchDetailDao.updateInfo(applyBatchDetail);
+                basicApplyBatchDetailService.saveBasicApplyBatchDetail(applyBatchDetail);
             }
             return HttpResult.newCorrectResult(basicEstate);
         } catch (Exception e) {

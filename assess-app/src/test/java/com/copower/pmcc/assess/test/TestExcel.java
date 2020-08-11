@@ -19,6 +19,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.junit.Test;
 
 public class TestExcel {
 
@@ -128,5 +129,11 @@ public class TestExcel {
         palette.setColorAtIndex(petteIndex, (byte) rgb.getRed(), (byte) rgb.getGreen(), (byte) rgb
                 .getBlue());
         return petteIndex;
+    }
+
+    @Test
+    public void test2(){
+        String format = String.format("%s%s%s", "/", "aaa", "/");
+        System.out.print("/aaa/hhh/nnn".replaceAll(format,"/bbbbb/"));
     }
 }

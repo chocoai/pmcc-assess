@@ -23,7 +23,7 @@ public class BasicApplyBatchDetailController {
     public HttpResult saveAndUpdateBasicApplyBatchDetail(String formData) {
         try {
             BasicApplyBatchDetail batchDetail = JSONObject.parseObject(formData,BasicApplyBatchDetail.class) ;
-            basicApplyBatchDetailService.updateBasicApplyBatchDetailInfo(batchDetail) ;
+            basicApplyBatchDetailService.saveBasicApplyBatchDetail(batchDetail); ;
             return HttpResult.newCorrectResult(batchDetail);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

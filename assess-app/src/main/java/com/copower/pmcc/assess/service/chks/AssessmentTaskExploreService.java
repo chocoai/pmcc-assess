@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.chks;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
@@ -37,7 +38,7 @@ import java.util.Map;
 
 /**
  * Created by zch on 2020-2-7.
- * 生成查勘考核任务
+ * 生成查勘[案例]考核任务
  */
 @Component(value = "assessmentTaskExploreService")
 public class AssessmentTaskExploreService implements AssessmentTaskInterface {
@@ -57,6 +58,11 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
     @Autowired
     private ProjectPlanService projectPlanService;
 
+    private final String WORK_HOURS_ESTATE = "work.hours.estate";
+    private final String WORK_HOURS_BUILDING = "work.hours.building";
+    private final String WORK_HOURS_UNIT = "work.hours.unit";
+    private final String WORK_HOURS_HOUSE = "work.hours.house";
+
     @Override
     public void createAssessmentPerformanceTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws Exception {
         if (activityId == null) {
@@ -67,6 +73,15 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId());
         if (basicApplyBatch == null) return;
         List<BasicApplyBatchDetail> basicApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailsByPlanDetailsId(projectPlanDetails.getId());
+        //过滤处理，去掉不应该生成的数据，引用数据不生成，同项目中相同数据不生成
+        basicApplyBatchDetailList = LangUtils.filter(basicApplyBatchDetailList, o -> {
+            if (BasicDataHandleEnum.BASIC_DATA_HANDLE_REFERENCE_ENUM.getKey().equalsIgnoreCase(o.getModifyType())) {
+                return false;
+            } else if (BasicDataHandleEnum.BASIC_DATA_HANDLE_SAME_ENUM.getKey().equalsIgnoreCase(o.getModifyType())) {
+                return false;
+            }
+            return true;
+        });
         if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) return;
         //只取本次申请的
         Iterator<BasicApplyBatchDetail> basicApplyBatchDetailIterator = basicApplyBatchDetailList.iterator();
@@ -87,13 +102,13 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         Map<String, String> workHoursMap = Maps.newHashMap();
         List<String> transform = LangUtils.transform(basicApplyBatchDetailList, o -> o.getTableName());
         if (transform.contains(BasicFormClassifyEnum.ESTATE.getTableName()))
-            workHoursMap.put("work.hours.estate", "楼盘信息");
+            workHoursMap.put(WORK_HOURS_ESTATE, "楼盘信息");
         if (transform.contains(BasicFormClassifyEnum.BUILDING.getTableName()))
-            workHoursMap.put("work.hours.building", "楼栋信息");
+            workHoursMap.put(WORK_HOURS_BUILDING, "楼栋信息");
         if (transform.contains(BasicFormClassifyEnum.UNIT.getTableName()))
-            workHoursMap.put("work.hours.unit", "单元信息");
+            workHoursMap.put(WORK_HOURS_UNIT, "单元信息");
         if (transform.contains(BasicFormClassifyEnum.HOUSE.getTableName()))
-            workHoursMap.put("work.hours.house", "房屋信息");
+            workHoursMap.put(WORK_HOURS_HOUSE, "房屋信息");
         for (Map.Entry<String, String> entry : workHoursMap.entrySet()) {
             List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, entry.getKey());
             if (CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
@@ -142,10 +157,10 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                 detailDto.setMaxScore(assessmentItemDto.getMaxScore());
                 detailDto.setStandardScore(assessmentItemDto.getStandardScore());
                 switch (entry.getKey()) {
-                    case "work.hours.estate"://楼盘默认取标准分
+                    case WORK_HOURS_ESTATE://楼盘默认取标准分
                         detailDto.setActualScore(assessmentItemDto.getStandardScore());
                         break;
-                    case "work.hours.building"://楼栋根据本次填写的数量计算分数
+                    case WORK_HOURS_BUILDING://楼栋根据本次填写的数量计算分数
                         List<BasicApplyBatchDetail> filterBuilding = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING.getTableName()));
                         if (CollectionUtils.isNotEmpty(filterBuilding)) {
                             BigDecimal actualScoreBuilding = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterBuilding.size() - 1))));
@@ -153,7 +168,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                             detailDto.setActualScore(actualScoreBuilding);
                         }
                         break;
-                    case "work.hours.unit"://单元根据本次填写的数量计算分数
+                    case WORK_HOURS_UNIT://单元根据本次填写的数量计算分数
                         List<BasicApplyBatchDetail> filterUnit = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING.getTableName()));
                         if (CollectionUtils.isNotEmpty(filterUnit)) {
                             BigDecimal actualScoreUnit = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterUnit.size() - 1))));
@@ -161,7 +176,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                             detailDto.setActualScore(actualScoreUnit);
                         }
                         break;
-                    case "work.hours.house"://房屋根据本次填写的数量计算分数
+                    case WORK_HOURS_HOUSE://房屋根据本次填写的数量计算分数
                         List<BasicApplyBatchDetail> filterHouse = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING.getTableName()));
                         if (CollectionUtils.isNotEmpty(filterHouse)) {
                             BigDecimal actualScoreHouse = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterHouse.size() - 1))));

@@ -792,4 +792,16 @@ public class BasicApplyBatchController extends BaseController {
             return HttpResult.newErrorResult("异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/isNeedReferenceEstate", method = {RequestMethod.GET}, name = "判断是否应该引用楼盘数据")
+    public HttpResult isNeedReferenceEstate(Integer projectId, Integer batchDetailId, String province, String city, String estateName) {
+        try {
+            Boolean aBoolean = basicApplyBatchService.isNeedReferenceEstate(projectId, batchDetailId, province, city, estateName);
+            return HttpResult.newCorrectResult(aBoolean);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
 }

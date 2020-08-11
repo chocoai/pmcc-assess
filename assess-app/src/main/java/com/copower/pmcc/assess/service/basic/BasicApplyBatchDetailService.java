@@ -88,10 +88,6 @@ public class BasicApplyBatchDetailService {
     @Autowired
     private BasicEstateSurveyRecordService basicEstateSurveyRecordService;
 
-    public boolean updateBasicApplyBatchDetailInfo(BasicApplyBatchDetail oo){
-        return basicApplyBatchDetailDao.updateInfo(oo);
-    }
-
     /**
      * 通过applyBatchId获取
      *
@@ -140,6 +136,13 @@ public class BasicApplyBatchDetailService {
     }
 
     public void saveBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail) {
+        ProjectPlanDetails projectPlanDetails = null;
+        if (basicApplyBatchDetail.getPlanDetailsId() != null && basicApplyBatchDetail.getPlanDetailsId() > 0) {
+            projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatchDetail.getPlanDetailsId());
+            if (projectPlanDetails != null) {
+                basicApplyBatchDetail.setProjectId(projectPlanDetails.getProjectId());
+            }
+        }
         if (basicApplyBatchDetail.getId() != null && basicApplyBatchDetail.getId() > 0) {
             //传递的名称与数据库名称比较，确定是否需要更新一次名称
             BasicApplyBatchDetail dbBatchDetail = getDataById(basicApplyBatchDetail.getId());
@@ -148,10 +151,24 @@ public class BasicApplyBatchDetailService {
             processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_BASIC_APPLY_BATCH_DETAIL_ID, String.valueOf(basicApplyBatchDetail.getId()));//清除缓存
             if (needUpdateName) {//更新apply表中名称
                 basicApplyService.updateNameByBatchDetailId(basicApplyBatchDetail.getId());
+                updateBatchDetailFullName(basicApplyBatchDetail, dbBatchDetail.getName(), basicApplyBatchDetail.getName());
             }
         } else {
             basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
+        }
+        //如果在相同项目下，fullName相同，并且是正常状态，并排除当前数据。那该数据则为同数据
+        if (basicApplyBatchDetail.getProjectId() != null) {
+            BasicApplyBatchDetail where = new BasicApplyBatchDetail();
+            where.setProjectId(basicApplyBatchDetail.getProjectId());
+            where.setFullName(basicApplyBatchDetail.getFullName());
+            where.setModifyType(BasicDataHandleEnum.BASIC_DATA_HANDLE_NOMAL_ENUM.getKey());
+            List<BasicApplyBatchDetail> batchDetailList = getBasicApplyBatchDetailList(where);
+            batchDetailList = LangUtils.filter(batchDetailList, o -> !o.getId().equals(basicApplyBatchDetail.getId()));
+            if (CollectionUtils.isNotEmpty(batchDetailList)) {
+                basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.BASIC_DATA_HANDLE_SAME_ENUM.getKey());
+                basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
+            }
         }
     }
 
@@ -598,5 +615,28 @@ public class BasicApplyBatchDetailService {
 
     public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(Integer quoteId, String name) {
         return basicApplyBatchDetailDao.getBasicApplyBatchDetailList(quoteId, name);
+    }
+
+    /**
+     * 递归更新全名
+     *
+     * @param batchDetail
+     * @param sourceName
+     * @param targetName
+     */
+    public void updateBatchDetailFullName(BasicApplyBatchDetail batchDetail, String sourceName, String targetName) {
+        //1.先检查名称是否发生变化，如果有变化，先更新自身的全名，再递归更新下级的全名
+        if (batchDetail == null || StringUtils.isBlank(sourceName) || StringUtils.isBlank(targetName)) return;
+        if (sourceName.equalsIgnoreCase(targetName)) return;
+        sourceName = String.format("%s%s%s", "/", sourceName, "/");
+        targetName = String.format("%s%s%s", "/", targetName, "/");
+        batchDetail.setFullName(batchDetail.getFullName().replaceAll(sourceName, targetName));
+        basicApplyBatchDetailDao.updateInfo(batchDetail);
+
+        List<BasicApplyBatchDetail> detailList = getBasicApplyBatchDetailByPid(batchDetail.getId(), batchDetail.getApplyBatchId());
+        if (CollectionUtils.isEmpty(detailList)) return;
+        for (BasicApplyBatchDetail basicApplyBatchDetail : detailList) {
+            updateBatchDetailFullName(basicApplyBatchDetail, sourceName, targetName);
+        }
     }
 }

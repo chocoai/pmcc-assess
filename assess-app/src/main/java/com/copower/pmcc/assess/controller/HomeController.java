@@ -1,34 +1,21 @@
 package com.copower.pmcc.assess.controller;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.job.AssessmentBonusJob;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.ureport.WorkLogService;
-import com.copower.pmcc.bpm.api.dto.BpmProcessMapDto;
-import com.copower.pmcc.bpm.api.dto.ProcessGroupDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProcessMapService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.SysWorkPredictDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
-import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * 描述:
@@ -48,20 +35,11 @@ public class HomeController {
     private PublicService publicService;
     @Autowired
     private WorkLogService workLogService;
-    @Autowired
-    private AssessmentBonusJob assessmentBonusJob;
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public ModelAndView homeMain() {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("main");
         return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getMyProcessGroup", method = RequestMethod.GET)
-    public HttpResult getMyProcessGroup() throws BusinessException {
-        assessmentBonusJob.launchAssessmentBonusTask();
-        return HttpResult.newCorrectResult();
     }
 
     @ResponseBody

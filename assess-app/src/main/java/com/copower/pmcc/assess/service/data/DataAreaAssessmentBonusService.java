@@ -57,7 +57,7 @@ public class DataAreaAssessmentBonusService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         String search = requestBaseParam.getSearch();
-        List<DataAreaAssessmentBonusVo> vos = dataAreaAssessmentBonusVos(province, city, district ,search);
+        List<DataAreaAssessmentBonusVo> vos = dataAreaAssessmentBonusVos(province, city, district, search);
         vo.setTotal(page.getTotal());
         vo.setRows(vos);
         return vo;
@@ -74,8 +74,8 @@ public class DataAreaAssessmentBonusService {
         return vos;
     }
 
-    public List<DataAreaAssessmentBonusVo> dataAreaAssessmentBonusVos(String province, String city, String district ,String departmentName) {
-        List<DataAreaAssessmentBonus> dataAreaAssessmentBonuss = dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(province, city, district ,departmentName);
+    public List<DataAreaAssessmentBonusVo> dataAreaAssessmentBonusVos(String province, String city, String district, String departmentName) {
+        List<DataAreaAssessmentBonus> dataAreaAssessmentBonuss = dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(province, city, district, departmentName);
         List<DataAreaAssessmentBonusVo> vos = Lists.newArrayList();
         if (!ObjectUtils.isEmpty(dataAreaAssessmentBonuss)) {
             for (DataAreaAssessmentBonus landLevel : dataAreaAssessmentBonuss) {
@@ -113,26 +113,28 @@ public class DataAreaAssessmentBonusService {
      * @param distric
      * @return
      */
-    public DataAreaAssessmentBonus getDataAreaAssessmentBonusByArea(String province, String city, String distric) {
+    public DataAreaAssessmentBonus getDataAreaAssessmentBonusByArea(Integer departmentId, String province, String city, String distric) {
         if (StringUtils.isBlank(province) || StringUtils.isBlank(city)) return null;
         DataAreaAssessmentBonus dataAreaAssessmentBonus = new DataAreaAssessmentBonus();
+        dataAreaAssessmentBonus.setDepartmentId(departmentId);
         dataAreaAssessmentBonus.setProvince(province);
         dataAreaAssessmentBonus.setCity(city);
         if (StringUtils.isNotBlank(distric)) {
             dataAreaAssessmentBonus.setDistrict(distric);
             List<DataAreaAssessmentBonus> list = dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(dataAreaAssessmentBonus);
             if (CollectionUtils.isEmpty(list))
-                return getAssessmentBonusByArea(province, city);
+                return getAssessmentBonusByArea(departmentId, province, city);
             else
                 return list.get(0);
         } else {
-            return getAssessmentBonusByArea(province, city);
+            return getAssessmentBonusByArea(departmentId, province, city);
         }
     }
 
-    public DataAreaAssessmentBonus getAssessmentBonusByArea(String province, String city) {
+    public DataAreaAssessmentBonus getAssessmentBonusByArea(Integer departmentId, String province, String city) {
         if (StringUtils.isBlank(province) || StringUtils.isBlank(city)) return null;
         DataAreaAssessmentBonus dataAreaAssessmentBonus = new DataAreaAssessmentBonus();
+        dataAreaAssessmentBonus.setDepartmentId(departmentId);
         dataAreaAssessmentBonus.setProvince(province);
         dataAreaAssessmentBonus.setCity(city);
         List<DataAreaAssessmentBonus> list = dataAreaAssessmentBonusDao.getDataAreaAssessmentBonusList(dataAreaAssessmentBonus);

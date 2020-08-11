@@ -1144,10 +1144,22 @@ public class BasicApplyBatchService {
     public Boolean isNeedReferenceEstate(Integer projectId, Integer batchDetailId, String province, String city, String estateName) {
         //1.先判断是否已引用
         BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(batchDetailId);
-        if (applyBatchDetail == null) {
+        if (applyBatchDetail == null && BasicDataHandleEnum.BASIC_DATA_HANDLE_REFERENCE_ENUM.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
             return false;
         }
-        //判断是否在同项目或案例库中存在相同楼盘
+        //判断项目中是否存在相同楼盘
+        BasicApplyBatch where = new BasicApplyBatch();
+        where.setProjectId(projectId);
+        where.setProvince(province);
+        where.setCity(city);
+        where.setEstateName(estateName);
+        List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(where);
+        if (CollectionUtils.isNotEmpty(infoList)) return true;
+        //判断案例库中是否存在相同楼盘
+        where.setProjectId(null);
+        where.setBisCase(true);
+        infoList = basicApplyBatchDao.getInfoList(where);
+        if (CollectionUtils.isNotEmpty(infoList)) return true;
         return false;
     }
 }

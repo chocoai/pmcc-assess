@@ -425,11 +425,9 @@ public class PublicService {
             startDate = endDate;
             endDate = temp;
         }
-
         Integer year1 = DateUtils.getYear(startDate);
         Integer year2 = DateUtils.getYear(endDate);
-        //相差年份的天数(如2010-2018，包括2018，这九年的总共天数)
-        Integer timeDistance = 0;
+        Integer timeDistance = 0;//相差年份的天数(如2010-2018，包括2018，这九年的总共天数)
         for (int i = year1; i <= year2; i++) {
             //闰年
             if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {
