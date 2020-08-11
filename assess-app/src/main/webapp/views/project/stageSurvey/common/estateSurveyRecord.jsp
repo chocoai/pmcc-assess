@@ -9,7 +9,6 @@
 <%--
  查勘记录表
 --%>
-<!DOCTYPE html>
 <div class="col-md-12">
     <div class="card full-height">
         <div class="card-header collapse-link">
@@ -34,8 +33,7 @@
                             </label>
                             <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6">
                                 <input id="estateSurveyRecordFileId"
-                                       name="estateSurveyRecordFileId"
-                                       required="required" placeholder="上传查勘记录"
+                                       name="estateSurveyRecordFileId" placeholder="上传查勘记录"
                                        class="form-control input-full"
                                        type="file">
                                 <div id="_estateSurveyRecordFileId"></div>
@@ -43,28 +41,15 @@
                         </div>
                     </div>
                 </div>
-                <%--<table class="table table-bordered" id="HouseHuxingPriceList">--%>
-                    <%--<!-- cerare document add ajax data-->--%>
-                <%--</table>--%>
             </form>
         </div>
     </div>
 </div>
 
 
-</html>
 <script>
     $(document).ready(function () {
         (function (fieldsName ,tableId) {
-            FileUtils.getFileShows({
-                target: fieldsName,
-                formData: {
-                    fieldsName: fieldsName,
-                    tableName: AssessDBKey.BasicEstateSurveyRecord,
-                    tableId: tableId
-                },
-                deleteFlag: true
-            }) ;
             FileUtils.uploadFiles({
                 target: fieldsName,
                 disabledTarget: "btn_submit",
@@ -74,10 +59,29 @@
                     tableId: tableId
                 },
                 deleteFlag: true,
-                onUploadComplete: function () {
+                onUploadComplete: function (id) {
+                    //暂时  只有在重新加载附件显示一次  不然上传文件后 未知的原因使其不能显示，所以这里重新调用了一次
+                    FileUtils.getFileShows({
+                        target: fieldsName,
+                        formData: {
+                            fieldsName: fieldsName,
+                            tableName: AssessDBKey.BasicEstateSurveyRecord,
+                            tableId: tableId
+                        },
+                        deleteFlag: true
+                    }) ;
                 }
             });
-            // console.log("tableId:"+tableId) ;
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicEstateSurveyRecord,
+                    tableId: tableId
+                },
+                deleteFlag: true
+            }) ;
+            // console.log("tableId:"+tableId +" fieldsName:"+fieldsName) ;
         }('estateSurveyRecordFileId',"${basicEstateSurveyRecord == null?'0':basicEstateSurveyRecord.id}")) ;
     }) ;
 </script>

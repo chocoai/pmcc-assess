@@ -53,7 +53,6 @@
 
     $(document).ready(function () {
         if ($("#basic_data_handle_referenceId").size() != 0) {
-            console.log("test4") ;
             basic_data_handle_reference = UE.getEditor('basic_data_handle_referenceId', {
                 toolbars: [
                     ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
