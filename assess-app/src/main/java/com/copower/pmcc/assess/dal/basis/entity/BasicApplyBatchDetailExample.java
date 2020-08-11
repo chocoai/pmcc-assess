@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class BasicApplyBatchDetailExample {
+    /**
+     * tb_basic_apply_batch_detail
+     */
     protected String orderByClause;
 
+    /**
+     * tb_basic_apply_batch_detail
+     */
     protected boolean distinct;
 
+    /**
+     * tb_basic_apply_batch_detail
+     */
     protected List<Criteria> oredCriteria;
 
     public BasicApplyBatchDetailExample() {
@@ -64,6 +73,9 @@ public class BasicApplyBatchDetailExample {
         distinct = false;
     }
 
+    /**
+     * tb_basic_apply_batch_detail
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1075,6 +1087,76 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andModifyTypeIsNull() {
+            addCriterion("modify_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeIsNotNull() {
+            addCriterion("modify_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeEqualTo(String value) {
+            addCriterion("modify_type =", value, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeNotEqualTo(String value) {
+            addCriterion("modify_type <>", value, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeGreaterThan(String value) {
+            addCriterion("modify_type >", value, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("modify_type >=", value, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeLessThan(String value) {
+            addCriterion("modify_type <", value, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeLessThanOrEqualTo(String value) {
+            addCriterion("modify_type <=", value, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeLike(String value) {
+            addCriterion("modify_type like", value, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeNotLike(String value) {
+            addCriterion("modify_type not like", value, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeIn(List<String> values) {
+            addCriterion("modify_type in", values, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeNotIn(List<String> values) {
+            addCriterion("modify_type not in", values, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeBetween(String value1, String value2) {
+            addCriterion("modify_type between", value1, value2, "modifyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyTypeNotBetween(String value1, String value2) {
+            addCriterion("modify_type not between", value1, value2, "modifyType");
+            return (Criteria) this;
+        }
+
         public Criteria andModifyContentIsNull() {
             addCriterion("modify_content is null");
             return (Criteria) this;
@@ -1202,66 +1284,6 @@ public class BasicApplyBatchDetailExample {
 
         public Criteria andBisFromCaseNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_from_case not between", value1, value2, "bisFromCase");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedIsNull() {
-            addCriterion("bis_modified is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedIsNotNull() {
-            addCriterion("bis_modified is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedEqualTo(Boolean value) {
-            addCriterion("bis_modified =", value, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedNotEqualTo(Boolean value) {
-            addCriterion("bis_modified <>", value, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedGreaterThan(Boolean value) {
-            addCriterion("bis_modified >", value, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_modified >=", value, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedLessThan(Boolean value) {
-            addCriterion("bis_modified <", value, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_modified <=", value, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedIn(List<Boolean> values) {
-            addCriterion("bis_modified in", values, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedNotIn(List<Boolean> values) {
-            addCriterion("bis_modified not in", values, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_modified between", value1, value2, "bisModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisModifiedNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_modified not between", value1, value2, "bisModified");
             return (Criteria) this;
         }
 
@@ -1523,6 +1545,9 @@ public class BasicApplyBatchDetailExample {
         }
     }
 
+    /**
+     * tb_basic_apply_batch_detail
+     */
     public static class Criterion {
         private String condition;
 

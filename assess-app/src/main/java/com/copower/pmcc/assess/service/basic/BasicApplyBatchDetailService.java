@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineCommonQuoteFieldEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
@@ -9,7 +10,6 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.basic.BasicApplyBatchVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
@@ -20,7 +20,6 @@ import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -40,7 +39,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -87,6 +85,12 @@ public class BasicApplyBatchDetailService {
     private BasicEstateLandCategoryInfoDao basicEstateLandCategoryInfoDao;
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BasicEstateSurveyRecordService basicEstateSurveyRecordService;
+
+    public boolean updateBasicApplyBatchDetailInfo(BasicApplyBatchDetail oo){
+        return basicApplyBatchDetailDao.updateInfo(oo);
+    }
 
     /**
      * 通过applyBatchId获取
@@ -167,6 +171,11 @@ public class BasicApplyBatchDetailService {
         basicApplyBatchDetail.setPlanDetailsId(planDetailsId);
         basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
         basicApplyBatchDetail.setExecutor(processControllerComponent.getThisUser());
+        if (basicApplyBatchDetail.getId() == null || basicApplyBatchDetail.getId() == 0) {
+            if (StringUtils.isBlank(basicApplyBatchDetail.getModifyType())) {
+                basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.BASIC_DATA_HANDLE_NOMAL_ENUM.getKey());
+            }
+        }
         BasicFormClassifyEnum enumByKey = BasicFormClassifyEnum.getEnumByKey(basicApplyBatchDetail.getType());
         basicApplyBatchDetail.setTableName(enumByKey.getTableName());
         //楼盘----------------------------------------------
@@ -239,6 +248,10 @@ public class BasicApplyBatchDetailService {
 
             BasicHouseTrading houseTrading = new BasicHouseTrading();
             houseTrading.setHouseId(house.getId());
+            BasicHouseTrading tradingByHouseId = basicHouseTradingService.getTradingByHouseId(house.getId());
+            if (tradingByHouseId != null && tradingByHouseId.getId() != null && tradingByHouseId.getId() > 0) {
+                houseTrading.setId(tradingByHouseId.getId());
+            }
             ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             if (projectPlanDetails != null) {
                 ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
@@ -249,11 +262,14 @@ public class BasicApplyBatchDetailService {
                 }
             }
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading, false);
-
+            basicEstateSurveyRecordService.initBasicEstateSurveyRecord(house.getId());
             BasicUnitHuxing huxing = new BasicUnitHuxing();
             huxing.setHouseId(house.getId());
             huxing.setEstateId(house.getEstateId());
-            basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(huxing, false);
+            List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(huxing);
+            if (CollectionUtils.isEmpty(basicUnitHuxingList)) {
+                basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(huxing, false);
+            }
             if (enumByKey.getKey().equals(BasicFormClassifyEnum.HOUSE_LAND.getKey())) {
                 BasicEstateLandCategoryInfo categoryInfo = new BasicEstateLandCategoryInfo();
                 categoryInfo.setHouseId(house.getId());
@@ -580,7 +596,7 @@ public class BasicApplyBatchDetailService {
         return vo;
     }
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(Integer quoteId, String name){
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(Integer quoteId, String name) {
         return basicApplyBatchDetailDao.getBasicApplyBatchDetailList(quoteId, name);
     }
 }

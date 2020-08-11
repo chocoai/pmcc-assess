@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.controller.BaseController;
@@ -495,6 +496,11 @@ public class BasicApplyBatchController extends BaseController {
         BasicApplyBatchDetail parentBatchDetail = basicApplyBatchDetailService.getDataById(applyBatchDetail.getPid());
         if (parentBatchDetail != null) {
             modelAndView.addObject("quoteId", parentBatchDetail.getQuoteId());
+        }
+        if (applyBatchDetail != null && org.apache.commons.lang3.StringUtils.isNotBlank(applyBatchDetail.getModifyType())){
+            if (applyBatchDetail.getModifyType().equals(BasicDataHandleEnum.BASIC_DATA_HANDLE_REFERENCE_ENUM.getKey())){
+                modelAndView.addObject("BASIC_DATA_HANDLE_REFERENCE", applyBatchDetail);
+            }
         }
         modelAndView.addObject("applyBatchDetailId", basicFormClassifyParamDto.getApplyBatchDetailId());
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
