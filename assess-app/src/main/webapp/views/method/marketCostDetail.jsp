@@ -525,13 +525,12 @@
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
-                                ${mdCostVo.mdCostConstruction.investmentProfitTaxExplain}
+                                ${mdCostVo.mdCostConstruction.residueRatioRemark}
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

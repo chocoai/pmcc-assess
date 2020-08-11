@@ -3,6 +3,11 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <style type="text/css">
+        #btnContainer .input-group-append{
+            margin-left: 2px;
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -19,31 +24,7 @@
                                     <div class="card-title">
                                         项目管理
                                         <small>
-                                            <div class="btn-group">
-                                                <c:if test="${showLimitBtn eq true}">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-info btn-sm" type="button"
-                                                                onclick="projectDetails.finishProject()"><span
-                                                                class="btn-label"><i class="fa fa-check"></i></span>完成
-                                                        </button>
-                                                    </div>
-                                                </c:if>
-                                                <c:if test="${projectStatusEnum ne 'close' and projectStatusEnum ne 'finish' and showLimitBtn eq true}">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-info btn-sm" type="button"
-                                                                onclick="projectDetails.stopProject()"><span
-                                                                class="btn-label"><i class="fa fa-stop"></i></span>终止
-                                                        </button>
-                                                    </div>
-                                                </c:if>
-                                                <c:if test="${projectStatusEnum != 'close' and showLimitBtn == true}">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-info btn-sm" type="button"
-                                                                onclick="projectDetails.restartProject()"><span
-                                                                class="btn-label"><i class="fa fa-star"></i></span>重启
-                                                        </button>
-                                                    </div>
-                                                </c:if>
+                                            <div class="btn-group" id="btnContainer">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info btn-sm dropdown-toggle" type="button"
                                                             data-toggle="dropdown" aria-haspopup="true"
@@ -61,6 +42,8 @@
                                                         <a class="dropdown-item"
                                                            href="${pageContext.request.contextPath}/project.scheme.change/applyView?projectId=${projectInfo.id}"
                                                            target="_blank">方案变更</a>
+                                                        <a class="dropdown-item" href="javascript://" onclick="projectDetails.stopProject()">项目终止</a>
+                                                        <a class="dropdown-item"href="javascript://" onclick="projectDetails.restartProject()">项目重启</a>
                                                     </div>
                                                 </div>
                                                 <div class="input-group-append">
@@ -132,7 +115,7 @@
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info btn-sm" type="button"
                                                             onclick="projectDetails.projectReviewScore()">
-                                                        项目工分
+                                                        复核与指导工分
                                                     </button>
                                                 </div>
                                                 <c:if test="${companyName eq 'xinglx'}">

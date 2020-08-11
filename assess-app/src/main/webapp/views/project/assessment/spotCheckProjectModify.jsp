@@ -11,6 +11,11 @@
 <head>
     <title>${projectInfo.projectName}</title>
     <%@include file="/views/share/main_css.jsp" %>
+    <style type="text/css">
+        .nav-pills.nav-secondary .nav-link.active {
+            background: #b4b2dc
+        }
+    </style>
 </head>
 <body class="nav-md">
 <div class="wrapper">
@@ -25,15 +30,26 @@
                                 <div class="row">
                                     <div class="col-2 col-md-2">
                                         <div id="navPlanList"
-                                             class="nav flex-column nav-pills nav-secondary nav-pills-no-bd"
+                                             class="nav flex-column nav-pills nav-secondary "
                                              role="tablist" aria-orientation="vertical">
                                             <c:forEach items="${projectPlanList}" var="item"
                                                        varStatus="status">
+
                                                 <a class="nav-link show" data-toggle="pill" href="#tabPane${item.id}"
                                                    role="tab"
                                                    onclick="spotCheckProject.loadProjectPhaseList($('#tbPlanPhaseList${item.id}'),${item.id})"
                                                    aria-controls="v-pills-home-nobd"
-                                                   aria-selected="true">${item.planName}</a>
+                                                   aria-selected="true">
+                                                    <div class="form-check" style="float: left;padding: 2px;">
+                                                        <label class="form-check-label"
+                                                               onclick="$(this).find(':checkbox').prop('checked',!$(this).find(':checkbox').prop('checked'));">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   onclick="alert(1);" checked="checked" value="">
+                                                            <span class="form-check-sign"></span>
+                                                        </label>
+                                                        <span>${item.planName}</span>
+                                                    </div>
+                                                </a>
                                             </c:forEach>
                                         </div>
                                     </div>
@@ -94,7 +110,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="spotCheckProject.saveSpotCheckItemScore();">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="spotCheckProject.saveSpotCheckItemScore();">
                     保存
                 </button>
             </div>
@@ -276,7 +293,7 @@
         var row = $('#tbPlanPhaseList' + planId).bootstrapTable('getRowByUniqueId', id);
         spotCheckProject.currProjectPhase = row;
         $('#frmSpotCheckItemScore').clearAll().initForm(row);
-        if(row.score==undefined||row.score==null){
+        if (row.score == undefined || row.score == null) {
             $('#frmSpotCheckItemScore').find('[name=score]').val(row.standardScore);
         }
         UERemark.setContent(AssessCommon.toString(row.remark));

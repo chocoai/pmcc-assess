@@ -32,7 +32,7 @@
                                 重启时间
                             </label>
                             <div class="col-sm-3">
-                                <label name="restartTime" class="form-control"></label>
+                                <label name="restartTime" class="form-control input-full"></label>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                                 重启原因
                             </label>
                             <div class="col-sm-11">
-                                <label name="changeReason" class="form-control"></label>
+                                <label name="changeReason" class="form-control input-full"></label>
                             </div>
                         </div>
                     </div>
