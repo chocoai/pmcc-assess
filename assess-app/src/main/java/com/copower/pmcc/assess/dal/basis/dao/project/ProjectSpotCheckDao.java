@@ -3,9 +3,11 @@ package com.copower.pmcc.assess.dal.basis.dao.project;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.basis.mapper.*;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -110,6 +112,27 @@ public class ProjectSpotCheckDao {
         return projectSpotCheckItemMapper.updateByPrimaryKeySelective(record) == 1;
     }
 
+    public long getSpotCheckItemCountByProjectId(Integer projectId) {
+        ProjectSpotCheckItemExample example = new ProjectSpotCheckItemExample();
+        example.createCriteria().andProjectIdEqualTo(projectId);
+        return projectSpotCheckItemMapper.countByExample(example);
+    }
+
+    public long getSpotCheckItemCountByEstateName(Date startDate, Date endDate, String estateName) {
+        ProjectSpotCheckItemExample example = new ProjectSpotCheckItemExample();
+        ProjectSpotCheckItemExample.Criteria criteria = example.createCriteria();
+        if (startDate != null) {
+            criteria.andGmtCreatedGreaterThanOrEqualTo(startDate);
+        }
+        if (endDate != null) {
+            criteria.andGmtCreatedLessThanOrEqualTo(endDate);
+        }
+        if (StringUtils.isNotBlank(estateName)) {
+            criteria.andEstateNameLike(String.format("%%%s%%", estateName));
+        }
+        return projectSpotCheckItemMapper.countByExample(example);
+    }
+
     /**
      * 根据条件更新
      *
@@ -160,7 +183,7 @@ public class ProjectSpotCheckDao {
         return projectSpotCheckItemScoreMapper.updateByPrimaryKeySelective(record) == 1;
     }
 
-    public List<ProjectSpotCheckItemScore> getSpotCheckItemScoreListByItemIds(List<Integer> itemIds){
+    public List<ProjectSpotCheckItemScore> getSpotCheckItemScoreListByItemIds(List<Integer> itemIds) {
         ProjectSpotCheckItemScoreExample example = new ProjectSpotCheckItemScoreExample();
         example.createCriteria().andItemIdIn(itemIds);
         return projectSpotCheckItemScoreMapper.selectByExampleWithBLOBs(example);

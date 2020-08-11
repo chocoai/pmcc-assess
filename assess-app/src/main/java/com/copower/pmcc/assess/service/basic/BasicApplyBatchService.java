@@ -1109,4 +1109,47 @@ public class BasicApplyBatchService {
         }
     }
 
+    /**
+     * 根据项目id获取该项目下的楼盘名称数据
+     *
+     * @param projectId
+     * @return
+     */
+    public List<String> getEstateNameListByProjectId(Integer projectId) {
+        List<String> list = Lists.newArrayList();
+        BasicApplyBatch where = new BasicApplyBatch();
+        where.setProjectId(projectId);
+        List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(where);
+        if (CollectionUtils.isEmpty(infoList)) return list;
+        for (BasicApplyBatch item : infoList) {
+            StringBuilder stringBuilder = new StringBuilder();
+            if (StringUtils.isNotBlank(item.getProvince()))
+                stringBuilder.append(erpAreaService.getSysAreaName(item.getProvince())).append("/");
+            if (StringUtils.isNotBlank(item.getCity()))
+                stringBuilder.append(erpAreaService.getSysAreaName(item.getCity())).append("/");
+            stringBuilder.append(item.getEstateName());
+            list.add(stringBuilder.toString());
+        }
+        return list;
+    }
+
+    /**
+     * 判断是否应该引用楼盘数据
+     *
+     * @param projectId
+     * @param batchDetailId
+     * @param province
+     * @param city
+     * @param estateName
+     * @return
+     */
+    public Boolean isNeedReferenceEstate(Integer projectId, Integer batchDetailId, String province, String city, String estateName) {
+        //1.先判断是否已引用
+        BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(batchDetailId);
+        if (applyBatchDetail == null) {
+            return false;
+        }
+        //判断是否在同项目或案例库中存在相同楼盘
+        return false;
+    }
 }

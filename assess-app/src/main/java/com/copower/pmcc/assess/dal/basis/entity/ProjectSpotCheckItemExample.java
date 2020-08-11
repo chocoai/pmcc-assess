@@ -355,6 +355,76 @@ public class ProjectSpotCheckItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andEstateNameIsNull() {
+            addCriterion("estate_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameIsNotNull() {
+            addCriterion("estate_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameEqualTo(String value) {
+            addCriterion("estate_name =", value, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameNotEqualTo(String value) {
+            addCriterion("estate_name <>", value, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameGreaterThan(String value) {
+            addCriterion("estate_name >", value, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameGreaterThanOrEqualTo(String value) {
+            addCriterion("estate_name >=", value, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameLessThan(String value) {
+            addCriterion("estate_name <", value, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameLessThanOrEqualTo(String value) {
+            addCriterion("estate_name <=", value, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameLike(String value) {
+            addCriterion("estate_name like", value, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameNotLike(String value) {
+            addCriterion("estate_name not like", value, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameIn(List<String> values) {
+            addCriterion("estate_name in", values, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameNotIn(List<String> values) {
+            addCriterion("estate_name not in", values, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameBetween(String value1, String value2) {
+            addCriterion("estate_name between", value1, value2, "estateName");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateNameNotBetween(String value1, String value2) {
+            addCriterion("estate_name not between", value1, value2, "estateName");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

@@ -11,6 +11,8 @@ public class ProjectSpotCheckItem {
 
     private String projectName;
 
+    private String estateName;
+
     private String creator;
 
     private Date gmtCreated;
@@ -47,6 +49,14 @@ public class ProjectSpotCheckItem {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName == null ? null : projectName.trim();
+    }
+
+    public String getEstateName() {
+        return estateName;
+    }
+
+    public void setEstateName(String estateName) {
+        this.estateName = estateName == null ? null : estateName.trim();
     }
 
     public String getCreator() {
