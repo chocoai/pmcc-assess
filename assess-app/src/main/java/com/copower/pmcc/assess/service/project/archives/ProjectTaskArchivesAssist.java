@@ -1,15 +1,20 @@
 package com.copower.pmcc.assess.service.project.archives;
 
+import com.copower.pmcc.assess.common.enums.archives.ArchivesFileTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -73,7 +78,12 @@ public class ProjectTaskArchivesAssist implements ProjectTaskInterface {
     }
 
     private void setModelParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-
+        modelAndView.addObject("projectPlanDetails",projectPlanDetails) ;
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(ArchivesFileTypeEnum.values().length) ;
+        for (ArchivesFileTypeEnum fileTypeEnum:ArchivesFileTypeEnum.values()){
+            keyValueDtoList.add(new KeyValueDto(fileTypeEnum.getKey(),fileTypeEnum.getName())) ;
+        }
+        modelAndView.addObject("ArchivesFileTypeList",keyValueDtoList) ;
     }
 
 

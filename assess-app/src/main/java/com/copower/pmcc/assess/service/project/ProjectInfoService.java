@@ -68,6 +68,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -137,6 +138,35 @@ public class ProjectInfoService {
     private BaseParameterService baseParameterService;
     @Autowired
     private AssessmentCommonService assessmentCommonService;
+
+    /**
+     * 获取项目每年的项目个数  递增最大数字
+     *
+     * @return
+     */
+    public Integer getSerialNumber() {
+        int year = DateUtils.getYear(DateUtils.now());
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.set(Calendar.YEAR, year - 1);
+        startCalendar.set(Calendar.MONTH, 12);
+        startCalendar.set(Calendar.DATE, 0);
+        startCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        startCalendar.set(Calendar.MINUTE, 59);
+        startCalendar.set(Calendar.SECOND, 59);
+        startCalendar.set(Calendar.MILLISECOND, 999);
+        Date startDate = startCalendar.getTime();
+
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.set(Calendar.YEAR, year);
+        endCalendar.set(Calendar.MONTH, 12);
+        endCalendar.set(Calendar.DATE, 0);
+        endCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        endCalendar.set(Calendar.MINUTE, 59);
+        endCalendar.set(Calendar.SECOND, 59);
+        endCalendar.set(Calendar.MILLISECOND, 999);
+        Date endDate = endCalendar.getTime();
+        return projectInfoDao.getSerialNumber(DateUtils.format(startDate, DateUtils.DATETIME_PATTERN), DateUtils.format(endDate, DateUtils.DATETIME_PATTERN));
+    }
 
 
     /**
@@ -311,7 +341,7 @@ public class ProjectInfoService {
     }
 
     //初始化项目阶段
-    public void initProjectWorkStages(ProjectInfo projectInfo, List<ProjectWorkStage> projectWorkStages) throws Exception{
+    public void initProjectWorkStages(ProjectInfo projectInfo, List<ProjectWorkStage> projectWorkStages) throws Exception {
         Integer projectCategoryId = projectInfo.getProjectCategoryId();//项目范围id
         int i = 1;
         for (ProjectWorkStage item : projectWorkStages) {
@@ -643,6 +673,8 @@ public class ProjectInfoService {
     public int saveProjectInfo(ProjectInfo projectInfo) {
         if (projectInfo.getId() == null || projectInfo.getId() == 0) {
             projectInfo.setCreator(commonService.thisUserAccount());
+            Integer serialNumber = getSerialNumber();
+            projectInfo.setSerialNumber(serialNumber);
             projectInfoDao.saveProjectInfo_returnID(projectInfo);
         } else {
             projectInfoDao.updateProjectInfo(projectInfo);
@@ -889,6 +921,7 @@ public class ProjectInfoService {
 
     /**
      * 获取项目委托单位
+     *
      * @param projectInfo
      * @return
      */
@@ -933,7 +966,7 @@ public class ProjectInfoService {
     public Boolean chksValidProject(Integer projectId) {
         try {
             String projectIds = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
-            if(org.apache.commons.lang3.StringUtils.isBlank(projectIds)) return true;
+            if (org.apache.commons.lang3.StringUtils.isBlank(projectIds)) return true;
             List<Integer> list = FormatUtils.transformString2Integer(projectIds);
             if (list.contains(projectId)) {
                 return true;

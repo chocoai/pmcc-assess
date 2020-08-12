@@ -5,12 +5,15 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectInfoMapper;
 import com.copower.pmcc.assess.dto.input.project.QueryProjectInfo;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +29,30 @@ public class ProjectInfoDao {
     private ProjectInfoMapper projectInfoMapper;
     @Autowired
     private CustomProjectInfoMapper customProjectInfoMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    /**
+     * 获取当年的项目的项目个数
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public Integer getSerialNumber(String startDate,String endDate){
+        StringBuilder stringBuilder = new StringBuilder() ;
+        stringBuilder.append("SELECT max(serial_number)  from ").append(FormatUtils.entityNameConvertToTableName(ProjectInfo.class)) ;
+        stringBuilder.append(" where 1=1 ") ;
+        stringBuilder.append(" and gmt_created >  ").append(" '").append(startDate).append("' ") ;
+        stringBuilder.append(" and gmt_created <=  ").append(" '").append(endDate).append("' ") ;
+        Integer integer = jdbcTemplate.queryForObject(stringBuilder.toString(), Integer.class);
+        if (integer == null) {
+            integer = 1;
+        }else {
+            integer += 1;
+        }
+        return integer;
+    }
 
     public boolean deleteByProjectInfoId(Integer id) {
         return projectInfoMapper.deleteByPrimaryKey(id) == 1;

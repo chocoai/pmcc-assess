@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class ProjectInfoExample {
+    /**
+     * tb_project_info
+     */
     protected String orderByClause;
 
+    /**
+     * tb_project_info
+     */
     protected boolean distinct;
 
+    /**
+     * tb_project_info
+     */
     protected List<Criteria> oredCriteria;
 
     public ProjectInfoExample() {
@@ -65,6 +74,9 @@ public class ProjectInfoExample {
         distinct = false;
     }
 
+    /**
+     * tb_project_info
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -2726,6 +2738,126 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisAssignIsNull() {
+            addCriterion("bis_assign is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignIsNotNull() {
+            addCriterion("bis_assign is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignEqualTo(Boolean value) {
+            addCriterion("bis_assign =", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignNotEqualTo(Boolean value) {
+            addCriterion("bis_assign <>", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignGreaterThan(Boolean value) {
+            addCriterion("bis_assign >", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_assign >=", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignLessThan(Boolean value) {
+            addCriterion("bis_assign <", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_assign <=", value, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignIn(List<Boolean> values) {
+            addCriterion("bis_assign in", values, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignNotIn(List<Boolean> values) {
+            addCriterion("bis_assign not in", values, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_assign between", value1, value2, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisAssignNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_assign not between", value1, value2, "bisAssign");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberIsNull() {
+            addCriterion("serial_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberIsNotNull() {
+            addCriterion("serial_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberEqualTo(Integer value) {
+            addCriterion("serial_number =", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberNotEqualTo(Integer value) {
+            addCriterion("serial_number <>", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberGreaterThan(Integer value) {
+            addCriterion("serial_number >", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("serial_number >=", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberLessThan(Integer value) {
+            addCriterion("serial_number <", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("serial_number <=", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberIn(List<Integer> values) {
+            addCriterion("serial_number in", values, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberNotIn(List<Integer> values) {
+            addCriterion("serial_number not in", values, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberBetween(Integer value1, Integer value2) {
+            addCriterion("serial_number between", value1, value2, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("serial_number not between", value1, value2, "serialNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -2915,66 +3047,6 @@ public class ProjectInfoExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
-
-        public Criteria andBisAssignIsNull() {
-            addCriterion("bis_assign is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignIsNotNull() {
-            addCriterion("bis_assign is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignEqualTo(Boolean value) {
-            addCriterion("bis_assign =", value, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignNotEqualTo(Boolean value) {
-            addCriterion("bis_assign <>", value, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignGreaterThan(Boolean value) {
-            addCriterion("bis_assign >", value, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_assign >=", value, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignLessThan(Boolean value) {
-            addCriterion("bis_assign <", value, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_assign <=", value, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignIn(List<Boolean> values) {
-            addCriterion("bis_assign in", values, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignNotIn(List<Boolean> values) {
-            addCriterion("bis_assign not in", values, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_assign between", value1, value2, "bisAssign");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisAssignNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_assign not between", value1, value2, "bisAssign");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {
@@ -2984,6 +3056,9 @@ public class ProjectInfoExample {
         }
     }
 
+    /**
+     * tb_project_info
+     */
     public static class Criterion {
         private String condition;
 
