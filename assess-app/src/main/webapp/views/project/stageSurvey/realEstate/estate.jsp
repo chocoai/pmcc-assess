@@ -71,7 +71,7 @@
                                                     <div class="input-group">
                                                         <input type="text" id="txt_estate_search"
                                                                data-rule-maxlength="100" placeholder="楼盘名称"
-                                                               required="required"
+                                                               required="required" onblur="isNeedReferenceEstate();"
                                                                name="name" class="form-control"
                                                                value="${basicEstate.name}">
                                                         <div class="input-group-prepend">
@@ -739,5 +739,20 @@
         var city = estateCommon.estateForm.find("[name='city']").val();
         var search = estateCommon.estateForm.find("input[name='name']").val();
         applyInfoQuote.showCaseEstateModal(province, city, search,'${applyBatchDetailId}');
+    }
+
+    //提示有相同楼盘
+    function isNeedReferenceEstate() {
+        $.getJSON('${pageContext.request.contextPath}/basicApplyBatch/isNeedReferenceEstate',{
+            projectId:'${basicApplyBatch.projectId}',
+            batchDetailId:'${applyBatchDetailId}',
+            province:estateCommon.estateForm.find("[name='province']").val(),
+            city:estateCommon.estateForm.find("[name='city']").val(),
+            estateName:estateCommon.estateForm.find("input[name='name']").val()
+        },function (result) {
+            if(result.ret&&result.data){
+                notifyInfo('提示','系统存在相同楼盘，可直接引用');
+            }
+        })
     }
 </script>

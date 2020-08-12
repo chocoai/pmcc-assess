@@ -176,6 +176,7 @@ public class BasicUnitService extends BasicEntityAbstract {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where unit_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), unitId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitCommonPart.class), unitId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitElevator.class), unitId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class), unitId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitStairs.class), unitId));
@@ -257,9 +258,7 @@ public class BasicUnitService extends BasicEntityAbstract {
                     basicUnit.setApplyId(unitDetail.getId());
                     basicUnit.setFullName(unitDetail.getFullName());
                 }
-
                 saveAndUpdate(basicUnit, true);
-
                 return basicUnit.getId();
             }
         }

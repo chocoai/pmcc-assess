@@ -108,10 +108,10 @@
                                                        name="shapeRemark" class="form-control input-full">
                                             </div>
                                             <label class="col-sm-2 control-label">
-                                                使用面积(m²)<span class="symbol required"></span>
+                                                使用面积(m²)
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="number" data-rule-number="true" placeholder="使用面积" required
+                                                <input type="number" data-rule-number="true" placeholder="使用面积"
                                                        name="area" class="form-control input-full">
                                             </div>
                                         </div>
