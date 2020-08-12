@@ -7,6 +7,7 @@
     <result column="year" jdbcType="INTEGER" property="year" />
     <result column="file_sort" jdbcType="INTEGER" property="fileSort" />
     <result column="file_date" jdbcType="TIMESTAMP" property="fileDate" />
+    <result column="file_type_name" jdbcType="VARCHAR" property="fileTypeName" />
     <result column="file_type" jdbcType="VARCHAR" property="fileType" />
     <result column="file_number" jdbcType="VARCHAR" property="fileNumber" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, project_id, year, file_sort, file_date, file_type, file_number, file_name, bis_paper, 
-    bis_enable, creator, created, modified
+    id, project_id, year, file_sort, file_date, file_type_name, file_type, file_number, 
+    file_name, bis_paper, bis_enable, creator, created, modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectFileCompleteExample" resultMap="BaseResultMap">
     select
@@ -113,15 +114,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_file_complete (project_id, year, file_sort, 
-      file_date, file_type, file_number, 
-      file_name, bis_paper, bis_enable, 
-      creator, created, modified
-      )
+      file_date, file_type_name, file_type, 
+      file_number, file_name, bis_paper, 
+      bis_enable, creator, created, 
+      modified)
     values (#{projectId,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, #{fileSort,jdbcType=INTEGER}, 
-      #{fileDate,jdbcType=TIMESTAMP}, #{fileType,jdbcType=VARCHAR}, #{fileNumber,jdbcType=VARCHAR}, 
-      #{fileName,jdbcType=VARCHAR}, #{bisPaper,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}
-      )
+      #{fileDate,jdbcType=TIMESTAMP}, #{fileTypeName,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, 
+      #{fileNumber,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{bisPaper,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{modified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="map">
     <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
@@ -147,6 +148,9 @@
           </if>
           <if test="record.fileDate != null">
             file_date,
+          </if>
+          <if test="record.fileTypeName != null">
+            file_type_name,
           </if>
           <if test="record.fileType != null">
             file_type,
@@ -196,6 +200,9 @@
           </if>
           <if test="record.fileDate != null">
             #{record.fileDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.fileTypeName != null">
+            #{record.fileTypeName,jdbcType=VARCHAR},
           </if>
           <if test="record.fileType != null">
             #{record.fileType,jdbcType=VARCHAR},
@@ -257,6 +264,9 @@
           <if test="record.fileDate != null">
             file_date = #{record.fileDate,jdbcType=TIMESTAMP},
           </if>
+          <if test="record.fileTypeName != null">
+            file_type_name = #{record.fileTypeName,jdbcType=VARCHAR},
+          </if>
           <if test="record.fileType != null">
             file_type = #{record.fileType,jdbcType=VARCHAR},
           </if>
@@ -295,6 +305,7 @@
       year = #{record.year,jdbcType=INTEGER},
       file_sort = #{record.fileSort,jdbcType=INTEGER},
       file_date = #{record.fileDate,jdbcType=TIMESTAMP},
+      file_type_name = #{record.fileTypeName,jdbcType=VARCHAR},
       file_type = #{record.fileType,jdbcType=VARCHAR},
       file_number = #{record.fileNumber,jdbcType=VARCHAR},
       file_name = #{record.fileName,jdbcType=VARCHAR},
@@ -329,6 +340,9 @@
           </if>
           <if test="record.fileDate != null">
             file_date = #{record.fileDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.fileTypeName != null">
+            file_type_name = #{record.fileTypeName,jdbcType=VARCHAR},
           </if>
           <if test="record.fileType != null">
             file_type = #{record.fileType,jdbcType=VARCHAR},
@@ -365,6 +379,7 @@
       year = #{year,jdbcType=INTEGER},
       file_sort = #{fileSort,jdbcType=INTEGER},
       file_date = #{fileDate,jdbcType=TIMESTAMP},
+      file_type_name = #{fileTypeName,jdbcType=VARCHAR},
       file_type = #{fileType,jdbcType=VARCHAR},
       file_number = #{fileNumber,jdbcType=VARCHAR},
       file_name = #{fileName,jdbcType=VARCHAR},
@@ -377,15 +392,15 @@
   </update>
   <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
     insert into tb_project_file_complete
-    (project_id, year, file_sort, file_date, file_type, file_number, file_name, bis_paper, 
-      bis_enable, creator, created, modified)
+    (project_id, year, file_sort, file_date, file_type_name, file_type, file_number, 
+      file_name, bis_paper, bis_enable, creator, created, modified)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.projectId,jdbcType=INTEGER}, #{item.year,jdbcType=INTEGER}, #{item.fileSort,jdbcType=INTEGER}, 
-        #{item.fileDate,jdbcType=TIMESTAMP}, #{item.fileType,jdbcType=VARCHAR}, #{item.fileNumber,jdbcType=VARCHAR}, 
-        #{item.fileName,jdbcType=VARCHAR}, #{item.bisPaper,jdbcType=BIT}, #{item.bisEnable,jdbcType=BIT}, 
-        #{item.creator,jdbcType=VARCHAR}, #{item.created,jdbcType=TIMESTAMP}, #{item.modified,jdbcType=TIMESTAMP}
-        )
+        #{item.fileDate,jdbcType=TIMESTAMP}, #{item.fileTypeName,jdbcType=VARCHAR}, #{item.fileType,jdbcType=VARCHAR}, 
+        #{item.fileNumber,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR}, #{item.bisPaper,jdbcType=BIT}, 
+        #{item.bisEnable,jdbcType=BIT}, #{item.creator,jdbcType=VARCHAR}, #{item.created,jdbcType=TIMESTAMP}, 
+        #{item.modified,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
@@ -409,6 +424,9 @@
         </if>
         <if test="'file_date'.toString() == column.value">
           #{item.fileDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'file_type_name'.toString() == column.value">
+          #{item.fileTypeName,jdbcType=VARCHAR}
         </if>
         <if test="'file_type'.toString() == column.value">
           #{item.fileType,jdbcType=VARCHAR}
