@@ -961,7 +961,7 @@ public class BasicApplyBatchService {
             newApplyBatchDetail.setName(sourceApplyBatchDetail.getName());
             newApplyBatchDetail.setDisplayName(sourceApplyBatchDetail.getDisplayName());
             newApplyBatchDetail.setExecutor(commonService.thisUserAccount());
-            newApplyBatchDetail.setModifyType(BasicDataHandleEnum.BASIC_DATA_HANDLE_REFERENCE_ENUM.getKey());
+            newApplyBatchDetail.setModifyType(BasicDataHandleEnum.REFERENCE.getKey());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
             try {
                 basicApplyBatchDetailService.insertBasicApply(newApplyBatchDetail, planDetailsId);
@@ -1144,7 +1144,7 @@ public class BasicApplyBatchService {
     public Boolean isNeedReferenceEstate(Integer projectId, Integer batchDetailId, String province, String city, String estateName) {
         //1.先判断是否已引用
         BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(batchDetailId);
-        if (applyBatchDetail == null && BasicDataHandleEnum.BASIC_DATA_HANDLE_REFERENCE_ENUM.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
+        if (applyBatchDetail == null && BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
             return false;
         }
         //判断项目中是否存在相同楼盘

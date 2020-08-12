@@ -154,20 +154,36 @@ public class BasicApplyBatchDetailService {
                 updateBatchDetailFullName(basicApplyBatchDetail, dbBatchDetail.getName(), basicApplyBatchDetail.getName());
             }
         } else {
+            String parentFullName = getFullNameByBatchDetailId(basicApplyBatchDetail.getPid());
+            basicApplyBatchDetail.setFullName(StringUtils.defaultString(parentFullName, "/") + basicApplyBatchDetail.getName() + "/");
             basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
+            if (StringUtils.isBlank(basicApplyBatchDetail.getModifyType())) {
+                basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.NOMAL.getKey());
+            }
             basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         }
+
+        validIsSameBatchDetal(basicApplyBatchDetail);
+    }
+
+    //验证是否为项目下相同数据
+    private void validIsSameBatchDetal(BasicApplyBatchDetail basicApplyBatchDetail){
         //如果在相同项目下，fullName相同，并且是正常状态，并排除当前数据。那该数据则为同数据
         if (basicApplyBatchDetail.getProjectId() != null) {
             BasicApplyBatchDetail where = new BasicApplyBatchDetail();
             where.setProjectId(basicApplyBatchDetail.getProjectId());
             where.setFullName(basicApplyBatchDetail.getFullName());
-            where.setModifyType(BasicDataHandleEnum.BASIC_DATA_HANDLE_NOMAL_ENUM.getKey());
+            where.setModifyType(BasicDataHandleEnum.NOMAL.getKey());
             List<BasicApplyBatchDetail> batchDetailList = getBasicApplyBatchDetailList(where);
             batchDetailList = LangUtils.filter(batchDetailList, o -> !o.getId().equals(basicApplyBatchDetail.getId()));
             if (CollectionUtils.isNotEmpty(batchDetailList)) {
-                basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.BASIC_DATA_HANDLE_SAME_ENUM.getKey());
+                basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.SAME.getKey());
                 basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
+            }else{
+                if(BasicDataHandleEnum.SAME.getKey().equalsIgnoreCase(basicApplyBatchDetail.getModifyType())){
+                    basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.NOMAL.getKey());
+                    basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
+                }
             }
         }
     }
@@ -190,7 +206,7 @@ public class BasicApplyBatchDetailService {
         basicApplyBatchDetail.setExecutor(processControllerComponent.getThisUser());
         if (basicApplyBatchDetail.getId() == null || basicApplyBatchDetail.getId() == 0) {
             if (StringUtils.isBlank(basicApplyBatchDetail.getModifyType())) {
-                basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.BASIC_DATA_HANDLE_NOMAL_ENUM.getKey());
+                basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.NOMAL.getKey());
             }
         }
         BasicFormClassifyEnum enumByKey = BasicFormClassifyEnum.getEnumByKey(basicApplyBatchDetail.getType());
@@ -530,9 +546,9 @@ public class BasicApplyBatchDetailService {
         if (CollectionUtils.isEmpty(list)) return null;
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = list.size() - 1; i >= 0; i--) {
-            stringBuilder.append(list.get(i).getName());
+            stringBuilder.append("/").append(list.get(i).getName()).append("/");
         }
-        return stringBuilder.toString();
+        return stringBuilder.toString().replaceAll("//", "/");
     }
 
     public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(List<Integer> basicApplyBatchIds, String type) {
@@ -614,6 +630,7 @@ public class BasicApplyBatchDetailService {
     }
 
     public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(Integer quoteId, String name) {
+        if (quoteId == null || StringUtils.isBlank(name)) return null;
         return basicApplyBatchDetailDao.getBasicApplyBatchDetailList(quoteId, name);
     }
 
@@ -628,11 +645,9 @@ public class BasicApplyBatchDetailService {
         //1.先检查名称是否发生变化，如果有变化，先更新自身的全名，再递归更新下级的全名
         if (batchDetail == null || StringUtils.isBlank(sourceName) || StringUtils.isBlank(targetName)) return;
         if (sourceName.equalsIgnoreCase(targetName)) return;
-        sourceName = String.format("%s%s%s", "/", sourceName, "/");
-        targetName = String.format("%s%s%s", "/", targetName, "/");
         batchDetail.setFullName(batchDetail.getFullName().replaceAll(sourceName, targetName));
         basicApplyBatchDetailDao.updateInfo(batchDetail);
-
+        validIsSameBatchDetal(batchDetail);
         List<BasicApplyBatchDetail> detailList = getBasicApplyBatchDetailByPid(batchDetail.getId(), batchDetail.getApplyBatchId());
         if (CollectionUtils.isEmpty(detailList)) return;
         for (BasicApplyBatchDetail basicApplyBatchDetail : detailList) {

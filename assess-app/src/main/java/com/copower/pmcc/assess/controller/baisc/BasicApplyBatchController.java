@@ -498,7 +498,7 @@ public class BasicApplyBatchController extends BaseController {
             modelAndView.addObject("quoteId", parentBatchDetail.getQuoteId());
         }
         if (applyBatchDetail != null && org.apache.commons.lang3.StringUtils.isNotBlank(applyBatchDetail.getModifyType())){
-            if (applyBatchDetail.getModifyType().equals(BasicDataHandleEnum.BASIC_DATA_HANDLE_REFERENCE_ENUM.getKey())){
+            if (applyBatchDetail.getModifyType().equals(BasicDataHandleEnum.REFERENCE.getKey())){
                 modelAndView.addObject("BASIC_DATA_HANDLE_REFERENCE", applyBatchDetail);
             }
         }

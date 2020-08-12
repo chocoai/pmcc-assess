@@ -75,9 +75,9 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         List<BasicApplyBatchDetail> basicApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailsByPlanDetailsId(projectPlanDetails.getId());
         //过滤处理，去掉不应该生成的数据，引用数据不生成，同项目中相同数据不生成
         basicApplyBatchDetailList = LangUtils.filter(basicApplyBatchDetailList, o -> {
-            if (BasicDataHandleEnum.BASIC_DATA_HANDLE_REFERENCE_ENUM.getKey().equalsIgnoreCase(o.getModifyType())) {
+            if (BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(o.getModifyType()) && StringUtils.isBlank(o.getModifyContent())) {
                 return false;
-            } else if (BasicDataHandleEnum.BASIC_DATA_HANDLE_SAME_ENUM.getKey().equalsIgnoreCase(o.getModifyType())) {
+            } else if (BasicDataHandleEnum.SAME.getKey().equalsIgnoreCase(o.getModifyType())) {
                 return false;
             }
             return true;
