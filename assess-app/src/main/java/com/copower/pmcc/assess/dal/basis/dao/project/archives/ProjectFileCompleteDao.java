@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectFileComplete;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectFileCompleteExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ProjectFileCompleteMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,26 @@ public class ProjectFileCompleteDao {
 
     @Autowired
     private ProjectFileCompleteMapper projectFileCompleteMapper;
+
+    public void  clearProjectFileCompleteByProjectId(Integer projectId){
+        ProjectFileCompleteExample example = new ProjectFileCompleteExample();
+        ProjectFileCompleteExample.Criteria criteria = example.createCriteria() ;
+        criteria.andBisEnableEqualTo(true) ;
+        criteria.andProjectIdEqualTo(projectId) ;
+        projectFileCompleteMapper.deleteByExample(example) ;
+    }
+
+    public void batchInsert(List<ProjectFileComplete> completeList) {
+        projectFileCompleteMapper.batchInsert(completeList) ;
+    }
+
+    public Long getFileNumber(String fileNumber){
+        ProjectFileCompleteExample example = new ProjectFileCompleteExample();
+        ProjectFileCompleteExample.Criteria criteria = example.createCriteria() ;
+        criteria.andBisEnableEqualTo(true) ;
+        criteria.andFileNumberEqualTo(fileNumber) ;
+        return projectFileCompleteMapper.countByExample(example) ;
+    }
 
     public ProjectFileComplete getProjectFileCompleteById(Integer id) {
         return projectFileCompleteMapper.selectByPrimaryKey(id);
@@ -47,6 +68,28 @@ public class ProjectFileCompleteDao {
         ProjectFileCompleteExample example = new ProjectFileCompleteExample();
         ProjectFileCompleteExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
         MybatisUtils.convertObj2Criteria(projectFileComplete, criteria);
+        return projectFileCompleteMapper.selectByExample(example);
+    }
+
+    public List<ProjectFileComplete> getProjectFileCompleteList(Integer projectId,Integer year,String fileNumber ,String fileName,String fileType){
+        ProjectFileCompleteExample example = new ProjectFileCompleteExample();
+        ProjectFileCompleteExample.Criteria criteria = example.createCriteria() ;
+        criteria.andBisEnableEqualTo(true) ;
+        if (projectId != null){
+            criteria.andProjectIdEqualTo(projectId) ;
+        }
+        if (year != null){
+            criteria.andYearEqualTo(year) ;
+        }
+        if (StringUtils.isNotBlank(fileNumber)){
+            criteria.andFileNumberLike(String.format("%%%s%%",fileNumber)) ;
+        }
+        if (StringUtils.isNotBlank(fileName)){
+            criteria.andFileNameLike(String.format("%%%s%%",fileName)) ;
+        }
+        if (StringUtils.isNotBlank(fileType)){
+            criteria.andFileTypeEqualTo(fileType) ;
+        }
         return projectFileCompleteMapper.selectByExample(example);
     }
 

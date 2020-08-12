@@ -32,6 +32,11 @@ public class ProjectFileComplete implements Serializable {
     private Date fileDate;
 
     /**
+     * 档案类型名称
+     */
+    private String fileTypeName;
+
+    /**
      * 档案类型
      */
     private String fileType;
@@ -154,6 +159,22 @@ public class ProjectFileComplete implements Serializable {
      */
     public void setFileDate(Date fileDate) {
         this.fileDate = fileDate;
+    }
+
+    /**
+     * 档案类型名称
+     * @return file_type_name 档案类型名称
+     */
+    public String getFileTypeName() {
+        return fileTypeName;
+    }
+
+    /**
+     * 档案类型名称
+     * @param fileTypeName 档案类型名称
+     */
+    public void setFileTypeName(String fileTypeName) {
+        this.fileTypeName = fileTypeName == null ? null : fileTypeName.trim();
     }
 
     /**
@@ -356,6 +377,15 @@ public class ProjectFileComplete implements Serializable {
         }
 
         /**
+         * 档案类型名称
+         * @param fileTypeName 档案类型名称
+         */
+        public Builder fileTypeName(String fileTypeName) {
+            obj.setFileTypeName(fileTypeName);
+            return this;
+        }
+
+        /**
          * 档案编号
          * @param fileNumber 档案编号
          */
@@ -429,6 +459,7 @@ public class ProjectFileComplete implements Serializable {
         year("year", "year", "INTEGER", false),
         fileSort("file_sort", "fileSort", "INTEGER", false),
         fileDate("file_date", "fileDate", "TIMESTAMP", false),
+        fileTypeName("file_type_name", "fileTypeName", "VARCHAR", false),
         fileType("file_type", "fileType", "VARCHAR", false),
         fileNumber("file_number", "fileNumber", "VARCHAR", false),
         fileName("file_name", "fileName", "VARCHAR", false),

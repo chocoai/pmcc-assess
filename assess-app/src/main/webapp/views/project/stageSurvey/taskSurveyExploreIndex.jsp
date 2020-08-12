@@ -595,6 +595,7 @@
             type: 'get',
             dataType: "json",
             success: function (result) {
+                console.log(result) ;
                 zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
                 //展开第一级，选中根节点
                 var rootNode = zTreeObj.getNodes()[0];
@@ -1038,16 +1039,18 @@
 
     batchTreeTool.showFunctionBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        $("#basicBatchApplyFrm").find('[name=declareRecordId]').val(node.declareRecordId);
-        $("#basicBatchApplyFrm").find('[name=declareRecordName]').val(node.declareRecordName);
-        //是当前执行人时
-        if (node.executor == '${userAccount}') {
-            $("#btnGroup").find('.btn.masterTool').show();
-            $("#btnGroup").find('.btn.limitTool').hide();
+        if (node){
+            $("#basicBatchApplyFrm").find('[name=declareRecordId]').val(node.declareRecordId);
+            $("#basicBatchApplyFrm").find('[name=declareRecordName]').val(node.declareRecordName);
+            //是当前执行人时
+            if (node.executor == '${userAccount}') {
+                $("#btnGroup").find('.btn.masterTool').show();
+                $("#btnGroup").find('.btn.limitTool').hide();
 
-        } else {
-            $("#btnGroup").find('.btn.limitTool').show();
-            $("#btnGroup").find('.btn.masterTool').hide();
+            } else {
+                $("#btnGroup").find('.btn.limitTool').show();
+                $("#btnGroup").find('.btn.masterTool').hide();
+            }
         }
 
 
