@@ -14,6 +14,7 @@ public class ProjectPlanVo extends ProjectPlan {
     private String taskAllDisplayUrl;
     private Boolean taskAllCanExecut;
     private String taskAllExecutUrl;
+    private Boolean checked;
 
     public String getPlanExecutor() {
         return planExecutor;
@@ -77,5 +78,13 @@ public class ProjectPlanVo extends ProjectPlan {
 
     public void setTaskAllExecutUrl(String taskAllExecutUrl) {
         this.taskAllExecutUrl = taskAllExecutUrl;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 }

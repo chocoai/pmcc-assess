@@ -11,11 +11,6 @@
 <head>
     <title>${projectInfo.projectName}</title>
     <%@include file="/views/share/main_css.jsp" %>
-    <style type="text/css">
-        .nav-pills.nav-secondary .nav-link.active {
-            background: #b4b2dc
-        }
-    </style>
 </head>
 <body class="nav-md">
 <div class="wrapper">
@@ -34,21 +29,12 @@
                                              role="tablist" aria-orientation="vertical">
                                             <c:forEach items="${projectPlanList}" var="item"
                                                        varStatus="status">
-
                                                 <a class="nav-link show" data-toggle="pill" href="#tabPane${item.id}"
                                                    role="tab"
                                                    onclick="spotCheckProject.loadProjectPhaseList($('#tbPlanPhaseList${item.id}'),${item.id})"
                                                    aria-controls="v-pills-home-nobd"
                                                    aria-selected="true">
-                                                    <div class="form-check" style="float: left;padding: 2px;">
-                                                        <label class="form-check-label"
-                                                               onclick="$(this).find(':checkbox').prop('checked',!$(this).find(':checkbox').prop('checked'));">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                   onclick="alert(1);" checked="checked" value="">
-                                                            <span class="form-check-sign"></span>
-                                                        </label>
-                                                        <span>${item.planName}</span>
-                                                    </div>
+                                                    <span>${item.planName}</span>
                                                 </a>
                                             </c:forEach>
                                         </div>

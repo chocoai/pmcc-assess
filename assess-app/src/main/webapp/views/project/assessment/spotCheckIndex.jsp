@@ -57,6 +57,7 @@
     </div>
 </div>
 </body>
+
 <%--填写考核基础信息--%>
 <div id="spotCheckModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -243,6 +244,8 @@
     function viewDetail(id) {
         window.open('${pageContext.request.contextPath}/projectSpotCheck/detail?spotId=' + id)
     }
+
+
 </script>
 
 

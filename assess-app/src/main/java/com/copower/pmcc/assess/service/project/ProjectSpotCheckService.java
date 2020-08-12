@@ -204,6 +204,44 @@ public class ProjectSpotCheckService {
         return projectSpotCheckDao.getProjectSpotCheckItemById(id);
     }
 
+    /**
+     * 获取该项目下的阶段
+     *
+     * @param projectId
+     * @param itemId
+     * @return
+     */
+    public List<ProjectPlanVo> getProjectPlanListByProjectId(Integer projectId, Integer itemId) {
+        if (projectId == null) return null;
+        List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
+        if (CollectionUtils.isEmpty(projectPlanList)) return null;
+        ProjectSpotCheckItem spotCheckItem = projectSpotCheckDao.getProjectSpotCheckItemById(itemId);
+        if (spotCheckItem != null && StringUtils.isNotBlank(spotCheckItem.getPlanId())) {
+            List<Integer> list = FormatUtils.transformString2Integer(spotCheckItem.getPlanId());
+            for (ProjectPlanVo projectPlanVo : projectPlanList) {
+                projectPlanVo.setChecked(list.contains(projectPlanVo.getId()));
+            }
+        } else {
+            projectPlanList.forEach(o -> o.setChecked(true));
+        }
+        return projectPlanList;
+    }
+
+    /**
+     * 保存数据
+     *
+     * @param spotCheckItem
+     */
+    public void saveSpotCheckItem(ProjectSpotCheckItem spotCheckItem) {
+        if (spotCheckItem == null) return;
+        if (spotCheckItem.getId() != null && spotCheckItem.getId() > 0) {
+            projectSpotCheckDao.modifyProjectSpotCheckItem(spotCheckItem);
+        } else {
+            spotCheckItem.setCreator(commonService.thisUserAccount());
+            projectSpotCheckDao.addProjectSpotCheckItem(spotCheckItem);
+        }
+    }
+
     public List<ProjectSpotCheckItem> getProjectSpotCheckItemsBySpotId(Integer spotId) {
         if (spotId == null) return null;
         ProjectSpotCheckItem where = new ProjectSpotCheckItem();
@@ -217,6 +255,7 @@ public class ProjectSpotCheckService {
         BeanUtils.copyProperties(projectSpotCheckItem, vo);
         return vo;
     }
+
 
     /**
      * 申请提交

@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="spot_id" jdbcType="INTEGER" property="spotId" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="plan_id" jdbcType="VARCHAR" property="planId" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="estate_name" jdbcType="VARCHAR" property="estateName" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, spot_id, project_id, project_name, estate_name, creator, gmt_created, gmt_modified
+    id, spot_id, project_id, plan_id, project_name, estate_name, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemExample" resultMap="BaseResultMap">
     select
@@ -106,12 +108,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_spot_check_item (spot_id, project_id, project_name, 
-      estate_name, creator, gmt_created, 
-      gmt_modified)
-    values (#{spotId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
-      #{estateName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_project_spot_check_item (spot_id, project_id, plan_id, 
+      project_name, estate_name, creator, 
+      gmt_created, gmt_modified)
+    values (#{spotId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{planId,jdbcType=VARCHAR}, 
+      #{projectName,jdbcType=VARCHAR}, #{estateName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItem">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -124,6 +126,9 @@
       </if>
       <if test="projectId != null">
         project_id,
+      </if>
+      <if test="planId != null">
+        plan_id,
       </if>
       <if test="projectName != null">
         project_name,
@@ -147,6 +152,9 @@
       </if>
       <if test="projectId != null">
         #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="planId != null">
+        #{planId,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null">
         #{projectName,jdbcType=VARCHAR},
@@ -183,6 +191,9 @@
       <if test="record.projectId != null">
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.planId != null">
+        plan_id = #{record.planId,jdbcType=VARCHAR},
+      </if>
       <if test="record.projectName != null">
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
@@ -208,6 +219,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       spot_id = #{record.spotId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
+      plan_id = #{record.planId,jdbcType=VARCHAR},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -225,6 +237,9 @@
       </if>
       <if test="projectId != null">
         project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="planId != null">
+        plan_id = #{planId,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null">
         project_name = #{projectName,jdbcType=VARCHAR},
@@ -248,6 +263,7 @@
     update tb_project_spot_check_item
     set spot_id = #{spotId,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
+      plan_id = #{planId,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
       estate_name = #{estateName,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

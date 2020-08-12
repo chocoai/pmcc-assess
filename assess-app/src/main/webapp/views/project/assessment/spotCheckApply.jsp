@@ -268,6 +268,34 @@
     </div>
 </div>
 
+<%--选择要抽查的阶段--%>
+<div id="selectSpotPlanModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">选择抽查阶段</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id">
+                <form id="frmSpotPlan" class="form-horizontal">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="spotCheck.saveSelectedSpotPlan();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%--填写工时考核窗口--%>
 <div id="editSpotCheckItemGroupModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -329,7 +357,6 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
     $(function () {
         spotCheck.loadSpotCheckItemList();
@@ -358,6 +385,9 @@
         cols.push({
             field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
                 var str = '';
+                str += '<button type="button" onclick="spotCheck.showSpotPlanModal(' + row.projectId + ',' + row.id + ');"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="选择抽查阶段">';
+                str += '<i class="fa fa-object-group"></i>';
+                str += '</button>';
                 str += '<button type="button" onclick="spotCheck.openSpotCheckProjectUrl(' + row.projectId + ',' + row.id + ');"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="填写">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
@@ -536,6 +566,58 @@
                 $(".tooltips").tooltip();
             }
         });
+    }
+
+    //显示抽查阶段窗口
+    spotCheck.showSpotPlanModal = function (projectId, itemId) {
+        $('#frmSpotPlan').empty();
+        $('#selectSpotPlanModal').find('[name=id]').val(itemId);
+        $.getJSON('${pageContext.request.contextPath}/projectSpotCheck/getProjectPlanListByProjectId', {
+            projectId: projectId,
+            itemId: itemId
+        }, function (result) {
+            if (result.ret && result.data) {
+                $.each(result.data, function (i, item) {
+                    var html = '<div class="form-check">';
+                    html += '<label class="form-check-label">';
+                    html += '<input class="form-check-input" type="checkbox"';
+                    if (item.checked) {
+                        html += ' checked="checked" ';
+                    }
+                    html += ' value="' + item.id + '">';
+                    html += '<span class="form-check-sign">' + item.planName + '</span>';
+                    html += '</label></div>';
+                    $('#frmSpotPlan').append(html);
+                })
+            }
+        })
+        $('#selectSpotPlanModal').modal();
+    }
+
+    //保存已选的抽查阶段
+    spotCheck.saveSelectedSpotPlan = function () {
+        var planIdArray = [];
+        $('#frmSpotPlan').find(':checkbox:checked').each(function () {
+            planIdArray.push($(this).val());
+        });
+        var data = {};
+        data.id = $('#selectSpotPlanModal').find('[name=id]').val();
+        data.planId = planIdArray.join();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/projectSpotCheck/saveSpotCheckItem',
+            type: 'post',
+            data: {formData: JSON.stringify(data)},
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess('提示', '选择成功');
+                    spotCheck.loadSpotCheckItemList();
+                    $('#selectSpotPlanModal').modal('hide');
+                } else {
+                    AlertError('错误', result.errmsg);
+                }
+            }
+        })
     }
 
     //项目抽查工分填写

@@ -9,6 +9,8 @@ public class ProjectSpotCheckItem {
 
     private Integer projectId;
 
+    private String planId;
+
     private String projectName;
 
     private String estateName;
@@ -41,6 +43,14 @@ public class ProjectSpotCheckItem {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public String getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(String planId) {
+        this.planId = planId == null ? null : planId.trim();
     }
 
     public String getProjectName() {

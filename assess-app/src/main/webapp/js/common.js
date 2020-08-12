@@ -1020,7 +1020,7 @@ $(function () {
             }
         },
         setValueBySelect:function (_this) {
-            $(_this).closest(".input-group").find("input").val($(_this).text());
+            $(_this).closest(".input-group").find("input").val($(_this).text()).trigger('change');
         },
         getSonTextAppendDicList: function (fieldName, name, value, callback) {
             $.ajax({
