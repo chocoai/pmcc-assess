@@ -119,7 +119,13 @@
 
     //项目抽查工分详情
     spotCheck.openSpotCheckProjectDetailUrl = function (projectId, itemId) {
-        window.open('${pageContext.request.contextPath}/projectSpotCheck/projectSpotDetail?projectId=' + projectId + '&itemId=' + itemId);
+        layer.open({
+            type: 2,
+            area: ['97%', '97%'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: '${pageContext.request.contextPath}/projectSpotCheck/projectSpotDetail?projectId=' + projectId + '&itemId=' + itemId
+        });
     }
 
 

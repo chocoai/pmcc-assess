@@ -120,13 +120,13 @@ public class ProjectSpotCheckService {
     }
 
     /**
-     * 获取运行中的批次
+     * 获取草稿中的批次
      *
      * @return
      */
-    public List<ProjectSpotCheck> getRuningSpotCheckList() {
+    public List<ProjectSpotCheck> getDraftSpotCheckList() {
         ProjectSpotCheck where = new ProjectSpotCheck();
-        where.setStatus(ProcessStatusEnum.RUN.getValue());
+        where.setStatus(ProjectStatusEnum.DRAFT.getKey());
         List<ProjectSpotCheck> projectSpotCheckList = projectSpotCheckDao.getProjectSpotCheckList(where);
         return projectSpotCheckList;
     }
@@ -351,19 +351,23 @@ public class ProjectSpotCheckService {
         where.setItemId(itemId);
         where.setPlanId(planId);
         List<ProjectSpotCheckItemScore> list = projectSpotCheckDao.getProjectSpotCheckItemScoreList(where);
-        if (CollectionUtils.isEmpty(list)) {
-            list = Lists.newArrayList();
-            List<ProjectPhase> projectPhaseList = projectPlanDetailsService.getProjectPhaseListByPlanId(planId);
-            if (CollectionUtils.isNotEmpty(projectPhaseList)) {
-                for (ProjectPhase projectPhase : projectPhaseList) {
-                    ProjectSpotCheckItemScore item = new ProjectSpotCheckItemScore();
-                    item.setPlanId(planId);
-                    item.setProjectPhaseId(projectPhase.getId());
-                    item.setProjectPhaseName(projectPhase.getProjectPhaseName());
-                    item.setStandard(projectPhase.getCeReviewStandard());
-                    item.setStandardScore(projectPhase.getCeReviewScore());
-                    list.add(item);
-                }
+        List<ProjectSpotCheckItemScore> resultList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(list)) {
+            resultList.addAll(list);
+        }
+        List<Integer> projectPhaseIds = LangUtils.transform(resultList, o -> o.getProjectPhaseId());
+        List<ProjectPhase> projectPhaseList = projectPlanDetailsService.getProjectPhaseListByPlanId(planId);
+        if (CollectionUtils.isNotEmpty(projectPhaseList)) {
+            for (ProjectPhase projectPhase : projectPhaseList) {
+                if (CollectionUtils.isNotEmpty(projectPhaseIds) && projectPhaseIds.contains(projectPhase.getId()))
+                    continue;
+                ProjectSpotCheckItemScore item = new ProjectSpotCheckItemScore();
+                item.setPlanId(planId);
+                item.setProjectPhaseId(projectPhase.getId());
+                item.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                item.setStandard(projectPhase.getCeReviewStandard());
+                item.setStandardScore(projectPhase.getCeReviewScore());
+                list.add(item);
             }
         }
         return LangUtils.transform(list, o -> getSpotCheckItemScoreVo(o));

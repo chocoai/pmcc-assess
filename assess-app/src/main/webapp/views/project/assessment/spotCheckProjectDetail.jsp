@@ -85,6 +85,7 @@
         </div>
     </div>
 </div>
+<%@include file="/views/project/assessment/commPlanDetail.jsp" %>
 <script type="text/javascript">
     var UERemark;
     $(function () {
@@ -129,6 +130,9 @@
                 str += '<button type="button" onclick="spotCheckProject.showHistoryItemModal(' + row.projectPhaseId + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="历史数据">';
                 str += '<i class="fa fa-history"></i>';
                 str += '</button>';
+                str += '<button type="button" onclick="spotCheckProject.showPlanDetailsList(' + row.projectPhaseId + ',' + planId + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="填写">';
+                str += '<i class="fa fa-align-justify"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -147,86 +151,15 @@
         });
     }
 
-    //加载任务
-    spotCheckProject.loadPlanDetailsList = function ($list, planId) {
-        var cols = [];
-        cols.push({field: 'id', title: 'id', visible: false});
-        cols.push({
-            field: 'projectPhaseName', title: '名称', width: '35%', formatter: function (value, row, index) {
-                var str = row.projectPhaseName;
-                if (row.planRemarks) {
-                    str += "<span style='font-size: 10px;'>(" + row.planRemarks + ")</span>";
-                }
-                return str;
-            }
-        });
-        cols.push({
-            field: 'executeUserName', title: '责任人/审批人', width: '15%', formatter: function (value, row, index) {
-                var s = value;
-                if (row.approverUserName) {
-                    s += '/' + row.approverUserName;
-                }
-                return s;
-            }
-        });
-        cols.push({
-            field: 'status', title: '状态', formatter: function (value, row, index) {
-                var str = "";
-                switch (value) {
-                    case "runing": {
-                        str = "<span class='label label-info'>" + "进行中" + "</span>";
-                        break;
-                    }
-                    case "finish": {
-                        str = "<span class='label label-success'>" + "已完成" + "</span>";
-                        break;
-                    }
-                    case "close": {
-                        str = "<span class='label label-warning'>" + "关闭" + "</span>";
-                        break;
-                    }
-                    case "none": {
-                        str = "<span class='label label-default'>" + row.projectPhaseName + "</span>";
-                        break;
-                    }
-                }
-                return str;
-            }
-        });
-        cols.push({
-            field: 'planStartDate', title: '开始日期', width: '10%', formatter: function (value, row, index) {
-                return formatDate(value, false);
-            }
-        });
-        cols.push({
-            field: 'planEndDate', title: '结束日期', width: '10%', formatter: function (value, row, index) {
-                return formatDate(value, false);
-            }
-        });
-        cols.push({
-            field: 'opt', title: '操作', width: '7%', formatter: function (value, row, index) {
-                var str = "";
-                if (row.displayUrl) {
-                    str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' title='查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
-                }
-                return str;
-            }
-        });
-        var select = {
-            projectId: "${projectInfo.id}",
-            planId: planId
-        };
-        $list.bootstrapTable('destroy');
-        TableInit($list, "${pageContext.request.contextPath}/projectInfo/getPlanDetailListByPlanId", cols, {
-            formData: JSON.stringify(select)
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();
-            }
-        });
+    //加载工作事项
+    spotCheckProject.showPlanDetailsList = function (projectPhaseId, planId) {
+        if (projectPhaseId && planId) {
+            commPlanDetail.showPlanDetailsListModal(planId, projectPhaseId);
+        }else if(spotCheckProject.currProjectPhase){
+            var planId = spotCheckProject.currProjectPhase.planId;
+            var projectPhaseId = spotCheckProject.currProjectPhase.projectPhaseId;
+            commPlanDetail.showPlanDetailsListModal(planId, projectPhaseId);
+        }
     }
 
     //显示历史数据弹窗

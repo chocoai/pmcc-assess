@@ -97,7 +97,7 @@ public class ProjectReviewScoreService {
      * @param projectId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void applyCommit( Integer projectId) throws BusinessException, BpmException {
+    public void applyCommit(Integer projectId) throws BusinessException, BpmException {
         if (projectId == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
@@ -130,7 +130,7 @@ public class ProjectReviewScoreService {
 
     //----------------------------------------------------------------------------------------------------
 
-    public ProjectReviewScoreItem getReviewScoreItemById(Integer id){
+    public ProjectReviewScoreItem getReviewScoreItemById(Integer id) {
         return projectReviewScoreDao.getProjectReviewScoreItemById(id);
     }
 
@@ -141,10 +141,10 @@ public class ProjectReviewScoreService {
         where.setReviewId(reviewId);
         List<ProjectReviewScoreItem> list = projectReviewScoreDao.getProjectReviewScoreItemList(where);
         if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list,o->getReviewScoreItemVo(o));
+        return LangUtils.transform(list, o -> getReviewScoreItemVo(o));
     }
 
-    public List<ProjectReviewScoreItemVo> getHistoryItemsByProjectPhaseId(Integer reviewId,Integer projectPhaseId) {
+    public List<ProjectReviewScoreItemVo> getHistoryItemsByProjectPhaseId(Integer reviewId, Integer projectPhaseId) {
         if (reviewId == null) return null;
         ProjectReviewScoreItem where = new ProjectReviewScoreItem();
         where.setBisEnable(false);
@@ -152,7 +152,7 @@ public class ProjectReviewScoreService {
         where.setProjectPhaseId(projectPhaseId);
         List<ProjectReviewScoreItem> list = projectReviewScoreDao.getProjectReviewScoreItemList(where);
         if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list,o->getReviewScoreItemVo(o));
+        return LangUtils.transform(list, o -> getReviewScoreItemVo(o));
     }
 
     public ProjectReviewScoreItemVo getReviewScoreItemVo(ProjectReviewScoreItem reviewScoreItem) {
@@ -169,26 +169,31 @@ public class ProjectReviewScoreService {
         where.setReviewId(reviewId);
         where.setPlanId(planId);
         List<ProjectReviewScoreItem> list = projectReviewScoreDao.getProjectReviewScoreItemList(where);
-        if (CollectionUtils.isEmpty(list)) {
-            list = Lists.newArrayList();
-            List<ProjectPhase> projectPhaseList = projectPlanDetailsService.getProjectPhaseListByPlanId(planId);
-            if (CollectionUtils.isNotEmpty(projectPhaseList)) {
-                for (ProjectPhase projectPhase : projectPhaseList) {
-                    ProjectReviewScoreItem item = new ProjectReviewScoreItem();
-                    item.setPlanId(planId);
-                    item.setProjectPhaseId(projectPhase.getId());
-                    item.setProjectPhaseName(projectPhase.getProjectPhaseName());
-                    item.setStandard(projectPhase.getManagerReviewStandard());
-                    item.setStandardScore(projectPhase.getManagerReviewScore());
-                    list.add(item);
-                }
+        List<ProjectReviewScoreItem> resultList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(list)) {
+            resultList.addAll(list);
+        }
+        List<Integer> projectPhaseIds = LangUtils.transform(resultList, o -> o.getProjectPhaseId());
+        List<ProjectPhase> projectPhaseList = projectPlanDetailsService.getProjectPhaseListByPlanId(planId);
+        if (CollectionUtils.isNotEmpty(projectPhaseList)) {
+            for (ProjectPhase projectPhase : projectPhaseList) {
+                if (CollectionUtils.isNotEmpty(projectPhaseIds) && projectPhaseIds.contains(projectPhase.getId()))
+                    continue;
+                ProjectReviewScoreItem item = new ProjectReviewScoreItem();
+                item.setPlanId(planId);
+                item.setProjectPhaseId(projectPhase.getId());
+                item.setProjectPhaseName(projectPhase.getProjectPhaseName());
+                item.setStandard(projectPhase.getManagerReviewStandard());
+                item.setStandardScore(projectPhase.getManagerReviewScore());
+                resultList.add(item);
             }
         }
-        return LangUtils.transform(list, o -> getReviewScoreItemVo(o));
+        return LangUtils.transform(resultList, o -> getReviewScoreItemVo(o));
     }
 
     /**
      * 保存数据
+     *
      * @param reviewScoreItem
      */
     public void saveReviewScoreItem(ProjectReviewScoreItem reviewScoreItem) {

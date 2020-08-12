@@ -317,6 +317,12 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getPlanDetailListByProjectPhaseId", name = "取得阶段工作成果")
+    public BootstrapTableVo getPlanDetailListByProjectPhaseId(Integer planId,Integer projectPhaseId) {
+        return projectPlanDetailsService.getPlanDetailListByProjectPhaseId(planId, projectPhaseId);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getProjectPlanItem", name = "取得计划编制信息", method = RequestMethod.POST)
     public HttpResult getProjectPlanItem(Integer planId) {
         try {

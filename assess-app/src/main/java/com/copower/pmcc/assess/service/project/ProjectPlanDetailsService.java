@@ -383,6 +383,31 @@ public class ProjectPlanDetailsService {
     }
 
     /**
+     * 获取数据
+     * @param planId
+     * @param projectPhaseId
+     * @return
+     */
+    public BootstrapTableVo getPlanDetailListByProjectPhaseId(Integer planId, Integer projectPhaseId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
+        projectPlanDetailsWhere.setPlanId(planId);
+        projectPlanDetailsWhere.setProjectPhaseId(projectPhaseId);
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
+        bootstrapTableVo.setTotal(page.getTotal());
+        List<ProjectPlanDetailsVo> detailsVos = LangUtils.transform(planDetails, o -> {
+            ProjectPlanDetailsVo vo = new ProjectPlanDetailsVo();
+            BeanUtils.copyProperties(o, vo);
+            vo.setExecuteUserName(publicService.getUserNameByAccount(o.getExecuteUserAccount()));
+            return vo;
+        });
+        bootstrapTableVo.setRows(detailsVos);
+        return bootstrapTableVo;
+    }
+
+    /**
      * 是否所有计划明细任务都已完成
      *
      * @param planId
@@ -485,15 +510,6 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsVos;
     }
 
-    public List<ProjectPlanDetailsVo> getProjectDetailsTask(ProjectPlanDetails projectPlanDetails) {
-        ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
-        projectPlanDetailsWhere.setPid(projectPlanDetails.getPid());
-        projectPlanDetailsWhere.setExecuteUserAccount(projectPlanDetails.getExecuteUserAccount());
-        List<ProjectPlanDetails> listObject = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
-        List<ProjectPlanDetailsVo> transform = LangUtils.transform(listObject, o -> getProjectPlanDetailsVo(o));
-        return transform;
-    }
-
     public List<ProjectPlanDetails> getProjectDetails(ProjectPlanDetails projectPlanDetails) {
         List<ProjectPlanDetails> listObject = projectPlanDetailsDao.getListObject(projectPlanDetails);
         return listObject;
@@ -516,16 +532,6 @@ public class ProjectPlanDetailsService {
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
         }
-    }
-
-    /**
-     * 获取子项计划任务
-     *
-     * @param planDetailsId
-     * @return
-     */
-    public List<ProjectPlanDetails> getChildrenPlanDetailsList(Integer planDetailsId) {
-        return projectPlanDetailsDao.getProjectPlanDetailsByPid(planDetailsId);
     }
 
     public List<ProjectPlanDetails> getProjectPlanDetailsByIds(List<Integer> ids) {

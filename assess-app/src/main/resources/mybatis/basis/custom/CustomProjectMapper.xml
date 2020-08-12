@@ -17,7 +17,7 @@
         <if test="endMonth != null and endMonth!=''">
             and finish_date <![CDATA[ < ]]>   #{endMonth}
         </if>
-        <if test="projectIds != null">
+        <if test="projectIds != null and projectIds.size()>0">
             and project_id in
             <foreach collection="projectIds" item="projectId" index="index" open="(" close=")" separator=",">
                 #{projectId}
@@ -34,7 +34,7 @@
         <if test="endMonth != null and endMonth!=''">
             and task_submit_time <![CDATA[ < ]]>   #{endMonth}
         </if>
-        <if test="projectIds != null">
+        <if test="projectIds != null and projectIds.size()>0">
             and project_id in
             <foreach collection="projectIds" item="projectId" index="index" open="(" close=")" separator=",">
                 #{projectId}
