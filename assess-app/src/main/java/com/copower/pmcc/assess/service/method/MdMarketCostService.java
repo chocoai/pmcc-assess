@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -634,9 +635,11 @@ public class MdMarketCostService {
                 try {
                     double e24 = Double.valueOf(getFieldObjectValue(ReportFieldCostMethodEnum.MarketCost_constructionAssessmentValue2, target));
                     double g24 = Double.valueOf(getFieldObjectValue(ReportFieldCostMethodEnum.MarketCost_constructionAssessmentValue2Rate, target));
-                    double value = ArithmeticUtils.div(e24, 1 - g24, 2);
-                    target.setConstructionAssessmentValue(String.valueOf(value));
-                    return String.valueOf(value);
+                    double value = 0;
+                    BigDecimal bigDecimal = new BigDecimal(e24).divide(new BigDecimal(1 - g24), 0, RoundingMode.HALF_UP);
+//                    value = ArithmeticUtils.div(e24, 1 - g24, 0);
+                    target.setConstructionAssessmentValue(String.valueOf(bigDecimal));
+                    return String.valueOf(bigDecimal);
                 } catch (Exception e) {
                     return "";
                 }
