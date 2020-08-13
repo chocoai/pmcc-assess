@@ -21,6 +21,10 @@ public class MdEconomicIndicatorsItemDao {
     @Autowired
     private MdEconomicIndicatorsItemMapper mdEconomicIndicatorsItemMapper;
 
+    public void batchInset(List<MdEconomicIndicatorsItem> list){
+        mdEconomicIndicatorsItemMapper.batchInsert(list) ;
+    }
+
     /**
      * 获取数据信息
      *

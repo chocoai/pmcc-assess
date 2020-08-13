@@ -22,6 +22,10 @@ public class ToolResidueRatioObserveDao {
     @Autowired
     private ToolResidueRatioObserveMapper toolResidueRatioObserveMapper;
 
+    public void batchInset(List<ToolResidueRatioObserve> list){
+        toolResidueRatioObserveMapper.batchInsert(list) ;
+    }
+
     /**
      * @param where
      * @return

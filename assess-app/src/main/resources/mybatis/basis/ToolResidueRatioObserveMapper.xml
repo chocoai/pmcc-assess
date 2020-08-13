@@ -1,38 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ToolResidueRatioObserveMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserve" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="master_id" property="masterId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="entity_condition" property="entityCondition" jdbcType="VARCHAR" />
-    <result column="entity_condition_content" property="entityConditionContent" jdbcType="VARCHAR" />
-    <result column="standard_score" property="standardScore" jdbcType="DECIMAL" />
-    <result column="score" property="score" jdbcType="DECIMAL" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ToolResidueRatioObserveMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserve">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="master_id" jdbcType="INTEGER" property="masterId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="entity_condition" jdbcType="VARCHAR" property="entityCondition" />
+    <result column="entity_condition_content" jdbcType="VARCHAR" property="entityConditionContent" />
+    <result column="standard_score" jdbcType="DECIMAL" property="standardScore" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -43,25 +43,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -72,42 +72,42 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, master_id, type, category, entity_condition, entity_condition_content, standard_score, 
     score, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserveExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserveExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_tool_residue_ratio_observe
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_tool_residue_ratio_observe
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_tool_residue_ratio_observe
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserveExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserveExample">
     delete from tb_tool_residue_ratio_observe
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserve" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserve">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_tool_residue_ratio_observe (master_id, type, category, 
@@ -119,124 +119,154 @@
       #{standardScore,jdbcType=DECIMAL}, #{score,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserve" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_tool_residue_ratio_observe
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="masterId != null" >
-        master_id,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="category != null" >
-        category,
-      </if>
-      <if test="entityCondition != null" >
-        entity_condition,
-      </if>
-      <if test="entityConditionContent != null" >
-        entity_condition_content,
-      </if>
-      <if test="standardScore != null" >
-        standard_score,
-      </if>
-      <if test="score != null" >
-        score,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="masterId != null" >
-        #{masterId,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="category != null" >
-        #{category,jdbcType=INTEGER},
-      </if>
-      <if test="entityCondition != null" >
-        #{entityCondition,jdbcType=VARCHAR},
-      </if>
-      <if test="entityConditionContent != null" >
-        #{entityConditionContent,jdbcType=VARCHAR},
-      </if>
-      <if test="standardScore != null" >
-        #{standardScore,jdbcType=DECIMAL},
-      </if>
-      <if test="score != null" >
-        #{score,jdbcType=DECIMAL},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.masterId != null">
+            master_id,
+          </if>
+          <if test="record.type != null">
+            type,
+          </if>
+          <if test="record.category != null">
+            category,
+          </if>
+          <if test="record.entityCondition != null">
+            entity_condition,
+          </if>
+          <if test="record.entityConditionContent != null">
+            entity_condition_content,
+          </if>
+          <if test="record.standardScore != null">
+            standard_score,
+          </if>
+          <if test="record.score != null">
+            score,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.masterId != null">
+            #{record.masterId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            #{record.type,jdbcType=INTEGER},
+          </if>
+          <if test="record.category != null">
+            #{record.category,jdbcType=INTEGER},
+          </if>
+          <if test="record.entityCondition != null">
+            #{record.entityCondition,jdbcType=VARCHAR},
+          </if>
+          <if test="record.entityConditionContent != null">
+            #{record.entityConditionContent,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardScore != null">
+            #{record.standardScore,jdbcType=DECIMAL},
+          </if>
+          <if test="record.score != null">
+            #{record.score,jdbcType=DECIMAL},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserveExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserveExample" resultType="java.lang.Long">
     select count(*) from tb_tool_residue_ratio_observe
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_tool_residue_ratio_observe
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.masterId != null" >
-        master_id = #{record.masterId,jdbcType=INTEGER},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.category != null" >
-        category = #{record.category,jdbcType=INTEGER},
-      </if>
-      <if test="record.entityCondition != null" >
-        entity_condition = #{record.entityCondition,jdbcType=VARCHAR},
-      </if>
-      <if test="record.entityConditionContent != null" >
-        entity_condition_content = #{record.entityConditionContent,jdbcType=VARCHAR},
-      </if>
-      <if test="record.standardScore != null" >
-        standard_score = #{record.standardScore,jdbcType=DECIMAL},
-      </if>
-      <if test="record.score != null" >
-        score = #{record.score,jdbcType=DECIMAL},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    <if test="_parameter != null" >
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.masterId != null">
+            master_id = #{record.masterId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            type = #{record.type,jdbcType=INTEGER},
+          </if>
+          <if test="record.category != null">
+            category = #{record.category,jdbcType=INTEGER},
+          </if>
+          <if test="record.entityCondition != null">
+            entity_condition = #{record.entityCondition,jdbcType=VARCHAR},
+          </if>
+          <if test="record.entityConditionContent != null">
+            entity_condition_content = #{record.entityConditionContent,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardScore != null">
+            standard_score = #{record.standardScore,jdbcType=DECIMAL},
+          </if>
+          <if test="record.score != null">
+            score = #{record.score,jdbcType=DECIMAL},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_tool_residue_ratio_observe
     set id = #{record.id,jdbcType=INTEGER},
       master_id = #{record.masterId,jdbcType=INTEGER},
@@ -249,47 +279,57 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserve" >
+  <update id="updateByPrimaryKeySelective" parameterType="map">
     update tb_tool_residue_ratio_observe
-    <set >
-      <if test="masterId != null" >
-        master_id = #{masterId,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="category != null" >
-        category = #{category,jdbcType=INTEGER},
-      </if>
-      <if test="entityCondition != null" >
-        entity_condition = #{entityCondition,jdbcType=VARCHAR},
-      </if>
-      <if test="entityConditionContent != null" >
-        entity_condition_content = #{entityConditionContent,jdbcType=VARCHAR},
-      </if>
-      <if test="standardScore != null" >
-        standard_score = #{standardScore,jdbcType=DECIMAL},
-      </if>
-      <if test="score != null" >
-        score = #{score,jdbcType=DECIMAL},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.masterId != null">
+            master_id = #{record.masterId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            type = #{record.type,jdbcType=INTEGER},
+          </if>
+          <if test="record.category != null">
+            category = #{record.category,jdbcType=INTEGER},
+          </if>
+          <if test="record.entityCondition != null">
+            entity_condition = #{record.entityCondition,jdbcType=VARCHAR},
+          </if>
+          <if test="record.entityConditionContent != null">
+            entity_condition_content = #{record.entityConditionContent,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardScore != null">
+            standard_score = #{record.standardScore,jdbcType=DECIMAL},
+          </if>
+          <if test="record.score != null">
+            score = #{record.score,jdbcType=DECIMAL},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserve" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ToolResidueRatioObserve">
     update tb_tool_residue_ratio_observe
     set master_id = #{masterId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
@@ -303,4 +343,60 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_tool_residue_ratio_observe
+    (master_id, type, category, entity_condition, entity_condition_content, standard_score, 
+      score, creator, gmt_created, gmt_modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.masterId,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, #{item.category,jdbcType=INTEGER}, 
+        #{item.entityCondition,jdbcType=VARCHAR}, #{item.entityConditionContent,jdbcType=VARCHAR}, 
+        #{item.standardScore,jdbcType=DECIMAL}, #{item.score,jdbcType=DECIMAL}, #{item.creator,jdbcType=VARCHAR}, 
+        #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_tool_residue_ratio_observe (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'master_id'.toString() == column.value">
+          #{item.masterId,jdbcType=INTEGER}
+        </if>
+        <if test="'type'.toString() == column.value">
+          #{item.type,jdbcType=INTEGER}
+        </if>
+        <if test="'category'.toString() == column.value">
+          #{item.category,jdbcType=INTEGER}
+        </if>
+        <if test="'entity_condition'.toString() == column.value">
+          #{item.entityCondition,jdbcType=VARCHAR}
+        </if>
+        <if test="'entity_condition_content'.toString() == column.value">
+          #{item.entityConditionContent,jdbcType=VARCHAR}
+        </if>
+        <if test="'standard_score'.toString() == column.value">
+          #{item.standardScore,jdbcType=DECIMAL}
+        </if>
+        <if test="'score'.toString() == column.value">
+          #{item.score,jdbcType=DECIMAL}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>

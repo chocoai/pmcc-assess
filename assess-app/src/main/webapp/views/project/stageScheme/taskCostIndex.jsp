@@ -275,16 +275,21 @@
         data.planDetailsId = '${projectPlanDetails.id}';
         data.type = construction.typeData();
         data.price = "0";
+        console.log(data) ;
         developmentCommon.saveMdCalculatingMethodEngineeringCost(data, function (item) {
             construction.writeMdCalculatingMethodEngineeringCost(item);
             target.modal("hide");
             notifySuccess("成功", "添加成功!");
             //这里会同时生成 建筑安装工程费 详细情况id
-            developmentCommon.saveMdArchitecturalObj2({}, {price: "0", pid: 0}, function (result) {
-                item.architecturalObjId = result.id;
-                developmentCommon.saveMdCalculatingMethodEngineeringCost(item);
+            if (! data.id){
+                developmentCommon.saveMdArchitecturalObj2({}, {price: "0", pid: 0}, function (result) {
+                    item.architecturalObjId = result.id;
+                    developmentCommon.saveMdCalculatingMethodEngineeringCost(item);
+                    construction.loadMdCalculatingMethodEngineeringCostTable();
+                });
+            } else {
                 construction.loadMdCalculatingMethodEngineeringCostTable();
-            });
+            }
         });
     };
 
@@ -334,6 +339,19 @@
                     construction.writeMdCalculatingMethodEngineeringCost();
                 });
             });
+        }
+    };
+
+    construction.editMdCalculatingMethodEngineeringCost = function () {
+        var rows = $(construction.engineeringFeeInfoTarget).bootstrapTable('getSelections');
+        if (!rows || rows.length != 1) {
+            notifyWarning("警告", "选择一条数据进行编辑!");
+        } else {
+            var target = $("#boxMdCalculatingMethodEngineeringCost");
+            target.modal("show");
+            var frm = target.find("form");
+            frm.clearAll();
+            frm.initForm(rows[0]) ;
         }
     };
 
