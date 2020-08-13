@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
@@ -185,6 +186,8 @@ public class BasicEstateController {
             BasicApplyBatchDetail sourceApplyBatchDetail = basicApplyBatchDetailDao.getBasicApplyBatchDetail(where);
             if (sourceApplyBatchDetail != null) {
                 applyBatchDetail.setQuoteId(sourceApplyBatchDetail.getId());
+                applyBatchDetail.setModifyType(BasicDataHandleEnum.REFERENCE.getKey());
+                applyBatchDetail.setName(basicEstate.getName());
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(applyBatchDetail);
             }
             return HttpResult.newCorrectResult(basicEstate);

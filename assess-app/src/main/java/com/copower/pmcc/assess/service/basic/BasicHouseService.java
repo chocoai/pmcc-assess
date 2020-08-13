@@ -236,7 +236,7 @@ public class BasicHouseService extends BasicEntityAbstract {
 
         //同步删除apply信息
         BasicApply basicApply = basicApplyService.getBasicApplyByHouseId(houseId);
-        if(basicApply!=null) basicApplyService.deleteBasicApplyById(basicApply.getId());
+        if (basicApply != null) basicApplyService.deleteBasicApplyById(basicApply.getId());
     }
 
     /**
@@ -413,7 +413,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         objectMap.put("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) != null ? basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) : new BasicUnitHuxingVo());
 
         BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
-        objectMap.put("landCategoryInfo",landCategoryInfo != null ? landCategoryInfo : new BasicEstateLandCategoryInfo());
+        objectMap.put("landCategoryInfo", landCategoryInfo != null ? landCategoryInfo : new BasicEstateLandCategoryInfo());
 
         initDemagedDegree(basicHouse);
         return objectMap;
@@ -463,7 +463,7 @@ public class BasicHouseService extends BasicEntityAbstract {
             if (basicHouse != null) {
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
-                    if(StringUtils.isNotEmpty(basicHouse.getHouseNumber())){
+                    if (StringUtils.isNotEmpty(basicHouse.getHouseNumber())) {
                         houseDetail.setName(basicHouse.getHouseNumber());
                         houseDetail.setDisplayName(basicHouse.getHouseNumber());
                         houseDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseDetail.getId()));
@@ -503,14 +503,14 @@ public class BasicHouseService extends BasicEntityAbstract {
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING_GROUPS.getVar());
                 List<BasicHouseTrading> basicTradingList = JSONObject.parseArray(jsonContent, BasicHouseTrading.class);
                 if (CollectionUtils.isNotEmpty(basicTradingList)) {
-                    for(BasicHouseTrading item:basicTradingList){
+                    for (BasicHouseTrading item : basicTradingList) {
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(item, true);
                     }
                     //默认设置第一条的标识
                     List<BasicHouseTrading> filter = LangUtils.filter(basicTradingList, p -> {
                         return p.getBisMark() == true;
                     });
-                    if(!CollectionUtils.isNotEmpty(filter)){
+                    if (!CollectionUtils.isNotEmpty(filter)) {
                         basicTradingList.get(0).setBisMark(true);
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTradingList.get(0), true);
                     }
@@ -544,7 +544,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                     basicHouse.setNewDegree(newDegree);
                     saveAndUpdate(basicHouse, false);
                 }
-                basicApplyBatchDetailService.insertBasicApply(houseDetail,planDetailsId);//更新basicApply表中的信息
+                basicApplyBatchDetailService.insertBasicApply(houseDetail, planDetailsId);//更新basicApply表中的信息
                 return basicHouse.getId();
             }
         }
@@ -594,6 +594,10 @@ public class BasicHouseService extends BasicEntityAbstract {
                 targetBasicHouseHuxing.setHouseId(targetBasicHouse.getId());
             }
             basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(targetBasicHouseHuxing, true);
+        } else {//每个房屋必须有对应户型
+            BasicUnitHuxing unitHuxing = new BasicUnitHuxing();
+            unitHuxing.setHouseId(targetBasicHouse.getId());
+            basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(unitHuxing, false);
         }
 
         if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
@@ -606,7 +610,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         }
         List<BasicHouseTrading> sourceBasicHouseTradingList = basicHouseTradingService.getTradingListByHouseId(sourceId);
         if (CollectionUtils.isNotEmpty(sourceBasicHouseTradingList)) {
-            for(BasicHouseTrading source:sourceBasicHouseTradingList){
+            for (BasicHouseTrading source : sourceBasicHouseTradingList) {
                 BasicHouseTrading targetBasicHouseTrading = new BasicHouseTrading();
                 BeanUtils.copyProperties(source, targetBasicHouseTrading);
                 targetBasicHouseTrading.setId(null);
@@ -614,27 +618,27 @@ public class BasicHouseService extends BasicEntityAbstract {
                 basicHouseTradingService.saveAndUpdateBasicHouseTrading(targetBasicHouseTrading, true);
                 //出售
                 List<BasicHouseTradingSell> basicHouseTradingSells = basicHouseTradingSellService.basicHouseTradingSellsGetByTradingId(source.getId());
-                if(CollectionUtils.isNotEmpty(basicHouseTradingSells)){
-                    for(BasicHouseTradingSell sellSource:basicHouseTradingSells){
+                if (CollectionUtils.isNotEmpty(basicHouseTradingSells)) {
+                    for (BasicHouseTradingSell sellSource : basicHouseTradingSells) {
                         BasicHouseTradingSell targetSell = new BasicHouseTradingSell();
-                        BeanUtils.copyProperties(sellSource,targetSell);
+                        BeanUtils.copyProperties(sellSource, targetSell);
                         targetSell.setId(null);
                         targetSell.setHouseId(targetBasicHouse.getId());
                         targetSell.setTradingId(targetBasicHouseTrading.getId());
-                        basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(targetSell,true);
+                        basicHouseTradingSellService.saveAndUpdateBasicHouseTradingSell(targetSell, true);
                     }
 
                 }
                 //出租
                 List<BasicHouseTradingLease> basicHouseTradingLeases = basicHouseTradingLeaseService.basicHouseTradingLeaseListByTradingId(source.getId());
-                if(CollectionUtils.isNotEmpty(basicHouseTradingLeases)){
-                    for(BasicHouseTradingLease leaseSource:basicHouseTradingLeases){
+                if (CollectionUtils.isNotEmpty(basicHouseTradingLeases)) {
+                    for (BasicHouseTradingLease leaseSource : basicHouseTradingLeases) {
                         BasicHouseTradingLease targetLease = new BasicHouseTradingLease();
-                        BeanUtils.copyProperties(leaseSource,targetLease);
+                        BeanUtils.copyProperties(leaseSource, targetLease);
                         targetLease.setId(null);
                         targetLease.setHouseId(targetBasicHouse.getId());
                         targetLease.setTradingId(targetBasicHouseTrading.getId());
-                        basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(targetLease,true);
+                        basicHouseTradingLeaseService.saveAndUpdateBasicHouseTradingLease(targetLease, true);
                     }
                 }
                 //附件拷贝
@@ -791,14 +795,14 @@ public class BasicHouseService extends BasicEntityAbstract {
     }
 
     @Override
-    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception {
         List<Object> objects = Lists.newArrayList();
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setApplyId(applyBatchDetailId);
         basicHouse.setBisCase(true);
         List<BasicHouse> basicHouseList = getBasicHouseList(basicHouse);
-        if(CollectionUtils.isNotEmpty(basicHouseList)){
-            basicHouseList.forEach(o->objects.add(o));
+        if (CollectionUtils.isNotEmpty(basicHouseList)) {
+            basicHouseList.forEach(o -> objects.add(o));
         }
         return objects;
     }

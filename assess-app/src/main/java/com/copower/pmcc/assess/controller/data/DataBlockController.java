@@ -145,31 +145,13 @@ public class DataBlockController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "更新数据")
-    public HttpResult updateOldData(Integer key) {
+    public HttpResult updateOldData() {
         try {
-            dataBlockService.updateOldData(key);
+            dataBlockService.updateOldData();
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("更新数据异常");
         }
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/climbingOldData", method = {RequestMethod.GET}, name = "抓取两年前老数据")
-    public HttpResult climbingOldData(Integer id) {
-        try {
-            netUrlConfigService.climbingAll();
-            netUrlConfigService.getBaZhongTradingCenter(1);
-            netUrlConfigService.getLuZhouTradingCenter(1);
-            netUrlConfigService.getZiGongTradingCenter(1);
-            netUrlConfigService.getYiBinTradingCenter(1,"land");
-            netUrlConfigService.getYiBinTradingCenter(1,"asset");
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("抓取两年前老数据异常");
-        }
-    }
-
 }

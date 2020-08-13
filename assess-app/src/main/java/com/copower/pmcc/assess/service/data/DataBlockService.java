@@ -6,6 +6,8 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportItemService;
@@ -46,32 +48,19 @@ public class DataBlockService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private GenerateReportGroupService generateReportGroupService;
+    private BasicApplyBatchService basicApplyBatchService;
     @Autowired
-    private GenerateReportInfoService generateReportInfoService;
-    @Autowired
-    private SchemeReportFileItemDao schemeReportFileItemDao;
-    @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
-    @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
-    private SurveyCommonService surveyCommonService;
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDataBlock(DataBlock dataBlock) {
         if (dataBlock.getId() == null || dataBlock.getId().intValue() == 0) {
             dataBlock.setCreator(commonService.thisUserAccount());
-            try {
-                return dataBlockDao.addDataBlock(dataBlock);
-            } catch (Exception e1) {
-                logger.error(e1.getMessage(), e1);
-                return null;
-            }
+            return dataBlockDao.addDataBlock(dataBlock);
         } else {
             dataBlockDao.updateDataBlock(dataBlock);
-            return null;
+            return dataBlock.getId();
         }
     }
 
@@ -173,18 +162,19 @@ public class DataBlockService {
         return blockList.size() > 0;
     }
 
-
-    public void updateOldData(Integer key) throws Exception {
-        //将实况照片更新到估价对象上
-        //1.先读取实况照片中没有估价对象号的数据，根据权证取到其中一个估价对象，将估价对象id绑定上去
-        List<SchemeReportFileItem> items = schemeReportFileItemDao.getReportFileItemListWhereJudgeIdNull();
-        if(!CollectionUtils.isEmpty(items)){
-            for (SchemeReportFileItem item : items) {
-                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getListByDeclareIds(Lists.newArrayList(item.getDeclareRecordId()));
-                if(!CollectionUtils.isEmpty(judgeObjects)){
-                    item.setSchemeJudgeObjectId(judgeObjects.get(0).getId());
-                    schemeReportFileItemDao.updateReportFileItem(item);
-                }
+    public void updateOldData() throws Exception {
+        //1.将basic_apply_batch_detail表中的full_name重新更新
+        List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailList(new BasicApplyBatchDetail());
+        if (CollectionUtils.isEmpty(list)) return;
+        for (BasicApplyBatchDetail basicApplyBatchDetail : list) {
+            if (StringUtils.isNotBlank(basicApplyBatchDetail.getFullName()) && basicApplyBatchDetail.getFullName().startsWith("/"))
+                continue;
+            try {
+                String fullName = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicApplyBatchDetail.getId());
+                basicApplyBatchDetail.setFullName(fullName);
+                basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
+            } catch (Exception ex) {
+                logger.error(ex.getMessage(), ex);
             }
         }
     }

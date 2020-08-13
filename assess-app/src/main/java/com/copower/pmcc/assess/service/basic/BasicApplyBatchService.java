@@ -273,10 +273,9 @@ public class BasicApplyBatchService {
     }
 
 
-    public BasicApplyBatch getSingleData(BasicApplyBatch basicApplyBatch) {
+    public List<BasicApplyBatch> getBasicApplyBatchList(BasicApplyBatch basicApplyBatch) {
         List<BasicApplyBatch> infoList = basicApplyBatchDao.getInfoList(basicApplyBatch);
-        if (CollectionUtils.isNotEmpty(infoList)) return infoList.get(0);
-        return null;
+        return infoList;
     }
 
 

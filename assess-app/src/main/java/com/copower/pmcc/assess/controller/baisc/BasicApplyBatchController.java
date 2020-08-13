@@ -772,6 +772,7 @@ public class BasicApplyBatchController extends BaseController {
             Object o = entityAbstract.copyBasicEntity(sourceApplyBatchDetail.getTableId(), targeApplyBatchDetail.getTableId(), true);
             if (targeApplyBatchDetail != null) {
                 targeApplyBatchDetail.setQuoteId(sourceApplyBatchDetail.getId());
+                targeApplyBatchDetail.setModifyType(BasicDataHandleEnum.REFERENCE.getKey());
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(targeApplyBatchDetail);
             }
             return HttpResult.newCorrectResult(o);

@@ -51,7 +51,7 @@ public class ProjectReviewScoreController {
     private BpmRpcBoxService bpmRpcBoxService;
 
     @RequestMapping(value = "/apply", name = "申请页面")
-    public ModelAndView apply(Integer projectId) throws BusinessException {
+    public ModelAndView apply(Integer projectId, Integer reviewId) throws BusinessException {
         String boxKey = baseParameterService.getBaseParameter(BaseParameterEnum.PROJECT_REVIEW_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxKey);
         if (boxReDto == null || boxReDto.getId() == null) {
@@ -62,9 +62,14 @@ public class ProjectReviewScoreController {
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         List<ProjectPlanVo> projectPlanList = projectInfoService.getProjectPlanList(projectId);
         modelAndView.addObject("projectPlanList", projectPlanList);
-        ProjectReviewScore projectReviewScore = projectReviewScoreService.getReviewScoreByProjectId(projectId);
+        ProjectReviewScore projectReviewScore = null;
+        if (reviewId != null) {
+            projectReviewScore = projectReviewScoreService.getReviewScoreById(reviewId);
+        }else if(projectId!=null){
+            projectReviewScore = projectReviewScoreService.getReviewScoreByProjectId(projectId);
+        }
         if (projectReviewScore == null) {
-            projectReviewScore=new ProjectReviewScore();
+            projectReviewScore = new ProjectReviewScore();
             projectReviewScore.setProjectId(projectId);
             projectReviewScore.setProjectName(projectInfo.getProjectName());
             projectReviewScore.setCreator(processControllerComponent.getThisUser());

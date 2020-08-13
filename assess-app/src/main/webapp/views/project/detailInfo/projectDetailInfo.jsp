@@ -4,7 +4,7 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
     <style type="text/css">
-        #btnContainer .input-group-append{
+        #btnContainer .input-group-append {
             margin-left: 2px;
         }
     </style>
@@ -42,8 +42,10 @@
                                                         <a class="dropdown-item"
                                                            href="${pageContext.request.contextPath}/project.scheme.change/applyView?projectId=${projectInfo.id}"
                                                            target="_blank">方案变更</a>
-                                                        <a class="dropdown-item" href="javascript://" onclick="projectDetails.stopProject()">项目终止</a>
-                                                        <a class="dropdown-item"href="javascript://" onclick="projectDetails.restartProject()">项目重启</a>
+                                                        <a class="dropdown-item" href="javascript://"
+                                                           onclick="projectDetails.stopProject()">项目终止</a>
+                                                        <a class="dropdown-item" href="javascript://"
+                                                           onclick="projectDetails.restartProject()">项目重启</a>
                                                     </div>
                                                 </div>
                                                 <div class="input-group-append">
@@ -264,14 +266,19 @@
         //项目工分
         projectReviewScore: function () {
             //先查看是否有记录
-            $.getJSON('${pageContext.request.contextPath}/projectReviewScore/getReviewScoreByProjectId',{projectId:'${projectInfo.id}'},function (result) {
-                if(result.ret&&result.data){
-                    var url = "${pageContext.request.contextPath}/projectReviewScore/detail?processInsId=" + result.data.processInsId;
-                }else{
-                    var url = "${pageContext.request.contextPath}/projectReviewScore/apply?projectId=" + ${projectInfo.id};
+            $.getJSON('${pageContext.request.contextPath}/projectReviewScore/getReviewScoreByProjectId', {projectId: '${projectInfo.id}'}, function (result) {
+                var url = '';
+                if (result.ret && result.data) {
+                    if (result.data.processInsId) {
+                        url = "${pageContext.request.contextPath}/projectReviewScore/detail?processInsId=" + result.data.processInsId;
+                    } else {
+                        url = "${pageContext.request.contextPath}/projectReviewScore/apply?projectId=${projectInfo.id}&reviewId=" + result.data.id;
+                    }
+                } else {
+                    url = "${pageContext.request.contextPath}/projectReviewScore/apply?projectId=${projectInfo.id}";
                 }
                 window.open(url, '_blank');
-            })
+            });
         },
         //终止
         stopProject: function () {
