@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ToolResidueRatioObserveMapper {
-    int countByExample(ToolResidueRatioObserveExample example);
+    long countByExample(ToolResidueRatioObserveExample example);
 
     int deleteByExample(ToolResidueRatioObserveExample example);
 
@@ -14,17 +14,21 @@ public interface ToolResidueRatioObserveMapper {
 
     int insert(ToolResidueRatioObserve record);
 
-    int insertSelective(ToolResidueRatioObserve record);
+    int insertSelective(@Param("record") ToolResidueRatioObserve record, @Param("selective") ToolResidueRatioObserve.Column ... selective);
 
     List<ToolResidueRatioObserve> selectByExample(ToolResidueRatioObserveExample example);
 
     ToolResidueRatioObserve selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") ToolResidueRatioObserve record, @Param("example") ToolResidueRatioObserveExample example);
+    int updateByExampleSelective(@Param("record") ToolResidueRatioObserve record, @Param("example") ToolResidueRatioObserveExample example, @Param("selective") ToolResidueRatioObserve.Column ... selective);
 
     int updateByExample(@Param("record") ToolResidueRatioObserve record, @Param("example") ToolResidueRatioObserveExample example);
 
-    int updateByPrimaryKeySelective(ToolResidueRatioObserve record);
+    int updateByPrimaryKeySelective(@Param("record") ToolResidueRatioObserve record, @Param("selective") ToolResidueRatioObserve.Column ... selective);
 
     int updateByPrimaryKey(ToolResidueRatioObserve record);
+
+    int batchInsert(@Param("list") List<ToolResidueRatioObserve> list);
+
+    int batchInsertSelective(@Param("list") List<ToolResidueRatioObserve> list, @Param("selective") ToolResidueRatioObserve.Column ... selective);
 }

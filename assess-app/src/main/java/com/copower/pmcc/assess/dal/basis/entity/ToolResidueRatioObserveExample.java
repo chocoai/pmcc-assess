@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class ToolResidueRatioObserveExample {
+    /**
+     * tb_tool_residue_ratio_observe
+     */
     protected String orderByClause;
 
+    /**
+     * tb_tool_residue_ratio_observe
+     */
     protected boolean distinct;
 
+    /**
+     * tb_tool_residue_ratio_observe
+     */
     protected List<Criteria> oredCriteria;
 
     public ToolResidueRatioObserveExample() {
@@ -65,6 +74,9 @@ public class ToolResidueRatioObserveExample {
         distinct = false;
     }
 
+    /**
+     * tb_tool_residue_ratio_observe
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -804,6 +816,9 @@ public class ToolResidueRatioObserveExample {
         }
     }
 
+    /**
+     * tb_tool_residue_ratio_observe
+     */
     public static class Criterion {
         private String condition;
 

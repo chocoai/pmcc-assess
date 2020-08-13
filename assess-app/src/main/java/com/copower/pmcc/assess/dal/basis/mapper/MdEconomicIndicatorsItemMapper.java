@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface MdEconomicIndicatorsItemMapper {
-    int countByExample(MdEconomicIndicatorsItemExample example);
+    long countByExample(MdEconomicIndicatorsItemExample example);
 
     int deleteByExample(MdEconomicIndicatorsItemExample example);
 
@@ -14,17 +14,21 @@ public interface MdEconomicIndicatorsItemMapper {
 
     int insert(MdEconomicIndicatorsItem record);
 
-    int insertSelective(MdEconomicIndicatorsItem record);
+    int insertSelective(@Param("record") MdEconomicIndicatorsItem record, @Param("selective") MdEconomicIndicatorsItem.Column ... selective);
 
     List<MdEconomicIndicatorsItem> selectByExample(MdEconomicIndicatorsItemExample example);
 
     MdEconomicIndicatorsItem selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") MdEconomicIndicatorsItem record, @Param("example") MdEconomicIndicatorsItemExample example);
+    int updateByExampleSelective(@Param("record") MdEconomicIndicatorsItem record, @Param("example") MdEconomicIndicatorsItemExample example, @Param("selective") MdEconomicIndicatorsItem.Column ... selective);
 
     int updateByExample(@Param("record") MdEconomicIndicatorsItem record, @Param("example") MdEconomicIndicatorsItemExample example);
 
-    int updateByPrimaryKeySelective(MdEconomicIndicatorsItem record);
+    int updateByPrimaryKeySelective(@Param("record") MdEconomicIndicatorsItem record, @Param("selective") MdEconomicIndicatorsItem.Column ... selective);
 
     int updateByPrimaryKey(MdEconomicIndicatorsItem record);
+
+    int batchInsert(@Param("list") List<MdEconomicIndicatorsItem> list);
+
+    int batchInsertSelective(@Param("list") List<MdEconomicIndicatorsItem> list, @Param("selective") MdEconomicIndicatorsItem.Column ... selective);
 }

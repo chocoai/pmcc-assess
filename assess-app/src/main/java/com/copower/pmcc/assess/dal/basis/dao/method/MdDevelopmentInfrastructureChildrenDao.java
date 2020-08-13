@@ -18,6 +18,10 @@ public class MdDevelopmentInfrastructureChildrenDao {
     @Autowired
     private MdDevelopmentInfrastructureChildrenMapper mapper;
 
+    public void batchInset(List<MdDevelopmentInfrastructureChildren> list){
+        mapper.batchInsert(list);
+    }
+
     public boolean addMdDevelopmentInfrastructureChildren(MdDevelopmentInfrastructureChildren oo){
         return mapper.insertSelective(oo) == 1;
     }

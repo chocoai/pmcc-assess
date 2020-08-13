@@ -9,10 +9,12 @@ import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAn
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,6 +92,7 @@ public class MdEconomicIndicatorsService {
         if (CollectionUtils.isEmpty(applyDto.getEconomicIndicatorsItemList())) {
             return;
         }
+        List<MdEconomicIndicatorsItem> list = new ArrayList<>() ;
         for (MdEconomicIndicatorsItem indicatorsItem : applyDto.getEconomicIndicatorsItemList()) {
             MdEconomicIndicatorsItem indicatorsItem2 = new MdEconomicIndicatorsItem();
             indicatorsItem.setPlanDetailsId(null);
@@ -100,7 +103,12 @@ public class MdEconomicIndicatorsService {
             BeanCopyHelp.copyPropertiesIgnoreNull(indicatorsItem, indicatorsItem2);
             indicatorsItem2.setEconomicId(target.getId());
             indicatorsItem2.setCreator(commonService.thisUserAccount());
-            mdEconomicIndicatorsItemDao.addEconomicIndicatorsItem(indicatorsItem2);
+            indicatorsItem2.setGmtCreated(DateUtils.now());
+            indicatorsItem2.setGmtModified(DateUtils.now());
+            list.add(indicatorsItem2) ;
+        }
+        if (CollectionUtils.isNotEmpty(list)){
+            mdEconomicIndicatorsItemDao.batchInset(list);
         }
     }
 

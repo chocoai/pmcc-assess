@@ -59,6 +59,16 @@ public class ResidueRatioService {
        BeanCopyHelp.copyPropertiesIgnoreNull(toolResidueRatio, target);
        target.setCreator(commonService.thisUserAccount());
        toolResidueRatioDao.addToolResidueRatio(target) ;
+       ToolResidueRatioObserve queryToolResidueRatioObserve = new ToolResidueRatioObserve() ;
+       queryToolResidueRatioObserve.setMasterId(copyId);
+       List<ToolResidueRatioObserve> toolResidueRatioObserveList = toolResidueRatioObserveDao.getToolResidueRatioObserve(queryToolResidueRatioObserve);
+       if (CollectionUtils.isNotEmpty(toolResidueRatioObserveList)){
+           for (ToolResidueRatioObserve obj:toolResidueRatioObserveList){
+               obj.setId(null);
+               obj.setMasterId(target.getId());
+           }
+           toolResidueRatioObserveDao.batchInset(toolResidueRatioObserveList);
+       }
    }
 
     public ToolResidueRatio saveResidueRatio(String formData) throws Exception {

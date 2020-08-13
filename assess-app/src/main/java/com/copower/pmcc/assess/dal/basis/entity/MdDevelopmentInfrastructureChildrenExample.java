@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class MdDevelopmentInfrastructureChildrenExample {
+    /**
+     * tb_md_development_infrastructure_children
+     */
     protected String orderByClause;
 
+    /**
+     * tb_md_development_infrastructure_children
+     */
     protected boolean distinct;
 
+    /**
+     * tb_md_development_infrastructure_children
+     */
     protected List<Criteria> oredCriteria;
 
     public MdDevelopmentInfrastructureChildrenExample() {
@@ -65,6 +74,9 @@ public class MdDevelopmentInfrastructureChildrenExample {
         distinct = false;
     }
 
+    /**
+     * tb_md_development_infrastructure_children
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -744,6 +756,9 @@ public class MdDevelopmentInfrastructureChildrenExample {
         }
     }
 
+    /**
+     * tb_md_development_infrastructure_children
+     */
     public static class Criterion {
         private String condition;
 

@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class MdEconomicIndicatorsItemExample {
+    /**
+     * tb_md_economic_indicators_item
+     */
     protected String orderByClause;
 
+    /**
+     * tb_md_economic_indicators_item
+     */
     protected boolean distinct;
 
+    /**
+     * tb_md_economic_indicators_item
+     */
     protected List<Criteria> oredCriteria;
 
     public MdEconomicIndicatorsItemExample() {
@@ -65,6 +74,9 @@ public class MdEconomicIndicatorsItemExample {
         distinct = false;
     }
 
+    /**
+     * tb_md_economic_indicators_item
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1114,6 +1126,9 @@ public class MdEconomicIndicatorsItemExample {
         }
     }
 
+    /**
+     * tb_md_economic_indicators_item
+     */
     public static class Criterion {
         private String condition;
 
