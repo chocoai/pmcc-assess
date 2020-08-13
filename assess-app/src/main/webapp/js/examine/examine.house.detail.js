@@ -24,7 +24,7 @@ houseHuxingPrice.prototype = {
         var tenementType = houseCommon.houseHuxingForm.find('label[name="tenementType"]').text();
         if (tenementType == '住宅' || tenementType == '办公') {
             temp = commonColumn.houseRoomResidence();
-        } else if (tenementType == '商铺' || tenementType == '商场') {
+        } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
             temp = commonColumn.houseRoomStore();
         } else if (tenementType == '餐饮酒店') {
             temp = commonColumn.houseRoomHotel();
@@ -118,7 +118,7 @@ houseRoom.prototype = {
         }
         if (tenementType == '住宅' || tenementType == '办公') {
             temp = commonColumn.houseRoomResidence();
-        } else if (tenementType == '商铺' || tenementType == '商场') {
+        } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
             temp = commonColumn.houseRoomStore();
         } else if (tenementType == '餐饮酒店') {
             temp = commonColumn.houseRoomHotel();
@@ -171,7 +171,7 @@ houseRoom.prototype = {
                 if (tenementType == '住宅' || tenementType == '办公') {
                     $("#" + houseRoom.prototype.config().frm).find(".residence.base").show();
                 }
-                if (tenementType == '商铺' || tenementType == '商场') {
+                if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                     $("#" + houseRoom.prototype.config().frm).find(".store.base").show();
                 }
                 if (tenementType == '餐饮酒店') {
@@ -223,7 +223,7 @@ houseRoom.prototype = {
                     $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").show();
                 }
             }
-            if (tenementType == '商铺' || tenementType == '商场') {
+            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                 if (houseShape == '规则') {
                     $("#" + houseRoom.prototype.config().frm).find(".store.unruled").hide();
                     $("#" + houseRoom.prototype.config().frm).find(".store.rule").show();

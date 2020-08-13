@@ -26,7 +26,7 @@ houseHuxingPrice.prototype = {
         var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
         if (tenementType == '住宅' || tenementType == '办公') {
             temp = commonColumn.houseRoomResidence();
-        } else if (tenementType == '商铺' || tenementType == '商场') {
+        } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
             temp = commonColumn.houseRoomStore();
         } else if (tenementType == '餐饮' || tenementType == '酒店') {
             temp = commonColumn.houseRoomHotel();
@@ -94,7 +94,7 @@ houseHuxingPrice.prototype = {
         var data = formParams(houseHuxingPrice.prototype.config().frm);
         data.houseId = houseCommon.getHouseId();
         var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
-        if (tenementType == '商铺' || tenementType == '商场') {
+        if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
             var adjacentPosition = '';
             $("#" + houseHuxingPrice.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
                 adjacentPosition += $(this).val() + ',';
@@ -136,7 +136,7 @@ houseHuxingPrice.prototype = {
                     $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
                     if (houseHuxingPrice.prototype.isNotBlank(result.data)) {
                         houseHuxingPrice.prototype.init(result.data, tenementType);
-                        if (tenementType == '商铺' || tenementType == '商场') {
+                        if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                             if (houseHuxingPrice.prototype.isNotBlank(result.data.adjacentPosition)) {
                                 houseHuxingPrice.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
                             } else {
@@ -170,7 +170,7 @@ houseHuxingPrice.prototype = {
                 $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").show();
                 $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").find("input").attr("disabled", false);
             }
-            if (tenementType == '商铺' || tenementType == '商场') {
+            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                 $("#" + houseHuxingPrice.prototype.config().frm).find(".store").show();
                 $("#" + houseHuxingPrice.prototype.config().frm).find(".store").find("input").attr("disabled", false);
 
@@ -2125,7 +2125,7 @@ var houseRoom;
             var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
             if (tenementType == '住宅' || tenementType == '办公') {
                 temp = commonColumn.houseRoomResidence();
-            } else if (tenementType == '商铺' || tenementType == '商场') {
+            } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                 temp = commonColumn.houseRoomStore();
             } else if (tenementType == '餐饮' || tenementType == '酒店') {
                 temp = commonColumn.houseRoomHotel();
@@ -2301,7 +2301,7 @@ var houseRoom;
             var data = formParams(houseRoom.prototype.config().frm);
             var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
             data.houseId = houseCommon.getHouseId();
-            if (tenementType == '商铺' || tenementType == '商场') {
+            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                 var adjacentPosition = '';
                 $("#" + houseRoom.prototype.config().frm).find('[name^=adjacentPosition]').each(function () {
                     adjacentPosition += $(this).val() == "null" ? "" : $(this).val();
@@ -2346,7 +2346,7 @@ var houseRoom;
                         $("#" + houseRoom.prototype.config().frm).clearAll();
                         houseRoom.prototype.init(result.data, tenementType);
                         var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
-                        if (tenementType == '商铺' || tenementType == '商场') {
+                        if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                             if (houseRoom.prototype.isNotBlank(result.data.adjacentPosition)) {
                                 houseRoom.prototype.writeHTMLData(result.data.adjacentPosition, result.data.distance);
                             } else {
@@ -2428,7 +2428,7 @@ var houseRoom;
                         $("#" + houseRoom.prototype.config().frm).find(".residence.base").show();
                         $("#" + houseRoom.prototype.config().frm).find(".residence.base").find("input").attr("disabled", false);
                     }
-                    if (tenementType == '商铺' || tenementType == '商场') {
+                    if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                         $("#" + houseRoom.prototype.config().frm).find(".store.base").show();
                         $("#" + houseRoom.prototype.config().frm).find(".store.base").find("input").attr("disabled", false);
 
@@ -2530,7 +2530,7 @@ var houseRoom;
                         $("#" + houseRoom.prototype.config().frm).find(".residence.rule").find("input").attr("disabled", false);
                     }
                 }
-                if (tenementType == '商铺' || tenementType == '商场') {
+                if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                     if (houseShape == '不规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".store.rule").hide();
                         $("#" + houseRoom.prototype.config().frm).find(".store.rule").find("input").attr("disabled", true);

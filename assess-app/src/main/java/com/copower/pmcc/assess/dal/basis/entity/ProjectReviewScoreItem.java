@@ -20,6 +20,8 @@ public class ProjectReviewScoreItem {
 
     private BigDecimal score;
 
+    private Integer sorting;
+
     private Boolean bisEnable;
 
     private String creator;
@@ -92,6 +94,14 @@ public class ProjectReviewScoreItem {
 
     public void setScore(BigDecimal score) {
         this.score = score;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
     }
 
     public Boolean getBisEnable() {

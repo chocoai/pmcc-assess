@@ -210,7 +210,6 @@
                                             <tr>
                                                 <td>
                                                     <div class="x-valid ">
-
                                                         <div class="form-check" style="justify-content:left">
                                                             <label class="form-check-label">
                                                                 <input class="form-check-input" type="checkbox"
@@ -218,16 +217,13 @@
                                                                        onclick="survey.areConsistentEvent(this) ;"
                                                                        name="areConsistent${item.id}"
                                                                        value="一致" >
-                                                                <span class="form-check-sign">一致4</span>
+                                                                <span class="form-check-sign">一致</span>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </td>
-
                                                 <input type="hidden" name="id" value="${item.id}">
-
                                                 <td>${item.inventoryContentName}</td>
-
                                                 <td>
                                                     <div class="x-valid">
                                                         <input type="text" data-rule-maxlength="50" placeholder="登记"
@@ -239,7 +235,6 @@
                                                                value="${item.registration}">
                                                     </div>
                                                 </td>
-
                                                 <td>
                                                     <div class="x-valid">
                                                         <input type="text" data-rule-maxlength="50" placeholder="实际"
@@ -251,7 +246,6 @@
                                                                value="${item.actual}">
                                                     </div>
                                                 </td>
-
                                                 <td>
                                                     <div class="x-valid show-hide"
                                                          style="display: ${item.areConsistent eq '一致'?'none':'block'}">

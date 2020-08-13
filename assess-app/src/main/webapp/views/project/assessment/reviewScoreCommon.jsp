@@ -146,7 +146,7 @@
         cols.push({
             field: 'opt', title: '操作', width: '15%', formatter: function (value, row, index) {
                 var str = '';
-                str += '<button type="button" onclick="reviewScore.showReivewScoreItemModal(' + row.id + ',' + planId + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="填写">';
+                str += '<button type="button" onclick="reviewScore.showReivewScoreItemModal(' + row.projectPhaseId + ',' + planId + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="填写">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
                 str += '<button type="button" onclick="reviewScore.showHistoryItemModal(' + row.projectPhaseId + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="历史数据">';
@@ -166,7 +166,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            uniqueId: 'id',
+            uniqueId: 'projectPhaseId',
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -185,8 +185,8 @@
     }
 
     //显示弹窗
-    reviewScore.showReivewScoreItemModal = function (id, planId) {
-        var row = $('#tbPlanPhaseList' + planId).bootstrapTable('getRowByUniqueId', id);
+    reviewScore.showReivewScoreItemModal = function (projectPhaseId, planId) {
+        var row = $('#tbPlanPhaseList' + planId).bootstrapTable('getRowByUniqueId', projectPhaseId);
         reviewScore.currProjectPhase = row;
         $('#frmReviewScoreItem').clearAll().initForm(row);
         if (row.score == undefined || row.score == null) {

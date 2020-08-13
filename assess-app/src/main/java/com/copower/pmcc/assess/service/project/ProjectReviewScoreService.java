@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -185,9 +186,13 @@ public class ProjectReviewScoreService {
                 item.setProjectPhaseName(projectPhase.getProjectPhaseName());
                 item.setStandard(projectPhase.getManagerReviewStandard());
                 item.setStandardScore(projectPhase.getManagerReviewScore());
+                item.setSorting(projectPhase.getPhaseSort());
                 resultList.add(item);
             }
         }
+        Collections.sort(resultList, (p1, p2) -> {
+            return p1.getSorting() - p2.getSorting();
+        });
         return LangUtils.transform(resultList, o -> getReviewScoreItemVo(o));
     }
 

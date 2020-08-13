@@ -436,7 +436,7 @@
             if (tenementType == '住宅'|| tenementType == '办公') {
                 temp = "residence";
             }
-            if (tenementType == '商铺' || tenementType == '商场') {
+            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                 temp = "store";
             }
             if (tenementType == '餐饮'||tenementType == '酒店') {
@@ -1041,7 +1041,7 @@
             html += '<option value="茶室">茶室</option>';
             html += '<option value="影视室">影视室</option>';
         }
-        if (tenementType == '商铺' || tenementType == '商场') {
+        if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
             html += '<option value="商间">商间</option>';
             html += '<option value="商区">商区</option>';
         }

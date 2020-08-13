@@ -640,7 +640,7 @@
             if (tenementType == '住宅' || tenementType == '办公') {
                 temp = "residence";
             }
-            if (tenementType == '商铺' || tenementType == '商场') {
+            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                 temp = "store";
             }
             if (tenementType == '餐饮酒店') {
@@ -879,7 +879,7 @@
                             if (tenementType == '住宅' || tenementType == '办公') {
                                 temp = "residence";
                             }
-                            if (tenementType == '商铺' || tenementType == '商场') {
+                            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                                 temp = "store";
                             }
                             if (tenementType == '餐饮酒店') {
@@ -1039,7 +1039,7 @@
         var temp = [];
         if (tenementType == '住宅' || tenementType == '办公') {
             temp = commonColumn.houseRoomResidence();
-        } else if (tenementType == '商铺' || tenementType == '商场') {
+        } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
             temp = commonColumn.houseRoomStore();
         } else if (tenementType == '餐饮酒店') {
             temp = commonColumn.houseRoomHotel();
@@ -1551,7 +1551,7 @@
             var temp = [];
             if (tenementType == '住宅' || tenementType == '办公') {
                 temp = commonColumn.houseRoomResidence();
-            } else if (tenementType == '商铺' || tenementType == '商场') {
+            } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                 temp = commonColumn.houseRoomStore();
             } else if (tenementType == '餐饮酒店') {
                 temp = commonColumn.houseRoomHotel();
@@ -1686,7 +1686,7 @@
                     $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").show();
                     $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").find("input").attr("disabled", false);
                 }
-                if (tenementType == '商铺' || tenementType == '商场') {
+                if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                     $("#" + houseHuxingPrice.prototype.config().frm).find(".store").show();
                     $("#" + houseHuxingPrice.prototype.config().frm).find(".store").find("input").attr("disabled", false);
 
@@ -1760,7 +1760,7 @@
                 if (tenementType == '住宅' || tenementType == '办公') {
                     temp = "residence";
                 }
-                if (tenementType == '商铺' || tenementType == '商场') {
+                if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                     temp = "store";
                 }
                 if (tenementType == '餐饮酒店') {

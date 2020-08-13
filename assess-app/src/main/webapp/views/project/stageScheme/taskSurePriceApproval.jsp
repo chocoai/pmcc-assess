@@ -444,7 +444,7 @@
         // }
         if (tenementType == '住宅' || tenementType == '办公') {
             temp = commonColumn.houseRoomResidence();
-        } else if (tenementType == '商铺' || tenementType == '商场') {
+        } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
             temp = commonColumn.houseRoomStore();
         } else if (tenementType == '餐饮酒店') {
             temp = commonColumn.houseRoomHotel();
@@ -496,7 +496,7 @@
             var temp = [];
             if (tenementType == '住宅' || tenementType == '办公') {
                 temp = commonColumn.houseRoomResidence();
-            } else if (tenementType == '商铺' || tenementType == '商场') {
+            } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
                 temp = commonColumn.houseRoomStore();
             } else if (tenementType == '餐饮酒店') {
                 temp = commonColumn.houseRoomHotel();

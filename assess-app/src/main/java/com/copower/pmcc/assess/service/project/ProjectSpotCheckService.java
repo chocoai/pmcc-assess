@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -312,16 +313,6 @@ public class ProjectSpotCheckService {
         }
     }
 
-    public List<ProjectSpotCheckItemScoreVo> getEnableItemScoresByItemId(Integer itemId) {
-        if (itemId == null) return null;
-        ProjectSpotCheckItemScore where = new ProjectSpotCheckItemScore();
-        where.setBisChecked(true);
-        where.setItemId(itemId);
-        List<ProjectSpotCheckItemScore> list = projectSpotCheckDao.getProjectSpotCheckItemScoreList(where);
-        if (CollectionUtils.isEmpty(list)) return null;
-        return LangUtils.transform(list, o -> getSpotCheckItemScoreVo(o));
-    }
-
     public ProjectSpotCheckItemScore getSpotCheckItemScoreById(Integer id) {
         return projectSpotCheckDao.getProjectSpotCheckItemScoreById(id);
     }
@@ -367,10 +358,14 @@ public class ProjectSpotCheckService {
                 item.setProjectPhaseName(projectPhase.getProjectPhaseName());
                 item.setStandard(projectPhase.getCeReviewStandard());
                 item.setStandardScore(projectPhase.getCeReviewScore());
-                list.add(item);
+                item.setSorting(projectPhase.getPhaseSort());
+                resultList.add(item);
             }
         }
-        return LangUtils.transform(list, o -> getSpotCheckItemScoreVo(o));
+        Collections.sort(resultList, (p1, p2) -> {
+            return p1.getSorting() - p2.getSorting();
+        });
+        return LangUtils.transform(resultList, o -> getSpotCheckItemScoreVo(o));
     }
 
     public List<ProjectSpotCheckItemScore> getSpotCheckItemScoreListByItemIds(List<Integer> itemIds) {

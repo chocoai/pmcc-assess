@@ -3973,7 +3973,8 @@ public class GenerateBaseDataService {
                 }
             }
 
-            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "商铺") || StringUtils.contains(basicUnitHuxing.getTenementType(), "商场")) {
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "商铺") || StringUtils.contains(basicUnitHuxing.getTenementType(), "商场")
+                    || StringUtils.contains(basicUnitHuxing.getTenementType(), "车位")) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("相邻位置");
                     linkedList.add("方位");

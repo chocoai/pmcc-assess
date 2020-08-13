@@ -88,6 +88,7 @@ public class ProjectReviewScoreDao {
     public List<ProjectReviewScoreItem> getProjectReviewScoreItemList(ProjectReviewScoreItem where) {
         ProjectReviewScoreItemExample example = new ProjectReviewScoreItemExample();
         MybatisUtils.convertObj2Example(where, example);
+        example.setOrderByClause("sorting");
         return projectReviewScoreItemMapper.selectByExampleWithBLOBs(example);
     }
 

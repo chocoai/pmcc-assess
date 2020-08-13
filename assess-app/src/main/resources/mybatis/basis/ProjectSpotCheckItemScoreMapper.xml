@@ -10,6 +10,7 @@
     <result column="standard" jdbcType="VARCHAR" property="standard" />
     <result column="standard_score" jdbcType="DECIMAL" property="standardScore" />
     <result column="score" jdbcType="DECIMAL" property="score" />
+    <result column="sorting" jdbcType="INTEGER" property="sorting" />
     <result column="bis_checked" jdbcType="BIT" property="bisChecked" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, item_id, plan_id, project_phase_id, project_phase_name, standard, standard_score, 
-    score, bis_checked, creator, gmt_created, gmt_modified
+    score, sorting, bis_checked, creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List">
     remark
@@ -137,14 +138,14 @@
     </selectKey>
     insert into tb_project_spot_check_item_score (item_id, plan_id, project_phase_id, 
       project_phase_name, standard, standard_score, 
-      score, bis_checked, creator, 
-      gmt_created, gmt_modified, remark
-      )
+      score, sorting, bis_checked, 
+      creator, gmt_created, gmt_modified, 
+      remark)
     values (#{itemId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{projectPhaseId,jdbcType=INTEGER}, 
       #{projectPhaseName,jdbcType=VARCHAR}, #{standard,jdbcType=VARCHAR}, #{standardScore,jdbcType=DECIMAL}, 
-      #{score,jdbcType=DECIMAL}, #{bisChecked,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=LONGVARCHAR}
-      )
+      #{score,jdbcType=DECIMAL}, #{sorting,jdbcType=INTEGER}, #{bisChecked,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckItemScore">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -172,6 +173,9 @@
       </if>
       <if test="score != null">
         score,
+      </if>
+      <if test="sorting != null">
+        sorting,
       </if>
       <if test="bisChecked != null">
         bis_checked,
@@ -210,6 +214,9 @@
       </if>
       <if test="score != null">
         #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="sorting != null">
+        #{sorting,jdbcType=INTEGER},
       </if>
       <if test="bisChecked != null">
         #{bisChecked,jdbcType=BIT},
@@ -261,6 +268,9 @@
       <if test="record.score != null">
         score = #{record.score,jdbcType=DECIMAL},
       </if>
+      <if test="record.sorting != null">
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
       <if test="record.bisChecked != null">
         bis_checked = #{record.bisChecked,jdbcType=BIT},
       </if>
@@ -291,6 +301,7 @@
       standard = #{record.standard,jdbcType=VARCHAR},
       standard_score = #{record.standardScore,jdbcType=DECIMAL},
       score = #{record.score,jdbcType=DECIMAL},
+      sorting = #{record.sorting,jdbcType=INTEGER},
       bis_checked = #{record.bisChecked,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -310,6 +321,7 @@
       standard = #{record.standard,jdbcType=VARCHAR},
       standard_score = #{record.standardScore,jdbcType=DECIMAL},
       score = #{record.score,jdbcType=DECIMAL},
+      sorting = #{record.sorting,jdbcType=INTEGER},
       bis_checked = #{record.bisChecked,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -342,6 +354,9 @@
       <if test="score != null">
         score = #{score,jdbcType=DECIMAL},
       </if>
+      <if test="sorting != null">
+        sorting = #{sorting,jdbcType=INTEGER},
+      </if>
       <if test="bisChecked != null">
         bis_checked = #{bisChecked,jdbcType=BIT},
       </if>
@@ -369,6 +384,7 @@
       standard = #{standard,jdbcType=VARCHAR},
       standard_score = #{standardScore,jdbcType=DECIMAL},
       score = #{score,jdbcType=DECIMAL},
+      sorting = #{sorting,jdbcType=INTEGER},
       bis_checked = #{bisChecked,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -385,6 +401,7 @@
       standard = #{standard,jdbcType=VARCHAR},
       standard_score = #{standardScore,jdbcType=DECIMAL},
       score = #{score,jdbcType=DECIMAL},
+      sorting = #{sorting,jdbcType=INTEGER},
       bis_checked = #{bisChecked,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

@@ -159,6 +159,7 @@ public class ProjectSpotCheckDao {
     public List<ProjectSpotCheckItemScore> getProjectSpotCheckItemScoreList(ProjectSpotCheckItemScore where) {
         ProjectSpotCheckItemScoreExample example = new ProjectSpotCheckItemScoreExample();
         MybatisUtils.convertObj2Example(where, example);
+        example.setOrderByClause("sorting");
         return projectSpotCheckItemScoreMapper.selectByExampleWithBLOBs(example);
     }
 
