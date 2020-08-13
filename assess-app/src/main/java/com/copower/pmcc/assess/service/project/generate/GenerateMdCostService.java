@@ -300,12 +300,32 @@ public class GenerateMdCostService {
                 return ArithmeticUtils.round(bigDecimal.toString(), 2);
             }
             case MarketCost_unforeseenExpensesTotal: {//成本法不可预见费总计
-                String param1 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_constructionSubtotal);
-                BigDecimal bigDecimal = ArithmeticUtils.mul(param1, target.getUnforeseenExpenses().toString());
-                return ArithmeticUtils.round(bigDecimal.toString(), 2);
+                String type = getMdCostVo().getType();
+                if ("1".equals(type)){
+                    String param1 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_constructionSubtotal);
+                    String param2 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_managementExpenseTotal);
+                    BigDecimal decimal = ArithmeticUtils.add(param1, param2);
+                    BigDecimal bigDecimal = ArithmeticUtils.multiply(decimal, target.getUnforeseenExpenses());
+                    return ArithmeticUtils.round(bigDecimal.toString(), 2);
+                }else {
+                    String param1 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_constructionSubtotal);
+                    BigDecimal bigDecimal = ArithmeticUtils.mul(param1 ,target.getUnforeseenExpenses().toString());
+                    return ArithmeticUtils.round(bigDecimal.toString(), 2);
+                }
             }
             case MarketCost_managementExpenseTotal: {//成本法管理费总计
-                return mdMarketCostService.getFieldObjectValue(ReportFieldCostMethodEnum.MarketCost_managementExpense, target);
+                String type = getMdCostVo().getType();
+                if ("1".equals(type)){
+                    BigDecimal bigDecimal = ArithmeticUtils.mul(target.getConstructionSubtotal(), target.getManagementExpense().toString());
+                    return ArithmeticUtils.round(bigDecimal.toString(), 2);
+                }else {
+                    String param1 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_landGetCostTotal);
+                    String param2 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_constructionSubtotal);
+                    String param3 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_unforeseenExpensesTotal);
+                    String add = ArithmeticUtils.add(new String[]{param1,param2,param3});
+                    BigDecimal bigDecimal = ArithmeticUtils.mul(add ,target.getManagementExpense().toString());
+                    return ArithmeticUtils.round(bigDecimal, 2);
+                }
             }
             case MarketCost_salesFeeTotal: {//成本法销售费总计
 //                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_salesFee, target);
