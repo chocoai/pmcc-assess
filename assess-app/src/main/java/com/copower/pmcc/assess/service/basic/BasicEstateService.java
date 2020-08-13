@@ -169,14 +169,6 @@ public class BasicEstateService extends BasicEntityAbstract {
         return vo;
     }
 
-    public List<CustomCaseEntity> autoCompleteCaseEstate(String name, String province, String city) {
-        if (StringUtils.isBlank(name) || StringUtils.isBlank(province) || StringUtils.isBlank(city)) return null;
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomCaseEntity> caseEstateList = basicEstateDao.getLatestVersionEstateList(name, province, city, null);
-        return caseEstateList;
-    }
-
     public BasicEstateVo getBasicEstateVo(BasicEstate basicEstate) {
         if (basicEstate == null) {
             return null;
