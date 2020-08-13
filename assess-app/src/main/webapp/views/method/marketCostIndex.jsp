@@ -653,12 +653,12 @@
                                 <div class="input-group">
                                     <input type="hidden" placeholder="成新率" name="residueRatioId"
                                            value="${mdCostVo.mdCostConstruction.residueRatioId}">
-                                    <input type="hidden" name="residueRatio"
-                                           value="${mdCostVo.mdCostConstruction.residueRatio}">
+                                    <%--<input type="hidden" name="residueRatio"--%>
+                                           <%--value="${mdCostVo.mdCostConstruction.residueRatio}">--%>
 
                                     <input type="text" aria-label="" aria-describedby="basic-addon1"
                                            placeholder="成新率(计算值)" class="form-control x-percent"
-                                           name="residueRatioShow"
+                                           name="residueRatio" onblur="cost.checkParams(this);"
                                            data-value="${mdCostVo.mdCostConstruction.residueRatio}">
                                     <div class="input-group-prepend">
                                         <button class="btn btn-info btn-sm" type="button"
