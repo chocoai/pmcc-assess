@@ -19,6 +19,7 @@ import com.copower.pmcc.assess.service.data.DataAreaAssessmentBonusService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
@@ -100,6 +101,9 @@ public class ProjectAssessmentBonusService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private ErpRpcUserService erpRpcUserService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
     /**
      * 相同标题  相同年  相同月  视为一个组合主键  不能与其相同
@@ -260,9 +264,31 @@ public class ProjectAssessmentBonusService {
             List<Integer> integerList = LangUtils.transform(performanceDtoList, obj -> obj.getId());
             assessmentPerformanceService.deletePerformanceByIds(integerList);
         }
+
+        //流程实例关闭
+        if (!assessmentBonus.getStatus().equals(ProcessStatusEnum.FINISH.getValue())) {
+            try {
+                //允许报错  这里有可能都没有发起流程的时候afreshAssessmentBonusTask就被调用了(重新发起考核的时候会清除所有任务和数据)
+                bpmRpcActivitiProcessManageService.closeProcess(assessmentBonus.getProcessInsId());
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
+        }
+        ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+        projectPlanResponsibility.setBusinessKey(ProjectAssessmentBonus.class.getSimpleName());
+        projectPlanResponsibility.setBusinessId(assessmentBonus.getId());
+        projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectPlanResponsibility);
+        if (CollectionUtils.isNotEmpty(projectTaskList)) {
+            List<Integer> integerList = LangUtils.transform(projectTaskList, obj -> obj.getId());
+            for (Integer integer : integerList) {
+                bpmRpcProjectTaskService.deleteProjectTask(integer);
+            }
+        }
+
         assessmentBonus.setProcessInsId("0");
         //删除完毕 重新发起 外勤加分考核
-        launchAssessmentBonusTask(assessmentBonus);
+        runAssessmentBonusTask(assessmentBonus);
     }
 
     /**
@@ -290,7 +316,13 @@ public class ProjectAssessmentBonusService {
      * @param assessmentBonus
      * @throws BusinessException
      */
+    @Transactional(rollbackFor = {Exception.class})
     public void launchAssessmentBonusTask(ProjectAssessmentBonus assessmentBonus) throws BusinessException {
+        //之所以用了一个方法来包含这个方法 是因为这个方法会被其它包含事务的方法调用  我不想引起两个事务叠加的情况
+        runAssessmentBonusTask(assessmentBonus);
+    }
+
+    private void runAssessmentBonusTask(ProjectAssessmentBonus assessmentBonus) throws BusinessException {
         if (assessmentBonus == null) {
             throw new BusinessException("参数异常");
         }
@@ -299,6 +331,7 @@ public class ProjectAssessmentBonusService {
         if (StringUtils.isBlank(assessmentBonus.getTitle())) {
             assessmentBonus.setTitle(String.format("%s年-%s月外勤加分考核", assessmentBonus.getYear(), assessmentBonus.getMonth()));
         }
+        final int projectId = 1;//写task任务的时候写入这个数据,以前写入0貌似不起作用了 ,写入到projectPlanResponsibility形成临时任务
         assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
         saveAssessmentBonus(assessmentBonus);
         Set<String> managerList = Sets.newHashSet();
@@ -354,7 +387,7 @@ public class ProjectAssessmentBonusService {
                             KeyValueDto keyValueDto = new KeyValueDto();
                             for (Map.Entry<String, BigDecimal> entry : map.entrySet()) {
                                 SysUserDto sysUser = erpRpcUserService.getSysUser(entry.getKey());
-                                DataAreaAssessmentBonus bonus = dataAreaAssessmentBonusService.getDataAreaAssessmentBonusByArea(sysUser.getDepartmentId(),basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict());
+                                DataAreaAssessmentBonus bonus = dataAreaAssessmentBonusService.getDataAreaAssessmentBonusByArea(sysUser.getDepartmentId(), basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict());
                                 if (bonus == null) continue;
                                 KeyValueDto valueDto = getKeyValueDtoByKey(keyValueDtoList, entry.getKey());
                                 BigDecimal bonusScore = entry.getValue().multiply(bonus.getCoefficient());
@@ -401,7 +434,10 @@ public class ProjectAssessmentBonusService {
                 projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
                 projectPlanResponsibility.setUrl(url);
                 projectPlanResponsibility.setPlanEndTime(new Date());
-                projectPlanResponsibility.setProjectId(0);
+                projectPlanResponsibility.setProjectId(projectId);
+                //这两个参数用作清除任务的时候查询用
+                projectPlanResponsibility.setBusinessKey(ProjectAssessmentBonus.class.getSimpleName());
+                projectPlanResponsibility.setBusinessId(assessmentBonus.getId());
                 bpmRpcProjectTaskService.saveProjectTask(projectPlanResponsibility);
             }
 
@@ -419,13 +455,17 @@ public class ProjectAssessmentBonusService {
                     projectPlanResponsibility.setCreator(s);
                     projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
                     projectPlanResponsibility.setUrl(url);
-                    projectPlanResponsibility.setProjectId(0);
+                    projectPlanResponsibility.setProjectId(projectId);
                     projectPlanResponsibility.setPlanEndTime(new Date());
+                    //这两个参数用作清除任务的时候查询用
+                    projectPlanResponsibility.setBusinessKey(ProjectAssessmentBonus.class.getSimpleName());
+                    projectPlanResponsibility.setBusinessId(assessmentBonus.getId());
                     bpmRpcProjectTaskService.saveProjectTask(projectPlanResponsibility);
                 }
             }
         }
     }
+
 
     //确定本项目查勘了几个楼盘
     private List<BasicApplyBatch> getBasicApplyBatchList(ProjectInfo projectInfo) {
@@ -452,7 +492,9 @@ public class ProjectAssessmentBonusService {
             for (AssessmentPerformanceDto performanceDto : performanceDtos) {
                 if (map.containsKey(performanceDto.getByExaminePeople())) {
                     BigDecimal bigDecimal = map.get(performanceDto.getByExaminePeople());
-                    map.put(performanceDto.getByExaminePeople(), performanceDto.getExamineScore().add(bigDecimal));
+                    if (bigDecimal != null) {
+                        map.put(performanceDto.getByExaminePeople(), performanceDto.getExamineScore().add(bigDecimal));
+                    }
                 } else {
                     map.put(performanceDto.getByExaminePeople(), performanceDto.getExamineScore());
                 }

@@ -73,18 +73,18 @@
                     <div class="form-group form-inline">
                         <label class="col-sm-2 col-form-label">年份<span class="symbol required"></span></label>
                         <div class="col-sm-10">
-                            <input type="text" data-rule-maxlength="50" placeholder="年份"
-                                   name="year" required data-rule-number='true'
-                                   class="form-control input-full ">
+                            <select class="form-control input-full search-select select2" name="year">
+                                <option value="">未选择</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="form-group form-inline">
                         <label class="col-sm-2 col-form-label">月份<span class="symbol required"></span></label>
                         <div class="col-sm-10">
-                            <input type="text" data-rule-maxlength="50" placeholder="月份"
-                                   name="month" required data-rule-number='true'
-                                   class="form-control input-full ">
+                            <select class="form-control input-full search-select select2" name="month">
+                                <option value="">未选择</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group form-inline">
@@ -92,7 +92,7 @@
                                 class="symbol required"></span></label>
                         <div class="col-sm-10">
                             <input type="text" data-rule-maxlength="100" placeholder="标题"
-                                   name="title"
+                                   name="title" onfocus="titleFocus(this);"
                                    class="form-control input-full">
                         </div>
                     </div>
@@ -113,18 +113,8 @@
 <script type="text/javascript">
     $(function () {
         loadProjectSpotCheckList();
-
-        //月份选择处理
-        DatepickerUtils.initDate($('.dbdate-month'), {
-            autoclose: true,
-            todayBtn: "linked",
-            language: "zh-CN",
-            clearBtn: true,
-            format: 'yyyy-mm',
-            startView: 4,
-            minView: 3
-        });
     });
+
 
     //加载抽查数据列表
     function loadProjectSpotCheckList() {
@@ -155,16 +145,14 @@
         cols.push({
             field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
                 var str = '';
-                if (row.processInsId && row.processInsId != '0'){
+                if (row.processInsId && row.processInsId != '0') {
                     str += '<button type="button" onclick="viewDetail(' + row.processInsId + ',\'' + row.processInsId + '\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                 }
-                if (row.status == 'finish') {
-                    str += '<button type="button" onclick="cleanProjectAssessmentBonus(' + row.id +  ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="重新发起">';
-                    str += '<i class="fa fa-reply fa-white"></i>';
-                    str += '</button>';
-                }
+                str += '<button type="button" onclick="cleanProjectAssessmentBonus(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="重新发起">';
+                str += '<i class="fa fa-reply fa-white"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -182,17 +170,38 @@
     }
 
 
-
-
-
     //显示窗口
     function showSpotCheckModal() {
-        $('#frmSpotCheck').clearAll();
-        $('#frmSpotCheck').validate();
-        $('#spotCheckModal').modal();
+        var frm = $('#frmSpotCheck');
+        var box = $('#spotCheckModal');
+        frm.clearAll();
+        frm.validate();
+
+        var date = new Date();
+        var arrMonth = [];
+        var arrYear = [];
+        arrYear.push(date.getFullYear());
+        arrYear.push(date.getFullYear() - 1);
+        for (var i = 1; i <= 12; i++) {
+            arrMonth.push(i);
+        }
+        frm.find("select[name='year']").empty().html(getOptionHtml(arrYear,"年")).trigger('change');
+        frm.find("select[name='month']").empty().html(getOptionHtml(arrMonth ,"月")).trigger('change');
+        frm.find("select[name='month']").val(date.getMonth()).trigger('change') ;
+        frm.find("select[name='year']").val(date.getFullYear()).trigger('change') ;
+        box.modal();
     }
 
-    function getProjectAssessmentBonusByCount(data,callback) {
+    function getOptionHtml(arr,title) {
+        var html = "" ;
+        html += "<option value=''>请选择</option>" ;
+        $.each(arr ,function (k,item) {
+            html += "<option value='" +item+ "'"+">" + item+title+"</option>" ;
+        }) ;
+        return html ;
+    }
+
+    function getProjectAssessmentBonusByCount(data, callback) {
         $.ajax({
             url: '${pageContext.request.contextPath}/projectAssessmentBonus/getProjectAssessmentBonusByCount',
             data: data,
@@ -200,9 +209,9 @@
             dataType: 'json',
             success: function (result) {
                 if (result.ret) {
-                   if (callback){
-                       callback(result.data) ;
-                   }
+                    if (callback) {
+                        callback(result.data);
+                    }
                 } else {
                     AlertError('错误', result.errmsg);
                 }
@@ -211,10 +220,10 @@
     }
 
     function cleanProjectAssessmentBonus(id) {
-        AlertConfirm("是否确认重新发起", "重新发起后会删除之前考核的数据", function (flag) {
+        AlertConfirm("是否确认重新发起", "重新发起后会删除之前考核的数据和任务", function (flag) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/projectAssessmentBonus/afreshAssessmentBonusTask',
-                data: {id:id},
+                data: {id: id},
                 type: 'post',
                 dataType: 'json',
                 success: function (result) {
@@ -235,8 +244,8 @@
             return false;
         }
         var data = formSerializeArray($('#frmSpotCheck'));
-        getProjectAssessmentBonusByCount(data ,function (item) {
-            if (Number(item) >= 1){
+        getProjectAssessmentBonusByCount(data, function (item) {
+            if (Number(item) >= 1) {
                 notifyInfo("提示", "重复考核!");
                 return false;
             }
@@ -273,7 +282,15 @@
                     }
                 }
             });
-        }) ;
+        });
+    }
+
+    //自动生成标题
+    function titleFocus(_this) {
+        var form = $(_this).closest('form');
+        var year = form.find('[name=year]').val();
+        var month = form.find('[name=month]').val();
+        form.find('[name=title]').val(year + "年-" + month + "月-" + "项目外勤考核");
     }
 
     //查看详情
