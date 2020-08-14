@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclareRealtyCheckListExample {
+    /**
+     * tb_declare_realty_check_list
+     */
     protected String orderByClause;
 
+    /**
+     * tb_declare_realty_check_list
+     */
     protected boolean distinct;
 
+    /**
+     * tb_declare_realty_check_list
+     */
     protected List<Criteria> oredCriteria;
 
     public DeclareRealtyCheckListExample() {
@@ -65,6 +74,9 @@ public class DeclareRealtyCheckListExample {
         distinct = false;
     }
 
+    /**
+     * tb_declare_realty_check_list
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1434,6 +1446,9 @@ public class DeclareRealtyCheckListExample {
         }
     }
 
+    /**
+     * tb_declare_realty_check_list
+     */
     public static class Criterion {
         private String condition;
 

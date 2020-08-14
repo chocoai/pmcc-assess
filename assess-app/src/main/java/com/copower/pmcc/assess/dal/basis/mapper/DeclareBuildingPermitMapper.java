@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeclareBuildingPermitMapper {
-    int countByExample(DeclareBuildingPermitExample example);
+    long countByExample(DeclareBuildingPermitExample example);
 
     int deleteByExample(DeclareBuildingPermitExample example);
 
@@ -14,17 +14,21 @@ public interface DeclareBuildingPermitMapper {
 
     int insert(DeclareBuildingPermit record);
 
-    int insertSelective(DeclareBuildingPermit record);
+    int insertSelective(@Param("record") DeclareBuildingPermit record, @Param("selective") DeclareBuildingPermit.Column ... selective);
 
     List<DeclareBuildingPermit> selectByExample(DeclareBuildingPermitExample example);
 
     DeclareBuildingPermit selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DeclareBuildingPermit record, @Param("example") DeclareBuildingPermitExample example);
+    int updateByExampleSelective(@Param("record") DeclareBuildingPermit record, @Param("example") DeclareBuildingPermitExample example, @Param("selective") DeclareBuildingPermit.Column ... selective);
 
     int updateByExample(@Param("record") DeclareBuildingPermit record, @Param("example") DeclareBuildingPermitExample example);
 
-    int updateByPrimaryKeySelective(DeclareBuildingPermit record);
+    int updateByPrimaryKeySelective(@Param("record") DeclareBuildingPermit record, @Param("selective") DeclareBuildingPermit.Column ... selective);
 
     int updateByPrimaryKey(DeclareBuildingPermit record);
+
+    int batchInsert(@Param("list") List<DeclareBuildingPermit> list);
+
+    int batchInsertSelective(@Param("list") List<DeclareBuildingPermit> list, @Param("selective") DeclareBuildingPermit.Column ... selective);
 }

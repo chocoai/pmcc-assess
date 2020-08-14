@@ -24,10 +24,10 @@ assessLand.showAddModelLandFun = function (flag, item) {
     var landCertGetQuestion = null;
     if (flag) {
         landCertGetQuestion = "有权证";
-        box.find(".card-body").prepend(commonDeclareApplyModel.land.getHtml());
+        box.find(".customer_body").prepend(commonDeclareApplyModel.land.getHtml());
     } else {
         landCertGetQuestion = "无权证";
-        box.find(".card-body").prepend(commonDeclareApplyModel.land.getHtml2());
+        box.find(".customer_body").prepend(commonDeclareApplyModel.land.getHtml2());
     }
     box.modal("show");
     declareCommon.showHtmlMastInit($(assessLand.config.frm), function (area) {
@@ -156,7 +156,7 @@ assessLand.showAddModelHouse = function (id) {
         return false;
     }
     $(assessLand.config.HouseCert.box).find("#" + commonDeclareApplyModel.config.house.handleId).remove();
-    $(assessLand.config.HouseCert.box).find(".card-body").prepend(commonDeclareApplyModel.house.getHtml());
+    $(assessLand.config.HouseCert.box).find(".customer_body").prepend(commonDeclareApplyModel.house.getHtml());
     var data = {
         centerId: item.centerId,
         beLocated: item.beLocated,
@@ -533,10 +533,10 @@ declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
     var landCertGetQuestion = null;
     if (flag) {
         landCertGetQuestion = "有权证";
-        box.find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml3());
+        box.find(".customer_body").prepend(commonDeclareApplyModel.realEstateCert.getHtml3());
     } else {
         landCertGetQuestion = "无权证";
-        box.find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml2());
+        box.find(".customer_body").prepend(commonDeclareApplyModel.realEstateCert.getHtml2());
     }
     box.modal("show");
     declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.frm), function (area) {

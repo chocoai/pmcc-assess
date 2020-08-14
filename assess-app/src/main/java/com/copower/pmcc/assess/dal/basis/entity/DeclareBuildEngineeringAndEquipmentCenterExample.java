@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclareBuildEngineeringAndEquipmentCenterExample {
+    /**
+     * tb_declare_build_engineering_and_equipment_center
+     */
     protected String orderByClause;
 
+    /**
+     * tb_declare_build_engineering_and_equipment_center
+     */
     protected boolean distinct;
 
+    /**
+     * tb_declare_build_engineering_and_equipment_center
+     */
     protected List<Criteria> oredCriteria;
 
     public DeclareBuildEngineeringAndEquipmentCenterExample() {
@@ -64,6 +73,9 @@ public class DeclareBuildEngineeringAndEquipmentCenterExample {
         distinct = false;
     }
 
+    /**
+     * tb_declare_build_engineering_and_equipment_center
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1093,6 +1105,9 @@ public class DeclareBuildEngineeringAndEquipmentCenterExample {
         }
     }
 
+    /**
+     * tb_declare_build_engineering_and_equipment_center
+     */
     public static class Criterion {
         private String condition;
 

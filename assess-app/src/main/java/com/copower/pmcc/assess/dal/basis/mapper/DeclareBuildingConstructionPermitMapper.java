@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeclareBuildingConstructionPermitMapper {
-    int countByExample(DeclareBuildingConstructionPermitExample example);
+    long countByExample(DeclareBuildingConstructionPermitExample example);
 
     int deleteByExample(DeclareBuildingConstructionPermitExample example);
 
@@ -14,17 +14,21 @@ public interface DeclareBuildingConstructionPermitMapper {
 
     int insert(DeclareBuildingConstructionPermit record);
 
-    int insertSelective(DeclareBuildingConstructionPermit record);
+    int insertSelective(@Param("record") DeclareBuildingConstructionPermit record, @Param("selective") DeclareBuildingConstructionPermit.Column ... selective);
 
     List<DeclareBuildingConstructionPermit> selectByExample(DeclareBuildingConstructionPermitExample example);
 
     DeclareBuildingConstructionPermit selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DeclareBuildingConstructionPermit record, @Param("example") DeclareBuildingConstructionPermitExample example);
+    int updateByExampleSelective(@Param("record") DeclareBuildingConstructionPermit record, @Param("example") DeclareBuildingConstructionPermitExample example, @Param("selective") DeclareBuildingConstructionPermit.Column ... selective);
 
     int updateByExample(@Param("record") DeclareBuildingConstructionPermit record, @Param("example") DeclareBuildingConstructionPermitExample example);
 
-    int updateByPrimaryKeySelective(DeclareBuildingConstructionPermit record);
+    int updateByPrimaryKeySelective(@Param("record") DeclareBuildingConstructionPermit record, @Param("selective") DeclareBuildingConstructionPermit.Column ... selective);
 
     int updateByPrimaryKey(DeclareBuildingConstructionPermit record);
+
+    int batchInsert(@Param("list") List<DeclareBuildingConstructionPermit> list);
+
+    int batchInsertSelective(@Param("list") List<DeclareBuildingConstructionPermit> list, @Param("selective") DeclareBuildingConstructionPermit.Column ... selective);
 }

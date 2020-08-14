@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeclareApplyMapper {
-    int countByExample(DeclareApplyExample example);
+    long countByExample(DeclareApplyExample example);
 
     int deleteByExample(DeclareApplyExample example);
 
@@ -14,17 +14,21 @@ public interface DeclareApplyMapper {
 
     int insert(DeclareApply record);
 
-    int insertSelective(DeclareApply record);
+    int insertSelective(@Param("record") DeclareApply record, @Param("selective") DeclareApply.Column ... selective);
 
     List<DeclareApply> selectByExample(DeclareApplyExample example);
 
     DeclareApply selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DeclareApply record, @Param("example") DeclareApplyExample example);
+    int updateByExampleSelective(@Param("record") DeclareApply record, @Param("example") DeclareApplyExample example, @Param("selective") DeclareApply.Column ... selective);
 
     int updateByExample(@Param("record") DeclareApply record, @Param("example") DeclareApplyExample example);
 
-    int updateByPrimaryKeySelective(DeclareApply record);
+    int updateByPrimaryKeySelective(@Param("record") DeclareApply record, @Param("selective") DeclareApply.Column ... selective);
 
     int updateByPrimaryKey(DeclareApply record);
+
+    int batchInsert(@Param("list") List<DeclareApply> list);
+
+    int batchInsertSelective(@Param("list") List<DeclareApply> list, @Param("selective") DeclareApply.Column ... selective);
 }

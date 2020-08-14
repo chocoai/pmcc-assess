@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeclareRealtyLandCertMapper {
-    int countByExample(DeclareRealtyLandCertExample example);
+    long countByExample(DeclareRealtyLandCertExample example);
 
     int deleteByExample(DeclareRealtyLandCertExample example);
 
@@ -14,17 +14,21 @@ public interface DeclareRealtyLandCertMapper {
 
     int insert(DeclareRealtyLandCert record);
 
-    int insertSelective(DeclareRealtyLandCert record);
+    int insertSelective(@Param("record") DeclareRealtyLandCert record, @Param("selective") DeclareRealtyLandCert.Column ... selective);
 
     List<DeclareRealtyLandCert> selectByExample(DeclareRealtyLandCertExample example);
 
     DeclareRealtyLandCert selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DeclareRealtyLandCert record, @Param("example") DeclareRealtyLandCertExample example);
+    int updateByExampleSelective(@Param("record") DeclareRealtyLandCert record, @Param("example") DeclareRealtyLandCertExample example, @Param("selective") DeclareRealtyLandCert.Column ... selective);
 
     int updateByExample(@Param("record") DeclareRealtyLandCert record, @Param("example") DeclareRealtyLandCertExample example);
 
-    int updateByPrimaryKeySelective(DeclareRealtyLandCert record);
+    int updateByPrimaryKeySelective(@Param("record") DeclareRealtyLandCert record, @Param("selective") DeclareRealtyLandCert.Column ... selective);
 
     int updateByPrimaryKey(DeclareRealtyLandCert record);
+
+    int batchInsert(@Param("list") List<DeclareRealtyLandCert> list);
+
+    int batchInsertSelective(@Param("list") List<DeclareRealtyLandCert> list, @Param("selective") DeclareRealtyLandCert.Column ... selective);
 }

@@ -357,6 +357,10 @@ public class DeclareRealtyHouseCertService {
         return declareRealtyHouseCertDao.deleteDeclareRealtyHouseCertById(id);
     }
 
+    public boolean deleteDeclareRealtyHouseCertById(List<Integer> ids){
+        return declareRealtyHouseCertDao.deleteDeclareRealtyHouseCertById(ids) ;
+    }
+
     public DeclareRealtyHouseCertVo getDeclareRealtyHouseCertVo(DeclareRealtyHouseCert declareRealtyHouseCert) {
         if (declareRealtyHouseCert == null) {
             return null;

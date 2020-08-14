@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeclareBuildEngineeringAndEquipmentCenterMapper {
-    int countByExample(DeclareBuildEngineeringAndEquipmentCenterExample example);
+    long countByExample(DeclareBuildEngineeringAndEquipmentCenterExample example);
 
     int deleteByExample(DeclareBuildEngineeringAndEquipmentCenterExample example);
 
@@ -14,17 +14,21 @@ public interface DeclareBuildEngineeringAndEquipmentCenterMapper {
 
     int insert(DeclareBuildEngineeringAndEquipmentCenter record);
 
-    int insertSelective(DeclareBuildEngineeringAndEquipmentCenter record);
+    int insertSelective(@Param("record") DeclareBuildEngineeringAndEquipmentCenter record, @Param("selective") DeclareBuildEngineeringAndEquipmentCenter.Column ... selective);
 
     List<DeclareBuildEngineeringAndEquipmentCenter> selectByExample(DeclareBuildEngineeringAndEquipmentCenterExample example);
 
     DeclareBuildEngineeringAndEquipmentCenter selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DeclareBuildEngineeringAndEquipmentCenter record, @Param("example") DeclareBuildEngineeringAndEquipmentCenterExample example);
+    int updateByExampleSelective(@Param("record") DeclareBuildEngineeringAndEquipmentCenter record, @Param("example") DeclareBuildEngineeringAndEquipmentCenterExample example, @Param("selective") DeclareBuildEngineeringAndEquipmentCenter.Column ... selective);
 
     int updateByExample(@Param("record") DeclareBuildEngineeringAndEquipmentCenter record, @Param("example") DeclareBuildEngineeringAndEquipmentCenterExample example);
 
-    int updateByPrimaryKeySelective(DeclareBuildEngineeringAndEquipmentCenter record);
+    int updateByPrimaryKeySelective(@Param("record") DeclareBuildEngineeringAndEquipmentCenter record, @Param("selective") DeclareBuildEngineeringAndEquipmentCenter.Column ... selective);
 
     int updateByPrimaryKey(DeclareBuildEngineeringAndEquipmentCenter record);
+
+    int batchInsert(@Param("list") List<DeclareBuildEngineeringAndEquipmentCenter> list);
+
+    int batchInsertSelective(@Param("list") List<DeclareBuildEngineeringAndEquipmentCenter> list, @Param("selective") DeclareBuildEngineeringAndEquipmentCenter.Column ... selective);
 }

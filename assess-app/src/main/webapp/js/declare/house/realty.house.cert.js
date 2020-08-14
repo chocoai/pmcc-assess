@@ -164,7 +164,7 @@ assessCommonHouse.showAddModelHouse = function (data) {
     var frm = target.find("form");
     //使校验生效
     target.find("#" + commonDeclareApplyModel.config.house.handleId).remove();
-    target.find(".card-body").append(commonDeclareApplyModel.house.getHtml());
+    target.find(".customer_body").append(commonDeclareApplyModel.house.getHtml());
     declareCommon.showHtmlMastInit(frm, function (area) {
         if (jQuery.isEmptyObject(data)) {
             assessCommonHouse.init(area);
@@ -306,7 +306,7 @@ assessCommonHouse.initLand = function (item) {
 assessCommonHouse.showAddModelLand = function (id) {
     var target = $('#' + assessCommonHouse.config.son.declareRealtyLandCert.box);
     target.find("#" + commonDeclareApplyModel.config.land.handleId).remove();
-    target.find(".card-body").prepend(commonDeclareApplyModel.land.getHtml());
+    target.find(".customer_body").prepend(commonDeclareApplyModel.land.getHtml());
     var frm = target.find("form");
     var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
     if (!declareCommon.isNotBlank(item.centerId)) {

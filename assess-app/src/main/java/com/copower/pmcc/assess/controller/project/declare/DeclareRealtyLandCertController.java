@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,7 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/getDeclareRealtyLandCertList", method = {RequestMethod.GET}, name = "获取土地证维护列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer pid, Integer planDetailsId, String province, String city, String district,String enable) {
+    public BootstrapTableVo getExamineEstateNetworkList(Integer pid, Integer planDetailsId, String province, String city, String district, String enable) {
         DeclareRealtyLandCert declareRealtyLandCert = new DeclareRealtyLandCert();
         BootstrapTableVo vo = null;
         try {
@@ -74,7 +75,7 @@ public class DeclareRealtyLandCertController {
             if (pid != null) {
                 declareRealtyLandCert.setPid(pid);
             }
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(enable)){
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(enable)) {
                 declareRealtyLandCert.setEnable(enable);
             }
             vo = declareRealtyLandCertService.getDeclareRealtyLandCertListVos(declareRealtyLandCert);
@@ -89,27 +90,20 @@ public class DeclareRealtyLandCertController {
     @RequestMapping(value = "/deleteDeclareRealtyLandCertById", method = {RequestMethod.POST}, name = "删除土地证维护")
     public HttpResult delete(String ids) {
         try {
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(ids)) {
-                for (String id:ids.split(",")){
-                    if (NumberUtils.isNumber(id)){
-                        declareRealtyLandCertService.deleteDeclareRealtyLandCertById(Integer.parseInt(id));
-                    }
-                }
-                return HttpResult.newCorrectResult();
-            }
+            declareRealtyLandCertService.deleteDeclareRealtyLandCertById(FormatUtils.transformString2Integer(ids));
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             baseService.writeExceptionInfo(e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareRealtyLandCert", method = {RequestMethod.POST}, name = "更新土地证维护")
-    public HttpResult saveAndUpdate(String formData,@RequestParam(defaultValue = "false") boolean updateNull) {
+    public HttpResult saveAndUpdate(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
         try {
-            DeclareRealtyLandCert declareRealtyLandCert= JSON.parseObject(formData,DeclareRealtyLandCert.class);
-            Integer id = declareRealtyLandCertService.saveAndUpdateDeclareRealtyLandCert(declareRealtyLandCert,updateNull);
+            DeclareRealtyLandCert declareRealtyLandCert = JSON.parseObject(formData, DeclareRealtyLandCert.class);
+            Integer id = declareRealtyLandCertService.saveAndUpdateDeclareRealtyLandCert(declareRealtyLandCert, updateNull);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -119,7 +113,7 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/listDeclareRealtyLandCert", method = {RequestMethod.GET}, name = "土地证维护 list")
-    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId,String declareType,String enable) {
+    public HttpResult list(Integer pid, String province, String city, String district, Integer planDetailsId, String declareType, String enable) {
         try {
             DeclareRealtyLandCert declareRealtyLandCert = new DeclareRealtyLandCert();
             if (!StringUtils.isEmpty(province)) {
@@ -134,10 +128,10 @@ public class DeclareRealtyLandCertController {
             if (planDetailsId != null) {
                 declareRealtyLandCert.setPlanDetailsId(planDetailsId);
             }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(declareType)) {
                 declareRealtyLandCert.setDeclareType(declareType);
             }
-            if (org.apache.commons.lang.StringUtils.isNotBlank(enable)){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(enable)) {
                 declareRealtyLandCert.setEnable(enable);
             }
             if (pid != null) {
@@ -160,7 +154,7 @@ public class DeclareRealtyLandCertController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareRealtyLandCertService.importData(declareRealtyLandCert,multipartFile);
+            String str = declareRealtyLandCertService.importData(declareRealtyLandCert, multipartFile);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -170,7 +164,7 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/importDataHouse", name = "导入房产证并且关联土地证", method = RequestMethod.POST)
-    public HttpResult importDataLand(HttpServletRequest request,Integer planDetailsId) {
+    public HttpResult importDataLand(HttpServletRequest request, Integer planDetailsId) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -178,7 +172,7 @@ public class DeclareRealtyLandCertController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = declareRealtyLandCertService.importLandAndHouse(multipartFile,planDetailsId);
+            String str = declareRealtyLandCertService.importLandAndHouse(multipartFile, planDetailsId);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -189,13 +183,13 @@ public class DeclareRealtyLandCertController {
 
     @ResponseBody
     @RequestMapping(value = "/attachmentAutomatedWarrants", name = "申报图片自动关联", method = RequestMethod.POST)
-    public HttpResult attachmentAutomatedWarrants(AutomatedWarrants automatedWarrants){
+    public HttpResult attachmentAutomatedWarrants(AutomatedWarrants automatedWarrants) {
         try {
             declareRealtyLandCertService.attachmentAutomatedWarrants(automatedWarrants);
-            return HttpResult.newCorrectResult(500,"success");
+            return HttpResult.newCorrectResult(500, "success");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(200,e.getMessage());
+            return HttpResult.newErrorResult(200, e.getMessage());
         }
     }
 

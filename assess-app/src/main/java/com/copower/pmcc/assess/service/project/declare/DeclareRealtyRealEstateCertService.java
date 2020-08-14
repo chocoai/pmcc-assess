@@ -233,6 +233,10 @@ public class DeclareRealtyRealEstateCertService {
         return declareRealtyRealEstateCertDao.deleteDeclareRealtyRealEstateCertById(id);
     }
 
+    public boolean deleteDeclareRealtyRealEstateCertById(List<Integer> ids){
+        return declareRealtyRealEstateCertDao.deleteDeclareRealtyRealEstateCertById(ids) ;
+    }
+
     public DeclareRealtyRealEstateCertVo getDeclareRealtyRealEstateCertVo(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
         if (declareRealtyRealEstateCert == null) {
             return null;

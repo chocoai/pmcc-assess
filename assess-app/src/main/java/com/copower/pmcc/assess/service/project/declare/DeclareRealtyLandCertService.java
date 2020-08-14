@@ -370,6 +370,10 @@ public class DeclareRealtyLandCertService {
         return declareRealtyLandCertDao.deleteDeclareRealtyLandCertById(id);
     }
 
+    public boolean deleteDeclareRealtyLandCertById(List<Integer> ids){
+        return declareRealtyLandCertDao.deleteDeclareRealtyLandCertById(ids);
+    }
+
     public DeclareRealtyLandCertVo getDeclareRealtyLandCertVo(DeclareRealtyLandCert declareRealtyLandCert) {
         if (declareRealtyLandCert == null) {
             return null;

@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclareApplyExample {
+    /**
+     * tb_declare_apply
+     */
     protected String orderByClause;
 
+    /**
+     * tb_declare_apply
+     */
     protected boolean distinct;
 
+    /**
+     * tb_declare_apply
+     */
     protected List<Criteria> oredCriteria;
 
     public DeclareApplyExample() {
@@ -65,6 +74,9 @@ public class DeclareApplyExample {
         distinct = false;
     }
 
+    /**
+     * tb_declare_apply
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1154,6 +1166,9 @@ public class DeclareApplyExample {
         }
     }
 
+    /**
+     * tb_declare_apply
+     */
     public static class Criterion {
         private String condition;
 

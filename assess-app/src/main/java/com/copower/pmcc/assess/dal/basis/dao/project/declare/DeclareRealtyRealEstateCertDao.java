@@ -63,6 +63,12 @@ public class DeclareRealtyRealEstateCertDao {
         return declareRealtyRealEstateCertMapper.deleteByPrimaryKey(id) == 1;
     }
 
+    public boolean deleteDeclareRealtyRealEstateCertById(List<Integer> ids){
+        DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();
+        example.createCriteria().andIdIn(ids);
+        return declareRealtyRealEstateCertMapper.deleteByExample(example) > 0;
+    }
+
     public List<DeclareRealtyRealEstateCert> getDeclareRealtyRealEstateCertList(DeclareRealtyRealEstateCert declareRealtyRealEstateCert){
         DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();
         MybatisUtils.convertObj2Example(declareRealtyRealEstateCert, example);
@@ -73,6 +79,7 @@ public class DeclareRealtyRealEstateCertDao {
     public Integer getCountByPlanDetailsId(Integer planDetailsId){
         DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();
         example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
-        return declareRealtyRealEstateCertMapper.countByExample(example);
+        long count = declareRealtyRealEstateCertMapper.countByExample(example);
+        return (int) count ;
     }
 }

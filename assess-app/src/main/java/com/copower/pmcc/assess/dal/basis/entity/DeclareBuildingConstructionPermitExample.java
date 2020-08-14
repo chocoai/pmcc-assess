@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclareBuildingConstructionPermitExample {
+    /**
+     * tb_declare_building_construction_permit
+     */
     protected String orderByClause;
 
+    /**
+     * tb_declare_building_construction_permit
+     */
     protected boolean distinct;
 
+    /**
+     * tb_declare_building_construction_permit
+     */
     protected List<Criteria> oredCriteria;
 
     public DeclareBuildingConstructionPermitExample() {
@@ -64,6 +73,9 @@ public class DeclareBuildingConstructionPermitExample {
         distinct = false;
     }
 
+    /**
+     * tb_declare_building_construction_permit
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1723,6 +1735,9 @@ public class DeclareBuildingConstructionPermitExample {
         }
     }
 
+    /**
+     * tb_declare_building_construction_permit
+     */
     public static class Criterion {
         private String condition;
 

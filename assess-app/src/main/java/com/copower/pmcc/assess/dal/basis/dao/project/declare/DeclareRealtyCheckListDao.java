@@ -65,7 +65,8 @@ public class DeclareRealtyCheckListDao {
         criteria.andAutoInitNumberEqualTo(autoInitNumber);
         criteria.andPlanDetailsIdEqualTo(planDetailsId) ;
         criteria.andMarsterIdEqualTo(marsterId) ;
-        return mapper.countByExample(example) ;
+        long count = mapper.countByExample(example);
+        return (int)count ;
     }
     
 }

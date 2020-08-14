@@ -129,6 +129,7 @@ public class DeclareRecordDao {
         DeclareRecordExample example = new DeclareRecordExample();
         DeclareRecordExample.Criteria criteria = example.createCriteria();
         criteria.andProjectIdEqualTo(projectId);
-        return mapper.countByExample(example);
+        long count = mapper.countByExample(example);
+        return (int)count ;
     }
 }

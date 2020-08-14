@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeclareRecordExtendMapper {
-    int countByExample(DeclareRecordExtendExample example);
+    long countByExample(DeclareRecordExtendExample example);
 
     int deleteByExample(DeclareRecordExtendExample example);
 
@@ -14,17 +14,21 @@ public interface DeclareRecordExtendMapper {
 
     int insert(DeclareRecordExtend record);
 
-    int insertSelective(DeclareRecordExtend record);
+    int insertSelective(@Param("record") DeclareRecordExtend record, @Param("selective") DeclareRecordExtend.Column ... selective);
 
     List<DeclareRecordExtend> selectByExample(DeclareRecordExtendExample example);
 
     DeclareRecordExtend selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DeclareRecordExtend record, @Param("example") DeclareRecordExtendExample example);
+    int updateByExampleSelective(@Param("record") DeclareRecordExtend record, @Param("example") DeclareRecordExtendExample example, @Param("selective") DeclareRecordExtend.Column ... selective);
 
     int updateByExample(@Param("record") DeclareRecordExtend record, @Param("example") DeclareRecordExtendExample example);
 
-    int updateByPrimaryKeySelective(DeclareRecordExtend record);
+    int updateByPrimaryKeySelective(@Param("record") DeclareRecordExtend record, @Param("selective") DeclareRecordExtend.Column ... selective);
 
     int updateByPrimaryKey(DeclareRecordExtend record);
+
+    int batchInsert(@Param("list") List<DeclareRecordExtend> list);
+
+    int batchInsertSelective(@Param("list") List<DeclareRecordExtend> list, @Param("selective") DeclareRecordExtend.Column ... selective);
 }

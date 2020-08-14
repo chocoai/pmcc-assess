@@ -92,9 +92,7 @@ public class DeclareRealtyHouseCertController {
         try {
             if (!StringUtils.isEmpty(ids)) {
                 List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
-                for (Integer id : integers) {
-                    declareRealtyHouseCertService.deleteDeclareRealtyHouseCertById(id);
-                }
+                declareRealtyHouseCertService.deleteDeclareRealtyHouseCertById(integers);
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
@@ -106,10 +104,10 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateDeclareRealtyHouseCert", method = {RequestMethod.POST}, name = "更新房产证维护")
-    public HttpResult saveAndUpdate(String formData,@RequestParam(defaultValue = "false") boolean updateNull) {
+    public HttpResult saveAndUpdate(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
         try {
             DeclareRealtyHouseCert declareRealtyHouseCert = JSON.parseObject(formData, DeclareRealtyHouseCert.class);
-            Integer id = declareRealtyHouseCertService.saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert,updateNull);
+            Integer id = declareRealtyHouseCertService.saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert, updateNull);
             return HttpResult.newCorrectResult(id);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -152,13 +150,13 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/attachmentAutomatedWarrants", name = "申报图片自动关联", method = RequestMethod.POST)
-    public HttpResult attachmentAutomatedWarrants(AutomatedWarrants automatedWarrants){
+    public HttpResult attachmentAutomatedWarrants(AutomatedWarrants automatedWarrants) {
         try {
             declareRealtyHouseCertService.attachmentAutomatedWarrants(automatedWarrants);
-            return HttpResult.newCorrectResult(500,"success");
+            return HttpResult.newCorrectResult(500, "success");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(200,e.getMessage());
+            return HttpResult.newErrorResult(200, e.getMessage());
         }
     }
 

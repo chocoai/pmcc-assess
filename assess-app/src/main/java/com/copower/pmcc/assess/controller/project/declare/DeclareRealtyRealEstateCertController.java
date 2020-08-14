@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,19 +90,12 @@ public class DeclareRealtyRealEstateCertController {
     @RequestMapping(value = "/deleteDeclareRealtyRealEstateCertById", method = {RequestMethod.POST}, name = "删除不动产维护")
     public HttpResult delete(String ids) {
         try {
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(ids)) {
-                for (String id:ids.split(",")){
-                    if (NumberUtils.isNumber(id)){
-                        declareRealtyRealEstateCertService.deleteDeclareRealtyRealEstateCertById(Integer.parseInt(id));
-                    }
-                }
-                return HttpResult.newCorrectResult();
-            }
+            declareRealtyRealEstateCertService.deleteDeclareRealtyRealEstateCertById(FormatUtils.transformString2Integer(ids));
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             baseService.writeExceptionInfo(e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @ResponseBody

@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclareRecordExample {
+    /**
+     * tb_declare_record
+     */
     protected String orderByClause;
 
+    /**
+     * tb_declare_record
+     */
     protected boolean distinct;
 
+    /**
+     * tb_declare_record
+     */
     protected List<Criteria> oredCriteria;
 
     public DeclareRecordExample() {
@@ -65,6 +74,9 @@ public class DeclareRecordExample {
         distinct = false;
     }
 
+    /**
+     * tb_declare_record
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -3214,6 +3226,9 @@ public class DeclareRecordExample {
         }
     }
 
+    /**
+     * tb_declare_record
+     */
     public static class Criterion {
         private String condition;
 

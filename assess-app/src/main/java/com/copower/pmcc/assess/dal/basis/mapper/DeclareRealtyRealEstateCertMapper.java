@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DeclareRealtyRealEstateCertMapper {
-    int countByExample(DeclareRealtyRealEstateCertExample example);
+    long countByExample(DeclareRealtyRealEstateCertExample example);
 
     int deleteByExample(DeclareRealtyRealEstateCertExample example);
 
@@ -14,17 +14,21 @@ public interface DeclareRealtyRealEstateCertMapper {
 
     int insert(DeclareRealtyRealEstateCert record);
 
-    int insertSelective(DeclareRealtyRealEstateCert record);
+    int insertSelective(@Param("record") DeclareRealtyRealEstateCert record, @Param("selective") DeclareRealtyRealEstateCert.Column ... selective);
 
     List<DeclareRealtyRealEstateCert> selectByExample(DeclareRealtyRealEstateCertExample example);
 
     DeclareRealtyRealEstateCert selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DeclareRealtyRealEstateCert record, @Param("example") DeclareRealtyRealEstateCertExample example);
+    int updateByExampleSelective(@Param("record") DeclareRealtyRealEstateCert record, @Param("example") DeclareRealtyRealEstateCertExample example, @Param("selective") DeclareRealtyRealEstateCert.Column ... selective);
 
     int updateByExample(@Param("record") DeclareRealtyRealEstateCert record, @Param("example") DeclareRealtyRealEstateCertExample example);
 
-    int updateByPrimaryKeySelective(DeclareRealtyRealEstateCert record);
+    int updateByPrimaryKeySelective(@Param("record") DeclareRealtyRealEstateCert record, @Param("selective") DeclareRealtyRealEstateCert.Column ... selective);
 
     int updateByPrimaryKey(DeclareRealtyRealEstateCert record);
+
+    int batchInsert(@Param("list") List<DeclareRealtyRealEstateCert> list);
+
+    int batchInsertSelective(@Param("list") List<DeclareRealtyRealEstateCert> list, @Param("selective") DeclareRealtyRealEstateCert.Column ... selective);
 }

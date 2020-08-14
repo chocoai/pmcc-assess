@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclarePreSalePermitExample {
+    /**
+     * tb_declare_pre_sale_permit
+     */
     protected String orderByClause;
 
+    /**
+     * tb_declare_pre_sale_permit
+     */
     protected boolean distinct;
 
+    /**
+     * tb_declare_pre_sale_permit
+     */
     protected List<Criteria> oredCriteria;
 
     public DeclarePreSalePermitExample() {
@@ -65,6 +74,9 @@ public class DeclarePreSalePermitExample {
         distinct = false;
     }
 
+    /**
+     * tb_declare_pre_sale_permit
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1514,6 +1526,9 @@ public class DeclarePreSalePermitExample {
         }
     }
 
+    /**
+     * tb_declare_pre_sale_permit
+     */
     public static class Criterion {
         private String condition;
 

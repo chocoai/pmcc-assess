@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclareLandUsePermitExample {
+    /**
+     * tb_declare_land_use_permit
+     */
     protected String orderByClause;
 
+    /**
+     * tb_declare_land_use_permit
+     */
     protected boolean distinct;
 
+    /**
+     * tb_declare_land_use_permit
+     */
     protected List<Criteria> oredCriteria;
 
     public DeclareLandUsePermitExample() {
@@ -65,6 +74,9 @@ public class DeclareLandUsePermitExample {
         distinct = false;
     }
 
+    /**
+     * tb_declare_land_use_permit
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1234,6 +1246,9 @@ public class DeclareLandUsePermitExample {
         }
     }
 
+    /**
+     * tb_declare_land_use_permit
+     */
     public static class Criterion {
         private String condition;
 

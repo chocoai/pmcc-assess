@@ -31,7 +31,7 @@ declareRealtyRealEstateCert.init = function (item) {
 
 declareRealtyRealEstateCert.showAddModel = function () {
     $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
-    $('#' + declareRealtyRealEstateCert.config.box).find(".card-body").append(commonDeclareApplyModel.realEstateCert.getHtml());
+    $('#' + declareRealtyRealEstateCert.config.box).find(".customer_body").append(commonDeclareApplyModel.realEstateCert.getHtml());
     declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.frm), function (area) {
         declareRealtyRealEstateCert.init(area);
         $('#' + declareRealtyRealEstateCert.config.box).modal("show");

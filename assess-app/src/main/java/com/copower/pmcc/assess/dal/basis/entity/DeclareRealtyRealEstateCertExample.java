@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclareRealtyRealEstateCertExample {
+    /**
+     * tb_declare_realty_real_estate_cert
+     */
     protected String orderByClause;
 
+    /**
+     * tb_declare_realty_real_estate_cert
+     */
     protected boolean distinct;
 
+    /**
+     * tb_declare_realty_real_estate_cert
+     */
     protected List<Criteria> oredCriteria;
 
     public DeclareRealtyRealEstateCertExample() {
@@ -65,6 +74,9 @@ public class DeclareRealtyRealEstateCertExample {
         distinct = false;
     }
 
+    /**
+     * tb_declare_realty_real_estate_cert
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -4324,6 +4336,9 @@ public class DeclareRealtyRealEstateCertExample {
         }
     }
 
+    /**
+     * tb_declare_realty_real_estate_cert
+     */
     public static class Criterion {
         private String condition;
 

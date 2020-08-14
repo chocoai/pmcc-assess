@@ -156,7 +156,7 @@ assessCommonLand.showAddModelLand = function () {
     var target = $('#' + assessCommonLand.config.box);
     var frm = target.find("form");
     target.find("#" + commonDeclareApplyModel.config.land.handleId).remove();
-    target.find(".card-body").append(commonDeclareApplyModel.land.getHtml());
+    target.find(".customer_body").append(commonDeclareApplyModel.land.getHtml());
     target.modal("show");
     declareCommon.showHtmlMastInit(frm, function (area) {
         assessCommonLand.init(area);
@@ -325,7 +325,7 @@ assessCommonLand.showAddModelHouse = function (id) {
     var box = $("#" + assessCommonLand.config.houseBox);
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.house.handleId).remove();
-    box.find(".card-body").prepend(commonDeclareApplyModel.house.getHtml());
+    box.find(".customer_body").prepend(commonDeclareApplyModel.house.getHtml());
     var fileArr = [assessCommonLand.config.houseFile];
     declareCommon.showHtmlMastInit(frm, function (area) {
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {

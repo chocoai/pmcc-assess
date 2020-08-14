@@ -1,74 +1,74 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DeclareRecordMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="number" property="number" jdbcType="INTEGER" />
-    <result column="data_table_name" property="dataTableName" jdbcType="VARCHAR" />
-    <result column="data_table_id" property="dataTableId" jdbcType="INTEGER" />
-    <result column="data_from_type" property="dataFromType" jdbcType="VARCHAR" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="has_cert" property="hasCert" jdbcType="BIT" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="ownership" property="ownership" jdbcType="VARCHAR" />
-    <result column="seat" property="seat" jdbcType="VARCHAR" />
-    <result column="street_number" property="streetNumber" jdbcType="VARCHAR" />
-    <result column="attached_number" property="attachedNumber" jdbcType="VARCHAR" />
-    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
-    <result column="unit" property="unit" jdbcType="VARCHAR" />
-    <result column="floor" property="floor" jdbcType="VARCHAR" />
-    <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
-    <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
-    <result column="practical_use" property="practicalUse" jdbcType="VARCHAR" />
-    <result column="land_cert_use" property="landCertUse" jdbcType="VARCHAR" />
-    <result column="land_cert_use_category" property="landCertUseCategory" jdbcType="VARCHAR" />
-    <result column="land_practical_use" property="landPracticalUse" jdbcType="VARCHAR" />
-    <result column="public_situation" property="publicSituation" jdbcType="VARCHAR" />
-    <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
-    <result column="practical_area" property="practicalArea" jdbcType="DECIMAL" />
-    <result column="nature" property="nature" jdbcType="VARCHAR" />
-    <result column="land_right_type" property="landRightType" jdbcType="VARCHAR" />
-    <result column="land_right_nature" property="landRightNature" jdbcType="VARCHAR" />
-    <result column="land_use_right_area" property="landUseRightArea" jdbcType="DECIMAL" />
-    <result column="housing_structure" property="housingStructure" jdbcType="VARCHAR" />
-    <result column="group_id" property="groupId" jdbcType="INTEGER" />
-    <result column="area_group_id" property="areaGroupId" jdbcType="INTEGER" />
-    <result column="house_use_end_date" property="houseUseEndDate" jdbcType="TIMESTAMP" />
-    <result column="land_use_end_date" property="landUseEndDate" jdbcType="TIMESTAMP" />
-    <result column="inventory_content_key" property="inventoryContentKey" jdbcType="VARCHAR" />
-    <result column="registration_date" property="registrationDate" jdbcType="TIMESTAMP" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="building_status" property="buildingStatus" jdbcType="INTEGER" />
-    <result column="bis_part_in" property="bisPartIn" jdbcType="BIT" />
-    <result column="bis_generate" property="bisGenerate" jdbcType="BIT" />
-    <result column="inventory_status" property="inventoryStatus" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.DeclareRecordMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="data_table_name" jdbcType="VARCHAR" property="dataTableName" />
+    <result column="data_table_id" jdbcType="INTEGER" property="dataTableId" />
+    <result column="data_from_type" jdbcType="VARCHAR" property="dataFromType" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="has_cert" jdbcType="BIT" property="hasCert" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="ownership" jdbcType="VARCHAR" property="ownership" />
+    <result column="seat" jdbcType="VARCHAR" property="seat" />
+    <result column="street_number" jdbcType="VARCHAR" property="streetNumber" />
+    <result column="attached_number" jdbcType="VARCHAR" property="attachedNumber" />
+    <result column="building_number" jdbcType="VARCHAR" property="buildingNumber" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="floor" jdbcType="VARCHAR" property="floor" />
+    <result column="room_number" jdbcType="VARCHAR" property="roomNumber" />
+    <result column="cert_use" jdbcType="VARCHAR" property="certUse" />
+    <result column="practical_use" jdbcType="VARCHAR" property="practicalUse" />
+    <result column="land_cert_use" jdbcType="VARCHAR" property="landCertUse" />
+    <result column="land_cert_use_category" jdbcType="VARCHAR" property="landCertUseCategory" />
+    <result column="land_practical_use" jdbcType="VARCHAR" property="landPracticalUse" />
+    <result column="public_situation" jdbcType="VARCHAR" property="publicSituation" />
+    <result column="floor_area" jdbcType="DECIMAL" property="floorArea" />
+    <result column="practical_area" jdbcType="DECIMAL" property="practicalArea" />
+    <result column="nature" jdbcType="VARCHAR" property="nature" />
+    <result column="land_right_type" jdbcType="VARCHAR" property="landRightType" />
+    <result column="land_right_nature" jdbcType="VARCHAR" property="landRightNature" />
+    <result column="land_use_right_area" jdbcType="DECIMAL" property="landUseRightArea" />
+    <result column="housing_structure" jdbcType="VARCHAR" property="housingStructure" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="area_group_id" jdbcType="INTEGER" property="areaGroupId" />
+    <result column="house_use_end_date" jdbcType="TIMESTAMP" property="houseUseEndDate" />
+    <result column="land_use_end_date" jdbcType="TIMESTAMP" property="landUseEndDate" />
+    <result column="inventory_content_key" jdbcType="VARCHAR" property="inventoryContentKey" />
+    <result column="registration_date" jdbcType="TIMESTAMP" property="registrationDate" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="building_status" jdbcType="INTEGER" property="buildingStatus" />
+    <result column="bis_part_in" jdbcType="BIT" property="bisPartIn" />
+    <result column="bis_generate" jdbcType="BIT" property="bisGenerate" />
+    <result column="inventory_status" jdbcType="VARCHAR" property="inventoryStatus" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -79,25 +79,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -108,7 +108,7 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, project_id, number, data_table_name, data_table_id, data_from_type, province, 
     city, district, type, has_cert, name, ownership, seat, street_number, attached_number, 
     building_number, unit, floor, room_number, cert_use, practical_use, land_cert_use, 
@@ -118,38 +118,38 @@
     registration_date, price, building_status, bis_part_in, bis_generate, inventory_status, 
     creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_declare_record
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_declare_record
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_declare_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample">
     delete from tb_declare_record
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_declare_record (project_id, number, data_table_name, 
@@ -185,448 +185,478 @@
       #{bisGenerate,jdbcType=BIT}, #{inventoryStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_declare_record
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
-        project_id,
-      </if>
-      <if test="number != null" >
-        number,
-      </if>
-      <if test="dataTableName != null" >
-        data_table_name,
-      </if>
-      <if test="dataTableId != null" >
-        data_table_id,
-      </if>
-      <if test="dataFromType != null" >
-        data_from_type,
-      </if>
-      <if test="province != null" >
-        province,
-      </if>
-      <if test="city != null" >
-        city,
-      </if>
-      <if test="district != null" >
-        district,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="hasCert != null" >
-        has_cert,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="ownership != null" >
-        ownership,
-      </if>
-      <if test="seat != null" >
-        seat,
-      </if>
-      <if test="streetNumber != null" >
-        street_number,
-      </if>
-      <if test="attachedNumber != null" >
-        attached_number,
-      </if>
-      <if test="buildingNumber != null" >
-        building_number,
-      </if>
-      <if test="unit != null" >
-        unit,
-      </if>
-      <if test="floor != null" >
-        floor,
-      </if>
-      <if test="roomNumber != null" >
-        room_number,
-      </if>
-      <if test="certUse != null" >
-        cert_use,
-      </if>
-      <if test="practicalUse != null" >
-        practical_use,
-      </if>
-      <if test="landCertUse != null" >
-        land_cert_use,
-      </if>
-      <if test="landCertUseCategory != null" >
-        land_cert_use_category,
-      </if>
-      <if test="landPracticalUse != null" >
-        land_practical_use,
-      </if>
-      <if test="publicSituation != null" >
-        public_situation,
-      </if>
-      <if test="floorArea != null" >
-        floor_area,
-      </if>
-      <if test="practicalArea != null" >
-        practical_area,
-      </if>
-      <if test="nature != null" >
-        nature,
-      </if>
-      <if test="landRightType != null" >
-        land_right_type,
-      </if>
-      <if test="landRightNature != null" >
-        land_right_nature,
-      </if>
-      <if test="landUseRightArea != null" >
-        land_use_right_area,
-      </if>
-      <if test="housingStructure != null" >
-        housing_structure,
-      </if>
-      <if test="groupId != null" >
-        group_id,
-      </if>
-      <if test="areaGroupId != null" >
-        area_group_id,
-      </if>
-      <if test="houseUseEndDate != null" >
-        house_use_end_date,
-      </if>
-      <if test="landUseEndDate != null" >
-        land_use_end_date,
-      </if>
-      <if test="inventoryContentKey != null" >
-        inventory_content_key,
-      </if>
-      <if test="registrationDate != null" >
-        registration_date,
-      </if>
-      <if test="price != null" >
-        price,
-      </if>
-      <if test="buildingStatus != null" >
-        building_status,
-      </if>
-      <if test="bisPartIn != null" >
-        bis_part_in,
-      </if>
-      <if test="bisGenerate != null" >
-        bis_generate,
-      </if>
-      <if test="inventoryStatus != null" >
-        inventory_status,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
-        #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="number != null" >
-        #{number,jdbcType=INTEGER},
-      </if>
-      <if test="dataTableName != null" >
-        #{dataTableName,jdbcType=VARCHAR},
-      </if>
-      <if test="dataTableId != null" >
-        #{dataTableId,jdbcType=INTEGER},
-      </if>
-      <if test="dataFromType != null" >
-        #{dataFromType,jdbcType=VARCHAR},
-      </if>
-      <if test="province != null" >
-        #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null" >
-        #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="district != null" >
-        #{district,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="hasCert != null" >
-        #{hasCert,jdbcType=BIT},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="ownership != null" >
-        #{ownership,jdbcType=VARCHAR},
-      </if>
-      <if test="seat != null" >
-        #{seat,jdbcType=VARCHAR},
-      </if>
-      <if test="streetNumber != null" >
-        #{streetNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="attachedNumber != null" >
-        #{attachedNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingNumber != null" >
-        #{buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unit != null" >
-        #{unit,jdbcType=VARCHAR},
-      </if>
-      <if test="floor != null" >
-        #{floor,jdbcType=VARCHAR},
-      </if>
-      <if test="roomNumber != null" >
-        #{roomNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="certUse != null" >
-        #{certUse,jdbcType=VARCHAR},
-      </if>
-      <if test="practicalUse != null" >
-        #{practicalUse,jdbcType=VARCHAR},
-      </if>
-      <if test="landCertUse != null" >
-        #{landCertUse,jdbcType=VARCHAR},
-      </if>
-      <if test="landCertUseCategory != null" >
-        #{landCertUseCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="landPracticalUse != null" >
-        #{landPracticalUse,jdbcType=VARCHAR},
-      </if>
-      <if test="publicSituation != null" >
-        #{publicSituation,jdbcType=VARCHAR},
-      </if>
-      <if test="floorArea != null" >
-        #{floorArea,jdbcType=DECIMAL},
-      </if>
-      <if test="practicalArea != null" >
-        #{practicalArea,jdbcType=DECIMAL},
-      </if>
-      <if test="nature != null" >
-        #{nature,jdbcType=VARCHAR},
-      </if>
-      <if test="landRightType != null" >
-        #{landRightType,jdbcType=VARCHAR},
-      </if>
-      <if test="landRightNature != null" >
-        #{landRightNature,jdbcType=VARCHAR},
-      </if>
-      <if test="landUseRightArea != null" >
-        #{landUseRightArea,jdbcType=DECIMAL},
-      </if>
-      <if test="housingStructure != null" >
-        #{housingStructure,jdbcType=VARCHAR},
-      </if>
-      <if test="groupId != null" >
-        #{groupId,jdbcType=INTEGER},
-      </if>
-      <if test="areaGroupId != null" >
-        #{areaGroupId,jdbcType=INTEGER},
-      </if>
-      <if test="houseUseEndDate != null" >
-        #{houseUseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="landUseEndDate != null" >
-        #{landUseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="inventoryContentKey != null" >
-        #{inventoryContentKey,jdbcType=VARCHAR},
-      </if>
-      <if test="registrationDate != null" >
-        #{registrationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="price != null" >
-        #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="buildingStatus != null" >
-        #{buildingStatus,jdbcType=INTEGER},
-      </if>
-      <if test="bisPartIn != null" >
-        #{bisPartIn,jdbcType=BIT},
-      </if>
-      <if test="bisGenerate != null" >
-        #{bisGenerate,jdbcType=BIT},
-      </if>
-      <if test="inventoryStatus != null" >
-        #{inventoryStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.projectId != null">
+            project_id,
+          </if>
+          <if test="record.number != null">
+            number,
+          </if>
+          <if test="record.dataTableName != null">
+            data_table_name,
+          </if>
+          <if test="record.dataTableId != null">
+            data_table_id,
+          </if>
+          <if test="record.dataFromType != null">
+            data_from_type,
+          </if>
+          <if test="record.province != null">
+            province,
+          </if>
+          <if test="record.city != null">
+            city,
+          </if>
+          <if test="record.district != null">
+            district,
+          </if>
+          <if test="record.type != null">
+            type,
+          </if>
+          <if test="record.hasCert != null">
+            has_cert,
+          </if>
+          <if test="record.name != null">
+            name,
+          </if>
+          <if test="record.ownership != null">
+            ownership,
+          </if>
+          <if test="record.seat != null">
+            seat,
+          </if>
+          <if test="record.streetNumber != null">
+            street_number,
+          </if>
+          <if test="record.attachedNumber != null">
+            attached_number,
+          </if>
+          <if test="record.buildingNumber != null">
+            building_number,
+          </if>
+          <if test="record.unit != null">
+            unit,
+          </if>
+          <if test="record.floor != null">
+            floor,
+          </if>
+          <if test="record.roomNumber != null">
+            room_number,
+          </if>
+          <if test="record.certUse != null">
+            cert_use,
+          </if>
+          <if test="record.practicalUse != null">
+            practical_use,
+          </if>
+          <if test="record.landCertUse != null">
+            land_cert_use,
+          </if>
+          <if test="record.landCertUseCategory != null">
+            land_cert_use_category,
+          </if>
+          <if test="record.landPracticalUse != null">
+            land_practical_use,
+          </if>
+          <if test="record.publicSituation != null">
+            public_situation,
+          </if>
+          <if test="record.floorArea != null">
+            floor_area,
+          </if>
+          <if test="record.practicalArea != null">
+            practical_area,
+          </if>
+          <if test="record.nature != null">
+            nature,
+          </if>
+          <if test="record.landRightType != null">
+            land_right_type,
+          </if>
+          <if test="record.landRightNature != null">
+            land_right_nature,
+          </if>
+          <if test="record.landUseRightArea != null">
+            land_use_right_area,
+          </if>
+          <if test="record.housingStructure != null">
+            housing_structure,
+          </if>
+          <if test="record.groupId != null">
+            group_id,
+          </if>
+          <if test="record.areaGroupId != null">
+            area_group_id,
+          </if>
+          <if test="record.houseUseEndDate != null">
+            house_use_end_date,
+          </if>
+          <if test="record.landUseEndDate != null">
+            land_use_end_date,
+          </if>
+          <if test="record.inventoryContentKey != null">
+            inventory_content_key,
+          </if>
+          <if test="record.registrationDate != null">
+            registration_date,
+          </if>
+          <if test="record.price != null">
+            price,
+          </if>
+          <if test="record.buildingStatus != null">
+            building_status,
+          </if>
+          <if test="record.bisPartIn != null">
+            bis_part_in,
+          </if>
+          <if test="record.bisGenerate != null">
+            bis_generate,
+          </if>
+          <if test="record.inventoryStatus != null">
+            inventory_status,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.projectId != null">
+            #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.number != null">
+            #{record.number,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataTableName != null">
+            #{record.dataTableName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dataTableId != null">
+            #{record.dataTableId,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataFromType != null">
+            #{record.dataFromType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.province != null">
+            #{record.province,jdbcType=VARCHAR},
+          </if>
+          <if test="record.city != null">
+            #{record.city,jdbcType=VARCHAR},
+          </if>
+          <if test="record.district != null">
+            #{record.district,jdbcType=VARCHAR},
+          </if>
+          <if test="record.type != null">
+            #{record.type,jdbcType=VARCHAR},
+          </if>
+          <if test="record.hasCert != null">
+            #{record.hasCert,jdbcType=BIT},
+          </if>
+          <if test="record.name != null">
+            #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.ownership != null">
+            #{record.ownership,jdbcType=VARCHAR},
+          </if>
+          <if test="record.seat != null">
+            #{record.seat,jdbcType=VARCHAR},
+          </if>
+          <if test="record.streetNumber != null">
+            #{record.streetNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.attachedNumber != null">
+            #{record.attachedNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.buildingNumber != null">
+            #{record.buildingNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.unit != null">
+            #{record.unit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.floor != null">
+            #{record.floor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.roomNumber != null">
+            #{record.roomNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.certUse != null">
+            #{record.certUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.practicalUse != null">
+            #{record.practicalUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landCertUse != null">
+            #{record.landCertUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landCertUseCategory != null">
+            #{record.landCertUseCategory,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landPracticalUse != null">
+            #{record.landPracticalUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.publicSituation != null">
+            #{record.publicSituation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.floorArea != null">
+            #{record.floorArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.practicalArea != null">
+            #{record.practicalArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.nature != null">
+            #{record.nature,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landRightType != null">
+            #{record.landRightType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landRightNature != null">
+            #{record.landRightNature,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landUseRightArea != null">
+            #{record.landUseRightArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.housingStructure != null">
+            #{record.housingStructure,jdbcType=VARCHAR},
+          </if>
+          <if test="record.groupId != null">
+            #{record.groupId,jdbcType=INTEGER},
+          </if>
+          <if test="record.areaGroupId != null">
+            #{record.areaGroupId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseUseEndDate != null">
+            #{record.houseUseEndDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.landUseEndDate != null">
+            #{record.landUseEndDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.inventoryContentKey != null">
+            #{record.inventoryContentKey,jdbcType=VARCHAR},
+          </if>
+          <if test="record.registrationDate != null">
+            #{record.registrationDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.price != null">
+            #{record.price,jdbcType=DECIMAL},
+          </if>
+          <if test="record.buildingStatus != null">
+            #{record.buildingStatus,jdbcType=INTEGER},
+          </if>
+          <if test="record.bisPartIn != null">
+            #{record.bisPartIn,jdbcType=BIT},
+          </if>
+          <if test="record.bisGenerate != null">
+            #{record.bisGenerate,jdbcType=BIT},
+          </if>
+          <if test="record.inventoryStatus != null">
+            #{record.inventoryStatus,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" resultType="java.lang.Long">
     select count(*) from tb_declare_record
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_declare_record
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.projectId != null" >
-        project_id = #{record.projectId,jdbcType=INTEGER},
-      </if>
-      <if test="record.number != null" >
-        number = #{record.number,jdbcType=INTEGER},
-      </if>
-      <if test="record.dataTableName != null" >
-        data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.dataTableId != null" >
-        data_table_id = #{record.dataTableId,jdbcType=INTEGER},
-      </if>
-      <if test="record.dataFromType != null" >
-        data_from_type = #{record.dataFromType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.province != null" >
-        province = #{record.province,jdbcType=VARCHAR},
-      </if>
-      <if test="record.city != null" >
-        city = #{record.city,jdbcType=VARCHAR},
-      </if>
-      <if test="record.district != null" >
-        district = #{record.district,jdbcType=VARCHAR},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=VARCHAR},
-      </if>
-      <if test="record.hasCert != null" >
-        has_cert = #{record.hasCert,jdbcType=BIT},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.ownership != null" >
-        ownership = #{record.ownership,jdbcType=VARCHAR},
-      </if>
-      <if test="record.seat != null" >
-        seat = #{record.seat,jdbcType=VARCHAR},
-      </if>
-      <if test="record.streetNumber != null" >
-        street_number = #{record.streetNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.attachedNumber != null" >
-        attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.buildingNumber != null" >
-        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.unit != null" >
-        unit = #{record.unit,jdbcType=VARCHAR},
-      </if>
-      <if test="record.floor != null" >
-        floor = #{record.floor,jdbcType=VARCHAR},
-      </if>
-      <if test="record.roomNumber != null" >
-        room_number = #{record.roomNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.certUse != null" >
-        cert_use = #{record.certUse,jdbcType=VARCHAR},
-      </if>
-      <if test="record.practicalUse != null" >
-        practical_use = #{record.practicalUse,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landCertUse != null" >
-        land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landCertUseCategory != null" >
-        land_cert_use_category = #{record.landCertUseCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landPracticalUse != null" >
-        land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
-      </if>
-      <if test="record.publicSituation != null" >
-        public_situation = #{record.publicSituation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.floorArea != null" >
-        floor_area = #{record.floorArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.practicalArea != null" >
-        practical_area = #{record.practicalArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.nature != null" >
-        nature = #{record.nature,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landRightType != null" >
-        land_right_type = #{record.landRightType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landRightNature != null" >
-        land_right_nature = #{record.landRightNature,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landUseRightArea != null" >
-        land_use_right_area = #{record.landUseRightArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.housingStructure != null" >
-        housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
-      </if>
-      <if test="record.groupId != null" >
-        group_id = #{record.groupId,jdbcType=INTEGER},
-      </if>
-      <if test="record.areaGroupId != null" >
-        area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
-      </if>
-      <if test="record.houseUseEndDate != null" >
-        house_use_end_date = #{record.houseUseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.landUseEndDate != null" >
-        land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.inventoryContentKey != null" >
-        inventory_content_key = #{record.inventoryContentKey,jdbcType=VARCHAR},
-      </if>
-      <if test="record.registrationDate != null" >
-        registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.price != null" >
-        price = #{record.price,jdbcType=DECIMAL},
-      </if>
-      <if test="record.buildingStatus != null" >
-        building_status = #{record.buildingStatus,jdbcType=INTEGER},
-      </if>
-      <if test="record.bisPartIn != null" >
-        bis_part_in = #{record.bisPartIn,jdbcType=BIT},
-      </if>
-      <if test="record.bisGenerate != null" >
-        bis_generate = #{record.bisGenerate,jdbcType=BIT},
-      </if>
-      <if test="record.inventoryStatus != null" >
-        inventory_status = #{record.inventoryStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    <if test="_parameter != null" >
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.number != null">
+            number = #{record.number,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataTableName != null">
+            data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dataTableId != null">
+            data_table_id = #{record.dataTableId,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataFromType != null">
+            data_from_type = #{record.dataFromType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.province != null">
+            province = #{record.province,jdbcType=VARCHAR},
+          </if>
+          <if test="record.city != null">
+            city = #{record.city,jdbcType=VARCHAR},
+          </if>
+          <if test="record.district != null">
+            district = #{record.district,jdbcType=VARCHAR},
+          </if>
+          <if test="record.type != null">
+            type = #{record.type,jdbcType=VARCHAR},
+          </if>
+          <if test="record.hasCert != null">
+            has_cert = #{record.hasCert,jdbcType=BIT},
+          </if>
+          <if test="record.name != null">
+            name = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.ownership != null">
+            ownership = #{record.ownership,jdbcType=VARCHAR},
+          </if>
+          <if test="record.seat != null">
+            seat = #{record.seat,jdbcType=VARCHAR},
+          </if>
+          <if test="record.streetNumber != null">
+            street_number = #{record.streetNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.attachedNumber != null">
+            attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.buildingNumber != null">
+            building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.unit != null">
+            unit = #{record.unit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.floor != null">
+            floor = #{record.floor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.roomNumber != null">
+            room_number = #{record.roomNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.certUse != null">
+            cert_use = #{record.certUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.practicalUse != null">
+            practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landCertUse != null">
+            land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landCertUseCategory != null">
+            land_cert_use_category = #{record.landCertUseCategory,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landPracticalUse != null">
+            land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.publicSituation != null">
+            public_situation = #{record.publicSituation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.floorArea != null">
+            floor_area = #{record.floorArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.practicalArea != null">
+            practical_area = #{record.practicalArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.nature != null">
+            nature = #{record.nature,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landRightType != null">
+            land_right_type = #{record.landRightType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landRightNature != null">
+            land_right_nature = #{record.landRightNature,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landUseRightArea != null">
+            land_use_right_area = #{record.landUseRightArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.housingStructure != null">
+            housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
+          </if>
+          <if test="record.groupId != null">
+            group_id = #{record.groupId,jdbcType=INTEGER},
+          </if>
+          <if test="record.areaGroupId != null">
+            area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseUseEndDate != null">
+            house_use_end_date = #{record.houseUseEndDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.landUseEndDate != null">
+            land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.inventoryContentKey != null">
+            inventory_content_key = #{record.inventoryContentKey,jdbcType=VARCHAR},
+          </if>
+          <if test="record.registrationDate != null">
+            registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.price != null">
+            price = #{record.price,jdbcType=DECIMAL},
+          </if>
+          <if test="record.buildingStatus != null">
+            building_status = #{record.buildingStatus,jdbcType=INTEGER},
+          </if>
+          <if test="record.bisPartIn != null">
+            bis_part_in = #{record.bisPartIn,jdbcType=BIT},
+          </if>
+          <if test="record.bisGenerate != null">
+            bis_generate = #{record.bisGenerate,jdbcType=BIT},
+          </if>
+          <if test="record.inventoryStatus != null">
+            inventory_status = #{record.inventoryStatus,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_declare_record
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
@@ -675,155 +705,165 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
+  <update id="updateByPrimaryKeySelective" parameterType="map">
     update tb_declare_record
-    <set >
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="number != null" >
-        number = #{number,jdbcType=INTEGER},
-      </if>
-      <if test="dataTableName != null" >
-        data_table_name = #{dataTableName,jdbcType=VARCHAR},
-      </if>
-      <if test="dataTableId != null" >
-        data_table_id = #{dataTableId,jdbcType=INTEGER},
-      </if>
-      <if test="dataFromType != null" >
-        data_from_type = #{dataFromType,jdbcType=VARCHAR},
-      </if>
-      <if test="province != null" >
-        province = #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null" >
-        city = #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="district != null" >
-        district = #{district,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="hasCert != null" >
-        has_cert = #{hasCert,jdbcType=BIT},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="ownership != null" >
-        ownership = #{ownership,jdbcType=VARCHAR},
-      </if>
-      <if test="seat != null" >
-        seat = #{seat,jdbcType=VARCHAR},
-      </if>
-      <if test="streetNumber != null" >
-        street_number = #{streetNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="attachedNumber != null" >
-        attached_number = #{attachedNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="buildingNumber != null" >
-        building_number = #{buildingNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="unit != null" >
-        unit = #{unit,jdbcType=VARCHAR},
-      </if>
-      <if test="floor != null" >
-        floor = #{floor,jdbcType=VARCHAR},
-      </if>
-      <if test="roomNumber != null" >
-        room_number = #{roomNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="certUse != null" >
-        cert_use = #{certUse,jdbcType=VARCHAR},
-      </if>
-      <if test="practicalUse != null" >
-        practical_use = #{practicalUse,jdbcType=VARCHAR},
-      </if>
-      <if test="landCertUse != null" >
-        land_cert_use = #{landCertUse,jdbcType=VARCHAR},
-      </if>
-      <if test="landCertUseCategory != null" >
-        land_cert_use_category = #{landCertUseCategory,jdbcType=VARCHAR},
-      </if>
-      <if test="landPracticalUse != null" >
-        land_practical_use = #{landPracticalUse,jdbcType=VARCHAR},
-      </if>
-      <if test="publicSituation != null" >
-        public_situation = #{publicSituation,jdbcType=VARCHAR},
-      </if>
-      <if test="floorArea != null" >
-        floor_area = #{floorArea,jdbcType=DECIMAL},
-      </if>
-      <if test="practicalArea != null" >
-        practical_area = #{practicalArea,jdbcType=DECIMAL},
-      </if>
-      <if test="nature != null" >
-        nature = #{nature,jdbcType=VARCHAR},
-      </if>
-      <if test="landRightType != null" >
-        land_right_type = #{landRightType,jdbcType=VARCHAR},
-      </if>
-      <if test="landRightNature != null" >
-        land_right_nature = #{landRightNature,jdbcType=VARCHAR},
-      </if>
-      <if test="landUseRightArea != null" >
-        land_use_right_area = #{landUseRightArea,jdbcType=DECIMAL},
-      </if>
-      <if test="housingStructure != null" >
-        housing_structure = #{housingStructure,jdbcType=VARCHAR},
-      </if>
-      <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=INTEGER},
-      </if>
-      <if test="areaGroupId != null" >
-        area_group_id = #{areaGroupId,jdbcType=INTEGER},
-      </if>
-      <if test="houseUseEndDate != null" >
-        house_use_end_date = #{houseUseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="landUseEndDate != null" >
-        land_use_end_date = #{landUseEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="inventoryContentKey != null" >
-        inventory_content_key = #{inventoryContentKey,jdbcType=VARCHAR},
-      </if>
-      <if test="registrationDate != null" >
-        registration_date = #{registrationDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="buildingStatus != null" >
-        building_status = #{buildingStatus,jdbcType=INTEGER},
-      </if>
-      <if test="bisPartIn != null" >
-        bis_part_in = #{bisPartIn,jdbcType=BIT},
-      </if>
-      <if test="bisGenerate != null" >
-        bis_generate = #{bisGenerate,jdbcType=BIT},
-      </if>
-      <if test="inventoryStatus != null" >
-        inventory_status = #{inventoryStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.number != null">
+            number = #{record.number,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataTableName != null">
+            data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dataTableId != null">
+            data_table_id = #{record.dataTableId,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataFromType != null">
+            data_from_type = #{record.dataFromType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.province != null">
+            province = #{record.province,jdbcType=VARCHAR},
+          </if>
+          <if test="record.city != null">
+            city = #{record.city,jdbcType=VARCHAR},
+          </if>
+          <if test="record.district != null">
+            district = #{record.district,jdbcType=VARCHAR},
+          </if>
+          <if test="record.type != null">
+            type = #{record.type,jdbcType=VARCHAR},
+          </if>
+          <if test="record.hasCert != null">
+            has_cert = #{record.hasCert,jdbcType=BIT},
+          </if>
+          <if test="record.name != null">
+            name = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.ownership != null">
+            ownership = #{record.ownership,jdbcType=VARCHAR},
+          </if>
+          <if test="record.seat != null">
+            seat = #{record.seat,jdbcType=VARCHAR},
+          </if>
+          <if test="record.streetNumber != null">
+            street_number = #{record.streetNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.attachedNumber != null">
+            attached_number = #{record.attachedNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.buildingNumber != null">
+            building_number = #{record.buildingNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.unit != null">
+            unit = #{record.unit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.floor != null">
+            floor = #{record.floor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.roomNumber != null">
+            room_number = #{record.roomNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.certUse != null">
+            cert_use = #{record.certUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.practicalUse != null">
+            practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landCertUse != null">
+            land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landCertUseCategory != null">
+            land_cert_use_category = #{record.landCertUseCategory,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landPracticalUse != null">
+            land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
+          </if>
+          <if test="record.publicSituation != null">
+            public_situation = #{record.publicSituation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.floorArea != null">
+            floor_area = #{record.floorArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.practicalArea != null">
+            practical_area = #{record.practicalArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.nature != null">
+            nature = #{record.nature,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landRightType != null">
+            land_right_type = #{record.landRightType,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landRightNature != null">
+            land_right_nature = #{record.landRightNature,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landUseRightArea != null">
+            land_use_right_area = #{record.landUseRightArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.housingStructure != null">
+            housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
+          </if>
+          <if test="record.groupId != null">
+            group_id = #{record.groupId,jdbcType=INTEGER},
+          </if>
+          <if test="record.areaGroupId != null">
+            area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseUseEndDate != null">
+            house_use_end_date = #{record.houseUseEndDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.landUseEndDate != null">
+            land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.inventoryContentKey != null">
+            inventory_content_key = #{record.inventoryContentKey,jdbcType=VARCHAR},
+          </if>
+          <if test="record.registrationDate != null">
+            registration_date = #{record.registrationDate,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.price != null">
+            price = #{record.price,jdbcType=DECIMAL},
+          </if>
+          <if test="record.buildingStatus != null">
+            building_status = #{record.buildingStatus,jdbcType=INTEGER},
+          </if>
+          <if test="record.bisPartIn != null">
+            bis_part_in = #{record.bisPartIn,jdbcType=BIT},
+          </if>
+          <if test="record.bisGenerate != null">
+            bis_generate = #{record.bisGenerate,jdbcType=BIT},
+          </if>
+          <if test="record.inventoryStatus != null">
+            inventory_status = #{record.inventoryStatus,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord">
     update tb_declare_record
     set project_id = #{projectId,jdbcType=INTEGER},
       number = #{number,jdbcType=INTEGER},
@@ -873,4 +913,188 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_declare_record
+    (project_id, number, data_table_name, data_table_id, data_from_type, province, city, 
+      district, type, has_cert, name, ownership, seat, street_number, attached_number, 
+      building_number, unit, floor, room_number, cert_use, practical_use, land_cert_use, 
+      land_cert_use_category, land_practical_use, public_situation, floor_area, practical_area, 
+      nature, land_right_type, land_right_nature, land_use_right_area, housing_structure, 
+      group_id, area_group_id, house_use_end_date, land_use_end_date, inventory_content_key, 
+      registration_date, price, building_status, bis_part_in, bis_generate, inventory_status, 
+      creator, gmt_created, gmt_modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.projectId,jdbcType=INTEGER}, #{item.number,jdbcType=INTEGER}, #{item.dataTableName,jdbcType=VARCHAR}, 
+        #{item.dataTableId,jdbcType=INTEGER}, #{item.dataFromType,jdbcType=VARCHAR}, #{item.province,jdbcType=VARCHAR}, 
+        #{item.city,jdbcType=VARCHAR}, #{item.district,jdbcType=VARCHAR}, #{item.type,jdbcType=VARCHAR}, 
+        #{item.hasCert,jdbcType=BIT}, #{item.name,jdbcType=VARCHAR}, #{item.ownership,jdbcType=VARCHAR}, 
+        #{item.seat,jdbcType=VARCHAR}, #{item.streetNumber,jdbcType=VARCHAR}, #{item.attachedNumber,jdbcType=VARCHAR}, 
+        #{item.buildingNumber,jdbcType=VARCHAR}, #{item.unit,jdbcType=VARCHAR}, #{item.floor,jdbcType=VARCHAR}, 
+        #{item.roomNumber,jdbcType=VARCHAR}, #{item.certUse,jdbcType=VARCHAR}, #{item.practicalUse,jdbcType=VARCHAR}, 
+        #{item.landCertUse,jdbcType=VARCHAR}, #{item.landCertUseCategory,jdbcType=VARCHAR}, 
+        #{item.landPracticalUse,jdbcType=VARCHAR}, #{item.publicSituation,jdbcType=VARCHAR}, 
+        #{item.floorArea,jdbcType=DECIMAL}, #{item.practicalArea,jdbcType=DECIMAL}, #{item.nature,jdbcType=VARCHAR}, 
+        #{item.landRightType,jdbcType=VARCHAR}, #{item.landRightNature,jdbcType=VARCHAR}, 
+        #{item.landUseRightArea,jdbcType=DECIMAL}, #{item.housingStructure,jdbcType=VARCHAR}, 
+        #{item.groupId,jdbcType=INTEGER}, #{item.areaGroupId,jdbcType=INTEGER}, #{item.houseUseEndDate,jdbcType=TIMESTAMP}, 
+        #{item.landUseEndDate,jdbcType=TIMESTAMP}, #{item.inventoryContentKey,jdbcType=VARCHAR}, 
+        #{item.registrationDate,jdbcType=TIMESTAMP}, #{item.price,jdbcType=DECIMAL}, #{item.buildingStatus,jdbcType=INTEGER}, 
+        #{item.bisPartIn,jdbcType=BIT}, #{item.bisGenerate,jdbcType=BIT}, #{item.inventoryStatus,jdbcType=VARCHAR}, 
+        #{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}
+        )
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_declare_record (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'project_id'.toString() == column.value">
+          #{item.projectId,jdbcType=INTEGER}
+        </if>
+        <if test="'number'.toString() == column.value">
+          #{item.number,jdbcType=INTEGER}
+        </if>
+        <if test="'data_table_name'.toString() == column.value">
+          #{item.dataTableName,jdbcType=VARCHAR}
+        </if>
+        <if test="'data_table_id'.toString() == column.value">
+          #{item.dataTableId,jdbcType=INTEGER}
+        </if>
+        <if test="'data_from_type'.toString() == column.value">
+          #{item.dataFromType,jdbcType=VARCHAR}
+        </if>
+        <if test="'province'.toString() == column.value">
+          #{item.province,jdbcType=VARCHAR}
+        </if>
+        <if test="'city'.toString() == column.value">
+          #{item.city,jdbcType=VARCHAR}
+        </if>
+        <if test="'district'.toString() == column.value">
+          #{item.district,jdbcType=VARCHAR}
+        </if>
+        <if test="'type'.toString() == column.value">
+          #{item.type,jdbcType=VARCHAR}
+        </if>
+        <if test="'has_cert'.toString() == column.value">
+          #{item.hasCert,jdbcType=BIT}
+        </if>
+        <if test="'name'.toString() == column.value">
+          #{item.name,jdbcType=VARCHAR}
+        </if>
+        <if test="'ownership'.toString() == column.value">
+          #{item.ownership,jdbcType=VARCHAR}
+        </if>
+        <if test="'seat'.toString() == column.value">
+          #{item.seat,jdbcType=VARCHAR}
+        </if>
+        <if test="'street_number'.toString() == column.value">
+          #{item.streetNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="'attached_number'.toString() == column.value">
+          #{item.attachedNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="'building_number'.toString() == column.value">
+          #{item.buildingNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="'unit'.toString() == column.value">
+          #{item.unit,jdbcType=VARCHAR}
+        </if>
+        <if test="'floor'.toString() == column.value">
+          #{item.floor,jdbcType=VARCHAR}
+        </if>
+        <if test="'room_number'.toString() == column.value">
+          #{item.roomNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="'cert_use'.toString() == column.value">
+          #{item.certUse,jdbcType=VARCHAR}
+        </if>
+        <if test="'practical_use'.toString() == column.value">
+          #{item.practicalUse,jdbcType=VARCHAR}
+        </if>
+        <if test="'land_cert_use'.toString() == column.value">
+          #{item.landCertUse,jdbcType=VARCHAR}
+        </if>
+        <if test="'land_cert_use_category'.toString() == column.value">
+          #{item.landCertUseCategory,jdbcType=VARCHAR}
+        </if>
+        <if test="'land_practical_use'.toString() == column.value">
+          #{item.landPracticalUse,jdbcType=VARCHAR}
+        </if>
+        <if test="'public_situation'.toString() == column.value">
+          #{item.publicSituation,jdbcType=VARCHAR}
+        </if>
+        <if test="'floor_area'.toString() == column.value">
+          #{item.floorArea,jdbcType=DECIMAL}
+        </if>
+        <if test="'practical_area'.toString() == column.value">
+          #{item.practicalArea,jdbcType=DECIMAL}
+        </if>
+        <if test="'nature'.toString() == column.value">
+          #{item.nature,jdbcType=VARCHAR}
+        </if>
+        <if test="'land_right_type'.toString() == column.value">
+          #{item.landRightType,jdbcType=VARCHAR}
+        </if>
+        <if test="'land_right_nature'.toString() == column.value">
+          #{item.landRightNature,jdbcType=VARCHAR}
+        </if>
+        <if test="'land_use_right_area'.toString() == column.value">
+          #{item.landUseRightArea,jdbcType=DECIMAL}
+        </if>
+        <if test="'housing_structure'.toString() == column.value">
+          #{item.housingStructure,jdbcType=VARCHAR}
+        </if>
+        <if test="'group_id'.toString() == column.value">
+          #{item.groupId,jdbcType=INTEGER}
+        </if>
+        <if test="'area_group_id'.toString() == column.value">
+          #{item.areaGroupId,jdbcType=INTEGER}
+        </if>
+        <if test="'house_use_end_date'.toString() == column.value">
+          #{item.houseUseEndDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'land_use_end_date'.toString() == column.value">
+          #{item.landUseEndDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'inventory_content_key'.toString() == column.value">
+          #{item.inventoryContentKey,jdbcType=VARCHAR}
+        </if>
+        <if test="'registration_date'.toString() == column.value">
+          #{item.registrationDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'price'.toString() == column.value">
+          #{item.price,jdbcType=DECIMAL}
+        </if>
+        <if test="'building_status'.toString() == column.value">
+          #{item.buildingStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'bis_part_in'.toString() == column.value">
+          #{item.bisPartIn,jdbcType=BIT}
+        </if>
+        <if test="'bis_generate'.toString() == column.value">
+          #{item.bisGenerate,jdbcType=BIT}
+        </if>
+        <if test="'inventory_status'.toString() == column.value">
+          #{item.inventoryStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>
