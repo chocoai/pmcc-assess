@@ -20,8 +20,6 @@ public class BasicBuilding {
 
     private String buildingName;
 
-    private String fullName;
-
     private String floorCount;
 
     private String location;
@@ -104,13 +102,17 @@ public class BasicBuilding {
 
     private Integer propertyCompanyNature;
 
-    private Integer mapId;
+    private String minimumFloorDistance;
 
-    private String remark;
+    private Integer streetInfoId;
+
+    private Integer mapId;
 
     private Integer displayCaseId;
 
     private Integer relevanceId;
+
+    private String remark;
 
     private Integer version;
 
@@ -129,10 +131,6 @@ public class BasicBuilding {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String minimumFloorDistance;
-
-    private Integer streetInfoId;
 
     public Integer getId() {
         return id;
@@ -196,14 +194,6 @@ public class BasicBuilding {
 
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName == null ? null : buildingName.trim();
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName == null ? null : fullName.trim();
     }
 
     public String getFloorCount() {
@@ -534,20 +524,28 @@ public class BasicBuilding {
         this.propertyCompanyNature = propertyCompanyNature;
     }
 
+    public String getMinimumFloorDistance() {
+        return minimumFloorDistance;
+    }
+
+    public void setMinimumFloorDistance(String minimumFloorDistance) {
+        this.minimumFloorDistance = minimumFloorDistance == null ? null : minimumFloorDistance.trim();
+    }
+
+    public Integer getStreetInfoId() {
+        return streetInfoId;
+    }
+
+    public void setStreetInfoId(Integer streetInfoId) {
+        this.streetInfoId = streetInfoId;
+    }
+
     public Integer getMapId() {
         return mapId;
     }
 
     public void setMapId(Integer mapId) {
         this.mapId = mapId;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
     }
 
     public Integer getDisplayCaseId() {
@@ -564,6 +562,14 @@ public class BasicBuilding {
 
     public void setRelevanceId(Integer relevanceId) {
         this.relevanceId = relevanceId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public Integer getVersion() {
@@ -636,21 +642,5 @@ public class BasicBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getMinimumFloorDistance() {
-        return minimumFloorDistance;
-    }
-
-    public void setMinimumFloorDistance(String minimumFloorDistance) {
-        this.minimumFloorDistance = minimumFloorDistance == null ? null : minimumFloorDistance.trim();
-    }
-
-    public Integer getStreetInfoId() {
-        return streetInfoId;
-    }
-
-    public void setStreetInfoId(Integer streetInfoId) {
-        this.streetInfoId = streetInfoId;
     }
 }

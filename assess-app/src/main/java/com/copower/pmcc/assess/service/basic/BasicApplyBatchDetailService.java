@@ -263,8 +263,6 @@ public class BasicApplyBatchDetailService {
             house.setHouseNumber(basicApplyBatchDetail.getName());
             BasicUnit basicUnit = getBasicUnitByBatchDetailId(basicApplyBatchDetail.getPid());
             if (basicUnit != null) {
-                house.setUnitId(basicUnit.getId());
-                house.setBuildingId(basicUnit.getBuildingId());
                 house.setEstateId(basicUnit.getEstateId());
             }
             //申报表代入的信息

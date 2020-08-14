@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
@@ -146,13 +147,6 @@ public class BasicHouseService extends BasicEntityAbstract {
      * @throws Exception
      */
     public List<BasicHouse> getBasicHouseList(BasicHouse basicHouse) {
-        return basicHouseDao.getBasicHouseList(basicHouse);
-    }
-
-    public List<BasicHouse> getHousesByUnitId(Integer unitId) {
-        if (unitId == null) return null;
-        BasicHouse basicHouse = new BasicHouse();
-        basicHouse.setUnitId(unitId);
         return basicHouseDao.getBasicHouseList(basicHouse);
     }
 
@@ -455,28 +449,30 @@ public class BasicHouseService extends BasicEntityAbstract {
                 BasicHouse version = (BasicHouse) copyBasicEntity(oldBasicHouse.getId(), null, false);
                 version.setRelevanceId(oldBasicHouse.getId());
                 version.setEstateId(0);
-                version.setBuildingId(0);
-                version.setUnitId(0);
                 saveAndUpdate(version, false);
             }
 
             if (basicHouse != null) {
+                //户型
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE_HUXING.getVar());
+                BasicUnitHuxing huxing = JSONObject.parseObject(jsonContent, BasicUnitHuxing.class);
+                //交易信息
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
+                BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
+
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
                     if (StringUtils.isNotEmpty(basicHouse.getHouseNumber())) {
                         houseDetail.setName(basicHouse.getHouseNumber());
                         houseDetail.setDisplayName(basicHouse.getHouseNumber());
                         houseDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseDetail.getId()));
+                        setHouseBatchDetailModifyType(basicHouse,huxing,basicTrading,houseDetail);
                         basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
                     }
                     basicHouse.setApplyId(houseDetail.getId());
-                    basicHouse.setFullName(houseDetail.getFullName());
                 }
                 Integer houseId = saveAndUpdate(basicHouse, true);
 
-                //户型
-                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE_HUXING.getVar());
-                BasicUnitHuxing huxing = JSONObject.parseObject(jsonContent, BasicUnitHuxing.class);
                 if (huxing != null) {
                     BasicUnitHuxing houseHuxingOld = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
                     if (houseHuxingOld != null) {
@@ -487,9 +483,6 @@ public class BasicHouseService extends BasicEntityAbstract {
                     }
                 }
 
-                //交易信息
-                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
-                BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
                 if (basicTrading != null) {
                     BasicHouseTrading houseTradingOld = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
                     if (houseTradingOld != null) {
@@ -815,5 +808,45 @@ public class BasicHouseService extends BasicEntityAbstract {
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicEstateSurveyRecord", basicEstateSurveyRecordService.getEstateSurveyRecordByHouseId(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
+    }
+
+    /**
+     * 设置修改状态
+     *
+     * @param basicHouse
+     * @param huxing
+     * @param basicTrading
+     * @param applyBatchDetail
+     */
+    public void setHouseBatchDetailModifyType(BasicHouse basicHouse, BasicUnitHuxing huxing, BasicHouseTrading basicTrading, BasicApplyBatchDetail applyBatchDetail) {
+        //1.如果为引用状态的数据，则验证是否修改过，修改过则将状态调整为修改过状态
+        if (basicHouse == null || huxing == null || basicTrading == null || applyBatchDetail == null) return;
+        if (BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
+            BasicHouse dbBasicHouse = getBasicHouseById(basicHouse.getId());
+            if (dbBasicHouse == null) return;
+            List<String> fieldNameList = Lists.newArrayList("applyId","newDegree", "quoteId", "mapId", "relevanceId", "version", "bisCase", "bisEnable", "bisDelete");
+            fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
+            Boolean isEqual = publicService.equalsObjectExcludeField(basicHouse, dbBasicHouse, fieldNameList);
+            if (isEqual == false) {
+                applyBatchDetail.setModifyType(BasicDataHandleEnum.MODIFY.getKey());
+                return;
+            }
+
+            fieldNameList = Lists.newArrayList("applyBatchId", "planDetailsId", "houseId", "estateId", "unitId", "bisDelete");
+            fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
+            BasicUnitHuxing dbHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
+            isEqual = publicService.equalsObjectExcludeField(huxing, dbHuxing, fieldNameList);
+            if (isEqual == false) {
+                applyBatchDetail.setModifyType(BasicDataHandleEnum.MODIFY.getKey());
+            }
+
+            fieldNameList = Lists.newArrayList("applyId", "houseId", "bisMark", "bisDelete");
+            fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
+            BasicHouseTrading dbHouseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+            isEqual = publicService.equalsObjectExcludeField(huxing, dbHouseTrading, fieldNameList);
+            if (isEqual == false) {
+                applyBatchDetail.setModifyType(BasicDataHandleEnum.MODIFY.getKey());
+            }
+        }
     }
 }

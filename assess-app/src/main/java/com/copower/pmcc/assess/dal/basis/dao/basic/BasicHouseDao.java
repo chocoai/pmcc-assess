@@ -62,7 +62,7 @@ public class BasicHouseDao {
         return basicHouseMapper.selectByExample(example);
     }
 
-    public Integer getCountByHuxingId(Integer huxingId) {
+    public long getCountByHuxingId(Integer huxingId) {
         BasicHouseExample example = new BasicHouseExample();
         BasicHouseExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         criteria.andHuxingIdEqualTo(huxingId);

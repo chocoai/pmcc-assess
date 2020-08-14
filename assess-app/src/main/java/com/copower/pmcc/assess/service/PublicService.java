@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.common.NetDownloadUtils;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.input.map.PolygonMapData;
@@ -33,6 +34,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
@@ -80,6 +83,7 @@ public class PublicService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    private Object fields;
 
     /**
      * 获取当前公司
@@ -614,5 +618,87 @@ public class PublicService {
         if (var1 == null && var2 != null) return false;
         if (var1 != null && var2 == null) return false;
         return var1.equals(var2);
+    }
+
+    /**
+     * 比较对象是否一致
+     *
+     * @param obj1
+     * @param obj2
+     * @param fieldNames 包含的字段
+     * @param <T>
+     * @return
+     */
+    public <T> Boolean equalsObjectWithField(T obj1, T obj2, List<String> fieldNames) {
+        try {
+            Field[] fields = obj1.getClass().getDeclaredFields();
+            for (Field f : fields) {
+                if (fieldNames.contains(f.getName())) {
+                    f.setAccessible(true);
+                    f.setAccessible(true);
+                    Object o1 = f.get(obj1);
+                    Object o2 = f.get(obj2);
+                    if (o1 == null && o2 != null) return false;
+                    if (o1 != null && o2 == null) return false;
+                    if (o1 != null && o2 != null) {
+                        if (o1 instanceof BigDecimal) {
+                            int i = new BigDecimal(String.valueOf(o1)).compareTo(new BigDecimal(String.valueOf(o2)));
+                            if (i != 0) {
+                                return false;
+                            }
+                        } else {
+                            if (!Objects.equals(o1, o2)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return true;
+    }
+
+    /**
+     * 比较对象是否一致
+     *
+     * @param obj1
+     * @param obj2
+     * @param fieldNames 排除的字段
+     * @param <T>
+     * @return
+     */
+    public <T> Boolean equalsObjectExcludeField(T obj1, T obj2, List<String> fieldNames) {
+        try {
+            Field[] fields = obj1.getClass().getDeclaredFields();
+            for (Field f : fields) {
+                if (fieldNames.contains(f.getName())) continue;
+                f.setAccessible(true);
+                Object o1 = f.get(obj1);
+                Object o2 = f.get(obj2);
+                if (o1 == null && o2 != null) {
+                    return false;
+                }
+                if (o1 != null && o2 == null) {
+                    return false;
+                }
+                if (o1 != null && o2 != null) {
+                    if (o1 instanceof BigDecimal) {
+                        int i = new BigDecimal(String.valueOf(o1)).compareTo(new BigDecimal(String.valueOf(o2)));
+                        if (i != 0) {
+                            return false;
+                        }
+                    } else {
+                        if (!Objects.equals(o1, o2)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return true;
     }
 }

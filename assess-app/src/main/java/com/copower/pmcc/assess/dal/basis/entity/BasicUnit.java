@@ -15,11 +15,11 @@ public class BasicUnit {
 
     private String unitNumber;
 
-    private String fullName;
-
     private String elevatorHouseholdRatio;
 
     private String huxingExplain;
+
+    private String huxingNum;
 
     private Integer mapId;
 
@@ -40,8 +40,6 @@ public class BasicUnit {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String huxingNum;
 
     public Integer getId() {
         return id;
@@ -91,14 +89,6 @@ public class BasicUnit {
         this.unitNumber = unitNumber == null ? null : unitNumber.trim();
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName == null ? null : fullName.trim();
-    }
-
     public String getElevatorHouseholdRatio() {
         return elevatorHouseholdRatio;
     }
@@ -113,6 +103,14 @@ public class BasicUnit {
 
     public void setHuxingExplain(String huxingExplain) {
         this.huxingExplain = huxingExplain == null ? null : huxingExplain.trim();
+    }
+
+    public String getHuxingNum() {
+        return huxingNum;
+    }
+
+    public void setHuxingNum(String huxingNum) {
+        this.huxingNum = huxingNum == null ? null : huxingNum.trim();
     }
 
     public Integer getMapId() {
@@ -193,13 +191,5 @@ public class BasicUnit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getHuxingNum() {
-        return huxingNum;
-    }
-
-    public void setHuxingNum(String huxingNum) {
-        this.huxingNum = huxingNum == null ? null : huxingNum.trim();
     }
 }

@@ -23,8 +23,6 @@ public class BasicEstateDao {
 
     @Autowired
     private BasicEstateMapper basicEstateMapper;
-    @Autowired
-    private CustomCaseMapper customCaseMapper;
 
     public BasicEstate getBasicEstateById(Integer id) {
         return basicEstateMapper.selectByPrimaryKey(id);
@@ -66,59 +64,11 @@ public class BasicEstateDao {
         return basicEstateMapper.selectByExample(example);
     }
 
-    public Integer getBasicEstateCount(String province, String city, String name) {
-        BasicEstateExample example = new BasicEstateExample();
-        BasicEstateExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIsNotNull().andBisDeleteEqualTo(false).andBisCaseEqualTo(true);
-        if (!StringUtils.isEmpty(name)) {
-            criteria.andNameEqualTo(name);
-        }
-        if (!StringUtils.isEmpty(province)) {
-            criteria.andProvinceEqualTo(province);
-        }
-        if (!StringUtils.isEmpty(city)) {
-            criteria.andCityEqualTo(city);
-        }
-        return basicEstateMapper.countByExample(example);
-    }
-
-    public BasicEstate getLatestVersionEstate(String province, String city, String name) {
-        BasicEstateExample example = new BasicEstateExample();
-        BasicEstateExample.Criteria criteria = example.createCriteria();
-        criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true);
-        if (!StringUtils.isEmpty(name)) {
-            criteria.andNameEqualTo(name);
-        }
-        if (!StringUtils.isEmpty(province)) {
-            criteria.andProvinceEqualTo(province);
-        }
-        if (!StringUtils.isEmpty(city)) {
-            criteria.andCityEqualTo(city);
-        }
-        example.setOrderByClause("version desc");
-        List<BasicEstate> basicEstateList = basicEstateMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(basicEstateList)) return null;
-        return basicEstateList.get(0);
-    }
-
 
     public List<BasicEstate> getBasicEstateList(BasicEstate basicEstate) {
         BasicEstateExample example = new BasicEstateExample();
         BasicEstateExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         MybatisUtils.convertObj2Criteria(basicEstate, criteria);
         return basicEstateMapper.selectByExample(example);
-    }
-
-    /**
-     * 获取版本最新的楼盘信息
-     *
-     * @param name
-     * @param province
-     * @param city
-     * @param district
-     * @return
-     */
-    public List<CustomCaseEntity> getLatestVersionEstateList(String name, String province, String city, String district) {
-        return customCaseMapper.getCaseEstateList(name, province, city, district);
     }
 }

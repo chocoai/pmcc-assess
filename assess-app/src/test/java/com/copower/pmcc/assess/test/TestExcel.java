@@ -3,9 +3,15 @@ package com.copower.pmcc.assess.test;
 /**
  * Created by zch on 2020-4-20.
  */
+
 import java.awt.*;
 import java.io.FileOutputStream;
+import java.lang.reflect.Field;
+import java.util.List;
 
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.poi.hssf.usermodel.EscherGraphics;
 import org.apache.poi.hssf.usermodel.EscherGraphics2d;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -42,7 +48,7 @@ public class TestExcel {
         int x1 = 61, y1 = 77;
         int x2 = 132, y2 = 76;
         int x3 = 144, y3 = 31;
-        int[] xys = { x1, y1, x2, y2, x3, y3 };
+        int[] xys = {x1, y1, x2, y2, x3, y3};
         drawLine(sheet, row, 0, 0, 144, 77, xys);
         cell.setCellValue(text);
         cellStyle.setVerticalAlignment(VerticalAlignment.TOP);
@@ -71,7 +77,7 @@ public class TestExcel {
         cell = row.createCell(3);
         cell.setCellStyle(cellStyle);
 
-        int[] xys1 = { 112, 83 };
+        int[] xys1 = {112, 83};
         drawLine(sheet, row, 1, 3, 110, 83, xys1);
 
         wb.write(fos);
@@ -132,8 +138,59 @@ public class TestExcel {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         String format = String.format("%s%s%s", "/", "aaa", "/");
-        System.out.print("/aaa/hhh/nnn".replaceAll(format,"/bbbbb/"));
+        System.out.print("/aaa/hhh/nnn".replaceAll(format, "/bbbbb/"));
+    }
+
+    public static <T> Boolean equalsObjectWithField(T obj1, T obj2, List<String> fieldNames) {
+        try {
+            Field[] fields = obj1.getClass().getDeclaredFields();
+            for (Field f : fields) {
+                if (fieldNames.contains(f.getName())) {
+                    f.setAccessible(true);
+                    Object o1 = f.get(obj1);
+                    Object o2 = f.get(obj2);
+                    if (!ObjectUtils.equals(o1, o2)) {
+                        return false;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return true;
+    }
+
+    public static <T> Boolean equalsObjectExcludeField(T obj1, T obj2, List<String> fieldNames) {
+        try {
+            Field[] fields = obj1.getClass().getDeclaredFields();
+            for (Field f : fields) {
+                if (fieldNames.contains(f.getName())) continue;
+                f.setAccessible(true);
+                Object o1 = f.get(obj1);
+                Object o2 = f.get(obj2);
+                if (!ObjectUtils.equals(o1, o2)) {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return true;
+    }
+
+    @Test
+    public void Test10() {
+        BasicEstate obj1 = new BasicEstate();
+        obj1.setProvince("四川1");
+        obj1.setBisCase(false);
+
+        BasicEstate obj2 = new BasicEstate();
+        obj2.setProvince("四川1");
+        obj2.setBisCase(true);
+
+        List<String> fieldNames = Lists.newArrayList("province", "city");
+        System.out.print(equalsObjectWithField(obj1, obj2, fieldNames));
     }
 }

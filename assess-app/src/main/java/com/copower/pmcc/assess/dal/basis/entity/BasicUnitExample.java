@@ -475,76 +475,6 @@ public class BasicUnitExample {
             return (Criteria) this;
         }
 
-        public Criteria andFullNameIsNull() {
-            addCriterion("full_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameIsNotNull() {
-            addCriterion("full_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameEqualTo(String value) {
-            addCriterion("full_name =", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotEqualTo(String value) {
-            addCriterion("full_name <>", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameGreaterThan(String value) {
-            addCriterion("full_name >", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameGreaterThanOrEqualTo(String value) {
-            addCriterion("full_name >=", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLessThan(String value) {
-            addCriterion("full_name <", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLessThanOrEqualTo(String value) {
-            addCriterion("full_name <=", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLike(String value) {
-            addCriterion("full_name like", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotLike(String value) {
-            addCriterion("full_name not like", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameIn(List<String> values) {
-            addCriterion("full_name in", values, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotIn(List<String> values) {
-            addCriterion("full_name not in", values, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameBetween(String value1, String value2) {
-            addCriterion("full_name between", value1, value2, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotBetween(String value1, String value2) {
-            addCriterion("full_name not between", value1, value2, "fullName");
-            return (Criteria) this;
-        }
-
         public Criteria andElevatorHouseholdRatioIsNull() {
             addCriterion("elevator_household_ratio is null");
             return (Criteria) this;
@@ -682,6 +612,76 @@ public class BasicUnitExample {
 
         public Criteria andHuxingExplainNotBetween(String value1, String value2) {
             addCriterion("huxing_explain not between", value1, value2, "huxingExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumIsNull() {
+            addCriterion("huxing_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumIsNotNull() {
+            addCriterion("huxing_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumEqualTo(String value) {
+            addCriterion("huxing_num =", value, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumNotEqualTo(String value) {
+            addCriterion("huxing_num <>", value, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumGreaterThan(String value) {
+            addCriterion("huxing_num >", value, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumGreaterThanOrEqualTo(String value) {
+            addCriterion("huxing_num >=", value, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumLessThan(String value) {
+            addCriterion("huxing_num <", value, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumLessThanOrEqualTo(String value) {
+            addCriterion("huxing_num <=", value, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumLike(String value) {
+            addCriterion("huxing_num like", value, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumNotLike(String value) {
+            addCriterion("huxing_num not like", value, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumIn(List<String> values) {
+            addCriterion("huxing_num in", values, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumNotIn(List<String> values) {
+            addCriterion("huxing_num not in", values, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumBetween(String value1, String value2) {
+            addCriterion("huxing_num between", value1, value2, "huxingNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingNumNotBetween(String value1, String value2) {
+            addCriterion("huxing_num not between", value1, value2, "huxingNum");
             return (Criteria) this;
         }
 
@@ -1292,76 +1292,6 @@ public class BasicUnitExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumIsNull() {
-            addCriterion("huxing_num is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumIsNotNull() {
-            addCriterion("huxing_num is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumEqualTo(String value) {
-            addCriterion("huxing_num =", value, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumNotEqualTo(String value) {
-            addCriterion("huxing_num <>", value, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumGreaterThan(String value) {
-            addCriterion("huxing_num >", value, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumGreaterThanOrEqualTo(String value) {
-            addCriterion("huxing_num >=", value, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumLessThan(String value) {
-            addCriterion("huxing_num <", value, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumLessThanOrEqualTo(String value) {
-            addCriterion("huxing_num <=", value, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumLike(String value) {
-            addCriterion("huxing_num like", value, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumNotLike(String value) {
-            addCriterion("huxing_num not like", value, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumIn(List<String> values) {
-            addCriterion("huxing_num in", values, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumNotIn(List<String> values) {
-            addCriterion("huxing_num not in", values, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumBetween(String value1, String value2) {
-            addCriterion("huxing_num between", value1, value2, "huxingNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andHuxingNumNotBetween(String value1, String value2) {
-            addCriterion("huxing_num not between", value1, value2, "huxingNum");
             return (Criteria) this;
         }
     }

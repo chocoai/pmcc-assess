@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
@@ -177,11 +178,11 @@ public class BasicBuildingService extends BasicEntityAbstract {
             }
             if (BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey().equals(keyValueDto.getKey())) {
                 vo.setCurrBuildingDifference(getBasicBuildingVo(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue()))));
-                List<BasicApplyBatchDetail> list=Lists.newArrayList();
-                basicApplyBatchDetailService.collectionParentBatchDetails(basicApply.getBatchDetailId(),list);
+                List<BasicApplyBatchDetail> list = Lists.newArrayList();
+                basicApplyBatchDetailService.collectionParentBatchDetails(basicApply.getBatchDetailId(), list);
                 List<BasicApplyBatchDetail> filter = LangUtils.filter(list, o -> o.getType().equals(keyValueDto.getKey()));
-                if(CollectionUtils.isNotEmpty(filter)){
-                    List<BasicBuildingVo> basicBuildingVos=Lists.newArrayList();
+                if (CollectionUtils.isNotEmpty(filter)) {
+                    List<BasicBuildingVo> basicBuildingVos = Lists.newArrayList();
                     for (BasicApplyBatchDetail basicApplyBatchDetail : filter) {
                         basicBuildingVos.add(getBasicBuildingVo(getBasicBuildingById(basicApplyBatchDetail.getTableId())));
                     }
@@ -258,7 +259,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
             try { //crm 未知错误  暂时这样处理
                 vo.setPropertyCompanyNatureName(crmRpcBaseDataDicService.getBaseDataDic(basicBuilding.getPropertyCompanyNature()).getName());
             } catch (Exception e) {
-                logger.error(e.getMessage(),e);
+                logger.error(e.getMessage(), e);
             }
         }
         vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(basicBuilding.getPropertySocialPrestige()));
@@ -269,7 +270,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
                 vo.setMinimumFloorDistance(nameById);
             }
         }
-        if(basicBuilding.getStreetInfoId()!=null){
+        if (basicBuilding.getStreetInfoId() != null) {
             BasicEstateStreetInfo estateStreetInfo = basicEstateStreetInfoDao.getBasicEstateStreetInfoById(basicBuilding.getStreetInfoId());
             vo.setStreetNumber(estateStreetInfo.getStreetNumber());
         }
@@ -382,9 +383,9 @@ public class BasicBuildingService extends BasicEntityAbstract {
                     buildingDetail.setName(basicBuilding.getBuildingNumber());
                     buildingDetail.setDisplayName(basicBuilding.getBuildingNumber());
                     buildingDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(buildingDetail.getId()));
+                    setBuildingBatchDetailModifyType(basicBuilding, buildingDetail);
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingDetail);
                     basicBuilding.setApplyId(buildingDetail.getId());
-                    basicBuilding.setFullName(buildingDetail.getFullName());
                 }
 
                 saveAndUpdate(basicBuilding, true);
@@ -482,7 +483,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
 
         //获取街道号相关信息
         BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicFormClassifyParamDto.getApplyBatchId());
-        if(basicApplyBatch!=null){
+        if (basicApplyBatch != null) {
             BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
             basicEstateStreetInfo.setEstateId(basicApplyBatch.getEstateId());
             List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
@@ -500,14 +501,14 @@ public class BasicBuildingService extends BasicEntityAbstract {
     }
 
     @Override
-    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception {
         List<Object> objects = Lists.newArrayList();
         BasicBuilding basicBuilding = new BasicBuilding();
         basicBuilding.setApplyId(applyBatchDetailId);
         basicBuilding.setBisCase(true);
         List<BasicBuilding> basicBuildingList = getBasicBuildingList(basicBuilding);
-        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(basicBuildingList)){
-            basicBuildingList.forEach(o->objects.add(o));
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(basicBuildingList)) {
+            basicBuildingList.forEach(o -> objects.add(o));
         }
         return objects;
     }
@@ -518,5 +519,28 @@ public class BasicBuildingService extends BasicEntityAbstract {
         BasicBuildingVo buildingVo = getBasicBuildingVoById(basicFormClassifyParamDto.getTbId());
         modelAndView.addObject("basicBuilding", buildingVo);
         return modelAndView;
+    }
+
+
+    /**
+     * 设置修改状态
+     *
+     * @param basicBuilding
+     * @param applyBatchDetail
+     */
+    public void setBuildingBatchDetailModifyType(BasicBuilding basicBuilding, BasicApplyBatchDetail applyBatchDetail) {
+        //1.如果为引用状态的数据，则验证是否修改过，修改过则将状态调整为修改过状态
+        if (basicBuilding == null || applyBatchDetail == null) return;
+        if (BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
+            BasicBuilding dbBasicBuilding = getBasicBuildingById(basicBuilding.getId());
+            if (dbBasicBuilding == null) return;
+            List<String> fieldNameList = Lists.newArrayList("applyId","estateId", "quoteId", "mapId", "relevanceId", "version", "bisCase", "bisEnable", "bisDelete");
+            fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
+            Boolean isEqual = publicService.equalsObjectExcludeField(basicBuilding, dbBasicBuilding, fieldNameList);
+            if (isEqual == false) {
+                applyBatchDetail.setModifyType(BasicDataHandleEnum.MODIFY.getKey());
+                return;
+            }
+        }
     }
 }

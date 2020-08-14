@@ -12,13 +12,7 @@ public class BasicHouse {
 
     private Integer estateId;
 
-    private Integer buildingId;
-
-    private Integer unitId;
-
     private String houseNumber;
-
-    private String fullName;
 
     private String floor;
 
@@ -126,36 +120,12 @@ public class BasicHouse {
         this.estateId = estateId;
     }
 
-    public Integer getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
-    }
-
-    public Integer getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(Integer unitId) {
-        this.unitId = unitId;
-    }
-
     public String getHouseNumber() {
         return houseNumber;
     }
 
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber == null ? null : houseNumber.trim();
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName == null ? null : fullName.trim();
     }
 
     public String getFloor() {

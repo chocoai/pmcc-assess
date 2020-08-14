@@ -606,76 +606,6 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
-        public Criteria andFullNameIsNull() {
-            addCriterion("full_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameIsNotNull() {
-            addCriterion("full_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameEqualTo(String value) {
-            addCriterion("full_name =", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotEqualTo(String value) {
-            addCriterion("full_name <>", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameGreaterThan(String value) {
-            addCriterion("full_name >", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameGreaterThanOrEqualTo(String value) {
-            addCriterion("full_name >=", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLessThan(String value) {
-            addCriterion("full_name <", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLessThanOrEqualTo(String value) {
-            addCriterion("full_name <=", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameLike(String value) {
-            addCriterion("full_name like", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotLike(String value) {
-            addCriterion("full_name not like", value, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameIn(List<String> values) {
-            addCriterion("full_name in", values, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotIn(List<String> values) {
-            addCriterion("full_name not in", values, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameBetween(String value1, String value2) {
-            addCriterion("full_name between", value1, value2, "fullName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFullNameNotBetween(String value1, String value2) {
-            addCriterion("full_name not between", value1, value2, "fullName");
-            return (Criteria) this;
-        }
-
         public Criteria andFloorCountIsNull() {
             addCriterion("floor_count is null");
             return (Criteria) this;
@@ -3286,6 +3216,136 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andMinimumFloorDistanceIsNull() {
+            addCriterion("minimum_floor_distance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceIsNotNull() {
+            addCriterion("minimum_floor_distance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceEqualTo(String value) {
+            addCriterion("minimum_floor_distance =", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceNotEqualTo(String value) {
+            addCriterion("minimum_floor_distance <>", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceGreaterThan(String value) {
+            addCriterion("minimum_floor_distance >", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceGreaterThanOrEqualTo(String value) {
+            addCriterion("minimum_floor_distance >=", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceLessThan(String value) {
+            addCriterion("minimum_floor_distance <", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceLessThanOrEqualTo(String value) {
+            addCriterion("minimum_floor_distance <=", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceLike(String value) {
+            addCriterion("minimum_floor_distance like", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceNotLike(String value) {
+            addCriterion("minimum_floor_distance not like", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceIn(List<String> values) {
+            addCriterion("minimum_floor_distance in", values, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceNotIn(List<String> values) {
+            addCriterion("minimum_floor_distance not in", values, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceBetween(String value1, String value2) {
+            addCriterion("minimum_floor_distance between", value1, value2, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceNotBetween(String value1, String value2) {
+            addCriterion("minimum_floor_distance not between", value1, value2, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdIsNull() {
+            addCriterion("street_info_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdIsNotNull() {
+            addCriterion("street_info_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdEqualTo(Integer value) {
+            addCriterion("street_info_id =", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdNotEqualTo(Integer value) {
+            addCriterion("street_info_id <>", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdGreaterThan(Integer value) {
+            addCriterion("street_info_id >", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("street_info_id >=", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdLessThan(Integer value) {
+            addCriterion("street_info_id <", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdLessThanOrEqualTo(Integer value) {
+            addCriterion("street_info_id <=", value, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdIn(List<Integer> values) {
+            addCriterion("street_info_id in", values, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdNotIn(List<Integer> values) {
+            addCriterion("street_info_id not in", values, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdBetween(Integer value1, Integer value2) {
+            addCriterion("street_info_id between", value1, value2, "streetInfoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetInfoIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("street_info_id not between", value1, value2, "streetInfoId");
+            return (Criteria) this;
+        }
+
         public Criteria andMapIdIsNull() {
             addCriterion("map_id is null");
             return (Criteria) this;
@@ -3343,76 +3403,6 @@ public class BasicBuildingExample {
 
         public Criteria andMapIdNotBetween(Integer value1, Integer value2) {
             addCriterion("map_id not between", value1, value2, "mapId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIsNull() {
-            addCriterion("remark is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIsNotNull() {
-            addCriterion("remark is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkEqualTo(String value) {
-            addCriterion("remark =", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("remark <>", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("remark >", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("remark >=", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLessThan(String value) {
-            addCriterion("remark <", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("remark <=", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLike(String value) {
-            addCriterion("remark like", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotLike(String value) {
-            addCriterion("remark not like", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIn(List<String> values) {
-            addCriterion("remark in", values, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("remark not in", values, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("remark between", value1, value2, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 
@@ -3533,6 +3523,76 @@ public class BasicBuildingExample {
 
         public Criteria andRelevanceIdNotBetween(Integer value1, Integer value2) {
             addCriterion("relevance_id not between", value1, value2, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 
@@ -4103,136 +4163,6 @@ public class BasicBuildingExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceIsNull() {
-            addCriterion("minimum_floor_distance is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceIsNotNull() {
-            addCriterion("minimum_floor_distance is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceEqualTo(String value) {
-            addCriterion("minimum_floor_distance =", value, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceNotEqualTo(String value) {
-            addCriterion("minimum_floor_distance <>", value, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceGreaterThan(String value) {
-            addCriterion("minimum_floor_distance >", value, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceGreaterThanOrEqualTo(String value) {
-            addCriterion("minimum_floor_distance >=", value, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceLessThan(String value) {
-            addCriterion("minimum_floor_distance <", value, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceLessThanOrEqualTo(String value) {
-            addCriterion("minimum_floor_distance <=", value, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceLike(String value) {
-            addCriterion("minimum_floor_distance like", value, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceNotLike(String value) {
-            addCriterion("minimum_floor_distance not like", value, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceIn(List<String> values) {
-            addCriterion("minimum_floor_distance in", values, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceNotIn(List<String> values) {
-            addCriterion("minimum_floor_distance not in", values, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceBetween(String value1, String value2) {
-            addCriterion("minimum_floor_distance between", value1, value2, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andMinimumFloorDistanceNotBetween(String value1, String value2) {
-            addCriterion("minimum_floor_distance not between", value1, value2, "minimumFloorDistance");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdIsNull() {
-            addCriterion("street_info_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdIsNotNull() {
-            addCriterion("street_info_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdEqualTo(Integer value) {
-            addCriterion("street_info_id =", value, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdNotEqualTo(Integer value) {
-            addCriterion("street_info_id <>", value, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdGreaterThan(Integer value) {
-            addCriterion("street_info_id >", value, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("street_info_id >=", value, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdLessThan(Integer value) {
-            addCriterion("street_info_id <", value, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdLessThanOrEqualTo(Integer value) {
-            addCriterion("street_info_id <=", value, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdIn(List<Integer> values) {
-            addCriterion("street_info_id in", values, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdNotIn(List<Integer> values) {
-            addCriterion("street_info_id not in", values, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdBetween(Integer value1, Integer value2) {
-            addCriterion("street_info_id between", value1, value2, "streetInfoId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStreetInfoIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("street_info_id not between", value1, value2, "streetInfoId");
             return (Criteria) this;
         }
     }

@@ -1,92 +1,91 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicBuildingMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="apply_id" property="applyId" jdbcType="INTEGER" />
-    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
-    <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
-    <result column="residence_use_year" property="residenceUseYear" jdbcType="INTEGER" />
-    <result column="industry_use_year" property="industryUseYear" jdbcType="INTEGER" />
-    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
-    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
-    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
-    <result column="floor_count" property="floorCount" jdbcType="VARCHAR" />
-    <result column="location" property="location" jdbcType="VARCHAR" />
-    <result column="builder" property="builder" jdbcType="INTEGER" />
-    <result column="builder_name" property="builderName" jdbcType="VARCHAR" />
-    <result column="property" property="property" jdbcType="INTEGER" />
-    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
-    <result column="unit_interval" property="unitInterval" jdbcType="VARCHAR" />
-    <result column="unit_count" property="unitCount" jdbcType="INTEGER" />
-    <result column="property_fee" property="propertyFee" jdbcType="DECIMAL" />
-    <result column="facilities_use_fee" property="facilitiesUseFee" jdbcType="DECIMAL" />
-    <result column="building_height" property="buildingHeight" jdbcType="VARCHAR" />
-    <result column="building_area" property="buildingArea" jdbcType="DECIMAL" />
-    <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
-    <result column="property_type" property="propertyType" jdbcType="INTEGER" />
-    <result column="property_category" property="propertyCategory" jdbcType="INTEGER" />
-    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
-    <result column="room_time" property="roomTime" jdbcType="TIMESTAMP" />
-    <result column="completed_time_type" property="completedTimeType" jdbcType="INTEGER" />
-    <result column="be_completed_time" property="beCompletedTime" jdbcType="TIMESTAMP" />
-    <result column="floor_height" property="floorHeight" jdbcType="VARCHAR" />
-    <result column="diameter_depth" property="diameterDepth" jdbcType="DECIMAL" />
-    <result column="land_use_year" property="landUseYear" jdbcType="DECIMAL" />
-    <result column="net_height" property="netHeight" jdbcType="DECIMAL" />
-    <result column="building_structure_type" property="buildingStructureType" jdbcType="INTEGER" />
-    <result column="building_structure_category" property="buildingStructureCategory" jdbcType="INTEGER" />
-    <result column="first_floor" property="firstFloor" jdbcType="INTEGER" />
-    <result column="max_floor" property="maxFloor" jdbcType="INTEGER" />
-    <result column="in_jacket_area" property="inJacketArea" jdbcType="VARCHAR" />
-    <result column="use_area" property="useArea" jdbcType="VARCHAR" />
-    <result column="construction_quality" property="constructionQuality" jdbcType="INTEGER" />
-    <result column="appearance_style" property="appearanceStyle" jdbcType="INTEGER" />
-    <result column="appearance_new_and_old" property="appearanceNewAndOld" jdbcType="INTEGER" />
-    <result column="between_distance" property="betweenDistance" jdbcType="INTEGER" />
-    <result column="between_distance_description" property="betweenDistanceDescription" jdbcType="VARCHAR" />
-    <result column="v_structura" property="vStructura" jdbcType="VARCHAR" />
-    <result column="v_specifications" property="vSpecifications" jdbcType="VARCHAR" />
-    <result column="v_structural_construction" property="vStructuralConstruction" jdbcType="VARCHAR" />
-    <result column="v_basic_practice" property="vBasicPractice" jdbcType="VARCHAR" />
-    <result column="v_structural_practice" property="vStructuralPractice" jdbcType="VARCHAR" />
-    <result column="property_social_prestige" property="propertySocialPrestige" jdbcType="INTEGER" />
-    <result column="property_company_nature" property="propertyCompanyNature" jdbcType="INTEGER" />
-    <result column="map_id" property="mapId" jdbcType="INTEGER" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="display_case_id" property="displayCaseId" jdbcType="INTEGER" />
-    <result column="relevance_id" property="relevanceId" jdbcType="INTEGER" />
-    <result column="version" property="version" jdbcType="INTEGER" />
-    <result column="bis_case" property="bisCase" jdbcType="BIT" />
-    <result column="reference" property="reference" jdbcType="VARCHAR" />
-    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
-    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
-    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="minimum_floor_distance" property="minimumFloorDistance" jdbcType="VARCHAR" />
-    <result column="street_info_id" property="streetInfoId" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicBuildingMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="apply_id" jdbcType="INTEGER" property="applyId" />
+    <result column="estate_id" jdbcType="INTEGER" property="estateId" />
+    <result column="quote_id" jdbcType="INTEGER" property="quoteId" />
+    <result column="residence_use_year" jdbcType="INTEGER" property="residenceUseYear" />
+    <result column="industry_use_year" jdbcType="INTEGER" property="industryUseYear" />
+    <result column="building_number" jdbcType="VARCHAR" property="buildingNumber" />
+    <result column="building_name" jdbcType="VARCHAR" property="buildingName" />
+    <result column="floor_count" jdbcType="VARCHAR" property="floorCount" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="builder" jdbcType="INTEGER" property="builder" />
+    <result column="builder_name" jdbcType="VARCHAR" property="builderName" />
+    <result column="property" jdbcType="INTEGER" property="property" />
+    <result column="property_name" jdbcType="VARCHAR" property="propertyName" />
+    <result column="unit_interval" jdbcType="VARCHAR" property="unitInterval" />
+    <result column="unit_count" jdbcType="INTEGER" property="unitCount" />
+    <result column="property_fee" jdbcType="DECIMAL" property="propertyFee" />
+    <result column="facilities_use_fee" jdbcType="DECIMAL" property="facilitiesUseFee" />
+    <result column="building_height" jdbcType="VARCHAR" property="buildingHeight" />
+    <result column="building_area" jdbcType="DECIMAL" property="buildingArea" />
+    <result column="cover_an_area" jdbcType="DECIMAL" property="coverAnArea" />
+    <result column="property_type" jdbcType="INTEGER" property="propertyType" />
+    <result column="property_category" jdbcType="INTEGER" property="propertyCategory" />
+    <result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+    <result column="room_time" jdbcType="TIMESTAMP" property="roomTime" />
+    <result column="completed_time_type" jdbcType="INTEGER" property="completedTimeType" />
+    <result column="be_completed_time" jdbcType="TIMESTAMP" property="beCompletedTime" />
+    <result column="floor_height" jdbcType="VARCHAR" property="floorHeight" />
+    <result column="diameter_depth" jdbcType="DECIMAL" property="diameterDepth" />
+    <result column="land_use_year" jdbcType="DECIMAL" property="landUseYear" />
+    <result column="net_height" jdbcType="DECIMAL" property="netHeight" />
+    <result column="building_structure_type" jdbcType="INTEGER" property="buildingStructureType" />
+    <result column="building_structure_category" jdbcType="INTEGER" property="buildingStructureCategory" />
+    <result column="first_floor" jdbcType="INTEGER" property="firstFloor" />
+    <result column="max_floor" jdbcType="INTEGER" property="maxFloor" />
+    <result column="in_jacket_area" jdbcType="VARCHAR" property="inJacketArea" />
+    <result column="use_area" jdbcType="VARCHAR" property="useArea" />
+    <result column="construction_quality" jdbcType="INTEGER" property="constructionQuality" />
+    <result column="appearance_style" jdbcType="INTEGER" property="appearanceStyle" />
+    <result column="appearance_new_and_old" jdbcType="INTEGER" property="appearanceNewAndOld" />
+    <result column="between_distance" jdbcType="INTEGER" property="betweenDistance" />
+    <result column="between_distance_description" jdbcType="VARCHAR" property="betweenDistanceDescription" />
+    <result column="v_structura" jdbcType="VARCHAR" property="vStructura" />
+    <result column="v_specifications" jdbcType="VARCHAR" property="vSpecifications" />
+    <result column="v_structural_construction" jdbcType="VARCHAR" property="vStructuralConstruction" />
+    <result column="v_basic_practice" jdbcType="VARCHAR" property="vBasicPractice" />
+    <result column="v_structural_practice" jdbcType="VARCHAR" property="vStructuralPractice" />
+    <result column="property_social_prestige" jdbcType="INTEGER" property="propertySocialPrestige" />
+    <result column="property_company_nature" jdbcType="INTEGER" property="propertyCompanyNature" />
+    <result column="minimum_floor_distance" jdbcType="VARCHAR" property="minimumFloorDistance" />
+    <result column="street_info_id" jdbcType="INTEGER" property="streetInfoId" />
+    <result column="map_id" jdbcType="INTEGER" property="mapId" />
+    <result column="display_case_id" jdbcType="INTEGER" property="displayCaseId" />
+    <result column="relevance_id" jdbcType="INTEGER" property="relevanceId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="bis_case" jdbcType="BIT" property="bisCase" />
+    <result column="reference" jdbcType="VARCHAR" property="reference" />
+    <result column="orientation" jdbcType="VARCHAR" property="orientation" />
+    <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
+    <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -97,25 +96,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -126,703 +125,693 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, apply_id, estate_id, quote_id, residence_use_year, industry_use_year, building_number, 
-    building_name, full_name, floor_count, location, builder, builder_name, property, 
-    property_name, unit_interval, unit_count, property_fee, facilities_use_fee, building_height, 
-    building_area, cover_an_area, property_type, property_category, open_time, room_time, 
-    completed_time_type, be_completed_time, floor_height, diameter_depth, land_use_year, 
-    net_height, building_structure_type, building_structure_category, first_floor, max_floor, 
-    in_jacket_area, use_area, construction_quality, appearance_style, appearance_new_and_old, 
-    between_distance, between_distance_description, v_structura, v_specifications, v_structural_construction, 
-    v_basic_practice, v_structural_practice, property_social_prestige, property_company_nature, 
-    map_id, remark, display_case_id, relevance_id, version, bis_case, reference, orientation, 
-    bis_enable, bis_delete, creator, gmt_created, gmt_modified, minimum_floor_distance, 
-    street_info_id
+    building_name, floor_count, location, builder, builder_name, property, property_name, 
+    unit_interval, unit_count, property_fee, facilities_use_fee, building_height, building_area, 
+    cover_an_area, property_type, property_category, open_time, room_time, completed_time_type, 
+    be_completed_time, floor_height, diameter_depth, land_use_year, net_height, building_structure_type, 
+    building_structure_category, first_floor, max_floor, in_jacket_area, use_area, construction_quality, 
+    appearance_style, appearance_new_and_old, between_distance, between_distance_description, 
+    v_structura, v_specifications, v_structural_construction, v_basic_practice, v_structural_practice, 
+    property_social_prestige, property_company_nature, minimum_floor_distance, street_info_id, 
+    map_id, display_case_id, relevance_id, remark, version, bis_case, reference, orientation, 
+    bis_enable, bis_delete, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_basic_building
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_basic_building
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_basic_building
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample">
     delete from tb_basic_building
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_building (apply_id, estate_id, quote_id, 
       residence_use_year, industry_use_year, building_number, 
-      building_name, full_name, floor_count, 
-      location, builder, builder_name, 
-      property, property_name, unit_interval, 
-      unit_count, property_fee, facilities_use_fee, 
-      building_height, building_area, cover_an_area, 
-      property_type, property_category, open_time, 
-      room_time, completed_time_type, be_completed_time, 
-      floor_height, diameter_depth, land_use_year, 
-      net_height, building_structure_type, building_structure_category, 
+      building_name, floor_count, location, 
+      builder, builder_name, property, 
+      property_name, unit_interval, unit_count, 
+      property_fee, facilities_use_fee, building_height, 
+      building_area, cover_an_area, property_type, 
+      property_category, open_time, room_time, 
+      completed_time_type, be_completed_time, floor_height, 
+      diameter_depth, land_use_year, net_height, 
+      building_structure_type, building_structure_category, 
       first_floor, max_floor, in_jacket_area, 
       use_area, construction_quality, appearance_style, 
       appearance_new_and_old, between_distance, between_distance_description, 
       v_structura, v_specifications, v_structural_construction, 
       v_basic_practice, v_structural_practice, property_social_prestige, 
-      property_company_nature, map_id, remark, 
-      display_case_id, relevance_id, version, 
+      property_company_nature, minimum_floor_distance, 
+      street_info_id, map_id, display_case_id, 
+      relevance_id, remark, version, 
       bis_case, reference, orientation, 
       bis_enable, bis_delete, creator, 
-      gmt_created, gmt_modified, minimum_floor_distance, 
-      street_info_id)
+      gmt_created, gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, 
       #{residenceUseYear,jdbcType=INTEGER}, #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{buildingName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, 
-      #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, #{builderName,jdbcType=VARCHAR}, 
-      #{property,jdbcType=INTEGER}, #{propertyName,jdbcType=VARCHAR}, #{unitInterval,jdbcType=VARCHAR}, 
-      #{unitCount,jdbcType=INTEGER}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
-      #{buildingHeight,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
-      #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
-      #{roomTime,jdbcType=TIMESTAMP}, #{completedTimeType,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
-      #{floorHeight,jdbcType=VARCHAR}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=DECIMAL}, 
-      #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
+      #{buildingName,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{builder,jdbcType=INTEGER}, #{builderName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, 
+      #{propertyName,jdbcType=VARCHAR}, #{unitInterval,jdbcType=VARCHAR}, #{unitCount,jdbcType=INTEGER}, 
+      #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, #{buildingHeight,jdbcType=VARCHAR}, 
+      #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{propertyType,jdbcType=INTEGER}, 
+      #{propertyCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, 
+      #{completedTimeType,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=VARCHAR}, 
+      #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=DECIMAL}, #{netHeight,jdbcType=DECIMAL}, 
+      #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
       #{firstFloor,jdbcType=INTEGER}, #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=VARCHAR}, 
       #{useArea,jdbcType=VARCHAR}, #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
       #{appearanceNewAndOld,jdbcType=INTEGER}, #{betweenDistance,jdbcType=INTEGER}, #{betweenDistanceDescription,jdbcType=VARCHAR}, 
       #{vStructura,jdbcType=VARCHAR}, #{vSpecifications,jdbcType=VARCHAR}, #{vStructuralConstruction,jdbcType=VARCHAR}, 
       #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{propertySocialPrestige,jdbcType=INTEGER}, 
-      #{propertyCompanyNature,jdbcType=INTEGER}, #{mapId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{displayCaseId,jdbcType=INTEGER}, #{relevanceId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
+      #{propertyCompanyNature,jdbcType=INTEGER}, #{minimumFloorDistance,jdbcType=VARCHAR}, 
+      #{streetInfoId,jdbcType=INTEGER}, #{mapId,jdbcType=INTEGER}, #{displayCaseId,jdbcType=INTEGER}, 
+      #{relevanceId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
       #{bisCase,jdbcType=BIT}, #{reference,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, 
       #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{minimumFloorDistance,jdbcType=VARCHAR}, 
-      #{streetInfoId,jdbcType=INTEGER})
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_building
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="applyId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
         apply_id,
       </if>
-      <if test="estateId != null" >
+      <if test="estateId != null">
         estate_id,
       </if>
-      <if test="quoteId != null" >
+      <if test="quoteId != null">
         quote_id,
       </if>
-      <if test="residenceUseYear != null" >
+      <if test="residenceUseYear != null">
         residence_use_year,
       </if>
-      <if test="industryUseYear != null" >
+      <if test="industryUseYear != null">
         industry_use_year,
       </if>
-      <if test="buildingNumber != null" >
+      <if test="buildingNumber != null">
         building_number,
       </if>
-      <if test="buildingName != null" >
+      <if test="buildingName != null">
         building_name,
       </if>
-      <if test="fullName != null" >
-        full_name,
-      </if>
-      <if test="floorCount != null" >
+      <if test="floorCount != null">
         floor_count,
       </if>
-      <if test="location != null" >
+      <if test="location != null">
         location,
       </if>
-      <if test="builder != null" >
+      <if test="builder != null">
         builder,
       </if>
-      <if test="builderName != null" >
+      <if test="builderName != null">
         builder_name,
       </if>
-      <if test="property != null" >
+      <if test="property != null">
         property,
       </if>
-      <if test="propertyName != null" >
+      <if test="propertyName != null">
         property_name,
       </if>
-      <if test="unitInterval != null" >
+      <if test="unitInterval != null">
         unit_interval,
       </if>
-      <if test="unitCount != null" >
+      <if test="unitCount != null">
         unit_count,
       </if>
-      <if test="propertyFee != null" >
+      <if test="propertyFee != null">
         property_fee,
       </if>
-      <if test="facilitiesUseFee != null" >
+      <if test="facilitiesUseFee != null">
         facilities_use_fee,
       </if>
-      <if test="buildingHeight != null" >
+      <if test="buildingHeight != null">
         building_height,
       </if>
-      <if test="buildingArea != null" >
+      <if test="buildingArea != null">
         building_area,
       </if>
-      <if test="coverAnArea != null" >
+      <if test="coverAnArea != null">
         cover_an_area,
       </if>
-      <if test="propertyType != null" >
+      <if test="propertyType != null">
         property_type,
       </if>
-      <if test="propertyCategory != null" >
+      <if test="propertyCategory != null">
         property_category,
       </if>
-      <if test="openTime != null" >
+      <if test="openTime != null">
         open_time,
       </if>
-      <if test="roomTime != null" >
+      <if test="roomTime != null">
         room_time,
       </if>
-      <if test="completedTimeType != null" >
+      <if test="completedTimeType != null">
         completed_time_type,
       </if>
-      <if test="beCompletedTime != null" >
+      <if test="beCompletedTime != null">
         be_completed_time,
       </if>
-      <if test="floorHeight != null" >
+      <if test="floorHeight != null">
         floor_height,
       </if>
-      <if test="diameterDepth != null" >
+      <if test="diameterDepth != null">
         diameter_depth,
       </if>
-      <if test="landUseYear != null" >
+      <if test="landUseYear != null">
         land_use_year,
       </if>
-      <if test="netHeight != null" >
+      <if test="netHeight != null">
         net_height,
       </if>
-      <if test="buildingStructureType != null" >
+      <if test="buildingStructureType != null">
         building_structure_type,
       </if>
-      <if test="buildingStructureCategory != null" >
+      <if test="buildingStructureCategory != null">
         building_structure_category,
       </if>
-      <if test="firstFloor != null" >
+      <if test="firstFloor != null">
         first_floor,
       </if>
-      <if test="maxFloor != null" >
+      <if test="maxFloor != null">
         max_floor,
       </if>
-      <if test="inJacketArea != null" >
+      <if test="inJacketArea != null">
         in_jacket_area,
       </if>
-      <if test="useArea != null" >
+      <if test="useArea != null">
         use_area,
       </if>
-      <if test="constructionQuality != null" >
+      <if test="constructionQuality != null">
         construction_quality,
       </if>
-      <if test="appearanceStyle != null" >
+      <if test="appearanceStyle != null">
         appearance_style,
       </if>
-      <if test="appearanceNewAndOld != null" >
+      <if test="appearanceNewAndOld != null">
         appearance_new_and_old,
       </if>
-      <if test="betweenDistance != null" >
+      <if test="betweenDistance != null">
         between_distance,
       </if>
-      <if test="betweenDistanceDescription != null" >
+      <if test="betweenDistanceDescription != null">
         between_distance_description,
       </if>
-      <if test="vStructura != null" >
+      <if test="vStructura != null">
         v_structura,
       </if>
-      <if test="vSpecifications != null" >
+      <if test="vSpecifications != null">
         v_specifications,
       </if>
-      <if test="vStructuralConstruction != null" >
+      <if test="vStructuralConstruction != null">
         v_structural_construction,
       </if>
-      <if test="vBasicPractice != null" >
+      <if test="vBasicPractice != null">
         v_basic_practice,
       </if>
-      <if test="vStructuralPractice != null" >
+      <if test="vStructuralPractice != null">
         v_structural_practice,
       </if>
-      <if test="propertySocialPrestige != null" >
+      <if test="propertySocialPrestige != null">
         property_social_prestige,
       </if>
-      <if test="propertyCompanyNature != null" >
+      <if test="propertyCompanyNature != null">
         property_company_nature,
       </if>
-      <if test="mapId != null" >
-        map_id,
-      </if>
-      <if test="remark != null" >
-        remark,
-      </if>
-      <if test="displayCaseId != null" >
-        display_case_id,
-      </if>
-      <if test="relevanceId != null" >
-        relevance_id,
-      </if>
-      <if test="version != null" >
-        version,
-      </if>
-      <if test="bisCase != null" >
-        bis_case,
-      </if>
-      <if test="reference != null" >
-        reference,
-      </if>
-      <if test="orientation != null" >
-        orientation,
-      </if>
-      <if test="bisEnable != null" >
-        bis_enable,
-      </if>
-      <if test="bisDelete != null" >
-        bis_delete,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-      <if test="minimumFloorDistance != null" >
+      <if test="minimumFloorDistance != null">
         minimum_floor_distance,
       </if>
-      <if test="streetInfoId != null" >
+      <if test="streetInfoId != null">
         street_info_id,
       </if>
+      <if test="mapId != null">
+        map_id,
+      </if>
+      <if test="displayCaseId != null">
+        display_case_id,
+      </if>
+      <if test="relevanceId != null">
+        relevance_id,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="bisCase != null">
+        bis_case,
+      </if>
+      <if test="reference != null">
+        reference,
+      </if>
+      <if test="orientation != null">
+        orientation,
+      </if>
+      <if test="bisEnable != null">
+        bis_enable,
+      </if>
+      <if test="bisDelete != null">
+        bis_delete,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="applyId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
         #{applyId,jdbcType=INTEGER},
       </if>
-      <if test="estateId != null" >
+      <if test="estateId != null">
         #{estateId,jdbcType=INTEGER},
       </if>
-      <if test="quoteId != null" >
+      <if test="quoteId != null">
         #{quoteId,jdbcType=INTEGER},
       </if>
-      <if test="residenceUseYear != null" >
+      <if test="residenceUseYear != null">
         #{residenceUseYear,jdbcType=INTEGER},
       </if>
-      <if test="industryUseYear != null" >
+      <if test="industryUseYear != null">
         #{industryUseYear,jdbcType=INTEGER},
       </if>
-      <if test="buildingNumber != null" >
+      <if test="buildingNumber != null">
         #{buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="buildingName != null" >
+      <if test="buildingName != null">
         #{buildingName,jdbcType=VARCHAR},
       </if>
-      <if test="fullName != null" >
-        #{fullName,jdbcType=VARCHAR},
-      </if>
-      <if test="floorCount != null" >
+      <if test="floorCount != null">
         #{floorCount,jdbcType=VARCHAR},
       </if>
-      <if test="location != null" >
+      <if test="location != null">
         #{location,jdbcType=VARCHAR},
       </if>
-      <if test="builder != null" >
+      <if test="builder != null">
         #{builder,jdbcType=INTEGER},
       </if>
-      <if test="builderName != null" >
+      <if test="builderName != null">
         #{builderName,jdbcType=VARCHAR},
       </if>
-      <if test="property != null" >
+      <if test="property != null">
         #{property,jdbcType=INTEGER},
       </if>
-      <if test="propertyName != null" >
+      <if test="propertyName != null">
         #{propertyName,jdbcType=VARCHAR},
       </if>
-      <if test="unitInterval != null" >
+      <if test="unitInterval != null">
         #{unitInterval,jdbcType=VARCHAR},
       </if>
-      <if test="unitCount != null" >
+      <if test="unitCount != null">
         #{unitCount,jdbcType=INTEGER},
       </if>
-      <if test="propertyFee != null" >
+      <if test="propertyFee != null">
         #{propertyFee,jdbcType=DECIMAL},
       </if>
-      <if test="facilitiesUseFee != null" >
+      <if test="facilitiesUseFee != null">
         #{facilitiesUseFee,jdbcType=DECIMAL},
       </if>
-      <if test="buildingHeight != null" >
+      <if test="buildingHeight != null">
         #{buildingHeight,jdbcType=VARCHAR},
       </if>
-      <if test="buildingArea != null" >
+      <if test="buildingArea != null">
         #{buildingArea,jdbcType=DECIMAL},
       </if>
-      <if test="coverAnArea != null" >
+      <if test="coverAnArea != null">
         #{coverAnArea,jdbcType=DECIMAL},
       </if>
-      <if test="propertyType != null" >
+      <if test="propertyType != null">
         #{propertyType,jdbcType=INTEGER},
       </if>
-      <if test="propertyCategory != null" >
+      <if test="propertyCategory != null">
         #{propertyCategory,jdbcType=INTEGER},
       </if>
-      <if test="openTime != null" >
+      <if test="openTime != null">
         #{openTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="roomTime != null" >
+      <if test="roomTime != null">
         #{roomTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="completedTimeType != null" >
+      <if test="completedTimeType != null">
         #{completedTimeType,jdbcType=INTEGER},
       </if>
-      <if test="beCompletedTime != null" >
+      <if test="beCompletedTime != null">
         #{beCompletedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="floorHeight != null" >
+      <if test="floorHeight != null">
         #{floorHeight,jdbcType=VARCHAR},
       </if>
-      <if test="diameterDepth != null" >
+      <if test="diameterDepth != null">
         #{diameterDepth,jdbcType=DECIMAL},
       </if>
-      <if test="landUseYear != null" >
+      <if test="landUseYear != null">
         #{landUseYear,jdbcType=DECIMAL},
       </if>
-      <if test="netHeight != null" >
+      <if test="netHeight != null">
         #{netHeight,jdbcType=DECIMAL},
       </if>
-      <if test="buildingStructureType != null" >
+      <if test="buildingStructureType != null">
         #{buildingStructureType,jdbcType=INTEGER},
       </if>
-      <if test="buildingStructureCategory != null" >
+      <if test="buildingStructureCategory != null">
         #{buildingStructureCategory,jdbcType=INTEGER},
       </if>
-      <if test="firstFloor != null" >
+      <if test="firstFloor != null">
         #{firstFloor,jdbcType=INTEGER},
       </if>
-      <if test="maxFloor != null" >
+      <if test="maxFloor != null">
         #{maxFloor,jdbcType=INTEGER},
       </if>
-      <if test="inJacketArea != null" >
+      <if test="inJacketArea != null">
         #{inJacketArea,jdbcType=VARCHAR},
       </if>
-      <if test="useArea != null" >
+      <if test="useArea != null">
         #{useArea,jdbcType=VARCHAR},
       </if>
-      <if test="constructionQuality != null" >
+      <if test="constructionQuality != null">
         #{constructionQuality,jdbcType=INTEGER},
       </if>
-      <if test="appearanceStyle != null" >
+      <if test="appearanceStyle != null">
         #{appearanceStyle,jdbcType=INTEGER},
       </if>
-      <if test="appearanceNewAndOld != null" >
+      <if test="appearanceNewAndOld != null">
         #{appearanceNewAndOld,jdbcType=INTEGER},
       </if>
-      <if test="betweenDistance != null" >
+      <if test="betweenDistance != null">
         #{betweenDistance,jdbcType=INTEGER},
       </if>
-      <if test="betweenDistanceDescription != null" >
+      <if test="betweenDistanceDescription != null">
         #{betweenDistanceDescription,jdbcType=VARCHAR},
       </if>
-      <if test="vStructura != null" >
+      <if test="vStructura != null">
         #{vStructura,jdbcType=VARCHAR},
       </if>
-      <if test="vSpecifications != null" >
+      <if test="vSpecifications != null">
         #{vSpecifications,jdbcType=VARCHAR},
       </if>
-      <if test="vStructuralConstruction != null" >
+      <if test="vStructuralConstruction != null">
         #{vStructuralConstruction,jdbcType=VARCHAR},
       </if>
-      <if test="vBasicPractice != null" >
+      <if test="vBasicPractice != null">
         #{vBasicPractice,jdbcType=VARCHAR},
       </if>
-      <if test="vStructuralPractice != null" >
+      <if test="vStructuralPractice != null">
         #{vStructuralPractice,jdbcType=VARCHAR},
       </if>
-      <if test="propertySocialPrestige != null" >
+      <if test="propertySocialPrestige != null">
         #{propertySocialPrestige,jdbcType=INTEGER},
       </if>
-      <if test="propertyCompanyNature != null" >
+      <if test="propertyCompanyNature != null">
         #{propertyCompanyNature,jdbcType=INTEGER},
       </if>
-      <if test="mapId != null" >
-        #{mapId,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="displayCaseId != null" >
-        #{displayCaseId,jdbcType=INTEGER},
-      </if>
-      <if test="relevanceId != null" >
-        #{relevanceId,jdbcType=INTEGER},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
-      </if>
-      <if test="bisCase != null" >
-        #{bisCase,jdbcType=BIT},
-      </if>
-      <if test="reference != null" >
-        #{reference,jdbcType=VARCHAR},
-      </if>
-      <if test="orientation != null" >
-        #{orientation,jdbcType=VARCHAR},
-      </if>
-      <if test="bisEnable != null" >
-        #{bisEnable,jdbcType=BIT},
-      </if>
-      <if test="bisDelete != null" >
-        #{bisDelete,jdbcType=BIT},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="minimumFloorDistance != null" >
+      <if test="minimumFloorDistance != null">
         #{minimumFloorDistance,jdbcType=VARCHAR},
       </if>
-      <if test="streetInfoId != null" >
+      <if test="streetInfoId != null">
         #{streetInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="mapId != null">
+        #{mapId,jdbcType=INTEGER},
+      </if>
+      <if test="displayCaseId != null">
+        #{displayCaseId,jdbcType=INTEGER},
+      </if>
+      <if test="relevanceId != null">
+        #{relevanceId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="bisCase != null">
+        #{bisCase,jdbcType=BIT},
+      </if>
+      <if test="reference != null">
+        #{reference,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null">
+        #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="bisEnable != null">
+        #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="bisDelete != null">
+        #{bisDelete,jdbcType=BIT},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" resultType="java.lang.Long">
     select count(*) from tb_basic_building
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_basic_building
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.applyId != null" >
+      <if test="record.applyId != null">
         apply_id = #{record.applyId,jdbcType=INTEGER},
       </if>
-      <if test="record.estateId != null" >
+      <if test="record.estateId != null">
         estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
-      <if test="record.quoteId != null" >
+      <if test="record.quoteId != null">
         quote_id = #{record.quoteId,jdbcType=INTEGER},
       </if>
-      <if test="record.residenceUseYear != null" >
+      <if test="record.residenceUseYear != null">
         residence_use_year = #{record.residenceUseYear,jdbcType=INTEGER},
       </if>
-      <if test="record.industryUseYear != null" >
+      <if test="record.industryUseYear != null">
         industry_use_year = #{record.industryUseYear,jdbcType=INTEGER},
       </if>
-      <if test="record.buildingNumber != null" >
+      <if test="record.buildingNumber != null">
         building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildingName != null" >
+      <if test="record.buildingName != null">
         building_name = #{record.buildingName,jdbcType=VARCHAR},
       </if>
-      <if test="record.fullName != null" >
-        full_name = #{record.fullName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.floorCount != null" >
+      <if test="record.floorCount != null">
         floor_count = #{record.floorCount,jdbcType=VARCHAR},
       </if>
-      <if test="record.location != null" >
+      <if test="record.location != null">
         location = #{record.location,jdbcType=VARCHAR},
       </if>
-      <if test="record.builder != null" >
+      <if test="record.builder != null">
         builder = #{record.builder,jdbcType=INTEGER},
       </if>
-      <if test="record.builderName != null" >
+      <if test="record.builderName != null">
         builder_name = #{record.builderName,jdbcType=VARCHAR},
       </if>
-      <if test="record.property != null" >
+      <if test="record.property != null">
         property = #{record.property,jdbcType=INTEGER},
       </if>
-      <if test="record.propertyName != null" >
+      <if test="record.propertyName != null">
         property_name = #{record.propertyName,jdbcType=VARCHAR},
       </if>
-      <if test="record.unitInterval != null" >
+      <if test="record.unitInterval != null">
         unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
       </if>
-      <if test="record.unitCount != null" >
+      <if test="record.unitCount != null">
         unit_count = #{record.unitCount,jdbcType=INTEGER},
       </if>
-      <if test="record.propertyFee != null" >
+      <if test="record.propertyFee != null">
         property_fee = #{record.propertyFee,jdbcType=DECIMAL},
       </if>
-      <if test="record.facilitiesUseFee != null" >
+      <if test="record.facilitiesUseFee != null">
         facilities_use_fee = #{record.facilitiesUseFee,jdbcType=DECIMAL},
       </if>
-      <if test="record.buildingHeight != null" >
+      <if test="record.buildingHeight != null">
         building_height = #{record.buildingHeight,jdbcType=VARCHAR},
       </if>
-      <if test="record.buildingArea != null" >
+      <if test="record.buildingArea != null">
         building_area = #{record.buildingArea,jdbcType=DECIMAL},
       </if>
-      <if test="record.coverAnArea != null" >
+      <if test="record.coverAnArea != null">
         cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
       </if>
-      <if test="record.propertyType != null" >
+      <if test="record.propertyType != null">
         property_type = #{record.propertyType,jdbcType=INTEGER},
       </if>
-      <if test="record.propertyCategory != null" >
+      <if test="record.propertyCategory != null">
         property_category = #{record.propertyCategory,jdbcType=INTEGER},
       </if>
-      <if test="record.openTime != null" >
+      <if test="record.openTime != null">
         open_time = #{record.openTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.roomTime != null" >
+      <if test="record.roomTime != null">
         room_time = #{record.roomTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.completedTimeType != null" >
+      <if test="record.completedTimeType != null">
         completed_time_type = #{record.completedTimeType,jdbcType=INTEGER},
       </if>
-      <if test="record.beCompletedTime != null" >
+      <if test="record.beCompletedTime != null">
         be_completed_time = #{record.beCompletedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.floorHeight != null" >
+      <if test="record.floorHeight != null">
         floor_height = #{record.floorHeight,jdbcType=VARCHAR},
       </if>
-      <if test="record.diameterDepth != null" >
+      <if test="record.diameterDepth != null">
         diameter_depth = #{record.diameterDepth,jdbcType=DECIMAL},
       </if>
-      <if test="record.landUseYear != null" >
+      <if test="record.landUseYear != null">
         land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
       </if>
-      <if test="record.netHeight != null" >
+      <if test="record.netHeight != null">
         net_height = #{record.netHeight,jdbcType=DECIMAL},
       </if>
-      <if test="record.buildingStructureType != null" >
+      <if test="record.buildingStructureType != null">
         building_structure_type = #{record.buildingStructureType,jdbcType=INTEGER},
       </if>
-      <if test="record.buildingStructureCategory != null" >
+      <if test="record.buildingStructureCategory != null">
         building_structure_category = #{record.buildingStructureCategory,jdbcType=INTEGER},
       </if>
-      <if test="record.firstFloor != null" >
+      <if test="record.firstFloor != null">
         first_floor = #{record.firstFloor,jdbcType=INTEGER},
       </if>
-      <if test="record.maxFloor != null" >
+      <if test="record.maxFloor != null">
         max_floor = #{record.maxFloor,jdbcType=INTEGER},
       </if>
-      <if test="record.inJacketArea != null" >
+      <if test="record.inJacketArea != null">
         in_jacket_area = #{record.inJacketArea,jdbcType=VARCHAR},
       </if>
-      <if test="record.useArea != null" >
+      <if test="record.useArea != null">
         use_area = #{record.useArea,jdbcType=VARCHAR},
       </if>
-      <if test="record.constructionQuality != null" >
+      <if test="record.constructionQuality != null">
         construction_quality = #{record.constructionQuality,jdbcType=INTEGER},
       </if>
-      <if test="record.appearanceStyle != null" >
+      <if test="record.appearanceStyle != null">
         appearance_style = #{record.appearanceStyle,jdbcType=INTEGER},
       </if>
-      <if test="record.appearanceNewAndOld != null" >
+      <if test="record.appearanceNewAndOld != null">
         appearance_new_and_old = #{record.appearanceNewAndOld,jdbcType=INTEGER},
       </if>
-      <if test="record.betweenDistance != null" >
+      <if test="record.betweenDistance != null">
         between_distance = #{record.betweenDistance,jdbcType=INTEGER},
       </if>
-      <if test="record.betweenDistanceDescription != null" >
+      <if test="record.betweenDistanceDescription != null">
         between_distance_description = #{record.betweenDistanceDescription,jdbcType=VARCHAR},
       </if>
-      <if test="record.vStructura != null" >
+      <if test="record.vStructura != null">
         v_structura = #{record.vStructura,jdbcType=VARCHAR},
       </if>
-      <if test="record.vSpecifications != null" >
+      <if test="record.vSpecifications != null">
         v_specifications = #{record.vSpecifications,jdbcType=VARCHAR},
       </if>
-      <if test="record.vStructuralConstruction != null" >
+      <if test="record.vStructuralConstruction != null">
         v_structural_construction = #{record.vStructuralConstruction,jdbcType=VARCHAR},
       </if>
-      <if test="record.vBasicPractice != null" >
+      <if test="record.vBasicPractice != null">
         v_basic_practice = #{record.vBasicPractice,jdbcType=VARCHAR},
       </if>
-      <if test="record.vStructuralPractice != null" >
+      <if test="record.vStructuralPractice != null">
         v_structural_practice = #{record.vStructuralPractice,jdbcType=VARCHAR},
       </if>
-      <if test="record.propertySocialPrestige != null" >
+      <if test="record.propertySocialPrestige != null">
         property_social_prestige = #{record.propertySocialPrestige,jdbcType=INTEGER},
       </if>
-      <if test="record.propertyCompanyNature != null" >
+      <if test="record.propertyCompanyNature != null">
         property_company_nature = #{record.propertyCompanyNature,jdbcType=INTEGER},
       </if>
-      <if test="record.mapId != null" >
-        map_id = #{record.mapId,jdbcType=INTEGER},
-      </if>
-      <if test="record.remark != null" >
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.displayCaseId != null" >
-        display_case_id = #{record.displayCaseId,jdbcType=INTEGER},
-      </if>
-      <if test="record.relevanceId != null" >
-        relevance_id = #{record.relevanceId,jdbcType=INTEGER},
-      </if>
-      <if test="record.version != null" >
-        version = #{record.version,jdbcType=INTEGER},
-      </if>
-      <if test="record.bisCase != null" >
-        bis_case = #{record.bisCase,jdbcType=BIT},
-      </if>
-      <if test="record.reference != null" >
-        reference = #{record.reference,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orientation != null" >
-        orientation = #{record.orientation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bisEnable != null" >
-        bis_enable = #{record.bisEnable,jdbcType=BIT},
-      </if>
-      <if test="record.bisDelete != null" >
-        bis_delete = #{record.bisDelete,jdbcType=BIT},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.minimumFloorDistance != null" >
+      <if test="record.minimumFloorDistance != null">
         minimum_floor_distance = #{record.minimumFloorDistance,jdbcType=VARCHAR},
       </if>
-      <if test="record.streetInfoId != null" >
+      <if test="record.streetInfoId != null">
         street_info_id = #{record.streetInfoId,jdbcType=INTEGER},
       </if>
+      <if test="record.mapId != null">
+        map_id = #{record.mapId,jdbcType=INTEGER},
+      </if>
+      <if test="record.displayCaseId != null">
+        display_case_id = #{record.displayCaseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.relevanceId != null">
+        relevance_id = #{record.relevanceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null">
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisCase != null">
+        bis_case = #{record.bisCase,jdbcType=BIT},
+      </if>
+      <if test="record.reference != null">
+        reference = #{record.reference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orientation != null">
+        orientation = #{record.orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisEnable != null">
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.bisDelete != null">
+        bis_delete = #{record.bisDelete,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null">
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_basic_building
     set id = #{record.id,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
@@ -832,7 +821,6 @@
       industry_use_year = #{record.industryUseYear,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_name = #{record.buildingName,jdbcType=VARCHAR},
-      full_name = #{record.fullName,jdbcType=VARCHAR},
       floor_count = #{record.floorCount,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
       builder = #{record.builder,jdbcType=INTEGER},
@@ -874,10 +862,12 @@
       v_structural_practice = #{record.vStructuralPractice,jdbcType=VARCHAR},
       property_social_prestige = #{record.propertySocialPrestige,jdbcType=INTEGER},
       property_company_nature = #{record.propertyCompanyNature,jdbcType=INTEGER},
+      minimum_floor_distance = #{record.minimumFloorDistance,jdbcType=VARCHAR},
+      street_info_id = #{record.streetInfoId,jdbcType=INTEGER},
       map_id = #{record.mapId,jdbcType=INTEGER},
-      remark = #{record.remark,jdbcType=VARCHAR},
       display_case_id = #{record.displayCaseId,jdbcType=INTEGER},
       relevance_id = #{record.relevanceId,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
       version = #{record.version,jdbcType=INTEGER},
       bis_case = #{record.bisCase,jdbcType=BIT},
       reference = #{record.reference,jdbcType=VARCHAR},
@@ -886,212 +876,207 @@
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      minimum_floor_distance = #{record.minimumFloorDistance,jdbcType=VARCHAR},
-      street_info_id = #{record.streetInfoId,jdbcType=INTEGER}
-    <if test="_parameter != null" >
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding">
     update tb_basic_building
-    <set >
-      <if test="applyId != null" >
+    <set>
+      <if test="applyId != null">
         apply_id = #{applyId,jdbcType=INTEGER},
       </if>
-      <if test="estateId != null" >
+      <if test="estateId != null">
         estate_id = #{estateId,jdbcType=INTEGER},
       </if>
-      <if test="quoteId != null" >
+      <if test="quoteId != null">
         quote_id = #{quoteId,jdbcType=INTEGER},
       </if>
-      <if test="residenceUseYear != null" >
+      <if test="residenceUseYear != null">
         residence_use_year = #{residenceUseYear,jdbcType=INTEGER},
       </if>
-      <if test="industryUseYear != null" >
+      <if test="industryUseYear != null">
         industry_use_year = #{industryUseYear,jdbcType=INTEGER},
       </if>
-      <if test="buildingNumber != null" >
+      <if test="buildingNumber != null">
         building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
-      <if test="buildingName != null" >
+      <if test="buildingName != null">
         building_name = #{buildingName,jdbcType=VARCHAR},
       </if>
-      <if test="fullName != null" >
-        full_name = #{fullName,jdbcType=VARCHAR},
-      </if>
-      <if test="floorCount != null" >
+      <if test="floorCount != null">
         floor_count = #{floorCount,jdbcType=VARCHAR},
       </if>
-      <if test="location != null" >
+      <if test="location != null">
         location = #{location,jdbcType=VARCHAR},
       </if>
-      <if test="builder != null" >
+      <if test="builder != null">
         builder = #{builder,jdbcType=INTEGER},
       </if>
-      <if test="builderName != null" >
+      <if test="builderName != null">
         builder_name = #{builderName,jdbcType=VARCHAR},
       </if>
-      <if test="property != null" >
+      <if test="property != null">
         property = #{property,jdbcType=INTEGER},
       </if>
-      <if test="propertyName != null" >
+      <if test="propertyName != null">
         property_name = #{propertyName,jdbcType=VARCHAR},
       </if>
-      <if test="unitInterval != null" >
+      <if test="unitInterval != null">
         unit_interval = #{unitInterval,jdbcType=VARCHAR},
       </if>
-      <if test="unitCount != null" >
+      <if test="unitCount != null">
         unit_count = #{unitCount,jdbcType=INTEGER},
       </if>
-      <if test="propertyFee != null" >
+      <if test="propertyFee != null">
         property_fee = #{propertyFee,jdbcType=DECIMAL},
       </if>
-      <if test="facilitiesUseFee != null" >
+      <if test="facilitiesUseFee != null">
         facilities_use_fee = #{facilitiesUseFee,jdbcType=DECIMAL},
       </if>
-      <if test="buildingHeight != null" >
+      <if test="buildingHeight != null">
         building_height = #{buildingHeight,jdbcType=VARCHAR},
       </if>
-      <if test="buildingArea != null" >
+      <if test="buildingArea != null">
         building_area = #{buildingArea,jdbcType=DECIMAL},
       </if>
-      <if test="coverAnArea != null" >
+      <if test="coverAnArea != null">
         cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
       </if>
-      <if test="propertyType != null" >
+      <if test="propertyType != null">
         property_type = #{propertyType,jdbcType=INTEGER},
       </if>
-      <if test="propertyCategory != null" >
+      <if test="propertyCategory != null">
         property_category = #{propertyCategory,jdbcType=INTEGER},
       </if>
-      <if test="openTime != null" >
+      <if test="openTime != null">
         open_time = #{openTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="roomTime != null" >
+      <if test="roomTime != null">
         room_time = #{roomTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="completedTimeType != null" >
+      <if test="completedTimeType != null">
         completed_time_type = #{completedTimeType,jdbcType=INTEGER},
       </if>
-      <if test="beCompletedTime != null" >
+      <if test="beCompletedTime != null">
         be_completed_time = #{beCompletedTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="floorHeight != null" >
+      <if test="floorHeight != null">
         floor_height = #{floorHeight,jdbcType=VARCHAR},
       </if>
-      <if test="diameterDepth != null" >
+      <if test="diameterDepth != null">
         diameter_depth = #{diameterDepth,jdbcType=DECIMAL},
       </if>
-      <if test="landUseYear != null" >
+      <if test="landUseYear != null">
         land_use_year = #{landUseYear,jdbcType=DECIMAL},
       </if>
-      <if test="netHeight != null" >
+      <if test="netHeight != null">
         net_height = #{netHeight,jdbcType=DECIMAL},
       </if>
-      <if test="buildingStructureType != null" >
+      <if test="buildingStructureType != null">
         building_structure_type = #{buildingStructureType,jdbcType=INTEGER},
       </if>
-      <if test="buildingStructureCategory != null" >
+      <if test="buildingStructureCategory != null">
         building_structure_category = #{buildingStructureCategory,jdbcType=INTEGER},
       </if>
-      <if test="firstFloor != null" >
+      <if test="firstFloor != null">
         first_floor = #{firstFloor,jdbcType=INTEGER},
       </if>
-      <if test="maxFloor != null" >
+      <if test="maxFloor != null">
         max_floor = #{maxFloor,jdbcType=INTEGER},
       </if>
-      <if test="inJacketArea != null" >
+      <if test="inJacketArea != null">
         in_jacket_area = #{inJacketArea,jdbcType=VARCHAR},
       </if>
-      <if test="useArea != null" >
+      <if test="useArea != null">
         use_area = #{useArea,jdbcType=VARCHAR},
       </if>
-      <if test="constructionQuality != null" >
+      <if test="constructionQuality != null">
         construction_quality = #{constructionQuality,jdbcType=INTEGER},
       </if>
-      <if test="appearanceStyle != null" >
+      <if test="appearanceStyle != null">
         appearance_style = #{appearanceStyle,jdbcType=INTEGER},
       </if>
-      <if test="appearanceNewAndOld != null" >
+      <if test="appearanceNewAndOld != null">
         appearance_new_and_old = #{appearanceNewAndOld,jdbcType=INTEGER},
       </if>
-      <if test="betweenDistance != null" >
+      <if test="betweenDistance != null">
         between_distance = #{betweenDistance,jdbcType=INTEGER},
       </if>
-      <if test="betweenDistanceDescription != null" >
+      <if test="betweenDistanceDescription != null">
         between_distance_description = #{betweenDistanceDescription,jdbcType=VARCHAR},
       </if>
-      <if test="vStructura != null" >
+      <if test="vStructura != null">
         v_structura = #{vStructura,jdbcType=VARCHAR},
       </if>
-      <if test="vSpecifications != null" >
+      <if test="vSpecifications != null">
         v_specifications = #{vSpecifications,jdbcType=VARCHAR},
       </if>
-      <if test="vStructuralConstruction != null" >
+      <if test="vStructuralConstruction != null">
         v_structural_construction = #{vStructuralConstruction,jdbcType=VARCHAR},
       </if>
-      <if test="vBasicPractice != null" >
+      <if test="vBasicPractice != null">
         v_basic_practice = #{vBasicPractice,jdbcType=VARCHAR},
       </if>
-      <if test="vStructuralPractice != null" >
+      <if test="vStructuralPractice != null">
         v_structural_practice = #{vStructuralPractice,jdbcType=VARCHAR},
       </if>
-      <if test="propertySocialPrestige != null" >
+      <if test="propertySocialPrestige != null">
         property_social_prestige = #{propertySocialPrestige,jdbcType=INTEGER},
       </if>
-      <if test="propertyCompanyNature != null" >
+      <if test="propertyCompanyNature != null">
         property_company_nature = #{propertyCompanyNature,jdbcType=INTEGER},
       </if>
-      <if test="mapId != null" >
-        map_id = #{mapId,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="displayCaseId != null" >
-        display_case_id = #{displayCaseId,jdbcType=INTEGER},
-      </if>
-      <if test="relevanceId != null" >
-        relevance_id = #{relevanceId,jdbcType=INTEGER},
-      </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
-      <if test="bisCase != null" >
-        bis_case = #{bisCase,jdbcType=BIT},
-      </if>
-      <if test="reference != null" >
-        reference = #{reference,jdbcType=VARCHAR},
-      </if>
-      <if test="orientation != null" >
-        orientation = #{orientation,jdbcType=VARCHAR},
-      </if>
-      <if test="bisEnable != null" >
-        bis_enable = #{bisEnable,jdbcType=BIT},
-      </if>
-      <if test="bisDelete != null" >
-        bis_delete = #{bisDelete,jdbcType=BIT},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="minimumFloorDistance != null" >
+      <if test="minimumFloorDistance != null">
         minimum_floor_distance = #{minimumFloorDistance,jdbcType=VARCHAR},
       </if>
-      <if test="streetInfoId != null" >
+      <if test="streetInfoId != null">
         street_info_id = #{streetInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="mapId != null">
+        map_id = #{mapId,jdbcType=INTEGER},
+      </if>
+      <if test="displayCaseId != null">
+        display_case_id = #{displayCaseId,jdbcType=INTEGER},
+      </if>
+      <if test="relevanceId != null">
+        relevance_id = #{relevanceId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="bisCase != null">
+        bis_case = #{bisCase,jdbcType=BIT},
+      </if>
+      <if test="reference != null">
+        reference = #{reference,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null">
+        orientation = #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="bisEnable != null">
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="bisDelete != null">
+        bis_delete = #{bisDelete,jdbcType=BIT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding">
     update tb_basic_building
     set apply_id = #{applyId,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
@@ -1100,7 +1085,6 @@
       industry_use_year = #{industryUseYear,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_name = #{buildingName,jdbcType=VARCHAR},
-      full_name = #{fullName,jdbcType=VARCHAR},
       floor_count = #{floorCount,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       builder = #{builder,jdbcType=INTEGER},
@@ -1142,10 +1126,12 @@
       v_structural_practice = #{vStructuralPractice,jdbcType=VARCHAR},
       property_social_prestige = #{propertySocialPrestige,jdbcType=INTEGER},
       property_company_nature = #{propertyCompanyNature,jdbcType=INTEGER},
+      minimum_floor_distance = #{minimumFloorDistance,jdbcType=VARCHAR},
+      street_info_id = #{streetInfoId,jdbcType=INTEGER},
       map_id = #{mapId,jdbcType=INTEGER},
-      remark = #{remark,jdbcType=VARCHAR},
       display_case_id = #{displayCaseId,jdbcType=INTEGER},
       relevance_id = #{relevanceId,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
       version = #{version,jdbcType=INTEGER},
       bis_case = #{bisCase,jdbcType=BIT},
       reference = #{reference,jdbcType=VARCHAR},
@@ -1154,9 +1140,7 @@
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      minimum_floor_distance = #{minimumFloorDistance,jdbcType=VARCHAR},
-      street_info_id = #{streetInfoId,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

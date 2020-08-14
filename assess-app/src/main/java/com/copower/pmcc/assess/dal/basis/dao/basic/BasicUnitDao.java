@@ -64,25 +64,4 @@ public class BasicUnitDao {
         MybatisUtils.convertObj2Criteria(basicUnit, criteria);
         return basicUnitMapper.selectByExample(example);
     }
-
-    /**
-     * 获取最新版单元信息
-     *
-     * @param buildingId
-     * @return
-     */
-    public List<CustomCaseEntity> getLatestVersionUnitList(String unitNumber, Integer buildingId) {
-        return customCaseMapper.getCaseUnitList(unitNumber, buildingId);
-    }
-
-    public BasicUnit getLatestVersionUnitByFullName(String fullName,Integer estateId) {
-        if (StringUtils.isBlank(fullName) || estateId == null) return null;
-        BasicUnitExample example = new BasicUnitExample();
-        BasicUnitExample.Criteria criteria = example.createCriteria();
-        criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true).andFullNameEqualTo(fullName).andEstateIdEqualTo(estateId);
-        example.setOrderByClause("version desc");
-        List<BasicUnit> basicUnitList = basicUnitMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(basicUnitList)) return null;
-        return basicUnitList.get(0);
-    }
 }

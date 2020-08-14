@@ -61,25 +61,4 @@ public class BasicBuildingDao {
         MybatisUtils.convertObj2Criteria(basicBuilding, criteria);
         return basicBuildingMapper.selectByExample(example);
     }
-
-    /**
-     * 获取最新版本楼栋主信息
-     *
-     * @param estateId
-     * @return
-     */
-    public List<CustomCaseEntity> getLatestVersionBuildingList(String buildingNumber, Integer estateId) {
-        return customCaseMapper.getCaseBuildingList(buildingNumber, estateId);
-    }
-
-    public BasicBuilding getLatestVersionBuildingByFullName(String fullName, Integer estateId) {
-        if (org.apache.commons.lang3.StringUtils.isBlank(fullName) || estateId == null) return null;
-        BasicBuildingExample example = new BasicBuildingExample();
-        BasicBuildingExample.Criteria criteria = example.createCriteria();
-        criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true).andFullNameEqualTo(fullName).andEstateIdEqualTo(estateId);
-        example.setOrderByClause("version desc");
-        List<BasicBuilding> basicBuildingList = basicBuildingMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(basicBuildingList)) return null;
-        return basicBuildingList.get(0);
-    }
 }

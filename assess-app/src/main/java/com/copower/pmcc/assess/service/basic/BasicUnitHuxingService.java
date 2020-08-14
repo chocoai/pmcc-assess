@@ -132,13 +132,13 @@ public class BasicUnitHuxingService {
     /**
      * 删除数据
      *
-     * @param id
+     * @param huxingId
      * @return
      * @throws Exception
      */
     public boolean deleteBasicUnitHuxing(Integer huxingId) throws Exception {
         //如果户型已被引用，则不允许删除
-        Integer count = basicHouseDao.getCountByHuxingId(huxingId);
+        long count = basicHouseDao.getCountByHuxingId(huxingId);
         if(count>0)
             throw new BusinessException("已被引用，不允许删除");
         return basicUnitHuxingDao.deleteBasicUnitHuxing(huxingId);

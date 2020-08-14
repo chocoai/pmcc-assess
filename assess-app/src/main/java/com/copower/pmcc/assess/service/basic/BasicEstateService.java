@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineCommonQuoteFieldEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -36,6 +37,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.Md5Utils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -410,13 +412,16 @@ public class BasicEstateService extends BasicEntityAbstract {
             version.setRelevanceId(oldBasicEstate.getId());
             saveAndUpdate(version, false);
         }
-
+        BasicEstateLandState basicEstateLandState = null;
+        String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());
+        basicEstateLandState = JSONObject.parseObject(string, BasicEstateLandState.class);
         if (basicEstate != null) {
             BasicApplyBatchDetail estateDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
             if (estateDetail != null) {
                 estateDetail.setName(basicEstate.getName());
                 estateDetail.setDisplayName(basicEstate.getName());
                 estateDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(estateDetail.getId()));
+                setEstateBatchDetailModifyType(basicEstate,basicEstateLandState,estateDetail);
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateDetail);
                 BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(estateDetail.getApplyBatchId());
                 if (basicApplyBatch != null) {
@@ -428,15 +433,13 @@ public class BasicEstateService extends BasicEntityAbstract {
                     BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
                     basicEstateStreetInfo.setEstateId(basicEstate.getId());
                     List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
-                    if(!CollectionUtils.isEmpty(streetInfoList)){
+                    if (!CollectionUtils.isEmpty(streetInfoList)) {
                         List<String> strs = LangUtils.transform(streetInfoList, o -> o.getStreetNumber());
-                        if(!CollectionUtils.isEmpty(strs)){
+                        if (!CollectionUtils.isEmpty(strs)) {
                             String remark = StringUtils.join(strs.toArray(), ",");
                             basicApplyBatch.setRemark(remark);
                         }
                     }
-
-
                     basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
                 }
 
@@ -456,9 +459,6 @@ public class BasicEstateService extends BasicEntityAbstract {
             saveAndUpdate(basicEstate, true);
 
             if (basicEstate.getId() != null) {
-                BasicEstateLandState basicEstateLandState = null;
-                String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());
-                basicEstateLandState = JSONObject.parseObject(string, BasicEstateLandState.class);
                 if (basicEstateLandState != null) {
                     basicEstateLandState.setLandLevelContent(org.apache.commons.lang.StringUtils.isNotEmpty(basicEstateLandState.getLandLevelContent()) ? basicEstateLandState.getLandLevelContent() : null);
                     basicEstateLandState.setEstateId(basicEstate.getId());
@@ -643,14 +643,14 @@ public class BasicEstateService extends BasicEntityAbstract {
     }
 
     @Override
-    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception {
         List<Object> objects = Lists.newArrayList();
         BasicEstate basicEstate = new BasicEstate();
         basicEstate.setApplyId(applyBatchDetailId);
         basicEstate.setBisCase(true);
         List<BasicEstate> basicEstateList = getBasicEstateList(basicEstate);
-        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(basicEstateList)){
-            basicEstateList.forEach(o->objects.add(o));
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(basicEstateList)) {
+            basicEstateList.forEach(o -> objects.add(o));
         }
         return objects;
     }
@@ -661,5 +661,35 @@ public class BasicEstateService extends BasicEntityAbstract {
         modelAndView.addObject("basicEstate", getBasicEstateById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
+    }
+
+    /**
+     * 设置修改状态
+     *
+     * @param basicEstate
+     * @param basicEstateLandState
+     * @param applyBatchDetail
+     */
+    public void setEstateBatchDetailModifyType(BasicEstate basicEstate, BasicEstateLandState basicEstateLandState, BasicApplyBatchDetail applyBatchDetail) {
+        //1.如果为引用状态的数据，则验证是否修改过，修改过则将状态调整为修改过状态
+        if (basicEstate == null || basicEstateLandState == null || applyBatchDetail == null) return;
+        if (BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
+            BasicEstate dbBasicEstate = getBasicEstateById(basicEstate.getId());
+            if (dbBasicEstate == null) return;
+            List<String> fieldNameList = Lists.newArrayList("applyId","classify","type","quoteId","mapId","relevanceId","version","bisCase","bisEnable","bisDelete");
+            fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
+            Boolean isEqual = publicService.equalsObjectExcludeField(basicEstate, dbBasicEstate, fieldNameList);
+            if (isEqual == false) {
+                applyBatchDetail.setModifyType(BasicDataHandleEnum.MODIFY.getKey());
+                return;
+            }
+            fieldNameList = Lists.newArrayList("applyId","estateId","bisDelete");
+            fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
+            BasicEstateLandState dbEstateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+            isEqual = publicService.equalsObjectExcludeField(basicEstateLandState, dbEstateLandState, fieldNameList);
+            if (isEqual == false) {
+                applyBatchDetail.setModifyType(BasicDataHandleEnum.MODIFY.getKey());
+            }
+        }
     }
 }

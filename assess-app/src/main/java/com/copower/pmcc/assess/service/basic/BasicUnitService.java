@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.basic;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicDataHandleEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
@@ -247,16 +248,15 @@ public class BasicUnitService extends BasicEntityAbstract {
                 version.setBuildingId(0);
                 saveAndUpdate(version, false);
             }
-
             if (basicUnit != null) {
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
                 if (unitDetail != null) {
                     unitDetail.setName(basicUnit.getUnitNumber());
                     unitDetail.setDisplayName(basicUnit.getUnitNumber());
                     unitDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(unitDetail.getId()));
+                    setUnitBatchDetailModifyType(basicUnit, unitDetail);
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitDetail);
                     basicUnit.setApplyId(unitDetail.getId());
-                    basicUnit.setFullName(unitDetail.getFullName());
                 }
                 saveAndUpdate(basicUnit, true);
                 return basicUnit.getId();
@@ -371,14 +371,14 @@ public class BasicUnitService extends BasicEntityAbstract {
     }
 
     @Override
-    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId)throws Exception {
+    public List<Object> getBasicEntityListByBatchDetailId(Integer applyBatchDetailId) throws Exception {
         List<Object> objects = Lists.newArrayList();
         BasicUnit basicUnit = new BasicUnit();
         basicUnit.setApplyId(applyBatchDetailId);
         basicUnit.setBisCase(true);
         List<BasicUnit> basicUnitList = getBasicUnitList(basicUnit);
-        if(org.apache.commons.collections.CollectionUtils.isNotEmpty(basicUnitList)){
-            basicUnitList.forEach(o->objects.add(o));
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(basicUnitList)) {
+            basicUnitList.forEach(o -> objects.add(o));
         }
         return objects;
     }
@@ -388,5 +388,27 @@ public class BasicUnitService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/photo/unit");
         modelAndView.addObject("basicUnit", getBasicUnitById(basicFormClassifyParamDto.getTbId()));
         return modelAndView;
+    }
+
+    /**
+     * 设置修改状态
+     *
+     * @param basicUnit
+     * @param applyBatchDetail
+     */
+    public void setUnitBatchDetailModifyType(BasicUnit basicUnit, BasicApplyBatchDetail applyBatchDetail) {
+        //1.如果为引用状态的数据，则验证是否修改过，修改过则将状态调整为修改过状态
+        if (basicUnit == null || applyBatchDetail == null) return;
+        if (BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
+            BasicUnit dbBasicUnit = getBasicUnitById(basicUnit.getId());
+            if (dbBasicUnit == null) return;
+            List<String> fieldNameList = Lists.newArrayList("applyId", "quoteId", "mapId", "relevanceId", "version", "bisCase", "bisEnable", "bisDelete");
+            fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
+            Boolean isEqual = publicService.equalsObjectExcludeField(basicUnit, dbBasicUnit, fieldNameList);
+            if (isEqual == false) {
+                applyBatchDetail.setModifyType(BasicDataHandleEnum.MODIFY.getKey());
+                return;
+            }
+        }
     }
 }
