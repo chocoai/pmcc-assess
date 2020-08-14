@@ -199,8 +199,10 @@
         appendHTML: function (data, price) {
             var frm = $(construction.target.selector);
             var type = construction.typeData() ;
-            var target = $("#boxMdCostConstruction");
-            target.find(".card-body").empty();
+            var eleName = 'boxMdCostConstruction';
+            var target = $("#" + eleName);
+            var table = target.find("div[data-title=" + eleName + "]");
+            table.empty() ;
             if (data == undefined) {
                 data = [];
             }
@@ -210,7 +212,7 @@
             target.find("input[name='id']").val('');
             target.find("input[name='masterId']").val('');
             var options = {
-                target: target.find(".card-body"),
+                target: table,
                 obj: data,
                 attribute: null,
                 price: price,
@@ -274,20 +276,22 @@
         data.projectId = '${projectPlanDetails.projectId}';
         data.planDetailsId = '${projectPlanDetails.id}';
         data.type = construction.typeData();
-        data.price = "0";
-        console.log(data) ;
+        if (! data.id){
+            data.price = "0";
+        }
         developmentCommon.saveMdCalculatingMethodEngineeringCost(data, function (item) {
             construction.writeMdCalculatingMethodEngineeringCost(item);
             target.modal("hide");
-            notifySuccess("成功", "添加成功!");
             //这里会同时生成 建筑安装工程费 详细情况id
             if (! data.id){
+                notifySuccess("成功", "添加成功!");
                 developmentCommon.saveMdArchitecturalObj2({}, {price: "0", pid: 0}, function (result) {
                     item.architecturalObjId = result.id;
                     developmentCommon.saveMdCalculatingMethodEngineeringCost(item);
                     construction.loadMdCalculatingMethodEngineeringCostTable();
                 });
             } else {
+                notifyWarning("提示", "请重新打开工程树计算单价!");
                 construction.loadMdCalculatingMethodEngineeringCostTable();
             }
         });
@@ -344,6 +348,7 @@
 
     construction.editMdCalculatingMethodEngineeringCost = function () {
         var rows = $(construction.engineeringFeeInfoTarget).bootstrapTable('getSelections');
+        console.log(rows) ;
         if (!rows || rows.length != 1) {
             notifyWarning("警告", "选择一条数据进行编辑!");
         } else {

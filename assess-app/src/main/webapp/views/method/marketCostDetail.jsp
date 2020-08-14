@@ -223,11 +223,24 @@
             <div class="row form-group">
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
+                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                            建筑安装工程费 (元/㎡)
+
+                        </label>
+                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                            <label class="form-control input-full">
+                                ${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFee}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                    <div class="form-inline x-valid">
                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div id="toolbarMdCalculatingMethodEngineeringCost" style="display: none">
-                                <button type="button" class="btn btn-info btn-sm disabled">
-                                    建筑安装工程费 ${mdCostVo.mdCostConstruction.constructionInstallationEngineeringFee}(元/㎡)
-                                </button>
                             </div>
                             <table class="table table-striped"
                                    id="engineeringConstructionInstallationEngineeringFeeInfoTarget">
@@ -617,19 +630,9 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="frmMdCostConstruction">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 "
-                                                 data-title="boxMdCostConstruction">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 "
+                             data-title="boxMdCostConstruction">
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </form>
@@ -670,7 +673,7 @@
         var eleName = 'boxMdCostConstruction';
         var target = $("#" + eleName);
         target.modal("show");
-        var table = target.find(".card-body").find("div[data-title=" + eleName + "]");
+        var table = target.find("div[data-title=" + eleName + "]");
         table.empty() ;
         developmentCommon.getMdArchitecturalObjById(id, function (item) {
             var data = [];

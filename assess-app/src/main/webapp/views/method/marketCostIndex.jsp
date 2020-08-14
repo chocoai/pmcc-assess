@@ -796,13 +796,8 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="row form-group">
-                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                    <div class="form-inline x-valid">
-                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 "
-                                             data-title="boxMdCostConstruction">
-
-                                        </div>
-                                    </div>
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 "
+                                     data-title="boxMdCostConstruction">
                                 </div>
                             </div>
                         </div>
