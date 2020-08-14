@@ -18,207 +18,205 @@
                     <input type="hidden" name="centerId">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                项目名称<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="项目名称" name="name" class="form-control input-full"
-                                                       required="required">
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                项目档次（楼盘)
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="项目档次（楼盘)" name="grade"
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                土地用途
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text" placeholder="土地用途" name="certUse"
-                                                       class="form-control input-full">
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            项目名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="项目名称" name="name" class="form-control input-full"
+                                                   required="required">
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            项目档次（楼盘)
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="项目档次（楼盘)" name="grade"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            土地用途
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text" placeholder="土地用途" name="certUse"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
 
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                建筑结构
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="建筑结构" name="buildingStructure"
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                建筑基底占地面积（㎡)
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="建筑基底占地面积（㎡)" name="buildingBaseCoverage"
-                                                       class="form-control input-full"
-                                                       data-rule-maxlength="100" data-rule-number='true'>
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                建筑限高（m）
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="建筑限高（m）" name="buildingHeightLimit"
-                                                       class="form-control input-full"
-                                                       data-rule-maxlength="100" data-rule-number='true'>
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            建筑结构
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="建筑结构" name="buildingStructure"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            建筑基底占地面积（㎡)
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="建筑基底占地面积（㎡)" name="buildingBaseCoverage"
+                                                   class="form-control input-full"
+                                                   data-rule-maxlength="100" data-rule-number='true'>
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            建筑限高（m）
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="建筑限高（m）" name="buildingHeightLimit"
+                                                   class="form-control input-full"
+                                                   data-rule-maxlength="100" data-rule-number='true'>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                容积率
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="容积率" name="volumetricRate"
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                建筑密度
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="建筑密度" name="buildingDensity"
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                绿地率
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="绿地率" name="greenSpaceRate"
-                                                       class="form-control input-full">
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            容积率
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="容积率" name="volumetricRate"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            建筑密度
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="建筑密度" name="buildingDensity"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            绿地率
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="绿地率" name="greenSpaceRate"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
 
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                规划建设净用地面积（㎡）
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="规划建设净用地面积（㎡）" name="planNetConstructionLandArea"
-                                                       class="form-control input-full"
-                                                       data-rule-maxlength="100" data-rule-number='true'>
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                规划总建筑面积（㎡）
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="规划总建筑面积（㎡）" name="planTotalBuildArea"
-                                                       class="form-control input-full"
-                                                       data-rule-maxlength="100" data-rule-number='true'>
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                设定容积率
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="设定容积率" name="setVolumetricRate"
-                                                       class="form-control input-full">
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            规划建设净用地面积（㎡）
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="规划建设净用地面积（㎡）" name="planNetConstructionLandArea"
+                                                   class="form-control input-full"
+                                                   data-rule-maxlength="100" data-rule-number='true'>
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            规划总建筑面积（㎡）
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="规划总建筑面积（㎡）" name="planTotalBuildArea"
+                                                   class="form-control input-full"
+                                                   data-rule-maxlength="100" data-rule-number='true'>
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            设定容积率
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="设定容积率" name="setVolumetricRate"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
 
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                评估用地面积（㎡）
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="评估用地面积（㎡）" name="assessUseLandArea"
-                                                       class="form-control input-full"
-                                                       data-rule-maxlength="100" data-rule-number='true'>
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                评估总建筑面积（㎡）
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="评估总建筑面积（㎡）" name="assessTotalBuildArea"
-                                                       class="form-control input-full"
-                                                       data-rule-maxlength="100" data-rule-number='true'>
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                规划日期
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input placeholder="规划日期"
-                                                       name="planDate" data-date-format="yyyy-mm-dd"
-                                                       class="form-control date-picker dbdate roomTime input-full">
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            评估用地面积（㎡）
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="评估用地面积（㎡）" name="assessUseLandArea"
+                                                   class="form-control input-full"
+                                                   data-rule-maxlength="100" data-rule-number='true'>
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            评估总建筑面积（㎡）
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="评估总建筑面积（㎡）" name="assessTotalBuildArea"
+                                                   class="form-control input-full"
+                                                   data-rule-maxlength="100" data-rule-number='true'>
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            规划日期
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input placeholder="规划日期"
+                                                   name="planDate" data-date-format="yyyy-mm-dd"
+                                                   class="form-control date-picker dbdate roomTime input-full">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                项目文件名称
-                                            </label>
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <input type="text"
-                                                       placeholder="项目文件名称" name="projectFileName"
-                                                       class="form-control input-full">
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            项目文件名称
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text"
+                                                   placeholder="项目文件名称" name="projectFileName"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                                宗地外设定
-                                            </label>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                                <div id="industrySupplyInfoContainer_AAAAA"></div>
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                            宗地外设定
+                                        </label>
+                                        <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                            <div id="industrySupplyInfoContainer_AAAAA"></div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                                宗地内设定
-                                            </label>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                                <div id="developmentDegreeContentContainer_AAAAA"></div>
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                            宗地内设定
+                                        </label>
+                                        <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                            <div id="developmentDegreeContentContainer_AAAAA"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -230,129 +228,127 @@
                 <form id="frmEconomicIndicatorsItem" class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                                <table class=" tree" id="frmEconomicIndicatorsItemTable">
-                                                    <thead>
-                                                    <tr>
-                                                        <th width="30%">规划项目名称</th>
-                                                        <th width="5%">规划建筑面积</th>
-                                                        <th width="5%">可出售面积</th>
-                                                        <th width="5%">评估面积/个数</th>
-                                                        <%--<th>个数</th>--%>
-                                                        <th width="20%">单位售价(元/㎡)</th>
-                                                        <th width="20%">备注</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr class="treegrid-1" data-key="groundBuildingArea"
-                                                        data-title="地上计入容积率建筑面积"
-                                                        data-role="parent" data-parent-index="1">
-                                                        <td>一: 地上计入容积率建筑面积
-                                                            <a class="btn btn-xs btn-warning tooltips"
-                                                               data-placement="top"
-                                                               onclick="economicIndicators.appendItemChildren(this);"><i
-                                                                    class="fa fa-plus fa-white"></i></a>
-                                                        </td>
-                                                        <td><label name="plannedBuildingArea"></label></td>
-                                                        <td><label name="saleableArea"></label></td>
-                                                        <td><label name="assessArea"></label></td>
-                                                        <%--<td><label name="number"></label></td>--%>
-                                                        <td><label name="unitPrice"></label></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr class="treegrid-2" data-key="groundExcludBuildingArea"
-                                                        data-title="地上不计入容积率建筑面积"
-                                                        data-role="parent" data-parent-index="2">
-                                                        <td>二: 地上不计入容积率建筑面积
-                                                            <a class="btn btn-xs btn-warning tooltips"
-                                                               data-placement="top"
-                                                               onclick="economicIndicators.appendItemChildren(this);"><i
-                                                                    class="fa fa-plus fa-white"></i></a>
-                                                        </td>
-                                                        <td><label name="plannedBuildingArea"></label></td>
-                                                        <td><label name="saleableArea"></label></td>
-                                                        <td><label name="assessArea"></label></td>
-                                                        <%--<td><label name="number"></label></td>--%>
-                                                        <td><label name="unitPrice"></label></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr class="treegrid-3" data-key="undergroundBuildingArea"
-                                                        data-title="地下建筑面积"
-                                                        data-role="parent" data-parent-index="3">
-                                                        <td>三: 地下建筑面积
-                                                            <a class="btn btn-xs btn-warning tooltips"
-                                                               data-placement="top"
-                                                               onclick="economicIndicators.appendItemChildren(this);"><i
-                                                                    class="fa fa-plus fa-white"></i></a>
-                                                        </td>
-                                                        <td><label name="plannedBuildingArea"></label></td>
-                                                        <td><label name="saleableArea"></label></td>
-                                                        <td><label name="assessArea"></label></td>
-                                                        <%--<td><label name="number"></label></td>--%>
-                                                        <td><label name="unitPrice"></label></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr class="treegrid-4" data-key="undergroundIncludedBuildingArea"
-                                                        data-title="地下不计入建筑面积"
-                                                        data-role="parent" data-parent-index="4">
-                                                        <td>四: 地下不计入建筑面积
-                                                            <a class="btn btn-xs btn-warning tooltips"
-                                                               data-placement="top"
-                                                               onclick="economicIndicators.appendItemChildren(this);"><i
-                                                                    class="fa fa-plus fa-white"></i></a>
-                                                        </td>
-                                                        <td><label name="plannedBuildingArea"></label></td>
-                                                        <td><label name="saleableArea"></label></td>
-                                                        <td><label name="assessArea"></label></td>
-                                                        <%--<td><label name="number"></label></td>--%>
-                                                        <td><label name="unitPrice"></label></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr class="treegrid-5" data-key="otherBuildingArea"
-                                                        data-role="parent" data-parent-index="5">
-                                                        <td>五: 其他
-                                                            <a class="btn btn-xs btn-warning tooltips"
-                                                               data-placement="top"
-                                                               onclick="economicIndicators.appendItemChildren(this);"><i
-                                                                    class="fa fa-plus fa-white"></i></a>
-                                                        </td>
-                                                        <td><label name="plannedBuildingArea"></label></td>
-                                                        <td><label name="saleableArea"></label></td>
-                                                        <td><label name="assessArea"></label></td>
-                                                        <%--<td><label name="number"></label></td>--%>
-                                                        <td><label name="unitPrice"></label></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    </tbody>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                            <table class=" tree" id="frmEconomicIndicatorsItemTable">
+                                                <thead>
+                                                <tr>
+                                                    <th width="30%">规划项目名称</th>
+                                                    <th width="5%">规划建筑面积</th>
+                                                    <th width="5%">可出售面积</th>
+                                                    <th width="5%">评估面积/个数</th>
+                                                    <%--<th>个数</th>--%>
+                                                    <th width="20%">单位售价(元/㎡)</th>
+                                                    <th width="20%">备注</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr class="treegrid-1" data-key="groundBuildingArea"
+                                                    data-title="地上计入容积率建筑面积"
+                                                    data-role="parent" data-parent-index="1">
+                                                    <td>一: 地上计入容积率建筑面积
+                                                        <a class="btn btn-xs btn-warning tooltips"
+                                                           data-placement="top"
+                                                           onclick="economicIndicators.appendItemChildren(this);"><i
+                                                                class="fa fa-plus fa-white"></i></a>
+                                                    </td>
+                                                    <td><label name="plannedBuildingArea"></label></td>
+                                                    <td><label name="saleableArea"></label></td>
+                                                    <td><label name="assessArea"></label></td>
+                                                    <%--<td><label name="number"></label></td>--%>
+                                                    <td><label name="unitPrice"></label></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="treegrid-2" data-key="groundExcludBuildingArea"
+                                                    data-title="地上不计入容积率建筑面积"
+                                                    data-role="parent" data-parent-index="2">
+                                                    <td>二: 地上不计入容积率建筑面积
+                                                        <a class="btn btn-xs btn-warning tooltips"
+                                                           data-placement="top"
+                                                           onclick="economicIndicators.appendItemChildren(this);"><i
+                                                                class="fa fa-plus fa-white"></i></a>
+                                                    </td>
+                                                    <td><label name="plannedBuildingArea"></label></td>
+                                                    <td><label name="saleableArea"></label></td>
+                                                    <td><label name="assessArea"></label></td>
+                                                    <%--<td><label name="number"></label></td>--%>
+                                                    <td><label name="unitPrice"></label></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="treegrid-3" data-key="undergroundBuildingArea"
+                                                    data-title="地下建筑面积"
+                                                    data-role="parent" data-parent-index="3">
+                                                    <td>三: 地下建筑面积
+                                                        <a class="btn btn-xs btn-warning tooltips"
+                                                           data-placement="top"
+                                                           onclick="economicIndicators.appendItemChildren(this);"><i
+                                                                class="fa fa-plus fa-white"></i></a>
+                                                    </td>
+                                                    <td><label name="plannedBuildingArea"></label></td>
+                                                    <td><label name="saleableArea"></label></td>
+                                                    <td><label name="assessArea"></label></td>
+                                                    <%--<td><label name="number"></label></td>--%>
+                                                    <td><label name="unitPrice"></label></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="treegrid-4" data-key="undergroundIncludedBuildingArea"
+                                                    data-title="地下不计入建筑面积"
+                                                    data-role="parent" data-parent-index="4">
+                                                    <td>四: 地下不计入建筑面积
+                                                        <a class="btn btn-xs btn-warning tooltips"
+                                                           data-placement="top"
+                                                           onclick="economicIndicators.appendItemChildren(this);"><i
+                                                                class="fa fa-plus fa-white"></i></a>
+                                                    </td>
+                                                    <td><label name="plannedBuildingArea"></label></td>
+                                                    <td><label name="saleableArea"></label></td>
+                                                    <td><label name="assessArea"></label></td>
+                                                    <%--<td><label name="number"></label></td>--%>
+                                                    <td><label name="unitPrice"></label></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr class="treegrid-5" data-key="otherBuildingArea"
+                                                    data-role="parent" data-parent-index="5">
+                                                    <td>五: 其他
+                                                        <a class="btn btn-xs btn-warning tooltips"
+                                                           data-placement="top"
+                                                           onclick="economicIndicators.appendItemChildren(this);"><i
+                                                                class="fa fa-plus fa-white"></i></a>
+                                                    </td>
+                                                    <td><label name="plannedBuildingArea"></label></td>
+                                                    <td><label name="saleableArea"></label></td>
+                                                    <td><label name="assessArea"></label></td>
+                                                    <%--<td><label name="number"></label></td>--%>
+                                                    <td><label name="unitPrice"></label></td>
+                                                    <td></td>
+                                                </tr>
+                                                </tbody>
 
-                                                    <tfoot>
-                                                    <tr>
-                                                        <td>预期销售合计:</td>
-                                                        <td class="info">规划建筑面积(㎡)<label name="plannedBuildingArea"
-                                                                                         class="label "></label></td>
-                                                        <td class="info">可售面积(㎡)<label name="saleableArea"
-                                                                                       class="label "></label></td>
-                                                        <td class="info" colspan="2">总可售面积售价(元)<label
-                                                                name="totalSaleableAreaPrice"
-                                                                class="label "></label></td>
-                                                    </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
+                                                <tfoot>
+                                                <tr>
+                                                    <td>预期销售合计:</td>
+                                                    <td class="info">规划建筑面积(㎡)<label name="plannedBuildingArea"
+                                                                                     class="label "></label></td>
+                                                    <td class="info">可售面积(㎡)<label name="saleableArea"
+                                                                                   class="label "></label></td>
+                                                    <td class="info" colspan="2">总可售面积售价(元)<label
+                                                            name="totalSaleableAreaPrice"
+                                                            class="label "></label></td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                                <code>说明:总可售面积售价 = 单位售价 x 评估面积; 可售面积 = 可出售面积 累加之和; 规划建筑面积 = 规划建筑面积
-                                                    累加之和</code>
-                                            </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                            <code>说明:总可售面积售价 = 单位售价 x 评估面积; 可售面积 = 可出售面积 累加之和; 规划建筑面积 = 规划建筑面积
+                                                累加之和</code>
                                         </div>
                                     </div>
                                 </div>

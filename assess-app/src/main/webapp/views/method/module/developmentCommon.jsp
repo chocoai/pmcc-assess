@@ -107,33 +107,31 @@
                     <input type="hidden" name="id">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                名称<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-10 col-md-10">
-                                                <input type="text" name="name" class="form-control input-full"
-                                                       required="required"
-                                                       placeholder="名称">
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10 col-md-10">
+                                            <input type="text" name="name" class="form-control input-full"
+                                                   required="required"
+                                                   placeholder="名称">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                价钱(元/㎡)
-                                            </label>
-                                            <div class="col-sm-10 col-md-10">
-                                                <input type="text" name="number" placeholder="价钱"
-                                                       class="form-control input-full"
-                                                       data-rule-number='true'
-                                                       required="required">
-                                            </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            金额(元/㎡)
+                                        </label>
+                                        <div class="col-sm-10 col-md-10">
+                                            <input type="text" name="number" placeholder="金额"
+                                                   class="form-control input-full"
+                                                   data-rule-number='true'
+                                                   required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -223,14 +221,12 @@
                 <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                <table class="table table-bordered" id="boxSchemeInfoList">
-                                                </table>
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <table class="table table-bordered" id="boxSchemeInfoList">
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

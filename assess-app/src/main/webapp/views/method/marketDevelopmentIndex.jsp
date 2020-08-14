@@ -63,7 +63,11 @@
                 <div class="card-header">
                     <div class="card-head-row">
                         <div class="card-title">
-                            基本参数 <button type="button" class="btn btn-info btn-sm" onclick="landEngineering.showMdDevelopmentIncomeCategory('${mdDevelopment.economicId}');">经济规划指标</button>
+                            基本参数
+                            <button type="button" class="btn btn-info btn-sm"
+                                    onclick="landEngineering.showMdDevelopmentIncomeCategory('${mdDevelopment.economicId}');">
+                                经济规划指标
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -154,7 +158,7 @@
                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                 <input type="text" value="${mdDevelopment.transferArea}"
                                        class="form-control input-full"
-                                       name="transferArea"  placeholder="移交面积">
+                                       name="transferArea" placeholder="移交面积">
                             </div>
                         </div>
                     </div>
@@ -296,22 +300,22 @@
                         <div class="form-inline x-valid">
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                 <div id="toolbarMdDevelopmentInfrastructureChildrenTable" style="display: none">
-                                    <button type="button" class="btn btn-warning btn-sm"
-                                            onclick="landEngineering.deleteMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable')">
-                                        <i class="fa fa-minus"></i>
-                                        删除
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn-sm "
-                                            onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',true)">
-                                        <i class="fa fa-pen"></i>
-                                        编辑
-                                    </button>
                                     <button type="button" class="btn btn-success btn-sm"
                                             onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',false)">
                                             <span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
                                         添加
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm "
+                                            onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',true)">
+                                        <i class="fa fa-pen"></i>
+                                        编辑
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-sm"
+                                            onclick="landEngineering.deleteMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable')">
+                                        <i class="fa fa-minus"></i>
+                                        删除
                                     </button>
                                 </div>
                                 <table class="table table-bordered" id="landMdDevelopmentInfrastructureChildrenTable">
@@ -873,9 +877,8 @@
                     <input type="hidden" name="id">
                     <input type="hidden" name="masterId">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="card-body">
-                            </div>
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 "
+                             data-title="boxLandEngineering">
                         </div>
                     </div>
                 </form>
@@ -898,7 +901,7 @@
      tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 80%;">
+    <div class="modal-dialog modal-lg" >
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑安装工程费</h4>
@@ -906,30 +909,28 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="id">
-                <input type="hidden" name="masterId">
                 <form class="form-horizontal">
                     <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <input type="hidden" name="architecturalObjId">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                名称<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                <input type="text" class="form-control input-full" name="name"
-                                                       placeholder="名称" required="required">
-                                            </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                建筑面积
-                                            </label>
-                                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                <input type="text" class="form-control input-full" name="area"
-                                                       placeholder="面积" required="required">
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <input type="text" class="form-control input-full" name="name"
+                                                   placeholder="名称" required="required">
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            建筑面积
+                                        </label>
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <input type="text" class="form-control input-full" name="area"
+                                                   placeholder="面积" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -952,9 +953,23 @@
 </div>
 
 <div id="toolbarMdCalculatingMethodEngineeringCostLand" style="display: none">
-    <button type="button" class="btn btn-warning btn-sm" onclick="landEngineering.delMdCalculatingMethodEngineeringCost()"><i class="fa fa-minus"></i>删除</button>
-    <button type="button" class="btn btn-success btn-sm" onclick="landEngineering.showMdCalculatingMethodEngineeringCost();"><span class="btn-label"><i class="fa fa-plus"></i></span>添加</button>
-    <button type="button" class="btn btn-info btn-sm" onclick="landEngineering.setMdCalculatingMethodEngineeringCost(false)">同步成本法建筑安装工程费</button>
-    <button type="button" class="btn btn-info btn-sm" onclick="landEngineering.setMdCalculatingMethodEngineeringCost(true)">同步查勘建筑安装工程费</button>
+    <button type="button" class="btn btn-success btn-sm"
+            onclick="landEngineering.showMdCalculatingMethodEngineeringCost();"><span class="btn-label"><i
+            class="fa fa-plus"></i></span>添加
+    </button>
+    <button type="button" class="btn btn-primary btn-sm "
+            onclick="landEngineering.editMdCalculatingMethodEngineeringCost() ;">
+        <i class="fa fa-pen"></i>
+        编辑
+    </button>
+    <button type="button" class="btn btn-warning btn-sm"
+            onclick="landEngineering.delMdCalculatingMethodEngineeringCost()"><i class="fa fa-minus"></i>删除
+    </button>
+    <button type="button" class="btn btn-info btn-sm"
+            onclick="landEngineering.setMdCalculatingMethodEngineeringCost(false)">同步成本法建筑安装工程费
+    </button>
+    <button type="button" class="btn btn-info btn-sm"
+            onclick="landEngineering.setMdCalculatingMethodEngineeringCost(true)">同步查勘建筑安装工程费
+    </button>
 </div>
 
