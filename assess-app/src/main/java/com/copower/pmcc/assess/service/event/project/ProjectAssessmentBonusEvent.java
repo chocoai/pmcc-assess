@@ -51,9 +51,13 @@ public class ProjectAssessmentBonusEvent extends BaseProcessEvent {
             if (processStatusEnum.isFinish()) {
                 //将各个成员的得分写入到考核系统中，
                 ProjectAssessmentBonus assessmentBonus = projectAssessmentBonusService.getAssessmentBonusByProcessInsId(processExecution.getProcessInstanceId());
-                if (assessmentBonus == null) return;
+                if (assessmentBonus == null) {
+                    return;
+                }
                 List<ProjectAssessmentBonusItem> bonusItemList = projectAssessmentBonusService.getAssessmentBonusItemsByMasterId(assessmentBonus.getId());
                 String lastDayOfMonth = DateUtils.getLastDayOfMonth(assessmentBonus.getYear(), assessmentBonus.getMonth());
+                assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
+                projectAssessmentBonusService.saveAssessmentBonus(assessmentBonus);
                 if (CollectionUtils.isNotEmpty(bonusItemList)) {
                     for (ProjectAssessmentBonusItem assessmentBonusItem : bonusItemList) {
                         String memberScoreCondition = assessmentBonusItem.getMemberScoreCondition();
