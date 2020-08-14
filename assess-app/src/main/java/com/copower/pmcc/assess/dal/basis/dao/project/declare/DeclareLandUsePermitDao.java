@@ -59,6 +59,13 @@ public class DeclareLandUsePermitDao {
         return declareLandUsePermitMapper.deleteByPrimaryKey(id) == 1;
     }
 
+    public boolean deleteDeclareLandUsePermitById(List<Integer> ids){
+        DeclareLandUsePermitExample example = new DeclareLandUsePermitExample();
+        DeclareLandUsePermitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        return declareLandUsePermitMapper.deleteByExample(example) >= 1;
+    }
+
     public List<DeclareLandUsePermit> getDeclareLandUsePermitList(DeclareLandUsePermit declareLandUsePermit) {
         DeclareLandUsePermitExample example = new DeclareLandUsePermitExample();
         MybatisUtils.convertObj2Example(declareLandUsePermit, example);

@@ -74,6 +74,13 @@ public class DeclarePreSalePermitDao {
         return declarePreSalePermitMapper.deleteByPrimaryKey(id) == 1;
     }
 
+    public boolean deleteDeclarePreSalePermitById(List<Integer> ids){
+        DeclarePreSalePermitExample example = new DeclarePreSalePermitExample();
+        DeclarePreSalePermitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        return declarePreSalePermitMapper.deleteByExample(example) > 0;
+    }
+
     public List<DeclarePreSalePermit> getDataIds(List<Integer> ids) {
         DeclarePreSalePermitExample example = new DeclarePreSalePermitExample();
         DeclarePreSalePermitExample.Criteria criteria = example.createCriteria();

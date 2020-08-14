@@ -12,6 +12,7 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,13 +83,20 @@ public class DeclareBuildingConstructionPermitService {
         return declareBuildingConstructionPermitDao.deleteDeclareBuildingConstructionPermitById(id) ;
     }
 
+    public boolean deleteDeclareBuildingConstructionPermitById(List<Integer> ids){
+        return declareBuildingConstructionPermitDao.deleteDeclareBuildingConstructionPermitById(ids) ;
+    }
+
     public List<DeclareBuildingConstructionPermit> getDataIds(List<Integer> ids){
         return declareBuildingConstructionPermitDao.getDataIds(ids) ;
     }
 
     public void deleteDeclareBuildingConstructionPermitByIds(String id){
+        if (StringUtils.isBlank(id)){
+            return;
+        }
         List<Integer> integerList = FormatUtils.transformString2Integer(id);
-        integerList.forEach(integer -> deleteDeclareBuildingConstructionPermitById(integer));
+        deleteDeclareBuildingConstructionPermitById(integerList) ;
     }
 
 }

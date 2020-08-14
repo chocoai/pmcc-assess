@@ -68,6 +68,13 @@ public class DeclareBuildingConstructionPermitDao {
         return declareBuildingConstructionPermitMapper.deleteByPrimaryKey(id) == 1;
     }
 
+    public boolean deleteDeclareBuildingConstructionPermitById(List<Integer> ids){
+        DeclareBuildingConstructionPermitExample example = new DeclareBuildingConstructionPermitExample();
+        DeclareBuildingConstructionPermitExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids) ;
+        return declareBuildingConstructionPermitMapper.deleteByExample(example) > 0;
+    }
+
     public List<DeclareBuildingConstructionPermit> getDeclareBuildingConstructionPermitList(DeclareBuildingConstructionPermit declareBuildingConstructionPermit){
         DeclareBuildingConstructionPermitExample example = new DeclareBuildingConstructionPermitExample();
         MybatisUtils.convertObj2Example(declareBuildingConstructionPermit, example);
