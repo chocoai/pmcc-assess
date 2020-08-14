@@ -103,7 +103,7 @@ public class ProjectAssessmentBonusService {
     private ErpRpcUserService erpRpcUserService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-    private final Logger logger = LoggerFactory.getLogger(getClass()) ;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 相同标题  相同年  相同月  视为一个组合主键  不能与其相同
@@ -269,9 +269,13 @@ public class ProjectAssessmentBonusService {
         if (!assessmentBonus.getStatus().equals(ProcessStatusEnum.FINISH.getValue())) {
             try {
                 //允许报错  这里有可能都没有发起流程的时候afreshAssessmentBonusTask就被调用了(重新发起考核的时候会清除所有任务和数据)
-                bpmRpcActivitiProcessManageService.closeProcess(assessmentBonus.getProcessInsId());
+                if (StringUtils.isNotBlank(assessmentBonus.getProcessInsId())) {
+                    if (!"0".equals(assessmentBonus.getProcessInsId())) {
+                        bpmRpcActivitiProcessManageService.closeProcess(assessmentBonus.getProcessInsId());
+                    }
+                }
             } catch (Exception e) {
-                logger.error(e.getMessage(),e);
+                logger.error(e.getMessage(), e);
             }
         }
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
