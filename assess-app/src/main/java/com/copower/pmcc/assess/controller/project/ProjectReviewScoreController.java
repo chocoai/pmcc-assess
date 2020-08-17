@@ -26,6 +26,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class ProjectReviewScoreController {
         ProjectReviewScore projectReviewScore = null;
         if (reviewId != null) {
             projectReviewScore = projectReviewScoreService.getReviewScoreById(reviewId);
-        }else if(projectId!=null){
+        } else if (projectId != null) {
             projectReviewScore = projectReviewScoreService.getReviewScoreByProjectId(projectId);
         }
         if (projectReviewScore == null) {
@@ -138,8 +139,10 @@ public class ProjectReviewScoreController {
 
     @ResponseBody
     @PostMapping(value = "/applyCommit", name = "申请提交")
-    public HttpResult applyCommit(Integer projectId) {
+    public HttpResult applyCommit(String formData) {
         try {
+            ProjectReviewScore projectReviewScore = JSON.parseObject(formData, ProjectReviewScore.class);
+            Integer projectId = projectReviewScore.getProjectId();
             Long count = projectReviewScoreService.getProjectReviewScoreCount(projectId);
             if (count > 0) {//一个项目只能提交一次
                 return HttpResult.newErrorResult("请不要重复提交");
@@ -151,7 +154,7 @@ public class ProjectReviewScoreController {
             if (!projectInfoService.chksValidProject(projectId)) {
                 return HttpResult.newErrorResult("该项目不允许申请");
             }
-            projectReviewScoreService.applyCommit(projectId);
+            projectReviewScoreService.applyCommit(projectId, projectReviewScore);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -161,9 +164,13 @@ public class ProjectReviewScoreController {
 
     @ResponseBody
     @PostMapping(value = "/editCommit", name = "返回修改提交")
-    public HttpResult editCommit(ApprovalModelDto approvalModelDto) {
+    public HttpResult editCommit(ApprovalModelDto approvalModelDto, String formData) {
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            if (StringUtils.isNotBlank(formData)) {
+                ProjectReviewScore projectReviewScore = JSON.parseObject(formData, ProjectReviewScore.class);
+                projectReviewScoreService.saveReviewScore(projectReviewScore);
+            }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -173,9 +180,13 @@ public class ProjectReviewScoreController {
 
     @PostMapping(value = "/approvalCommit", name = "审批提交")
     @ResponseBody
-    public HttpResult approvalCommit(ApprovalModelDto approvalModelDto) {
+    public HttpResult approvalCommit(ApprovalModelDto approvalModelDto, String formData) {
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            if (StringUtils.isNotBlank(formData)) {
+                ProjectReviewScore projectReviewScore = JSON.parseObject(formData, ProjectReviewScore.class);
+                projectReviewScoreService.saveReviewScore(projectReviewScore);
+            }
             return HttpResult.newCorrectResult();
         } catch (BpmException e) {
             logger.error("提交审批失败", e);

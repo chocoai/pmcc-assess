@@ -98,11 +98,10 @@ public class ProjectReviewScoreService {
      * @param projectId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void applyCommit(Integer projectId) throws BusinessException, BpmException {
+    public void applyCommit(Integer projectId,ProjectReviewScore reviewScore) throws BusinessException, BpmException {
         if (projectId == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectReviewScore reviewScore = getReviewScoreByProjectId(projectId);
         reviewScore.setStatus(ProcessStatusEnum.RUN.getValue());
         saveReviewScore(reviewScore);
 

@@ -7234,18 +7234,14 @@ public class GenerateBaseDataService {
             areaGroup = new SchemeAreaGroup();
         }
         this.schemeAreaGroup = areaGroup;
-        List<SchemeJudgeObject> judgeObjectList = generateReportGroupService.getSchemeJudgeObjectByGroupId(reportGroup.getId());
-        if (CollectionUtils.isEmpty(judgeObjectList)) {
-            judgeObjectList = new ArrayList<SchemeJudgeObject>(0);
+        List<SchemeJudgeObject> judgeObjectList = null;
+        if (reportGroup.getId() != null) {
+            judgeObjectList = generateReportGroupService.getSchemeJudgeObjectByGroupId(reportGroup.getId());
         }
+        judgeObjectList = CollectionUtils.isEmpty(judgeObjectList) ? Lists.newArrayList() : judgeObjectList;
         this.schemeJudgeObjectList = judgeObjectList;
-
         this.schemeJudgeObjectFullList = judgeObjectList;
         this.schemeJudgeObjectDeclareList = judgeObjectList;
-
-//        this.schemeJudgeObjectFullList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(areaId);
-//        this.schemeJudgeObjectDeclareList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-
 
         this.schemeJudgeObjectMap = FormatUtils.mappingSingleEntity(this.schemeJudgeObjectList, o -> o.getId());
     }

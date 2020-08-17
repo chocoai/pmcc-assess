@@ -5,6 +5,14 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="contract_negotiation" jdbcType="DECIMAL" property="contractNegotiation" />
+    <result column="contract_negotiation_explain" jdbcType="VARCHAR" property="contractNegotiationExplain" />
+    <result column="customer_activities" jdbcType="DECIMAL" property="customerActivities" />
+    <result column="customer_activities_explain" jdbcType="VARCHAR" property="customerActivitiesExplain" />
+    <result column="work_division" jdbcType="DECIMAL" property="workDivision" />
+    <result column="work_division_explain" jdbcType="VARCHAR" property="workDivisionExplain" />
+    <result column="invoice_collection" jdbcType="DECIMAL" property="invoiceCollection" />
+    <result column="invoice_collection_explain" jdbcType="VARCHAR" property="invoiceCollectionExplain" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="process_ins_id" jdbcType="VARCHAR" property="processInsId" />
     <result column="status" jdbcType="VARCHAR" property="status" />
@@ -71,8 +79,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, project_id, project_name, remark, process_ins_id, status, creator, gmt_created, 
-    gmt_modified
+    id, project_id, project_name, contract_negotiation, contract_negotiation_explain, 
+    customer_activities, customer_activities_explain, work_division, work_division_explain, 
+    invoice_collection, invoice_collection_explain, remark, process_ins_id, status, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScoreExample" resultMap="BaseResultMap">
     select
@@ -108,12 +118,20 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_review_score (project_id, project_name, remark, 
-      process_ins_id, status, creator, 
-      gmt_created, gmt_modified)
-    values (#{projectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{processInsId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_project_review_score (project_id, project_name, contract_negotiation, 
+      contract_negotiation_explain, customer_activities, 
+      customer_activities_explain, work_division, 
+      work_division_explain, invoice_collection, 
+      invoice_collection_explain, remark, process_ins_id, 
+      status, creator, gmt_created, 
+      gmt_modified)
+    values (#{projectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{contractNegotiation,jdbcType=DECIMAL}, 
+      #{contractNegotiationExplain,jdbcType=VARCHAR}, #{customerActivities,jdbcType=DECIMAL}, 
+      #{customerActivitiesExplain,jdbcType=VARCHAR}, #{workDivision,jdbcType=DECIMAL}, 
+      #{workDivisionExplain,jdbcType=VARCHAR}, #{invoiceCollection,jdbcType=DECIMAL}, 
+      #{invoiceCollectionExplain,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectReviewScore">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -126,6 +144,30 @@
       </if>
       <if test="projectName != null">
         project_name,
+      </if>
+      <if test="contractNegotiation != null">
+        contract_negotiation,
+      </if>
+      <if test="contractNegotiationExplain != null">
+        contract_negotiation_explain,
+      </if>
+      <if test="customerActivities != null">
+        customer_activities,
+      </if>
+      <if test="customerActivitiesExplain != null">
+        customer_activities_explain,
+      </if>
+      <if test="workDivision != null">
+        work_division,
+      </if>
+      <if test="workDivisionExplain != null">
+        work_division_explain,
+      </if>
+      <if test="invoiceCollection != null">
+        invoice_collection,
+      </if>
+      <if test="invoiceCollectionExplain != null">
+        invoice_collection_explain,
       </if>
       <if test="remark != null">
         remark,
@@ -152,6 +194,30 @@
       </if>
       <if test="projectName != null">
         #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNegotiation != null">
+        #{contractNegotiation,jdbcType=DECIMAL},
+      </if>
+      <if test="contractNegotiationExplain != null">
+        #{contractNegotiationExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="customerActivities != null">
+        #{customerActivities,jdbcType=DECIMAL},
+      </if>
+      <if test="customerActivitiesExplain != null">
+        #{customerActivitiesExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="workDivision != null">
+        #{workDivision,jdbcType=DECIMAL},
+      </if>
+      <if test="workDivisionExplain != null">
+        #{workDivisionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCollection != null">
+        #{invoiceCollection,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceCollectionExplain != null">
+        #{invoiceCollectionExplain,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -191,6 +257,30 @@
       <if test="record.projectName != null">
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
+      <if test="record.contractNegotiation != null">
+        contract_negotiation = #{record.contractNegotiation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.contractNegotiationExplain != null">
+        contract_negotiation_explain = #{record.contractNegotiationExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerActivities != null">
+        customer_activities = #{record.customerActivities,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customerActivitiesExplain != null">
+        customer_activities_explain = #{record.customerActivitiesExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workDivision != null">
+        work_division = #{record.workDivision,jdbcType=DECIMAL},
+      </if>
+      <if test="record.workDivisionExplain != null">
+        work_division_explain = #{record.workDivisionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceCollection != null">
+        invoice_collection = #{record.invoiceCollection,jdbcType=DECIMAL},
+      </if>
+      <if test="record.invoiceCollectionExplain != null">
+        invoice_collection_explain = #{record.invoiceCollectionExplain,jdbcType=VARCHAR},
+      </if>
       <if test="record.remark != null">
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
@@ -219,6 +309,14 @@
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       project_name = #{record.projectName,jdbcType=VARCHAR},
+      contract_negotiation = #{record.contractNegotiation,jdbcType=DECIMAL},
+      contract_negotiation_explain = #{record.contractNegotiationExplain,jdbcType=VARCHAR},
+      customer_activities = #{record.customerActivities,jdbcType=DECIMAL},
+      customer_activities_explain = #{record.customerActivitiesExplain,jdbcType=VARCHAR},
+      work_division = #{record.workDivision,jdbcType=DECIMAL},
+      work_division_explain = #{record.workDivisionExplain,jdbcType=VARCHAR},
+      invoice_collection = #{record.invoiceCollection,jdbcType=DECIMAL},
+      invoice_collection_explain = #{record.invoiceCollectionExplain,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
@@ -237,6 +335,30 @@
       </if>
       <if test="projectName != null">
         project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNegotiation != null">
+        contract_negotiation = #{contractNegotiation,jdbcType=DECIMAL},
+      </if>
+      <if test="contractNegotiationExplain != null">
+        contract_negotiation_explain = #{contractNegotiationExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="customerActivities != null">
+        customer_activities = #{customerActivities,jdbcType=DECIMAL},
+      </if>
+      <if test="customerActivitiesExplain != null">
+        customer_activities_explain = #{customerActivitiesExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="workDivision != null">
+        work_division = #{workDivision,jdbcType=DECIMAL},
+      </if>
+      <if test="workDivisionExplain != null">
+        work_division_explain = #{workDivisionExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCollection != null">
+        invoice_collection = #{invoiceCollection,jdbcType=DECIMAL},
+      </if>
+      <if test="invoiceCollectionExplain != null">
+        invoice_collection_explain = #{invoiceCollectionExplain,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
@@ -263,6 +385,14 @@
     update tb_project_review_score
     set project_id = #{projectId,jdbcType=INTEGER},
       project_name = #{projectName,jdbcType=VARCHAR},
+      contract_negotiation = #{contractNegotiation,jdbcType=DECIMAL},
+      contract_negotiation_explain = #{contractNegotiationExplain,jdbcType=VARCHAR},
+      customer_activities = #{customerActivities,jdbcType=DECIMAL},
+      customer_activities_explain = #{customerActivitiesExplain,jdbcType=VARCHAR},
+      work_division = #{workDivision,jdbcType=DECIMAL},
+      work_division_explain = #{workDivisionExplain,jdbcType=VARCHAR},
+      invoice_collection = #{invoiceCollection,jdbcType=DECIMAL},
+      invoice_collection_explain = #{invoiceCollectionExplain,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},

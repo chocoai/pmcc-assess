@@ -19,20 +19,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        复核与指导工时考核
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <%@include file="/views/project/assessment/reviewScoreCommon.jsp" %>
-                            </div>
-                        </div>
-                    </div>
+                    <%@include file="/views/project/assessment/reviewScoreCommon.jsp" %>
                     <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
@@ -47,13 +34,16 @@
         if (!$("#frm_approval").valid()) {
             return false;
         }
-        var data = formApproval.getFormData();
+        var jsonData = formApproval.getFormData();
+        var reviewScore = formSerializeArray($("#frmReviewScore"));
+        reviewScore.projectId = '${projectInfo.id}';
+        jsonData.formData = JSON.stringify(reviewScore);
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/projectReviewScore/approvalCommit",
             type: "post",
             dataType: "json",
-            data: data,
+            data: jsonData,
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {

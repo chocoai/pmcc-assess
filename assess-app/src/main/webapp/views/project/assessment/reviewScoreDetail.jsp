@@ -66,6 +66,65 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        项目组织与实施考核
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="frmReviewScore" class="form-horizontal">
+                                    <input type="hidden" name="id" value="${projectReviewScore.id}">
+                                    <table class="table mt-3">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" width="10%">项目</th>
+                                            <th scope="col" width="30%">标准</th>
+                                            <th scope="col" width="10%">得分</th>
+                                            <th scope="col" width="50%">说明</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>合同洽谈、合同签署及管理</td>
+                                            <td>执行统一合同或只完成合同签署时，工时为标准分值的1/3；完成合同全过程管理为标准分值。</td>
+                                            <td>${projectReviewScore.contractNegotiation}</td>
+                                            <td>${projectReviewScore.contractNegotiationExplain}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>客户活动、客户拜访、客户设诉、客户关怀</td>
+                                            <td>参与具体客户的客户活动、客户拜访、客户设诉、客户关怀，参与其中的任意一项且符合要求，得标准分值的1/4。</td>
+                                            <td>${projectReviewScore.customerActivities}</td>
+                                            <td>${projectReviewScore.customerActivitiesExplain}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>人员分工、时间安排、费用管理</td>
+                                            <td>
+                                                人员分工、时间安排、外勤、费用管理各占标准工时分值的1/4,如果项目超时、或不符合费用管理要求，本项工时分为零；如果项目组长、或项目经理实施全部工作、助理人员仅实施项目辅助工作，如申报、清查、他权、客户客理中的合同、客户关系等，本项目不计分值。
+                                            </td>
+                                            <td>${projectReviewScore.workDivision}</td>
+                                            <td>${projectReviewScore.workDivisionExplain}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>开票、收款完成且与会计核对一致</td>
+                                            <td>开标40%，送票或推送20%，崔收与核对40%。</td>
+                                            <td>${projectReviewScore.invoiceCollection}</td>
+                                            <td>${projectReviewScore.invoiceCollectionExplain}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>

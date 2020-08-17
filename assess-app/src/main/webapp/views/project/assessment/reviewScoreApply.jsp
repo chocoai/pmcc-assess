@@ -19,25 +19,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        复核与指导工时考核
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <%@include file="/views/project/assessment/reviewScoreCommon.jsp" %>
-                            </div>
-                        </div>
-                    </div>
+                    <%@include file="/views/project/assessment/reviewScoreCommon.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
@@ -66,9 +48,15 @@
 
 <script type="text/javascript">
     function applySumit() {
+        if (!$("#frmReviewScore").valid()) {
+            return false;
+        }
+
+        var data = formSerializeArray($("#frmReviewScore"));
+        data.projectId = '${projectInfo.id}';
         if ('${processInsId}' == '' || '${processInsId}' == '0') {
             $.post('${pageContext.request.contextPath}/projectReviewScore/applyCommit', {
-                projectId: '${projectInfo.id}'
+                formData: JSON.stringify(data)
             }, function (result) {
                 if (result.ret) {
                     AlertSuccess('成功', '提交成功', function () {
@@ -80,6 +68,7 @@
             }, 'json');
         } else {
             var jsonData = formSerializeArray($("#process_variable_form"));
+            jsonData.formData = JSON.stringify(data);
             $.post('${pageContext.request.contextPath}/projectReviewScore/editCommit', jsonData, function (result) {
                 if (result.ret) {
                     AlertSuccess('成功', '提交成功', function () {

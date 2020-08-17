@@ -7,32 +7,134 @@
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="row">
-    <div class="col-2 col-md-2">
-        <div id="navPlanList"
-             class="nav flex-column nav-pills nav-secondary nav-pills-no-bd"
-             role="tablist" aria-orientation="vertical">
-            <c:forEach items="${projectPlanList}" var="item"
-                       varStatus="status">
-                <a class="nav-link show" data-toggle="pill" href="#tabPane${item.id}"
-                   role="tab"
-                   onclick="reviewScore.loadProjectPhaseList($('#tbPlanPhaseList${item.id}'),${item.id})"
-                   aria-controls="v-pills-home-nobd"
-                   aria-selected="true">${item.planName}</a>
-            </c:forEach>
+<%--复核与指导工时考核--%>
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header">
+            <div class="card-head-row">
+                <div class="card-title">
+                    复核与指导工时考核
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-10 col-md-10">
-        <div class="tab-content" id="v-pills-without-border-tabContent">
-            <c:forEach items="${projectPlanList}" var="item" varStatus="status">
-                <div class="tab-pane fade" id="tabPane${item.id}" role="tabpanel"
-                     aria-labelledby="v-pills-messages-tab-nobd">
-                    <div class="card-body">
-                        <table class="table table-bordered"
-                               id="tbPlanPhaseList${item.id}"></table>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-2 col-md-2">
+                    <div id="navPlanList"
+                         class="nav flex-column nav-pills nav-secondary nav-pills-no-bd"
+                         role="tablist" aria-orientation="vertical">
+                        <c:forEach items="${projectPlanList}" var="item"
+                                   varStatus="status">
+                            <a class="nav-link show" data-toggle="pill" href="#tabPane${item.id}"
+                               role="tab"
+                               onclick="reviewScore.loadProjectPhaseList($('#tbPlanPhaseList${item.id}'),${item.id})"
+                               aria-controls="v-pills-home-nobd"
+                               aria-selected="true">${item.planName}</a>
+                        </c:forEach>
                     </div>
                 </div>
-            </c:forEach>
+                <div class="col-10 col-md-10">
+                    <div class="tab-content" id="v-pills-without-border-tabContent">
+                        <c:forEach items="${projectPlanList}" var="item" varStatus="status">
+                            <div class="tab-pane fade" id="tabPane${item.id}" role="tabpanel"
+                                 aria-labelledby="v-pills-messages-tab-nobd">
+                                <div class="card-body">
+                                    <table class="table table-bordered"
+                                           id="tbPlanPhaseList${item.id}"></table>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%--项目组织与实施考核--%>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    项目组织与实施考核
+                </div>
+                <div class="card-tools">
+                    <button class="btn  btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form id="frmReviewScore" class="form-horizontal">
+                <input type="hidden" name="id" value="${projectReviewScore.id}">
+                <table class="table mt-3">
+                    <thead>
+                    <tr>
+                        <th scope="col" width="10%">项目</th>
+                        <th scope="col" width="30%">标准</th>
+                        <th scope="col" width="10%">得分</th>
+                        <th scope="col" width="50%">说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>合同洽谈、合同签署及管理</td>
+                        <td>执行统一合同或只完成合同签署时，工时为标准分值的1/3；完成合同全过程管理为标准分值。</td>
+                        <td><input type="text" data-rule-number="true" placeholder="得分"
+                                   name="contractNegotiation" required
+                                   class="form-control input-full"
+                                   value="${empty projectReviewScore.contractNegotiation?0.3:projectReviewScore.contractNegotiation}">
+                        </td>
+                        <td><input type="text" placeholder="说明"
+                                   name="contractNegotiationExplain"
+                                   class="form-control input-full"
+                                   value="${projectReviewScore.contractNegotiationExplain}"></td>
+                    </tr>
+                    <tr>
+                        <td>客户活动、客户拜访、客户设诉、客户关怀</td>
+                        <td>参与具体客户的客户活动、客户拜访、客户设诉、客户关怀，参与其中的任意一项且符合要求，得标准分值的1/4。</td>
+                        <td><input type="text" data-rule-number="true" placeholder="得分"
+                                   name="customerActivities" required
+                                   class="form-control input-full"
+                                   value="${empty projectReviewScore.customerActivities?0.2:projectReviewScore.customerActivities}">
+                        </td>
+                        <td><input type="text" placeholder="说明"
+                                   name="customerActivitiesExplain"
+                                   class="form-control input-full"
+                                   value="${projectReviewScore.customerActivitiesExplain}"></td>
+                    </tr>
+                    <tr>
+                        <td>人员分工、时间安排、费用管理</td>
+                        <td>
+                            人员分工、时间安排、外勤、费用管理各占标准工时分值的1/4,如果项目超时、或不符合费用管理要求，本项工时分为零；如果项目组长、或项目经理实施全部工作、助理人员仅实施项目辅助工作，如申报、清查、他权、客户客理中的合同、客户关系等，本项目不计分值。
+                        </td>
+                        <td><input type="text" data-rule-number="true" placeholder="得分"
+                                   name="workDivision" required
+                                   class="form-control input-full"
+                                   value="${empty projectReviewScore.workDivision?0.4:projectReviewScore.workDivision}">
+                        </td>
+                        <td><input type="text" placeholder="说明"
+                                   name="workDivisionExplain"
+                                   class="form-control input-full"
+                                   value="${projectReviewScore.workDivisionExplain}"></td>
+                    </tr>
+                    <tr>
+                        <td>开票、收款完成且与会计核对一致</td>
+                        <td>开标40%，送票或推送20%，崔收与核对40%。</td>
+                        <td><input type="text" data-rule-number="true" placeholder="得分"
+                                   name="invoiceCollection" required
+                                   class="form-control input-full"
+                                   value="${empty projectReviewScore.invoiceCollection?0.2:projectReviewScore.invoiceCollection}">
+                        </td>
+                        <td><input type="text" placeholder="说明"
+                                   name="invoiceCollectionExplain"
+                                   class="form-control input-full"
+                                   value="${projectReviewScore.invoiceCollectionExplain}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
         </div>
     </div>
 </div>

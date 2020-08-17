@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -292,6 +293,526 @@ public class ProjectReviewScoreExample {
 
         public Criteria andProjectNameNotBetween(String value1, String value2) {
             addCriterion("project_name not between", value1, value2, "projectName");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationIsNull() {
+            addCriterion("contract_negotiation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationIsNotNull() {
+            addCriterion("contract_negotiation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationEqualTo(BigDecimal value) {
+            addCriterion("contract_negotiation =", value, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationNotEqualTo(BigDecimal value) {
+            addCriterion("contract_negotiation <>", value, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationGreaterThan(BigDecimal value) {
+            addCriterion("contract_negotiation >", value, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("contract_negotiation >=", value, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationLessThan(BigDecimal value) {
+            addCriterion("contract_negotiation <", value, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("contract_negotiation <=", value, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationIn(List<BigDecimal> values) {
+            addCriterion("contract_negotiation in", values, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationNotIn(List<BigDecimal> values) {
+            addCriterion("contract_negotiation not in", values, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("contract_negotiation between", value1, value2, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("contract_negotiation not between", value1, value2, "contractNegotiation");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainIsNull() {
+            addCriterion("contract_negotiation_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainIsNotNull() {
+            addCriterion("contract_negotiation_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainEqualTo(String value) {
+            addCriterion("contract_negotiation_explain =", value, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainNotEqualTo(String value) {
+            addCriterion("contract_negotiation_explain <>", value, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainGreaterThan(String value) {
+            addCriterion("contract_negotiation_explain >", value, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("contract_negotiation_explain >=", value, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainLessThan(String value) {
+            addCriterion("contract_negotiation_explain <", value, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainLessThanOrEqualTo(String value) {
+            addCriterion("contract_negotiation_explain <=", value, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainLike(String value) {
+            addCriterion("contract_negotiation_explain like", value, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainNotLike(String value) {
+            addCriterion("contract_negotiation_explain not like", value, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainIn(List<String> values) {
+            addCriterion("contract_negotiation_explain in", values, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainNotIn(List<String> values) {
+            addCriterion("contract_negotiation_explain not in", values, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainBetween(String value1, String value2) {
+            addCriterion("contract_negotiation_explain between", value1, value2, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractNegotiationExplainNotBetween(String value1, String value2) {
+            addCriterion("contract_negotiation_explain not between", value1, value2, "contractNegotiationExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesIsNull() {
+            addCriterion("customer_activities is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesIsNotNull() {
+            addCriterion("customer_activities is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesEqualTo(BigDecimal value) {
+            addCriterion("customer_activities =", value, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesNotEqualTo(BigDecimal value) {
+            addCriterion("customer_activities <>", value, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesGreaterThan(BigDecimal value) {
+            addCriterion("customer_activities >", value, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("customer_activities >=", value, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesLessThan(BigDecimal value) {
+            addCriterion("customer_activities <", value, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("customer_activities <=", value, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesIn(List<BigDecimal> values) {
+            addCriterion("customer_activities in", values, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesNotIn(List<BigDecimal> values) {
+            addCriterion("customer_activities not in", values, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("customer_activities between", value1, value2, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("customer_activities not between", value1, value2, "customerActivities");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainIsNull() {
+            addCriterion("customer_activities_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainIsNotNull() {
+            addCriterion("customer_activities_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainEqualTo(String value) {
+            addCriterion("customer_activities_explain =", value, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainNotEqualTo(String value) {
+            addCriterion("customer_activities_explain <>", value, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainGreaterThan(String value) {
+            addCriterion("customer_activities_explain >", value, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("customer_activities_explain >=", value, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainLessThan(String value) {
+            addCriterion("customer_activities_explain <", value, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainLessThanOrEqualTo(String value) {
+            addCriterion("customer_activities_explain <=", value, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainLike(String value) {
+            addCriterion("customer_activities_explain like", value, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainNotLike(String value) {
+            addCriterion("customer_activities_explain not like", value, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainIn(List<String> values) {
+            addCriterion("customer_activities_explain in", values, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainNotIn(List<String> values) {
+            addCriterion("customer_activities_explain not in", values, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainBetween(String value1, String value2) {
+            addCriterion("customer_activities_explain between", value1, value2, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomerActivitiesExplainNotBetween(String value1, String value2) {
+            addCriterion("customer_activities_explain not between", value1, value2, "customerActivitiesExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionIsNull() {
+            addCriterion("work_division is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionIsNotNull() {
+            addCriterion("work_division is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionEqualTo(BigDecimal value) {
+            addCriterion("work_division =", value, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionNotEqualTo(BigDecimal value) {
+            addCriterion("work_division <>", value, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionGreaterThan(BigDecimal value) {
+            addCriterion("work_division >", value, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("work_division >=", value, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionLessThan(BigDecimal value) {
+            addCriterion("work_division <", value, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("work_division <=", value, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionIn(List<BigDecimal> values) {
+            addCriterion("work_division in", values, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionNotIn(List<BigDecimal> values) {
+            addCriterion("work_division not in", values, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("work_division between", value1, value2, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("work_division not between", value1, value2, "workDivision");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainIsNull() {
+            addCriterion("work_division_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainIsNotNull() {
+            addCriterion("work_division_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainEqualTo(String value) {
+            addCriterion("work_division_explain =", value, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainNotEqualTo(String value) {
+            addCriterion("work_division_explain <>", value, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainGreaterThan(String value) {
+            addCriterion("work_division_explain >", value, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("work_division_explain >=", value, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainLessThan(String value) {
+            addCriterion("work_division_explain <", value, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainLessThanOrEqualTo(String value) {
+            addCriterion("work_division_explain <=", value, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainLike(String value) {
+            addCriterion("work_division_explain like", value, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainNotLike(String value) {
+            addCriterion("work_division_explain not like", value, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainIn(List<String> values) {
+            addCriterion("work_division_explain in", values, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainNotIn(List<String> values) {
+            addCriterion("work_division_explain not in", values, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainBetween(String value1, String value2) {
+            addCriterion("work_division_explain between", value1, value2, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkDivisionExplainNotBetween(String value1, String value2) {
+            addCriterion("work_division_explain not between", value1, value2, "workDivisionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionIsNull() {
+            addCriterion("invoice_collection is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionIsNotNull() {
+            addCriterion("invoice_collection is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionEqualTo(BigDecimal value) {
+            addCriterion("invoice_collection =", value, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionNotEqualTo(BigDecimal value) {
+            addCriterion("invoice_collection <>", value, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionGreaterThan(BigDecimal value) {
+            addCriterion("invoice_collection >", value, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("invoice_collection >=", value, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionLessThan(BigDecimal value) {
+            addCriterion("invoice_collection <", value, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("invoice_collection <=", value, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionIn(List<BigDecimal> values) {
+            addCriterion("invoice_collection in", values, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionNotIn(List<BigDecimal> values) {
+            addCriterion("invoice_collection not in", values, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("invoice_collection between", value1, value2, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("invoice_collection not between", value1, value2, "invoiceCollection");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainIsNull() {
+            addCriterion("invoice_collection_explain is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainIsNotNull() {
+            addCriterion("invoice_collection_explain is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainEqualTo(String value) {
+            addCriterion("invoice_collection_explain =", value, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainNotEqualTo(String value) {
+            addCriterion("invoice_collection_explain <>", value, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainGreaterThan(String value) {
+            addCriterion("invoice_collection_explain >", value, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainGreaterThanOrEqualTo(String value) {
+            addCriterion("invoice_collection_explain >=", value, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainLessThan(String value) {
+            addCriterion("invoice_collection_explain <", value, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainLessThanOrEqualTo(String value) {
+            addCriterion("invoice_collection_explain <=", value, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainLike(String value) {
+            addCriterion("invoice_collection_explain like", value, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainNotLike(String value) {
+            addCriterion("invoice_collection_explain not like", value, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainIn(List<String> values) {
+            addCriterion("invoice_collection_explain in", values, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainNotIn(List<String> values) {
+            addCriterion("invoice_collection_explain not in", values, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainBetween(String value1, String value2) {
+            addCriterion("invoice_collection_explain between", value1, value2, "invoiceCollectionExplain");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvoiceCollectionExplainNotBetween(String value1, String value2) {
+            addCriterion("invoice_collection_explain not between", value1, value2, "invoiceCollectionExplain");
             return (Criteria) this;
         }
 
