@@ -57,6 +57,7 @@ public class BasicHouseRoomDao {
     public int countByHouseId(Integer houseId) {
         BasicHouseRoomExample example = new BasicHouseRoomExample();
         example.createCriteria().andBisDeleteEqualTo(false).andHouseIdEqualTo(houseId);
-        return basicHouseRoomMapper.countByExample(example);
+        long count = basicHouseRoomMapper.countByExample(example);
+        return (int)count;
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface BasicHouseCorollaryEquipmentMapper {
-    int countByExample(BasicHouseCorollaryEquipmentExample example);
+    long countByExample(BasicHouseCorollaryEquipmentExample example);
 
     int deleteByExample(BasicHouseCorollaryEquipmentExample example);
 
@@ -14,17 +14,21 @@ public interface BasicHouseCorollaryEquipmentMapper {
 
     int insert(BasicHouseCorollaryEquipment record);
 
-    int insertSelective(BasicHouseCorollaryEquipment record);
+    int insertSelective(@Param("record") BasicHouseCorollaryEquipment record, @Param("selective") BasicHouseCorollaryEquipment.Column ... selective);
 
     List<BasicHouseCorollaryEquipment> selectByExample(BasicHouseCorollaryEquipmentExample example);
 
     BasicHouseCorollaryEquipment selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") BasicHouseCorollaryEquipment record, @Param("example") BasicHouseCorollaryEquipmentExample example);
+    int updateByExampleSelective(@Param("record") BasicHouseCorollaryEquipment record, @Param("example") BasicHouseCorollaryEquipmentExample example, @Param("selective") BasicHouseCorollaryEquipment.Column ... selective);
 
     int updateByExample(@Param("record") BasicHouseCorollaryEquipment record, @Param("example") BasicHouseCorollaryEquipmentExample example);
 
-    int updateByPrimaryKeySelective(BasicHouseCorollaryEquipment record);
+    int updateByPrimaryKeySelective(@Param("record") BasicHouseCorollaryEquipment record, @Param("selective") BasicHouseCorollaryEquipment.Column ... selective);
 
     int updateByPrimaryKey(BasicHouseCorollaryEquipment record);
+
+    int batchInsert(@Param("list") List<BasicHouseCorollaryEquipment> list);
+
+    int batchInsertSelective(@Param("list") List<BasicHouseCorollaryEquipment> list, @Param("selective") BasicHouseCorollaryEquipment.Column ... selective);
 }

@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class BasicHouseRoomExample {
+    /**
+     * tb_basic_house_room
+     */
     protected String orderByClause;
 
+    /**
+     * tb_basic_house_room
+     */
     protected boolean distinct;
 
+    /**
+     * tb_basic_house_room
+     */
     protected List<Criteria> oredCriteria;
 
     public BasicHouseRoomExample() {
@@ -65,6 +74,9 @@ public class BasicHouseRoomExample {
         distinct = false;
     }
 
+    /**
+     * tb_basic_house_room
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -2335,6 +2347,76 @@ public class BasicHouseRoomExample {
             addCriterion("shape_remark not between", value1, value2, "shapeRemark");
             return (Criteria) this;
         }
+
+        public Criteria andSpecialFactorsIsNull() {
+            addCriterion("special_factors is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsIsNotNull() {
+            addCriterion("special_factors is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsEqualTo(String value) {
+            addCriterion("special_factors =", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsNotEqualTo(String value) {
+            addCriterion("special_factors <>", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsGreaterThan(String value) {
+            addCriterion("special_factors >", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsGreaterThanOrEqualTo(String value) {
+            addCriterion("special_factors >=", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsLessThan(String value) {
+            addCriterion("special_factors <", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsLessThanOrEqualTo(String value) {
+            addCriterion("special_factors <=", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsLike(String value) {
+            addCriterion("special_factors like", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsNotLike(String value) {
+            addCriterion("special_factors not like", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsIn(List<String> values) {
+            addCriterion("special_factors in", values, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsNotIn(List<String> values) {
+            addCriterion("special_factors not in", values, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsBetween(String value1, String value2) {
+            addCriterion("special_factors between", value1, value2, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsNotBetween(String value1, String value2) {
+            addCriterion("special_factors not between", value1, value2, "specialFactors");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
@@ -2344,6 +2426,9 @@ public class BasicHouseRoomExample {
         }
     }
 
+    /**
+     * tb_basic_house_room
+     */
     public static class Criterion {
         private String condition;
 

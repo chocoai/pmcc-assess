@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class BasicHouseCorollaryEquipmentExample {
+    /**
+     * tb_basic_house_corollary_equipment
+     */
     protected String orderByClause;
 
+    /**
+     * tb_basic_house_corollary_equipment
+     */
     protected boolean distinct;
 
+    /**
+     * tb_basic_house_corollary_equipment
+     */
     protected List<Criteria> oredCriteria;
 
     public BasicHouseCorollaryEquipmentExample() {
@@ -64,6 +73,9 @@ public class BasicHouseCorollaryEquipmentExample {
         distinct = false;
     }
 
+    /**
+     * tb_basic_house_corollary_equipment
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -615,6 +627,76 @@ public class BasicHouseCorollaryEquipmentExample {
             return (Criteria) this;
         }
 
+        public Criteria andLocationIsNull() {
+            addCriterion("location is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIsNotNull() {
+            addCriterion("location is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationEqualTo(String value) {
+            addCriterion("location =", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotEqualTo(String value) {
+            addCriterion("location <>", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationGreaterThan(String value) {
+            addCriterion("location >", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationGreaterThanOrEqualTo(String value) {
+            addCriterion("location >=", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLessThan(String value) {
+            addCriterion("location <", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLessThanOrEqualTo(String value) {
+            addCriterion("location <=", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationLike(String value) {
+            addCriterion("location like", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotLike(String value) {
+            addCriterion("location not like", value, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationIn(List<String> values) {
+            addCriterion("location in", values, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotIn(List<String> values) {
+            addCriterion("location not in", values, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationBetween(String value1, String value2) {
+            addCriterion("location between", value1, value2, "location");
+            return (Criteria) this;
+        }
+
+        public Criteria andLocationNotBetween(String value1, String value2) {
+            addCriterion("location not between", value1, value2, "location");
+            return (Criteria) this;
+        }
+
         public Criteria andMaintenanceStatusIsNull() {
             addCriterion("maintenance_status is null");
             return (Criteria) this;
@@ -933,6 +1015,9 @@ public class BasicHouseCorollaryEquipmentExample {
         }
     }
 
+    /**
+     * tb_basic_house_corollary_equipment
+     */
     public static class Criterion {
         private String condition;
 

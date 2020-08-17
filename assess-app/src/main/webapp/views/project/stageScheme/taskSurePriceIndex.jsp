@@ -1316,6 +1316,57 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div style="display: none" class="row form-group residence">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                房间形状<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select  name='houseShape'
+                                                         class='form-control input-full' required>
+                                                    <option value="">-请选择-</option>
+                                                    <option value="矩形">矩形</option>
+                                                    <option value="正方形">正方形</option>
+                                                    <option value="L型">L型</option>
+                                                    <option value="方形弧形组合">方形弧形组合</option>
+                                                    <option value="规则多边形">规则多边形</option>
+                                                    <option value="不规则">不规则</option>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                特殊因素
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="特殊因素"
+                                                       name="specialFactors" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group residence">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                层高(m)
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="number" data-rule-number="true" placeholder="层高"
+                                                           name="layerHeight" class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu layerHeightList" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <%-- 商铺、商场--%>
                                 <div style="display: none" class="row form-group store">
                                     <div class="col-md-12">

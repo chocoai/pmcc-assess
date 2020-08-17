@@ -20,8 +20,7 @@
             <form class="form-horizontal">
                 <p>
                     <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                            data-toggle="modal" onclick="houseRoom.prototype.showModel()"
-                            href="#divBoxHouseRoom">
+                            data-toggle="modal" onclick="houseRoom.prototype.showModel()">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
@@ -101,7 +100,7 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                形状说明
+                                                形状说明<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="形状说明" required
@@ -132,7 +131,7 @@
                                                                 type="button" data-toggle="dropdown"
                                                                 aria-haspopup="true" aria-expanded="false">选择
                                                         </button>
-                                                        <div class="dropdown-menu" id="layerHeightList">
+                                                        <div class="dropdown-menu layerHeightList" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -166,6 +165,19 @@
                                             <div class="col-sm-4  common">
                                                 <input type="text" placeholder="所在楼层" name="currentFloor"
                                                        class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group common">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                特殊因素
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="特殊因素"
+                                                       name="specialFactors" class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>

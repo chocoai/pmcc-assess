@@ -448,7 +448,7 @@
             if (tenementType == '仓储') {
                 temp = "storage";
             }
-            var columns = [];
+            var columns = [{key:"houseShape",value:"房间形状"},{key:"shapeRemark",value:"形状说明"},{key:"specialFactors",value:"特殊因素"}];
 
             $("#" + houseHuxingPrice.prototype.config().frm).find("."+temp).find(".control-label").each(function () {
                 var column = {};
