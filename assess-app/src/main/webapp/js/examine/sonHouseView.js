@@ -1948,10 +1948,7 @@ var houseRoomDecorate;
                     if (result.ret) {
                         if (houseRoomDecorate.prototype.isNotBlank(result.data)) {
                             houseRoomDecorate.prototype.getLocationHtml(result.data)
-                        } else {
-
                         }
-                        $('#' + houseRoomDecorate.prototype.config().box).modal("show");//
                     }
                 },
                 error: function (result) {
@@ -1961,7 +1958,7 @@ var houseRoomDecorate;
 
         },
         getLocationHtml :function(resultData) {
-            var target = $("#frmLocation").find(".card-body");
+            var target = $("#frmLocation").find(".customer_body");
             target.empty();
             var resultHtml = '<div>';
             var divLength = Math.ceil(resultData.length / 6);
@@ -1980,10 +1977,7 @@ var houseRoomDecorate;
                 resultHtml += "</div>";
                 resultHtml += "</div>";
             }
-
             target.append(resultHtml);
-
-
             var value = $("#" + houseRoomDecorate.prototype.config().frm).find("input[name='location']").val();
             if (houseRoomDecorate.prototype.isNotBlank(value)) {
                 var valueArray = value.split(",");
@@ -1991,19 +1985,6 @@ var houseRoomDecorate;
                 AssessCommon.checkboxToChecked(checkboxs, valueArray);
             }
             $("#divBoxLocation").modal("show");
-        },
-        saveDecoratePart: function () {
-            var checkedBoxs = $("#frmDecoratePart").find('input:checkbox:checked');
-            if (checkedBoxs.length <= 0) {
-                notifyInfo('提示', '至少选择一个');
-                return false;
-            }
-            var data = [];
-            checkedBoxs.each(function () {
-                data.push($(this).val());
-            })
-            $("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val(data.join());
-            $("#divBoxDecoratePart").modal("hide");
         },
         spliceLocation: function () {
             var value = [];

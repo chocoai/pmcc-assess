@@ -176,49 +176,7 @@
     </div>
 </div>
 
-<div id="divBoxDecoratePart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">装修部位</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
 
-            <div class="modal-body">
-                <form id="frmDecoratePart" class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-sm-12">
-                                                <div id="industrySupplyInfoContainer"></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm"
-                        onclick="houseRoomDecorate.prototype.saveDecoratePart()">
-                    保存
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
 <div id="divBoxLocation" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -233,7 +191,7 @@
                 <form id="frmLocation" class="form-horizontal">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card-body">
+                            <div class="customer_body">
 
                             </div>
                         </div>

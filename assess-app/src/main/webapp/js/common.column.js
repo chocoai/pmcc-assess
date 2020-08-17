@@ -972,6 +972,7 @@ commonColumn.houseCorollaryEquipmentColumn = function () {
     cols.push({field: 'maintenanceStatusName', title: '维护状况'});
     cols.push({field: 'parameterIndex', title: '参数指标'});
     cols.push({field: 'price', title: '价格'});
+    cols.push({field: 'location', title: '位置'});
     cols.push({field: 'fileViewName', title: '附件'});
     return cols;
 }
