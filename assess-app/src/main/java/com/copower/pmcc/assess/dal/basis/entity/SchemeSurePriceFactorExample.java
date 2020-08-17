@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class SchemeSurePriceFactorExample {
+    /**
+     * tb_scheme_sure_price_factor
+     */
     protected String orderByClause;
 
+    /**
+     * tb_scheme_sure_price_factor
+     */
     protected boolean distinct;
 
+    /**
+     * tb_scheme_sure_price_factor
+     */
     protected List<Criteria> oredCriteria;
 
     public SchemeSurePriceFactorExample() {
@@ -65,6 +74,9 @@ public class SchemeSurePriceFactorExample {
         distinct = false;
     }
 
+    /**
+     * tb_scheme_sure_price_factor
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -744,6 +756,9 @@ public class SchemeSurePriceFactorExample {
         }
     }
 
+    /**
+     * tb_scheme_sure_price_factor
+     */
     public static class Criterion {
         private String condition;
 

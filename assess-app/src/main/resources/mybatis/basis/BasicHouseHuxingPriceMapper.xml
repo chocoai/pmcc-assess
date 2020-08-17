@@ -1,60 +1,66 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseHuxingPriceMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="huxing_id" property="huxingId" jdbcType="INTEGER" />
-    <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
-    <result column="area" property="area" jdbcType="DECIMAL" />
-    <result column="floor" property="floor" jdbcType="VARCHAR" />
-    <result column="adjust_factor" property="adjustFactor" jdbcType="VARCHAR" />
-    <result column="json_data" property="jsonData" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
-    <result column="declare_name" property="declareName" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="aeration" property="aeration" jdbcType="VARCHAR" />
-    <result column="lighting" property="lighting" jdbcType="VARCHAR" />
-    <result column="sunshine" property="sunshine" jdbcType="VARCHAR" />
-    <result column="sound_insulation" property="soundInsulation" jdbcType="VARCHAR" />
-    <result column="length" property="length" jdbcType="VARCHAR" />
-    <result column="width" property="width" jdbcType="VARCHAR" />
-    <result column="adjacent_position" property="adjacentPosition" jdbcType="VARCHAR" />
-    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
-    <result column="opening" property="opening" jdbcType="VARCHAR" />
-    <result column="depth" property="depth" jdbcType="VARCHAR" />
-    <result column="distance" property="distance" jdbcType="VARCHAR" />
-    <result column="span_length" property="spanLength" jdbcType="VARCHAR" />
-    <result column="span_num" property="spanNum" jdbcType="VARCHAR" />
-    <result column="max_span" property="maxSpan" jdbcType="VARCHAR" />
-    <result column="min_span" property="minSpan" jdbcType="VARCHAR" />
-    <result column="standard_span" property="standardSpan" jdbcType="VARCHAR" />
-    <result column="standard_measure" property="standardMeasure" jdbcType="VARCHAR" />
-    <result column="storage_request" property="storageRequest" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseHuxingPriceMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="huxing_id" jdbcType="INTEGER" property="huxingId" />
+    <result column="house_id" jdbcType="INTEGER" property="houseId" />
+    <result column="house_number" jdbcType="VARCHAR" property="houseNumber" />
+    <result column="area" jdbcType="DECIMAL" property="area" />
+    <result column="floor" jdbcType="VARCHAR" property="floor" />
+    <result column="adjust_factor" jdbcType="VARCHAR" property="adjustFactor" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="declare_id" jdbcType="INTEGER" property="declareId" />
+    <result column="declare_name" jdbcType="VARCHAR" property="declareName" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="aeration" jdbcType="VARCHAR" property="aeration" />
+    <result column="lighting" jdbcType="VARCHAR" property="lighting" />
+    <result column="sunshine" jdbcType="VARCHAR" property="sunshine" />
+    <result column="sound_insulation" jdbcType="VARCHAR" property="soundInsulation" />
+    <result column="length" jdbcType="VARCHAR" property="length" />
+    <result column="width" jdbcType="VARCHAR" property="width" />
+    <result column="adjacent_position" jdbcType="VARCHAR" property="adjacentPosition" />
+    <result column="orientation" jdbcType="VARCHAR" property="orientation" />
+    <result column="opening" jdbcType="VARCHAR" property="opening" />
+    <result column="depth" jdbcType="VARCHAR" property="depth" />
+    <result column="distance" jdbcType="VARCHAR" property="distance" />
+    <result column="span_length" jdbcType="VARCHAR" property="spanLength" />
+    <result column="span_num" jdbcType="VARCHAR" property="spanNum" />
+    <result column="max_span" jdbcType="VARCHAR" property="maxSpan" />
+    <result column="min_span" jdbcType="VARCHAR" property="minSpan" />
+    <result column="standard_span" jdbcType="VARCHAR" property="standardSpan" />
+    <result column="standard_measure" jdbcType="VARCHAR" property="standardMeasure" />
+    <result column="storage_request" jdbcType="VARCHAR" property="storageRequest" />
+    <result column="special_factors" jdbcType="VARCHAR" property="specialFactors" />
+    <result column="house_shape" jdbcType="VARCHAR" property="houseShape" />
+    <result column="shape_remark" jdbcType="VARCHAR" property="shapeRemark" />
+    <result column="layer_height" jdbcType="DECIMAL" property="layerHeight" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice">
+    <result column="json_data" jdbcType="LONGVARCHAR" property="jsonData" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -65,25 +71,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -94,386 +100,477 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
-    id, huxing_id, house_id, house_number, area, floor, adjust_factor, json_data, price, 
-    remark, declare_id, declare_name, creator, gmt_created, gmt_modified, aeration, lighting, 
+  <sql id="Base_Column_List">
+    id, huxing_id, house_id, house_number, area, floor, adjust_factor, price, remark, 
+    declare_id, declare_name, creator, gmt_created, gmt_modified, aeration, lighting, 
     sunshine, sound_insulation, length, width, adjacent_position, orientation, opening, 
     depth, distance, span_length, span_num, max_span, min_span, standard_span, standard_measure, 
-    storage_request
+    storage_request, special_factors, house_shape, shape_remark, layer_height
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" >
+  <sql id="Blob_Column_List">
+    json_data
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" resultMap="ResultMapWithBLOBs">
     select
-    <if test="distinct" >
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_basic_house_huxing_price
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_basic_house_huxing_price
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_basic_house_huxing_price
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_basic_house_huxing_price
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample">
     delete from tb_basic_house_huxing_price
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_huxing_price (huxing_id, house_id, house_number, 
       area, floor, adjust_factor, 
-      json_data, price, remark, 
-      declare_id, declare_name, creator, 
-      gmt_created, gmt_modified, aeration, 
-      lighting, sunshine, sound_insulation, 
-      length, width, adjacent_position, 
-      orientation, opening, depth, 
-      distance, span_length, span_num, 
-      max_span, min_span, standard_span, 
-      standard_measure, storage_request)
+      price, remark, declare_id, 
+      declare_name, creator, gmt_created, 
+      gmt_modified, aeration, lighting, 
+      sunshine, sound_insulation, length, 
+      width, adjacent_position, orientation, 
+      opening, depth, distance, 
+      span_length, span_num, max_span, 
+      min_span, standard_span, standard_measure, 
+      storage_request, special_factors, house_shape, 
+      shape_remark, layer_height, json_data
+      )
     values (#{huxingId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{floor,jdbcType=VARCHAR}, #{adjustFactor,jdbcType=VARCHAR}, 
-      #{jsonData,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
-      #{declareId,jdbcType=INTEGER}, #{declareName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{aeration,jdbcType=VARCHAR}, 
-      #{lighting,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, 
-      #{length,jdbcType=VARCHAR}, #{width,jdbcType=VARCHAR}, #{adjacentPosition,jdbcType=VARCHAR}, 
-      #{orientation,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, 
-      #{distance,jdbcType=VARCHAR}, #{spanLength,jdbcType=VARCHAR}, #{spanNum,jdbcType=VARCHAR}, 
-      #{maxSpan,jdbcType=VARCHAR}, #{minSpan,jdbcType=VARCHAR}, #{standardSpan,jdbcType=VARCHAR}, 
-      #{standardMeasure,jdbcType=VARCHAR}, #{storageRequest,jdbcType=VARCHAR})
+      #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{declareId,jdbcType=INTEGER}, 
+      #{declareName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{aeration,jdbcType=VARCHAR}, #{lighting,jdbcType=VARCHAR}, 
+      #{sunshine,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{length,jdbcType=VARCHAR}, 
+      #{width,jdbcType=VARCHAR}, #{adjacentPosition,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, 
+      #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, #{distance,jdbcType=VARCHAR}, 
+      #{spanLength,jdbcType=VARCHAR}, #{spanNum,jdbcType=VARCHAR}, #{maxSpan,jdbcType=VARCHAR}, 
+      #{minSpan,jdbcType=VARCHAR}, #{standardSpan,jdbcType=VARCHAR}, #{standardMeasure,jdbcType=VARCHAR}, 
+      #{storageRequest,jdbcType=VARCHAR}, #{specialFactors,jdbcType=VARCHAR}, #{houseShape,jdbcType=VARCHAR}, 
+      #{shapeRemark,jdbcType=VARCHAR}, #{layerHeight,jdbcType=DECIMAL}, #{jsonData,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_huxing_price
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="huxingId != null" >
-        huxing_id,
-      </if>
-      <if test="houseId != null" >
-        house_id,
-      </if>
-      <if test="houseNumber != null" >
-        house_number,
-      </if>
-      <if test="area != null" >
-        area,
-      </if>
-      <if test="floor != null" >
-        floor,
-      </if>
-      <if test="adjustFactor != null" >
-        adjust_factor,
-      </if>
-      <if test="jsonData != null" >
-        json_data,
-      </if>
-      <if test="price != null" >
-        price,
-      </if>
-      <if test="remark != null" >
-        remark,
-      </if>
-      <if test="declareId != null" >
-        declare_id,
-      </if>
-      <if test="declareName != null" >
-        declare_name,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-      <if test="aeration != null" >
-        aeration,
-      </if>
-      <if test="lighting != null" >
-        lighting,
-      </if>
-      <if test="sunshine != null" >
-        sunshine,
-      </if>
-      <if test="soundInsulation != null" >
-        sound_insulation,
-      </if>
-      <if test="length != null" >
-        length,
-      </if>
-      <if test="width != null" >
-        width,
-      </if>
-      <if test="adjacentPosition != null" >
-        adjacent_position,
-      </if>
-      <if test="orientation != null" >
-        orientation,
-      </if>
-      <if test="opening != null" >
-        opening,
-      </if>
-      <if test="depth != null" >
-        depth,
-      </if>
-      <if test="distance != null" >
-        distance,
-      </if>
-      <if test="spanLength != null" >
-        span_length,
-      </if>
-      <if test="spanNum != null" >
-        span_num,
-      </if>
-      <if test="maxSpan != null" >
-        max_span,
-      </if>
-      <if test="minSpan != null" >
-        min_span,
-      </if>
-      <if test="standardSpan != null" >
-        standard_span,
-      </if>
-      <if test="standardMeasure != null" >
-        standard_measure,
-      </if>
-      <if test="storageRequest != null" >
-        storage_request,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="huxingId != null" >
-        #{huxingId,jdbcType=INTEGER},
-      </if>
-      <if test="houseId != null" >
-        #{houseId,jdbcType=INTEGER},
-      </if>
-      <if test="houseNumber != null" >
-        #{houseNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="area != null" >
-        #{area,jdbcType=DECIMAL},
-      </if>
-      <if test="floor != null" >
-        #{floor,jdbcType=VARCHAR},
-      </if>
-      <if test="adjustFactor != null" >
-        #{adjustFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="jsonData != null" >
-        #{jsonData,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="declareId != null" >
-        #{declareId,jdbcType=INTEGER},
-      </if>
-      <if test="declareName != null" >
-        #{declareName,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="aeration != null" >
-        #{aeration,jdbcType=VARCHAR},
-      </if>
-      <if test="lighting != null" >
-        #{lighting,jdbcType=VARCHAR},
-      </if>
-      <if test="sunshine != null" >
-        #{sunshine,jdbcType=VARCHAR},
-      </if>
-      <if test="soundInsulation != null" >
-        #{soundInsulation,jdbcType=VARCHAR},
-      </if>
-      <if test="length != null" >
-        #{length,jdbcType=VARCHAR},
-      </if>
-      <if test="width != null" >
-        #{width,jdbcType=VARCHAR},
-      </if>
-      <if test="adjacentPosition != null" >
-        #{adjacentPosition,jdbcType=VARCHAR},
-      </if>
-      <if test="orientation != null" >
-        #{orientation,jdbcType=VARCHAR},
-      </if>
-      <if test="opening != null" >
-        #{opening,jdbcType=VARCHAR},
-      </if>
-      <if test="depth != null" >
-        #{depth,jdbcType=VARCHAR},
-      </if>
-      <if test="distance != null" >
-        #{distance,jdbcType=VARCHAR},
-      </if>
-      <if test="spanLength != null" >
-        #{spanLength,jdbcType=VARCHAR},
-      </if>
-      <if test="spanNum != null" >
-        #{spanNum,jdbcType=VARCHAR},
-      </if>
-      <if test="maxSpan != null" >
-        #{maxSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="minSpan != null" >
-        #{minSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="standardSpan != null" >
-        #{standardSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="standardMeasure != null" >
-        #{standardMeasure,jdbcType=VARCHAR},
-      </if>
-      <if test="storageRequest != null" >
-        #{storageRequest,jdbcType=VARCHAR},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.huxingId != null">
+            huxing_id,
+          </if>
+          <if test="record.houseId != null">
+            house_id,
+          </if>
+          <if test="record.houseNumber != null">
+            house_number,
+          </if>
+          <if test="record.area != null">
+            area,
+          </if>
+          <if test="record.floor != null">
+            floor,
+          </if>
+          <if test="record.adjustFactor != null">
+            adjust_factor,
+          </if>
+          <if test="record.price != null">
+            price,
+          </if>
+          <if test="record.remark != null">
+            remark,
+          </if>
+          <if test="record.declareId != null">
+            declare_id,
+          </if>
+          <if test="record.declareName != null">
+            declare_name,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+          <if test="record.aeration != null">
+            aeration,
+          </if>
+          <if test="record.lighting != null">
+            lighting,
+          </if>
+          <if test="record.sunshine != null">
+            sunshine,
+          </if>
+          <if test="record.soundInsulation != null">
+            sound_insulation,
+          </if>
+          <if test="record.length != null">
+            length,
+          </if>
+          <if test="record.width != null">
+            width,
+          </if>
+          <if test="record.adjacentPosition != null">
+            adjacent_position,
+          </if>
+          <if test="record.orientation != null">
+            orientation,
+          </if>
+          <if test="record.opening != null">
+            opening,
+          </if>
+          <if test="record.depth != null">
+            depth,
+          </if>
+          <if test="record.distance != null">
+            distance,
+          </if>
+          <if test="record.spanLength != null">
+            span_length,
+          </if>
+          <if test="record.spanNum != null">
+            span_num,
+          </if>
+          <if test="record.maxSpan != null">
+            max_span,
+          </if>
+          <if test="record.minSpan != null">
+            min_span,
+          </if>
+          <if test="record.standardSpan != null">
+            standard_span,
+          </if>
+          <if test="record.standardMeasure != null">
+            standard_measure,
+          </if>
+          <if test="record.storageRequest != null">
+            storage_request,
+          </if>
+          <if test="record.specialFactors != null">
+            special_factors,
+          </if>
+          <if test="record.houseShape != null">
+            house_shape,
+          </if>
+          <if test="record.shapeRemark != null">
+            shape_remark,
+          </if>
+          <if test="record.layerHeight != null">
+            layer_height,
+          </if>
+          <if test="record.jsonData != null">
+            json_data,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.huxingId != null">
+            #{record.huxingId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseId != null">
+            #{record.houseId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseNumber != null">
+            #{record.houseNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.area != null">
+            #{record.area,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floor != null">
+            #{record.floor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.adjustFactor != null">
+            #{record.adjustFactor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.price != null">
+            #{record.price,jdbcType=DECIMAL},
+          </if>
+          <if test="record.remark != null">
+            #{record.remark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.declareId != null">
+            #{record.declareId,jdbcType=INTEGER},
+          </if>
+          <if test="record.declareName != null">
+            #{record.declareName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.aeration != null">
+            #{record.aeration,jdbcType=VARCHAR},
+          </if>
+          <if test="record.lighting != null">
+            #{record.lighting,jdbcType=VARCHAR},
+          </if>
+          <if test="record.sunshine != null">
+            #{record.sunshine,jdbcType=VARCHAR},
+          </if>
+          <if test="record.soundInsulation != null">
+            #{record.soundInsulation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.length != null">
+            #{record.length,jdbcType=VARCHAR},
+          </if>
+          <if test="record.width != null">
+            #{record.width,jdbcType=VARCHAR},
+          </if>
+          <if test="record.adjacentPosition != null">
+            #{record.adjacentPosition,jdbcType=VARCHAR},
+          </if>
+          <if test="record.orientation != null">
+            #{record.orientation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.opening != null">
+            #{record.opening,jdbcType=VARCHAR},
+          </if>
+          <if test="record.depth != null">
+            #{record.depth,jdbcType=VARCHAR},
+          </if>
+          <if test="record.distance != null">
+            #{record.distance,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spanLength != null">
+            #{record.spanLength,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spanNum != null">
+            #{record.spanNum,jdbcType=VARCHAR},
+          </if>
+          <if test="record.maxSpan != null">
+            #{record.maxSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.minSpan != null">
+            #{record.minSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardSpan != null">
+            #{record.standardSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardMeasure != null">
+            #{record.standardMeasure,jdbcType=VARCHAR},
+          </if>
+          <if test="record.storageRequest != null">
+            #{record.storageRequest,jdbcType=VARCHAR},
+          </if>
+          <if test="record.specialFactors != null">
+            #{record.specialFactors,jdbcType=VARCHAR},
+          </if>
+          <if test="record.houseShape != null">
+            #{record.houseShape,jdbcType=VARCHAR},
+          </if>
+          <if test="record.shapeRemark != null">
+            #{record.shapeRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.layerHeight != null">
+            #{record.layerHeight,jdbcType=DECIMAL},
+          </if>
+          <if test="record.jsonData != null">
+            #{record.jsonData,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" resultType="java.lang.Long">
     select count(*) from tb_basic_house_huxing_price
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_basic_house_huxing_price
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.huxingId != null" >
-        huxing_id = #{record.huxingId,jdbcType=INTEGER},
-      </if>
-      <if test="record.houseId != null" >
-        house_id = #{record.houseId,jdbcType=INTEGER},
-      </if>
-      <if test="record.houseNumber != null" >
-        house_number = #{record.houseNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.area != null" >
-        area = #{record.area,jdbcType=DECIMAL},
-      </if>
-      <if test="record.floor != null" >
-        floor = #{record.floor,jdbcType=VARCHAR},
-      </if>
-      <if test="record.adjustFactor != null" >
-        adjust_factor = #{record.adjustFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="record.jsonData != null" >
-        json_data = #{record.jsonData,jdbcType=VARCHAR},
-      </if>
-      <if test="record.price != null" >
-        price = #{record.price,jdbcType=DECIMAL},
-      </if>
-      <if test="record.remark != null" >
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.declareId != null" >
-        declare_id = #{record.declareId,jdbcType=INTEGER},
-      </if>
-      <if test="record.declareName != null" >
-        declare_name = #{record.declareName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.aeration != null" >
-        aeration = #{record.aeration,jdbcType=VARCHAR},
-      </if>
-      <if test="record.lighting != null" >
-        lighting = #{record.lighting,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sunshine != null" >
-        sunshine = #{record.sunshine,jdbcType=VARCHAR},
-      </if>
-      <if test="record.soundInsulation != null" >
-        sound_insulation = #{record.soundInsulation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.length != null" >
-        length = #{record.length,jdbcType=VARCHAR},
-      </if>
-      <if test="record.width != null" >
-        width = #{record.width,jdbcType=VARCHAR},
-      </if>
-      <if test="record.adjacentPosition != null" >
-        adjacent_position = #{record.adjacentPosition,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orientation != null" >
-        orientation = #{record.orientation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.opening != null" >
-        opening = #{record.opening,jdbcType=VARCHAR},
-      </if>
-      <if test="record.depth != null" >
-        depth = #{record.depth,jdbcType=VARCHAR},
-      </if>
-      <if test="record.distance != null" >
-        distance = #{record.distance,jdbcType=VARCHAR},
-      </if>
-      <if test="record.spanLength != null" >
-        span_length = #{record.spanLength,jdbcType=VARCHAR},
-      </if>
-      <if test="record.spanNum != null" >
-        span_num = #{record.spanNum,jdbcType=VARCHAR},
-      </if>
-      <if test="record.maxSpan != null" >
-        max_span = #{record.maxSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="record.minSpan != null" >
-        min_span = #{record.minSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="record.standardSpan != null" >
-        standard_span = #{record.standardSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="record.standardMeasure != null" >
-        standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
-      </if>
-      <if test="record.storageRequest != null" >
-        storage_request = #{record.storageRequest,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.huxingId != null">
+            huxing_id = #{record.huxingId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseId != null">
+            house_id = #{record.houseId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseNumber != null">
+            house_number = #{record.houseNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.area != null">
+            area = #{record.area,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floor != null">
+            floor = #{record.floor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.adjustFactor != null">
+            adjust_factor = #{record.adjustFactor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.price != null">
+            price = #{record.price,jdbcType=DECIMAL},
+          </if>
+          <if test="record.remark != null">
+            remark = #{record.remark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.declareId != null">
+            declare_id = #{record.declareId,jdbcType=INTEGER},
+          </if>
+          <if test="record.declareName != null">
+            declare_name = #{record.declareName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.aeration != null">
+            aeration = #{record.aeration,jdbcType=VARCHAR},
+          </if>
+          <if test="record.lighting != null">
+            lighting = #{record.lighting,jdbcType=VARCHAR},
+          </if>
+          <if test="record.sunshine != null">
+            sunshine = #{record.sunshine,jdbcType=VARCHAR},
+          </if>
+          <if test="record.soundInsulation != null">
+            sound_insulation = #{record.soundInsulation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.length != null">
+            length = #{record.length,jdbcType=VARCHAR},
+          </if>
+          <if test="record.width != null">
+            width = #{record.width,jdbcType=VARCHAR},
+          </if>
+          <if test="record.adjacentPosition != null">
+            adjacent_position = #{record.adjacentPosition,jdbcType=VARCHAR},
+          </if>
+          <if test="record.orientation != null">
+            orientation = #{record.orientation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.opening != null">
+            opening = #{record.opening,jdbcType=VARCHAR},
+          </if>
+          <if test="record.depth != null">
+            depth = #{record.depth,jdbcType=VARCHAR},
+          </if>
+          <if test="record.distance != null">
+            distance = #{record.distance,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spanLength != null">
+            span_length = #{record.spanLength,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spanNum != null">
+            span_num = #{record.spanNum,jdbcType=VARCHAR},
+          </if>
+          <if test="record.maxSpan != null">
+            max_span = #{record.maxSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.minSpan != null">
+            min_span = #{record.minSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardSpan != null">
+            standard_span = #{record.standardSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardMeasure != null">
+            standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
+          </if>
+          <if test="record.storageRequest != null">
+            storage_request = #{record.storageRequest,jdbcType=VARCHAR},
+          </if>
+          <if test="record.specialFactors != null">
+            special_factors = #{record.specialFactors,jdbcType=VARCHAR},
+          </if>
+          <if test="record.houseShape != null">
+            house_shape = #{record.houseShape,jdbcType=VARCHAR},
+          </if>
+          <if test="record.shapeRemark != null">
+            shape_remark = #{record.shapeRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.layerHeight != null">
+            layer_height = #{record.layerHeight,jdbcType=DECIMAL},
+          </if>
+          <if test="record.jsonData != null">
+            json_data = #{record.jsonData,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExampleWithBLOBs" parameterType="map">
     update tb_basic_house_huxing_price
     set id = #{record.id,jdbcType=INTEGER},
       huxing_id = #{record.huxingId,jdbcType=INTEGER},
@@ -482,7 +579,6 @@
       area = #{record.area,jdbcType=DECIMAL},
       floor = #{record.floor,jdbcType=VARCHAR},
       adjust_factor = #{record.adjustFactor,jdbcType=VARCHAR},
-      json_data = #{record.jsonData,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       remark = #{record.remark,jdbcType=VARCHAR},
       declare_id = #{record.declareId,jdbcType=INTEGER},
@@ -507,114 +603,183 @@
       min_span = #{record.minSpan,jdbcType=VARCHAR},
       standard_span = #{record.standardSpan,jdbcType=VARCHAR},
       standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
-      storage_request = #{record.storageRequest,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
+      storage_request = #{record.storageRequest,jdbcType=VARCHAR},
+      special_factors = #{record.specialFactors,jdbcType=VARCHAR},
+      house_shape = #{record.houseShape,jdbcType=VARCHAR},
+      shape_remark = #{record.shapeRemark,jdbcType=VARCHAR},
+      layer_height = #{record.layerHeight,jdbcType=DECIMAL},
+      json_data = #{record.jsonData,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
+  <update id="updateByExample" parameterType="map">
     update tb_basic_house_huxing_price
-    <set >
-      <if test="huxingId != null" >
-        huxing_id = #{huxingId,jdbcType=INTEGER},
-      </if>
-      <if test="houseId != null" >
-        house_id = #{houseId,jdbcType=INTEGER},
-      </if>
-      <if test="houseNumber != null" >
-        house_number = #{houseNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="area != null" >
-        area = #{area,jdbcType=DECIMAL},
-      </if>
-      <if test="floor != null" >
-        floor = #{floor,jdbcType=VARCHAR},
-      </if>
-      <if test="adjustFactor != null" >
-        adjust_factor = #{adjustFactor,jdbcType=VARCHAR},
-      </if>
-      <if test="jsonData != null" >
-        json_data = #{jsonData,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="declareId != null" >
-        declare_id = #{declareId,jdbcType=INTEGER},
-      </if>
-      <if test="declareName != null" >
-        declare_name = #{declareName,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="aeration != null" >
-        aeration = #{aeration,jdbcType=VARCHAR},
-      </if>
-      <if test="lighting != null" >
-        lighting = #{lighting,jdbcType=VARCHAR},
-      </if>
-      <if test="sunshine != null" >
-        sunshine = #{sunshine,jdbcType=VARCHAR},
-      </if>
-      <if test="soundInsulation != null" >
-        sound_insulation = #{soundInsulation,jdbcType=VARCHAR},
-      </if>
-      <if test="length != null" >
-        length = #{length,jdbcType=VARCHAR},
-      </if>
-      <if test="width != null" >
-        width = #{width,jdbcType=VARCHAR},
-      </if>
-      <if test="adjacentPosition != null" >
-        adjacent_position = #{adjacentPosition,jdbcType=VARCHAR},
-      </if>
-      <if test="orientation != null" >
-        orientation = #{orientation,jdbcType=VARCHAR},
-      </if>
-      <if test="opening != null" >
-        opening = #{opening,jdbcType=VARCHAR},
-      </if>
-      <if test="depth != null" >
-        depth = #{depth,jdbcType=VARCHAR},
-      </if>
-      <if test="distance != null" >
-        distance = #{distance,jdbcType=VARCHAR},
-      </if>
-      <if test="spanLength != null" >
-        span_length = #{spanLength,jdbcType=VARCHAR},
-      </if>
-      <if test="spanNum != null" >
-        span_num = #{spanNum,jdbcType=VARCHAR},
-      </if>
-      <if test="maxSpan != null" >
-        max_span = #{maxSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="minSpan != null" >
-        min_span = #{minSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="standardSpan != null" >
-        standard_span = #{standardSpan,jdbcType=VARCHAR},
-      </if>
-      <if test="standardMeasure != null" >
-        standard_measure = #{standardMeasure,jdbcType=VARCHAR},
-      </if>
-      <if test="storageRequest != null" >
-        storage_request = #{storageRequest,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    set id = #{record.id,jdbcType=INTEGER},
+      huxing_id = #{record.huxingId,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=INTEGER},
+      house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=DECIMAL},
+      floor = #{record.floor,jdbcType=VARCHAR},
+      adjust_factor = #{record.adjustFactor,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      declare_name = #{record.declareName,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      aeration = #{record.aeration,jdbcType=VARCHAR},
+      lighting = #{record.lighting,jdbcType=VARCHAR},
+      sunshine = #{record.sunshine,jdbcType=VARCHAR},
+      sound_insulation = #{record.soundInsulation,jdbcType=VARCHAR},
+      length = #{record.length,jdbcType=VARCHAR},
+      width = #{record.width,jdbcType=VARCHAR},
+      adjacent_position = #{record.adjacentPosition,jdbcType=VARCHAR},
+      orientation = #{record.orientation,jdbcType=VARCHAR},
+      opening = #{record.opening,jdbcType=VARCHAR},
+      depth = #{record.depth,jdbcType=VARCHAR},
+      distance = #{record.distance,jdbcType=VARCHAR},
+      span_length = #{record.spanLength,jdbcType=VARCHAR},
+      span_num = #{record.spanNum,jdbcType=VARCHAR},
+      max_span = #{record.maxSpan,jdbcType=VARCHAR},
+      min_span = #{record.minSpan,jdbcType=VARCHAR},
+      standard_span = #{record.standardSpan,jdbcType=VARCHAR},
+      standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
+      storage_request = #{record.storageRequest,jdbcType=VARCHAR},
+      special_factors = #{record.specialFactors,jdbcType=VARCHAR},
+      house_shape = #{record.houseShape,jdbcType=VARCHAR},
+      shape_remark = #{record.shapeRemark,jdbcType=VARCHAR},
+      layer_height = #{record.layerHeight,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
+  <update id="updateByPrimaryKeySelective" parameterType="map">
+    update tb_basic_house_huxing_price
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.huxingId != null">
+            huxing_id = #{record.huxingId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseId != null">
+            house_id = #{record.houseId,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseNumber != null">
+            house_number = #{record.houseNumber,jdbcType=VARCHAR},
+          </if>
+          <if test="record.area != null">
+            area = #{record.area,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floor != null">
+            floor = #{record.floor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.adjustFactor != null">
+            adjust_factor = #{record.adjustFactor,jdbcType=VARCHAR},
+          </if>
+          <if test="record.price != null">
+            price = #{record.price,jdbcType=DECIMAL},
+          </if>
+          <if test="record.remark != null">
+            remark = #{record.remark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.declareId != null">
+            declare_id = #{record.declareId,jdbcType=INTEGER},
+          </if>
+          <if test="record.declareName != null">
+            declare_name = #{record.declareName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.aeration != null">
+            aeration = #{record.aeration,jdbcType=VARCHAR},
+          </if>
+          <if test="record.lighting != null">
+            lighting = #{record.lighting,jdbcType=VARCHAR},
+          </if>
+          <if test="record.sunshine != null">
+            sunshine = #{record.sunshine,jdbcType=VARCHAR},
+          </if>
+          <if test="record.soundInsulation != null">
+            sound_insulation = #{record.soundInsulation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.length != null">
+            length = #{record.length,jdbcType=VARCHAR},
+          </if>
+          <if test="record.width != null">
+            width = #{record.width,jdbcType=VARCHAR},
+          </if>
+          <if test="record.adjacentPosition != null">
+            adjacent_position = #{record.adjacentPosition,jdbcType=VARCHAR},
+          </if>
+          <if test="record.orientation != null">
+            orientation = #{record.orientation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.opening != null">
+            opening = #{record.opening,jdbcType=VARCHAR},
+          </if>
+          <if test="record.depth != null">
+            depth = #{record.depth,jdbcType=VARCHAR},
+          </if>
+          <if test="record.distance != null">
+            distance = #{record.distance,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spanLength != null">
+            span_length = #{record.spanLength,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spanNum != null">
+            span_num = #{record.spanNum,jdbcType=VARCHAR},
+          </if>
+          <if test="record.maxSpan != null">
+            max_span = #{record.maxSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.minSpan != null">
+            min_span = #{record.minSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardSpan != null">
+            standard_span = #{record.standardSpan,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardMeasure != null">
+            standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
+          </if>
+          <if test="record.storageRequest != null">
+            storage_request = #{record.storageRequest,jdbcType=VARCHAR},
+          </if>
+          <if test="record.specialFactors != null">
+            special_factors = #{record.specialFactors,jdbcType=VARCHAR},
+          </if>
+          <if test="record.houseShape != null">
+            house_shape = #{record.houseShape,jdbcType=VARCHAR},
+          </if>
+          <if test="record.shapeRemark != null">
+            shape_remark = #{record.shapeRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.layerHeight != null">
+            layer_height = #{record.layerHeight,jdbcType=DECIMAL},
+          </if>
+          <if test="record.jsonData != null">
+            json_data = #{record.jsonData,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice">
     update tb_basic_house_huxing_price
     set huxing_id = #{huxingId,jdbcType=INTEGER},
       house_id = #{houseId,jdbcType=INTEGER},
@@ -622,7 +787,6 @@
       area = #{area,jdbcType=DECIMAL},
       floor = #{floor,jdbcType=VARCHAR},
       adjust_factor = #{adjustFactor,jdbcType=VARCHAR},
-      json_data = #{jsonData,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
       declare_id = #{declareId,jdbcType=INTEGER},
@@ -647,7 +811,198 @@
       min_span = #{minSpan,jdbcType=VARCHAR},
       standard_span = #{standardSpan,jdbcType=VARCHAR},
       standard_measure = #{standardMeasure,jdbcType=VARCHAR},
-      storage_request = #{storageRequest,jdbcType=VARCHAR}
+      storage_request = #{storageRequest,jdbcType=VARCHAR},
+      special_factors = #{specialFactors,jdbcType=VARCHAR},
+      house_shape = #{houseShape,jdbcType=VARCHAR},
+      shape_remark = #{shapeRemark,jdbcType=VARCHAR},
+      layer_height = #{layerHeight,jdbcType=DECIMAL},
+      json_data = #{jsonData,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice">
+    update tb_basic_house_huxing_price
+    set huxing_id = #{huxingId,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=INTEGER},
+      house_number = #{houseNumber,jdbcType=VARCHAR},
+      area = #{area,jdbcType=DECIMAL},
+      floor = #{floor,jdbcType=VARCHAR},
+      adjust_factor = #{adjustFactor,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      declare_id = #{declareId,jdbcType=INTEGER},
+      declare_name = #{declareName,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      aeration = #{aeration,jdbcType=VARCHAR},
+      lighting = #{lighting,jdbcType=VARCHAR},
+      sunshine = #{sunshine,jdbcType=VARCHAR},
+      sound_insulation = #{soundInsulation,jdbcType=VARCHAR},
+      length = #{length,jdbcType=VARCHAR},
+      width = #{width,jdbcType=VARCHAR},
+      adjacent_position = #{adjacentPosition,jdbcType=VARCHAR},
+      orientation = #{orientation,jdbcType=VARCHAR},
+      opening = #{opening,jdbcType=VARCHAR},
+      depth = #{depth,jdbcType=VARCHAR},
+      distance = #{distance,jdbcType=VARCHAR},
+      span_length = #{spanLength,jdbcType=VARCHAR},
+      span_num = #{spanNum,jdbcType=VARCHAR},
+      max_span = #{maxSpan,jdbcType=VARCHAR},
+      min_span = #{minSpan,jdbcType=VARCHAR},
+      standard_span = #{standardSpan,jdbcType=VARCHAR},
+      standard_measure = #{standardMeasure,jdbcType=VARCHAR},
+      storage_request = #{storageRequest,jdbcType=VARCHAR},
+      special_factors = #{specialFactors,jdbcType=VARCHAR},
+      house_shape = #{houseShape,jdbcType=VARCHAR},
+      shape_remark = #{shapeRemark,jdbcType=VARCHAR},
+      layer_height = #{layerHeight,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_basic_house_huxing_price
+    (huxing_id, house_id, house_number, area, floor, adjust_factor, price, remark, declare_id, 
+      declare_name, creator, gmt_created, gmt_modified, aeration, lighting, sunshine, 
+      sound_insulation, length, width, adjacent_position, orientation, opening, depth, 
+      distance, span_length, span_num, max_span, min_span, standard_span, standard_measure, 
+      storage_request, special_factors, house_shape, shape_remark, layer_height, json_data
+      )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.huxingId,jdbcType=INTEGER}, #{item.houseId,jdbcType=INTEGER}, #{item.houseNumber,jdbcType=VARCHAR}, 
+        #{item.area,jdbcType=DECIMAL}, #{item.floor,jdbcType=VARCHAR}, #{item.adjustFactor,jdbcType=VARCHAR}, 
+        #{item.price,jdbcType=DECIMAL}, #{item.remark,jdbcType=VARCHAR}, #{item.declareId,jdbcType=INTEGER}, 
+        #{item.declareName,jdbcType=VARCHAR}, #{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, 
+        #{item.gmtModified,jdbcType=TIMESTAMP}, #{item.aeration,jdbcType=VARCHAR}, #{item.lighting,jdbcType=VARCHAR}, 
+        #{item.sunshine,jdbcType=VARCHAR}, #{item.soundInsulation,jdbcType=VARCHAR}, #{item.length,jdbcType=VARCHAR}, 
+        #{item.width,jdbcType=VARCHAR}, #{item.adjacentPosition,jdbcType=VARCHAR}, #{item.orientation,jdbcType=VARCHAR}, 
+        #{item.opening,jdbcType=VARCHAR}, #{item.depth,jdbcType=VARCHAR}, #{item.distance,jdbcType=VARCHAR}, 
+        #{item.spanLength,jdbcType=VARCHAR}, #{item.spanNum,jdbcType=VARCHAR}, #{item.maxSpan,jdbcType=VARCHAR}, 
+        #{item.minSpan,jdbcType=VARCHAR}, #{item.standardSpan,jdbcType=VARCHAR}, #{item.standardMeasure,jdbcType=VARCHAR}, 
+        #{item.storageRequest,jdbcType=VARCHAR}, #{item.specialFactors,jdbcType=VARCHAR}, 
+        #{item.houseShape,jdbcType=VARCHAR}, #{item.shapeRemark,jdbcType=VARCHAR}, #{item.layerHeight,jdbcType=DECIMAL}, 
+        #{item.jsonData,jdbcType=LONGVARCHAR})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_basic_house_huxing_price (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'huxing_id'.toString() == column.value">
+          #{item.huxingId,jdbcType=INTEGER}
+        </if>
+        <if test="'house_id'.toString() == column.value">
+          #{item.houseId,jdbcType=INTEGER}
+        </if>
+        <if test="'house_number'.toString() == column.value">
+          #{item.houseNumber,jdbcType=VARCHAR}
+        </if>
+        <if test="'area'.toString() == column.value">
+          #{item.area,jdbcType=DECIMAL}
+        </if>
+        <if test="'floor'.toString() == column.value">
+          #{item.floor,jdbcType=VARCHAR}
+        </if>
+        <if test="'adjust_factor'.toString() == column.value">
+          #{item.adjustFactor,jdbcType=VARCHAR}
+        </if>
+        <if test="'price'.toString() == column.value">
+          #{item.price,jdbcType=DECIMAL}
+        </if>
+        <if test="'remark'.toString() == column.value">
+          #{item.remark,jdbcType=VARCHAR}
+        </if>
+        <if test="'declare_id'.toString() == column.value">
+          #{item.declareId,jdbcType=INTEGER}
+        </if>
+        <if test="'declare_name'.toString() == column.value">
+          #{item.declareName,jdbcType=VARCHAR}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'aeration'.toString() == column.value">
+          #{item.aeration,jdbcType=VARCHAR}
+        </if>
+        <if test="'lighting'.toString() == column.value">
+          #{item.lighting,jdbcType=VARCHAR}
+        </if>
+        <if test="'sunshine'.toString() == column.value">
+          #{item.sunshine,jdbcType=VARCHAR}
+        </if>
+        <if test="'sound_insulation'.toString() == column.value">
+          #{item.soundInsulation,jdbcType=VARCHAR}
+        </if>
+        <if test="'length'.toString() == column.value">
+          #{item.length,jdbcType=VARCHAR}
+        </if>
+        <if test="'width'.toString() == column.value">
+          #{item.width,jdbcType=VARCHAR}
+        </if>
+        <if test="'adjacent_position'.toString() == column.value">
+          #{item.adjacentPosition,jdbcType=VARCHAR}
+        </if>
+        <if test="'orientation'.toString() == column.value">
+          #{item.orientation,jdbcType=VARCHAR}
+        </if>
+        <if test="'opening'.toString() == column.value">
+          #{item.opening,jdbcType=VARCHAR}
+        </if>
+        <if test="'depth'.toString() == column.value">
+          #{item.depth,jdbcType=VARCHAR}
+        </if>
+        <if test="'distance'.toString() == column.value">
+          #{item.distance,jdbcType=VARCHAR}
+        </if>
+        <if test="'span_length'.toString() == column.value">
+          #{item.spanLength,jdbcType=VARCHAR}
+        </if>
+        <if test="'span_num'.toString() == column.value">
+          #{item.spanNum,jdbcType=VARCHAR}
+        </if>
+        <if test="'max_span'.toString() == column.value">
+          #{item.maxSpan,jdbcType=VARCHAR}
+        </if>
+        <if test="'min_span'.toString() == column.value">
+          #{item.minSpan,jdbcType=VARCHAR}
+        </if>
+        <if test="'standard_span'.toString() == column.value">
+          #{item.standardSpan,jdbcType=VARCHAR}
+        </if>
+        <if test="'standard_measure'.toString() == column.value">
+          #{item.standardMeasure,jdbcType=VARCHAR}
+        </if>
+        <if test="'storage_request'.toString() == column.value">
+          #{item.storageRequest,jdbcType=VARCHAR}
+        </if>
+        <if test="'special_factors'.toString() == column.value">
+          #{item.specialFactors,jdbcType=VARCHAR}
+        </if>
+        <if test="'house_shape'.toString() == column.value">
+          #{item.houseShape,jdbcType=VARCHAR}
+        </if>
+        <if test="'shape_remark'.toString() == column.value">
+          #{item.shapeRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="'layer_height'.toString() == column.value">
+          #{item.layerHeight,jdbcType=DECIMAL}
+        </if>
+        <if test="'json_data'.toString() == column.value">
+          #{item.jsonData,jdbcType=LONGVARCHAR}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>

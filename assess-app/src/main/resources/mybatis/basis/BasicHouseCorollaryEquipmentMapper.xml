@@ -1,40 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseCorollaryEquipmentMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="house_id" property="houseId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="category" property="category" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="equipment_use" property="equipmentUse" jdbcType="INTEGER" />
-    <result column="parameter_index" property="parameterIndex" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="VARCHAR" />
-    <result column="maintenance_status" property="maintenanceStatus" jdbcType="INTEGER" />
-    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseCorollaryEquipmentMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="house_id" jdbcType="INTEGER" property="houseId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="equipment_use" jdbcType="INTEGER" property="equipmentUse" />
+    <result column="parameter_index" jdbcType="VARCHAR" property="parameterIndex" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="maintenance_status" jdbcType="INTEGER" property="maintenanceStatus" />
+    <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -45,25 +46,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -74,191 +75,230 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
-    id, house_id, type, category, name, equipment_use, parameter_index, price, maintenance_status, 
-    bis_delete, creator, gmt_created, gmt_modified
+  <sql id="Base_Column_List">
+    id, house_id, type, category, name, equipment_use, parameter_index, price, location, 
+    maintenance_status, bis_delete, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipmentExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipmentExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_basic_house_corollary_equipment
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_basic_house_corollary_equipment
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_basic_house_corollary_equipment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipmentExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipmentExample">
     delete from tb_basic_house_corollary_equipment
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_corollary_equipment (house_id, type, category, 
       name, equipment_use, parameter_index, 
-      price, maintenance_status, bis_delete, 
-      creator, gmt_created, gmt_modified
-      )
+      price, location, maintenance_status, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{houseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{equipmentUse,jdbcType=INTEGER}, #{parameterIndex,jdbcType=VARCHAR}, 
-      #{price,jdbcType=VARCHAR}, #{maintenanceStatus,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{price,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{maintenanceStatus,jdbcType=INTEGER}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_corollary_equipment
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="houseId != null" >
-        house_id,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="category != null" >
-        category,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="equipmentUse != null" >
-        equipment_use,
-      </if>
-      <if test="parameterIndex != null" >
-        parameter_index,
-      </if>
-      <if test="price != null" >
-        price,
-      </if>
-      <if test="maintenanceStatus != null" >
-        maintenance_status,
-      </if>
-      <if test="bisDelete != null" >
-        bis_delete,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="houseId != null" >
-        #{houseId,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="category != null" >
-        #{category,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentUse != null" >
-        #{equipmentUse,jdbcType=INTEGER},
-      </if>
-      <if test="parameterIndex != null" >
-        #{parameterIndex,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        #{price,jdbcType=VARCHAR},
-      </if>
-      <if test="maintenanceStatus != null" >
-        #{maintenanceStatus,jdbcType=INTEGER},
-      </if>
-      <if test="bisDelete != null" >
-        #{bisDelete,jdbcType=BIT},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.houseId != null">
+            house_id,
+          </if>
+          <if test="record.type != null">
+            type,
+          </if>
+          <if test="record.category != null">
+            category,
+          </if>
+          <if test="record.name != null">
+            name,
+          </if>
+          <if test="record.equipmentUse != null">
+            equipment_use,
+          </if>
+          <if test="record.parameterIndex != null">
+            parameter_index,
+          </if>
+          <if test="record.price != null">
+            price,
+          </if>
+          <if test="record.location != null">
+            location,
+          </if>
+          <if test="record.maintenanceStatus != null">
+            maintenance_status,
+          </if>
+          <if test="record.bisDelete != null">
+            bis_delete,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.houseId != null">
+            #{record.houseId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            #{record.type,jdbcType=INTEGER},
+          </if>
+          <if test="record.category != null">
+            #{record.category,jdbcType=INTEGER},
+          </if>
+          <if test="record.name != null">
+            #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.equipmentUse != null">
+            #{record.equipmentUse,jdbcType=INTEGER},
+          </if>
+          <if test="record.parameterIndex != null">
+            #{record.parameterIndex,jdbcType=VARCHAR},
+          </if>
+          <if test="record.price != null">
+            #{record.price,jdbcType=VARCHAR},
+          </if>
+          <if test="record.location != null">
+            #{record.location,jdbcType=VARCHAR},
+          </if>
+          <if test="record.maintenanceStatus != null">
+            #{record.maintenanceStatus,jdbcType=INTEGER},
+          </if>
+          <if test="record.bisDelete != null">
+            #{record.bisDelete,jdbcType=BIT},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipmentExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipmentExample" resultType="java.lang.Long">
     select count(*) from tb_basic_house_corollary_equipment
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_basic_house_corollary_equipment
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.houseId != null" >
-        house_id = #{record.houseId,jdbcType=INTEGER},
-      </if>
-      <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.category != null" >
-        category = #{record.category,jdbcType=INTEGER},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.equipmentUse != null" >
-        equipment_use = #{record.equipmentUse,jdbcType=INTEGER},
-      </if>
-      <if test="record.parameterIndex != null" >
-        parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
-      </if>
-      <if test="record.price != null" >
-        price = #{record.price,jdbcType=VARCHAR},
-      </if>
-      <if test="record.maintenanceStatus != null" >
-        maintenance_status = #{record.maintenanceStatus,jdbcType=INTEGER},
-      </if>
-      <if test="record.bisDelete != null" >
-        bis_delete = #{record.bisDelete,jdbcType=BIT},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    <if test="_parameter != null" >
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.houseId != null">
+            house_id = #{record.houseId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            type = #{record.type,jdbcType=INTEGER},
+          </if>
+          <if test="record.category != null">
+            category = #{record.category,jdbcType=INTEGER},
+          </if>
+          <if test="record.name != null">
+            name = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.equipmentUse != null">
+            equipment_use = #{record.equipmentUse,jdbcType=INTEGER},
+          </if>
+          <if test="record.parameterIndex != null">
+            parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
+          </if>
+          <if test="record.price != null">
+            price = #{record.price,jdbcType=VARCHAR},
+          </if>
+          <if test="record.location != null">
+            location = #{record.location,jdbcType=VARCHAR},
+          </if>
+          <if test="record.maintenanceStatus != null">
+            maintenance_status = #{record.maintenanceStatus,jdbcType=INTEGER},
+          </if>
+          <if test="record.bisDelete != null">
+            bis_delete = #{record.bisDelete,jdbcType=BIT},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_basic_house_corollary_equipment
     set id = #{record.id,jdbcType=INTEGER},
       house_id = #{record.houseId,jdbcType=INTEGER},
@@ -268,58 +308,72 @@
       equipment_use = #{record.equipmentUse,jdbcType=INTEGER},
       parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=VARCHAR},
+      location = #{record.location,jdbcType=VARCHAR},
       maintenance_status = #{record.maintenanceStatus,jdbcType=INTEGER},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment" >
+  <update id="updateByPrimaryKeySelective" parameterType="map">
     update tb_basic_house_corollary_equipment
-    <set >
-      <if test="houseId != null" >
-        house_id = #{houseId,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="category != null" >
-        category = #{category,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="equipmentUse != null" >
-        equipment_use = #{equipmentUse,jdbcType=INTEGER},
-      </if>
-      <if test="parameterIndex != null" >
-        parameter_index = #{parameterIndex,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=VARCHAR},
-      </if>
-      <if test="maintenanceStatus != null" >
-        maintenance_status = #{maintenanceStatus,jdbcType=INTEGER},
-      </if>
-      <if test="bisDelete != null" >
-        bis_delete = #{bisDelete,jdbcType=BIT},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.houseId != null">
+            house_id = #{record.houseId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            type = #{record.type,jdbcType=INTEGER},
+          </if>
+          <if test="record.category != null">
+            category = #{record.category,jdbcType=INTEGER},
+          </if>
+          <if test="record.name != null">
+            name = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.equipmentUse != null">
+            equipment_use = #{record.equipmentUse,jdbcType=INTEGER},
+          </if>
+          <if test="record.parameterIndex != null">
+            parameter_index = #{record.parameterIndex,jdbcType=VARCHAR},
+          </if>
+          <if test="record.price != null">
+            price = #{record.price,jdbcType=VARCHAR},
+          </if>
+          <if test="record.location != null">
+            location = #{record.location,jdbcType=VARCHAR},
+          </if>
+          <if test="record.maintenanceStatus != null">
+            maintenance_status = #{record.maintenanceStatus,jdbcType=INTEGER},
+          </if>
+          <if test="record.bisDelete != null">
+            bis_delete = #{record.bisDelete,jdbcType=BIT},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCorollaryEquipment">
     update tb_basic_house_corollary_equipment
     set house_id = #{houseId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
@@ -328,6 +382,7 @@
       equipment_use = #{equipmentUse,jdbcType=INTEGER},
       parameter_index = #{parameterIndex,jdbcType=VARCHAR},
       price = #{price,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
       maintenance_status = #{maintenanceStatus,jdbcType=INTEGER},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
@@ -335,4 +390,70 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_basic_house_corollary_equipment
+    (house_id, type, category, name, equipment_use, parameter_index, price, location, 
+      maintenance_status, bis_delete, creator, gmt_created, gmt_modified)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.houseId,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, #{item.category,jdbcType=INTEGER}, 
+        #{item.name,jdbcType=VARCHAR}, #{item.equipmentUse,jdbcType=INTEGER}, #{item.parameterIndex,jdbcType=VARCHAR}, 
+        #{item.price,jdbcType=VARCHAR}, #{item.location,jdbcType=VARCHAR}, #{item.maintenanceStatus,jdbcType=INTEGER}, 
+        #{item.bisDelete,jdbcType=BIT}, #{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, 
+        #{item.gmtModified,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_basic_house_corollary_equipment (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'house_id'.toString() == column.value">
+          #{item.houseId,jdbcType=INTEGER}
+        </if>
+        <if test="'type'.toString() == column.value">
+          #{item.type,jdbcType=INTEGER}
+        </if>
+        <if test="'category'.toString() == column.value">
+          #{item.category,jdbcType=INTEGER}
+        </if>
+        <if test="'name'.toString() == column.value">
+          #{item.name,jdbcType=VARCHAR}
+        </if>
+        <if test="'equipment_use'.toString() == column.value">
+          #{item.equipmentUse,jdbcType=INTEGER}
+        </if>
+        <if test="'parameter_index'.toString() == column.value">
+          #{item.parameterIndex,jdbcType=VARCHAR}
+        </if>
+        <if test="'price'.toString() == column.value">
+          #{item.price,jdbcType=VARCHAR}
+        </if>
+        <if test="'location'.toString() == column.value">
+          #{item.location,jdbcType=VARCHAR}
+        </if>
+        <if test="'maintenance_status'.toString() == column.value">
+          #{item.maintenanceStatus,jdbcType=INTEGER}
+        </if>
+        <if test="'bis_delete'.toString() == column.value">
+          #{item.bisDelete,jdbcType=BIT}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>

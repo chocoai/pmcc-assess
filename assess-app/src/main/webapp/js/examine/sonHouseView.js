@@ -158,70 +158,74 @@ houseHuxingPrice.prototype = {
         })
     },
     init: function (item, tenementType) {
-        $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
+        var frm = $("#" + houseHuxingPrice.prototype.config().frm) ;
+        frm.clearAll();
         if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").attr("style", "display:none");
-            $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").find("input").attr("disabled", true);
+            frm.find(".form-group").attr("style", "display:none");
+            frm.find(".form-group").find("input").attr("disabled", true);
 
-            $("#" + houseHuxingPrice.prototype.config().frm).find(".common").show();
-            $("#" + houseHuxingPrice.prototype.config().frm).find(".common").find("input").attr("disabled", false);
+            frm.find(".common").show();
+            frm.find(".common").find("input").attr("disabled", false);
 
             if (tenementType == '住宅' || tenementType == '办公') {
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").show();
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").find("input").attr("disabled", false);
+                frm.find(".residence").show();
+                frm.find(".residence").find("input").attr("disabled", false);
             }
             if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".store").show();
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".store").find("input").attr("disabled", false);
+                frm.find(".store").show();
+                frm.find(".store").find("input").attr("disabled", false);
 
             }
             if (tenementType == '餐饮' || tenementType == '酒店') {
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").show();
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").find("input").attr("disabled", false);
+                frm.find(".hotel").show();
+                frm.find(".hotel").find("input").attr("disabled", false);
             }
             if (tenementType == '生产') {
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".production").show();
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".production").find("input").attr("disabled", false);
+                frm.find(".production").show();
+                frm.find(".production").find("input").attr("disabled", false);
             }
             if (tenementType == '仓储') {
-                $("#" + houseHuxingPrice.prototype.config().frm).find(".storage").show();
+                frm.find(".storage").show();
             }
         } else {
-            $("#" + houseHuxingPrice.prototype.config().frm).find(".common").show();
+            frm.find(".common").show();
         }
-        $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
+        frm.initForm(item);
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_orientation, item.orientation, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("select.orientation2").empty().html(html).trigger('change');
+            frm.find("select.orientation2").empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_standard_measure, item.standardMeasure, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("select.standardMeasure2").empty().html(html).trigger('change');
+            frm.find("select.standardMeasure2").empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_storage_request, item.storageRequest, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("select.storageRequest2").empty().html(html).trigger('change');
+            frm.find("select.storageRequest2").empty().html(html).trigger('change');
         });
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceAerationList").empty().html(html).trigger('change');
+            frm.find("#residenceAerationList").empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceLightingList").empty().html(html).trigger('change');
+            frm.find("#residenceLightingList").empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceSunshineList").empty().html(html).trigger('change');
+            frm.find("#residenceSunshineList").empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("#residenceSoundInsulationList").empty().html(html).trigger('change');
+            frm.find("#residenceSoundInsulationList").empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("#productionAerationList").empty().html(html).trigger('change');
+            frm.find("#productionAerationList").empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("#hotelAerationList").empty().html(html).trigger('change');
+            frm.find("#hotelAerationList").empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("#hotelLightingList").empty().html(html).trigger('change');
+            frm.find("#hotelLightingList").empty().html(html).trigger('change');
         }, true);
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_room_status, null, function (html, data) {
-            $("#" + houseHuxingPrice.prototype.config().frm).find("#productionLightingList").empty().html(html).trigger('change');
+            frm.find("#productionLightingList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_floor_high, null, function (html, data) {
+            frm.find(".layerHeightList").empty().html(html).trigger('change');
         }, true);
 
     },
@@ -1004,8 +1008,71 @@ var houseCorollaryEquipment;
                 },
                 deleteFlag: true
             })
+        },
+        openLocationModal: function (_this) {
+            var houseId = houseCommon.getHouseId();
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoom/basicHouseRoomList",
+                type: "get",
+                dataType: "json",
+                data: {houseId: houseId},
+                success: function (result) {
+                    if (result.ret) {
+                        if (houseCorollaryEquipment.prototype.isNotBlank(result.data)) {
+                            houseCorollaryEquipment.prototype.getLocationHtml(result.data)
+                        }
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+
+        },
+        getLocationHtml :function(resultData) {
+            var frm = $("#frmHouseCorollaryEquipmentLocation") ;
+            var target = frm.find(".customer_body");
+            target.empty();
+            var resultHtml = '<div>';
+            var divLength = Math.ceil(resultData.length / 6);
+            for (var j = 0; j < divLength; j++) {
+                resultHtml += '<div class="row form-group">';
+                resultHtml += '<div class="col-md-12">';
+                resultHtml += "<div class='form-check' style='justify-content:left'>";
+                var length = (j + 1) * 6 > resultData.length ? resultData.length : (j + 1) * 6;
+                for (var i = j * 6; i < length; i++) {
+                    resultHtml += "<label class='form-check-label'>";
+                    resultHtml += "<input class='form-check-input' type='checkbox' name='locationCheckBox' ";
+                    resultHtml += 'value="' + resultData[i].name + '">';
+                    resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
+                }
+                resultHtml += "</div>";
+                resultHtml += "</div>";
+                resultHtml += "</div>";
+            }
+            target.append(resultHtml);
+            var value = $("#" + houseCorollaryEquipment.prototype.config().frm).find("input[name='location']").val();
+            if (houseCorollaryEquipment.prototype.isNotBlank(value)) {
+                var valueArray = value.split(",");
+                var checkboxs = frm.find("input[name='locationCheckBox']");
+                AssessCommon.checkboxToChecked(checkboxs, valueArray);
+            }
+            $("#divHouseCorollaryEquipmentBoxDecoratePart").modal("show");
+        },
+        saveDecoratePart: function () {
+            var checkedBoxs = $("#frmHouseCorollaryEquipmentLocation").find('input:checkbox:checked');
+            if (checkedBoxs.length <= 0) {
+                notifyInfo('提示', '至少选择一个');
+                return false;
+            }
+            var data = [];
+            checkedBoxs.each(function () {
+                data.push($(this).val());
+            });
+            $("#" + houseCorollaryEquipment.prototype.config().frm).find('input[name="location"]').val(data.join());
+            $("#divHouseCorollaryEquipmentBoxDecoratePart").modal("hide");
         }
-    }
+    };
 
     //绑定事件
     $('#' + houseCorollaryEquipment.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
@@ -1893,7 +1960,7 @@ var houseRoomDecorate;
             })
 
         },
-        getLocationHtml(resultData) {
+        getLocationHtml :function(resultData) {
             var target = $("#frmLocation").find(".card-body");
             target.empty();
             var resultHtml = '<div>';
@@ -2183,6 +2250,10 @@ var houseRoom;
         showModel: function () {
             $("#" + houseRoom.prototype.config().frm).clearAll();
             var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
+            if (! tenementType) {
+                notifyInfo("提示", "请先选择户型的物业类型") ;
+                return false ;
+            }
             houseRoom.prototype.init({}, tenementType);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, '', function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("select[name='adjacentPosition']").empty().html(html).trigger('change');
@@ -2490,7 +2561,8 @@ var houseRoom;
                 $("#" + houseRoom.prototype.config().frm).find("#productionLightingList").empty().html(html).trigger('change');
             }, true);
             AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_floor_high, null, function (html, data) {
-                $("#" + houseRoom.prototype.config().frm).find("#layerHeightList").empty().html(html).trigger('change');
+                // $("#" + houseRoom.prototype.config().frm).find("#layerHeightList").empty().html(html).trigger('change');
+                $("#" + houseRoom.prototype.config().frm).find(".layerHeightList").empty().html(html).trigger('change');
             }, true);
             AssessCommon.loadTextAppendDicHtml(AssessDicKey.examine_house_clear_high, null, function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("#clearHeightList").empty().html(html).trigger('change');
@@ -2513,7 +2585,7 @@ var houseRoom;
             }
             houseRoom.prototype.houseShapeChange();
         },
-        houseShapeChange() {
+        houseShapeChange :function() {
             var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
             var houseShape = $("#" + houseRoom.prototype.config().frm).find('select[name="houseShape"]').val();
             if (houseRoom.prototype.isNotBlank(tenementType) && houseRoom.prototype.isNotBlank(tenementType)) {
@@ -2599,7 +2671,7 @@ var houseRoom;
             })
         },
         //自动生成
-        autoGenerate() {
+        autoGenerate:function() {
             var huxingData = houseCommon.houseHuxingForm.find("[name=huxingData]").val();
             var houseId = houseCommon.getHouseId();
             if (houseRoom.prototype.isNotBlank(huxingData)) {

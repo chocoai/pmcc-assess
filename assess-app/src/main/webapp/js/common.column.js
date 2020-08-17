@@ -476,6 +476,8 @@ commonColumn.houseHuxingPriceColumn = function () {
     });
     cols.push({field: 'area', title: '面积'});
     cols.push({field: 'floor', title: '楼层'});
+    cols.push({field: 'houseShape', title: '房间形状'});
+    cols.push({field: 'layerHeight', title: '层高'});
     return cols;
 };
 

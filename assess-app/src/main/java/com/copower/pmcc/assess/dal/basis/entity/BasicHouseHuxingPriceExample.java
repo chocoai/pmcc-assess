@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class BasicHouseHuxingPriceExample {
+    /**
+     * tb_basic_house_huxing_price
+     */
     protected String orderByClause;
 
+    /**
+     * tb_basic_house_huxing_price
+     */
     protected boolean distinct;
 
+    /**
+     * tb_basic_house_huxing_price
+     */
     protected List<Criteria> oredCriteria;
 
     public BasicHouseHuxingPriceExample() {
@@ -65,6 +74,9 @@ public class BasicHouseHuxingPriceExample {
         distinct = false;
     }
 
+    /**
+     * tb_basic_house_huxing_price
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -553,76 +565,6 @@ public class BasicHouseHuxingPriceExample {
 
         public Criteria andAdjustFactorNotBetween(String value1, String value2) {
             addCriterion("adjust_factor not between", value1, value2, "adjustFactor");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataIsNull() {
-            addCriterion("json_data is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataIsNotNull() {
-            addCriterion("json_data is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataEqualTo(String value) {
-            addCriterion("json_data =", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataNotEqualTo(String value) {
-            addCriterion("json_data <>", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataGreaterThan(String value) {
-            addCriterion("json_data >", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataGreaterThanOrEqualTo(String value) {
-            addCriterion("json_data >=", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataLessThan(String value) {
-            addCriterion("json_data <", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataLessThanOrEqualTo(String value) {
-            addCriterion("json_data <=", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataLike(String value) {
-            addCriterion("json_data like", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataNotLike(String value) {
-            addCriterion("json_data not like", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataIn(List<String> values) {
-            addCriterion("json_data in", values, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataNotIn(List<String> values) {
-            addCriterion("json_data not in", values, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataBetween(String value1, String value2) {
-            addCriterion("json_data between", value1, value2, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataNotBetween(String value1, String value2) {
-            addCriterion("json_data not between", value1, value2, "jsonData");
             return (Criteria) this;
         }
 
@@ -2335,6 +2277,276 @@ public class BasicHouseHuxingPriceExample {
             addCriterion("storage_request not between", value1, value2, "storageRequest");
             return (Criteria) this;
         }
+
+        public Criteria andSpecialFactorsIsNull() {
+            addCriterion("special_factors is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsIsNotNull() {
+            addCriterion("special_factors is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsEqualTo(String value) {
+            addCriterion("special_factors =", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsNotEqualTo(String value) {
+            addCriterion("special_factors <>", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsGreaterThan(String value) {
+            addCriterion("special_factors >", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsGreaterThanOrEqualTo(String value) {
+            addCriterion("special_factors >=", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsLessThan(String value) {
+            addCriterion("special_factors <", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsLessThanOrEqualTo(String value) {
+            addCriterion("special_factors <=", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsLike(String value) {
+            addCriterion("special_factors like", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsNotLike(String value) {
+            addCriterion("special_factors not like", value, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsIn(List<String> values) {
+            addCriterion("special_factors in", values, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsNotIn(List<String> values) {
+            addCriterion("special_factors not in", values, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsBetween(String value1, String value2) {
+            addCriterion("special_factors between", value1, value2, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecialFactorsNotBetween(String value1, String value2) {
+            addCriterion("special_factors not between", value1, value2, "specialFactors");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeIsNull() {
+            addCriterion("house_shape is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeIsNotNull() {
+            addCriterion("house_shape is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeEqualTo(String value) {
+            addCriterion("house_shape =", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeNotEqualTo(String value) {
+            addCriterion("house_shape <>", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeGreaterThan(String value) {
+            addCriterion("house_shape >", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeGreaterThanOrEqualTo(String value) {
+            addCriterion("house_shape >=", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeLessThan(String value) {
+            addCriterion("house_shape <", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeLessThanOrEqualTo(String value) {
+            addCriterion("house_shape <=", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeLike(String value) {
+            addCriterion("house_shape like", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeNotLike(String value) {
+            addCriterion("house_shape not like", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeIn(List<String> values) {
+            addCriterion("house_shape in", values, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeNotIn(List<String> values) {
+            addCriterion("house_shape not in", values, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeBetween(String value1, String value2) {
+            addCriterion("house_shape between", value1, value2, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeNotBetween(String value1, String value2) {
+            addCriterion("house_shape not between", value1, value2, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkIsNull() {
+            addCriterion("shape_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkIsNotNull() {
+            addCriterion("shape_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkEqualTo(String value) {
+            addCriterion("shape_remark =", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkNotEqualTo(String value) {
+            addCriterion("shape_remark <>", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkGreaterThan(String value) {
+            addCriterion("shape_remark >", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("shape_remark >=", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkLessThan(String value) {
+            addCriterion("shape_remark <", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkLessThanOrEqualTo(String value) {
+            addCriterion("shape_remark <=", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkLike(String value) {
+            addCriterion("shape_remark like", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkNotLike(String value) {
+            addCriterion("shape_remark not like", value, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkIn(List<String> values) {
+            addCriterion("shape_remark in", values, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkNotIn(List<String> values) {
+            addCriterion("shape_remark not in", values, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkBetween(String value1, String value2) {
+            addCriterion("shape_remark between", value1, value2, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andShapeRemarkNotBetween(String value1, String value2) {
+            addCriterion("shape_remark not between", value1, value2, "shapeRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightIsNull() {
+            addCriterion("layer_height is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightIsNotNull() {
+            addCriterion("layer_height is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightEqualTo(BigDecimal value) {
+            addCriterion("layer_height =", value, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightNotEqualTo(BigDecimal value) {
+            addCriterion("layer_height <>", value, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightGreaterThan(BigDecimal value) {
+            addCriterion("layer_height >", value, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("layer_height >=", value, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightLessThan(BigDecimal value) {
+            addCriterion("layer_height <", value, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("layer_height <=", value, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightIn(List<BigDecimal> values) {
+            addCriterion("layer_height in", values, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightNotIn(List<BigDecimal> values) {
+            addCriterion("layer_height not in", values, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("layer_height between", value1, value2, "layerHeight");
+            return (Criteria) this;
+        }
+
+        public Criteria andLayerHeightNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("layer_height not between", value1, value2, "layerHeight");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
@@ -2344,6 +2556,9 @@ public class BasicHouseHuxingPriceExample {
         }
     }
 
+    /**
+     * tb_basic_house_huxing_price
+     */
     public static class Criterion {
         private String condition;
 
