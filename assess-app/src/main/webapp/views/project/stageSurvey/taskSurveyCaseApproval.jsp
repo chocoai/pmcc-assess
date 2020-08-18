@@ -189,6 +189,7 @@
         data.tbType = node.type;
         data.applyBatchId = node.applyBatchId;
         data.tbId = node.tableId;
+        data.applyBatchDetailId = node.id;
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationEdit?' + parseParam(data));
     }
 

@@ -101,10 +101,48 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
                 saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), realEstateCertVo.getId(), realEstateCertVo.getCertName());
             }
         }
+
+        //添加工时考核任务
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
+        dto.setProcessInsId(processInsId);
+        dto.setAppKey(applicationConstant.getAppKey());
+        if (projectInfo != null) {
+            dto.setProjectId(projectInfo.getId());
+            dto.setProjectName(projectInfo.getProjectName());
+        }
+        dto.setTaskId(taskId);
+        dto.setBoxId(boxReDto.getId());
+        dto.setActivityId(activityId);
+        if (activityDto != null) {
+            dto.setReActivityName(activityDto.getName());
+            dto.setActivityName(activityDto.getCnName());
+            dto.setSorting(activityDto.getSortMultilevel());
+            dto.setBusinessKey(activityDto.getCnName());
+        }
+        dto.setByExaminePeople(byExamineUser);
+        dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+        dto.setTableId(projectPlanDetails.getId());
+        dto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
+        if (projectPlanDetails != null) {
+            dto.setPlanId(projectPlanDetails.getPlanId());
+            dto.setPlanDetailsId(projectPlanDetails.getId());
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+            } else {
+                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+            }
+            dto.setProjectPhaseId(projectPlanDetails.getProjectPhaseId());
+        }
+        dto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
+        dto.setAssessmentKey(AssessmentTypeEnum.WORK_HOURS.getValue());
+        dto.setBisEffective(true);
+        dto.setCreator(commonService.thisUserAccount());
+        performanceService.saveAndUpdatePerformanceDto(dto, true);
     }
 
     /**
-     *
+     * 添加质量考核
      * @param processInsId
      * @param activityId
      * @param taskId
@@ -117,52 +155,50 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
      * @param businessKey
      */
     private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String businessKey) {
-        for (AssessmentTypeEnum assessmentTypeEnum : AssessmentTypeEnum.values()) {
-            List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentTypeEnum.getValue());
-            if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
-            AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
-            dto.setProcessInsId(processInsId);
-            dto.setAppKey(applicationConstant.getAppKey());
-            if (projectInfo != null) {
-                dto.setProjectId(projectInfo.getId());
-                dto.setProjectName(projectInfo.getProjectName());
-            }
-            dto.setTaskId(taskId);
-            dto.setBoxId(boxReDto.getId());
-            BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
-            dto.setActivityId(activityId);
-            if (activityDto != null) {
-                dto.setReActivityName(activityDto.getName());
-                dto.setActivityName(activityDto.getCnName());
-                dto.setSorting(activityDto.getSortMultilevel());
-                dto.setBusinessKey(activityDto.getCnName() + "/" + businessKey);
-            }
-            dto.setByExaminePeople(byExamineUser);
-            dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
-            dto.setTableId(tableId);
-            dto.setTableName(tableName);
-            if (projectPlanDetails != null) {
-                dto.setPlanId(projectPlanDetails.getPlanId());
-                dto.setPlanDetailsId(projectPlanDetails.getId());
-                ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-                if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
-                    dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
-                } else {
-                    dto.setPlanName(projectPlanDetails.getProjectPhaseName());
-                }
-                dto.setProjectPhaseId(projectPlanDetails.getProjectPhaseId());
-            }
-            dto.setAssessmentType(assessmentTypeEnum.getValue());
-            dto.setAssessmentKey(assessmentTypeEnum.getValue());
-            dto.setBisEffective(true);
-            dto.setCreator(commonService.thisUserAccount());
-            Integer id = performanceService.saveAndUpdatePerformanceDto(dto, true);
-
-            //更新考核地址
-            dto.setSourceViewUrl("/assessmentDeclare/index?performanceId=" + id);
-            dto.setId(id);
-            performanceService.saveAndUpdatePerformanceDto(dto, false);
+        List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, AssessmentTypeEnum.QUALITY.getValue());
+        if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
+        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
+        dto.setProcessInsId(processInsId);
+        dto.setAppKey(applicationConstant.getAppKey());
+        if (projectInfo != null) {
+            dto.setProjectId(projectInfo.getId());
+            dto.setProjectName(projectInfo.getProjectName());
         }
+        dto.setTaskId(taskId);
+        dto.setBoxId(boxReDto.getId());
+        BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
+        dto.setActivityId(activityId);
+        if (activityDto != null) {
+            dto.setReActivityName(activityDto.getName());
+            dto.setActivityName(activityDto.getCnName());
+            dto.setSorting(activityDto.getSortMultilevel());
+            dto.setBusinessKey(activityDto.getCnName() + "/" + businessKey);
+        }
+        dto.setByExaminePeople(byExamineUser);
+        dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+        dto.setTableId(tableId);
+        dto.setTableName(tableName);
+        if (projectPlanDetails != null) {
+            dto.setPlanId(projectPlanDetails.getPlanId());
+            dto.setPlanDetailsId(projectPlanDetails.getId());
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+            } else {
+                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+            }
+            dto.setProjectPhaseId(projectPlanDetails.getProjectPhaseId());
+        }
+        dto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
+        dto.setAssessmentKey(AssessmentTypeEnum.QUALITY.getValue());
+        dto.setBisEffective(true);
+        dto.setCreator(commonService.thisUserAccount());
+        Integer id = performanceService.saveAndUpdatePerformanceDto(dto, true);
+
+        //更新考核地址
+        dto.setSourceViewUrl("/assessmentDeclare/index?performanceId=" + id);
+        dto.setId(id);
+        performanceService.saveAndUpdatePerformanceDto(dto, false);
     }
 
 }

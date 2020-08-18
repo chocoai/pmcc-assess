@@ -203,7 +203,6 @@
         data.tbType = treeNode.type;
         data.tbId = treeNode.tableId;
         data.applyBatchId = treeNode.applyBatchId;
-
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?' + parseParam(data));
     }
 
@@ -219,6 +218,7 @@
         data.tbType = node.type;
         data.applyBatchId = node.applyBatchId;
         data.tbId = node.tableId;
+        data.applyBatchDetailId = node.id;
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationEdit?' + parseParam(data));
     }
 
@@ -268,8 +268,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     notifySuccess("成功", "添加成功");
-                }
-                else {
+                } else {
                     AlertError("添加失败", "失败原因:" + result.errmsg, 1, null, null);
                 }
             }
