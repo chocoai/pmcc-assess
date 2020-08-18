@@ -335,7 +335,7 @@ public class ProjectAssessmentBonusService {
         if (StringUtils.isBlank(assessmentBonus.getTitle())) {
             assessmentBonus.setTitle(String.format("%s年-%s月外勤加分考核", assessmentBonus.getYear(), assessmentBonus.getMonth()));
         }
-        final int projectId = 1;//写task任务的时候写入这个数据,以前写入0貌似不起作用了 ,写入到projectPlanResponsibility形成临时任务
+        final int projectId = -1;//写task任务的时候写入这个数据,以前写入0貌似不起作用了 ,写入到projectPlanResponsibility形成临时任务
         assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
         saveAssessmentBonus(assessmentBonus);
         Set<String> managerList = Sets.newHashSet();
@@ -357,6 +357,9 @@ public class ProjectAssessmentBonusService {
                 }
                 if (getAssessmentBonusItemCount(sysProjectDto.getProjectId()) > 0) {
                     continue;//每个项目只计算一次
+                }
+                if(!projectInfoService.chksValidProject(sysProjectDto.getProjectId())){
+                    continue;//没有在配置中的项目
                 }
                 ProjectInfo projectInfo = projectInfoService.getProjectInfoById(sysProjectDto.getProjectId());
                 String projectManager = projectMemberService.getProjectManager(projectInfo.getId());//项目经理
