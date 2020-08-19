@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.project.archives;
 
-import com.copower.pmcc.assess.common.enums.archives.ArchivesFileTypeEnum;
+import com.copower.pmcc.ad.api.enums.AdArchivesDataTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -27,6 +27,8 @@ public class ProjectTaskArchivesAssist implements ProjectTaskInterface {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectArchivesDataService projectArchivesDataService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -79,11 +81,12 @@ public class ProjectTaskArchivesAssist implements ProjectTaskInterface {
 
     private void setModelParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         modelAndView.addObject("projectPlanDetails",projectPlanDetails) ;
-        List<KeyValueDto> keyValueDtoList = new ArrayList<>(ArchivesFileTypeEnum.values().length) ;
-        for (ArchivesFileTypeEnum fileTypeEnum:ArchivesFileTypeEnum.values()){
-            keyValueDtoList.add(new KeyValueDto(fileTypeEnum.getKey(),fileTypeEnum.getName())) ;
-        }
-        modelAndView.addObject("ArchivesFileTypeList",keyValueDtoList) ;
+        modelAndView.addObject("FileArchivesTypeData",projectArchivesDataService.getFileArchivesTypeData()) ;
+        modelAndView.addObject("FilePublicData",projectArchivesDataService.getFilePublicData()) ;
+        modelAndView.addObject("FileSourceData",projectArchivesDataService.getFileSourceData()) ;
+        modelAndView.addObject("MarkAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileDtoListByAppKeyAndType(AdArchivesDataTypeEnum.MARK_ENUM)) ;
+        modelAndView.addObject("LifeAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileDtoListByAppKeyAndType(AdArchivesDataTypeEnum.LIFE_ENUM)) ;
+        modelAndView.addObject("SysSymbolRuleDtoList",projectArchivesDataService.getSysSymbolRuleDtoList()) ;
     }
 
 

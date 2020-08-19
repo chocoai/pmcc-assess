@@ -41,24 +41,21 @@
                                                 </label>
                                                 <div class="col-sm-2">
                                                     <input type="text" data-rule-maxlength="50" placeholder="档案名称"
-                                                           name="fileName"
+                                                           name="name"
                                                            class="form-control input-full">
                                                 </div>
                                                 <label class="col-sm-1 control-label">
-                                                    档案编号
+                                                    档案类型
                                                 </label>
                                                 <div class="col-sm-2">
-                                                    <input type="text" data-rule-maxlength="50" placeholder="档案编号"
-                                                           name="fileNumber"
-                                                           class="form-control input-full">
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    年份
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <input type="text" data-rule-maxlength="50" placeholder="年份"
-                                                           name="year"
-                                                           class="form-control input-full">
+                                                    <select name="fileType"
+                                                            class="form-control input-full search-select select2">
+                                                        <option value="">请选择</option>
+                                                        <c:forEach items="${FileArchivesTypeData}"
+                                                                   var="ArchivesFileType">
+                                                            <option value="${ArchivesFileType.key}">${ArchivesFileType.value}</option>
+                                                        </c:forEach>
+                                                    </select>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <button type="button" class="btn btn-info btn-sm"
@@ -107,10 +104,21 @@
         });
         var table = $(objArchives.table.selector);
         var cols = [];
-        cols.push({field: 'year', title: '年份', width: "10%"});
+        cols.push({field: 'name', title: '档案名称', width: "10%"});
         cols.push({field: 'fileTypeName', title: '档案类型', width: "10%"});
-        cols.push({field: 'fileNumber', title: '档案编号', width: "10%"});
-        cols.push({field: 'fileName', title: '档案名称', width: "10%"});
+        cols.push({field: 'fileCategoryName', title: '档案类别', width: "10%"});
+        cols.push({field: 'fileSourceName', title: '档案来源', width: "10%"});
+        cols.push({field: 'publicWayName', title: '公开方式', width: "10%"});
+        cols.push({field: 'shelfLifeName', title: '保存期限', width: "10%"});
+        cols.push({
+            field: 'groupId', title: '档案存放与否', width: "15%", formatter: function (value, row) {
+                if (row.groupId) {
+                    return "已存放" ;
+                }else {
+                    return "未存放" ;
+                }
+            }
+        });
         cols.push({
             field: 'id', title: '文档',width: "15%",formatter: function (value, row) {
                 var show = '<div id="_project_proxy' + row.id + '"></div>';
@@ -128,7 +136,7 @@
             }
         });
         table.bootstrapTable('destroy');
-        TableInit(table, "${pageContext.request.contextPath}/projectFileComplete/getProjectFileCompleteList", cols, data, {
+        TableInit(table, "${pageContext.request.contextPath}/projectArchives/getAdPlaceFileItemDtoListByParam", cols, data, {
             method: "get",
             showColumns: false,
             showRefresh: false,
