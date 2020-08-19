@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.controller.data;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.NetUrlConfigService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -15,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+
 
 /**
  * @Auther: zch
@@ -30,9 +32,6 @@ public class DataBlockController extends BaseController {
     private DataBlockService dataBlockService;
     @Autowired
     private ErpAreaService erpAreaService;
-    @Autowired
-    private NetUrlConfigService netUrlConfigService;
-
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() throws BusinessException {

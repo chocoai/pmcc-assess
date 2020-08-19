@@ -40,6 +40,11 @@
     <dubbo:reference interface="com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService" id="crmRpcBaseDataDicService" check="false" retries="0" timeout="10000" url="${crm.api.url}" />
     <!-- ======================ad - consumer========================== -->
     <dubbo:reference interface="com.copower.pmcc.ad.api.provider.AdRpcQualificationsService" id="adRpcQualificationsService" check="false" retries="0" timeout="10000" url="${ad.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.ad.api.provider.AdRpcBasePlaceFileService" id="adRpcBasePlaceFileService" check="false" retries="0" timeout="10000" url="${ad.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.ad.api.provider.AdRpcPlaceFileGroupService" id="adRpcPlaceFileGroupService" check="false" retries="0" timeout="10000" url="${ad.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.ad.api.provider.AdRpcPlaceFileItemService" id="adRpcPlaceFileItemService" check="false" retries="0" timeout="10000" url="${ad.api.url}" />
+    <dubbo:reference interface="com.copower.pmcc.ad.api.provider.AdRpcPlaceFileVolumeNumberService" id="adRpcPlaceFileVolumeNumberService" check="false" retries="0" timeout="10000" url="${ad.api.url}" />
+
     <!-- ======================finance - consumer========================== -->
     <dubbo:reference interface="com.copower.pmcc.finance.api.provider.FinanceRpcToolService" id="financeRpcToolService" check="false" retries="0" timeout="10000" url="${finance.api.url}" />
     <!-- ======================chks 考核========================== -->
