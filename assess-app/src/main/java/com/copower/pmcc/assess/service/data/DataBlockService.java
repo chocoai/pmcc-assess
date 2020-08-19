@@ -2,23 +2,27 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportItemService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -51,6 +55,18 @@ public class DataBlockService {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private SurveyAssetInfoService surveyAssetInfoService;
+    @Autowired
+    private SurveyAssetInfoItemService surveyAssetInfoItemService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
+    @Autowired
+    private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
+    @Autowired
+    private SurveyAssetInventoryContentDao surveyAssetInventoryContentDao;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -164,17 +180,34 @@ public class DataBlockService {
 
     public void updateOldData() throws Exception {
         //1.将basic_apply_batch_detail表中的full_name重新更新
-        List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailList(new BasicApplyBatchDetail());
-        if (CollectionUtils.isEmpty(list)) return;
-        for (BasicApplyBatchDetail basicApplyBatchDetail : list) {
-            if (StringUtils.isNotBlank(basicApplyBatchDetail.getFullName()) && basicApplyBatchDetail.getFullName().startsWith("/"))
+        SurveyAssetInfo where = new SurveyAssetInfo();
+        List<SurveyAssetInfo> assetInfos = surveyAssetInfoService.getSurveyAssetInfoListByQuery(where);
+        SurveyAssetInfoItem surveyAssetInfoItemWhere = new SurveyAssetInfoItem();
+        List<SurveyAssetInfoItem> list = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(surveyAssetInfoItemWhere);
+        List<Integer> transform = LangUtils.transform(list, o -> o.getAssetInfoId());
+        for (SurveyAssetInfo assetInfo : assetInfos) {
+            if (!CollectionUtils.isEmpty(transform) && transform.contains(assetInfo.getId()))
                 continue;
-            try {
-                String fullName = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicApplyBatchDetail.getId());
-                basicApplyBatchDetail.setFullName(fullName);
-                basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
-            } catch (Exception ex) {
-                logger.error(ex.getMessage(), ex);
+            List<DeclareRecord> records = declareRecordService.getDeclareRecordByProjectId(assetInfo.getProjectId());
+            if (records != null && records.size() == 1) {
+                SurveyAssetInfoItem surveyAssetInfoItem = new SurveyAssetInfoItem();
+                surveyAssetInfoItem.setAssetInfoId(assetInfo.getId());
+                surveyAssetInfoItem.setName(records.get(0).getName());
+                surveyAssetInfoItem.setStatus("finish");
+                surveyAssetInfoItem.setDeclareId(records.get(0).getId());
+                surveyAssetInfoItem.setCreator(assetInfo.getCreator());
+                SurveyAssetInventoryContent contentWhere = new SurveyAssetInventoryContent();
+                contentWhere.setProjectId(assetInfo.getProjectId());
+                SurveyAssetInventoryContent inventoryContent = surveyAssetInventoryContentDao.getSingleObject(contentWhere);
+                if (inventoryContent != null && inventoryContent.getMasterId() != null) {
+                    surveyAssetInfoItem.setInventoryId(inventoryContent.getMasterId());
+                } else {
+                    SurveyAssetInventoryVo assetInventoryVo = surveyAssetInventoryService.getDataByPlanDetailsId(assetInfo.getPlanDetailId());
+                    if(assetInventoryVo!=null){
+                        surveyAssetInfoItem.setInventoryId(assetInventoryVo.getId());
+                    }
+                }
+                surveyAssetInfoItemService.saveAndUpdateSurveyAssetInfoItem(surveyAssetInfoItem, false);
             }
         }
     }

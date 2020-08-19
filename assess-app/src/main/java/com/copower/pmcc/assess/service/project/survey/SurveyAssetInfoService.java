@@ -137,7 +137,7 @@ public class SurveyAssetInfoService implements ProjectPhaseInterface {
         if (CollectionUtils.isNotEmpty(list)) {
             return list.get(0);
         }
-        return query;
+        return null;
     }
 
     public boolean updateSurveyAssetInfo(SurveyAssetInfo oo, boolean updateNull) {
@@ -180,22 +180,6 @@ public class SurveyAssetInfoService implements ProjectPhaseInterface {
             return;
         }
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
-    }
-
-    public void deleteSurveyAssetInfoById(String id) {
-        if (StringUtils.isEmpty(id)) {
-            return;
-        }
-        List<Integer> ids = FormatUtils.transformString2Integer(id);
-        if (CollectionUtils.isNotEmpty(ids)) {
-            if (ids.size() == 1) {
-                removeFileByTableId(ids.get(0));
-                surveyAssetInfoDao.deleteSurveyAssetInfoById(ids.get(0));
-            } else {
-                ids.forEach(integer -> removeFileByTableId(integer));
-                surveyAssetInfoDao.deleteSurveyAssetInfoByIds(ids);
-            }
-        }
     }
 
     public BootstrapTableVo getBootstrapTableVo(SurveyAssetInfo oo) {
@@ -335,16 +319,16 @@ public class SurveyAssetInfoService implements ProjectPhaseInterface {
                 SurveyAssetInfoItem assetInfoItem = iterator.next();
                 if (assetInfoItem.getInventoryId() != null && assetInfoItem.getInventoryId() != 0) {
                     SurveyAssetInventory assetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoItem.getInventoryId());
-                    if (assetInventory != null){
+                    if (assetInventory != null) {
                         inventoryList.add(assetInventory);
                     }
                 }
-                if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0){
+                if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0) {
                     SurveyAssetInfoGroup assetInfoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(assetInfoItem.getGroupId());
-                    if (assetInfoGroup.getInventoryId() != null && assetInfoGroup.getInventoryId() != 0){
+                    if (assetInfoGroup.getInventoryId() != null && assetInfoGroup.getInventoryId() != 0) {
                         SurveyAssetInventory assetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getInventoryId());
-                        if (assetInventory != null){
-                            inventoryList.add(assetInventory) ;
+                        if (assetInventory != null) {
+                            inventoryList.add(assetInventory);
                         }
                     }
                 }
@@ -353,10 +337,10 @@ public class SurveyAssetInfoService implements ProjectPhaseInterface {
         return inventoryList;
     }
 
-    public SurveyAssetInventory getSurveyAssetInventoryByDeclareRecordId(Integer declareRecordId){
+    public SurveyAssetInventory getSurveyAssetInventoryByDeclareRecordId(Integer declareRecordId) {
         List<SurveyAssetInventory> surveyAssetInventories = getSurveyAssetInventoryListByDeclareRecordId(declareRecordId);
-        if (CollectionUtils.isNotEmpty(surveyAssetInventories)){
-            return surveyAssetInventories.get( 0) ;
+        if (CollectionUtils.isNotEmpty(surveyAssetInventories)) {
+            return surveyAssetInventories.get(0);
         }
         return null;
     }
@@ -369,20 +353,19 @@ public class SurveyAssetInfoService implements ProjectPhaseInterface {
     @Override
     public void afterDeleteExecute(Integer projectPlanDetailsId) {
         SurveyAssetInfo surveyAssetInfo = getSurveyAssetInfoByPlanDetailsId(projectPlanDetailsId);
-
+        if (surveyAssetInfo == null) return;
         List<SurveyAssetInfoItem> assetInfoItemList = surveyAssetInfoItemService.getItemsByAssetInfoId(surveyAssetInfo.getId());
-        if(CollectionUtils.isNotEmpty(assetInfoItemList)){
-            for(SurveyAssetInfoItem item:assetInfoItemList){
+        if (CollectionUtils.isNotEmpty(assetInfoItemList)) {
+            for (SurveyAssetInfoItem item : assetInfoItemList) {
                 //权证状态修改
                 DeclareRecord recordById = declareRecordService.getDeclareRecordById(item.getDeclareId());
-                if(recordById!=null){
+                if (recordById != null) {
                     recordById.setInventoryStatus(null);
-                    declareRecordService.updateDeclareRecord(recordById,true);
+                    declareRecordService.updateDeclareRecord(recordById, true);
                 }
                 //删除认领的数据
                 surveyAssetInfoItemDao.deleteSurveyAssetInfoItemById(item.getId());
             }
         }
-
     }
 }

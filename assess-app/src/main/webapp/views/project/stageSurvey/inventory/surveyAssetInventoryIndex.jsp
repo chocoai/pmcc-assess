@@ -1013,6 +1013,8 @@
         surveyAssetInventory.influenceFactorRemarkText = resultData.join(",");
         data.surveyAssetInventory = surveyAssetInventory;
         data.assetInventoryContentList = dataItem;
+        data.surveyAssetInventory.projectId='${projectPlanDetails.projectId}';
+        data.surveyAssetInventory.planDetailId='${projectPlanDetails.id}';
         data.surveyAssetInventory.specialCase = $("#specialCase").val();
         data.surveyAssetInventory.rimIsNormal = $("#rimIsNormal").val();
         data.surveyAssetInventory.entityIsDamage = $("#entityIsDamage").val();
@@ -1069,7 +1071,6 @@
     }
 
     function newGetFormData(callback) {
-        getFormData();
         if (!$("#frm_asset").valid()) {
             return false;
         }

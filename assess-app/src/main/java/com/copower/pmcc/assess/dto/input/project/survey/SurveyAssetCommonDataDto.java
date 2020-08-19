@@ -9,6 +9,7 @@ import java.util.List;
  * Created by zly on 2018/5/10.
  */
 public class SurveyAssetCommonDataDto {
+
     private SurveyAssetInventory surveyAssetInventory;
     private List<SurveyAssetInventoryContent> assetInventoryContentList;
 
