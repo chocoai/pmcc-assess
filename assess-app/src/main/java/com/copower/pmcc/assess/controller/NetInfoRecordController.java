@@ -129,13 +129,13 @@ public class NetInfoRecordController {
 
     @ResponseBody
     @RequestMapping(value = "/closeItem", name = "关闭", method = {RequestMethod.POST})
-    public HttpResult closeItem(Integer id, String closeReason) {
+    public HttpResult closeItem(String id, String closeReason) {
         try {
-            NetInfoRecord record = netInfoRecordDao.getInfoById(id);
-            record.setCloseReason(closeReason);
-            record.setBisDelete(true);
-            netInfoRecordService.updateInfo(record);
-
+//            NetInfoRecord record = netInfoRecordDao.getInfoById(id);
+//            record.setCloseReason(closeReason);
+//            record.setBisDelete(true);
+//            netInfoRecordService.updateInfo(record);
+            netInfoRecordService.closeItem(id, closeReason);
             return HttpResult.newCorrectResult("关闭成功");
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
