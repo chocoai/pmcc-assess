@@ -113,8 +113,8 @@ public class NetInfoRecordService {
         netUrlConfigService.getBaZhongTradingCenter(1);
         netUrlConfigService.getLuZhouTradingCenter(1);
         netUrlConfigService.getZiGongTradingCenter(1);
-        netUrlConfigService.getYiBinTradingCenter(1,"land");
-        netUrlConfigService.getYiBinTradingCenter(1,"asset");
+        netUrlConfigService.getYiBinTradingCenter(1, "land");
+        netUrlConfigService.getYiBinTradingCenter(1, "asset");
     }
 
     //来源淘宝网
@@ -1197,8 +1197,8 @@ public class NetInfoRecordService {
 
     public String getContentHtml(String urlInfo, String requestMethod, String encoding) {
         try {
-            if(urlInfo.contains("https")){
-                SSLContext sslcontext = SSLContext.getInstance("SSL","SunJSSE");
+            if (urlInfo.contains("https")) {
+                SSLContext sslcontext = SSLContext.getInstance("SSL", "SunJSSE");
                 sslcontext.init(null, new TrustManager[]{new MyX509TrustManager()}, new java.security.SecureRandom());
                 HostnameVerifier ignoreHostnameVerifier = new HostnameVerifier() {
                     public boolean verify(String s, SSLSession sslsession) {
@@ -1256,12 +1256,11 @@ public class NetInfoRecordService {
         return elements;
     }
 
-    public Elements getContent(String urlInfo, String element, String encoding,String requestMethod) {
+    public Elements getContent(String urlInfo, String element, String encoding, String requestMethod) {
         org.jsoup.nodes.Document doc = Jsoup.parse(getContentHtml(urlInfo, requestMethod, encoding));
         Elements elements = doc.select(element);
         return elements;
     }
-
 
 
     /**
@@ -1434,7 +1433,7 @@ public class NetInfoRecordService {
         return bootstrapTableVo;
     }
 
-    public void addInfo(NetInfoRecord netInfo){
+    public void addInfo(NetInfoRecord netInfo) {
         netInfoRecordDao.addInfo(netInfo);
         //备份数据
         CaseNetInfoRecord caseNetInfoRecord = new CaseNetInfoRecord();
@@ -1442,7 +1441,7 @@ public class NetInfoRecordService {
         caseNetInfoRecordDao.addInfo(caseNetInfoRecord);
     }
 
-    public void updateInfo(NetInfoRecord netInfo){
+    public void updateInfo(NetInfoRecord netInfo) {
         netInfoRecordDao.updateInfo(netInfo);
         //备份数据
         CaseNetInfoRecord caseNetInfoRecord = new CaseNetInfoRecord();
@@ -1450,7 +1449,30 @@ public class NetInfoRecordService {
         caseNetInfoRecordDao.updateInfo(caseNetInfoRecord);
     }
 
-    public void addInfoContent(NetInfoRecordContent netInfoContent){
+    /**
+     * 关闭认领任务
+     * @param id
+     * @param closeReason
+     */
+    public void closeItem(String id, String closeReason) {
+        if (StringUtils.isBlank(id)) {
+            return;
+        }
+        List<Integer> integerList = FormatUtils.transformString2Integer(id);
+        if (CollectionUtils.isEmpty(integerList)){
+            return;
+        }
+        NetInfoRecord record = new NetInfoRecord();
+        record.setCloseReason(closeReason);
+        record.setBisDelete(true);
+        netInfoRecordDao.batchNetInfoRecord(record,integerList);
+        CaseNetInfoRecord caseNetInfoRecord = new CaseNetInfoRecord();
+        caseNetInfoRecord.setCloseReason(closeReason);
+        caseNetInfoRecord.setBisDelete(true);
+        caseNetInfoRecordDao.batchNetInfoRecord(caseNetInfoRecord,integerList);
+    }
+
+    public void addInfoContent(NetInfoRecordContent netInfoContent) {
         netInfoRecordContentDao.addInfo(netInfoContent);
         //备份数据
         CaseNetInfoRecordContent caseNetInfoRecordContent = new CaseNetInfoRecordContent();

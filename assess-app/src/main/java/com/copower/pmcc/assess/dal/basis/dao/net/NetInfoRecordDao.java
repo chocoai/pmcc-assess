@@ -31,6 +31,20 @@ public class NetInfoRecordDao {
         return netInfoRecordMapper.selectByPrimaryKey(id);
     }
 
+    public List<NetInfoRecord> getInfoByIds(List<Integer> ids) {
+        NetInfoRecordExample example = new NetInfoRecordExample();
+        NetInfoRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids) ;
+        return netInfoRecordMapper.selectByExample(example) ;
+    }
+
+    public void batchNetInfoRecord(NetInfoRecord obj,List<Integer> ids){
+        NetInfoRecordExample example = new NetInfoRecordExample();
+        NetInfoRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids) ;
+        netInfoRecordMapper.updateByExampleSelective(obj,example) ;
+    }
+
     /**
      * 获取数据列表
      *
