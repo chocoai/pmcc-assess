@@ -460,7 +460,7 @@
         cols.push({field: 'publicWayName', title: '公开方式', width: "10%"});
         cols.push({field: 'shelfLifeName', title: '保存期限', width: "10%"});
         cols.push({
-            field: 'groupId', title: '档案存放与否', width: "15%", formatter: function (value, row) {
+            field: 'groupId', title: '档案分组存放与否', width: "15%", formatter: function (value, row) {
                 if (row.groupId) {
                     return "已存放";
                 } else {
@@ -474,7 +474,7 @@
                 FileUtils.getFileShows({
                     target: "project_proxy" + row.id,
                     formData: {
-                        tableName: 'tb_project_file_complete',
+                        tableName: 'tb_ad_place_file_item_dto',
                         tableId: row.id,
                         fieldsName: "project_proxy" + row.id
                     },
@@ -548,10 +548,10 @@
 
 
     objArchives.autoCreateProjectFileCompleteNow = function () {
-        AlertConfirm("是否自动创建档案", "自动创建档案会清除之前的档案数据", function () {
+        AlertConfirm("提示", "是否自动创建档案", function () {
             Loading.progressShow();
             $.ajax({
-                url: "${pageContext.request.contextPath}/projectFileComplete/autoCreateProjectFileCompleteNow",
+                url: "${pageContext.request.contextPath}/projectArchives/autoCreateProjectFileCompleteNow",
                 type: "post",
                 dataType: "json",
                 data: {projectId: '${projectInfo.id}'},
@@ -692,19 +692,19 @@
         var table = $(objArchives.volumeNumberTable.selector);
         var cols = [];
         cols.push({field: 'number', title: '卷号', width: "30%"});
-        // cols.push({field: 'type', title: '卷号分类', width: "10%"});
         cols.push({
             field: 'id', title: '操作', width: "25%", formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<button type="button" onclick="objArchives.editAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                str += '<button type="button" onclick="objArchives.delAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
-                str += '<i class="fa fa-minus"></i>';
-                str += '</button>';
+
+                // str += '<button type="button" onclick="objArchives.delAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                // str += '<i class="fa fa-minus"></i>';
+                // str += '</button>';
 
                 str += '<button type="button" onclick="objArchives.selectAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="选择此卷号">';
-                str += '<i class="fa fa-check-circle"></i>';
+                str += '<i class="fa fa-check"></i>';
                 str += '</button>';
                 return str;
             }
@@ -861,15 +861,48 @@
 
 </script>
 <script type="application/javascript">
+
+
+    function getAdPlaceFileItemDtoValidList(callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectArchives/getAdPlaceFileItemDtoValidList",
+            type: "get",
+            dataType: "json",
+            data:{projectId: '${projectInfo.id}'},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                   if (callback){
+                       callback(result.data) ;
+                   }
+                } else {
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
     //提交
     function submit() {
         var data = {};
 
-        if ("${processInsId}" != "0") {
-            submitEditToServer(JSON.stringify(data));
-        } else {
-            submitToServer(JSON.stringify(data));
-        }
+        getAdPlaceFileItemDtoValidList(function (arr) {
+            console.log(arr) ;
+            if (arr.length != 0){
+                notifyInfo("提示", "存在没有设置卷号的档案");
+                return false ;
+            }
+            if ("${processInsId}" != "0") {
+                submitEditToServer(JSON.stringify(data));
+            } else {
+                submitToServer(JSON.stringify(data));
+            }
+        }) ;
+
     }
 
 

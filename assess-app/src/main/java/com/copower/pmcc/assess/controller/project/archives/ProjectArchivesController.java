@@ -26,8 +26,8 @@ public class ProjectArchivesController {
 
     @ResponseBody
     @RequestMapping(value = "/getAdPlaceFileItemDtoListByParam", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(AdPlaceFileItemDto dto) {
-        return projectArchivesDataService.getAdPlaceFileItemDtoListByParam(dto);
+    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(Integer publicProjectId,Integer groupId,String name,Integer fileType,Integer fileCategory,Boolean bisBinding) {
+        return projectArchivesDataService.getAdPlaceFileItemDtoListByParam(publicProjectId, groupId, name, fileType, fileCategory, bisBinding);
     }
 
     @ResponseBody
@@ -149,7 +149,32 @@ public class ProjectArchivesController {
         try {
             return HttpResult.newCorrectResult(200,projectArchivesDataService.getSymbolDto(ruleId));
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getAdPlaceFileItemDtoValidList", method = {RequestMethod.GET}, name = "判断 卷号")
+    public HttpResult getAdPlaceFileItemDtoValidList(Integer projectId) {
+        try {
+            return HttpResult.newCorrectResult(200,projectArchivesDataService.getAdPlaceFileItemDtoValidList(projectId));
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/autoCreateProjectFileCompleteNow", method = {RequestMethod.POST}, name = "自动生成档案")
+    public HttpResult autoCreateProjectFileCompleteNow(Integer projectId) {
+        try {
+            projectArchivesDataService.autoCreateProjectFileCompleteNow(projectId) ;
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" ,e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
