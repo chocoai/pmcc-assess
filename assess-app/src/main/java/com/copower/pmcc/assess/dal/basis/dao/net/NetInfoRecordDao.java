@@ -38,7 +38,7 @@ public class NetInfoRecordDao {
         return netInfoRecordMapper.selectByExample(example) ;
     }
 
-    public void batchNetInfoRecord(NetInfoRecord obj,List<Integer> ids){
+    public void batchUpdateNetInfoRecord(NetInfoRecord obj,List<Integer> ids){
         NetInfoRecordExample example = new NetInfoRecordExample();
         NetInfoRecordExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids) ;
