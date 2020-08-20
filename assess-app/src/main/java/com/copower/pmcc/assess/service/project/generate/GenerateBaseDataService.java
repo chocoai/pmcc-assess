@@ -4019,16 +4019,16 @@ public class GenerateBaseDataService {
         builder.startTable();
         generateCommonMethod.settingBuildingTable(builder);
         //头
-        builder.insertCell();
+        builder.insertCell().getCellFormat().setWidth(20);
         builder.write("序号");
         builder.insertCell();
         builder.write("权证号");
         builder.insertCell();
         builder.write("坐落");
         builder.insertCell();
-        builder.write("用途(证载)");
+        builder.write("证载用途");
         builder.insertCell();
-        builder.write("用途(实际)");
+        builder.write("实际用途");
         builder.insertCell();
         builder.write("房屋总层数");
         builder.insertCell();
@@ -4153,14 +4153,14 @@ public class GenerateBaseDataService {
                         builder.write(huxingPrice.getFloor());
 
                         builder.insertCell();
-                        builder.write(String.valueOf(huxingPrice.getArea()));
+                        builder.write(String.valueOf(huxingPrice.getArea() == null ? "" : huxingPrice.getArea()));
 
                         builder.insertCell();
-                        builder.write(String.valueOf(huxingPrice.getPrice()));
+                        builder.write(String.valueOf(huxingPrice.getPrice() == null ? "" : huxingPrice.getPrice()));
 
                         BigDecimal huxingTotalPrice = BigDecimal.ZERO;
                         if (huxingPrice.getArea() != null && huxingPrice.getPrice() != null) {
-                            huxingTotalPrice = huxingPrice.getArea().multiply(huxingPrice.getPrice());
+                            huxingTotalPrice = huxingPrice.getArea().multiply(huxingPrice.getPrice()).divide(new BigDecimal("10000"), 2, RoundingMode.HALF_UP);
                             priceTotal = priceTotal.add(huxingTotalPrice);
                             mortgagePriceTotal = mortgagePriceTotal.add(huxingTotalPrice);
                         }
@@ -4505,6 +4505,7 @@ public class GenerateBaseDataService {
         Document document = new Document();
         DocumentBuilder documentBuilder = new DocumentBuilder(document);
         AsposeUtils.setDefaultTable(documentBuilder);
+        documentBuilder.getPageSetup().setOrientation(Orientation.LANDSCAPE);//设置为横向
         documentBuilder.getFont().setSize(10.5);
         documentBuilder.getFont().setName(AsposeUtils.ImitationSong);
         StringBuilder stringBuilder = new StringBuilder();
