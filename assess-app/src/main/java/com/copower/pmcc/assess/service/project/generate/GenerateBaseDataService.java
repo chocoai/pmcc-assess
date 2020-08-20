@@ -1817,13 +1817,14 @@ public class GenerateBaseDataService {
                 if (CollectionUtils.isEmpty(priceItemList)) continue;
                 if (priceItemList.size() <= 1) {
                     SchemeSurePriceItem schemeSurePriceItem = priceItemList.get(0);
-                    stringBuilder.append(String.format("%s计算结果为%s元/㎡，", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
+                    stringBuilder.append(String.format("%s计算结果为%s元/㎡，", schemeSurePriceItem.getMethodName(), ArithmeticUtils.getBigDecimalString(schemeSurePriceItem.getTrialPrice())));
                 } else {
                     StringBuilder formulaString = new StringBuilder();
                     for (SchemeSurePriceItem schemeSurePriceItem : priceItemList) {
-                        stringBuilder.append(String.format("%s计算结果为%s元/㎡，", schemeSurePriceItem.getMethodName(), schemeSurePriceItem.getTrialPrice().toString()));
-                        if (schemeSurePriceItem.getWeight() != null)
-                            stringBuilder.append(String.format("权重为%s%%；", schemeSurePriceItem.getWeight().multiply(new BigDecimal("100")).setScale(2, RoundingMode.HALF_UP)));
+                        stringBuilder.append(String.format("%s计算结果为%s元/㎡，", schemeSurePriceItem.getMethodName(), ArithmeticUtils.getBigDecimalString(schemeSurePriceItem.getTrialPrice())));
+                        if (schemeSurePriceItem.getWeight() != null) {
+                            stringBuilder.append(String.format("权重为%s%%；", ArithmeticUtils.mul(schemeSurePriceItem.getWeight(), new BigDecimal("100"), 2)));
+                        }
                         formulaString.append("(").append(schemeSurePriceItem.getMethodName()).append("×权重)＋");
                     }
                     stringBuilder.append(String.format("计算公式为%s，", StringUtils.stripEnd(formulaString.toString(), "＋")));
@@ -1836,7 +1837,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 if (schemeSurePrice != null && schemeSurePrice.getPrice() != null) {
-                    stringBuilder.append(String.format("最终单价为%s元/㎡", schemeSurePrice.getPrice().toString()));
+                    stringBuilder.append(String.format("最终单价为%s元/㎡", ArithmeticUtils.getBigDecimalString(schemeSurePrice.getPrice())));
                 }
                 String s = String.format("%s%s 。", generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject), stringBuilder.toString());
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(StringUtils.trimToEmpty(s))), false);
@@ -2014,7 +2015,7 @@ public class GenerateBaseDataService {
         final String nullValue = "";
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             builder.startTable();
-            generateCommonMethod.writeWordTitle(builder, doubleLinkedList, Lists.newLinkedList(Arrays.asList("估价序号", "权证号", "所有权人", "共有情况", "证载用途", "房屋性质", "面积")));
+            generateCommonMethod.writeWordTitle(builder, doubleLinkedList, Lists.newLinkedList(Arrays.asList("估价序号", "权证号", "所有权人", "共有情况", "证载用途", "房屋性质", "面积(㎡)")));
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getDeclareRecordId() == null) {
                     continue;
@@ -2049,7 +2050,7 @@ public class GenerateBaseDataService {
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getPublicSituation()) ? declareRecord.getPublicSituation() : nullValue);
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getCertUse()) ? declareRecord.getCertUse() : nullValue);
                 linkedLists.add(StringUtils.isNotBlank(declareRecord.getNature()) ? declareRecord.getNature() : nullValue);
-                linkedLists.add(declareRecord.getFloorArea() != null ? String.format("%s%s", declareRecord.getFloorArea().toString(), "㎡") : nullValue);
+                linkedLists.add(declareRecord.getFloorArea() != null ? String.format("%s", ArithmeticUtils.getBigDecimalString(declareRecord.getFloorArea())) : nullValue);
                 generateCommonMethod.writeWordTitle(builder, doubleLinkedList, linkedLists);
                 linkedLists.clear();
             }
@@ -4213,7 +4214,7 @@ public class GenerateBaseDataService {
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         boolean mortgageFlag = Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId());
         LinkedList<Double> doubleLinkedList = Lists.newLinkedList(Lists.newArrayList(50d, 150d, 30d, 30d, 30d, 30d, 50d, 55d, 60d, 50d, 50d));
-        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价(元)", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
+        LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价(元/㎡)", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
         int colMax = strings.size();
         int firstIndex = 6;//从建筑面积开始 所以是6
         if (!seat) {
@@ -4284,16 +4285,16 @@ public class GenerateBaseDataService {
                         mergeCellModelList.add(new MergeCellModel(cellRange0, cell));
                     }
                     if (j == firstIndex + 1) {
-                        builder.write(evaluationArea.toString());
+                        builder.write(ArithmeticUtils.getBigDecimalString(evaluationArea));
                     }
                     if (j == firstIndex + 2) {
-                        builder.write(price.toString());
+                        builder.write(ArithmeticUtils.getBigDecimalString(price));
                     }
                     if (j == firstIndex + 3) {
                         BigDecimal temp = new BigDecimal(total.toString());
                         temp = temp.divide(new BigDecimal(10000));
                         temp = temp.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        builder.write(temp.toString());
+                        builder.write(ArithmeticUtils.getBigDecimalString(temp));
                     }
                     BigDecimal knowTotalPrice = getSchemeReimbursementKnowTotalPrice();
                     if (j == (firstIndex + 4)) {
@@ -4303,7 +4304,7 @@ public class GenerateBaseDataService {
                         BigDecimal mortgage = total.subtract(knowTotalPrice);
                         mortgage = mortgage.divide(new BigDecimal(10000));
                         mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        builder.write(mortgage.toString());
+                        builder.write(ArithmeticUtils.getBigDecimalString(mortgage));
                     }
                 }
                 builder.endRow();
@@ -4428,7 +4429,7 @@ public class GenerateBaseDataService {
             linkedLists.add(nullValue);
         }
         if (schemeJudgeObject.getEvaluationArea() != null) {//6
-            linkedLists.add(schemeJudgeObject.getEvaluationArea().toString());
+            linkedLists.add(ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getEvaluationArea()));
         } else {
             linkedLists.add(nullValue);
         }
@@ -4449,7 +4450,8 @@ public class GenerateBaseDataService {
             }
         }
         if (schemeJudgeObject.getPrice() != null) {//7
-            linkedLists.add(String.format("%s%s", schemeJudgeObject.getPrice().toString(), StringUtils.isNotBlank(unit) ? unit : nullValue));
+//            linkedLists.add(String.format("%s%s", schemeJudgeObject.getPrice().toString(), StringUtils.isNotBlank(unit) ? unit : nullValue));
+            linkedLists.add(String.format("%s", ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getPrice())));
         } else {
             linkedLists.add(nullValue);
         }
@@ -4457,7 +4459,7 @@ public class GenerateBaseDataService {
             BigDecimal total = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
             total = total.divide(new BigDecimal(10000));
             total = total.setScale(2, BigDecimal.ROUND_HALF_UP);
-            linkedLists.add(total.toString());
+            linkedLists.add(ArithmeticUtils.getBigDecimalString(total));
         } else {
             linkedLists.add(nullValue);
         }
@@ -4473,7 +4475,7 @@ public class GenerateBaseDataService {
                 BigDecimal mortgage = totol.subtract(knowTotalPrice);
                 mortgage = mortgage.divide(new BigDecimal(10000));
                 mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
-                linkedLists.add(mortgage.toString());//10
+                linkedLists.add(ArithmeticUtils.getBigDecimalString(mortgage));//10
             } else {
                 linkedLists.add(nullValue);
             }
@@ -5461,6 +5463,7 @@ public class GenerateBaseDataService {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地用途:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_use))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("权益人:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Stakeholder))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("规划条件:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.PLANNINGCONDITIONS))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地使用期限:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.LAND_USE_PERIOD))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地开发程度:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.DEGREEOFLANDDEVELOPMENT))));
 
 
@@ -6737,8 +6740,8 @@ public class GenerateBaseDataService {
                     certUseMap2.put(number, declareRecord.getCertUse());
                     if (StringUtils.isNotBlank(declareRecord.getPracticalUse()))
                         practicalUseMap.put(number, schemeJudgeObject.getPracticalUse());
-                    buildAreaMap.put(number, String.format("%s㎡", schemeJudgeObject.getFloorArea()));
-                    evaluationAreaMap.put(number, String.format("%s㎡", schemeJudgeObject.getEvaluationArea()));
+                    buildAreaMap.put(number, String.format("%s㎡", ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getFloorArea())));
+                    evaluationAreaMap.put(number, String.format("%s㎡", ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getEvaluationArea())));
                     if (StringUtils.isNotBlank(declareRecord.getLandRightNature()))
                         landRightNatureMap.put(number, declareRecord.getLandRightNature());
                     ownershipMap.put(number, declareRecord.getOwnership());
