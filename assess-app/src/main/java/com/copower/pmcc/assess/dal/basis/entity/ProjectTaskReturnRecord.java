@@ -9,17 +9,19 @@ public class ProjectTaskReturnRecord {
 
     private Integer planDetailsId;
 
+    private String processInsId;
+
     private String reason;
+
+    private Date returnTime;
+
+    private String returnPerson;
 
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String returnPerson;
-
-    private Date returnTime;
 
     public Integer getId() {
         return id;
@@ -45,12 +47,36 @@ public class ProjectTaskReturnRecord {
         this.planDetailsId = planDetailsId;
     }
 
+    public String getProcessInsId() {
+        return processInsId;
+    }
+
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
     public String getReason() {
         return reason;
     }
 
     public void setReason(String reason) {
         this.reason = reason == null ? null : reason.trim();
+    }
+
+    public Date getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(Date returnTime) {
+        this.returnTime = returnTime;
+    }
+
+    public String getReturnPerson() {
+        return returnPerson;
+    }
+
+    public void setReturnPerson(String returnPerson) {
+        this.returnPerson = returnPerson == null ? null : returnPerson.trim();
     }
 
     public String getCreator() {
@@ -75,21 +101,5 @@ public class ProjectTaskReturnRecord {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getReturnPerson() {
-        return returnPerson;
-    }
-
-    public void setReturnPerson(String returnPerson) {
-        this.returnPerson = returnPerson == null ? null : returnPerson.trim();
-    }
-
-    public Date getReturnTime() {
-        return returnTime;
-    }
-
-    public void setReturnTime(Date returnTime) {
-        this.returnTime = returnTime;
     }
 }

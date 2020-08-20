@@ -545,7 +545,18 @@
         cols.push({field: 'planName', title: '阶段事项名称', width: '20%'});
         cols.push({field: 'businessKey', title: '名称', width: '20%'});
         cols.push({field: 'byExaminePeopleName', title: '被抽查人', width: '10%'});
-        cols.push({field: 'examineScore', title: '得分', width: '10%'});
+        cols.push({
+            field: 'examineScore', title: '得分/标准分', width: '10%', formatter: function (value, row, index) {
+                return value+"/"+row.standardScore;
+            }
+        });
+        cols.push({
+            field: 'ratio', title: '得分率', width: '10%', formatter: function (value, row, index) {
+                if(row.examineScore&&row.standardScore){
+                    return ((row.examineScore/row.standardScore)*100).toFixed(2)+"%";
+                }
+            }
+        });
         cols.push({
             field: 'bisQualified', title: '是否合格', width: '10%', formatter: function (value, row, index) {
                 if (value) {

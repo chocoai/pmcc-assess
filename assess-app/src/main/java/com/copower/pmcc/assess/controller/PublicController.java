@@ -279,30 +279,25 @@ public class PublicController {
                 .getLimit(), search);
 
         List<BoxApprovalLogVo> rows = (List<BoxApprovalLogVo>) approvalLog.getRows();
-        SysAttachmentDto bidBaseAttachment = new SysAttachmentDto();
-        bidBaseAttachment.setProjectId(projectId);
-        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(bidBaseAttachment);
         List<BoxApprovalLogVo> resultRows = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(attachmentList)) {
-            for (BoxApprovalLogVo item : rows) {
-                if (item.getWorkPhaseId() != null && item.getWorkPhaseId() > 0) {
-                    ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(item.getWorkPhaseId());
-                    if (projectPhase != null) {
-                        item.setOpinions(String.format("[%s]%s", projectPhase.getProjectPhaseName(), item.getOpinions()));
-                    }
+        for (BoxApprovalLogVo item : rows) {
+            if (item.getWorkPhaseId() != null && item.getWorkPhaseId() > 0) {
+                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(item.getWorkPhaseId());
+                if (projectPhase != null) {
+                    item.setOpinions(String.format("[%s]%s", projectPhase.getProjectPhaseName(), item.getOpinions()));
                 }
-                List<SysAttachmentDto> filter = LangUtils.filter(attachmentList, o -> {
-                    return StringUtils.equals(o.getProcessInsId(), item.getProcessInsId()) && StringUtils.equals(o.getReActivityName(), item.getActivityNameKey()) && StringUtils.equals(o
-                            .getProcessTaskId(), item.getProcessTaskId());
-                });
-                if (CollectionUtils.isNotEmpty(filter)) {
-                    List<AttachmentVo> attachmentVos = getAttachmentVos(filter);
-                    item.setAttachmentVos(attachmentVos);
-                }
-                resultRows.add(item);
             }
-            approvalLog.setRows(resultRows);
+            SysAttachmentDto where = new SysAttachmentDto();
+            where.setProcessInsId(item.getProcessInsId());
+            where.setProcessTaskId(item.getProcessTaskId());
+            List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getAttachmentList(where);
+            if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                List<AttachmentVo> attachmentVos = getAttachmentVos(attachmentDtoList);
+                item.setAttachmentVos(attachmentVos);
+            }
+            resultRows.add(item);
         }
+        approvalLog.setRows(resultRows);
         return approvalLog;
     }
 

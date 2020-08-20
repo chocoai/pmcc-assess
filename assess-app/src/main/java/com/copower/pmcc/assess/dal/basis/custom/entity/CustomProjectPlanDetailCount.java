@@ -5,6 +5,7 @@ package com.copower.pmcc.assess.dal.basis.custom.entity;
  */
 public class CustomProjectPlanDetailCount {
     private Integer projectPhaseId;
+    private String projectPhaseName;
     private Integer planDetailsCount;
 
     public Integer getProjectPhaseId() {
@@ -13,6 +14,14 @@ public class CustomProjectPlanDetailCount {
 
     public void setProjectPhaseId(Integer projectPhaseId) {
         this.projectPhaseId = projectPhaseId;
+    }
+
+    public String getProjectPhaseName() {
+        return projectPhaseName;
+    }
+
+    public void setProjectPhaseName(String projectPhaseName) {
+        this.projectPhaseName = projectPhaseName;
     }
 
     public Integer getPlanDetailsCount() {

@@ -16,7 +16,19 @@ public class ProjectSpotCheck {
 
     private String processInsId;
 
+    private Integer planDetailsCount;
+
+    private String planDetailsContent;
+
+    private BigDecimal workHourStandardScore;
+
+    private BigDecimal workHourRatio;
+
     private BigDecimal workHourScore;
+
+    private BigDecimal qualityStandardScore;
+
+    private BigDecimal qualityRatio;
 
     private BigDecimal qualityScore;
 
@@ -76,12 +88,60 @@ public class ProjectSpotCheck {
         this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
+    public Integer getPlanDetailsCount() {
+        return planDetailsCount;
+    }
+
+    public void setPlanDetailsCount(Integer planDetailsCount) {
+        this.planDetailsCount = planDetailsCount;
+    }
+
+    public String getPlanDetailsContent() {
+        return planDetailsContent;
+    }
+
+    public void setPlanDetailsContent(String planDetailsContent) {
+        this.planDetailsContent = planDetailsContent == null ? null : planDetailsContent.trim();
+    }
+
+    public BigDecimal getWorkHourStandardScore() {
+        return workHourStandardScore;
+    }
+
+    public void setWorkHourStandardScore(BigDecimal workHourStandardScore) {
+        this.workHourStandardScore = workHourStandardScore;
+    }
+
+    public BigDecimal getWorkHourRatio() {
+        return workHourRatio;
+    }
+
+    public void setWorkHourRatio(BigDecimal workHourRatio) {
+        this.workHourRatio = workHourRatio;
+    }
+
     public BigDecimal getWorkHourScore() {
         return workHourScore;
     }
 
     public void setWorkHourScore(BigDecimal workHourScore) {
         this.workHourScore = workHourScore;
+    }
+
+    public BigDecimal getQualityStandardScore() {
+        return qualityStandardScore;
+    }
+
+    public void setQualityStandardScore(BigDecimal qualityStandardScore) {
+        this.qualityStandardScore = qualityStandardScore;
+    }
+
+    public BigDecimal getQualityRatio() {
+        return qualityRatio;
+    }
+
+    public void setQualityRatio(BigDecimal qualityRatio) {
+        this.qualityRatio = qualityRatio;
     }
 
     public BigDecimal getQualityScore() {

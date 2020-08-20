@@ -64,9 +64,31 @@
                 </table>
             </div>
         </div>
-
     </div>
 </div>
+
+<div id="processHistoryLogModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">流程日志</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table title="流程日志" class="table table-bordered" id="processHistoryLogList"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type="application/javascript">
     $(function () {
         loadReturnRecordList();
@@ -216,6 +238,13 @@
             }
         });
         cols.push({field: 'fileViewName', title: '附件'});
+        cols.push({
+            field: 'opt', title: '操作', formatter: function (value, row, index) {
+                var str = "";
+                str += "<button type='button' onclick='showProcessHistoryLogModal(\"" + row.processInsId + "\")' style='margin-left: 5px;' title='流程日志' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
+                return str;
+            }
+        });
         $("#tb_returnRecordList").bootstrapTable('destroy');
         TableInit("tb_returnRecordList", "${pageContext.request.contextPath}/ProjectTask/loadReturnRecordList", cols, {
             planDetailsId: '${projectPlanDetails.id}'
@@ -229,5 +258,55 @@
         });
     }
 
+    //加载历史流程日志
+    function showProcessHistoryLogModal(processInsId) {
+        loadProcessHistoryLogList($("#processHistoryLogList"),processInsId);
+        $('#processHistoryLogModal').modal();
+    }
 
+    //加载流程日志
+    function loadProcessHistoryLogList($list,processInsId) {
+        var cols = [];
+        cols.push({field: 'activityName', title: '审批节点'});
+        cols.push({field: 'createrName', title: '审批人'});
+        cols.push({
+            field: 'created', title: '审批时间', formatter: function (value, row, index) {
+                return formatDate(value, true);
+            }
+        });
+        cols.push({field: 'conclusion', title: '结论'});
+        cols.push({field: 'opinions', title: '审批意见'});
+        cols.push({
+            field: 'attachmentVos', title: '审批附件', formatter: function (value, row, index) {
+                return "<div id='_uploadFile_log_list" + row.id + "'></div>";
+            }
+        });
+        var paramData = {
+            showRefresh: false,                  //是否显示刷新按钮
+            search: false,
+            onLoadSuccess: function (data) {
+                $(".tooltips").tooltip();
+                if (data["rows"]) {
+                    $.each(data["rows"], function (i, j) {
+                        FileUtils.showFileList({
+                            target: "uploadFile_log_list" + j.id,
+                            editFlag: false,
+                            deleteFlag: false,
+                            showMode: "table",
+                            data: j.attachmentVos
+                        });
+                    })
+                }
+                var demoWidth = $(window).width();
+                if (demoWidth <= 720) {
+                    $list.bootstrapTable('hideColumn', 'Number');
+                    $list.bootstrapTable('hideColumn', 'activityName');
+                    $list.bootstrapTable('hideColumn', 'conclusion');
+                    $list.bootstrapTable('hideColumn', 'attachmentVos');
+                }
+            }
+        };
+        $list.bootstrapTable('destroy');
+        TableInit($list, "${pageContext.request.contextPath}/public/getApprovalLog", cols, {processInsId: processInsId}, paramData);
+    }
 </script>

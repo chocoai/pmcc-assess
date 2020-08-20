@@ -516,6 +516,256 @@ public class ProjectSpotCheckExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlanDetailsCountIsNull() {
+            addCriterion("plan_details_count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountIsNotNull() {
+            addCriterion("plan_details_count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountEqualTo(Integer value) {
+            addCriterion("plan_details_count =", value, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountNotEqualTo(Integer value) {
+            addCriterion("plan_details_count <>", value, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountGreaterThan(Integer value) {
+            addCriterion("plan_details_count >", value, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_count >=", value, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountLessThan(Integer value) {
+            addCriterion("plan_details_count <", value, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_count <=", value, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountIn(List<Integer> values) {
+            addCriterion("plan_details_count in", values, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountNotIn(List<Integer> values) {
+            addCriterion("plan_details_count not in", values, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_count between", value1, value2, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_count not between", value1, value2, "planDetailsCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentIsNull() {
+            addCriterion("plan_details_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentIsNotNull() {
+            addCriterion("plan_details_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentEqualTo(String value) {
+            addCriterion("plan_details_content =", value, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentNotEqualTo(String value) {
+            addCriterion("plan_details_content <>", value, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentGreaterThan(String value) {
+            addCriterion("plan_details_content >", value, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentGreaterThanOrEqualTo(String value) {
+            addCriterion("plan_details_content >=", value, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentLessThan(String value) {
+            addCriterion("plan_details_content <", value, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentLessThanOrEqualTo(String value) {
+            addCriterion("plan_details_content <=", value, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentLike(String value) {
+            addCriterion("plan_details_content like", value, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentNotLike(String value) {
+            addCriterion("plan_details_content not like", value, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentIn(List<String> values) {
+            addCriterion("plan_details_content in", values, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentNotIn(List<String> values) {
+            addCriterion("plan_details_content not in", values, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentBetween(String value1, String value2) {
+            addCriterion("plan_details_content between", value1, value2, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsContentNotBetween(String value1, String value2) {
+            addCriterion("plan_details_content not between", value1, value2, "planDetailsContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreIsNull() {
+            addCriterion("work_hour_standard_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreIsNotNull() {
+            addCriterion("work_hour_standard_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreEqualTo(BigDecimal value) {
+            addCriterion("work_hour_standard_score =", value, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreNotEqualTo(BigDecimal value) {
+            addCriterion("work_hour_standard_score <>", value, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreGreaterThan(BigDecimal value) {
+            addCriterion("work_hour_standard_score >", value, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("work_hour_standard_score >=", value, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreLessThan(BigDecimal value) {
+            addCriterion("work_hour_standard_score <", value, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("work_hour_standard_score <=", value, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreIn(List<BigDecimal> values) {
+            addCriterion("work_hour_standard_score in", values, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreNotIn(List<BigDecimal> values) {
+            addCriterion("work_hour_standard_score not in", values, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("work_hour_standard_score between", value1, value2, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourStandardScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("work_hour_standard_score not between", value1, value2, "workHourStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioIsNull() {
+            addCriterion("work_hour_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioIsNotNull() {
+            addCriterion("work_hour_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioEqualTo(BigDecimal value) {
+            addCriterion("work_hour_ratio =", value, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioNotEqualTo(BigDecimal value) {
+            addCriterion("work_hour_ratio <>", value, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioGreaterThan(BigDecimal value) {
+            addCriterion("work_hour_ratio >", value, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("work_hour_ratio >=", value, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioLessThan(BigDecimal value) {
+            addCriterion("work_hour_ratio <", value, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("work_hour_ratio <=", value, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioIn(List<BigDecimal> values) {
+            addCriterion("work_hour_ratio in", values, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioNotIn(List<BigDecimal> values) {
+            addCriterion("work_hour_ratio not in", values, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("work_hour_ratio between", value1, value2, "workHourRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkHourRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("work_hour_ratio not between", value1, value2, "workHourRatio");
+            return (Criteria) this;
+        }
+
         public Criteria andWorkHourScoreIsNull() {
             addCriterion("work_hour_score is null");
             return (Criteria) this;
@@ -573,6 +823,126 @@ public class ProjectSpotCheckExample {
 
         public Criteria andWorkHourScoreNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("work_hour_score not between", value1, value2, "workHourScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreIsNull() {
+            addCriterion("quality_standard_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreIsNotNull() {
+            addCriterion("quality_standard_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreEqualTo(BigDecimal value) {
+            addCriterion("quality_standard_score =", value, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreNotEqualTo(BigDecimal value) {
+            addCriterion("quality_standard_score <>", value, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreGreaterThan(BigDecimal value) {
+            addCriterion("quality_standard_score >", value, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("quality_standard_score >=", value, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreLessThan(BigDecimal value) {
+            addCriterion("quality_standard_score <", value, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("quality_standard_score <=", value, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreIn(List<BigDecimal> values) {
+            addCriterion("quality_standard_score in", values, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreNotIn(List<BigDecimal> values) {
+            addCriterion("quality_standard_score not in", values, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("quality_standard_score between", value1, value2, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityStandardScoreNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("quality_standard_score not between", value1, value2, "qualityStandardScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioIsNull() {
+            addCriterion("quality_ratio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioIsNotNull() {
+            addCriterion("quality_ratio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioEqualTo(BigDecimal value) {
+            addCriterion("quality_ratio =", value, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioNotEqualTo(BigDecimal value) {
+            addCriterion("quality_ratio <>", value, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioGreaterThan(BigDecimal value) {
+            addCriterion("quality_ratio >", value, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("quality_ratio >=", value, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioLessThan(BigDecimal value) {
+            addCriterion("quality_ratio <", value, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("quality_ratio <=", value, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioIn(List<BigDecimal> values) {
+            addCriterion("quality_ratio in", values, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioNotIn(List<BigDecimal> values) {
+            addCriterion("quality_ratio not in", values, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("quality_ratio between", value1, value2, "qualityRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andQualityRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("quality_ratio not between", value1, value2, "qualityRatio");
             return (Criteria) this;
         }
 

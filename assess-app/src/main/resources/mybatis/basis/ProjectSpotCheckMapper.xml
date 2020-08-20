@@ -8,7 +8,13 @@
     <result column="spot_month" jdbcType="VARCHAR" property="spotMonth" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="process_ins_id" jdbcType="VARCHAR" property="processInsId" />
+    <result column="plan_details_count" jdbcType="INTEGER" property="planDetailsCount" />
+    <result column="plan_details_content" jdbcType="VARCHAR" property="planDetailsContent" />
+    <result column="work_hour_standard_score" jdbcType="DECIMAL" property="workHourStandardScore" />
+    <result column="work_hour_ratio" jdbcType="DECIMAL" property="workHourRatio" />
     <result column="work_hour_score" jdbcType="DECIMAL" property="workHourScore" />
+    <result column="quality_standard_score" jdbcType="DECIMAL" property="qualityStandardScore" />
+    <result column="quality_ratio" jdbcType="DECIMAL" property="qualityRatio" />
     <result column="quality_score" jdbcType="DECIMAL" property="qualityScore" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -74,8 +80,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, title, by_spot_user, spot_month, remark, process_ins_id, work_hour_score, quality_score, 
-    status, creator, gmt_created, gmt_modified
+    id, title, by_spot_user, spot_month, remark, process_ins_id, plan_details_count, 
+    plan_details_content, work_hour_standard_score, work_hour_ratio, work_hour_score, 
+    quality_standard_score, quality_ratio, quality_score, status, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheckExample" resultMap="BaseResultMap">
     select
@@ -112,13 +120,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_spot_check (title, by_spot_user, spot_month, 
-      remark, process_ins_id, work_hour_score, 
-      quality_score, status, creator, 
-      gmt_created, gmt_modified)
+      remark, process_ins_id, plan_details_count, 
+      plan_details_content, work_hour_standard_score, 
+      work_hour_ratio, work_hour_score, quality_standard_score, 
+      quality_ratio, quality_score, status, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{title,jdbcType=VARCHAR}, #{bySpotUser,jdbcType=VARCHAR}, #{spotMonth,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, #{workHourScore,jdbcType=DECIMAL}, 
-      #{qualityScore,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{remark,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, #{planDetailsCount,jdbcType=INTEGER}, 
+      #{planDetailsContent,jdbcType=VARCHAR}, #{workHourStandardScore,jdbcType=DECIMAL}, 
+      #{workHourRatio,jdbcType=DECIMAL}, #{workHourScore,jdbcType=DECIMAL}, #{qualityStandardScore,jdbcType=DECIMAL}, 
+      #{qualityRatio,jdbcType=DECIMAL}, #{qualityScore,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectSpotCheck">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -141,8 +155,26 @@
       <if test="processInsId != null">
         process_ins_id,
       </if>
+      <if test="planDetailsCount != null">
+        plan_details_count,
+      </if>
+      <if test="planDetailsContent != null">
+        plan_details_content,
+      </if>
+      <if test="workHourStandardScore != null">
+        work_hour_standard_score,
+      </if>
+      <if test="workHourRatio != null">
+        work_hour_ratio,
+      </if>
       <if test="workHourScore != null">
         work_hour_score,
+      </if>
+      <if test="qualityStandardScore != null">
+        quality_standard_score,
+      </if>
+      <if test="qualityRatio != null">
+        quality_ratio,
       </if>
       <if test="qualityScore != null">
         quality_score,
@@ -176,8 +208,26 @@
       <if test="processInsId != null">
         #{processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="planDetailsCount != null">
+        #{planDetailsCount,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsContent != null">
+        #{planDetailsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="workHourStandardScore != null">
+        #{workHourStandardScore,jdbcType=DECIMAL},
+      </if>
+      <if test="workHourRatio != null">
+        #{workHourRatio,jdbcType=DECIMAL},
+      </if>
       <if test="workHourScore != null">
         #{workHourScore,jdbcType=DECIMAL},
+      </if>
+      <if test="qualityStandardScore != null">
+        #{qualityStandardScore,jdbcType=DECIMAL},
+      </if>
+      <if test="qualityRatio != null">
+        #{qualityRatio,jdbcType=DECIMAL},
       </if>
       <if test="qualityScore != null">
         #{qualityScore,jdbcType=DECIMAL},
@@ -223,8 +273,26 @@
       <if test="record.processInsId != null">
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.planDetailsCount != null">
+        plan_details_count = #{record.planDetailsCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDetailsContent != null">
+        plan_details_content = #{record.planDetailsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workHourStandardScore != null">
+        work_hour_standard_score = #{record.workHourStandardScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.workHourRatio != null">
+        work_hour_ratio = #{record.workHourRatio,jdbcType=DECIMAL},
+      </if>
       <if test="record.workHourScore != null">
         work_hour_score = #{record.workHourScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.qualityStandardScore != null">
+        quality_standard_score = #{record.qualityStandardScore,jdbcType=DECIMAL},
+      </if>
+      <if test="record.qualityRatio != null">
+        quality_ratio = #{record.qualityRatio,jdbcType=DECIMAL},
       </if>
       <if test="record.qualityScore != null">
         quality_score = #{record.qualityScore,jdbcType=DECIMAL},
@@ -254,7 +322,13 @@
       spot_month = #{record.spotMonth,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      plan_details_count = #{record.planDetailsCount,jdbcType=INTEGER},
+      plan_details_content = #{record.planDetailsContent,jdbcType=VARCHAR},
+      work_hour_standard_score = #{record.workHourStandardScore,jdbcType=DECIMAL},
+      work_hour_ratio = #{record.workHourRatio,jdbcType=DECIMAL},
       work_hour_score = #{record.workHourScore,jdbcType=DECIMAL},
+      quality_standard_score = #{record.qualityStandardScore,jdbcType=DECIMAL},
+      quality_ratio = #{record.qualityRatio,jdbcType=DECIMAL},
       quality_score = #{record.qualityScore,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -282,8 +356,26 @@
       <if test="processInsId != null">
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="planDetailsCount != null">
+        plan_details_count = #{planDetailsCount,jdbcType=INTEGER},
+      </if>
+      <if test="planDetailsContent != null">
+        plan_details_content = #{planDetailsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="workHourStandardScore != null">
+        work_hour_standard_score = #{workHourStandardScore,jdbcType=DECIMAL},
+      </if>
+      <if test="workHourRatio != null">
+        work_hour_ratio = #{workHourRatio,jdbcType=DECIMAL},
+      </if>
       <if test="workHourScore != null">
         work_hour_score = #{workHourScore,jdbcType=DECIMAL},
+      </if>
+      <if test="qualityStandardScore != null">
+        quality_standard_score = #{qualityStandardScore,jdbcType=DECIMAL},
+      </if>
+      <if test="qualityRatio != null">
+        quality_ratio = #{qualityRatio,jdbcType=DECIMAL},
       </if>
       <if test="qualityScore != null">
         quality_score = #{qualityScore,jdbcType=DECIMAL},
@@ -310,7 +402,13 @@
       spot_month = #{spotMonth,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      plan_details_count = #{planDetailsCount,jdbcType=INTEGER},
+      plan_details_content = #{planDetailsContent,jdbcType=VARCHAR},
+      work_hour_standard_score = #{workHourStandardScore,jdbcType=DECIMAL},
+      work_hour_ratio = #{workHourRatio,jdbcType=DECIMAL},
       work_hour_score = #{workHourScore,jdbcType=DECIMAL},
+      quality_standard_score = #{qualityStandardScore,jdbcType=DECIMAL},
+      quality_ratio = #{qualityRatio,jdbcType=DECIMAL},
       quality_score = #{qualityScore,jdbcType=DECIMAL},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},

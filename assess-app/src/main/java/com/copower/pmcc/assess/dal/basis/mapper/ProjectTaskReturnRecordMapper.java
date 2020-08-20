@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ProjectTaskReturnRecordMapper {
-    int countByExample(ProjectTaskReturnRecordExample example);
+    long countByExample(ProjectTaskReturnRecordExample example);
 
     int deleteByExample(ProjectTaskReturnRecordExample example);
 

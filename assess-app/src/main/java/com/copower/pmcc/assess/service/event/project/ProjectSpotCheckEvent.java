@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.event.project;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectPlanCount;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectPlanDetailCount;
@@ -94,6 +95,9 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
         }
         String parameter = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
         List<Integer> projectIds = FormatUtils.transformString2Integer(parameter);
+        String startMonth = spotCheck.getSpotMonth();
+        String endMonth = DateUtils.format(DateUtils.addMonth(DateUtils.convertDate(startMonth + "-01"), 1), DateUtils.MONTH_PATTERN);
+        List<CustomProjectPlanDetailCount> planDetailCounts = projectPlanDetailsService.getPlanDetailsCountByMonth(startMonth, endMonth, projectIds);
 
         List<ProjectSpotCheck> spotChecks = projectSpotCheckService.getFinishSpotCheckListByMonth(spotCheck.getBySpotUser(), spotCheck.getSpotMonth());
         AssessmentPerformanceDto performanceDto = new AssessmentPerformanceDto();
@@ -102,7 +106,7 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
         performanceDto.setProcessInsId(processInsId);
         performanceDto.setByExaminePeople(spotCheck.getBySpotUser());
         performanceDto.setExaminePeople(spotCheck.getCreator());
-        performanceDto.setExamineScore(getWorkHoursScore(spotChecks,projectIds));//需计算
+        performanceDto.setExamineScore(getWorkHoursScore(spotChecks, planDetailCounts, spotCheck));//需计算
         performanceDto.setExamineDate(endDate);
         performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
         performanceDto.setAssessmentKey("SpotAssessment");
@@ -111,11 +115,23 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
         performanceDto.setBisEffective(true);
         performanceDto.setBisQualified(true);
         performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
+        spotCheck.setWorkHourScore(performanceDto.getExamineScore());
 
-        performanceDto.setExamineScore(getQualityScore(spotChecks,projectIds));//需计算
+        performanceDto.setExamineScore(getQualityScore(spotChecks, planDetailCounts, spotCheck));//需计算
         performanceDto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
         performanceDto.setBusinessKey("抽查考核质量得分");
         performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
+        spotCheck.setQualityScore(performanceDto.getExamineScore());
+
+        if (CollectionUtils.isNotEmpty(planDetailCounts)) {
+            spotCheck.setPlanDetailsContent(JSON.toJSONString(planDetailCounts));
+            Integer  count = 0;
+            for (CustomProjectPlanDetailCount planDetailCount : planDetailCounts) {
+                count += planDetailCount.getPlanDetailsCount();
+            }
+            spotCheck.setPlanDetailsCount(count);
+        }
+        projectSpotCheckService.saveSpotCheck(spotCheck);
     }
 
     /**
@@ -124,7 +140,7 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
      * @param spotChecks 本月抽查批次
      * @return
      */
-    private BigDecimal getWorkHoursScore(List<ProjectSpotCheck> spotChecks,List<Integer> projectIds) {
+    private BigDecimal getWorkHoursScore(List<ProjectSpotCheck> spotChecks, List<CustomProjectPlanDetailCount> planDetailCounts, ProjectSpotCheck currSpotCheck) {
         if (CollectionUtils.isEmpty(spotChecks)) return BigDecimal.ZERO;
         List<ProjectSpotCheckItem> spotCheckItemAll = Lists.newArrayList();
         for (ProjectSpotCheck spotCheck : spotChecks) {
@@ -132,7 +148,7 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
             if (CollectionUtils.isNotEmpty(spotCheckItems))
                 spotCheckItemAll.addAll(spotCheckItems);
         }
-        List<ProjectSpotCheckItemScore> itemScoreList =projectSpotCheckService.getSpotCheckItemScoreListByItemIds(LangUtils.transform(spotCheckItemAll, o -> o.getId()));
+        List<ProjectSpotCheckItemScore> itemScoreList = projectSpotCheckService.getSpotCheckItemScoreListByItemIds(LangUtils.transform(spotCheckItemAll, o -> o.getId()));
         if (CollectionUtils.isEmpty(itemScoreList)) return BigDecimal.ZERO;
         BigDecimal standardScore = BigDecimal.ZERO;//标准得分
         BigDecimal score = BigDecimal.ZERO;//实际得分
@@ -142,19 +158,18 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
         }
         BigDecimal ratio = score.divide(standardScore, 2, RoundingMode.HALF_UP);//得出系数
         //找出本月应该获取的分值
-        String startMonth = spotChecks.get(0).getSpotMonth();
-        String endMonth = DateUtils.format(DateUtils.addMonth(DateUtils.convertDate(startMonth + "-01"), 1), DateUtils.MONTH_PATTERN);
-        List<CustomProjectPlanCount> projectPlanCounts = projectPlanService.getPlanCountByMonth(startMonth, endMonth,projectIds);
         BigDecimal monthTotalScore = BigDecimal.ZERO;//本月标准总得分
-        if(CollectionUtils.isNotEmpty(projectPlanCounts)){
-            for (CustomProjectPlanCount projectPlanCount : projectPlanCounts) {
-                if (projectPlanCount.getWorkStageId() == null) continue;
-                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanCount.getWorkStageId());
-                if (projectWorkStage != null && projectWorkStage.getCeReviewScore() != null) {
-                    monthTotalScore = monthTotalScore.add(projectWorkStage.getCeReviewScore().multiply(new BigDecimal(projectPlanCount.getPlanCount())));
+        if (CollectionUtils.isNotEmpty(planDetailCounts)) {
+            for (CustomProjectPlanDetailCount planDetailCount : planDetailCounts) {
+                if (planDetailCount.getProjectPhaseId() == null) continue;
+                ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(planDetailCount.getProjectPhaseId());
+                if (projectPhase != null && projectPhase.getCeReviewScore() != null) {
+                    monthTotalScore = monthTotalScore.add(projectPhase.getCeReviewScore().multiply(new BigDecimal(planDetailCount.getPlanDetailsCount())));
                 }
             }
         }
+        currSpotCheck.setQualityRatio(ratio);
+        currSpotCheck.setQualityStandardScore(monthTotalScore);
         return ratio.multiply(monthTotalScore).setScale(2, RoundingMode.HALF_UP);
     }
 
@@ -164,7 +179,7 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
      * @param spotChecks 本月抽查批次
      * @return
      */
-    private BigDecimal getQualityScore(List<ProjectSpotCheck> spotChecks,List<Integer> projectIds) {
+    private BigDecimal getQualityScore(List<ProjectSpotCheck> spotChecks, List<CustomProjectPlanDetailCount> planDetailCounts, ProjectSpotCheck currSpotCheck) {
         if (CollectionUtils.isEmpty(spotChecks)) return BigDecimal.ZERO;
         List<Integer> spotCheckIds = LangUtils.transform(spotChecks, o -> o.getId());
         List<AssessmentPerformanceDto> performanceDtoList = performanceService.getPerformancesBySpotBatchIds(spotCheckIds);
@@ -177,9 +192,6 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
         }
         BigDecimal ratio = score.divide(standardScore, 2, RoundingMode.HALF_UP);//得出系数
         //找出本月完成的工作事项，将工作事项分组并统计数量，最后统计出应该得到的质量分
-        String startMonth = spotChecks.get(0).getSpotMonth();
-        String endMonth = DateUtils.format(DateUtils.addMonth(DateUtils.convertDate(startMonth + "-01"), 1), DateUtils.MONTH_PATTERN);
-        List<CustomProjectPlanDetailCount> planDetailCounts = projectPlanDetailsService.getPlanDetailsCountByMonth(startMonth, endMonth,projectIds);
         if (CollectionUtils.isEmpty(planDetailCounts)) return BigDecimal.ZERO;
         BigDecimal monthTotalScore = BigDecimal.ZERO;//本月标准总得分
         for (CustomProjectPlanDetailCount planDetailCount : planDetailCounts) {
@@ -197,6 +209,9 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
                 }
             }
         }
+        currSpotCheck.setQualityRatio(ratio);
+        currSpotCheck.setQualityStandardScore(monthTotalScore);
         return ratio.multiply(monthTotalScore).setScale(2, RoundingMode.HALF_UP);
     }
+
 }

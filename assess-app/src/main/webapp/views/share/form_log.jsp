@@ -41,7 +41,7 @@
 
 
 <script type="application/javascript">
-    var projectLogsObj = {
+    var processLogsObj = {
         projectId: "${projectId}",
         processInsId: "${processInsId}"
     };
@@ -49,22 +49,20 @@
     $(function () {
 
         //数据检查
-        if (!projectLogsObj.projectId) {
-            projectLogsObj.projectId = "${projectInfo.id}";
+        if (!processLogsObj.projectId) {
+            processLogsObj.projectId = "${projectInfo.id}";
         }
-
-        if (!projectLogsObj.processInsId) {
-            projectLogsObj.processInsId = "${projectPlanDetails.processInsId}";
+        if (!processLogsObj.processInsId) {
+            processLogsObj.processInsId = "${projectPlanDetails.processInsId}";
         }
         //---end
 
-        loadLogProjectTable();
-        loadLogTable();
+        processLogsObj.loadLogProjectTable($("#tb_log_project"),processLogsObj.projectId);
+        processLogsObj.loadLogProcessTable($("#tb_log"),processLogsObj.processInsId);
     });
 
-
-    function loadLogProjectTable() {
-
+    //加载项目日志
+    processLogsObj.loadLogProjectTable=function ($list,projectId) {
         var cols = [];
         cols.push({field: 'workStage', title: '项目阶段', width: '15%'});
         cols.push({field: 'workPhase', title: '工作事项'});
@@ -98,20 +96,20 @@
                 }
                 var demoWidth = $(window).width();
                 if (demoWidth <= 720) {
-                    $("#tb_log_project").bootstrapTable('hideColumn', 'Number');
-                    $("#tb_log_project").bootstrapTable('hideColumn', 'workStage');
-                    $("#tb_log_project").bootstrapTable('hideColumn', 'workPhase');
-                    $("#tb_log_project").bootstrapTable('hideColumn', 'activityName');
-                    $("#tb_log_project").bootstrapTable('hideColumn', 'conclusion');
-                    $("#tb_log_project").bootstrapTable('hideColumn', 'attachmentVos');
+                    $list.bootstrapTable('hideColumn', 'Number');
+                    $list.bootstrapTable('hideColumn', 'workStage');
+                    $list.bootstrapTable('hideColumn', 'workPhase');
+                    $list.bootstrapTable('hideColumn', 'activityName');
+                    $list.bootstrapTable('hideColumn', 'conclusion');
+                    $list.bootstrapTable('hideColumn', 'attachmentVos');
                 }
             }
         };
-        TableInit("tb_log_project", "${pageContext.request.contextPath}/public/getApprovalLogByProject", cols, {projectId: projectLogsObj.projectId}, paramData);
-
+        TableInit($list, "${pageContext.request.contextPath}/public/getApprovalLogByProject", cols, {projectId: projectId}, paramData);
     }
 
-    function loadLogTable() {
+    //加载流程日志
+    processLogsObj.loadLogProcessTable=function ($list,processInsId) {
         var cols = [];
         cols.push({field: 'activityName', title: '审批节点'});
         cols.push({field: 'createrName', title: '审批人'});
@@ -145,14 +143,14 @@
                 }
                 var demoWidth = $(window).width();
                 if (demoWidth <= 720) {
-                    $("#tb_log").bootstrapTable('hideColumn', 'Number');
-                    $("#tb_log").bootstrapTable('hideColumn', 'activityName');
-                    $("#tb_log").bootstrapTable('hideColumn', 'conclusion');
-                    $("#tb_log").bootstrapTable('hideColumn', 'attachmentVos');
+                    $list.bootstrapTable('hideColumn', 'Number');
+                    $list.bootstrapTable('hideColumn', 'activityName');
+                    $list.bootstrapTable('hideColumn', 'conclusion');
+                    $list.bootstrapTable('hideColumn', 'attachmentVos');
                 }
             }
         };
-        TableInit("tb_log", "${pageContext.request.contextPath}/public/getApprovalLog", cols, {processInsId: projectLogsObj.processInsId}, paramData);
-
+        TableInit($list, "${pageContext.request.contextPath}/public/getApprovalLog", cols, {processInsId: processInsId}, paramData);
     }
+
 </script>

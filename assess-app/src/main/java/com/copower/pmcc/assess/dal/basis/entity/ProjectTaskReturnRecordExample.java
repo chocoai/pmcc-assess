@@ -285,6 +285,76 @@ public class ProjectTaskReturnRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andProcessInsIdIsNull() {
+            addCriterion("process_ins_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIsNotNull() {
+            addCriterion("process_ins_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdEqualTo(String value) {
+            addCriterion("process_ins_id =", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotEqualTo(String value) {
+            addCriterion("process_ins_id <>", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThan(String value) {
+            addCriterion("process_ins_id >", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("process_ins_id >=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThan(String value) {
+            addCriterion("process_ins_id <", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThanOrEqualTo(String value) {
+            addCriterion("process_ins_id <=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLike(String value) {
+            addCriterion("process_ins_id like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotLike(String value) {
+            addCriterion("process_ins_id not like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIn(List<String> values) {
+            addCriterion("process_ins_id in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotIn(List<String> values) {
+            addCriterion("process_ins_id not in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdBetween(String value1, String value2) {
+            addCriterion("process_ins_id between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotBetween(String value1, String value2) {
+            addCriterion("process_ins_id not between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
         public Criteria andReasonIsNull() {
             addCriterion("reason is null");
             return (Criteria) this;
@@ -352,6 +422,136 @@ public class ProjectTaskReturnRecordExample {
 
         public Criteria andReasonNotBetween(String value1, String value2) {
             addCriterion("reason not between", value1, value2, "reason");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeIsNull() {
+            addCriterion("return_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeIsNotNull() {
+            addCriterion("return_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeEqualTo(Date value) {
+            addCriterion("return_time =", value, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeNotEqualTo(Date value) {
+            addCriterion("return_time <>", value, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeGreaterThan(Date value) {
+            addCriterion("return_time >", value, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("return_time >=", value, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeLessThan(Date value) {
+            addCriterion("return_time <", value, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeLessThanOrEqualTo(Date value) {
+            addCriterion("return_time <=", value, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeIn(List<Date> values) {
+            addCriterion("return_time in", values, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeNotIn(List<Date> values) {
+            addCriterion("return_time not in", values, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeBetween(Date value1, Date value2) {
+            addCriterion("return_time between", value1, value2, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnTimeNotBetween(Date value1, Date value2) {
+            addCriterion("return_time not between", value1, value2, "returnTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonIsNull() {
+            addCriterion("return_person is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonIsNotNull() {
+            addCriterion("return_person is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonEqualTo(String value) {
+            addCriterion("return_person =", value, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonNotEqualTo(String value) {
+            addCriterion("return_person <>", value, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonGreaterThan(String value) {
+            addCriterion("return_person >", value, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonGreaterThanOrEqualTo(String value) {
+            addCriterion("return_person >=", value, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonLessThan(String value) {
+            addCriterion("return_person <", value, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonLessThanOrEqualTo(String value) {
+            addCriterion("return_person <=", value, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonLike(String value) {
+            addCriterion("return_person like", value, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonNotLike(String value) {
+            addCriterion("return_person not like", value, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonIn(List<String> values) {
+            addCriterion("return_person in", values, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonNotIn(List<String> values) {
+            addCriterion("return_person not in", values, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonBetween(String value1, String value2) {
+            addCriterion("return_person between", value1, value2, "returnPerson");
+            return (Criteria) this;
+        }
+
+        public Criteria andReturnPersonNotBetween(String value1, String value2) {
+            addCriterion("return_person not between", value1, value2, "returnPerson");
             return (Criteria) this;
         }
 
@@ -542,136 +742,6 @@ public class ProjectTaskReturnRecordExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonIsNull() {
-            addCriterion("return_person is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonIsNotNull() {
-            addCriterion("return_person is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonEqualTo(String value) {
-            addCriterion("return_person =", value, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonNotEqualTo(String value) {
-            addCriterion("return_person <>", value, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonGreaterThan(String value) {
-            addCriterion("return_person >", value, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonGreaterThanOrEqualTo(String value) {
-            addCriterion("return_person >=", value, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonLessThan(String value) {
-            addCriterion("return_person <", value, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonLessThanOrEqualTo(String value) {
-            addCriterion("return_person <=", value, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonLike(String value) {
-            addCriterion("return_person like", value, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonNotLike(String value) {
-            addCriterion("return_person not like", value, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonIn(List<String> values) {
-            addCriterion("return_person in", values, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonNotIn(List<String> values) {
-            addCriterion("return_person not in", values, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonBetween(String value1, String value2) {
-            addCriterion("return_person between", value1, value2, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnPersonNotBetween(String value1, String value2) {
-            addCriterion("return_person not between", value1, value2, "returnPerson");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeIsNull() {
-            addCriterion("return_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeIsNotNull() {
-            addCriterion("return_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeEqualTo(Date value) {
-            addCriterion("return_time =", value, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeNotEqualTo(Date value) {
-            addCriterion("return_time <>", value, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeGreaterThan(Date value) {
-            addCriterion("return_time >", value, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("return_time >=", value, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeLessThan(Date value) {
-            addCriterion("return_time <", value, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeLessThanOrEqualTo(Date value) {
-            addCriterion("return_time <=", value, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeIn(List<Date> values) {
-            addCriterion("return_time in", values, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeNotIn(List<Date> values) {
-            addCriterion("return_time not in", values, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeBetween(Date value1, Date value2) {
-            addCriterion("return_time between", value1, value2, "returnTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andReturnTimeNotBetween(Date value1, Date value2) {
-            addCriterion("return_time not between", value1, value2, "returnTime");
             return (Criteria) this;
         }
     }
