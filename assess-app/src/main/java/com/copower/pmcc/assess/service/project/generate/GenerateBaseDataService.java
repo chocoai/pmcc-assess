@@ -4150,6 +4150,9 @@ public class GenerateBaseDataService {
                         builder.write(floorCount);
 
                         builder.insertCell();
+                        builder.write(huxingPrice.getFloor());
+
+                        builder.insertCell();
                         builder.write(String.valueOf(huxingPrice.getArea()));
 
                         builder.insertCell();
