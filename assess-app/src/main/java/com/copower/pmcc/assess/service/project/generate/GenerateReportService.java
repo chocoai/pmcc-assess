@@ -229,7 +229,7 @@ public class GenerateReportService {
      * @return
      */
     private void createBodySysAttachment(String path, BaseDataDic reportType, List<SysAttachmentDto> sysAttachmentDtoList, GenerateReportGroup reportGroup) throws Exception {
-        String timeName = String.join("-", DateUtils.format(DateUtils.now(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(DateUtils.now(), DateUtils.HOUR_MINUTE_CHINESE_PATTERN));
+        String timeName = String.join("-", DateUtils.format(DateUtils.now(), DateUtils.DATE_CHINESE_PATTERN));
         String fileName = String.join("", reportType.getName(), timeName, ".", FilenameUtils.getExtension(path));
         String fieldsName = generateCommonMethod.getReportFieldsName(reportType.getFieldName(), reportGroup);
         createCommonSysAttachment(path, fieldsName, fileName, sysAttachmentDtoList, reportGroup);
@@ -242,7 +242,7 @@ public class GenerateReportService {
      * @return
      */
     private void createFooterSysAttachment(String path, BaseDataDic reportType, List<SysAttachmentDto> sysAttachmentDtoList, GenerateReportGroup reportGroup) throws Exception {
-        String timeName = String.join("-", DateUtils.format(DateUtils.now(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(DateUtils.now(), DateUtils.HOUR_MINUTE_CHINESE_PATTERN));
+        String timeName = String.join("-", DateUtils.format(DateUtils.now(), DateUtils.DATE_CHINESE_PATTERN));
         String fileName = String.join("", reportType.getName(), "附件",timeName, ".", FilenameUtils.getExtension(path));
         String fieldsName = generateCommonMethod.getReportFooterFieldsName(reportType.getFieldName(), reportGroup);
         createCommonSysAttachment(path, fieldsName, fileName, sysAttachmentDtoList, reportGroup);

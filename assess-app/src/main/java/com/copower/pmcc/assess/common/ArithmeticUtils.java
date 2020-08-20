@@ -123,7 +123,7 @@ public class ArithmeticUtils implements Serializable {
      * @return 两个参数的和
      */
     public static String add(String v1, String v2, int scale) {
-        return addModel(createBigDecimal(v1), createBigDecimal(v2), scale).toString();
+        return getBigDecimalString(addModel(createBigDecimal(v1), createBigDecimal(v2), scale));
     }
 
     public static BigDecimal addModel(BigDecimal v1, BigDecimal v2, int scale) {
@@ -173,7 +173,7 @@ public class ArithmeticUtils implements Serializable {
      * @return 两个参数的差
      */
     public static String sub(String v1, String v2, int scale) {
-        return sub(createBigDecimal(v1), createBigDecimal(v2), scale, BigDecimal.ROUND_HALF_UP).toString();
+        return getBigDecimalString(sub(createBigDecimal(v1), createBigDecimal(v2), scale, BigDecimal.ROUND_HALF_UP));
     }
 
     public static BigDecimal sub(BigDecimal v1, BigDecimal v2, int scale, int roundingMode) {
@@ -260,11 +260,11 @@ public class ArithmeticUtils implements Serializable {
      * @return 两个参数的积
      */
     public static String mul(BigDecimal v1, BigDecimal v2, int scale) {
-        return multiply(v1, v2, scale).toString();
+        return getBigDecimalString(multiply(v1, v2, scale));
     }
 
     public static String mul(BigDecimal v1, BigDecimal v2, int scale, int roundingMode) {
-        return multiply(v1, v2, scale, roundingMode).toString();
+        return getBigDecimalString(multiply(v1, v2, scale, roundingMode));
     }
 
     public static BigDecimal multiply(BigDecimal v1, BigDecimal v2, int scale) {
@@ -322,7 +322,7 @@ public class ArithmeticUtils implements Serializable {
      * @return 两个参数的商
      */
     public static String div(String v1, String v2, int scale) {
-        return divide(createBigDecimal(v1), createBigDecimal(v2), scale).toString();
+        return getBigDecimalString(divide(createBigDecimal(v1), createBigDecimal(v2), scale));
     }
 
     /**
@@ -333,7 +333,7 @@ public class ArithmeticUtils implements Serializable {
      * @return
      */
     public static String div(String v1, String v2) {
-        return div(createBigDecimal(v1), createBigDecimal(v2)).toString();
+        return getBigDecimalString(div(createBigDecimal(v1), createBigDecimal(v2)));
     }
 
     /**
@@ -432,7 +432,7 @@ public class ArithmeticUtils implements Serializable {
      * @return 余数
      */
     public static String remainder(String v1, String v2, int scale) {
-        return remainderModel(createBigDecimal(v1), createBigDecimal(v2), scale, BigDecimal.ROUND_HALF_UP).toString();
+        return getBigDecimalString(remainderModel(createBigDecimal(v1), createBigDecimal(v2), scale, BigDecimal.ROUND_HALF_UP));
     }
 
     /**
@@ -629,7 +629,6 @@ public class ArithmeticUtils implements Serializable {
         if (log < 1) {
             throw new IllegalArgumentException("参数异常!");
         }
-//        int length = getBigDecimalString(bigDecimal).length();
         int length = bigDecimal.toBigInteger().toString().length();
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         double result = whileDivide(atomicInteger, bigDecimal.doubleValue());
@@ -639,7 +638,6 @@ public class ArithmeticUtils implements Serializable {
         //自定义数学计算模型,并且精确到约定的长度
         MathContext mathContext = new MathContext(length, RoundingMode.HALF_EVEN);
         BigDecimal target = decimal.multiply(createBigDecimal(bigInteger), mathContext);
-//        return target.toString();
         return target.toBigInteger().toString();
     }
 

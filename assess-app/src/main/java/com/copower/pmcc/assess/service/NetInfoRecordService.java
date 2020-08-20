@@ -1465,11 +1465,11 @@ public class NetInfoRecordService {
         NetInfoRecord record = new NetInfoRecord();
         record.setCloseReason(closeReason);
         record.setBisDelete(true);
-        netInfoRecordDao.batchNetInfoRecord(record,integerList);
+        netInfoRecordDao.batchUpdateNetInfoRecord(record,integerList);
         CaseNetInfoRecord caseNetInfoRecord = new CaseNetInfoRecord();
         caseNetInfoRecord.setCloseReason(closeReason);
         caseNetInfoRecord.setBisDelete(true);
-        caseNetInfoRecordDao.batchNetInfoRecord(caseNetInfoRecord,integerList);
+        caseNetInfoRecordDao.batchUpdateNetInfoRecord(caseNetInfoRecord,integerList);
     }
 
     public void addInfoContent(NetInfoRecordContent netInfoContent) {
