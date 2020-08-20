@@ -106,26 +106,28 @@
         var cols = [];
         cols.push({field: 'name', title: '档案名称', width: "10%"});
         cols.push({field: 'fileTypeName', title: '档案类型', width: "10%"});
-        cols.push({field: 'fileCategoryName', title: '档案类别', width: "10%"});
-        cols.push({field: 'fileSourceName', title: '档案来源', width: "10%"});
-        cols.push({field: 'publicWayName', title: '公开方式', width: "10%"});
-        cols.push({field: 'shelfLifeName', title: '保存期限', width: "10%"});
-        cols.push({
-            field: 'groupId', title: '档案存放与否', width: "15%", formatter: function (value, row) {
-                if (row.groupId) {
-                    return "已存放" ;
-                }else {
-                    return "未存放" ;
-                }
-            }
-        });
+        cols.push({field: 'fileCategoryName', title: '档案类别', width: "5%"});
+        cols.push({field: 'fileSourceName', title: '档案来源', width: "5%"});
+        cols.push({field: 'publicWayName', title: '公开方式', width: "5%"});
+        cols.push({field: 'shelfLifeName', title: '保存期限', width: "5%"});
+        // cols.push({
+        //     field: 'groupId', title: '档案分组存放与否', width: "15%", formatter: function (value, row) {
+        //         if (row.groupId) {
+        //             return "已存放" ;
+        //         }else {
+        //             return "未存放" ;
+        //         }
+        //     }
+        // });
+        cols.push({field: 'saveLocation', title: '存放位置', width: "10%"});
+        cols.push({field: 'number', title: '存放卷号', width: "10%"});
         cols.push({
             field: 'id', title: '文档',width: "15%",formatter: function (value, row) {
                 var show = '<div id="_project_proxy' + row.id + '"></div>';
                 FileUtils.getFileShows({
                     target: "project_proxy" + row.id,
                     formData: {
-                        tableName: 'tb_project_file_complete',
+                        tableName: 'tb_ad_place_file_item_dto',
                         tableId: row.id,
                         fieldsName: "project_proxy" + row.id
                     },
