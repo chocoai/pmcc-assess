@@ -112,6 +112,10 @@
                                                 onclick="detailInfo.prototype.backTask()">
                                             取消认领任务
                                         </button>
+                                        <button style="margin-left: 10px" type="button" class="btn btn-warning btn-sm"
+                                                onclick="detailInfo.prototype.closeAllModal()">
+                                            关闭任务
+                                        </button>
                                     </div>
 
 
@@ -1859,9 +1863,24 @@
             } else {
                 notifyInfo('提示', '请选择要取消认领的任务');
             }
-        }, closeModal: function (id) {
+        },
+        closeModal: function (id) {
             $("#closeFrm").clearAll();
             $("#closeFrm").find("input[name='id']").val(id);
+            $('#divBoxClose').modal("show");
+        },
+        closeAllModal: function () {
+            var rows = $('#transaction_List').bootstrapTable('getSelections');
+            if (! rows || rows.length == 0) {
+                notifyInfo('提示', '请选择要关闭的任务');
+                return false ;
+            }
+            var ids = [] ;
+            $.each(rows ,function ( k,item) {
+                ids.push(item.id) ;
+            }) ;
+            $("#closeFrm").clearAll();
+            $("#closeFrm").find("input[name='id']").val(ids.join(","));
             $('#divBoxClose').modal("show");
         },
         closeItem: function () {
