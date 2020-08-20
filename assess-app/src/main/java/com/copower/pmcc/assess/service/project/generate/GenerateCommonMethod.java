@@ -555,7 +555,7 @@ public class GenerateCommonMethod {
             setScale = new BigDecimal(bigDecimal.toString());
         }
         //四舍五入,并且取到约定的位数
-        return setScale.abs().setScale(newScale, BigDecimal.ROUND_HALF_UP).toString();
+        return ArithmeticUtils.getBigDecimalString(setScale.abs().setScale(newScale, BigDecimal.ROUND_HALF_UP));
     }
 
     /**

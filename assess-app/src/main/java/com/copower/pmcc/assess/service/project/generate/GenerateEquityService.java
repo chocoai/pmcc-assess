@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.generate;
 
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeJudgeObjectSimpleDto;
@@ -8,6 +9,7 @@ import com.copower.pmcc.assess.dto.input.project.survey.SurveyRightGroupDto;
 import com.copower.pmcc.assess.dto.output.data.DataPropertyServiceItemVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.assess.service.data.DataPropertyServiceItemService;
@@ -26,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -62,6 +65,8 @@ public class GenerateEquityService {
     private SurveyAssetRightGroupService surveyAssetRightGroupService;
     @Autowired
     private SurveyAssetRightItemService surveyAssetRightItemService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
     public static final String Land_acquisition_methods = "土地取得方式";
     public static final String Land_use = "土地用途";
@@ -71,6 +76,7 @@ public class GenerateEquityService {
     public static final String GREENSPACERATE = "绿地率";
     public static final String PLANNINGCONDITIONS = "规划条件";
     public static final String DEGREEOFLANDDEVELOPMENT = "土地开发程度";
+    public static final String LAND_USE_PERIOD = "土地使用期限";
 
     /**
      * 获取土地权益信息
@@ -122,6 +128,21 @@ public class GenerateEquityService {
         BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         if (estateLandState != null) {
             switch (key) {
+                case LAND_USE_PERIOD: {
+                    List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
+                    if (CollectionUtils.isNotEmpty(basicEstateLandCategoryInfoList)) {
+                        List<BigDecimal> bigDecimalList = LangUtils.transform(basicEstateLandCategoryInfoList, obj -> obj.getLandUseYear());
+                        if (CollectionUtils.isNotEmpty(bigDecimalList)) {
+                            bigDecimalList = LangUtils.filter(bigDecimalList, obj -> obj != null);
+                        }
+                        if (CollectionUtils.isNotEmpty(bigDecimalList)) {
+                            BigDecimal bigDecimal = ArithmeticUtils.add(bigDecimalList);
+                            String round = ArithmeticUtils.round(bigDecimal, 2);
+                            value = String.format("%s年",round) ;
+                        }
+                    }
+                    break;
+                }
                 case PLOTRATIO: {
                     value = estateLandState.getPlotRatio();//容积率
                     break;
