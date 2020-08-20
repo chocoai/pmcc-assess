@@ -3525,60 +3525,6 @@ public class GenerateBaseDataService {
     }
 
     /**
-     * 单价调整表
-     *
-     * @throws Exception
-     */
-    private Document getUnitPriceAdjustmentDocument(List<SchemeJudgeObjectVo> schemeJudgeObjectList) throws Exception {
-        Document doc = new Document();
-        DocumentBuilder builder = new DocumentBuilder(doc);
-        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
-        generateCommonMethod.settingBuildingTable(builder);
-        final String nullString = "";
-        List<String> stringList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-            generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价编号", "因素", "评估面积", "评估单价", "评估总价")));
-            for (SchemeJudgeObjectVo schemeJudgeObject : schemeJudgeObjectList) {
-                stringList.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList.stream().map(poo -> (SchemeJudgeObject) poo).collect(Collectors.toList())));
-                stringList.add(StringUtils.isNotBlank(schemeJudgeObject.getFactor()) ? schemeJudgeObject.getFactor() : nullString);
-                if (schemeJudgeObject.getEvaluationArea() != null) {
-                    stringList.add(String.format("%s%s", schemeJudgeObject.getEvaluationArea().toString(), "㎡"));
-                } else {
-                    stringList.add(nullString);
-                }
-                //报告使用的单位
-                String unit = "元/㎡";
-                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                if (basicApply != null) {
-                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                    BasicHouseTrading basicHouseTrading = generateBaseExamineService.getBasicTrading();
-                    BaseDataDic buildAreaUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_BUILD_AREA_UNIT_PRICE);
-                    BaseDataDic buildInteriorUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INTERIOR_AREA_UNIT_PRICE);
-                    if (basicHouseTrading.getPriceConnotation() != buildAreaUnitPrice.getId() && basicHouseTrading.getPriceConnotation() != buildInteriorUnitPrice.getId()) {
-                        unit = basicHouseTrading.getPriceConnotationUnit();
-                    }
-                }
-                if (schemeJudgeObject.getPrice() != null) {
-                    stringList.add(String.format("%s%s", schemeJudgeObject.getPrice().toString(), unit));
-                } else {
-                    stringList.add(nullString);
-                }
-                if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
-                    BigDecimal bigDecimal = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
-                    bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_UP);
-                    stringList.add(String.format("%s%s", bigDecimal.toString(), unit));
-                } else {
-                    stringList.add(nullString);
-                }
-                generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(stringList));
-                stringList.clear();
-            }
-        }
-        return doc;
-    }
-
-
-    /**
      * 主要计算过程
      *
      * @return
@@ -3755,16 +3701,6 @@ public class GenerateBaseDataService {
             }
         }
         return knowTotalPrice;
-    }
-
-    /**
-     * 分组
-     *
-     * @param list
-     * @return
-     */
-    private Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> getSurveyAssetInventoryRightRecordListMap(List<SchemeJudgeObject> list) {
-        return getSurveyAssetInventoryRightRecordListMap(list, projectInfo);
     }
 
     /**
@@ -4084,7 +4020,9 @@ public class GenerateBaseDataService {
         generateCommonMethod.settingBuildingTable(builder);
         //头
         builder.insertCell();
-        builder.write("估价对象");
+        builder.write("序号");
+        builder.insertCell();
+        builder.write("权证号");
         builder.insertCell();
         builder.write("坐落");
         builder.insertCell();
@@ -4114,17 +4052,27 @@ public class GenerateBaseDataService {
         BigDecimal mortgagePriceTotal = new BigDecimal("0");//抵押总价合计
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                builder.insertCell();
-                builder.write(schemeJudgeObject.getNumber() + "号");
+                String number = schemeJudgeObject.getNumber();//序号
+                String certName = schemeJudgeObject.getCertName();//权证名称
+                String seat = schemeJudgeObject.getSeat();//坐落
+                String certUser = schemeJudgeObject.getCertUse();//证载用途
+                String practicalUse = schemeJudgeObject.getPracticalUse();//实际用途
+                String floorCount = StringUtils.EMPTY;//总层数
 
                 builder.insertCell();
-                builder.write(schemeJudgeObject.getSeat());
+                builder.write(number);
 
                 builder.insertCell();
-                builder.write(schemeJudgeObject.getCertUse());
+                builder.write(certName);
 
                 builder.insertCell();
-                builder.write(schemeJudgeObject.getPracticalUse());
+                builder.write(seat);
+
+                builder.insertCell();
+                builder.write(certUser);
+
+                builder.insertCell();
+                builder.write(practicalUse);
 
                 builder.insertCell();
                 BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
@@ -4132,10 +4080,11 @@ public class GenerateBaseDataService {
                 BasicBuildingVo buildingVo = generateBaseExamineService.getBasicBuilding();
                 if (buildingVo != null) {
                     if (buildingVo.getCurrBuildingDifference() != null) {
-                        builder.write(String.valueOf(buildingVo.getCurrBuildingDifference().getMaxFloor()));//4
+                        floorCount = String.valueOf(buildingVo.getCurrBuildingDifference().getMaxFloor());
                     } else {
-                        builder.write(String.valueOf(buildingVo.getFloorCount()));//4
+                        floorCount = String.valueOf(buildingVo.getFloorCount());
                     }
+                    builder.write(floorCount);//4
                 }
 
                 builder.insertCell();
@@ -4172,12 +4121,65 @@ public class GenerateBaseDataService {
                     mortgagePriceTotal = mortgagePriceTotal.add(mortgagePrice);
                 }
                 builder.endRow();
+
+                //再检查是否关联的差异表数据
+                List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(basicApply.getBasicHouseId());
+                if (CollectionUtils.isNotEmpty(huxingPriceList)) {
+                    for (int i = 0; i < huxingPriceList.size(); i++) {
+                        BasicHouseHuxingPrice huxingPrice = huxingPriceList.get(i);
+                        builder.insertCell();
+                        builder.write(number + "-" + (i + 1));
+
+                        builder.insertCell();
+                        if (huxingPrice.getDeclareId() != null && StringUtils.isNotBlank(huxingPrice.getDeclareName())) {
+                            builder.write(huxingPrice.getDeclareName());
+                        } else {
+                            builder.write(certName);
+                        }
+
+                        builder.insertCell();
+                        builder.write(seat);
+
+                        builder.insertCell();
+                        builder.write(certUser);
+
+                        builder.insertCell();
+                        builder.write(practicalUse);
+
+                        builder.insertCell();
+                        builder.write(floorCount);
+
+                        builder.insertCell();
+                        builder.write(String.valueOf(huxingPrice.getArea()));
+
+                        builder.insertCell();
+                        builder.write(String.valueOf(huxingPrice.getPrice()));
+
+                        BigDecimal huxingTotalPrice = BigDecimal.ZERO;
+                        if (huxingPrice.getArea() != null && huxingPrice.getPrice() != null) {
+                            huxingTotalPrice = huxingPrice.getArea().multiply(huxingPrice.getPrice());
+                            priceTotal = priceTotal.add(huxingTotalPrice);
+                            mortgagePriceTotal = mortgagePriceTotal.add(huxingTotalPrice);
+                        }
+                        builder.insertCell();
+                        builder.write(String.valueOf(huxingTotalPrice));
+
+                        builder.insertCell();
+                        builder.write(String.valueOf(BigDecimal.ZERO));
+
+                        builder.insertCell();
+                        builder.write(String.valueOf(huxingTotalPrice));
+
+                        builder.endRow();
+                    }
+                }
             }
         }
 
         //合计
         builder.insertCell();
         builder.write("小计");
+        builder.insertCell();
         builder.insertCell();
         builder.insertCell();
         builder.insertCell();
@@ -4523,7 +4525,6 @@ public class GenerateBaseDataService {
         String cssHtml = generateCommonMethod.getWarpCssHtml(String.join("", "<div style='text-align:center;;font-size:16.0pt;'>", stringBuilder.toString(), "</div>"));
         documentBuilder.insertHtml(cssHtml, false);
         buildResultSetTable(projectInfo, schemeJudgeObjectList, documentBuilder);
-        handleBasicHouseHuxingPriceSheet(schemeJudgeObjectList, documentBuilder);
         AsposeUtils.saveWord(localPath, document);
         return localPath;
     }

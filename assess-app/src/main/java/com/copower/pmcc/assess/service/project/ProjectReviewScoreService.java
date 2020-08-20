@@ -56,6 +56,8 @@ public class ProjectReviewScoreService {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
 
     public ProjectReviewScore getReviewScoreById(Integer id) {
         return projectReviewScoreDao.getProjectReviewScoreById(id);
@@ -98,7 +100,7 @@ public class ProjectReviewScoreService {
      * @param projectId
      */
     @Transactional(rollbackFor = Exception.class)
-    public void applyCommit(Integer projectId,ProjectReviewScore reviewScore) throws BusinessException, BpmException {
+    public void applyCommit(Integer projectId, ProjectReviewScore reviewScore) throws BusinessException, BpmException {
         if (projectId == null)
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
@@ -173,12 +175,15 @@ public class ProjectReviewScoreService {
         if (CollectionUtils.isNotEmpty(list)) {
             resultList.addAll(list);
         }
+        ProjectReviewScore reviewScore = getReviewScoreById(reviewId);
+        String projectManager = projectMemberService.getProjectManager(reviewScore.getProjectId());
         List<Integer> projectPhaseIds = LangUtils.transform(resultList, o -> o.getProjectPhaseId());
         List<ProjectPhase> projectPhaseList = projectPlanDetailsService.getProjectPhaseListByPlanId(planId);
         if (CollectionUtils.isNotEmpty(projectPhaseList)) {
             for (ProjectPhase projectPhase : projectPhaseList) {
                 if (CollectionUtils.isNotEmpty(projectPhaseIds) && projectPhaseIds.contains(projectPhase.getId()))
                     continue;
+                if (isMatchAboutUser(planId, projectPhase.getId(), projectManager)) continue;
                 ProjectReviewScoreItem item = new ProjectReviewScoreItem();
                 item.setPlanId(planId);
                 item.setProjectPhaseId(projectPhase.getId());
@@ -195,10 +200,19 @@ public class ProjectReviewScoreService {
         return LangUtils.transform(resultList, o -> getReviewScoreItemVo(o));
     }
 
-
-    private Boolean isMatchAboutUser(Integer planId,Integer projectPhaseId){
-
-        return false;
+    //确定该对应工作事项的任务是否都为项目经理处理的，如果是则项目经理不能获得复核工分
+    private Boolean isMatchAboutUser(Integer planId, Integer projectPhaseId, String projectManager) {
+        if (planId == null || projectPhaseId == null || StringUtils.isBlank(projectManager)) return false;
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setPlanId(planId);
+        where.setProjectPhaseId(projectPhaseId);
+        List<ProjectPlanDetails> detailsList = projectPlanDetailsService.getProjectDetails(where);
+        if (CollectionUtils.isEmpty(detailsList)) return false;
+        for (ProjectPlanDetails projectPlanDetails : detailsList) {
+            if (!projectManager.equalsIgnoreCase(projectPlanDetails.getExecuteUserAccount()))
+                return false;
+        }
+        return true;
     }
 
     /**

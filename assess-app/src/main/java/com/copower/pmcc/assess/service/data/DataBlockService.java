@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.event.project.ProjectSpotCheckEvent;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
@@ -52,21 +53,8 @@ public class DataBlockService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private BasicApplyBatchService basicApplyBatchService;
-    @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    @Autowired
-    private SurveyAssetInfoService surveyAssetInfoService;
-    @Autowired
-    private SurveyAssetInfoItemService surveyAssetInfoItemService;
-    @Autowired
-    private DeclareRecordService declareRecordService;
-    @Autowired
-    private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
-    @Autowired
-    private SurveyAssetInventoryContentDao surveyAssetInventoryContentDao;
-    @Autowired
-    private SurveyAssetInventoryService surveyAssetInventoryService;
+    private ProjectSpotCheckEvent projectSpotCheckEvent;
+
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -178,7 +166,7 @@ public class DataBlockService {
         return blockList.size() > 0;
     }
 
-    public void updateOldData() throws Exception {
-
+    public void updateOldData(String processInsId) throws Exception {
+        projectSpotCheckEvent.summarySpotScore(processInsId);
     }
 }

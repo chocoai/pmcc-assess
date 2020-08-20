@@ -144,10 +144,9 @@ public class DataBlockController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "更新数据")
-    public HttpResult updateOldData() {
+    public HttpResult updateOldData(String processInsId) {
         try {
-            //可以删除 楼栋、单元、房屋中部分无效的字段 如full_name等
-            dataBlockService.updateOldData();
+            dataBlockService.updateOldData(processInsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

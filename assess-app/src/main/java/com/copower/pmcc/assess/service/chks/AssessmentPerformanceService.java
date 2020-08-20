@@ -111,16 +111,15 @@ public class AssessmentPerformanceService {
         where.setActivityId(null);
         where.setSpotId(0);
         where.setAdjustId(0);
-        if (isAdmin) {//管理员可查看全部数据
+        Boolean isSpotGroupUser = assessmentCommonService.isSpotGroupUser(boxId, commonService.thisUserAccount());
+        if (isAdmin || isSpotGroupUser) {//管理员和抽查组可查看全部数据
             bootstrapTableVo = performanceService.getPerformanceDtoListByParam(where, null, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         } else {
             if (CollectionUtils.isEmpty(activityList)) return bootstrapTableVo;
             bootstrapTableVo = performanceService.getPerformanceDtoListByParam(where, activityList, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         }
-
         List<AssessmentPerformanceDto> rows = bootstrapTableVo.getRows();
         if (CollectionUtils.isNotEmpty(rows)) {
-            Boolean isSpotGroupUser = assessmentCommonService.isSpotGroupUser(boxId, commonService.thisUserAccount());
             for (AssessmentPerformanceDto row : rows) {
                 if (row.getBisCounted() == Boolean.TRUE) continue;
                 //状态为运行中，审核页面时

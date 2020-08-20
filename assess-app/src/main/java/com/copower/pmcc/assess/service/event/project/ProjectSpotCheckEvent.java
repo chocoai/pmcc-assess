@@ -20,6 +20,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -64,53 +65,57 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
             ProcessStatusEnum processStatusEnum = ProcessStatusEnum.create(processExecution.getProcessStatus().getValue());
             if (processStatusEnum == null) return;
             if (processStatusEnum.isFinish()) {
-                //将抽查的工时得分写入到考核系统中
-                ProjectSpotCheck spotCheck = projectSpotCheckService.getSpotCheckByProcessInsId(processExecution.getProcessInstanceId());
-                if (spotCheck == null) return;
-
-                //先将本月上次抽查计算的分数设置为无效
-                AssessmentPerformanceDto assessmentPerformanceDto = new AssessmentPerformanceDto();
-                assessmentPerformanceDto.setAssessmentKey("SpotAssessment");
-                assessmentPerformanceDto.setByExaminePeople(spotCheck.getBySpotUser());
-                assessmentPerformanceDto.setBisEffective(true);
-                Date startDate = DateUtils.convertDate(spotCheck.getSpotMonth() + "-01");
-                Date endDate = DateUtils.convertDate(DateUtils.getLastDayOfMonth(DateUtils.getYear(startDate), DateUtils.getMonth(startDate)));
-                List<AssessmentPerformanceDto> performances = performanceService.getPerformancesByExamineDate(assessmentPerformanceDto, startDate, endDate);
-                if (CollectionUtils.isNotEmpty(performances)) {
-                    for (AssessmentPerformanceDto performance : performances) {
-                        performance.setBisEffective(false);
-                        performanceService.updatePerformanceDto(performance, false);
-                    }
-                }
-                String parameter = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
-                List<Integer> projectIds = FormatUtils.transformString2Integer(parameter);
-
-                List<ProjectSpotCheck> spotChecks = projectSpotCheckService.getFinishSpotCheckListByMonth(spotCheck.getBySpotUser(), spotCheck.getSpotMonth());
-                AssessmentPerformanceDto performanceDto = new AssessmentPerformanceDto();
-                performanceDto.setAppKey(applicationConstant.getAppKey());
-                performanceDto.setProjectName(spotCheck.getTitle());
-                performanceDto.setProcessInsId(processExecution.getProcessInstanceId());
-                performanceDto.setByExaminePeople(spotCheck.getBySpotUser());
-                performanceDto.setExaminePeople(spotCheck.getCreator());
-                performanceDto.setExamineScore(getWorkHoursScore(spotChecks,projectIds));//需计算
-                performanceDto.setExamineDate(endDate);
-                performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
-                performanceDto.setAssessmentKey("SpotAssessment");
-                performanceDto.setBusinessKey("抽查考核工时得分");
-                performanceDto.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
-                performanceDto.setBisEffective(true);
-                performanceDto.setBisQualified(true);
-                performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
-
-                performanceDto.setExamineScore(getQualityScore(spotChecks,projectIds));//需计算
-                performanceDto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
-                performanceDto.setBusinessKey("抽查考核质量得分");
-                performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
+                summarySpotScore(processExecution.getProcessInstanceId());
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "ProjectSpotCheckEvent");
             throw e;
         }
+    }
+
+    public void summarySpotScore(String processInsId) throws BusinessException {
+        //将抽查的工时得分写入到考核系统中
+        ProjectSpotCheck spotCheck = projectSpotCheckService.getSpotCheckByProcessInsId(processInsId);
+        if (spotCheck == null) return;
+
+        //先将本月上次抽查计算的分数设置为无效
+        AssessmentPerformanceDto assessmentPerformanceDto = new AssessmentPerformanceDto();
+        assessmentPerformanceDto.setAssessmentKey("SpotAssessment");
+        assessmentPerformanceDto.setByExaminePeople(spotCheck.getBySpotUser());
+        assessmentPerformanceDto.setBisEffective(true);
+        Date startDate = DateUtils.convertDate(spotCheck.getSpotMonth() + "-01");
+        Date endDate = DateUtils.convertDate(DateUtils.getLastDayOfMonth(DateUtils.getYear(startDate), DateUtils.getMonth(startDate)));
+        List<AssessmentPerformanceDto> performances = performanceService.getPerformancesByExamineDate(assessmentPerformanceDto, startDate, endDate);
+        if (CollectionUtils.isNotEmpty(performances)) {
+            for (AssessmentPerformanceDto performance : performances) {
+                performance.setBisEffective(false);
+                performanceService.updatePerformanceDto(performance, false);
+            }
+        }
+        String parameter = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
+        List<Integer> projectIds = FormatUtils.transformString2Integer(parameter);
+
+        List<ProjectSpotCheck> spotChecks = projectSpotCheckService.getFinishSpotCheckListByMonth(spotCheck.getBySpotUser(), spotCheck.getSpotMonth());
+        AssessmentPerformanceDto performanceDto = new AssessmentPerformanceDto();
+        performanceDto.setAppKey(applicationConstant.getAppKey());
+        performanceDto.setProjectName(spotCheck.getTitle());
+        performanceDto.setProcessInsId(processInsId);
+        performanceDto.setByExaminePeople(spotCheck.getBySpotUser());
+        performanceDto.setExaminePeople(spotCheck.getCreator());
+        performanceDto.setExamineScore(getWorkHoursScore(spotChecks,projectIds));//需计算
+        performanceDto.setExamineDate(endDate);
+        performanceDto.setAssessmentType(AssessmentTypeEnum.WORK_HOURS.getValue());
+        performanceDto.setAssessmentKey("SpotAssessment");
+        performanceDto.setBusinessKey("抽查考核工时得分");
+        performanceDto.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
+        performanceDto.setBisEffective(true);
+        performanceDto.setBisQualified(true);
+        performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
+
+        performanceDto.setExamineScore(getQualityScore(spotChecks,projectIds));//需计算
+        performanceDto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
+        performanceDto.setBusinessKey("抽查考核质量得分");
+        performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
     }
 
     /**
