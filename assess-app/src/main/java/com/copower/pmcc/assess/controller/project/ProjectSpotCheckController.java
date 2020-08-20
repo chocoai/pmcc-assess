@@ -276,11 +276,11 @@ public class ProjectSpotCheckController {
         }
     }
 
-    @GetMapping(value = "/getDraftSpotCheckList", name = "获取草稿批次")
+    @GetMapping(value = "/getRuningSpotCheckList", name = "获取草稿批次")
     @ResponseBody
-    public HttpResult getDraftSpotCheckList() {
+    public HttpResult getRuningSpotCheckList() {
         try {
-            return HttpResult.newCorrectResult(projectSpotCheckService.getDraftSpotCheckList());
+            return HttpResult.newCorrectResult(projectSpotCheckService.getRuningSpotCheckList());
         } catch (Exception e) {
             logger.error("获取运行中批次失败", e);
             return HttpResult.newErrorResult(e);

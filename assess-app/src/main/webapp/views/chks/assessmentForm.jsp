@@ -1133,7 +1133,7 @@
         });
 
         //获取批次
-        $.getJSON('${pageContext.request.contextPath}/projectSpotCheck/getDraftSpotCheckList', {}, function (result) {
+        $.getJSON('${pageContext.request.contextPath}/projectSpotCheck/getRuningSpotCheckList', {}, function (result) {
             if (result.ret && result.data) {
                 var html = '';
                 if (result.data.length > 1) {

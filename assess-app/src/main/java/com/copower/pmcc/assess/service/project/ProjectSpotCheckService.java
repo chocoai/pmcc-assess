@@ -121,15 +121,23 @@ public class ProjectSpotCheckService {
     }
 
     /**
-     * 获取草稿中的批次
+     * 获取运行中的批次
      *
      * @return
      */
-    public List<ProjectSpotCheck> getDraftSpotCheckList() {
+    public List<ProjectSpotCheck> getRuningSpotCheckList() {
+        List<ProjectSpotCheck> resultList = Lists.newArrayList();
         ProjectSpotCheck where = new ProjectSpotCheck();
-        where.setStatus(ProjectStatusEnum.DRAFT.getKey());
+        where.setStatus(ProjectStatusEnum.DRAFT.getKey());//草稿状态
         List<ProjectSpotCheck> projectSpotCheckList = projectSpotCheckDao.getProjectSpotCheckList(where);
-        return projectSpotCheckList;
+        if (CollectionUtils.isNotEmpty(projectSpotCheckList))
+            resultList.addAll(projectSpotCheckList);
+
+        where.setStatus(ProjectStatusEnum.RUNING.getKey());//运行状态
+        projectSpotCheckList = projectSpotCheckDao.getProjectSpotCheckList(where);
+        if (CollectionUtils.isNotEmpty(projectSpotCheckList))
+            resultList.addAll(projectSpotCheckList);
+        return resultList;
     }
 
     public void saveSpotCheck(ProjectSpotCheck spotCheck) {
