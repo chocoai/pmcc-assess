@@ -179,36 +179,6 @@ public class DataBlockService {
     }
 
     public void updateOldData() throws Exception {
-        //1.将basic_apply_batch_detail表中的full_name重新更新
-        SurveyAssetInfo where = new SurveyAssetInfo();
-        List<SurveyAssetInfo> assetInfos = surveyAssetInfoService.getSurveyAssetInfoListByQuery(where);
-        SurveyAssetInfoItem surveyAssetInfoItemWhere = new SurveyAssetInfoItem();
-        List<SurveyAssetInfoItem> list = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(surveyAssetInfoItemWhere);
-        List<Integer> transform = LangUtils.transform(list, o -> o.getAssetInfoId());
-        for (SurveyAssetInfo assetInfo : assetInfos) {
-            if (!CollectionUtils.isEmpty(transform) && transform.contains(assetInfo.getId()))
-                continue;
-            List<DeclareRecord> records = declareRecordService.getDeclareRecordByProjectId(assetInfo.getProjectId());
-            if (records != null && records.size() == 1) {
-                SurveyAssetInfoItem surveyAssetInfoItem = new SurveyAssetInfoItem();
-                surveyAssetInfoItem.setAssetInfoId(assetInfo.getId());
-                surveyAssetInfoItem.setName(records.get(0).getName());
-                surveyAssetInfoItem.setStatus("finish");
-                surveyAssetInfoItem.setDeclareId(records.get(0).getId());
-                surveyAssetInfoItem.setCreator(assetInfo.getCreator());
-                SurveyAssetInventoryContent contentWhere = new SurveyAssetInventoryContent();
-                contentWhere.setProjectId(assetInfo.getProjectId());
-                SurveyAssetInventoryContent inventoryContent = surveyAssetInventoryContentDao.getSingleObject(contentWhere);
-                if (inventoryContent != null && inventoryContent.getMasterId() != null) {
-                    surveyAssetInfoItem.setInventoryId(inventoryContent.getMasterId());
-                } else {
-                    SurveyAssetInventoryVo assetInventoryVo = surveyAssetInventoryService.getDataByPlanDetailsId(assetInfo.getPlanDetailId());
-                    if(assetInventoryVo!=null){
-                        surveyAssetInfoItem.setInventoryId(assetInventoryVo.getId());
-                    }
-                }
-                surveyAssetInfoItemService.saveAndUpdateSurveyAssetInfoItem(surveyAssetInfoItem, false);
-            }
-        }
+
     }
 }
