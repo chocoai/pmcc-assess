@@ -19,7 +19,7 @@ public class CaseNetInfoRecordDao {
     @Autowired
     private CaseNetInfoRecordMapper caseNetInfoRecordMapper;
 
-    public void batchNetInfoRecord(CaseNetInfoRecord obj, List<Integer> ids){
+    public void batchUpdateNetInfoRecord(CaseNetInfoRecord obj, List<Integer> ids){
         CaseNetInfoRecordExample example = new CaseNetInfoRecordExample();
         CaseNetInfoRecordExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids) ;
