@@ -82,7 +82,8 @@
                                     <div class="col-md-3">
                                         <form id="basicBatchApplyFrm" class="form-horizontal">
                                             <input type="hidden" name="id" value="${applyBatch.id}">
-                                            <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                                            <input type="hidden" name="projectId"
+                                                   value="${projectPlanDetails.projectId}">
                                             <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                                             <input type="hidden" id="estateId" name="estateId"
                                                    value="${applyBatch.estateId}">
@@ -128,28 +129,19 @@
                                             <div class="row form-group">
                                                 <div class="col-md-12 form-inline">
                                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                                        权证
+                                                        <button class="btn btn-warning btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="declareRecordModeObj.init({callback:selectRecord,this_:this},false);">
+                                                            选择
+                                                        </button>
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                        <div class='input-group'>
-                                                            <input name='declareRecordId' id='declareRecordId'
-                                                                   type='hidden'>
-                                                            <input name='declareRecordName' id='declareRecordName'
-                                                                   class='form-control form-control-sm' readonly
-                                                                   onclick='declareRecordModeObj.init({callback:selectRecord,this_:this},true);'>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-warning btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="declareRecordModeObj.init({callback:selectRecord,this_:this},true);">
-                                                                    选择
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                        <label data-name="declareRecordName"
+                                                               class='form-control form-control-sm input-full'></label>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </form>
                                     </div>
                                 </div>
@@ -440,7 +432,6 @@
 
 </script>
 <script type="text/javascript">
-
     var batchApply = undefined;
     var setting = {
         check: {
@@ -546,9 +537,7 @@
 
     batchTreeTool.showFunctionBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        $("#basicBatchApplyFrm").find('[name=declareRecordId]').val(node.declareRecordId);
-        $("#basicBatchApplyFrm").find('[name=declareRecordName]').val(node.declareRecordName);
-
+        $("#basicBatchApplyFrm").find('[data-name=declareRecordName]').text(AssessCommon.toString(node.declareRecordName));
     }
 
 
@@ -722,7 +711,7 @@
 
 
     //选择权证
-    function selectRecord(_this, id) {
+    function selectRecord(_this, declareId, declareName) {
         var zTreeObj = $.fn.zTree.getZTreeObj($("#ztree").prop("id"));
         var nodes = zTreeObj.getCheckedNodes(true);
         nodes = nodes.length == 0 ? zTreeObj.getSelectedNodes() : nodes;
@@ -730,46 +719,25 @@
             notifyInfo('提示', '勾选至少一个节点');
             return false;
         }
-        var ids = [];
-        $.each(nodes, function (i, node) {
-            ids.push(node.id);
+        var applyBatchDetailIds = '';
+        $.each(nodes, function (i, item) {
+            applyBatchDetailIds += item.id + ',';
         });
         var group = $(_this).closest(".form-group");
-        group.find("input[name='declareRecordId']").val(id);
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRecord/getDeclareRecordListByIds",
-            type: "get",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    var arr = [];
-                    $.each(result.data, function (i, item) {
-                        $(_this).val(item.name);
-                    });
-                    batchSaveDeclareRecordId(ids);
-                } else {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        });
+        group.find("[data-name='declareRecordName']").text(AssessCommon.toString(declareName));
+        batchSaveDeclareRecordId(applyBatchDetailIds.replace(/,$/, ''), declareId, declareName);
     }
 
     //批量设置权证
-    function batchSaveDeclareRecordId(ids) {
-        var declareRecordId = $("#basicBatchApplyFrm").find('[name=declareRecordId]').val();
-        var declareRecordName = $("#basicBatchApplyFrm").find('[name=declareRecordName]').val();
+    function batchSaveDeclareRecordId(applyBatchDetailIds, declareId, declareName) {
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/batchSaveDeclareRecordId",
             type: "post",
             dataType: "json",
             data: {
-                ids: ids.join(","),
-                declareRecordId: declareRecordId,
-                declareRecordName: declareRecordName
+                applyBatchDetailIds: applyBatchDetailIds,
+                declareRecordIds: declareId,
+                declareRecordName: declareName
             },
             success: function (result) {
                 if (result.ret) {
@@ -788,7 +756,6 @@
         });
     }
 
-
     //全部展开或收起
     batchTreeTool.expandAll = function (flag) {
         zTreeObj.expandAll(flag);
@@ -801,7 +768,6 @@
             notifyInfo('提示', '还未选择节点');
             return;
         }
-
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/getTableTypeList",
             data: {type: node.type},
@@ -809,11 +775,10 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret && result.data && result.data.length > 0) {
-
                     var typeHtml = "<option value=''>--请选择--</option>";
                     $.each(result.data, function (i, item) {
                         typeHtml += "<option value='" + item.key + "'>" + item.value + "</option>";
-                    })
+                    });
                     $("#frm_detail").clearAll();
                     $("#frm_detail").find("[name='type']").empty().html(typeHtml);
                     $("#frm_detail").find("input[name='applyBatchId']").val(node.applyBatchId);
@@ -952,7 +917,7 @@
         $("#basicAlternativeCaseList").bootstrapTable('destroy');
         TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
             name: $('#queryAlternativeName').val(),
-            projectId:'${projectId}'
+            projectId: '${projectId}'
         }, {
             showColumns: false,
             showRefresh: false,

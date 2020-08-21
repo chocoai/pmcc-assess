@@ -112,8 +112,8 @@
                                                         权证
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                        <input name='declareRecordName' id='declareRecordName'
-                                                               class='form-control input-full'>
+                                                        <label data-name='declareRecordName'
+                                                               class='form-control input-full'></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -123,9 +123,7 @@
                             </div>
                         </div>
                     </div>
-
                     <%@include file="/views/share/form_approval.jsp" %>
-                    <%-- <%@include file="/views/share/form_log.jsp" %>--%>
                 </div>
             </div>
         </div>
@@ -240,13 +238,12 @@
 
     function showFunctionBtn() {
         var node = zTreeObj.getSelectedNodes()[0];
-        $("#frmProjectCIP").find('[name=declareRecordName]').val(node.declareRecordName);
+        $("#frmProjectCIP").find('[data-name=declareRecordName]').text(AssessCommon.toString(node.declareRecordName));
         if (node.executor == '${userAccount}') {
             $("#btnGroup").find('.btn.alternativeCase').show();
         } else {
             $("#btnGroup").find('.btn.alternativeCase').hide();
         }
-
     }
 
     //添加到备选案例

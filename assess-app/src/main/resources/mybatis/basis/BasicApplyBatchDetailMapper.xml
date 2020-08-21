@@ -9,6 +9,7 @@
     <result column="apply_batch_id" jdbcType="INTEGER" property="applyBatchId" />
     <result column="declare_record_id" jdbcType="INTEGER" property="declareRecordId" />
     <result column="declare_record_name" jdbcType="VARCHAR" property="declareRecordName" />
+    <result column="other_declare_recore_id" jdbcType="VARCHAR" property="otherDeclareRecoreId" />
     <result column="table_name" jdbcType="VARCHAR" property="tableName" />
     <result column="table_id" jdbcType="INTEGER" property="tableId" />
     <result column="type" jdbcType="VARCHAR" property="type" />
@@ -86,8 +87,9 @@
   </sql>
   <sql id="Base_Column_List">
     id, pid, project_id, plan_details_id, apply_batch_id, declare_record_id, declare_record_name, 
-    table_name, table_id, type, name, display_name, full_name, executor, quote_id, upgrade_table_id, 
-    modify_type, modify_content, bis_from_case, bis_delete, creator, gmt_created, gmt_modified
+    other_declare_recore_id, table_name, table_id, type, name, display_name, full_name, 
+    executor, quote_id, upgrade_table_id, modify_type, modify_content, bis_from_case, 
+    bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample" resultMap="BaseResultMap">
     select
@@ -125,20 +127,20 @@
     </selectKey>
     insert into tb_basic_apply_batch_detail (pid, project_id, plan_details_id, 
       apply_batch_id, declare_record_id, declare_record_name, 
-      table_name, table_id, type, 
-      name, display_name, full_name, 
-      executor, quote_id, upgrade_table_id, 
-      modify_type, modify_content, bis_from_case, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified)
+      other_declare_recore_id, table_name, table_id, 
+      type, name, display_name, 
+      full_name, executor, quote_id, 
+      upgrade_table_id, modify_type, modify_content, 
+      bis_from_case, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{applyBatchId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{declareRecordName,jdbcType=VARCHAR}, 
-      #{tableName,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, 
-      #{executor,jdbcType=VARCHAR}, #{quoteId,jdbcType=INTEGER}, #{upgradeTableId,jdbcType=INTEGER}, 
-      #{modifyType,jdbcType=VARCHAR}, #{modifyContent,jdbcType=VARCHAR}, #{bisFromCase,jdbcType=BIT}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{otherDeclareRecoreId,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
+      #{fullName,jdbcType=VARCHAR}, #{executor,jdbcType=VARCHAR}, #{quoteId,jdbcType=INTEGER}, 
+      #{upgradeTableId,jdbcType=INTEGER}, #{modifyType,jdbcType=VARCHAR}, #{modifyContent,jdbcType=VARCHAR}, 
+      #{bisFromCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -163,6 +165,9 @@
       </if>
       <if test="declareRecordName != null">
         declare_record_name,
+      </if>
+      <if test="otherDeclareRecoreId != null">
+        other_declare_recore_id,
       </if>
       <if test="tableName != null">
         table_name,
@@ -231,6 +236,9 @@
       </if>
       <if test="declareRecordName != null">
         #{declareRecordName,jdbcType=VARCHAR},
+      </if>
+      <if test="otherDeclareRecoreId != null">
+        #{otherDeclareRecoreId,jdbcType=VARCHAR},
       </if>
       <if test="tableName != null">
         #{tableName,jdbcType=VARCHAR},
@@ -312,6 +320,9 @@
       <if test="record.declareRecordName != null">
         declare_record_name = #{record.declareRecordName,jdbcType=VARCHAR},
       </if>
+      <if test="record.otherDeclareRecoreId != null">
+        other_declare_recore_id = #{record.otherDeclareRecoreId,jdbcType=VARCHAR},
+      </if>
       <if test="record.tableName != null">
         table_name = #{record.tableName,jdbcType=VARCHAR},
       </if>
@@ -374,6 +385,7 @@
       apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       declare_record_name = #{record.declareRecordName,jdbcType=VARCHAR},
+      other_declare_recore_id = #{record.otherDeclareRecoreId,jdbcType=VARCHAR},
       table_name = #{record.tableName,jdbcType=VARCHAR},
       table_id = #{record.tableId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=VARCHAR},
@@ -414,6 +426,9 @@
       </if>
       <if test="declareRecordName != null">
         declare_record_name = #{declareRecordName,jdbcType=VARCHAR},
+      </if>
+      <if test="otherDeclareRecoreId != null">
+        other_declare_recore_id = #{otherDeclareRecoreId,jdbcType=VARCHAR},
       </if>
       <if test="tableName != null">
         table_name = #{tableName,jdbcType=VARCHAR},
@@ -474,6 +489,7 @@
       apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       declare_record_name = #{declareRecordName,jdbcType=VARCHAR},
+      other_declare_recore_id = #{otherDeclareRecoreId,jdbcType=VARCHAR},
       table_name = #{tableName,jdbcType=VARCHAR},
       table_id = #{tableId,jdbcType=INTEGER},
       type = #{type,jdbcType=VARCHAR},

@@ -43,7 +43,10 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_basic_house_huxing_price" domainObjectName="BasicHouseHuxingPrice" >
+        <table tableName="tb_basic_apply_batch_detail" domainObjectName="BasicApplyBatchDetail" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_basic_apply" domainObjectName="BasicApply" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

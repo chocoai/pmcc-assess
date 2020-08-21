@@ -419,16 +419,15 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/batchSaveDeclareRecordId", name = "批量设置权证", method = {RequestMethod.POST})
-    public HttpResult batchSaveDeclareRecordId(String ids, Integer declareRecordId, String declareRecordName) {
+    public HttpResult batchSaveDeclareRecordId(String applyBatchDetailIds, String declareRecordIds,String declareRecordName) {
         try {
-            basicApplyBatchDetailService.batchSaveDeclareRecordId(ids, declareRecordId, declareRecordName);
+            basicApplyBatchDetailService.batchSaveDeclareRecordId(applyBatchDetailIds, declareRecordIds,declareRecordName);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("批量设置权证异常");
         }
     }
-
 
     /**
      * 删除操作手册信息

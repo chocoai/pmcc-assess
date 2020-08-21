@@ -92,8 +92,8 @@
                                                         权证
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                        <input name='declareRecordName' id='declareRecordName'
-                                                               class='form-control input-full'>
+                                                        <label data-name="declareRecordName"
+                                                               class='form-control input-full input-full'></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -103,7 +103,6 @@
                             </div>
                         </div>
                     </div>
-
                     <%@include file="/views/share/form_approval.jsp" %>
                     <%-- <%@include file="/views/share/form_log.jsp" %>--%>
                 </div>
@@ -221,7 +220,7 @@
 
     function showFunctionBtn() {
         var node = zTreeObj.getSelectedNodes()[0];
-        $("#basicBatchApplyFrm").find('[name=declareRecordName]').val(node.declareRecordName);
+        $("#basicBatchApplyFrm").find('[data-name=declareRecordName]').text(AssessCommon.toString(node.declareRecordName));
     }
 
     //添加到备选案例
@@ -243,8 +242,7 @@
                 Loading.progressHide();
                 if (result.ret) {
                     notifySuccess("成功", "添加成功");
-                }
-                else {
+                } else {
                     AlertError("添加失败", "失败原因:" + result.errmsg, 1, null, null);
                 }
             }

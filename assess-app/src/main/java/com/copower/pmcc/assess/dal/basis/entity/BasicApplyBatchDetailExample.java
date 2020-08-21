@@ -535,6 +535,76 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andOtherDeclareRecoreIdIsNull() {
+            addCriterion("other_declare_recore_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdIsNotNull() {
+            addCriterion("other_declare_recore_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdEqualTo(String value) {
+            addCriterion("other_declare_recore_id =", value, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdNotEqualTo(String value) {
+            addCriterion("other_declare_recore_id <>", value, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdGreaterThan(String value) {
+            addCriterion("other_declare_recore_id >", value, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdGreaterThanOrEqualTo(String value) {
+            addCriterion("other_declare_recore_id >=", value, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdLessThan(String value) {
+            addCriterion("other_declare_recore_id <", value, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdLessThanOrEqualTo(String value) {
+            addCriterion("other_declare_recore_id <=", value, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdLike(String value) {
+            addCriterion("other_declare_recore_id like", value, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdNotLike(String value) {
+            addCriterion("other_declare_recore_id not like", value, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdIn(List<String> values) {
+            addCriterion("other_declare_recore_id in", values, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdNotIn(List<String> values) {
+            addCriterion("other_declare_recore_id not in", values, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdBetween(String value1, String value2) {
+            addCriterion("other_declare_recore_id between", value1, value2, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOtherDeclareRecoreIdNotBetween(String value1, String value2) {
+            addCriterion("other_declare_recore_id not between", value1, value2, "otherDeclareRecoreId");
+            return (Criteria) this;
+        }
+
         public Criteria andTableNameIsNull() {
             addCriterion("table_name is null");
             return (Criteria) this;

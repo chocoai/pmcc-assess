@@ -161,10 +161,7 @@ public class BasicApplyBatchService {
             ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
             ztreeDto.setApplyBatchId(item.getApplyBatchId());
             ztreeDto.setDeclareRecordId(item.getDeclareRecordId());
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(item.getDeclareRecordId());
-            if (declareRecord != null) {
-                ztreeDto.setDeclareRecordName(declareRecord.getName());
-            }
+            ztreeDto.setDeclareRecordName(item.getDeclareRecordName());
             treeDtos.add(ztreeDto);
         }
         return treeDtos;

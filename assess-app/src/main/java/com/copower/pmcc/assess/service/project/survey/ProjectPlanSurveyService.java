@@ -70,39 +70,41 @@ public class ProjectPlanSurveyService {
         Integer workStageId = projectPlan.getWorkStageId();
 
         ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectPlan.getCategoryId());
-        // List<ProjectPhase> projectPhases = Lists.newArrayList(inventoryPhase,explorePhase);
-        // List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
-        //案例调查任务和他项权利任务与项目挂钩
-        // if (CollectionUtils.isEmpty(projectPhases)) return;
+        ProjectPhase assetInventoryPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPlan.getCategoryId());
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
+        List<ProjectPhase> projectPhases = Lists.newArrayList(sceneExplorePhase, assetInventoryPhase, otherRightPhase);
+        if (CollectionUtils.isEmpty(projectPhases)) return;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
         //添加他权任务
         String projectManager = projectMemberService.getProjectManager(projectId);
-        ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
-        projectPlanDetail.setProjectWorkStageId(workStageId);
-        projectPlanDetail.setPlanId(planId);
-        projectPlanDetail.setProjectId(projectId);
-        projectPlanDetail.setExecuteUserAccount(projectManager);
-        SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
-        if (sysUser != null) {
-            projectPlanDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
-        }
-        projectPlanDetail.setProjectPhaseName(otherRightPhase.getProjectPhaseName());
-        projectPlanDetail.setPlanStartDate(new Date());
-        projectPlanDetail.setPlanEndDate(new Date());
-        projectPlanDetail.setBisEnable(true);
-        projectPlanDetail.setProcessInsId("0");
-        projectPlanDetail.setStatus(ProcessStatusEnum.RUN.getValue());
-        projectPlanDetail.setPlanHours(otherRightPhase.getPhaseTime());
-        projectPlanDetail.setPid(0);
-        projectPlanDetail.setFirstPid(0);
-        projectPlanDetail.setProjectPhaseId(otherRightPhase.getId());
-        projectPlanDetail.setSorting(10000);
-        projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
-        try {
-            projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetail, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-        } catch (BpmException e) {
-            logger.error("查勘添加task任务" + e.getMessage(), e);
+        for (ProjectPhase projectPhase : projectPhases) {
+            ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();
+            projectPlanDetail.setProjectWorkStageId(workStageId);
+            projectPlanDetail.setPlanId(planId);
+            projectPlanDetail.setProjectId(projectId);
+            projectPlanDetail.setExecuteUserAccount(projectManager);
+            SysUserDto sysUser = erpRpcUserService.getSysUser(projectManager);
+            if (sysUser != null) {
+                projectPlanDetail.setExecuteDepartmentId(sysUser.getDepartmentId());
+            }
+            projectPlanDetail.setProjectPhaseName(projectPhase.getProjectPhaseName());
+            projectPlanDetail.setPlanStartDate(new Date());
+            projectPlanDetail.setPlanEndDate(new Date());
+            projectPlanDetail.setBisEnable(true);
+            projectPlanDetail.setProcessInsId("0");
+            projectPlanDetail.setStatus(ProcessStatusEnum.RUN.getValue());
+            projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
+            projectPlanDetail.setPid(0);
+            projectPlanDetail.setFirstPid(0);
+            projectPlanDetail.setProjectPhaseId(projectPhase.getId());
+            projectPlanDetail.setSorting(10000 + projectPhase.getPhaseSort());
+            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);
+            try {
+                projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetail, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+            } catch (BpmException e) {
+                logger.error("查勘添加task任务" + e.getMessage(), e);
+            }
         }
     }
 }

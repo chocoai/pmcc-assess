@@ -240,7 +240,7 @@ public class SchemeAreaGroupService {
                     boolean isSameCity = StringUtils.equals(StringUtils.defaultString(declareRecord.getCity()), StringUtils.defaultString(areaGroup.getCity()));
                     boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(declareRecord.getDistrict()), StringUtils.defaultString(areaGroup.getDistrict()));
                     if (isSameProvince && isSameCity && isSameDistrict) {
-                        declareRecordToJudgeObject(declareRecord, areaGroup,isLand);
+                        declareRecordToJudgeObject(declareRecord, areaGroup, isLand);
                         declareRecordIterator.remove();
                     }
                 }
@@ -266,7 +266,7 @@ public class SchemeAreaGroupService {
                 Boolean isNeedReNumber = false;//是否需要重新编号
                 if (CollectionUtils.isNotEmpty(declareRecordList)) {//为权证添加估价对象
                     isNeedReNumber = true;
-                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup,isLand));
+                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup, isLand));
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
                     isNeedReNumber = true;
@@ -305,6 +305,10 @@ public class SchemeAreaGroupService {
     private void declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup, Boolean isLand) {
         //根据查勘情况生成对应的估价对象，并将查勘applyid关联到估价对象上
         List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
+        if (CollectionUtils.isEmpty(basicApplyList)) {
+            //当没有找到时，则需在关联的多权证数据中寻找，如果有找到也将其生成估价对象
+            basicApplyList = basicApplyService.getBasicApplyListByOtherDeclare(String.format(",%s,", declareRecord.getId()));
+        }
         if (CollectionUtils.isEmpty(basicApplyList)) return;
         //经济指标
         MdEconomicIndicators economicIndicators = null;
@@ -342,7 +346,7 @@ public class SchemeAreaGroupService {
                 schemeJudgeObject.setCertUse(basicHouse.getCertUse());
                 schemeJudgeObject.setPracticalUse(basicHouse.getPracticalUse());
                 BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(basicHouse.getId());
-                if (isLand&&landCategoryInfo != null) {
+                if (isLand && landCategoryInfo != null) {
                     schemeJudgeObject.setCertUse(declareRecord.getLandCertUse());
                     schemeJudgeObject.setPracticalUse(landCategoryInfo.getLandUseType());
                     schemeJudgeObject.setActualPlotRatio(landCategoryInfo.getPlotRatio());

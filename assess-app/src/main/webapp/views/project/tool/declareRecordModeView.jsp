@@ -99,7 +99,7 @@
     declareRecordModeObj.projectId = undefined;
     declareRecordModeObj.singleSelect = undefined;
 
-    declareRecordModeObj.init = function (options,singleSelect) {
+    declareRecordModeObj.init = function (options, singleSelect) {
         var defaultObj = {projectId: '${projectPlanDetails.projectId}'};
         jQuery.extend(defaultObj, options);
         var box = declareRecordModeObj.targetBox;
@@ -120,7 +120,7 @@
             declareRecordModeObj.projectId = defaultObj.projectId;
         }
         declareRecordModeObj.singleSelect = singleSelect;
-        declareRecordModeObj.loadDeclareRecordTable({projectId: defaultObj.projectId},singleSelect);
+        declareRecordModeObj.loadDeclareRecordTable({projectId: defaultObj.projectId}, singleSelect);
         box.modal('show');
     };
 
@@ -140,42 +140,32 @@
         }
         var rows = table.bootstrapTable('getSelections');
         if (rows.length >= 1) {
-            var tempData = [];
+            var idArray = [];
+            var nameArray = [];
             for (var i = 0; i < rows.length; i++) {
-                tempData.push(rows[i].id);
+                idArray.push(rows[i].id);
+                nameArray.push(rows[i].name);
             }
             if (declareRecordModeObj.callback) {
                 if (declareRecordModeObj.this_) {
-                    declareRecordModeObj.callback(declareRecordModeObj.this_, tempData.join(","));
+                    declareRecordModeObj.callback(declareRecordModeObj.this_, idArray.join(","), nameArray.join(","));
                 } else {
-                    declareRecordModeObj.callback(tempData.join(","));
+                    declareRecordModeObj.callback(idArray.join(","), nameArray.join(","));
                 }
                 box.modal('hide');
             }
         } else {
-            notifyInfo('提示',"至少选择一个");
+            notifyInfo('提示', "至少选择一个");
         }
     };
 
     declareRecordModeObj.searchData = function (_this) {
         var group = $(_this).closest(".form-horizontal");
-//        var province = group.find("select[name='province']").val();
-//        var city = group.find("select[name='city']").val();
-//        var district = group.find("select[name='district']").val();
         var name = group.find("[name='name']").val();
         var seat = group.find("[name='seat']").val();
         var unit = group.find("[name='unit']").val();
         var buildingNumber = group.find("[name='buildingNumber']").val();
         var data = {projectId: declareRecordModeObj.projectId};
-//        if (province) {
-//            data.province = province;
-//        }
-//        if (city) {
-//            data.city = city;
-//        }
-//        if (district) {
-//            data.district = district;
-//        }
         if (name) {
             data.name = name;
         }
@@ -188,10 +178,10 @@
         if (seat) {
             data.seat = seat;
         }
-        declareRecordModeObj.loadDeclareRecordTable(data,declareRecordModeObj.singleSelect);
+        declareRecordModeObj.loadDeclareRecordTable(data, declareRecordModeObj.singleSelect);
     };
 
-    declareRecordModeObj.loadDeclareRecordTable = function (options,singleSelect) {
+    declareRecordModeObj.loadDeclareRecordTable = function (options, singleSelect) {
         var table = declareRecordModeObj.targetTable;
         if (table instanceof jQuery) {
         } else {
@@ -204,13 +194,11 @@
         cols.push({field: 'unit', title: '单元号', width: "15%"});
         cols.push({field: 'ownership', title: '所有权人', width: "15%"});
         cols.push({field: 'seat', title: '坐落', width: "29%"});
-//        cols.push({field: 'floorArea', title: '证载面积', width: "9%"});
-//        cols.push({field: 'practicalArea', title: '实际面积', width: "9%"});
         var method = {
             showColumns: false,
             showRefresh: false,
             search: false,
-            singleSelect: singleSelect?true:false,
+            singleSelect: singleSelect ? true : false,
             onLoadSuccess: function () {//加载成功时执行
                 //对曾经选中过的依旧保持选中状态
                 if (declareRecordModeObj.ids) {

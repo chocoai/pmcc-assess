@@ -1,46 +1,47 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicApplyMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="apply_batch_id" property="applyBatchId" jdbcType="INTEGER" />
-    <result column="batch_detail_id" property="batchDetailId" jdbcType="INTEGER" />
-    <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
-    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="land_category_id" property="landCategoryId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="structural_info" property="structuralInfo" jdbcType="VARCHAR" />
-    <result column="area" property="area" jdbcType="DECIMAL" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="basic_estate_id" property="basicEstateId" jdbcType="INTEGER" />
-    <result column="basic_building_id" property="basicBuildingId" jdbcType="INTEGER" />
-    <result column="basic_unit_id" property="basicUnitId" jdbcType="INTEGER" />
-    <result column="basic_house_id" property="basicHouseId" jdbcType="INTEGER" />
-    <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicApplyMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicApply">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="apply_batch_id" jdbcType="INTEGER" property="applyBatchId" />
+    <result column="batch_detail_id" jdbcType="INTEGER" property="batchDetailId" />
+    <result column="plan_details_id" jdbcType="INTEGER" property="planDetailsId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="declare_record_id" jdbcType="INTEGER" property="declareRecordId" />
+    <result column="other_declare_record_id" jdbcType="VARCHAR" property="otherDeclareRecordId" />
+    <result column="land_category_id" jdbcType="INTEGER" property="landCategoryId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="structural_info" jdbcType="VARCHAR" property="structuralInfo" />
+    <result column="area" jdbcType="DECIMAL" property="area" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="basic_estate_id" jdbcType="INTEGER" property="basicEstateId" />
+    <result column="basic_building_id" jdbcType="INTEGER" property="basicBuildingId" />
+    <result column="basic_unit_id" jdbcType="INTEGER" property="basicUnitId" />
+    <result column="basic_house_id" jdbcType="INTEGER" property="basicHouseId" />
+    <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -51,25 +52,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -80,257 +81,267 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
-    id, name, apply_batch_id, batch_detail_id, declare_record_id, plan_details_id, land_category_id, 
-    type, structural_info, area, address, basic_estate_id, basic_building_id, basic_unit_id, 
-    basic_house_id, bis_delete, creator, gmt_created, gmt_modified
+  <sql id="Base_Column_List">
+    id, apply_batch_id, batch_detail_id, plan_details_id, name, declare_record_id, other_declare_record_id, 
+    land_category_id, type, structural_info, area, address, basic_estate_id, basic_building_id, 
+    basic_unit_id, basic_house_id, bis_delete, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_basic_apply
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_basic_apply
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_basic_apply
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample">
     delete from tb_basic_apply
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply (name, apply_batch_id, batch_detail_id, 
-      declare_record_id, plan_details_id, land_category_id, 
-      type, structural_info, area, 
-      address, basic_estate_id, basic_building_id, 
-      basic_unit_id, basic_house_id, bis_delete, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{name,jdbcType=VARCHAR}, #{applyBatchId,jdbcType=INTEGER}, #{batchDetailId,jdbcType=INTEGER}, 
-      #{declareRecordId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, #{landCategoryId,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER}, #{structuralInfo,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
-      #{address,jdbcType=VARCHAR}, #{basicEstateId,jdbcType=INTEGER}, #{basicBuildingId,jdbcType=INTEGER}, 
-      #{basicUnitId,jdbcType=INTEGER}, #{basicHouseId,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_basic_apply (apply_batch_id, batch_detail_id, plan_details_id, 
+      name, declare_record_id, other_declare_record_id, 
+      land_category_id, type, structural_info, 
+      area, address, basic_estate_id, 
+      basic_building_id, basic_unit_id, basic_house_id, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
+    values (#{applyBatchId,jdbcType=INTEGER}, #{batchDetailId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{declareRecordId,jdbcType=INTEGER}, #{otherDeclareRecordId,jdbcType=VARCHAR}, 
+      #{landCategoryId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{structuralInfo,jdbcType=VARCHAR}, 
+      #{area,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, #{basicEstateId,jdbcType=INTEGER}, 
+      #{basicBuildingId,jdbcType=INTEGER}, #{basicUnitId,jdbcType=INTEGER}, #{basicHouseId,jdbcType=INTEGER}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_apply
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="applyBatchId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="applyBatchId != null">
         apply_batch_id,
       </if>
-      <if test="batchDetailId != null" >
+      <if test="batchDetailId != null">
         batch_detail_id,
       </if>
-      <if test="declareRecordId != null" >
-        declare_record_id,
-      </if>
-      <if test="planDetailsId != null" >
+      <if test="planDetailsId != null">
         plan_details_id,
       </if>
-      <if test="landCategoryId != null" >
+      <if test="name != null">
+        name,
+      </if>
+      <if test="declareRecordId != null">
+        declare_record_id,
+      </if>
+      <if test="otherDeclareRecordId != null">
+        other_declare_record_id,
+      </if>
+      <if test="landCategoryId != null">
         land_category_id,
       </if>
-      <if test="type != null" >
+      <if test="type != null">
         type,
       </if>
-      <if test="structuralInfo != null" >
+      <if test="structuralInfo != null">
         structural_info,
       </if>
-      <if test="area != null" >
+      <if test="area != null">
         area,
       </if>
-      <if test="address != null" >
+      <if test="address != null">
         address,
       </if>
-      <if test="basicEstateId != null" >
+      <if test="basicEstateId != null">
         basic_estate_id,
       </if>
-      <if test="basicBuildingId != null" >
+      <if test="basicBuildingId != null">
         basic_building_id,
       </if>
-      <if test="basicUnitId != null" >
+      <if test="basicUnitId != null">
         basic_unit_id,
       </if>
-      <if test="basicHouseId != null" >
+      <if test="basicHouseId != null">
         basic_house_id,
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         bis_delete,
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="applyBatchId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="applyBatchId != null">
         #{applyBatchId,jdbcType=INTEGER},
       </if>
-      <if test="batchDetailId != null" >
+      <if test="batchDetailId != null">
         #{batchDetailId,jdbcType=INTEGER},
       </if>
-      <if test="declareRecordId != null" >
-        #{declareRecordId,jdbcType=INTEGER},
-      </if>
-      <if test="planDetailsId != null" >
+      <if test="planDetailsId != null">
         #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="landCategoryId != null" >
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="declareRecordId != null">
+        #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="otherDeclareRecordId != null">
+        #{otherDeclareRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="landCategoryId != null">
         #{landCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
+      <if test="type != null">
         #{type,jdbcType=INTEGER},
       </if>
-      <if test="structuralInfo != null" >
+      <if test="structuralInfo != null">
         #{structuralInfo,jdbcType=VARCHAR},
       </if>
-      <if test="area != null" >
+      <if test="area != null">
         #{area,jdbcType=DECIMAL},
       </if>
-      <if test="address != null" >
+      <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
-      <if test="basicEstateId != null" >
+      <if test="basicEstateId != null">
         #{basicEstateId,jdbcType=INTEGER},
       </if>
-      <if test="basicBuildingId != null" >
+      <if test="basicBuildingId != null">
         #{basicBuildingId,jdbcType=INTEGER},
       </if>
-      <if test="basicUnitId != null" >
+      <if test="basicUnitId != null">
         #{basicUnitId,jdbcType=INTEGER},
       </if>
-      <if test="basicHouseId != null" >
+      <if test="basicHouseId != null">
         #{basicHouseId,jdbcType=INTEGER},
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         #{bisDelete,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyExample" resultType="java.lang.Long">
     select count(*) from tb_basic_apply
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_basic_apply
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.applyBatchId != null" >
+      <if test="record.applyBatchId != null">
         apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
       </if>
-      <if test="record.batchDetailId != null" >
+      <if test="record.batchDetailId != null">
         batch_detail_id = #{record.batchDetailId,jdbcType=INTEGER},
       </if>
-      <if test="record.declareRecordId != null" >
-        declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
-      </if>
-      <if test="record.planDetailsId != null" >
+      <if test="record.planDetailsId != null">
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="record.landCategoryId != null" >
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.declareRecordId != null">
+        declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="record.otherDeclareRecordId != null">
+        other_declare_record_id = #{record.otherDeclareRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landCategoryId != null">
         land_category_id = #{record.landCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null" >
+      <if test="record.type != null">
         type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.structuralInfo != null" >
+      <if test="record.structuralInfo != null">
         structural_info = #{record.structuralInfo,jdbcType=VARCHAR},
       </if>
-      <if test="record.area != null" >
+      <if test="record.area != null">
         area = #{record.area,jdbcType=DECIMAL},
       </if>
-      <if test="record.address != null" >
+      <if test="record.address != null">
         address = #{record.address,jdbcType=VARCHAR},
       </if>
-      <if test="record.basicEstateId != null" >
+      <if test="record.basicEstateId != null">
         basic_estate_id = #{record.basicEstateId,jdbcType=INTEGER},
       </if>
-      <if test="record.basicBuildingId != null" >
+      <if test="record.basicBuildingId != null">
         basic_building_id = #{record.basicBuildingId,jdbcType=INTEGER},
       </if>
-      <if test="record.basicUnitId != null" >
+      <if test="record.basicUnitId != null">
         basic_unit_id = #{record.basicUnitId,jdbcType=INTEGER},
       </if>
-      <if test="record.basicHouseId != null" >
+      <if test="record.basicHouseId != null">
         basic_house_id = #{record.basicHouseId,jdbcType=INTEGER},
       </if>
-      <if test="record.bisDelete != null" >
+      <if test="record.bisDelete != null">
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_basic_apply
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
       apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
       batch_detail_id = #{record.batchDetailId,jdbcType=INTEGER},
-      declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      other_declare_record_id = #{record.otherDeclareRecordId,jdbcType=VARCHAR},
       land_category_id = #{record.landCategoryId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       structural_info = #{record.structuralInfo,jdbcType=VARCHAR},
@@ -344,77 +355,81 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply">
     update tb_basic_apply
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="applyBatchId != null" >
+    <set>
+      <if test="applyBatchId != null">
         apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
       </if>
-      <if test="batchDetailId != null" >
+      <if test="batchDetailId != null">
         batch_detail_id = #{batchDetailId,jdbcType=INTEGER},
       </if>
-      <if test="declareRecordId != null" >
-        declare_record_id = #{declareRecordId,jdbcType=INTEGER},
-      </if>
-      <if test="planDetailsId != null" >
+      <if test="planDetailsId != null">
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
-      <if test="landCategoryId != null" >
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="declareRecordId != null">
+        declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="otherDeclareRecordId != null">
+        other_declare_record_id = #{otherDeclareRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="landCategoryId != null">
         land_category_id = #{landCategoryId,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
+      <if test="type != null">
         type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="structuralInfo != null" >
+      <if test="structuralInfo != null">
         structural_info = #{structuralInfo,jdbcType=VARCHAR},
       </if>
-      <if test="area != null" >
+      <if test="area != null">
         area = #{area,jdbcType=DECIMAL},
       </if>
-      <if test="address != null" >
+      <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="basicEstateId != null" >
+      <if test="basicEstateId != null">
         basic_estate_id = #{basicEstateId,jdbcType=INTEGER},
       </if>
-      <if test="basicBuildingId != null" >
+      <if test="basicBuildingId != null">
         basic_building_id = #{basicBuildingId,jdbcType=INTEGER},
       </if>
-      <if test="basicUnitId != null" >
+      <if test="basicUnitId != null">
         basic_unit_id = #{basicUnitId,jdbcType=INTEGER},
       </if>
-      <if test="basicHouseId != null" >
+      <if test="basicHouseId != null">
         basic_house_id = #{basicHouseId,jdbcType=INTEGER},
       </if>
-      <if test="bisDelete != null" >
+      <if test="bisDelete != null">
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApply">
     update tb_basic_apply
-    set name = #{name,jdbcType=VARCHAR},
-      apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
+    set apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
       batch_detail_id = #{batchDetailId,jdbcType=INTEGER},
-      declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      other_declare_record_id = #{otherDeclareRecordId,jdbcType=VARCHAR},
       land_category_id = #{landCategoryId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       structural_info = #{structuralInfo,jdbcType=VARCHAR},

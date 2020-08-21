@@ -69,6 +69,11 @@ public class BasicApplyService {
         return basicApplyDao.getBasicApplyByHouseId(houseId);
     }
 
+    public List<BasicApply> getBasicApplyListByOtherDeclare(String declareId) {
+        if (StringUtils.isBlank(declareId)) return null;
+        return basicApplyDao.getBasicApplyListByOtherDeclare(declareId);
+    }
+
     public List<BasicApply> getListByDeclareRecordId(Integer declareRecordId) {
         BasicApply where = new BasicApply();
         where.setDeclareRecordId(declareRecordId);
@@ -124,6 +129,7 @@ public class BasicApplyService {
 
     /**
      * 根据apply表中名称
+     *
      * @param batchDetailId
      */
     public void updateNameByBatchDetailId(Integer batchDetailId) {
@@ -135,7 +141,7 @@ public class BasicApplyService {
             List<KeyValueDto> keyValueDtos = JSON.parseArray(basicApply.getStructuralInfo(), KeyValueDto.class);
             StringBuilder stringBuilder = new StringBuilder();
             for (KeyValueDto keyValueDto : keyValueDtos) {
-                if(StringUtils.isNotBlank(keyValueDto.getExplain())){
+                if (StringUtils.isNotBlank(keyValueDto.getExplain())) {
                     BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getCacheBasicApplyBatchDetailById(Integer.valueOf(keyValueDto.getExplain()));
                     if (batchDetail != null) {
                         stringBuilder.append(batchDetail.getName()).append("/");

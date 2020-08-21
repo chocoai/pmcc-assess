@@ -17,6 +17,8 @@ public class BasicApplyBatchDetail {
 
     private String declareRecordName;
 
+    private String otherDeclareRecoreId;
+
     private String tableName;
 
     private Integer tableId;
@@ -103,6 +105,14 @@ public class BasicApplyBatchDetail {
 
     public void setDeclareRecordName(String declareRecordName) {
         this.declareRecordName = declareRecordName == null ? null : declareRecordName.trim();
+    }
+
+    public String getOtherDeclareRecoreId() {
+        return otherDeclareRecoreId;
+    }
+
+    public void setOtherDeclareRecoreId(String otherDeclareRecoreId) {
+        this.otherDeclareRecoreId = otherDeclareRecoreId == null ? null : otherDeclareRecoreId.trim();
     }
 
     public String getTableName() {

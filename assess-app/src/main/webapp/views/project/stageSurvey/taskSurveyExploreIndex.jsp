@@ -38,10 +38,10 @@
                                                 onclick="batchTreeTool.showAlternativeCaseModal();">
                                             引用备选案例
                                         </button>
-                                            <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
-                                                    onclick="showQuoteHouseCase();">
-                                                引用房屋案例
-                                            </button>
+                                        <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
+                                                onclick="showQuoteHouseCase();">
+                                            引用房屋案例
+                                        </button>
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-sm"><span
@@ -112,7 +112,8 @@
                                                         <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
                                                     </div>
                                                     <div class=" col-md-3">
-                                                        <%@include file="/views/project/stageSurvey/common/canvasQRcodeTree.jsp" %>
+                                                        <%@include
+                                                                file="/views/project/stageSurvey/common/canvasQRcodeTree.jsp" %>
                                                     </div>
                                                 </div>
                                             </div>
@@ -121,7 +122,8 @@
                                     <div class="col-md-3">
                                         <form id="basicBatchApplyFrm" class="form-horizontal">
                                             <input type="hidden" name="id" value="${applyBatch.id}">
-                                            <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                                            <input type="hidden" name="projectId"
+                                                   value="${projectPlanDetails.projectId}">
                                             <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                                             <input type="hidden" id="estateId" name="estateId"
                                                    value="${applyBatch.estateId}">
@@ -185,24 +187,16 @@
                                             <div class="row form-group">
                                                 <div class="col-md-12 form-inline">
                                                     <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                                        权证
+                                                        <button class="btn btn-warning btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="declareRecordModeObj.init({callback:selectRecord,this_:this},false);">
+                                                            选择权证
+                                                        </button>
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                        <div class='input-group'>
-                                                            <input name='declareRecordId' id='declareRecordId'
-                                                                   type='hidden'>
-                                                            <input name='declareRecordName' id='declareRecordName'
-                                                                   class='form-control form-control-sm' readonly
-                                                                   onclick='declareRecordModeObj.init({callback:selectRecord,this_:this},true);'>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-warning btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="declareRecordModeObj.init({callback:selectRecord,this_:this},true);">
-                                                                    选择
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                        <label data-name='declareRecordName'
+                                                               class='form-control form-control-sm input-full'></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -595,7 +589,7 @@
             type: 'get',
             dataType: "json",
             success: function (result) {
-                console.log(result) ;
+                console.log(result);
                 zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
                 //展开第一级，选中根节点
                 var rootNode = zTreeObj.getNodes()[0];
@@ -1039,21 +1033,17 @@
 
     batchTreeTool.showFunctionBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node){
-            $("#basicBatchApplyFrm").find('[name=declareRecordId]').val(node.declareRecordId);
-            $("#basicBatchApplyFrm").find('[name=declareRecordName]').val(node.declareRecordName);
+        if (node) {
+            $("#basicBatchApplyFrm").find('[data-name=declareRecordName]').text(AssessCommon.toString(node.declareRecordName));
             //是当前执行人时
             if (node.executor == '${userAccount}') {
                 $("#btnGroup").find('.btn.masterTool').show();
                 $("#btnGroup").find('.btn.limitTool').hide();
-
             } else {
                 $("#btnGroup").find('.btn.limitTool').show();
                 $("#btnGroup").find('.btn.masterTool').hide();
             }
         }
-
-
     }
 
     //获取该节点下子级表单类型
@@ -1198,7 +1188,7 @@
     }
 
     //选择权证
-    function selectRecord(_this, id) {
+    function selectRecord(_this, declareId, declareName) {
         var zTreeObj = $.fn.zTree.getZTreeObj($("#ztree").prop("id"));
         var nodes = zTreeObj.getCheckedNodes(true);
         nodes = nodes.length == 0 ? zTreeObj.getSelectedNodes() : nodes;
@@ -1206,46 +1196,25 @@
             notifyInfo('提示', '勾选至少一个节点');
             return false;
         }
-        var ids = [];
-        $.each(nodes, function (i, node) {
-            ids.push(node.id);
+        var applyBatchDetailIds = '';
+        $.each(nodes, function (i, item) {
+            applyBatchDetailIds += item.id + ',';
         });
         var group = $(_this).closest(".form-group");
-        group.find("input[name='declareRecordId']").val(id);
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRecord/getDeclareRecordListByIds",
-            type: "get",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    var arr = [];
-                    $.each(result.data, function (i, item) {
-                        $(_this).val(item.name);
-                    });
-                    batchSaveDeclareRecordId(ids);
-                } else {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        });
+        group.find("[data-name='declareRecordName']").text(declareName);
+        batchSaveDeclareRecordId(applyBatchDetailIds.replace(/,$/, ''), declareId, declareName);
     }
 
     //批量设置权证
-    function batchSaveDeclareRecordId(ids) {
-        var declareRecordId = $("#basicBatchApplyFrm").find('[name=declareRecordId]').val();
-        var declareRecordName = $("#basicBatchApplyFrm").find('[name=declareRecordName]').val();
+    function batchSaveDeclareRecordId(applyBatchDetailIds, declareId, declareName) {
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/batchSaveDeclareRecordId",
             type: "post",
             dataType: "json",
             data: {
-                ids: ids.join(","),
-                declareRecordId: declareRecordId,
-                declareRecordName: declareRecordName
+                applyBatchDetailIds: applyBatchDetailIds,
+                declareRecordIds: declareId,
+                declareRecordName: declareName
             },
             success: function (result) {
                 if (result.ret) {

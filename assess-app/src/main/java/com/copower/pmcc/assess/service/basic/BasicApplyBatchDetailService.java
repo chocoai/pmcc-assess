@@ -167,7 +167,7 @@ public class BasicApplyBatchDetailService {
     }
 
     //验证是否为项目下相同数据
-    private void validIsSameBatchDetal(BasicApplyBatchDetail basicApplyBatchDetail){
+    private void validIsSameBatchDetal(BasicApplyBatchDetail basicApplyBatchDetail) {
         //如果在相同项目下，fullName相同，并且是正常状态，并排除当前数据。那该数据则为同数据
         if (basicApplyBatchDetail.getProjectId() != null) {
             BasicApplyBatchDetail where = new BasicApplyBatchDetail();
@@ -179,8 +179,8 @@ public class BasicApplyBatchDetailService {
             if (CollectionUtils.isNotEmpty(batchDetailList)) {
                 basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.SAME.getKey());
                 basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
-            }else{
-                if(BasicDataHandleEnum.SAME.getKey().equalsIgnoreCase(basicApplyBatchDetail.getModifyType())){
+            } else {
+                if (BasicDataHandleEnum.SAME.getKey().equalsIgnoreCase(basicApplyBatchDetail.getModifyType())) {
                     basicApplyBatchDetail.setModifyType(BasicDataHandleEnum.NOMAL.getKey());
                     basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
                 }
@@ -582,20 +582,28 @@ public class BasicApplyBatchDetailService {
     }
 
     //批量设置权证id
-    public void batchSaveDeclareRecordId(String ids, Integer declareRecordId, String declareRecordName) {
-        if (!StringUtils.isEmpty(ids)) {
-            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
+    public void batchSaveDeclareRecordId(String applyBatchDetailIds, String declareRecordIds, String declareRecordName) {
+        if (!StringUtils.isEmpty(applyBatchDetailIds)) {
+            List<Integer> integers = FormatUtils.transformString2Integer(applyBatchDetailIds);
             List<BasicApplyBatchDetail> detailList = getBatchDetailListByIds(integers);
             List<BasicApplyBatchDetail> filter = LangUtils.filter(detailList, o -> o.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey()));
             if (CollectionUtils.isNotEmpty(filter)) {
                 for (BasicApplyBatchDetail item : filter) {
-                    item.setDeclareRecordId(declareRecordId);
+                    List<Integer> recordIds = FormatUtils.transformString2Integer(declareRecordIds);
+                    item.setDeclareRecordId(recordIds.get(0));
+                    recordIds.remove(0);
+                    if (CollectionUtils.isNotEmpty(recordIds)) {
+                        item.setOtherDeclareRecoreId(String.format(",%s,",FormatUtils.transformListString(recordIds)));
+                    }else{
+                        item.setOtherDeclareRecoreId("");
+                    }
                     item.setDeclareRecordName(declareRecordName);
                     saveBasicApplyBatchDetail(item);
                     //修改basic_apply表
                     BasicApply basicApply = basicApplyService.getBasicApplyByHouseId(item.getTableId());
                     if (basicApply != null) {
-                        basicApply.setDeclareRecordId(declareRecordId);
+                        basicApply.setDeclareRecordId(item.getDeclareRecordId());
+                        basicApply.setOtherDeclareRecordId(item.getOtherDeclareRecoreId());
                         basicApplyService.saveBasicApply(basicApply);
                     }
                 }

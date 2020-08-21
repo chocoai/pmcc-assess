@@ -6,15 +6,17 @@ import java.util.Date;
 public class BasicApply {
     private Integer id;
 
-    private String name;
-
     private Integer applyBatchId;
 
     private Integer batchDetailId;
 
+    private Integer planDetailsId;
+
+    private String name;
+
     private Integer declareRecordId;
 
-    private Integer planDetailsId;
+    private String otherDeclareRecordId;
 
     private Integer landCategoryId;
 
@@ -50,14 +52,6 @@ public class BasicApply {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
     public Integer getApplyBatchId() {
         return applyBatchId;
     }
@@ -74,6 +68,22 @@ public class BasicApply {
         this.batchDetailId = batchDetailId;
     }
 
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
     public Integer getDeclareRecordId() {
         return declareRecordId;
     }
@@ -82,12 +92,12 @@ public class BasicApply {
         this.declareRecordId = declareRecordId;
     }
 
-    public Integer getPlanDetailsId() {
-        return planDetailsId;
+    public String getOtherDeclareRecordId() {
+        return otherDeclareRecordId;
     }
 
-    public void setPlanDetailsId(Integer planDetailsId) {
-        this.planDetailsId = planDetailsId;
+    public void setOtherDeclareRecordId(String otherDeclareRecordId) {
+        this.otherDeclareRecordId = otherDeclareRecordId == null ? null : otherDeclareRecordId.trim();
     }
 
     public Integer getLandCategoryId() {

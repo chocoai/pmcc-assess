@@ -53,10 +53,10 @@ public class BasicApplyDao {
         return basicApplyMapper.selectByExample(example);
     }
 
-    public List<BasicApply> getBasicApplyListByWhere(BasicApply basicApply) {
+    public List<BasicApply> getBasicApplyListByOtherDeclare(String declareId) {
         BasicApplyExample example = new BasicApplyExample();
-        BasicApplyExample.Criteria criteria = example.createCriteria();
-        MybatisUtils.convertObj2Criteria(basicApply,criteria);
+        BasicApplyExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        criteria.andOtherDeclareRecordIdLike(String.format("%%%s%%",declareId));
         example.setOrderByClause("id desc");
         return basicApplyMapper.selectByExample(example);
     }
@@ -93,20 +93,6 @@ public class BasicApplyDao {
         if (basicApply == null) return false;
         basicApply.setBisDelete(true);
         return basicApplyMapper.updateByPrimaryKeySelective(basicApply) > 0;
-    }
-
-    /**
-     * 根据条件查询申请的数量
-     *
-     * @param basicApply
-     * @param applyId
-     * @return
-     */
-    public int getBasicApplyCount(BasicApply basicApply, Integer applyId) {
-        BasicApplyExample example = new BasicApplyExample();
-        example = MybatisUtils.convertObj2Example(basicApply, example);
-        example.createCriteria().andIdNotEqualTo(applyId);
-        return basicApplyMapper.countByExample(example);
     }
 
     public List<BasicApply> getBasicApplysByBatchDetailIds(List<Integer> batchDetailIds) {
