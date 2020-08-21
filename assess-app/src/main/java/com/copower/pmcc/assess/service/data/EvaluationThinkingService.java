@@ -29,10 +29,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 评估技术思路
@@ -242,7 +239,12 @@ public class EvaluationThinkingService {
 
     private String getJudgeNumber(String number) {
         if (StringUtils.isBlank(number)) return "";
-        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(number));
-        return generateCommonMethod.convertNumber(integers);
+        List<Integer> integerList = null;
+        try {
+            integerList = generateCommonMethod.splitIntegerListJudgeNumber(number);
+        } catch (Exception e) {
+            integerList = Arrays.asList(generateCommonMethod.parseIntJudgeNumber(number));
+        }
+        return generateCommonMethod.convertNumber(integerList);
     }
 }

@@ -4394,28 +4394,19 @@ public class GenerateBaseDataService {
             return;
         }
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+        if (declareRecord == null){
+            declareRecord = new DeclareRecord() ;
+        }
         if (isLabelJudgeObjectShowName) {
             linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
         } else {
             linkedLists.add(schemeJudgeObject.getName());
         }
         if (seat) {
-            if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getSeat())) {//1
-                linkedLists.add(declareRecord.getSeat());
-            } else {
-                linkedLists.add(nullValue);
-            }
+            linkedLists.add(AsposeUtils.getValue(declareRecord.getSeat()));//1
         }
-        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getCertUse())) {//2
-            linkedLists.add(declareRecord.getCertUse());
-        } else {
-            linkedLists.add(nullValue);
-        }
-        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getPracticalUse())) {//3
-            linkedLists.add(declareRecord.getPracticalUse());
-        } else {
-            linkedLists.add(nullValue);
-        }
+        linkedLists.add(AsposeUtils.getValue(declareRecord.getCertUse()));//2
+        linkedLists.add(AsposeUtils.getValue(declareRecord.getPracticalUse()));//3
         try {
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
             BasicBuildingVo buildingVo = generateBaseExamineService.getBasicBuilding();
@@ -4427,38 +4418,9 @@ public class GenerateBaseDataService {
         } catch (Exception e) {
             linkedLists.add("0");
         }
-        if (declareRecord != null && StringUtils.isNotBlank(declareRecord.getFloor())) {//5
-            linkedLists.add(declareRecord.getFloor());
-        } else {
-            linkedLists.add(nullValue);
-        }
-        if (schemeJudgeObject.getEvaluationArea() != null) {//6
-            linkedLists.add(ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getEvaluationArea()));
-        } else {
-            linkedLists.add(nullValue);
-        }
-        //使用什么单位
-        String unit = "元/㎡";
-        if (basicApply != null) {
-            try {
-                BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicApply.getBasicHouseId());
-                BaseDataDic buildAreaUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_BUILD_AREA_UNIT_PRICE);
-                BaseDataDic buildInteriorUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INTERIOR_AREA_UNIT_PRICE);
-                if (basicHouseTrading.getPriceConnotation() != buildAreaUnitPrice.getId() && basicHouseTrading.getPriceConnotation() != buildInteriorUnitPrice.getId()) {
-                    if (StringUtils.isNotBlank(basicHouseTrading.getPriceConnotationUnit())) {
-                        unit = basicHouseTrading.getPriceConnotationUnit();
-                    }
-                }
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
-        if (schemeJudgeObject.getPrice() != null) {//7
-//            linkedLists.add(String.format("%s%s", schemeJudgeObject.getPrice().toString(), StringUtils.isNotBlank(unit) ? unit : nullValue));
-            linkedLists.add(String.format("%s", ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getPrice())));
-        } else {
-            linkedLists.add(nullValue);
-        }
+        linkedLists.add(AsposeUtils.getValue(declareRecord.getFloor()));//5
+        linkedLists.add(AsposeUtils.getValue(schemeJudgeObject.getEvaluationArea()));//6
+        linkedLists.add(AsposeUtils.getValue(schemeJudgeObject.getPrice()));//7
         if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {//8
             BigDecimal total = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
             total = total.divide(new BigDecimal(10000));
