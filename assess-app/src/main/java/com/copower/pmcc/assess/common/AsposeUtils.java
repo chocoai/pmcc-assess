@@ -790,6 +790,9 @@ public class AsposeUtils {
         if (CollectionUtils.isNotEmpty(titles)) {
             for (String title : titles) {
                 builder.insertCell();
+                if (title == null){
+                    title = "" ;
+                }
                 builder.write(title);
             }
             builder.endRow();
@@ -804,7 +807,11 @@ public class AsposeUtils {
             for (int i = 0; i < linkedLists.size(); i++) {
                 Cell cell = builder.insertCell();
                 cell.getCellFormat().setWidth(doubleLinkedList.get(i).doubleValue());
-                builder.write(linkedLists.get(i));
+                String s = linkedLists.get(i);
+                if (s == null) {
+                    s = "" ;
+                }
+                builder.write(s);
             }
             builder.endRow();
         }
