@@ -506,7 +506,7 @@ public class BasicUnitHuxingService {
         //生成房屋的basicApplyBatchDetail数据
         BasicApplyBatchDetail houseBatchDetail = new BasicApplyBatchDetail();
         houseBatchDetail.setTableId(basicHouse.getId());
-        houseBatchDetail.setTableName("tb_basic_house");
+        houseBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
         houseBatchDetail.setPid(unitBatchDetail.getId());
         houseBatchDetail.setApplyBatchId(unitBatchDetail.getApplyBatchId());
         houseBatchDetail.setName(basicHouse.getHouseNumber());
@@ -514,8 +514,7 @@ public class BasicUnitHuxingService {
         houseBatchDetail.setCreator(commonService.thisUserAccount());
         houseBatchDetail.setExecutor(commonService.thisUserAccount());
         basicApplyBatchDetailDao.addInfo(houseBatchDetail);
-        Integer planDetailsId = basicApplyBatchService.getBasicApplyBatchById(unitBatchDetail.getApplyBatchId()).getPlanDetailsId();
-        basicApplyBatchDetailService.insertBasicApply(houseBatchDetail, planDetailsId);
+        basicApplyBatchDetailService.insertBasicApply(houseBatchDetail);
         return true;
     }
 

@@ -4130,17 +4130,18 @@ public class GenerateBaseDataService {
                         BasicHouseHuxingPrice huxingPrice = huxingPriceList.get(i);
                         builder.insertCell();
                         builder.write(number + "-" + (i + 1));
-
-                        builder.insertCell();
-                        if (huxingPrice.getDeclareId() != null && StringUtils.isNotBlank(huxingPrice.getDeclareName())) {
-                            builder.write(huxingPrice.getDeclareName());
-                        } else {
+                        if (huxingPrice.getDeclareId() != null){
+                            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(huxingPrice.getDeclareId());
+                            builder.insertCell();
+                            builder.write(declareRecord.getName());
+                            builder.insertCell();
+                            builder.write(declareRecord.getSeat());
+                        }else{
+                            builder.insertCell();
                             builder.write(certName);
+                            builder.insertCell();
+                            builder.write(huxingPrice.getSeat());
                         }
-
-                        builder.insertCell();
-                        builder.write(seat);
-
                         builder.insertCell();
                         builder.write(certUser);
 
@@ -4153,6 +4154,9 @@ public class GenerateBaseDataService {
                         builder.insertCell();
                         builder.write(huxingPrice.getFloor());
 
+                        if (huxingPrice.getArea() != null) {
+                            areaTotal = areaTotal.add(huxingPrice.getArea());
+                        }
                         builder.insertCell();
                         builder.write(String.valueOf(huxingPrice.getArea() == null ? "" : huxingPrice.getArea()));
 

@@ -311,12 +311,12 @@ public class BasicApplyBatchDetailService {
 
         }
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
-        this.insertBasicApply(basicApplyBatchDetail, planDetailsId); //存入basicApply
+        this.insertBasicApply(basicApplyBatchDetail); //存入basicApply
         return basicApplyBatchDetail;
     }
 
     //存入basicApply表单
-    public void insertBasicApply(BasicApplyBatchDetail houseBasicApplyBatchDetail, Integer planDetailsId) throws Exception {
+    public void insertBasicApply(BasicApplyBatchDetail houseBasicApplyBatchDetail) throws Exception {
         if (!houseBasicApplyBatchDetail.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) return;
         BasicApply where = new BasicApply();
         where.setBatchDetailId(houseBasicApplyBatchDetail.getId());
@@ -342,7 +342,7 @@ public class BasicApplyBatchDetailService {
         if (basicHouse != null)
             basicApply.setArea(basicHouse.getArea());
         basicApply.setBatchDetailId(houseBasicApplyBatchDetail.getId());
-        basicApply.setPlanDetailsId(planDetailsId);
+        basicApply.setPlanDetailsId(houseBasicApplyBatchDetail.getPlanDetailsId());
         List<BasicApplyBatchDetail> list = Lists.newArrayList();
         collectionParentBatchDetails(houseBasicApplyBatchDetail.getId(), list);
         if (CollectionUtils.isNotEmpty(list)) {

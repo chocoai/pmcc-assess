@@ -670,6 +670,7 @@ public class BasicApplyBatchService {
         //1.先复制本身 2.检查是否有下级，如果有则继续复制下级
         BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
         Object object = entityAbstract.copyBasicEntity(basicApplyBatchDetail.getTableId(), null, true);
+        basicApplyBatchDetailService.insertBasicApply(basicApplyBatchDetail);
         BasicApplyBatchDetail newBatchDetail = new BasicApplyBatchDetail();
         if (object != null) {
             BeanUtils.copyProperties(basicApplyBatchDetail, newBatchDetail, BaseConstant.ASSESS_IGNORE_ARRAY);
@@ -963,7 +964,7 @@ public class BasicApplyBatchService {
             newApplyBatchDetail.setModifyType(BasicDataHandleEnum.REFERENCE.getKey());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(newApplyBatchDetail);
             try {
-                basicApplyBatchDetailService.insertBasicApply(newApplyBatchDetail, planDetailsId);
+                basicApplyBatchDetailService.insertBasicApply(newApplyBatchDetail);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }

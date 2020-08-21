@@ -38,8 +38,8 @@ public class SchemeInfoDao {
     public SchemeInfo getSchemeInfo(SchemeInfo schemeInfo) {
         SchemeInfoExample example = new SchemeInfoExample();
         MybatisUtils.convertObj2Example(schemeInfo, example);
-        List<SchemeInfo> schemeInfos = schemeInfoMapper.selectByExample(example);
         example.setOrderByClause("id desc");
+        List<SchemeInfo> schemeInfos = schemeInfoMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(schemeInfos)) return schemeInfos.get(0);
         return null;
     }

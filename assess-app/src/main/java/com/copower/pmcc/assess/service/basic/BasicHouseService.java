@@ -537,7 +537,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                     basicHouse.setNewDegree(newDegree);
                     saveAndUpdate(basicHouse, false);
                 }
-                basicApplyBatchDetailService.insertBasicApply(houseDetail, planDetailsId);//更新basicApply表中的信息
+                basicApplyBatchDetailService.insertBasicApply(houseDetail);//更新basicApply表中的信息
                 return basicHouse.getId();
             }
         }
