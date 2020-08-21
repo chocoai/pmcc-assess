@@ -76,7 +76,7 @@ public class ProjectPlanSurveyService {
         if (CollectionUtils.isEmpty(projectPhases)) return;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
-        //添加他权任务
+        //添加任务
         String projectManager = projectMemberService.getProjectManager(projectId);
         for (ProjectPhase projectPhase : projectPhases) {
             ProjectPlanDetails projectPlanDetail = new ProjectPlanDetails();

@@ -68,7 +68,7 @@ public class ProjectPhaseDao {
 
     public ProjectPhase getProjectPhaseByKey(String key, Integer categoryId) {
         ProjectPhaseExample example = new ProjectPhaseExample();
-        example.createCriteria().andPhaseKeyEqualTo(key).andProjectCategoryIdEqualTo(categoryId);
+        example.createCriteria().andBisEnableEqualTo(true).andPhaseKeyEqualTo(key).andProjectCategoryIdEqualTo(categoryId);
         List<ProjectPhase> projectPhases = projectPhaseMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(projectPhases))
             return projectPhases.get(0);
