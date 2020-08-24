@@ -188,12 +188,14 @@
             </div>
 
             <div class="modal-body">
+                <button type="button" class="btn btn-primary btn-sm" onclick="decorateLocation.selectAll(this);">全选
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="decorateLocation.selectInvert(this);">反选
+                </button>
                 <form id="frmLocation" class="form-horizontal">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="customer_body">
-
-                            </div>
+                            <div class="customer_body"></div>
                         </div>
                     </div>
                 </form>
@@ -202,13 +204,26 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="houseRoomDecorate.prototype.spliceLocation()">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="houseRoomDecorate.prototype.spliceLocation()">
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    var decorateLocation = {};
+    //全选
+    decorateLocation.selectAll = function (_this) {
+        $(_this).closest('.modal-body').find('.customer_body').find(':checkbox').prop('checked', true);
+    }
+    //反选
+    decorateLocation.selectInvert = function (_this) {
+        $(_this).closest('.modal-body').find('.customer_body').find(':checkbox').each(function () {
+            $(this).prop('checked', !$(this).prop('checked'));
+        });
+    }
+</script>
 
 

@@ -54,41 +54,43 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            类型<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="type"
-                                                    class="form-control input-full type">
-                                            </select>
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                类型<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select required="required" name="type"
+                                                        class="form-control input-full type">
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            类别<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="category" class="form-control input-full category">
-                                            </select>
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                类别<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select required="required" name="category"
+                                                        class="form-control input-full category">
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="name" class="form-control input-full" required="required">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="name" class="form-control input-full"
+                                                       required="required">
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -117,68 +119,70 @@
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            设备用途<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="equipmentUse"
-                                                    class="form-control input-full equipmentUse">
-                                            </select>
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                设备用途<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select required="required" name="equipmentUse"
+                                                        class="form-control input-full equipmentUse">
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            维护状况<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select required="required" name="maintenanceStatus"
-                                                    class="form-control input-full maintenanceStatus">
-                                            </select>
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                维护状况<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select required="required" name="maintenanceStatus"
+                                                        class="form-control input-full maintenanceStatus">
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            参数指标
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="parameterIndex" class="form-control input-full">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                参数指标
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="parameterIndex"
+                                                       class="form-control input-full">
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            价格
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="price" class="form-control input-full" >
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                价格
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="price" class="form-control input-full">
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            附件<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input id="positionDiagramFileID" placeholder="上传附件" class="form-control input-full"
-                                                   type="file">
-                                            <div id="_positionDiagramFileID"></div>
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                附件<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input id="positionDiagramFileID" placeholder="上传附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_positionDiagramFileID"></div>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
 
@@ -191,7 +195,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="houseCorollaryEquipment.prototype.saveData()">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="houseCorollaryEquipment.prototype.saveData()">
                     保存
                 </button>
             </div>
@@ -200,22 +205,25 @@
     </div>
 </div>
 
-<div id="divHouseCorollaryEquipmentBoxDecoratePart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divHouseCorollaryEquipmentBoxDecoratePart" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">装修部位</h4>
+                <h4 class="modal-title">所在位置</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
 
             <div class="modal-body">
+                <button type="button" class="btn btn-primary btn-sm" onclick="equipmentDecorateLocation.selectAll(this);">全选
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="equipmentDecorateLocation.selectInvert(this);">反选
+                </button>
                 <form id="frmHouseCorollaryEquipmentLocation" class="form-horizontal">
                     <div class="row">
-                        <div class="col-md-12 customer_body">
-
-                        </div>
+                        <div class="col-md-12 customer_body"></div>
                     </div>
                 </form>
             </div>
@@ -232,3 +240,16 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    var equipmentDecorateLocation = {};
+    //全选
+    equipmentDecorateLocation.selectAll = function (_this) {
+        $(_this).closest('.modal-body').find('.customer_body').find(':checkbox').prop('checked', true);
+    }
+    //反选
+    equipmentDecorateLocation.selectInvert = function (_this) {
+        $(_this).closest('.modal-body').find('.customer_body').find(':checkbox').each(function () {
+            $(this).prop('checked', !$(this).prop('checked'));
+        });
+    }
+</script>
