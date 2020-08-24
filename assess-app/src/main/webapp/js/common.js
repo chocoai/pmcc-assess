@@ -349,7 +349,35 @@ $(function () {
                 });
             }
         },
-
+        //单个select2赋值
+        initSelect2: function(frm,data,name){
+            if (data){
+                if (name){
+                    var value = data[name] ;
+                    if (value){
+                        var select = frm.find("select[name=" + name+"]") ;
+                        select.val(value).trigger('change') ;
+                    }
+                }
+            }
+        } ,
+        //数据字典  select2赋值
+        loadDataDicAssignment:function(key, obj , name ,frm){
+            var value = null ;
+            if (obj) {
+                value = obj[name] ;
+            }
+            var target = frm.find("[name=" + name+"]") ;
+            if (target.size() == 0){
+                target = frm.find("select."+name) ;
+            }
+            this.loadDataDicByKey(key,value,function (html, data) {
+                target.empty().html(html).trigger('change');
+                if (value) {
+                    target.val(value).trigger('change') ;
+                }
+            }) ;
+        } ,
         //根据key获取字典信息
         loadDataDicByKey: function (key, value, callback, initHtml) {
             this.loadNewAsyncDataDicByKey(key, value, callback, true, initHtml);

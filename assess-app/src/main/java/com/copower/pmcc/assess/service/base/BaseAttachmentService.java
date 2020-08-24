@@ -61,6 +61,10 @@ public class BaseAttachmentService {
         return erpRpcAttachmentService.deleteAttachment(id);
     }
 
+    public boolean deleteAttachment(List<Integer> ids) {
+        return erpRpcAttachmentService.deleteAttachmentByIds(ids) > 0;
+    }
+
     public void deleteAttachmentByIdList(String id) {
         if (StringUtils.isEmpty(id)) {
             return;
@@ -69,9 +73,7 @@ public class BaseAttachmentService {
         if (CollectionUtils.isEmpty(integerList)) {
             return;
         }
-        integerList.forEach(integer -> {
-            deleteAttachment(integer);
-        });
+        deleteAttachment(integerList) ;
     }
 
     public int deleteAttachmentByDto(SysAttachmentDto sysAttachmentDto) {

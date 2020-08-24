@@ -358,19 +358,19 @@ public class GenerateMdCostService {
                 return ArithmeticUtils.round(v, 0);
             }
             case MarketCost_developBuildArea: {//成本法开发建筑面积
-                return ArithmeticUtils.round(target.getDevelopBuildAreaTax().toString(), 0);
+                return ArithmeticUtils.round(target.getDevelopBuildAreaTax().toString(), 2);
             }
             case MarketCost_CompleteCostTotalValue: {//成本法完全成本计算值总计 万元
                 return target.getConstructionAssessmentValue();
             }
             case MarketCost_CompleteCostValue: {//成本法完全成本计算值
                 String v = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_CompleteCostTotalValue);
-                return ArithmeticUtils.mul(v, "10000", 0);
+                return ArithmeticUtils.mul(v, "10000", 2);
             }
             case MarketCost_constructionAssessmentPriceCorrecting: {//成本法单价
                 String param1 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_CompleteCostValue);
                 String value = ArithmeticUtils.div(param1, target.getDevelopBuildAreaTax().toString());
-                return ArithmeticUtils.round(value, 0);
+                return ArithmeticUtils.round(value, 2);
             }
             case MarketCost_constructionAssessmentPriceCorrecting2: {
                 String v = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_constructionAssessmentPriceCorrecting);
@@ -710,9 +710,11 @@ public class GenerateMdCostService {
             case MarketCost_ResidueRatio_method: {
                 if (target.getResidueRatioId() != null) {
                     if (toolResidueRatio == null) {
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无");
                         break;
                     }
                     if (toolResidueRatio.getType() == null) {
+                        generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无");
                         break;
                     }
                     switch (toolResidueRatio.getType()) {
@@ -739,9 +741,11 @@ public class GenerateMdCostService {
             }
             case MarketCost_ResidueRatio_formula: {
                 if (toolResidueRatio == null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无");
                     break;
                 }
                 if (toolResidueRatio.getType() == null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无");
                     break;
                 }
                 switch (toolResidueRatio.getType()) {
@@ -759,6 +763,7 @@ public class GenerateMdCostService {
             break;
             case MarketCost_ResidueRatio_value: {
                 if (toolResidueRatio == null) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无");
                     break;
                 }
                 try {
@@ -801,6 +806,7 @@ public class GenerateMdCostService {
                         generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), toolResidueRatio.getResultValue());
                     }
                 } catch (Exception e) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "无");
                     baseService.writeExceptionInfo(e);
                 }
             }
