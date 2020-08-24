@@ -3776,13 +3776,9 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = new DocumentBuilder(doc);
         generateCommonMethod.settingBuildingTable(documentBuilder);
         AsposeUtils.setDefaultTable(documentBuilder);
-
-        handleJudgeBuildResultSurveySheetBase(seat, schemeJudgeObjectList, projectInfo, documentBuilder);
-
-        handleBasicHouseHuxingPriceSheet(schemeJudgeObjectList, documentBuilder);
-
+        buildResultSetTable(projectInfo,schemeJudgeObjectList,documentBuilder);
+        //handleJudgeBuildResultSurveySheetBase(seat, schemeJudgeObjectList, projectInfo, documentBuilder);
         AsposeUtils.saveWord(path, doc);
-
         return path;
     }
 

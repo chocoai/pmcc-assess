@@ -38,16 +38,6 @@ public class ProjectTaskCIPEvent extends ProjectTaskEvent {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
-    private BaseParameterService baseParameterService;
-    @Autowired
-    private BasicApplyBatchService basicApplyBatchService;
-    @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    @Autowired
-    private BasicApplyBatchDao basicApplyBatchDao;
-    @Autowired
-    private PublicBasicService publicBasicService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
@@ -57,5 +47,4 @@ public class ProjectTaskCIPEvent extends ProjectTaskEvent {
             surveyCommonService.updateDeclarePracticalUse(projectPlanDetails);
         }
     }
-
 }

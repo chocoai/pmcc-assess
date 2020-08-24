@@ -28,6 +28,7 @@ public class ProjectSchemeChangeEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processExecution.getProcessInstanceId());
         costsProjectChangeLog.setStatus(ProcessStatusEnum.FINISH.getValue());
         projectChangeLogDao.modifyProjectChangeLog(costsProjectChangeLog);

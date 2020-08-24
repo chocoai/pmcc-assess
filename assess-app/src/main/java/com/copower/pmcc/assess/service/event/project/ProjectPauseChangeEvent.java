@@ -25,6 +25,7 @@ public class ProjectPauseChangeEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         ProjectChangeLog data = simpleChangeService.getDataByProcessInsId(processExecution.getProcessInstanceId());
         data.setStatus(ProcessStatusEnum.FINISH.getValue());
         projectChangeLogDao.modifyProjectChangeLog(data);

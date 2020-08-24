@@ -21,6 +21,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processExecution.getProcessInstanceId());
         basicApplyBatchService.handleCaseData(applyBatch);
     }

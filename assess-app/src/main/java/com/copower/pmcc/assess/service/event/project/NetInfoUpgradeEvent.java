@@ -45,6 +45,7 @@ public class NetInfoUpgradeEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         NetInfoUpgrade data = netInfoUpgradeService.getDataByProcessInsId(processExecution.getProcessInstanceId());
         data.setStatus(ProcessStatusEnum.FINISH.getValue());
         netInfoUpgradeService.editData(data);

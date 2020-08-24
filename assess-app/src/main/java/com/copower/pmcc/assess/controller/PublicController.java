@@ -13,8 +13,11 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.dto.AttachmentVo;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
+import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAreaDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -56,7 +59,7 @@ public class PublicController {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BaseService baseService;
     @Autowired
@@ -338,15 +341,14 @@ public class PublicController {
 
     @RequestMapping(value = "/closeProcess", name = "流程实例关闭")
     @ResponseBody
-    public HttpResult closeProcess(String processInsId) {
+    public HttpResult closeProcess(ApprovalModelDto approvalModelDto) {
         try {
-            bpmRpcActivitiProcessManageService.closeProcess(processInsId);
+            approvalModelDto.setConclusion(TaskHandleStateEnum.CLOSE.getValue());
+            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult("流程关闭异常");
         }
     }
-
-
 }

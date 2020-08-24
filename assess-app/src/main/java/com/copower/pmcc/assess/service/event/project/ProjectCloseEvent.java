@@ -43,6 +43,7 @@ public class ProjectCloseEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         ProjectClose projectClose = projectCloseService.getProjectClose(processExecution.getProcessInstanceId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectClose.getProjectId());
         List<ProjectPlan> projectPlans = projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectInfo.getId()), ProjectStatusEnum.PAUSE.getName());

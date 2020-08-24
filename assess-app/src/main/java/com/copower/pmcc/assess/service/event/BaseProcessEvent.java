@@ -24,8 +24,6 @@ public class BaseProcessEvent implements ProcessEventExecutor {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private CustomDdlTableMapper customDdlTableMapper;
-    @Autowired
-    private BpmRpcProcessExecutionService bpmRpcProcessExecutionService;
 
     @Override
     public void processStartExecute(String s) {
@@ -41,14 +39,6 @@ public class BaseProcessEvent implements ProcessEventExecutor {
             customDdlTableMapper.customTableSelect(sql);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-        }
-    }
-
-    public void processFinishExecuteExtend(ProcessExecution processExecution, Date executeDate, String beans) {
-        beans = FormatUtils.toLowerCaseFirstChar(beans);
-        if (processExecution.getProcessStatus().equals(ProcessStatusEnum.FINISH)) {
-            BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processExecution.getProcessInstanceId());
-            bpmRpcProcessExecutionService.addBoxProcessExecute(boxRuDto.getTableName(), boxRuDto.getTableId(), processExecution.getProcessInstanceId(), executeDate, beans);
         }
     }
 }

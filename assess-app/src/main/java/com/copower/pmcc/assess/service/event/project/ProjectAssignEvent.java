@@ -26,20 +26,15 @@ public class ProjectAssignEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         ProjectInfo projectInfo=new ProjectInfo();
         projectInfo.setAssignProcessInsId(processExecution.getProcessInstanceId());
         List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
-        if(CollectionUtils.isNotEmpty(projectInfoList))
-        {
+        if(CollectionUtils.isNotEmpty(projectInfoList)) {
             ProjectInfo projectInfo1 = projectInfoList.get(0);
             projectInfo1.setAssignStatus(processExecution.getProcessStatus().getValue());
             projectInfo1.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
             projectInfoService.updateProjectInfo(projectInfo1);
-//            try {
-//                projectInfoService.initProjectInfo(projectInfo1,true);
-//            } catch (BusinessException e) {
-//                e.printStackTrace();
-//            }
         }
     }
 }

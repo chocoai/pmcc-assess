@@ -31,6 +31,11 @@
                             <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
+                            <c:if test="${not empty processInsId and processInsId ne '0'}">
+                                <button type="button" class="btn btn-warning" style="margin-left: 10px;" onclick="projectTakeNumber.closeProcess()">
+                                    撤销
+                                </button>
+                            </c:if>
                             <button type="button" id="commit_btn" class="btn btn-primary" style="margin-left: 10px;" onclick="masterObj.commit();">
                                 提交
                             </button>
@@ -59,9 +64,6 @@
     var masterObj = {
 
     };
-
-
-
     /**
      * 提交数据
      * @returns {*}

@@ -44,7 +44,7 @@ public class ProjectMemberChangeProcessEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
-
+        if(!processExecution.getProcessStatus().isFinish()) return;
         if (StringUtils.equals(processExecution.getProcessStatus().getValue(), ProcessStatusEnum.FINISH.getValue())) {
             ProjectChangeLog costsProjectChangeLog = projectMemberChangeService.getProjectChangeLog(processExecution.getProcessInstanceId());
             String newRecord = costsProjectChangeLog.getNewRecord();

@@ -47,6 +47,7 @@ public class ProjectInfoChangeEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         ProjectChangeLog costsProjectChangeLog = stateChangeService.getDataByProcessInsId(processExecution.getProcessInstanceId());
         ProjectInfoChangeVo projectInfoChangeVo = JSON.parseObject(costsProjectChangeLog.getNewRecord(), ProjectInfoChangeVo.class);
         costsProjectChangeLog.setStatus(ProcessStatusEnum.FINISH.getValue());

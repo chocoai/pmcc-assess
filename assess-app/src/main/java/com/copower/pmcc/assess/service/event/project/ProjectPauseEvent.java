@@ -46,7 +46,6 @@ public class ProjectPauseEvent extends BaseProcessEvent {
         ProjectSuspend projectSuspend = projectSuspendDao.getProjectSuspendProcessInsId(processExecution.getProcessInstanceId());
         ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(projectSuspend.getProjectId());
         if (processExecution.getProcessStatus().equals(ProcessStatusEnum.FINISH)) {
-          //  projectSuspend.setSuspendUserAccount(processControllerComponent.getThisUser());
             projectSuspend.setSupendDate(new Date());
             projectSuspendDao.editSuspend(projectSuspend);
             projectInfo.setProjectStatus(ProjectStatusEnum.PAUSE.getKey());

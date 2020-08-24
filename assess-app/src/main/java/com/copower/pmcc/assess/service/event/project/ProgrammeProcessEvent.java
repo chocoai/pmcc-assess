@@ -33,15 +33,11 @@ public class ProgrammeProcessEvent extends BaseProcessEvent {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
 
-    @Override
-    public void processFinishExecuteExtend(ProcessExecution processExecution, Date executeDate, String beans) {
-        super.processFinishExecuteExtend(processExecution, executeDate, beans);
-    }
-
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processExecution.getProcessInstanceId());
         if (projectPlanDetails == null) return;
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());

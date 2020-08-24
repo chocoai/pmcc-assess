@@ -25,8 +25,8 @@ public class ProjectPalnDetailsEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws  Exception{
         super.processFinishExecute(processExecution);
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao
-                .getProjectPlanDetailsItemByProcessInsId(processExecution.getProcessInstanceId());
+        if(!processExecution.getProcessStatus().isFinish()) return;
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemByProcessInsId(processExecution.getProcessInstanceId());
         projectPlanDetails.setStatus(processExecution.getProcessStatus().getValue());
         projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
     }

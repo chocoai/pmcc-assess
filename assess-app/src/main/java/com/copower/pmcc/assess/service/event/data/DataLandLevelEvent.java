@@ -30,6 +30,7 @@ public class DataLandLevelEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         List<DataLandLevelVo> landLevelVos = dataLandLevelService.getByProcessInsId(processExecution.getProcessInstanceId());
         if (CollectionUtils.isNotEmpty(landLevelVos)) {
             for (DataLandLevelVo landLevelVo : landLevelVos) {

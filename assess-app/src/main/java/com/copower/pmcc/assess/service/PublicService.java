@@ -15,11 +15,14 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.bpm.api.dto.BoxApprovalLogDto;
+import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
@@ -83,7 +86,8 @@ public class PublicService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-    private Object fields;
+    @Autowired
+    private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
 
     /**
      * 获取当前公司

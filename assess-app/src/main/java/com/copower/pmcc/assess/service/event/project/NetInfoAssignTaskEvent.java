@@ -46,6 +46,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         NetInfoAssignTask data = netInfoAssignTaskService.getDataByProcessInsId(processExecution.getProcessInstanceId());
         data.setStatus(ProcessStatusEnum.FINISH.getValue());
         netInfoAssignTaskService.editData(data);

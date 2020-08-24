@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.event.project;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareApply;
 import com.copower.pmcc.assess.service.project.declare.DeclareApplyService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
+import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,13 +19,11 @@ public class DeclareRealtyEstateCertEvent extends ProjectTaskEvent {
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
+        if(!processExecution.getProcessStatus().isFinish()) return;
         DeclareApply declareApply = declareApplyService.getDeclareApplyByProcessInsId(processExecution.getProcessInstanceId());
         if (declareApply != null) {
             declareApplyService.writeToDeclareRecord(declareApply);
         }
         super.processFinishExecute(processExecution);//数据写入record记录表中后再执行进入下阶段
-        if (StringUtils.isNotEmpty(processExecution.getProcessInstanceId())){
-//            chksAssessmentProjectPerformanceService.checkTaskChksActivity(processExecution.getProcessInstanceId());
-        }
     }
 }

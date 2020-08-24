@@ -117,6 +117,33 @@
         });
     };
 
+    //撤销
+    projectTakeNumber.closeProcess = function () {
+        AlertConfirm("是否确认撤销", "流程撤销后将不可恢复", function () {
+            var approvalModelDto = formSerializeArray($("#process_variable_form"));
+            Loading.progressShow("正在提交数据...");
+            $.ajax({
+                url: "${pageContext.request.contextPath}/public/closeProcess",
+                type: "post",
+                data: approvalModelDto,
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        AlertSuccess("成功", "流程撤销成功",function(){
+                            window.close();
+                        });
+                    }
+                    else {
+                        AlertError("提交数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        })
+    };
+
 
     $(function () {
         if ("${projectTakeNumber}") {

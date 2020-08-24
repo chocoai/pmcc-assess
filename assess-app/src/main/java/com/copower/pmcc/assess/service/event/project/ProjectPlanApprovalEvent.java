@@ -41,6 +41,7 @@ public class ProjectPlanApprovalEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution)throws  Exception {
         super.processFinishExecute(processExecution);
+        if(!processExecution.getProcessStatus().isFinish()) return;
         ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
         List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlan.getId(), ProcessStatusEnum.NOPROCESS.getValue());
         if(CollectionUtils.isEmpty(projectPlanDetails)){
