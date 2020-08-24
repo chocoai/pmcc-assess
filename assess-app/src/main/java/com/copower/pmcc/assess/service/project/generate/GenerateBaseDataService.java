@@ -3554,10 +3554,14 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 List<SchemeJudgeFunction> functions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
-                if (CollectionUtils.isEmpty(functions)) continue;
+                if (CollectionUtils.isEmpty(functions)) {
+                    continue;
+                }
                 for (SchemeJudgeFunction function : functions) {
                     DataMethodFormula formula = dataMethodFormulaService.getDataMethodFormulaByType(function.getMethodType());
-                    if (formula == null) continue;
+                    if (formula == null) {
+                        continue;
+                    }
                     String text = "参数".equalsIgnoreCase(type) ? formula.getRelevantParameter() : formula.getFormula();
                     if (map.containsKey(schemeJudgeObject.getNumber())) {
                         String s = map.get(schemeJudgeObject.getNumber());

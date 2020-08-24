@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
@@ -68,6 +69,8 @@ public class GenerateHouseEntityService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicUnitElevatorService basicUnitElevatorService;
+    @Autowired
+    private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
 
 
     /**
@@ -152,6 +155,7 @@ public class GenerateHouseEntityService {
 
     public String getBuildingScaleExtend(BasicApply basicApply) {
         if (basicApply == null) return "";
+        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
         StringBuilder builder = new StringBuilder();
         if (basicBuilding.getBuildingArea() != null)
@@ -160,7 +164,6 @@ public class GenerateHouseEntityService {
             builder.append(String.format("套内面积%s平方米，", basicBuilding.getInJacketArea()));
         if (StringUtils.isNotBlank(basicBuilding.getUseArea()))
             builder.append(String.format("使用面积%s平方米，", basicBuilding.getUseArea()));
-
         List<BasicBuildingVo> buildingDiffVoList = basicBuilding.getBasicBuildingDifferences();
         if (StringUtils.isNotBlank(basicBuilding.getBuildingHeight()))
             builder.append(String.format("建筑高度%s米，", basicBuilding.getBuildingHeight()));
@@ -175,6 +178,28 @@ public class GenerateHouseEntityService {
                 if (StringUtils.isNotBlank(vo.getFloorHeight()))
                     builder.append(String.format("层高%s米", vo.getFloorHeight()));
                 builder.append(";");
+            }
+            if (basicApply.getType().equals(BasicApplyTypeEnum.INDUSTRY.getId())) {
+                List<BasicHouseCorollaryEquipment> corollaryEquipmentList = generateBaseExamineService.getBasicHouseCorollaryEquipmentList();
+                if (CollectionUtils.isNotEmpty(corollaryEquipmentList)) {
+                    for (BasicHouseCorollaryEquipment equipment : corollaryEquipmentList) {
+                        if (StringUtils.isNotBlank(equipment.getParameterIndex())) {
+                            builder.append(equipment.getParameterIndex());
+                        }
+                        if (equipment.getType() != null) {
+                            builder.append(baseDataDicService.getNameById(equipment.getType()));
+                        } else {
+                            builder.append(baseDataDicService.getNameById(equipment.getCategory()));
+                        }
+                        if (StringUtils.isNotBlank(equipment.getName())) {
+                            builder.append(equipment.getName());
+                        }
+                        if (StringUtils.isNotBlank(equipment.getPrice())) {
+                            builder.append("价格").append(equipment.getPrice());
+                            builder.append(";");
+                        }
+                    }
+                }
             }
         } else {
             if (basicBuilding.getFirstFloor() != null)
@@ -636,11 +661,17 @@ public class GenerateHouseEntityService {
             int size = equipmentList.size();
             for (int j = 0; j < size; j++) {
                 linkedHashSet.add(equipmentList.get(j).getName());
+                if (StringUtils.isNotBlank(equipmentList.get(j).getParameterIndex())) {
+                    linkedHashSet.add(equipmentList.get(j).getParameterIndex());
+                }
                 linkedHashSet.add(baseDataDicService.getNameById(equipmentList.get(j).getEquipmentUse()));
                 linkedHashSet.add(baseDataDicService.getNameById(equipmentList.get(j).getCategory()));
+                if (StringUtils.isNotBlank(equipmentList.get(j).getPrice())) {
+                    linkedHashSet.add(baseDataDicService.getNameById(equipmentList.get(j).getPrice()));
+                }
             }
             if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                hashSet.add(String.format("%s%s%s", schemeJudgeObject.getNumber(), "号", StringUtils.join(linkedHashSet, "、")));
+                hashSet.add(String.format("%s%s%s", schemeJudgeObject.getNumber(), "号估价对象", StringUtils.join(linkedHashSet, "，")));
                 linkedHashSet.clear();
             }
         }

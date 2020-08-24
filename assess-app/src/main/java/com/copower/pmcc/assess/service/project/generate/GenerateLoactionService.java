@@ -491,6 +491,9 @@ public class GenerateLoactionService {
             builder.append(StringUtils.join(stringSet, ""));
         }
         String value = builder.toString();
+        if (StringUtils.isNotBlank(builder.toString())) {
+            value = error ;
+        }
         return value;
     }
 
