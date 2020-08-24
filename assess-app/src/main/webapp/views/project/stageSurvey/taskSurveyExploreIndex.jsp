@@ -1199,6 +1199,8 @@
         var applyBatchDetailIds = '';
         $.each(nodes, function (i, item) {
             applyBatchDetailIds += item.id + ',';
+            item.declareRecordName = declareName;
+            zTreeObj.updateNode(item);
         });
         var group = $(_this).closest(".form-group");
         group.find("[data-name='declareRecordName']").text(declareName);
@@ -1219,13 +1221,6 @@
             success: function (result) {
                 if (result.ret) {
                     notifySuccess('提示', '设置成功');
-                    if (${!empty applyBatch}) {
-                        if (${!empty applyBatch.referenceApplyBatchId}) {
-                            batchTreeTool.ztreeInit(${applyBatch.referenceApplyBatchId});
-                        } else {
-                            batchTreeTool.ztreeInit(${applyBatch.id});
-                        }
-                    }
                 } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }

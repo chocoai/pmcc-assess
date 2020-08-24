@@ -215,7 +215,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <button type="button" class="btn btn-primary btn-sm" onclick="equipmentDecorateLocation.selectAll(this);">全选
                 </button>
@@ -236,7 +235,6 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>

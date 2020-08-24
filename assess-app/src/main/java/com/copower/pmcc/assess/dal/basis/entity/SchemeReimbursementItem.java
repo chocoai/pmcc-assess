@@ -16,6 +16,8 @@ public class SchemeReimbursementItem {
 
     private Integer judgeObjectId;
 
+    private Integer standardJudgeId;
+
     private Integer planDetailsId;
 
     private BigDecimal notSetUpUnitPrice;
@@ -33,6 +35,10 @@ public class SchemeReimbursementItem {
     private BigDecimal mortgageUnitPrice;
 
     private BigDecimal mortgageTotalPrice;
+
+    private Integer sorting;
+
+    private Boolean bisEnable;
 
     private String creator;
 
@@ -86,6 +92,14 @@ public class SchemeReimbursementItem {
 
     public void setJudgeObjectId(Integer judgeObjectId) {
         this.judgeObjectId = judgeObjectId;
+    }
+
+    public Integer getStandardJudgeId() {
+        return standardJudgeId;
+    }
+
+    public void setStandardJudgeId(Integer standardJudgeId) {
+        this.standardJudgeId = standardJudgeId;
     }
 
     public Integer getPlanDetailsId() {
@@ -158,6 +172,22 @@ public class SchemeReimbursementItem {
 
     public void setMortgageTotalPrice(BigDecimal mortgageTotalPrice) {
         this.mortgageTotalPrice = mortgageTotalPrice;
+    }
+
+    public Integer getSorting() {
+        return sorting;
+    }
+
+    public void setSorting(Integer sorting) {
+        this.sorting = sorting;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public String getCreator() {

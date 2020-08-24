@@ -16,7 +16,9 @@ import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightDeclareSer
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -255,17 +257,6 @@ public class SchemeReimbursementService {
         return integerList;
     }
 
-    private String getNameBySchemeJudgeObjectList(List<SchemeJudgeObject> judgeObjectList) {
-        List<Integer> integerList = new ArrayList<>(judgeObjectList.size());
-        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-            for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
-                integerList.addAll(splitIntegerListJudgeNumber(schemeJudgeObject.getNumber()));
-            }
-        }
-        Collections.sort(integerList);
-        return String.join("", StringUtils.join(integerList, ","), "号");
-    }
-
     public void repeatInit(Integer id) {
         SchemeReimbursement schemeReimbursement = schemeReimbursementDao.getSchemeReimbursement(id);
         SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeReimbursement.getAreaId());
@@ -317,6 +308,30 @@ public class SchemeReimbursementService {
                 saveAndUpdateSchemeReimbursementItem(reimbursementItem);
             }
         }
+    }
+
+    /**
+     * 根据方案合并
+     *
+     * @param reimbursementId
+     */
+    public void mergeByProgramme(Integer areaGroupId, Integer reimbursementId) {
+        //1.找出方案中合并的估价对象 2.按合并的规则将现有数据进行合并
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaGroupId);
+        judgeObjectList = LangUtils.filter(judgeObjectList, o -> o.getBisMerge() == Boolean.TRUE);
+        if(CollectionUtils.isEmpty(judgeObjectList)) return;
+        for (SchemeJudgeObject judgeObject : judgeObjectList) {
+
+        }
+    }
+
+    /**
+     * 根据他权合并
+     *
+     * @param reimbursementId
+     */
+    public void mergeByOtherRight(Integer areaGroupId,Integer reimbursementId) {
+
     }
 
 

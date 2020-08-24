@@ -476,6 +476,66 @@ public class SchemeReimbursementItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andStandardJudgeIdIsNull() {
+            addCriterion("standard_judge_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdIsNotNull() {
+            addCriterion("standard_judge_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdEqualTo(Integer value) {
+            addCriterion("standard_judge_id =", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdNotEqualTo(Integer value) {
+            addCriterion("standard_judge_id <>", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdGreaterThan(Integer value) {
+            addCriterion("standard_judge_id >", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("standard_judge_id >=", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdLessThan(Integer value) {
+            addCriterion("standard_judge_id <", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("standard_judge_id <=", value, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdIn(List<Integer> values) {
+            addCriterion("standard_judge_id in", values, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdNotIn(List<Integer> values) {
+            addCriterion("standard_judge_id not in", values, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdBetween(Integer value1, Integer value2) {
+            addCriterion("standard_judge_id between", value1, value2, "standardJudgeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardJudgeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("standard_judge_id not between", value1, value2, "standardJudgeId");
+            return (Criteria) this;
+        }
+
         public Criteria andPlanDetailsIdIsNull() {
             addCriterion("plan_details_id is null");
             return (Criteria) this;
@@ -1013,6 +1073,126 @@ public class SchemeReimbursementItemExample {
 
         public Criteria andMortgageTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("mortgage_total_price not between", value1, value2, "mortgageTotalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNull() {
+            addCriterion("sorting is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIsNotNull() {
+            addCriterion("sorting is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingEqualTo(Integer value) {
+            addCriterion("sorting =", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotEqualTo(Integer value) {
+            addCriterion("sorting <>", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThan(Integer value) {
+            addCriterion("sorting >", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sorting >=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThan(Integer value) {
+            addCriterion("sorting <", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingLessThanOrEqualTo(Integer value) {
+            addCriterion("sorting <=", value, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingIn(List<Integer> values) {
+            addCriterion("sorting in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotIn(List<Integer> values) {
+            addCriterion("sorting not in", values, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingBetween(Integer value1, Integer value2) {
+            addCriterion("sorting between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
+            addCriterion("sorting not between", value1, value2, "sorting");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNull() {
+            addCriterion("bis_enable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNotNull() {
+            addCriterion("bis_enable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableEqualTo(Boolean value) {
+            addCriterion("bis_enable =", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotEqualTo(Boolean value) {
+            addCriterion("bis_enable <>", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThan(Boolean value) {
+            addCriterion("bis_enable >", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable >=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThan(Boolean value) {
+            addCriterion("bis_enable <", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable <=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIn(List<Boolean> values) {
+            addCriterion("bis_enable in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotIn(List<Boolean> values) {
+            addCriterion("bis_enable not in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable not between", value1, value2, "bisEnable");
             return (Criteria) this;
         }
 

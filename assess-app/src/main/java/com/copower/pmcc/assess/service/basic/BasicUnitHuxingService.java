@@ -139,7 +139,7 @@ public class BasicUnitHuxingService {
     public boolean deleteBasicUnitHuxing(Integer huxingId) throws Exception {
         //如果户型已被引用，则不允许删除
         long count = basicHouseDao.getCountByHuxingId(huxingId);
-        if(count>0)
+        if (count > 0)
             throw new BusinessException("已被引用，不允许删除");
         return basicUnitHuxingDao.deleteBasicUnitHuxing(huxingId);
     }
@@ -203,9 +203,9 @@ public class BasicUnitHuxingService {
             vo.setFileViewName(builder.toString());
         }
         if (NumberUtils.isNumber(basicUnitHuxing.getOrientation())) {
-            vo.setOrientationName(String.format("%s%s", basicUnitHuxing.getReference(), baseDataDicService.getNameById(basicUnitHuxing.getOrientation())));
+            vo.setOrientationName(String.format("%s%s", StringUtils.defaultString(basicUnitHuxing.getReference()), StringUtils.defaultString(baseDataDicService.getNameById(basicUnitHuxing.getOrientation()))));
         } else {
-            vo.setOrientationName(String.format("%s%s", basicUnitHuxing.getReference(), basicUnitHuxing.getOrientation()));
+            vo.setOrientationName(String.format("%s%s", StringUtils.defaultString(basicUnitHuxing.getReference()), StringUtils.defaultString(basicUnitHuxing.getOrientation())));
         }
         vo.setSpatialDistributionName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getSpatialDistribution()) ? Integer.parseInt(basicUnitHuxing.getSpatialDistribution()) : null));
         vo.setCreatorName(publicService.getUserNameByAccount(basicUnitHuxing.getCreator()));
