@@ -169,6 +169,7 @@ public class SchemeJudgeObjectDao {
         return mapper.selectByExample(example);
     }
 
+
     public List<SchemeJudgeObject> getMergeListByAreaId(Integer areaGroupId) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andAreaGroupIdEqualTo(areaGroupId).andBisMergeEqualTo(true);

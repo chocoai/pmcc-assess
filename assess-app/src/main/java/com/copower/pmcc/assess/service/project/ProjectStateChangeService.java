@@ -92,7 +92,6 @@ public class ProjectStateChangeService extends BaseService {
         if (CollectionUtils.isNotEmpty(changeLogs)) {
             return changeLogs;
         }
-
         return null;
     }
 

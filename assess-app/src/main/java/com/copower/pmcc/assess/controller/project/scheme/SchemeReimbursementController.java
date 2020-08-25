@@ -48,4 +48,28 @@ public class SchemeReimbursementController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/groupByProgramme", name = "根据方案分组", method = RequestMethod.POST)
+    public HttpResult groupByProgramme(Integer areaGroupId, Integer reimbursementId) {
+        try {
+            schemeReimbursementService.groupByProgramme(areaGroupId,reimbursementId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("根据方案分组异常", e);
+            return HttpResult.newErrorResult("根据方案分组异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/groupByOtherRight", name = "根据他权分组", method = RequestMethod.POST)
+    public HttpResult groupByOtherRight(Integer areaGroupId, Integer reimbursementId) {
+        try {
+            schemeReimbursementService.groupByOtherRight(areaGroupId,reimbursementId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error("根据他权分组异常", e);
+            return HttpResult.newErrorResult("根据他权分组异常");
+        }
+    }
+
 }

@@ -476,6 +476,76 @@ public class SchemeReimbursementItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andJudgeObjectNumberIsNull() {
+            addCriterion("judge_object_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberIsNotNull() {
+            addCriterion("judge_object_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberEqualTo(String value) {
+            addCriterion("judge_object_number =", value, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberNotEqualTo(String value) {
+            addCriterion("judge_object_number <>", value, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberGreaterThan(String value) {
+            addCriterion("judge_object_number >", value, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("judge_object_number >=", value, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberLessThan(String value) {
+            addCriterion("judge_object_number <", value, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberLessThanOrEqualTo(String value) {
+            addCriterion("judge_object_number <=", value, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberLike(String value) {
+            addCriterion("judge_object_number like", value, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberNotLike(String value) {
+            addCriterion("judge_object_number not like", value, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberIn(List<String> values) {
+            addCriterion("judge_object_number in", values, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberNotIn(List<String> values) {
+            addCriterion("judge_object_number not in", values, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberBetween(String value1, String value2) {
+            addCriterion("judge_object_number between", value1, value2, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeObjectNumberNotBetween(String value1, String value2) {
+            addCriterion("judge_object_number not between", value1, value2, "judgeObjectNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andStandardJudgeIdIsNull() {
             addCriterion("standard_judge_id is null");
             return (Criteria) this;

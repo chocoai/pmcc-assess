@@ -16,6 +16,8 @@ public class SchemeReimbursementItem {
 
     private Integer judgeObjectId;
 
+    private String judgeObjectNumber;
+
     private Integer standardJudgeId;
 
     private Integer planDetailsId;
@@ -92,6 +94,14 @@ public class SchemeReimbursementItem {
 
     public void setJudgeObjectId(Integer judgeObjectId) {
         this.judgeObjectId = judgeObjectId;
+    }
+
+    public String getJudgeObjectNumber() {
+        return judgeObjectNumber;
+    }
+
+    public void setJudgeObjectNumber(String judgeObjectNumber) {
+        this.judgeObjectNumber = judgeObjectNumber == null ? null : judgeObjectNumber.trim();
     }
 
     public Integer getStandardJudgeId() {

@@ -23,8 +23,14 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${areaGroup.areaName}
-                                        <button onclick="repeatSchemeReimbursementInit(this);"
-                                                class="btn btn-success btn-sm" type="button">重新初始化
+                                        <button onclick="repeatSchemeReimbursementInit();"
+                                                class="btn btn-primary btn-sm" type="button">重新初始化
+                                        </button>
+                                        <button onclick="groupByProgramme();"
+                                                class="btn btn-primary btn-sm" type="button">根据方案分组
+                                        </button>
+                                        <button onclick="groupByOtherRight();"
+                                                class="btn btn-primary btn-sm" type="button">根据他权分组
                                         </button>
                                     </div>
                                 </div>
@@ -150,8 +156,7 @@
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
-        }
-        else {
+        } else {
             submitToServer(JSON.stringify(formData));
         }
     }
@@ -186,9 +191,71 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    getItemHtml() ;
+                    getItemHtml();
                     notifySuccess("提示", "重新初始化成功!");
-                }else {
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
+    }
+
+    //根据方案分组
+    function groupByProgramme() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeReimbursement/groupByProgramme",
+            data: {
+                reimbursementId: "${master.id}",
+                areaGroupId:'${areaGroup.id}'
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    getItemHtml();
+                    notifySuccess("提示", "操作成功!");
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
+    }
+
+    //根据他权分组
+    function groupByOtherRight() {
+        Loading.progressShow();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/schemeReimbursement/groupByOtherRight",
+            data: {
+                reimbursementId: "${master.id}",
+                areaGroupId:'${areaGroup.id}'
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    getItemHtml();
+                    notifySuccess("提示", "操作成功!");
+                } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
@@ -204,9 +271,9 @@
     }
 
     function getItemHtml() {
-        if (! "${master.id}"){
-            AlertError("提示","法定优先受偿款没有初始化,进入页面后点击初始化按钮！");
-            return false ;
+        if (!"${master.id}") {
+            AlertError("提示", "法定优先受偿款没有初始化,进入页面后点击初始化按钮！");
+            return false;
         }
         Loading.progressShow();
         $.ajax({

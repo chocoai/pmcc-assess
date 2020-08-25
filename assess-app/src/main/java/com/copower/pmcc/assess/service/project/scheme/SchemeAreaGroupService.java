@@ -440,7 +440,7 @@ public class SchemeAreaGroupService {
             List<SchemeJudgeObject> judgeObjectListAll = Lists.newArrayList();
             for (SchemeJudgeObject judgeObject : judgeObjectList) {
                 if (judgeObject.getBisMerge() == Boolean.TRUE) {
-                    judgeObjectListAll.addAll(schemeJudgeObjectService.getChildrenJudgeObject(judgeObject.getId()));
+                    judgeObjectListAll.addAll(schemeJudgeObjectService.getListByPid(judgeObject.getId()));
                 }
                 judgeObjectListAll.add(judgeObject);
             }

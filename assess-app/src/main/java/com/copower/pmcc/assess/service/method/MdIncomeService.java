@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.method.MethodDataTypeEnum;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeFormTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.*;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -2118,7 +2119,9 @@ public class MdIncomeService {
                 if (CollectionUtils.isNotEmpty(sourceLeaseList)) {
                     for (MdIncomeLease sourceLease : sourceLeaseList) {
                         MdIncomeLease targetLease = new MdIncomeLease();
-                        BeanUtils.copyProperties(sourceLease, targetLease, "id");
+                        List<String> ignoreList = BaseConstant.ASSESS_IGNORE_LIST;
+                        ignoreList.add("mcId");
+                        BeanUtils.copyProperties(sourceLease, targetLease, ignoreList.toArray(new String[ignoreList.size()]));
                         targetLease.setIncomeId(targetIncome.getId());
                         targetLease.setSectionId(targetIncomeDateSection.getId());
                         targetLease.setCreator(commonService.thisUserAccount());

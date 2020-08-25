@@ -142,6 +142,10 @@ public class SurveyAssetRightDeclareService {
         return surveyAssetRightDeclareDao.getSurveyAssetRightDeclareByIds(ids);
     }
 
+    public List<SurveyAssetRightDeclare> getRightDeclareListByDeclareIds(List<Integer> declareIds) {
+        return surveyAssetRightDeclareDao.getRightDeclareListByDeclareIds(declareIds);
+    }
+
     public SurveyAssetRightDeclare getSurveyAssetRightDeclareById(Integer id) {
         return surveyAssetRightDeclareDao.getSurveyAssetRightDeclareById(id);
     }

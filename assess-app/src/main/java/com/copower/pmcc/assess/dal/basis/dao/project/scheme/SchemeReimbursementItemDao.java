@@ -34,54 +34,55 @@ public class SchemeReimbursementItemDao {
         SchemeReimbursementItemExample example = new SchemeReimbursementItemExample();
         SchemeReimbursementItemExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (schemeReimbursementItem.getId() != null){
+        if (schemeReimbursementItem.getId() != null) {
             criteria.andIdEqualTo(schemeReimbursementItem.getId());
         }
-        if (schemeReimbursementItem.getJudgeObjectId() != null){
+        if (schemeReimbursementItem.getJudgeObjectId() != null) {
             criteria.andJudgeObjectIdEqualTo(schemeReimbursementItem.getJudgeObjectId());
         }
-        if (schemeReimbursementItem.getPlanDetailsId() != null){
+        if (schemeReimbursementItem.getPlanDetailsId() != null) {
             criteria.andPlanDetailsIdEqualTo(schemeReimbursementItem.getPlanDetailsId());
         }
-        if (schemeReimbursementItem.getMasterId() != null){
+        if (schemeReimbursementItem.getMasterId() != null) {
             criteria.andMasterIdEqualTo(schemeReimbursementItem.getMasterId());
         }
-        if (schemeReimbursementItem.getProjectId() != null){
+        if (schemeReimbursementItem.getProjectId() != null) {
             criteria.andProjectIdEqualTo(schemeReimbursementItem.getProjectId());
         }
-        if (schemeReimbursementItem.getNotSetUpUnitPrice() != null){
+        if (schemeReimbursementItem.getNotSetUpUnitPrice() != null) {
             criteria.andNotSetUpUnitPriceEqualTo(schemeReimbursementItem.getNotSetUpUnitPrice());
         }
-        if (schemeReimbursementItem.getNotSetUpTotalPrice() != null){
+        if (schemeReimbursementItem.getNotSetUpTotalPrice() != null) {
             criteria.andNotSetUpTotalPriceEqualTo(schemeReimbursementItem.getNotSetUpTotalPrice());
         }
-        if (schemeReimbursementItem.getKnowTotalPrice() != null){
+        if (schemeReimbursementItem.getKnowTotalPrice() != null) {
             criteria.andKnowTotalPriceEqualTo(schemeReimbursementItem.getKnowTotalPrice());
         }
-        if (schemeReimbursementItem.getMortgagedTotalPrice() != null){
+        if (schemeReimbursementItem.getMortgagedTotalPrice() != null) {
             criteria.andMortgagedTotalPriceEqualTo(schemeReimbursementItem.getMortgagedTotalPrice());
         }
-        if (schemeReimbursementItem.getMortgageUnitPrice() != null){
+        if (schemeReimbursementItem.getMortgageUnitPrice() != null) {
             criteria.andMortgageUnitPriceEqualTo(schemeReimbursementItem.getMortgageUnitPrice());
         }
-        if (schemeReimbursementItem.getMortgageTotalPrice() != null){
+        if (schemeReimbursementItem.getMortgageTotalPrice() != null) {
             criteria.andMortgageTotalPriceEqualTo(schemeReimbursementItem.getMortgageTotalPrice());
         }
-        if (schemeReimbursementItem.getOwedTotalPrice() != null){
+        if (schemeReimbursementItem.getOwedTotalPrice() != null) {
             criteria.andOwedTotalPriceEqualTo(schemeReimbursementItem.getOwedTotalPrice());
         }
-        if (schemeReimbursementItem.getOtherTotalPrice() != null){
+        if (schemeReimbursementItem.getOtherTotalPrice() != null) {
             criteria.andOtherTotalPriceEqualTo(schemeReimbursementItem.getOtherTotalPrice());
         }
-        if (StringUtils.isNotBlank(schemeReimbursementItem.getName())){
+        if (StringUtils.isNotBlank(schemeReimbursementItem.getName())) {
             criteria.andNameEqualTo(schemeReimbursementItem.getName());
         }
-        if (StringUtils.isNotBlank(schemeReimbursementItem.getCreator())){
+        if (StringUtils.isNotBlank(schemeReimbursementItem.getCreator())) {
             criteria.andCreatorEqualTo(schemeReimbursementItem.getCreator());
         }
-        if (schemeReimbursementItem.getInventoryRightRecordId() != null){
+        if (schemeReimbursementItem.getInventoryRightRecordId() != null) {
             criteria.andInventoryRightRecordIdEqualTo(schemeReimbursementItem.getInventoryRightRecordId());
         }
+        example.setOrderByClause("sorting");
         return schemeReimbursementItemMapper.selectByExample(example);
     }
 
@@ -107,5 +108,12 @@ public class SchemeReimbursementItemDao {
 
     public boolean deleteObject(Integer id) {
         return schemeReimbursementItemMapper.deleteByPrimaryKey(id) == 1;
+    }
+
+    public void deleteItemsByMasterId(Integer reimbursementId) {
+        if (reimbursementId == null) return;
+        SchemeReimbursementItemExample example = new SchemeReimbursementItemExample();
+        example.createCriteria().andMasterIdEqualTo(reimbursementId);
+        schemeReimbursementItemMapper.deleteByExample(example);
     }
 }

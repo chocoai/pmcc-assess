@@ -253,8 +253,20 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getListByIds(judgeObjectIds);
     }
 
-    public List<SchemeJudgeObject> getChildrenJudgeObject(Integer id) {
-        return schemeJudgeObjectDao.getListByPid(id);
+    /**
+     * 取得估计对象与权证一一对应的数据
+     *
+     * @param declareId
+     * @return
+     */
+    public SchemeJudgeObject getJudgeObjectByDeclareId(Integer declareId) {
+        SchemeJudgeObject where = new SchemeJudgeObject();
+        where.setDeclareRecordId(declareId);
+        where.setBisMerge(false);
+        where.setBisSplit(false);
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getJudgeObjectList(where);
+        if (CollectionUtils.isEmpty(judgeObjects)) return null;
+        return judgeObjects.get(0);
     }
 
     /**
@@ -384,10 +396,10 @@ public class SchemeJudgeObjectService {
     public SchemeJudgeObjectVo getSchemeJudgeObjectVo(SchemeJudgeObject schemeJudgeObject) {
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         BeanUtils.copyProperties(schemeJudgeObject, schemeJudgeObjectVo);
-        if(schemeJudgeObject.getSetUseClassify()!=null){
+        if (schemeJudgeObject.getSetUseClassify() != null) {
             schemeJudgeObjectVo.setSetUseClassifyName(baseDataDicService.getNameById(schemeJudgeObject.getSetUseClassify()));
             schemeJudgeObjectVo.setSetUseName(baseDataDicService.getNameById(schemeJudgeObject.getSetUse()));
-        }else{
+        } else {
             if (schemeJudgeObject.getSetUse() != null) {
                 DataSetUseField setUseField = dataSetUseFieldService.getCacheSetUseFieldById(schemeJudgeObject.getSetUse());
                 if (setUseField != null)
@@ -1156,12 +1168,12 @@ public class SchemeJudgeObjectService {
      * @param projectId
      */
     public void updateJudgeObjectDeclareInfo(DeclareRecord declareRecord, Integer projectId) {
-        if(declareRecord==null) return;
-        SchemeJudgeObject where=new SchemeJudgeObject();
+        if (declareRecord == null) return;
+        SchemeJudgeObject where = new SchemeJudgeObject();
         where.setDeclareRecordId(declareRecord.getId());
         where.setProjectId(projectId);
         List<SchemeJudgeObject> judgeObjects = getJudgeObjectList(where);
-        if(CollectionUtils.isEmpty(judgeObjects)) return;
+        if (CollectionUtils.isEmpty(judgeObjects)) return;
         for (SchemeJudgeObject schemeJudgeObject : judgeObjects) {
             schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
             schemeJudgeObject.setCertName(declareRecord.getName());
@@ -1195,7 +1207,7 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(mergeJudgeObjectList)) {
             for (SchemeJudgeObject mergeJudgeObject : mergeJudgeObjectList) {
                 StringBuilder numberBuilder = new StringBuilder();
-                List<SchemeJudgeObject> childrenJudgeObject = getChildrenJudgeObject(mergeJudgeObject.getId());
+                List<SchemeJudgeObject> childrenJudgeObject = getListByPid(mergeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(childrenJudgeObject)) {
                     for (SchemeJudgeObject object : childrenJudgeObject) {
                         numberBuilder.append(object.getNumber());

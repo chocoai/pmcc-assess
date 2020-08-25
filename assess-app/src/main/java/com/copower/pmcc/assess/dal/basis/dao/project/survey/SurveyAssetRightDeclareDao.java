@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightDeclare;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightDeclareExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetRightDeclareMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -48,28 +49,37 @@ public class SurveyAssetRightDeclareDao {
         return mapper.selectByExample(example);
     }
 
+    public List<SurveyAssetRightDeclare> getRightDeclareListByDeclareIds(List<Integer> declareIds) {
+        SurveyAssetRightDeclareExample example = new SurveyAssetRightDeclareExample();
+        SurveyAssetRightDeclareExample.Criteria criteria = example.createCriteria();
+        if (CollectionUtils.isNotEmpty(declareIds)) {
+            criteria.andDeclareIdIn(declareIds);
+        }
+        return mapper.selectByExample(example);
+    }
+
     public List<SurveyAssetRightDeclare> getSurveyAssetRightDeclareList(SurveyAssetRightDeclare rightDeclare) {
         SurveyAssetRightDeclareExample example = new SurveyAssetRightDeclareExample();
         SurveyAssetRightDeclareExample.Criteria criteria = example.createCriteria();
-        MybatisUtils.convertObj2Criteria(rightDeclare,criteria);
+        MybatisUtils.convertObj2Criteria(rightDeclare, criteria);
         return mapper.selectByExample(example);
     }
 
     public List<SurveyAssetRightDeclare> getSurveyAssetRightDeclareListByExample(SurveyAssetRightDeclare oo) {
         SurveyAssetRightDeclareExample example = new SurveyAssetRightDeclareExample();
         SurveyAssetRightDeclareExample.Criteria criteria = example.createCriteria();
-        final String like = "%%" ;
+        final String like = "%%";
 
-        if (oo.getGroupId() != null){
-            criteria.andGroupIdEqualTo(oo.getGroupId()) ;
+        if (oo.getGroupId() != null) {
+            criteria.andGroupIdEqualTo(oo.getGroupId());
         }
 
-        if (oo.getPlanDetailsId() != null){
-            criteria.andPlanDetailsIdEqualTo(oo.getPlanDetailsId()) ;
+        if (oo.getPlanDetailsId() != null) {
+            criteria.andPlanDetailsIdEqualTo(oo.getPlanDetailsId());
         }
 
-        if (oo.getBuildingNumber() != null){
-            criteria.andBuildingNumberEqualTo(oo.getBuildingNumber()) ;
+        if (oo.getBuildingNumber() != null) {
+            criteria.andBuildingNumberEqualTo(oo.getBuildingNumber());
         }
 
         if (StringUtils.isNotEmpty(oo.getDeclareName())) {
@@ -80,7 +90,7 @@ public class SurveyAssetRightDeclareDao {
             criteria.andBuildingNameLike(String.join("", like, oo.getBuildingName(), like));
         }
         if (StringUtils.isNotEmpty(oo.getCreator())) {
-            criteria.andCreatorEqualTo(oo.getCreator()) ;
+            criteria.andCreatorEqualTo(oo.getCreator());
         }
 
         if (StringUtils.isNotEmpty(oo.getSeat())) {

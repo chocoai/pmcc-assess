@@ -142,10 +142,11 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
             schemeReimbursement.setProcessInsId(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())?projectPlanDetails.getProcessInsId():"0");
             schemeReimbursement.setStatus(ProcessStatusEnum.RUN.getValue());
             schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
+
+            //初始化数据
+            schemeReimbursementService.init(schemeReimbursement,schemeAreaGroup);
         }
         modelAndView.addObject("master", schemeReimbursement);
         modelAndView.addObject("areaGroup", schemeAreaGroup);
-        //初始化数据
-        schemeReimbursementService.init(schemeReimbursement,schemeAreaGroup);
     }
 }

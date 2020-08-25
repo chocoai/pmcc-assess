@@ -7,10 +7,15 @@ package com.copower.pmcc.assess.test;
 import java.awt.*;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightDeclare;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.poi.hssf.usermodel.EscherGraphics;
 import org.apache.poi.hssf.usermodel.EscherGraphics2d;
@@ -192,5 +197,33 @@ public class TestExcel {
 
         List<String> fieldNames = Lists.newArrayList("province", "city");
         System.out.print(equalsObjectWithField(obj1, obj2, fieldNames));
+    }
+
+    @Test
+    public void test11() {
+        List<SurveyAssetRightDeclare> rightDeclareList = Lists.newArrayList();
+        SurveyAssetRightDeclare rightDeclare=new SurveyAssetRightDeclare();
+        rightDeclare.setGroupId(5);
+        rightDeclare.setSeat("aaaa");
+        rightDeclareList.add(rightDeclare);
+        rightDeclare=new SurveyAssetRightDeclare();
+        rightDeclare.setGroupId(5);
+        rightDeclare.setSeat("aaaabbbbb");
+        rightDeclareList.add(rightDeclare);
+
+        rightDeclare=new SurveyAssetRightDeclare();
+        rightDeclare.setGroupId(6);
+        rightDeclare.setSeat("cccc");
+        rightDeclareList.add(rightDeclare);
+        Multimap<Integer, SurveyAssetRightDeclare> multimap = FormatUtils.mappingMultiEntity(rightDeclareList, o -> o.getGroupId());
+        for (Map.Entry<Integer, Collection<SurveyAssetRightDeclare>> entry : multimap.asMap().entrySet()) {
+            System.out.print(entry.getKey());
+            System.out.print("/");
+            Collection<SurveyAssetRightDeclare> surveyAssetRightDeclares = entry.getValue();
+            for (SurveyAssetRightDeclare surveyAssetRightDeclare : surveyAssetRightDeclares) {
+                System.out.print("\\");
+                System.out.print(surveyAssetRightDeclare.getSeat());
+            }
+        }
     }
 }

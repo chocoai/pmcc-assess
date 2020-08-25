@@ -22,10 +22,12 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.lucene.queries.function.valuesource.LiteralValueSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -180,36 +182,7 @@ public class SchemeReimbursementService {
             }
             itemVos = findQueryBySchemeReimbursementItem2(schemeReimbursementItem);
         }
-        Ordering<SchemeReimbursementItemVo> ordering = Ordering.from(new Comparator<SchemeReimbursementItemVo>() {
-            @Override
-            public int compare(SchemeReimbursementItemVo o1, SchemeReimbursementItemVo o2) {
-                if (StringUtils.isBlank(o1.getName())) {
-                    return 0;
-                }
-                if (StringUtils.isBlank(o2.getName())) {
-                    return 0;
-                }
-                String nameA = StringUtils.remove(o1.getName(), "号");
-                String nameB = StringUtils.remove(o2.getName(), "号");
-                Integer a = getNumberOrderingByString(nameA);
-                Integer b = getNumberOrderingByString(nameB);
-                if (a != null && b != null) {
-                    return a.compareTo(b);
-                }
-                return 0;
-            }
-        });
-        itemVos.sort(ordering);
         return itemVos;
-    }
-
-    private Integer getNumberOrderingByString(String number) {
-        List<Integer> integerList = splitIntegerListJudgeNumber(number);
-        if (CollectionUtils.isNotEmpty(integerList)) {
-            Collections.sort(integerList);
-            return integerList.get(0);
-        }
-        return null;
     }
 
     public void saveAndUpdateSchemeReimbursementItem(SchemeReimbursementItem schemeReimbursementItem) {
@@ -270,6 +243,15 @@ public class SchemeReimbursementService {
         return schemeReimbursementDao.getSchemeReimbursement(where);
     }
 
+    /**
+     * 删除数据
+     *
+     * @param reimbursementId
+     */
+    public void deleteItemsByMasterId(Integer reimbursementId) {
+        if (reimbursementId == null) return;
+        schemeReimbursementItemDao.deleteItemsByMasterId(reimbursementId);
+    }
 
     /**
      * 初始化数据
@@ -280,13 +262,7 @@ public class SchemeReimbursementService {
     public void init(SchemeReimbursement schemeReimbursement, SchemeAreaGroup schemeAreaGroup) {
         //1.先删除已生成的受偿款数据；2找出与权证相关的估价对象，循环处理每一个估价对象，关联其他权信息
         if (schemeReimbursement == null || schemeReimbursement.getId() == null) return;
-        //清除数据
-        SchemeReimbursementItem where = new SchemeReimbursementItem();
-        where.setMasterId(schemeReimbursement.getId());
-        List<SchemeReimbursementItem> itemList = schemeReimbursementItemDao.getListObject(where);
-        if (CollectionUtils.isNotEmpty(itemList)) {
-            itemList.forEach(o -> schemeReimbursementItemDao.deleteObject(o.getId()));
-        }
+        deleteItemsByMasterId(schemeReimbursement.getId());//清除数据
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(schemeAreaGroup.getId());
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
@@ -301,6 +277,8 @@ public class SchemeReimbursementService {
                 }
                 reimbursementItem.setMasterId(schemeReimbursement.getId());
                 reimbursementItem.setJudgeObjectId(schemeJudgeObject.getId());
+                reimbursementItem.setBisEnable(true);
+                reimbursementItem.setSorting(schemeJudgeObject.getSorting());
                 //找出该估价对象关联的他权信息
                 SurveyAssetRightDeclare rightDeclare = surveyAssetRightDeclareService.getRightDeclareByDeclareId(schemeJudgeObject.getDeclareRecordId());
                 if (rightDeclare != null)
@@ -310,18 +288,35 @@ public class SchemeReimbursementService {
         }
     }
 
+
     /**
      * 根据方案合并
      *
      * @param reimbursementId
      */
-    public void mergeByProgramme(Integer areaGroupId, Integer reimbursementId) {
+    public void groupByProgramme(Integer areaGroupId, Integer reimbursementId) {
         //1.找出方案中合并的估价对象 2.按合并的规则将现有数据进行合并
+        deleteItemsByMasterId(reimbursementId);//清除数据
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaGroupId);
-        judgeObjectList = LangUtils.filter(judgeObjectList, o -> o.getBisMerge() == Boolean.TRUE);
-        if(CollectionUtils.isEmpty(judgeObjectList)) return;
-        for (SchemeJudgeObject judgeObject : judgeObjectList) {
-
+        if (CollectionUtils.isEmpty(judgeObjectList)) return;
+        SchemeReimbursement schemeReimbursement = getSingleObject(reimbursementId);
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            SchemeReimbursementItem reimbursementItem = new SchemeReimbursementItem();
+            reimbursementItem.setCreator(processControllerComponent.getThisUser());
+            reimbursementItem.setProjectId(schemeReimbursement.getProjectId());
+            reimbursementItem.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+            reimbursementItem.setName(schemeJudgeObject.getName());
+            reimbursementItem.setMasterId(schemeReimbursement.getId());
+            reimbursementItem.setJudgeObjectId(schemeJudgeObject.getBisMerge() == Boolean.TRUE ? schemeJudgeObject.getStandardJudgeId() : schemeJudgeObject.getId());
+            reimbursementItem.setJudgeObjectNumber(schemeJudgeObject.getNumber());
+            if (schemeJudgeObject.getStandardJudgeId() != null) {//找出该估价对象关联的他权信息
+                SurveyAssetRightDeclare rightDeclare = surveyAssetRightDeclareService.getRightDeclareByDeclareId(schemeJudgeObject.getDeclareRecordId());
+                if (rightDeclare != null)
+                    reimbursementItem.setInventoryRightRecordId(rightDeclare.getGroupId());
+            }
+            reimbursementItem.setBisEnable(true);
+            reimbursementItem.setSorting(schemeJudgeObject.getSorting());
+            saveAndUpdateSchemeReimbursementItem(reimbursementItem);
         }
     }
 
@@ -330,8 +325,63 @@ public class SchemeReimbursementService {
      *
      * @param reimbursementId
      */
-    public void mergeByOtherRight(Integer areaGroupId,Integer reimbursementId) {
-
+    public void groupByOtherRight(Integer areaGroupId, Integer reimbursementId) {
+        deleteItemsByMasterId(reimbursementId);//清除数据
+        //1.先找出该区域下的权证数据，2.再到他权的数据表中找到关联上的权证数据 3.将有关联关系的数据绑到一起 4.将剩余的估价对象数据单独生成
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
+        SchemeReimbursement schemeReimbursement = getSingleObject(reimbursementId);
+        List<Integer> declareIds = LangUtils.transform(judgeObjectList, o -> o.getDeclareRecordId());
+        List<SurveyAssetRightDeclare> rightDeclareList = surveyAssetRightDeclareService.getRightDeclareListByDeclareIds(declareIds);
+        if (CollectionUtils.isNotEmpty(rightDeclareList)) {
+            Multimap<Integer, SurveyAssetRightDeclare> multimap = FormatUtils.mappingMultiEntity(rightDeclareList, o -> o.getGroupId());
+            for (Map.Entry<Integer, Collection<SurveyAssetRightDeclare>> entry : multimap.asMap().entrySet()) {
+                List<SurveyAssetRightDeclare> surveyAssetRightDeclares = Lists.newArrayList(entry.getValue());
+                SurveyAssetRightDeclare assetRightDeclare = surveyAssetRightDeclares.get(0);
+                //找个同属于该组的估价对象
+                List<Integer> groupDeclareIds = LangUtils.transform(surveyAssetRightDeclares, o -> o.getDeclareId());
+                List<SchemeJudgeObject> groupJudgeObjects = schemeJudgeObjectService.getListByDeclareIds(groupDeclareIds);
+                String number = StringUtils.join(LangUtils.transform(groupJudgeObjects, o -> o.getNumber()),',');
+                SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getJudgeObjectByDeclareId(assetRightDeclare.getDeclareId());
+                SchemeReimbursementItem reimbursementItem = new SchemeReimbursementItem();
+                reimbursementItem.setCreator(processControllerComponent.getThisUser());
+                reimbursementItem.setProjectId(schemeReimbursement.getProjectId());
+                reimbursementItem.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                reimbursementItem.setName(number + BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+                reimbursementItem.setMasterId(schemeReimbursement.getId());
+                reimbursementItem.setJudgeObjectId(schemeJudgeObject.getId());
+                reimbursementItem.setJudgeObjectNumber(number);
+                SurveyAssetRightDeclare rightDeclare = surveyAssetRightDeclareService.getRightDeclareByDeclareId(schemeJudgeObject.getDeclareRecordId());
+                if (rightDeclare != null)
+                    reimbursementItem.setInventoryRightRecordId(rightDeclare.getGroupId());
+                reimbursementItem.setBisEnable(true);
+                reimbursementItem.setSorting(schemeJudgeObject.getSorting());
+                saveAndUpdateSchemeReimbursementItem(reimbursementItem);
+                for (SurveyAssetRightDeclare surveyAssetRightDeclare : surveyAssetRightDeclares) {//移除已处理的估价对象
+                    declareIds.remove(surveyAssetRightDeclare.getDeclareId());
+                }
+            }
+        }
+        List<SchemeJudgeObject> objectList = schemeJudgeObjectService.getListByDeclareIds(declareIds);
+        if (CollectionUtils.isNotEmpty(objectList)) {
+            for (SchemeJudgeObject judgeObject : objectList) {
+                SchemeReimbursementItem reimbursementItem = new SchemeReimbursementItem();
+                reimbursementItem.setCreator(processControllerComponent.getThisUser());
+                reimbursementItem.setProjectId(schemeReimbursement.getProjectId());
+                reimbursementItem.setPlanDetailsId(schemeReimbursement.getPlanDetailsId());
+                reimbursementItem.setName(judgeObject.getName());
+                reimbursementItem.setMasterId(schemeReimbursement.getId());
+                reimbursementItem.setJudgeObjectId(judgeObject.getId());
+                reimbursementItem.setJudgeObjectNumber(judgeObject.getNumber());
+                if (judgeObject.getStandardJudgeId() != null) {//找出该估价对象关联的他权信息
+                    SurveyAssetRightDeclare rightDeclare = surveyAssetRightDeclareService.getRightDeclareByDeclareId(judgeObject.getDeclareRecordId());
+                    if (rightDeclare != null)
+                        reimbursementItem.setInventoryRightRecordId(rightDeclare.getGroupId());
+                }
+                reimbursementItem.setBisEnable(true);
+                reimbursementItem.setSorting(judgeObject.getSorting());
+                saveAndUpdateSchemeReimbursementItem(reimbursementItem);
+            }
+        }
     }
 
 
