@@ -355,7 +355,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frm_lease_cost" class="form-horizontal">
                     <input type="hidden" name="id">

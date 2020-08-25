@@ -1175,8 +1175,8 @@ public class GenerateMdCompareService {
         }
         if (StringUtils.isEmpty(weightRemark.toString())) {
             front.append(toChinese(String.valueOf(size)) + "个比较价格差异幅度较小，我们认为" + toChinese(String.valueOf(size)) + "个比较实例与估价对象在同一区域范围内，其价格具有一致性，综合考虑各种因素，并结合该区域同类房地产交易价格水平，确定以" + toChinese(String.valueOf(size)) + "个交易案例比较价格的算术平均值作为估价对象的比较价格，计算过程如下：");
-            num = num.divide(new BigDecimal(String.valueOf(caseItemList.size())), 2, RoundingMode.CEILING);
-            String result = String.format("%.2f", num);
+            num = num.divide(new BigDecimal(String.valueOf(caseItemList.size())), 0, RoundingMode.HALF_UP);
+            String result = num.toString();
             content.deleteCharAt(content.length() - 1);
             content.append(")").append("÷").append(caseItemList.size()).append("≈").append(result);
             content.append(unit).append("；").append("即,估价对象房地产的单价为").append(result).append(unit);
