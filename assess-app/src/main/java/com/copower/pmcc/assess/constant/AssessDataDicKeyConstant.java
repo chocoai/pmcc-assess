@@ -212,4 +212,8 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_LAND_LEVEL_CLASSIFY = "data.land.level.classify"; //土地级别 大类
 
 
+    public static final String AD_PLACE_FILE_SHELF_LIFE = "ad.place.file.shelf.life"; //评估系统 档案保存期限
+    public static final String AD_PLACE_FILE_MARK = "ad.place.file.mark"; //评估系统 档案标识
+
+
 }

@@ -45,6 +45,8 @@ public enum BaseParameterEnum {
     PROJECT_COMMISSION_PROCESS_KEY("project.commission.process.key", "项目提成流程", "box"),
     PROJECT_PIGEONHOLE_PROCESS_KEY("project.pigeonhole.process.key", "项目归档流程", "box"),
 
+    PROJECT_ARCHIVES_ADMINISTRATIVE_NODE_KEY("project.archives.administrative.node.key", "项目归档-行政节点", "box"),
+
     ASSESSMENT_TASK_GENERATE_DATE("assessment.task.generate.date", "生成考核任务时间", "sys"),
     ASSESSMENT_TASK_GENERATE_PROJECT_ID("assessment.task.generate.project.id", "生成考核任务项目id", "box"),
 

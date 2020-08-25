@@ -1,20 +1,17 @@
 package com.copower.pmcc.assess.service.project.archives;
 
-import com.copower.pmcc.ad.api.enums.AdArchivesDataTypeEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -41,6 +38,10 @@ public class ProjectTaskArchivesAssist implements ProjectTaskInterface {
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageArchives/taskArchivesApproval", processInsId, boxId, taskId, agentUserAccount);
         setModelParam(projectPlanDetails, modelAndView);
+        if (boxId != null) {
+            //当处于行政节点的时候需要写入 存储位置和卷号
+            modelAndView.addObject("xing_zheng_node",projectArchivesDataService.getBoxName()) ;
+        }
         return modelAndView;
     }
 
@@ -81,11 +82,11 @@ public class ProjectTaskArchivesAssist implements ProjectTaskInterface {
 
     private void setModelParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         modelAndView.addObject("projectPlanDetails",projectPlanDetails) ;
-        modelAndView.addObject("FileArchivesTypeData",projectArchivesDataService.getFileArchivesTypeData()) ;
+//        modelAndView.addObject("FileArchivesTypeData",projectArchivesDataService.getFileArchivesTypeData()) ;
         modelAndView.addObject("FilePublicData",projectArchivesDataService.getFilePublicData()) ;
         modelAndView.addObject("FileSourceData",projectArchivesDataService.getFileSourceData()) ;
-        modelAndView.addObject("MarkAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileDtoListByAppKeyAndType(AdArchivesDataTypeEnum.MARK_ENUM)) ;
-        modelAndView.addObject("LifeAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileDtoListByAppKeyAndType(AdArchivesDataTypeEnum.LIFE_ENUM)) ;
+        modelAndView.addObject("MarkAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK)) ;
+        modelAndView.addObject("LifeAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_SHELF_LIFE)) ;
         modelAndView.addObject("SysSymbolRuleDtoList",projectArchivesDataService.getSysSymbolRuleDtoList()) ;
     }
 

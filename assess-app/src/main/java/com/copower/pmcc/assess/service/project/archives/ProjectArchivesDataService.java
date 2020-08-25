@@ -9,9 +9,13 @@ import com.copower.pmcc.ad.api.provider.AdRpcBasePlaceFileService;
 import com.copower.pmcc.ad.api.provider.AdRpcPlaceFileGroupService;
 import com.copower.pmcc.ad.api.provider.AdRpcPlaceFileItemService;
 import com.copower.pmcc.ad.api.provider.AdRpcPlaceFileVolumeNumberService;
+import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.AdPlaceFileItemDtoVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.SysAppEnum;
@@ -32,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
@@ -58,6 +63,10 @@ public class ProjectArchivesDataService {
     private ErpRpcToolsService erpRpcToolsService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private BaseParameterService baseParameterService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -139,6 +148,15 @@ public class ProjectArchivesDataService {
         return sysSymbol;
     }
 
+    /**
+     * 项目归档-行政节点
+     * @return
+     */
+    public String getBoxName(){
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_ARCHIVES_ADMINISTRATIVE_NODE_KEY.getParameterKey());
+        return boxName ;
+    }
+
 
     /**
      * 卷号规则
@@ -218,6 +236,10 @@ public class ProjectArchivesDataService {
         return adRpcBasePlaceFileService.getAdBasePlaceFileDtoListByAppKeyAndType(dataTypeEnum, applicationConstant.getAppKey());
     }
 
+    public List<AdBasePlaceFileDto> getAdBasePlaceFileList( String fieldName){
+        return adRpcBasePlaceFileService.getAdBasePlaceFileList(applicationConstant.getAppKey(),fieldName) ;
+    }
+
     public AdPlaceFileItemDto getAdPlaceFileItemDtoById(Integer id) {
         return adRpcPlaceFileItemService.getAdPlaceFileItemDtoById(id);
     }
@@ -246,6 +268,7 @@ public class ProjectArchivesDataService {
                 }
             }
             Integer integer = adRpcPlaceFileItemService.saveAdPlaceFileItemDto(obj);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDto.class),integer);
             obj.setId(integer);
         } else {
             adRpcPlaceFileItemService.updateAdPlaceFileItemDto(obj);
@@ -351,7 +374,18 @@ public class ProjectArchivesDataService {
                 vo.setSaveLocation(fileGroupDto.getSaveLocation());
             }
         }
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(obj.getId(), null, FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDto.class));
+        StringBuilder builder = new StringBuilder();
+        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
+            }
+            vo.setFileViewName(builder.toString());
+        }
         return vo;
     }
 
+    public List<AdBasePlaceFileDto> getAdBasePlaceFileListByPid(Integer pid) {
+        return adRpcBasePlaceFileService.getAdBasePlaceFileListByPid(pid) ;
+    }
 }
