@@ -133,7 +133,6 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
      */
     private void writeSchemeReimbursement(ProjectPlanDetails projectPlanDetails, SchemeAreaGroup schemeAreaGroup,ModelAndView modelAndView ,boolean repeat) throws Exception {
         SchemeReimbursement schemeReimbursement = schemeReimbursementService.getSchemeReimbursement(projectPlanDetails.getId(),schemeAreaGroup.getId());
-        //当查询不到主法定优先受偿款时则生成一个主数据
         if (schemeReimbursement == null){
             schemeReimbursement = new SchemeReimbursement() ;
             schemeReimbursement.setPlanDetailsId(projectPlanDetails.getId());
@@ -142,9 +141,7 @@ public class ProjectTaskReimbursementAssist implements ProjectTaskInterface {
             schemeReimbursement.setProcessInsId(StringUtils.isNotBlank(projectPlanDetails.getProcessInsId())?projectPlanDetails.getProcessInsId():"0");
             schemeReimbursement.setStatus(ProcessStatusEnum.RUN.getValue());
             schemeReimbursementService.saveSchemeReimbursement(schemeReimbursement);
-
-            //初始化数据
-            schemeReimbursementService.init(schemeReimbursement,schemeAreaGroup);
+            schemeReimbursementService.init(schemeReimbursement,schemeAreaGroup);//初始化数据
         }
         modelAndView.addObject("master", schemeReimbursement);
         modelAndView.addObject("areaGroup", schemeAreaGroup);

@@ -276,7 +276,9 @@ public class PublicService {
     public void html2canvasNetDownloadUtils(String canvasCode, Integer tableId, String tableName, String fieldsName) throws Exception {
         final String BASE64_PREFIX = "data:image/jpeg;base64,";
         //这的jpg必须和页面一致
-        String imgFilePath = org.apache.commons.io.FileUtils.getTempDirectoryPath() + UUID.randomUUID().toString().substring(1, 7) + ".jpg";
+        String localDir = baseAttachmentService.createTempDirPath(commonService.thisUserAccount());
+        String imageName = baseAttachmentService.createNoRepeatFileName("jpg");
+        String imgFilePath = localDir + File.separator + imageName;
         com.copower.pmcc.assess.common.FileUtils.base64ToImage(StringUtils.remove(canvasCode, BASE64_PREFIX), imgFilePath);
         SysAttachmentDto baseAttachment = new SysAttachmentDto();
         baseAttachment.setTableId(tableId);

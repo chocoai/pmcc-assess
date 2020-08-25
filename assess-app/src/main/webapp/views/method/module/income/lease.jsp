@@ -77,10 +77,11 @@
                                            placeholder="报酬率" readonly="readonly"
                                            data-value="${mdIncome.rewardRate}" onblur="lease.computeNetProfit();">
                                     <div class="input-group-prepend">
-                                    <input type="hidden" name="rewardRateId" value="${mdIncome.rewardRateId}">
-                              <button type="button" class="btn btn-info btn-sm"
-                                     onclick="lease.getRewardRate(this);">报酬率</button>
-                            </div>
+                                        <input type="hidden" name="rewardRateId" value="${mdIncome.rewardRateId}">
+                                        <button type="button" class="btn btn-info btn-sm"
+                                                onclick="lease.getRewardRate(this);">报酬率
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -182,10 +183,11 @@
                                                     <input type="text" name="rentalIncome" placeholder="月租金收入(元/m²)"
                                                            data-rule-number="true"
                                                            class="form-control" required="required">
-                                                    <span class="input-group-btn">
-                                        <input type="button" class="btn btn-primary" value="市场比较法"
-                                               onclick="lease.callCompareMethod(this);"/>
-                                    </span>
+                                                    <div class="input-group-prepend">
+                                                        <input type="button" class="btn btn-sm btn-primary"
+                                                               value="市场比较法"
+                                                               onclick="lease.callCompareMethod(this);"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
@@ -641,8 +643,8 @@
             title: '市场比较法',
             shadeClose: true,
             shade: true,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
+            maxmin: false, //开启最大化最小化按钮
+            area: ['90%', '90%'],
             content: '${pageContext.request.contextPath}/marketCompare/index?mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
@@ -667,7 +669,6 @@
                 }
             }
         });
-        layer.full(frame);
     }
 
     //获取报酬率
@@ -713,8 +714,7 @@
                     lease.loadLeaseList();
                     lease.loadCalculationResult();
                     $('#modal_lease_income').modal('hide');
-                }
-                else {
+                } else {
                     AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
@@ -751,6 +751,8 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<button type="button" class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="编辑" onclick="lease.editLease(' + index + ');" ><i class="fa fa-pen fa-white"></i></button>';
+                str += " <button type='button' style='margin-left: 5px;' onclick='lease.copyLeaseIncomeItem(" + row.id + ");' data-placement='top' data-original-title='复制' class='btn btn-xs btn-info btn-copy tooltips' ><i class='fa fa-copy fa-white'></i></button>";
+                str += " <button type='button' style='margin-left: 5px;' onclick='lease.pasteLeaseIncomeItem(" + row.id + ");' data-placement='top' data-original-title='粘贴' class='btn btn-xs btn-warning tooltips tooltips' ><i class='fa fa-paste fa-white'></i></button>";
                 str += '</div>';
                 return str;
             }
@@ -768,6 +770,44 @@
                 lease.computeNetProfit();
             }
         });
+    }
+
+    //复制
+    lease.copyLeaseIncomeItem = function (sourceId) {
+        leaseIncomeSourceId = sourceId
+        notifySuccess("成功", "复制成功");
+    }
+
+    //粘贴
+    lease.pasteLeaseIncomeItem = function (targetId) {
+        if (leaseIncomeSourceId) {
+            if (leaseIncomeSourceId == targetId) {
+                notifyInfo("提示", "不能复制粘贴自身");
+                return false;
+            }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/income/pasteLeaseIncome",
+                data: {
+                    sourceId: leaseIncomeSourceId,
+                    targetId: targetId,
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        lease.loadLeaseList();
+                        notifyInfo("提示", "粘贴成功");
+                    } else {
+                        AlertError("复制失败:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            });
+        } else {
+            notifyInfo("提示", "选择被复制的对象");
+        }
     }
 
     //编辑成本信息
@@ -844,8 +884,7 @@
                     lease.loadLeaseCostList();
                     lease.loadCalculationResult();
                     $('#modal_lease_cost').modal('hide');
-                }
-                else {
+                } else {
                     AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
@@ -991,8 +1030,7 @@
                     lease.loadLeaseParameterList();
                     lease.loadCalculationResult();
                     $('#modal_lease_parameter').modal('hide');
-                }
-                else {
+                } else {
                     AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },

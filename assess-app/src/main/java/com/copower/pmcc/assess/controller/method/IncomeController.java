@@ -476,6 +476,18 @@ public class IncomeController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/pasteLeaseIncome", method = {RequestMethod.POST}, name = "复制收入")
+    public HttpResult pasteLeaseIncome(Integer sourceId, Integer targetId) {
+        try {
+            mdIncomeService.pasteLeaseIncome(sourceId, targetId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/pasteLeaseCost", method = {RequestMethod.POST}, name = "复制成本")
     public HttpResult pasteLeaseCost(Integer sourceId, Integer targetId) {
         try {

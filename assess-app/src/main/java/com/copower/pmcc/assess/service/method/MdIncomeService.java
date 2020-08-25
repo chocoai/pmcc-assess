@@ -1614,11 +1614,28 @@ public class MdIncomeService {
         return mdIncomeLeaseCostVo;
     }
 
+    //收入粘贴
+    public void pasteLeaseIncome(Integer sourceId, Integer targetId) {
+        MdIncomeLease sourceLease = mdIncomeLeaseDao.getIncomeLeaseById(sourceId);
+        MdIncomeLease targetLease = mdIncomeLeaseDao.getIncomeLeaseById(targetId);
+        List<String> ignoreList = BaseConstant.ASSESS_IGNORE_LIST;
+        ignoreList.add("mcId");
+        ignoreList.add("sectionId");
+        ignoreList.add("incomeId");
+        ignoreList.add("sorting");
+        BeanUtils.copyProperties(sourceLease, targetLease, ignoreList.toArray(new String[ignoreList.size()]));
+        mdIncomeLeaseDao.updateIncomeLease(targetLease);
+    }
+
     //成本粘贴
     public void pasteLeaseCost(Integer sourceId, Integer targetId) {
         MdIncomeLeaseCost sourceLeaseCost = mdIncomeLeaseCostDao.getLeaseCostById(sourceId);
         MdIncomeLeaseCost targetLeaseCost = mdIncomeLeaseCostDao.getLeaseCostById(targetId);
-        BeanUtils.copyProperties(sourceLeaseCost, targetLeaseCost, "id", "sectionId", "incomeId", "sorting");
+        List<String> ignoreList = BaseConstant.ASSESS_IGNORE_LIST;
+        ignoreList.add("sectionId");
+        ignoreList.add("incomeId");
+        ignoreList.add("sorting");
+        BeanUtils.copyProperties(sourceLeaseCost, targetLeaseCost, ignoreList.toArray(new String[ignoreList.size()]));
         mdIncomeLeaseCostDao.updateLeaseCost(targetLeaseCost);
     }
 
