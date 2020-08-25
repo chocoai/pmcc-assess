@@ -8,6 +8,8 @@ import com.copower.pmcc.ad.api.dto.AdPlaceFileVolumeNumberDto;
 import com.copower.pmcc.assess.service.project.archives.ProjectArchivesDataService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @RequestMapping(value = "/projectArchives")
 @Controller
@@ -63,15 +67,18 @@ public class ProjectArchivesController {
 
     @ResponseBody
     @RequestMapping(value = "/saveAdPlaceFileGroupDto", method = {RequestMethod.POST}, name = "更新")
-    public HttpResult saveAdPlaceFileGroupDto(String formData, Integer targetId) {
+    public HttpResult saveAdPlaceFileGroupDto(String formData, String targetId) {
         try {
             AdPlaceFileGroupDto dto = JSONObject.parseObject(formData, AdPlaceFileGroupDto.class);
             projectArchivesDataService.saveAdPlaceFileGroupDto(dto);
-            if (targetId != null && targetId != 0) {
-                AdPlaceFileItemDto fileItemDto = projectArchivesDataService.getAdPlaceFileItemDtoById(targetId);
-                if (fileItemDto != null){
-                    fileItemDto.setGroupId(dto.getId());
-                    projectArchivesDataService.saveAdPlaceFileItemDto(fileItemDto);
+            if (StringUtils.isNotBlank(targetId)) {
+                List<Integer> integerList = FormatUtils.transformString2Integer(targetId);
+                for (Integer integer:integerList) {
+                    AdPlaceFileItemDto fileItemDto = projectArchivesDataService.getAdPlaceFileItemDtoById(integer);
+                    if (fileItemDto != null){
+                        fileItemDto.setGroupId(dto.getId());
+                        projectArchivesDataService.saveAdPlaceFileItemDto(fileItemDto);
+                    }
                 }
             }
             return HttpResult.newCorrectResult(dto);
@@ -160,6 +167,17 @@ public class ProjectArchivesController {
     public HttpResult getAdPlaceFileItemDtoValidList(Integer projectId) {
         try {
             return HttpResult.newCorrectResult(200,projectArchivesDataService.getAdPlaceFileItemDtoValidList(projectId));
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAdBasePlaceFileListByPid", method = {RequestMethod.GET}, name = "get base data")
+    public HttpResult getAdBasePlaceFileListByPid(Integer pid) {
+        try {
+            return HttpResult.newCorrectResult(200,projectArchivesDataService.getAdBasePlaceFileListByPid(pid));
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" , e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
