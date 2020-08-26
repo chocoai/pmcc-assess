@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface SchemeReimbursementMapper {
-    int countByExample(SchemeReimbursementExample example);
+    long countByExample(SchemeReimbursementExample example);
 
     int deleteByExample(SchemeReimbursementExample example);
 

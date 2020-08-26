@@ -1596,18 +1596,15 @@ public class GenerateMdIncomeService implements Serializable {
         if (CollectionUtils.isNotEmpty(mdIncomeDateSectionList)) {
             BigDecimal t = new BigDecimal("0");
             for (MdIncomeDateSection section : mdIncomeDateSectionList) {
-                StringBuilder s2 = new StringBuilder();
-                s2.append(DateUtils.format(section.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(section.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
-                s.append(s2.toString());
+                if (mdIncomeDateSectionList.size() > 1) {
+                    StringBuilder s2 = new StringBuilder();
+                    s2.append(DateUtils.format(section.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(section.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                    s.append(s2.toString());
+                }
                 BigDecimal yearCount = section.getYearCount();
                 t = t.add(yearCount);
-                String formula = new String();
-                if (yearCount.compareTo(new BigDecimal("1")) < 1) {
-                    formula = ":At×(1 + g)/(1 + Y)^t]";
-                } else {
-                    formula = ":At×(1+Y)^-(T+1)×(1-((1+g)/(1+Y))^n)/(1-(1+g)/(1+Y))";
-                }
-
+                String formula = "= At/(Y-g)×[1-(1+g)^t/(1+Y)^t]";
+                //formula = ":At×(1+Y)^-(T+1)×(1-((1+g)/(1+Y))^n)/(1-(1+g)/(1+Y))";复杂公式，后期再处理
                 if (StringUtils.isNoneEmpty(section.getNetProfit())) {
                     formula = formula.replace("At", section.getNetProfit());
                 }
@@ -1617,7 +1614,11 @@ public class GenerateMdIncomeService implements Serializable {
                 if (section.getRentalGrowthRate() != null) {
                     formula = formula.replace("g", ArithmeticUtils.getPercentileSystem(section.getRentalGrowthRate(), 4, BigDecimal.ROUND_HALF_UP));
                 }
-                if (t.compareTo(new BigDecimal("1")) != 0) {
+                if (yearCount != null) {
+                    formula = formula.replace("t", ArithmeticUtils.getBigDecimalString(yearCount));
+                }
+                //-----------------------------用于复杂公式参数
+                /*if (t.compareTo(new BigDecimal("1")) != 0) {
                     formula = formula.replace("t", t.toString());
                     if (formula.contains("T")) {
                         formula = formula.replace("T", t.subtract(yearCount).toString());
@@ -1627,7 +1628,8 @@ public class GenerateMdIncomeService implements Serializable {
                 }
                 if (section.getYearCount() != null) {
                     formula = formula.replace("n", section.getYearCount().toString());
-                }
+                }*/
+                //-----------------------------用于复杂公式参数
                 s.append(formula);
                 s.append(";");
             }

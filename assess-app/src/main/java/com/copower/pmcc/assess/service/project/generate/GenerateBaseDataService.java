@@ -6127,39 +6127,43 @@ public class GenerateBaseDataService {
         }
         if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
             for (Map.Entry<SchemeInfo, SchemeJudgeObject> entry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-                BaseDataDic baseDataDic = dataDicList.stream().filter(oo -> Objects.equal(entry.getKey().getMethodType(), oo.getId())).findFirst().get();
-                if (baseDataDic == null || StringUtils.isEmpty(baseDataDic.getFieldName())) {
-                    continue;
-                }
-                List<Integer> numbers = generateCommonMethod.splitIntegerListJudgeNumber(entry.getValue().getNumber());
-                switch (baseDataDic.getFieldName()) {
-                    case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
-                        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(entry.getValue().getId(), entry.getKey().getMethodDataId(), areaId);
-                        baseDetailedCalculationProcessValuationObject(generateMdCompareService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
-                        break;
-                    case AssessDataDicKeyConstant.MD_INCOME:
-                        //判断自营还是租赁
-                        MdIncome mdIncome = mdIncomeService.getIncomeById(entry.getKey().getMethodDataId());
-                        if (mdIncome != null) {
-                            if (MethodIncomeOperationModeEnum.PROPRIETARY.getId().equals(mdIncome.getOperationMode())) {
-                                GenerateMdIncomeSelfRunService generateMdIncomeSelfRunService = new GenerateMdIncomeSelfRunService(entry.getKey(), areaId);
-                                baseDetailedCalculationProcessValuationObject(generateMdIncomeSelfRunService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
-                            } else if (MethodIncomeOperationModeEnum.LEASE.getId().equals(mdIncome.getOperationMode())) {
-                                GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(entry.getKey(), projectId, areaId);
-                                baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                try{
+                    BaseDataDic baseDataDic = dataDicList.stream().filter(oo -> Objects.equal(entry.getKey().getMethodType(), oo.getId())).findFirst().get();
+                    if (baseDataDic == null || StringUtils.isEmpty(baseDataDic.getFieldName())) {
+                        continue;
+                    }
+                    List<Integer> numbers = generateCommonMethod.splitIntegerListJudgeNumber(entry.getValue().getNumber());
+                    switch (baseDataDic.getFieldName()) {
+                        case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
+                            GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(entry.getValue().getId(), entry.getKey().getMethodDataId(), areaId);
+                            baseDetailedCalculationProcessValuationObject(generateMdCompareService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                            break;
+                        case AssessDataDicKeyConstant.MD_INCOME:
+                            //判断自营还是租赁
+                            MdIncome mdIncome = mdIncomeService.getIncomeById(entry.getKey().getMethodDataId());
+                            if (mdIncome != null) {
+                                if (MethodIncomeOperationModeEnum.PROPRIETARY.getId().equals(mdIncome.getOperationMode())) {
+                                    GenerateMdIncomeSelfRunService generateMdIncomeSelfRunService = new GenerateMdIncomeSelfRunService(entry.getKey(), areaId);
+                                    baseDetailedCalculationProcessValuationObject(generateMdIncomeSelfRunService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                                } else if (MethodIncomeOperationModeEnum.LEASE.getId().equals(mdIncome.getOperationMode())) {
+                                    GenerateMdIncomeService generateMdIncomeService = new GenerateMdIncomeService(entry.getKey(), projectId, areaId);
+                                    baseDetailedCalculationProcessValuationObject(generateMdIncomeService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                                }
                             }
-                        }
-                        break;
-                    case AssessDataDicKeyConstant.MD_COST:
-                        GenerateMdCostService mdCostService = new GenerateMdCostService(projectId, entry.getKey(), areaId);
-                        baseDetailedCalculationProcessValuationObject(mdCostService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
-                        break;
-                    case AssessDataDicKeyConstant.MD_DEVELOPMENT:
-                        GenerateMdDevelopmentService generateMdDevelopmentService = new GenerateMdDevelopmentService(projectId, entry.getKey(), areaId);
-                        baseDetailedCalculationProcessValuationObject(generateMdDevelopmentService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
-                        break;
-                    default:
-                        break;
+                            break;
+                        case AssessDataDicKeyConstant.MD_COST:
+                            GenerateMdCostService mdCostService = new GenerateMdCostService(projectId, entry.getKey(), areaId);
+                            baseDetailedCalculationProcessValuationObject(mdCostService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                            break;
+                        case AssessDataDicKeyConstant.MD_DEVELOPMENT:
+                            GenerateMdDevelopmentService generateMdDevelopmentService = new GenerateMdDevelopmentService(projectId, entry.getKey(), areaId);
+                            baseDetailedCalculationProcessValuationObject(generateMdDevelopmentService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
+                            break;
+                        default:
+                            break;
+                    }
+                }catch (Exception e){
+                    logger.error(e.getMessage(),e);
                 }
             }
         }

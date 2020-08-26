@@ -26,6 +26,7 @@ public class SchemeReimbursementItemDao {
     public List<SchemeReimbursementItem> getListObject(SchemeReimbursementItem schemeReimbursementItem) {
         SchemeReimbursementItemExample example = new SchemeReimbursementItemExample();
         MybatisUtils.convertObj2Example(schemeReimbursementItem, example);
+        example.setOrderByClause("sorting");
         return schemeReimbursementItemMapper.selectByExample(example);
     }
 
