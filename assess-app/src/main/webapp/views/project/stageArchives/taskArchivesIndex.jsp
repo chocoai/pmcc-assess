@@ -284,9 +284,10 @@
     objArchives.tableName = "tb_ad_place_file_item_dto";
     objArchives.fieldsName = "project_proxy";
 
-    objArchives.onChangeFileType = function (_this ,fileCategory) {
+    objArchives.onChangeFileType = function (_this, fileCategory) {
         var frm = $(_this).closest("form");
-        var value = $(_this).val();
+        var value = $(_this).find("option:selected").val();
+        console.log(value);
         if (!value) {
             return false;
         }
@@ -303,10 +304,15 @@
                     retHtml += '<option value="" selected>-请选择-</option>';
                     $.each(result.data, function (k, item) {
                         retHtml += '<option key="' + item.name + '" title="' + item.name + '" value="' + item.id + '"';
+                        if (fileCategory) {
+                            if (item.id == fileCategory) {
+                                retHtml += 'selected="selected"'
+                            }
+                        }
                         retHtml += '>' + item.name + '</option>';
                     });
                     frm.find("select[name='fileCategory']").empty().html(retHtml).trigger('change');
-                    if (fileCategory){
+                    if (fileCategory) {
                         frm.find("select[name='fileCategory']").val(fileCategory).trigger('change');
                     }
                 } else {
@@ -345,14 +351,19 @@
         cols.push({
             field: 'id', title: '操作', width: "15%", formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<button type="button" onclick="objArchives.editDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
-                str += '<i class="fa fa-pen"></i>';
-                str += '</button>';
+                if (row.groupId) {
+                    str += '<button type="button" onclick="objArchives.lockOpenDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="解除卷号绑定">';
+                    str += '<i class="fas fa-lock-open"></i>';
+                    str += '</button>';
+                } else {
+                    str += '<button type="button" onclick="objArchives.editDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
 
-                str += '<button type="button" onclick="objArchives.delDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
-                str += '<i class="fa fa-minus"></i>';
-                str += '</button>';
-
+                    str += '<button type="button" onclick="objArchives.delDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
+                }
                 return str;
             }
         });
@@ -422,7 +433,32 @@
                     AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
-        })
+        });
+    };
+
+    objArchives.lockOpenDataDic = function (id) {
+        AlertConfirm("是否确认解除卷号设置", "解除相应的数据后将不可恢复可以重新再次设置卷号", function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectArchives/lockOpenDataDicAdPlaceFileItemDtoById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        notifySuccess("成功", "解除卷号成功");
+                        objArchives.loadTableList();
+                    } else {
+                        AlertError("数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
     };
 
 
@@ -457,13 +493,12 @@
         var table = $(objArchives.table.selector);
         var data = table.bootstrapTable('getRowByUniqueId', id);
         frm.initForm(data);
-        frm.find("select[name='fileCategory']") ;
-        var ele = frm.find("select[name='fileType']")[0] ;
+        var ele = frm.find("select[name='fileType']")[0];
         frm.find("select[name='fileType']").val(data.fileType).trigger('change');
         frm.find("select[name='fileSource']").val(data.fileSource).trigger('change');
         frm.find("select[name='publicWay']").val(data.publicWay).trigger('change');
         frm.find("select[name='shelfLife']").val(data.shelfLife).trigger('change');
-        objArchives.onChangeFileType( ele,data.fileCategory) ;
+        objArchives.onChangeFileType(ele, data.fileCategory);
     };
 
     objArchives.saveArchives = function () {

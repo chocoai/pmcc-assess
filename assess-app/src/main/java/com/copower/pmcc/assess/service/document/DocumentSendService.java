@@ -107,6 +107,10 @@ public class DocumentSendService {
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
 
+    public List<DocumentSend> getDocumentSendList(Integer projectId,String status){
+        return documentDao.getDocumentSendList(projectId, status) ;
+    }
+
     public List<DocumentSend> getDocumentSend(DocumentSend documentSend) {
         return documentDao.getDocumentSendList(documentSend);
     }

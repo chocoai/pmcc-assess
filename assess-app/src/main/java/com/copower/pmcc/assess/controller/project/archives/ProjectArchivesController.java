@@ -140,6 +140,18 @@ public class ProjectArchivesController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/lockOpenDataDicAdPlaceFileItemDtoById", method = {RequestMethod.POST}, name = "解除卷号")
+    public HttpResult lockOpenDataDicAdPlaceFileItemDtoById(String id) {
+        try {
+            projectArchivesDataService.lockOpenDataDicAdPlaceFileItemDtoById(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getAdPlaceFileGroupDtoById", method = {RequestMethod.GET}, name = "get")
     public HttpResult getAdPlaceFileGroupDtoById(Integer id) {
         try {
