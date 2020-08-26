@@ -29,6 +29,14 @@ public class DocumentDao {
     @Autowired
     private DocumentOpinionMapper documentOpinionMapper;
 
+    public List<DocumentSend> getDocumentSendList(Integer projectId,String status){
+        DocumentSendExample example = new DocumentSendExample();
+        DocumentSendExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectIdEqualTo(projectId) ;
+        criteria.andStatusEqualTo(status) ;
+        return documentSendMapper.selectByExampleWithBLOBs(example);
+    }
+
     ///region 项目发文
     public List<DocumentSend> getDocumentSendList(DocumentSend documentSend) {
         DocumentSendExample example = new DocumentSendExample();

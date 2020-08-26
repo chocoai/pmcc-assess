@@ -88,6 +88,14 @@ public class BasicApplyBatchDetailService {
     @Autowired
     private BasicEstateSurveyRecordService basicEstateSurveyRecordService;
 
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailByProjectId(Integer projectId){
+        BasicApplyBatchDetail query = new BasicApplyBatchDetailVo();
+        query.setProjectId(projectId);
+        query.setBisDelete(false);
+        return basicApplyBatchDetailDao.getInfoList(query) ;
+    }
+
+
     /**
      * 通过applyBatchId获取
      *

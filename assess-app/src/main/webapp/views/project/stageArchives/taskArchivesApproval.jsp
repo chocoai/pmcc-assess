@@ -252,7 +252,7 @@
                                                         <span class="btn-label"><i class="fa fa-search"></i></span>
                                                         查询
                                                     </button>
-                                                    <c:if test="${xing_zheng_node == activityReName}" >
+                                                    <c:if test="${xing_zheng_node == activityReName}">
                                                         <button type="button" class="btn btn-primary btn-sm"
                                                                 onclick="objArchives.batchGroupHandel() ;">
                                                             <span class="btn-label"><i
@@ -339,7 +339,7 @@
                 data[item] = undefined;
             }
         });
-        console.log(data) ;
+        console.log(data);
         var table = $(objArchives.table.selector);
         var cols = [];
         cols.push({field: 'name', title: '档案名称', width: "10%"});
@@ -359,9 +359,18 @@
                 }
             }
         });
+        cols.push({
+            field: 'bisBinding', title: '必须设置卷号', width: "15%", formatter: function (value, row) {
+                if (value) {
+                    return "是";
+                } else {
+                    return "否";
+                }
+            }
+        });
 
         cols.push({field: 'fileViewName', title: '文档', width: "15%"});
-        var checkbox = '${xing_zheng_node}' == '${activityReName}' ;
+        var checkbox = '${xing_zheng_node}' == '${activityReName}';
         if (checkbox) {
             cols.push({
                 field: 'id', title: '操作', width: "15%", formatter: function (value, row, index) {
@@ -373,7 +382,7 @@
                     return str;
                 }
             });
-        }else {
+        } else {
             cols.push({field: 'saveLocation', title: '存放位置', width: "10%"});
             cols.push({field: 'number', title: '存放卷号', width: "10%"});
         }
@@ -388,27 +397,27 @@
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
             }
-        } ,checkbox);
+        }, checkbox);
     };
 
-    objArchives.batchGroupHandel = function() {
+    objArchives.batchGroupHandel = function () {
         var table = $(objArchives.table.selector);
         var rows = table.bootstrapTable('getSelections');
         if (rows.length == 0) {
             notifyWarning("提示", "请选择要设置的档案!");
-            return false ;
+            return false;
         }
         var count = 0;
         var idArray = [];
-        $.each(rows ,function ( k,item) {
-            if (item.groupId){
+        $.each(rows, function (k, item) {
+            if (item.groupId) {
                 count++;
             }
-            idArray.push(item.id) ;
-        }) ;
-        if (count != 0){
+            idArray.push(item.id);
+        });
+        if (count != 0) {
             notifyWarning("提示", "存在已经设置了卷号的档案");
-            return false ;
+            return false;
         }
         var box = $(objArchives.groupBox.selector);
         var frm = box.find("form");
@@ -416,7 +425,7 @@
         frm.validate();
         objArchives.targetId = idArray.join(",");
         box.modal("show");
-    } ;
+    };
 
     objArchives.groupHandel = function (id) {
         var box = $(objArchives.groupBox.selector);
@@ -441,12 +450,17 @@
             return false;
         }
         var data = formSerializeArray(frm);
+        var targetId = null;
+        //更新的时候不需要再次关联档案
+        if (!data.id) {
+            targetId = objArchives.targetId;
+        }
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/projectArchives/saveAdPlaceFileGroupDto",
             type: "post",
             dataType: "json",
-            data: {formData: JSON.stringify(data), targetId: objArchives.targetId},
+            data: {formData: JSON.stringify(data), targetId: targetId},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
@@ -680,7 +694,7 @@
                 }
                 saveApprovalform("");
             });
-        }else {
+        } else {
             saveApprovalform("");
         }
 
