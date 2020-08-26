@@ -660,18 +660,14 @@ public class GenerateHouseEntityService {
             }
             int size = equipmentList.size();
             for (int j = 0; j < size; j++) {
-                linkedHashSet.add(equipmentList.get(j).getName());
                 if (StringUtils.isNotBlank(equipmentList.get(j).getParameterIndex())) {
                     linkedHashSet.add(equipmentList.get(j).getParameterIndex());
                 }
                 linkedHashSet.add(baseDataDicService.getNameById(equipmentList.get(j).getEquipmentUse()));
-                linkedHashSet.add(baseDataDicService.getNameById(equipmentList.get(j).getCategory()));
-                if (StringUtils.isNotBlank(equipmentList.get(j).getPrice())) {
-                    linkedHashSet.add(baseDataDicService.getNameById(equipmentList.get(j).getPrice()));
-                }
+                linkedHashSet.add(equipmentList.get(j).getName());
             }
             if (CollectionUtils.isNotEmpty(linkedHashSet)) {
-                hashSet.add(String.format("%s%s%s", schemeJudgeObject.getNumber(), "号估价对象", StringUtils.join(linkedHashSet, "，")));
+                hashSet.add(String.format("%s%s%s", schemeJudgeObject.getNumber(), "号估价对象", StringUtils.join(linkedHashSet, "")));
                 linkedHashSet.clear();
             }
         }
