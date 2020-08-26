@@ -40,12 +40,12 @@
                             <div class="card-body">
                                 <form id="cmsContractInfo" class="form-horizontal">
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">
                                                     发文标题<span class="symbol required"></span>
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-7">
                                                     <label class="form-control">${documentSend.title}</label>
                                                 </div>
                                             </div>

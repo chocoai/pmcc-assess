@@ -163,16 +163,11 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </form>
                                 </div>
-
                                 <div class="card-body">
-                                    <div id="generateReportGroupTool${generationVo.areaGroupId}">
-
-                                    </div>
+                                    <div id="generateReportGroupTool${generationVo.areaGroupId}"></div>
                                 </div>
-
                             </div>
                         </div>
                         <script type="text/javascript">
