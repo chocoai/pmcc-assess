@@ -1099,7 +1099,77 @@ $(function () {
                     }
                 });
             }
-        },
+        }
+    };
+
+    assessCommon.run = function (data, url, type, callback, funParams, errorCallback) {
+        Loading.progressShow();
+        $.ajax({
+            type: type,
+            url: getContextPath() + url,
+            data: data,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    if (funParams) {
+                        if (funParams == 'save') {
+                            notifySuccess("成功", "保存数据成功!");
+                        }
+                        if (funParams == 'add') {
+                            notifySuccess("成功", "添加数据成功!");
+                        }
+                        if (funParams == 'update') {
+                            notifySuccess("成功", "修改数据成功!");
+                        }
+                        if (funParams == 'query') {
+                            notifySuccess("成功", "查询数据成功!");
+                        }
+                        if (funParams == 'delete') {
+                            notifySuccess("成功", "删除数据成功!");
+                        }
+                    }
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
+                    if (errorCallback) {
+                        errorCallback();
+                    }
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
+    };
+    assessCommon.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
+        var deleteParams = false;
+        if (funParams) {
+            if (funParams == 'delete') {
+                deleteParams = true;
+            }
+        }
+        if (deleteParams) {
+            AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
+                assessCommon.run(data, url, type, callback, funParams, errorCallback);
+            });
+        } else {
+            assessCommon.run(data, url, type, callback, funParams, errorCallback);
+        }
+    };
+
+    assessCommon.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
+        assessCommon.ajaxServerFun(data, url, type, callback, null, errorCallback);
     };
 
     window.AssessCommon = assessCommon;

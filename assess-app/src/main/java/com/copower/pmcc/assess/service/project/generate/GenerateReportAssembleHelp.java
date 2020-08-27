@@ -200,7 +200,7 @@ public final class GenerateReportAssembleHelp {
         }
         //作业开始时间
         if (Objects.equal(ReportFieldCommonEnum.CommonHomeWorkStartTime.getName(), name)) {
-            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHomeWorkStartTime());
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHomeWorkStartTime(generateReportInfo.getHomeWorkStartTime()));
         }
 
         //机构住所

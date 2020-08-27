@@ -431,37 +431,10 @@
     }
 
     houseCommon.getPriceExportColumns = function(tenementType){
-        var temp;
-        if (houseCommon.isNotBlank(tenementType)) {
-            if (tenementType == '住宅'|| tenementType == '办公') {
-                temp = "residence";
-            }
-            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-                temp = "store";
-            }
-            if (tenementType == '餐饮'||tenementType == '酒店') {
-                temp = "hotel";
-            }
-            if (tenementType == '生产') {
-                temp = "production";
-            }
-            if (tenementType == '仓储') {
-                temp = "storage";
-            }
-            var columns = [{key:"houseShape",value:"房间形状"},{key:"shapeRemark",value:"形状说明"},{key:"specialFactors",value:"特殊因素"}];
-
-            $("#" + houseHuxingPrice.prototype.config().frm).find("."+temp).find(".control-label").each(function () {
-                var column = {};
-                column.value = $.trim($(this).text());
-                if(houseCommon.isNotBlank($(this).next().find("input").attr("name"))){
-                    column.key =  $(this).next().find("input").attr("name");
-                }else{
-                    column.key =  $(this).next().find("select").attr("name");
-                }
-                columns.push(column);
+        if (tenementType) {
+            AssessCommon.ajaxServerMethod({tenementType: tenementType,num:1}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                houseCommon.houseHuxingForm.find("input[name='priceExportColumns']").val(JSON.stringify(value));
             });
-
-            houseCommon.houseHuxingForm.find("input[name='priceExportColumns']").val(JSON.stringify(columns));
         }
     };
 
@@ -1033,44 +1006,10 @@
             return;
         }
         var html = ' <option value="">-请选择-</option>';
-        if (tenementType == '住宅') {
-            html += '<option value="卧室" data-desc="室">卧室</option>';
-            html += '<option value="客厅" data-desc="厅">客厅</option>';
-            html += '<option value="中餐厅">中餐厅</option>';
-            html += '<option value="西餐厅">西餐厅</option>';
-            html += '<option value="茶室">茶室</option>';
-            html += '<option value="影视室">影视室</option>';
-        }
-        if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-            html += '<option value="商间">商间</option>';
-            html += '<option value="商区">商区</option>';
-        }
-        if (tenementType == '餐饮'||tenementType == '酒店') {
-            html += '<option value="住宿" data-child="标间(普通),标间(商务),标间(高级),单间(普通),单间(商务),单间(高级),套房(普通),套房(商务),套房(高级)">住宿</option>';
-            html += '<option value="商业" data-child="会议室,会议厅,商务厅,影视厅">商业</option>';
-            html += '<option value="餐饮" data-child="包间(普通),包间(标准),包间(豪华),餐饮大厅,共用餐区">餐饮</option>';
-        }
-        if (tenementType == '办公') {
-            html += '<option value="会议室">会议室</option>';
-            html += '<option value="会客室">会客室</option>';
-            html += '<option value="休息室">休息室</option>';
-            html += '<option value="办公室">办公室</option>';
-            html += '<option value="办公区">办公区</option>';
-            html += '<option value="档案室">档案室</option>';
-            html += '<option value="影视室">影视室</option>';
-        }
-        if (tenementType == '生产') {
-            html += '<option value="生产车间">生产车间</option>';
-            html += '<option value="维修车间">维修车间</option>';
-            html += '<option value="成品车间">成品车间</option>';
-            html += '<option value="热力车间">热力车间</option>';
-            html += '<option value="中转车间">中转车间</option>';
-        }
-        if (tenementType == '仓储') {
-            html += '<option value="储库">储库</option>';
-            html += '<option value="储仓">储仓</option>';
-        }
-        $('#huxingSpecialPart').empty().append(html);
+        AssessCommon.ajaxServerMethod({tenementType: tenementType,num:3}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+            html += value ;
+            $('#huxingSpecialPart').empty().append(html);
+        });
     };
 
     houseCommon.huxingSpecialPartChange = function (_this, isCategory) {
@@ -1093,7 +1032,7 @@
             }
             houseCommon.appendHuxingItemHtml($form, name, null, descName);
         }
-    }
+    };
 
     houseCommon.huxingCommonPartChange = function (_this) {
         var form = $(_this).closest('form');

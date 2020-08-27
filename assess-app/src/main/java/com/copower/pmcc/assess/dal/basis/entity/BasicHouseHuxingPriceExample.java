@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class BasicHouseHuxingPriceExample {
+    /**
+     * tb_basic_house_huxing_price
+     */
     protected String orderByClause;
 
+    /**
+     * tb_basic_house_huxing_price
+     */
     protected boolean distinct;
 
+    /**
+     * tb_basic_house_huxing_price
+     */
     protected List<Criteria> oredCriteria;
 
     public BasicHouseHuxingPriceExample() {
@@ -65,6 +74,9 @@ public class BasicHouseHuxingPriceExample {
         distinct = false;
     }
 
+    /**
+     * tb_basic_house_huxing_price
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -2614,6 +2626,9 @@ public class BasicHouseHuxingPriceExample {
         }
     }
 
+    /**
+     * tb_basic_house_huxing_price
+     */
     public static class Criterion {
         private String condition;
 

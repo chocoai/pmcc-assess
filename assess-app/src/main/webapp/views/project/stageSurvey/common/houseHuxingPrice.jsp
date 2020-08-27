@@ -164,6 +164,13 @@
                                                 <input type="text" placeholder="特殊因素"
                                                        name="specialFactors" class="form-control input-full">
                                             </div>
+                                            <label class="col-sm-2 control-label">
+                                                坐落
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="坐落"
+                                                       name="seat" class="form-control input-full">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
