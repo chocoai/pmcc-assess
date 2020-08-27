@@ -190,10 +190,7 @@
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
-
-
 </body>
-
 </html>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>

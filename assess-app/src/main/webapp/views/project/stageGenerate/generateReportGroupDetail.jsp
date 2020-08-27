@@ -77,14 +77,12 @@
         </div>
     </div>
 </div>
-
 <script type="text/html" id="generateReportGroupToolView">
-
     <div class="card full-height">
         <div class="card-header collapse-link">
             <div class="card-head-row">
                 <div class="card-title">
-                       {name}
+                    {name}
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span
@@ -95,60 +93,67 @@
         </div>
         <div class="card-body">
             <form class="form-horizontal" enctype="multipart/form-data">
-
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
                             <input type="hidden" data-name="id" value="{id}">
-
                             <label class="col-sm-1 control-label">估价对象</label>
-
                             <div class="col-sm-3">
                                 <label class="form-control input-full">{fullName}</label>
                             </div>
-
-
-
                             <div class="col-sm-7">
-
-
                                 <button type="button" class="btn btn-sm  btn-info"
                                         onclick="reportGroupObj.editData(this ,'{id}') ;">
                                     <i class="fa fa-search fa-white"></i>
                                 </button>
-
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
-                    <div class="row form-group" style="display: none;" id="reportType{areaGroupId}{id}${reportType.id}" data-name="reportType{areaGroupId}{id}">
+                    <div class="row form-group" style="display: none;" id="reportType{areaGroupId}{id}${reportType.id}"
+                         data-name="reportType{areaGroupId}{id}">
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
-
                                 <label class="col-sm-1">
                                         ${reportType.name}
                                 </label>
-
                                 <div class="col-sm-3">
                                     <!-- 报告附件id -->
                                     <div id="_${reportType.fieldName}{areaGroupId}{id}"></div>
                                 </div>
-
                                 <label class="col-sm-1">
                                         ${reportType.name} 附件
                                 </label>
-
                                 <div class="col-sm-3">
                                     <!-- 报告附件id -->
                                     <div id="_${reportType.fieldName}_Attachment{areaGroupId}{id}"></div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <c:if test="${flog=='approval'}">
+                                        <input id="archiveReport_{areaGroupId}_{id}_${reportType.fieldName}"
+                                               name="archiveReport_{areaGroupId}_{id}_${reportType.fieldName}"
+                                               placeholder="归档报告"
+                                               class="form-control input-full"
+                                               type="file">
+                                    </c:if>
+                                    <div id="_archiveReport_{areaGroupId}_{id}_${reportType.fieldName}"></div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <c:if test="${flog=='approval'}">
+                                        <input id="archiveReportFile_{areaGroupId}_{id}_${reportType.fieldName}"
+                                               name="archiveReportFile_{areaGroupId}_{id}_${reportType.fieldName}"
+                                               placeholder="归档报告附件"
+                                               class="form-control input-full"
+                                               type="file">
+                                    </c:if>
+                                    <div id="_archiveReportFile_{areaGroupId}_{id}_${reportType.fieldName}"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
-
             </form>
         </div>
     </div>
@@ -330,9 +335,6 @@
         });
     };
 
-
-
-
     reportGroupObj.loadGenerateReportItemList = function (masterId) {
         var table = reportGroupObj.handleJquery(reportGroupObj.reportItemList);
         var cols = [];
@@ -361,81 +363,122 @@
         });
     };
 
-    reportGroupObj.reportTypeChangeEvent = function(data){
-        var target = $("#generateReportGroupTool" + data.areaGroupId) ;
-        var tempName = 'reportType'+data.areaGroupId+data.id;
+    reportGroupObj.reportTypeChangeEvent = function (data) {
+        var target = $("#generateReportGroupTool" + data.areaGroupId);
+        var tempName = 'reportType' + data.areaGroupId + data.id;
         target.find("div[data-name=" + tempName + "]").hide();
         if (data.reportType) {
             var ids = data.reportType.split(",");
-            if ($.isArray(ids)){
+            if ($.isArray(ids)) {
                 $.each(ids, function (i, node) {
                     $("#" + tempName + node).show();
                 });
             }
         }
-    } ;
+    };
 
 
-
-    reportGroupObj.fileShow = function(fieldsName, deleteFlag, id){
+    reportGroupObj.fileShow = function (fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({
             target: fieldsName,
             //showMode: 'table',
             formData: {
                 fieldsName: fieldsName,
                 tableName: AssessDBKey.GenerateReportGroup,
-                tableId: id == undefined ? 0 : id ,
+                tableId: id == undefined ? 0 : id,
             },
             editFlag: true,
             deleteFlag: false,
             signatureFlag: '${activityCnName}'.indexOf("盖章") > -1
         })
-    } ;
+    };
 
-    reportGroupObj.fileShow2 = function(fieldsName, deleteFlag, id){
+    reportGroupObj.fileShow2 = function (fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({
             target: fieldsName,
             //showMode: 'table',
             formData: {
                 fieldsName: fieldsName,
                 tableName: AssessDBKey.GenerateReportGroup,
-                tableId: id == undefined ? 0 : id ,
+                tableId: id == undefined ? 0 : id,
             },
             editFlag: true,
             deleteFlag: false,
             signatureFlag: false
         })
-    } ;
+    };
 
     reportGroupObj.init = function (generationVo) {
         var reportInfoId = generationVo.id;
         var areaGroupId = generationVo.areaGroupId;
-        var html = "" ;
-        html += "<button class='btn btn-sm btn-success' type='button' onclick='reportGroupObj.appendHTML(reportInfoId,areaGroupId);'>" ;
-        html += "<i class='fa fa-plus'></i>" ;
-        html += "</button>" ;
-        html = html.replace(/reportInfoId/g,reportInfoId);
-        html = html.replace(/areaGroupId/g,areaGroupId);
+        var html = "";
+        html += "<button class='btn btn-sm btn-success' type='button' onclick='reportGroupObj.appendHTML(reportInfoId,areaGroupId);'>";
+        html += "<i class='fa fa-plus'></i>";
+        html += "</button>";
+        html = html.replace(/reportInfoId/g, reportInfoId);
+        html = html.replace(/areaGroupId/g, areaGroupId);
         (function (target) {
-            target.empty() ;
+            target.empty();
             reportGroupObj.getGenerateReportGroupList(areaGroupId, function (data) {
                 if (data.length >= 1) {
                     $.each(data, function (i, item) {
                         target.append(reportGroupObj.replaceHtml(item));
-                        reportGroupObj.reportTypeChangeEvent(item) ;
+                        reportGroupObj.reportTypeChangeEvent(item);
                         getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
                             $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
-                                reportGroupObj.fileShow(n + "" + areaGroupId+""+item.id, true, item.id);
-                                reportGroupObj.fileShow(n + "_Attachment" + areaGroupId+""+item.id, true, item.id);
+                                reportGroupObj.fileShow(n + "" + areaGroupId + "" + item.id, true, item.id);
+                                reportGroupObj.fileShow(n + "_Attachment" + areaGroupId + "" + item.id, true, item.id);
+
+                                FileUtils.uploadFiles({
+                                    buttonText:'归档报告',
+                                    target: "archiveReport_" + areaGroupId + "_" + item.id + "_" + n,
+                                    disabledTarget: "btn_submit",
+                                    formData: {
+                                        fieldsName: "archiveReport_" + areaGroupId + "_" + item.id + "_" + n,
+                                        tableName: AssessDBKey.GenerateReportItem,
+                                        tableId: item.id
+                                    },
+                                    deleteFlag: true
+                                });
+                                FileUtils.getFileShows({
+                                    target: "archiveReport_" + areaGroupId + "_" + item.id + "_" + n,
+                                    formData: {
+                                        fieldsName: "archiveReport_" + areaGroupId + "_" + item.id + "_" + n,
+                                        tableName: AssessDBKey.GenerateReportItem,
+                                        tableId: item.id
+                                    },
+                                    deleteFlag: ${flog=='approval'?true:false}
+                                });
+
+                                FileUtils.uploadFiles({
+                                    buttonText:'归档报告附件',
+                                    target: "archiveReportFile_" + areaGroupId + "_" + item.id + "_" + n,
+                                    disabledTarget: "btn_submit",
+                                    formData: {
+                                        fieldsName: "archiveReportFile_" + areaGroupId + "_" + item.id + "_" + n,
+                                        tableName: AssessDBKey.GenerateReportItem,
+                                        tableId: item.id
+                                    },
+                                    deleteFlag: true
+                                });
+                                FileUtils.getFileShows({
+                                    target: "archiveReportFile_" + areaGroupId + "_" + item.id + "_" + n,
+                                    formData: {
+                                        fieldsName: "archiveReportFile_" + areaGroupId + "_" + item.id + "_" + n,
+                                        tableName: AssessDBKey.GenerateReportItem,
+                                        tableId: item.id
+                                    },
+                                    deleteFlag: ${flog=='approval'?true:false}
+                                });
                             });
                         });
                     });
                     setTimeout(function () {
                         var group = target.find(".form-group").first();
                         var btnX = group.find(".btn-warning");
-                        var parent =  btnX.parent() ;
-                        btnX.remove() ;
-                        parent.append(html) ;
+                        var parent = btnX.parent();
+                        btnX.remove();
+                        parent.append(html);
                     }, 100);
                 } else {
                     var item = {reportInfoId: reportInfoId, areaGroupId: areaGroupId, name: "组1"};

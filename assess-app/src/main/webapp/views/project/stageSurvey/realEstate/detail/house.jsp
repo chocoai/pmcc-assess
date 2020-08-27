@@ -229,7 +229,7 @@
                                         <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
                                     </c:if>
                                     <%@include file="/views/project/stageSurvey/commonDetail/houseHuxingPrice.jsp" %>
-                                    <%@include file="/views/project/stageSurvey/commonDetail/estateSurveyRecord.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/commonDetail/houseSurveyRecord.jsp" %>
                                 </div>
                             </div>
                         </div>
