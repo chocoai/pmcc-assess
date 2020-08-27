@@ -636,50 +636,36 @@
     surePrice.autoGenerateFactor = function () {
         var tenementType = $("#modal_factor").find('[name=tenementType]').val();
         var temp;
-        if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
-            if (tenementType == '住宅' || tenementType == '办公') {
-                temp = "residence";
-            }
-            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-                temp = "store";
-            }
-            if (tenementType == '餐饮酒店') {
-                temp = "hotel";
-            }
-            if (tenementType == '生产') {
-                temp = "production";
-            }
-            if (tenementType == '仓储') {
-                temp = "storage";
-            }
-            $("#tbody_factor").empty();
-            var html = '';
-            //楼层因素
-            var buildFactor = $("#adjustFatorTemp").html();
-            buildFactor = buildFactor.replace(/{factor}/g, '楼层');
-            buildFactor = buildFactor.replace(/{remark}/g, '');
-            buildFactor = buildFactor.replace(/{coefficient}/g, '');
-            html += buildFactor;
-            //面积因素
-            var areaFactor = $("#adjustFatorTemp").html();
-            areaFactor = areaFactor.replace(/{factor}/g, '评估面积');
-            areaFactor = areaFactor.replace(/{remark}/g, '');
-            areaFactor = areaFactor.replace(/{coefficient}/g, '');
-            html += areaFactor;
-            $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
-                var item = $("#adjustFatorTemp").html();
-                var factor = $.trim($(this).text());
-                item = item.replace(/{factor}/g, factor);
-                item = item.replace(/{remark}/g, '');
-                item = item.replace(/{coefficient}/g, '');
-                html += item;
+        if (tenementType) {
+            AssessCommon.ajaxServerMethod({tenementType: tenementType,num:4}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                temp = value ;
+                $("#tbody_factor").empty();
+                var html = '';
+                //楼层因素
+                var buildFactor = $("#adjustFatorTemp").html();
+                buildFactor = buildFactor.replace(/{factor}/g, '楼层');
+                buildFactor = buildFactor.replace(/{remark}/g, '');
+                buildFactor = buildFactor.replace(/{coefficient}/g, '');
+                html += buildFactor;
+                //面积因素
+                var areaFactor = $("#adjustFatorTemp").html();
+                areaFactor = areaFactor.replace(/{factor}/g, '评估面积');
+                areaFactor = areaFactor.replace(/{remark}/g, '');
+                areaFactor = areaFactor.replace(/{coefficient}/g, '');
+                html += areaFactor;
+                $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
+                    var item = $("#adjustFatorTemp").html();
+                    var factor = $.trim($(this).text());
+                    item = item.replace(/{factor}/g, factor);
+                    item = item.replace(/{remark}/g, '');
+                    item = item.replace(/{coefficient}/g, '');
+                    html += item;
+                });
+                $("#tbody_factor").append(html);
             });
-            $("#tbody_factor").append(html);
-        } else {
+        }else {
             notifyInfo("提示", "没有物业类型无法生成")
         }
-
-
     }
 
     //类型调整
@@ -874,43 +860,28 @@
                     var factorColumns = [];
                     if (result.data) {
                         var tenementType = result.data.tenementType;
-                        var temp;
-                        if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
-                            if (tenementType == '住宅' || tenementType == '办公') {
-                                temp = "residence";
-                            }
-                            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-                                temp = "store";
-                            }
-                            if (tenementType == '餐饮酒店') {
-                                temp = "hotel";
-                            }
-                            if (tenementType == '生产') {
-                                temp = "production";
-                            }
-                            if (tenementType == '仓储') {
-                                temp = "storage";
-                            }
+                        if (tenementType) {
+                            AssessCommon.ajaxServerMethod({tenementType: tenementType,num:4}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                                $("#" + houseHuxingPrice.prototype.config().frm).find("." + value).find(".control-label").each(function () {
+                                    var factorColumn = {};
+                                    factorColumn.value = $.trim($(this).text()) + "因素";
+                                    if (houseHuxingPrice.prototype.isNotBlank($(this).next().find("input").attr("name"))) {
+                                        factorColumn.key = $(this).next().find("input").attr("name") + "_factor";
+                                    } else {
+                                        factorColumn.key = $(this).next().find("select").attr("name") + "_factor";
+                                    }
+                                    factorColumns.push(factorColumn);
+                                });
 
-                            $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
-                                var factorColumn = {};
-                                factorColumn.value = $.trim($(this).text()) + "因素";
-                                if (houseHuxingPrice.prototype.isNotBlank($(this).next().find("input").attr("name"))) {
-                                    factorColumn.key = $(this).next().find("input").attr("name") + "_factor";
-                                } else {
-                                    factorColumn.key = $(this).next().find("select").attr("name") + "_factor";
-                                }
-                                factorColumns.push(factorColumn);
+                                var pid = ${projectPlanDetails.judgeObjectId};
+                                var href = "${pageContext.request.contextPath}/schemeSurePrice/generateAndExport";
+                                href += "?pid=" + pid + "&factorColumns=" + encodeURIComponent(JSON.stringify(factorColumns));
 
+                                window.open(href, "");
                             });
-
                         }
                     }
-                    var pid = ${projectPlanDetails.judgeObjectId};
-                    var href = "${pageContext.request.contextPath}/schemeSurePrice/generateAndExport";
-                    href += "?pid=" + pid + "&factorColumns=" + encodeURIComponent(JSON.stringify(factorColumns));
 
-                    window.open(href, "");
                 }
             },
             error: function (result) {
@@ -1037,32 +1008,26 @@
     surePrice.loadHouseRoomList = function (houseId, tenementType) {
         var cols = commonColumn.houseRoomColumn();
         var temp = [];
-        if (tenementType == '住宅' || tenementType == '办公') {
-            temp = commonColumn.houseRoomResidence();
-        } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-            temp = commonColumn.houseRoomStore();
-        } else if (tenementType == '餐饮酒店') {
-            temp = commonColumn.houseRoomHotel();
-        } else if (tenementType == '生产') {
-            temp = commonColumn.houseRoomProduction();
-        } else if (tenementType == '仓储') {
-            temp = commonColumn.houseRoomStorage();
+        if (tenementType) {
+            AssessCommon.ajaxServerMethod({tenementType: tenementType,num:2}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                temp = eval(value) ;
+                $.each(temp, function (i, item) {
+                    cols.push(item);
+                });
+                cols.push({field: 'fileViewName', title: '附件'});
+                $("#HouseRoomList").bootstrapTable('destroy');
+                TableInit("HouseRoomList", getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
+                    houseId: houseId
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            });
         }
-        $.each(temp, function (i, item) {
-            cols.push(item);
-        })
-        cols.push({field: 'fileViewName', title: '附件'});
-        $("#HouseRoomList").bootstrapTable('destroy');
-        TableInit("HouseRoomList", getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-            houseId: houseId
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
     }
 </script>
 

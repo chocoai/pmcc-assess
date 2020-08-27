@@ -3894,7 +3894,7 @@ public class GenerateBaseDataService {
                 linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("floor", basicHouseHuxingPrice.getFloor())));
             }
 
-            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "住宅") || StringUtils.contains(basicUnitHuxing.getTenementType(), "办公")) {
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), BasicTenementTypeEnum.RESIDENTIAL.getName()) || StringUtils.contains(basicUnitHuxing.getTenementType(), BasicTenementTypeEnum.OFFICE.getName())) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("通风");
                     linkedList.add("采光");
@@ -3913,8 +3913,8 @@ public class GenerateBaseDataService {
                 }
             }
 
-            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "商铺") || StringUtils.contains(basicUnitHuxing.getTenementType(), "商场")
-                    || StringUtils.contains(basicUnitHuxing.getTenementType(), "车位")) {
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), BasicTenementTypeEnum.SHOP.getName()) || StringUtils.contains(basicUnitHuxing.getTenementType(), BasicTenementTypeEnum.MARKET.getName())
+                    || StringUtils.contains(basicUnitHuxing.getTenementType(), BasicTenementTypeEnum.PARKING_SPACE.getName())) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("相邻位置");
                     linkedList.add("方位");
@@ -3930,7 +3930,7 @@ public class GenerateBaseDataService {
                     linkedList.add(biFunction.apply(examineHousePriceDtoList, new MyEntry<>("distance", basicHouseHuxingPrice.getDistance())));
                 }
             }
-            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "生产")) {
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), BasicTenementTypeEnum.PRODUCE.getName())) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("跨长");
                     linkedList.add("跨数");
@@ -3951,7 +3951,7 @@ public class GenerateBaseDataService {
 
                 }
             }
-            if (StringUtils.contains(basicUnitHuxing.getTenementType(), "仓储")) {
+            if (StringUtils.contains(basicUnitHuxing.getTenementType(), BasicTenementTypeEnum.WARE_HOUSE.getName())) {
                 if (basicHouseHuxingPrice == null) {
                     linkedList.add("计量标准");
                     linkedList.add("仓储要求");

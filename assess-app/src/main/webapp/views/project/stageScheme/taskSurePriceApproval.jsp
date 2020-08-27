@@ -442,32 +442,26 @@
         // if(houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text()=="多层"){
         //     cols.push({field: 'currentFloor', title: '所在楼层'});
         // }
-        if (tenementType == '住宅' || tenementType == '办公') {
-            temp = commonColumn.houseRoomResidence();
-        } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-            temp = commonColumn.houseRoomStore();
-        } else if (tenementType == '餐饮酒店') {
-            temp = commonColumn.houseRoomHotel();
-        } else if (tenementType == '生产') {
-            temp = commonColumn.houseRoomProduction();
-        } else if (tenementType == '仓储') {
-            temp = commonColumn.houseRoomStorage();
+        if (tenementType) {
+            AssessCommon.ajaxServerMethod({tenementType: tenementType,num:2}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                temp = eval(value) ;
+                $.each(temp, function (i, item) {
+                    cols.push(item);
+                });
+                cols.push({field: 'fileViewName', title: '附件'});
+                $("#HouseRoomList").bootstrapTable('destroy');
+                TableInit("HouseRoomList", getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
+                    houseId: houseId
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            });
         }
-        $.each(temp, function (i, item) {
-            cols.push(item);
-        })
-        cols.push({field: 'fileViewName', title: '附件'});
-        $("#HouseRoomList").bootstrapTable('destroy');
-        TableInit("HouseRoomList", getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-            houseId: houseId
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
     }
 </script>
 
@@ -494,33 +488,27 @@
             var cols = commonColumn.houseHuxingPriceColumn();
             var tenementType = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='tenementType']").val();
             var temp = [];
-            if (tenementType == '住宅' || tenementType == '办公') {
-                temp = commonColumn.houseRoomResidence();
-            } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-                temp = commonColumn.houseRoomStore();
-            } else if (tenementType == '餐饮酒店') {
-                temp = commonColumn.houseRoomHotel();
-            } else if (tenementType == '生产') {
-                temp = commonColumn.houseRoomProduction();
-            } else if (tenementType == '仓储') {
-                temp = commonColumn.houseRoomStorage();
+            if (tenementType) {
+                AssessCommon.ajaxServerMethod({tenementType: tenementType,num:2}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                    temp = eval(value) ;
+                    $.each(temp, function (i, item) {
+                        cols.push(item);
+                    });
+                    cols.push({field: 'price', title: '价格'});
+                    cols.push({field: 'adjustFactor', title: '因素'});
+                    $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+                    TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
+                        houseId: houseId
+                    }, {
+                        showColumns: false,
+                        showRefresh: false,
+                        search: false,
+                        onLoadSuccess: function () {
+                            $('.tooltips').tooltip();
+                        }
+                    });
+                });
             }
-            $.each(temp, function (i, item) {
-                cols.push(item);
-            })
-            cols.push({field: 'price', title: '价格'});
-            cols.push({field: 'adjustFactor', title: '因素'});
-            $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
-                houseId: houseId
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
         },
         showTableModel: function () {
             var houseId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val();
