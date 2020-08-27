@@ -39,11 +39,11 @@
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 control-label">
-                                                        报告出具日期<span class="symbol required"></span>
+                                                        作业开始时间<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full"><fmt:formatDate
-                                                                value='${generationVo.reportIssuanceDate}'
+                                                                value='${generationVo.homeWorkStartTime}'
                                                                 pattern='yyyy-MM-dd'/></label>
                                                     </div>
                                                     <label class="col-sm-1 control-label">
@@ -88,6 +88,22 @@
                                                     <div class="col-sm-3">
                                                         <label class="form-control input-full">${generationVo.realEstateAppraiserName}</label>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">
+                                                        报告出具日期<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full"><fmt:formatDate
+                                                                value='${generationVo.reportIssuanceDate}'
+                                                                pattern='yyyy-MM-dd'/></label>
+                                                    </div>
+
+
                                                 </div>
                                             </div>
                                         </div>
