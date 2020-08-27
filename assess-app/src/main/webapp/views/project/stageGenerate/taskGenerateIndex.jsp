@@ -39,15 +39,15 @@
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 control-label">
-                                                        报告出具日期<span class="symbol required"></span>
+                                                        作业开始时间<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-sm-3">
-                                                        <input type="text" name="reportIssuanceDate"
-                                                               placeholder="报告出具日期"
+                                                        <input type="text" name="homeWorkStartTime"
+                                                               placeholder="作业开始时间"
                                                                class="form-control input-full date-picker dbdate"
                                                                pattern='yyyy-MM-dd'
                                                                data-date-format="yyyy-mm-dd" required
-                                                               value="<fmt:formatDate value='${generationVo.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
+                                                               value="<fmt:formatDate value='${generationVo.homeWorkStartTime}' pattern='yyyy-MM-dd'/>">
                                                     </div>
                                                     <label class="col-sm-1 control-label">
                                                         作业结束时间<span class="symbol required"></span>
@@ -116,6 +116,23 @@
                                                                 class="form-control input-full search-select select2"
                                                                 required="required">
                                                         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">
+                                                        报告出具日期<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="reportIssuanceDate"
+                                                               placeholder="报告出具日期"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               pattern='yyyy-MM-dd'
+                                                               data-date-format="yyyy-mm-dd" required
+                                                               value="<fmt:formatDate value='${generationVo.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
                                                     </div>
                                                 </div>
                                             </div>

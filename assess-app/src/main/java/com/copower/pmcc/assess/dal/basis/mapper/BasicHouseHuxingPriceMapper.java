@@ -14,7 +14,7 @@ public interface BasicHouseHuxingPriceMapper {
 
     int insert(BasicHouseHuxingPrice record);
 
-    int insertSelective(BasicHouseHuxingPrice record);
+    int insertSelective(@Param("record") BasicHouseHuxingPrice record, @Param("selective") BasicHouseHuxingPrice.Column ... selective);
 
     List<BasicHouseHuxingPrice> selectByExampleWithBLOBs(BasicHouseHuxingPriceExample example);
 
@@ -22,15 +22,19 @@ public interface BasicHouseHuxingPriceMapper {
 
     BasicHouseHuxingPrice selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") BasicHouseHuxingPrice record, @Param("example") BasicHouseHuxingPriceExample example);
+    int updateByExampleSelective(@Param("record") BasicHouseHuxingPrice record, @Param("example") BasicHouseHuxingPriceExample example, @Param("selective") BasicHouseHuxingPrice.Column ... selective);
 
     int updateByExampleWithBLOBs(@Param("record") BasicHouseHuxingPrice record, @Param("example") BasicHouseHuxingPriceExample example);
 
     int updateByExample(@Param("record") BasicHouseHuxingPrice record, @Param("example") BasicHouseHuxingPriceExample example);
 
-    int updateByPrimaryKeySelective(BasicHouseHuxingPrice record);
+    int updateByPrimaryKeySelective(@Param("record") BasicHouseHuxingPrice record, @Param("selective") BasicHouseHuxingPrice.Column ... selective);
 
     int updateByPrimaryKeyWithBLOBs(BasicHouseHuxingPrice record);
 
     int updateByPrimaryKey(BasicHouseHuxingPrice record);
+
+    int batchInsert(@Param("list") List<BasicHouseHuxingPrice> list);
+
+    int batchInsertSelective(@Param("list") List<BasicHouseHuxingPrice> list, @Param("selective") BasicHouseHuxingPrice.Column ... selective);
 }

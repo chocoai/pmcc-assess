@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class GenerateReportInfoExample {
+    /**
+     * tb_generate_report_info
+     */
     protected String orderByClause;
 
+    /**
+     * tb_generate_report_info
+     */
     protected boolean distinct;
 
+    /**
+     * tb_generate_report_info
+     */
     protected List<Criteria> oredCriteria;
 
     public GenerateReportInfoExample() {
@@ -64,6 +73,9 @@ public class GenerateReportInfoExample {
         distinct = false;
     }
 
+    /**
+     * tb_generate_report_info
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -532,6 +544,66 @@ public class GenerateReportInfoExample {
 
         public Criteria andReportIssuanceDateNotBetween(Date value1, Date value2) {
             addCriterion("report_issuance_date not between", value1, value2, "reportIssuanceDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeIsNull() {
+            addCriterion("home_work_start_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeIsNotNull() {
+            addCriterion("home_work_start_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeEqualTo(Date value) {
+            addCriterion("home_work_start_time =", value, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeNotEqualTo(Date value) {
+            addCriterion("home_work_start_time <>", value, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeGreaterThan(Date value) {
+            addCriterion("home_work_start_time >", value, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("home_work_start_time >=", value, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeLessThan(Date value) {
+            addCriterion("home_work_start_time <", value, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeLessThanOrEqualTo(Date value) {
+            addCriterion("home_work_start_time <=", value, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeIn(List<Date> values) {
+            addCriterion("home_work_start_time in", values, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeNotIn(List<Date> values) {
+            addCriterion("home_work_start_time not in", values, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeBetween(Date value1, Date value2) {
+            addCriterion("home_work_start_time between", value1, value2, "homeWorkStartTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHomeWorkStartTimeNotBetween(Date value1, Date value2) {
+            addCriterion("home_work_start_time not between", value1, value2, "homeWorkStartTime");
             return (Criteria) this;
         }
 
@@ -1463,6 +1535,9 @@ public class GenerateReportInfoExample {
         }
     }
 
+    /**
+     * tb_generate_report_info
+     */
     public static class Criterion {
         private String condition;
 

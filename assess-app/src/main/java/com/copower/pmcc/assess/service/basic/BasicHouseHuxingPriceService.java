@@ -241,6 +241,8 @@ public class BasicHouseHuxingPriceService {
         base.put("declareName", "权证名称");
         base.put("area", "面积");
         base.put("floor", "楼层");
+        base.put("seat", "坐落");
+        base.put("layerHeight", "层高");
         if (StringUtils.isNotEmpty(source)) {
             base.put("price", "价格");
             base.put("adjustFactor", "因素");

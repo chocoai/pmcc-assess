@@ -3144,8 +3144,11 @@ public class GenerateBaseDataService {
      *
      * @return
      */
-    public String getHomeWorkStartTime() {
-        return DateUtils.format(projectInfo.getGmtCreated(), DateUtils.DATE_CHINESE_PATTERN);
+    public String getHomeWorkStartTime(Date start) {
+        if (start == null) {
+            start = projectInfo.getGmtCreated();
+        }
+        return DateUtils.format(start, DateUtils.DATE_CHINESE_PATTERN);
     }
 
     /**

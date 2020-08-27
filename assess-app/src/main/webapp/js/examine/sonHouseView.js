@@ -24,41 +24,35 @@ houseHuxingPrice.prototype = {
         var cols = commonColumn.houseHuxingPriceColumn();
         var temp = [];
         var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
-        if (tenementType == '住宅' || tenementType == '办公') {
-            temp = commonColumn.houseRoomResidence();
-        } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-            temp = commonColumn.houseRoomStore();
-        } else if (tenementType == '餐饮' || tenementType == '酒店') {
-            temp = commonColumn.houseRoomHotel();
-        } else if (tenementType == '生产') {
-            temp = commonColumn.houseRoomProduction();
-        } else if (tenementType == '仓储') {
-            temp = commonColumn.houseRoomStorage();
+        if (tenementType) {
+            AssessCommon.ajaxServerMethod({tenementType: tenementType,num:2}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                temp = eval(value) ;
+                $.each(temp, function (i, item) {
+                    cols.push(item);
+                }) ;
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                        str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                        str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="装修" onclick="houseHuxingPrice.prototype.showDecorateListModal(' + row.id + ')"><i class="fa fa-store-alt"></i></button>';
+                        str += '</div>';
+                        return str;
+                    }
+                });
+                $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+                TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
+                    houseId: houseCommon.getHouseId()
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
+            });
         }
-        $.each(temp, function (i, item) {
-            cols.push(item);
-        })
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips" data-placement="top" data-original-title="装修" onclick="houseHuxingPrice.prototype.showDecorateListModal(' + row.id + ')"><i class="fa fa-store-alt"></i></button>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-        TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
-            houseId: houseCommon.getHouseId()
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
     },
     removeData: function (id) {
         $.ajax({
@@ -167,26 +161,15 @@ houseHuxingPrice.prototype = {
             frm.find(".common").show();
             frm.find(".common").find("input").attr("disabled", false);
 
-            if (tenementType == '住宅' || tenementType == '办公') {
-                frm.find(".residence").show();
-                frm.find(".residence").find("input").attr("disabled", false);
+            if (tenementType) {
+                AssessCommon.ajaxServerMethod({tenementType: tenementType,num:4}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                    frm.find("."+value).show();
+                    if (tenementType != '仓储'){
+                        frm.find("."+value).find("input").attr("disabled", false);
+                    }
+                });
             }
-            if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-                frm.find(".store").show();
-                frm.find(".store").find("input").attr("disabled", false);
 
-            }
-            if (tenementType == '餐饮' || tenementType == '酒店') {
-                frm.find(".hotel").show();
-                frm.find(".hotel").find("input").attr("disabled", false);
-            }
-            if (tenementType == '生产') {
-                frm.find(".production").show();
-                frm.find(".production").find("input").attr("disabled", false);
-            }
-            if (tenementType == '仓储') {
-                frm.find(".storage").show();
-            }
         } else {
             frm.find(".common").show();
         }
@@ -2171,43 +2154,50 @@ var houseRoom;
                 cols.push({field: 'currentFloor', title: '所在楼层'});
             }
             var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
-            if (tenementType == '住宅' || tenementType == '办公') {
-                temp = commonColumn.houseRoomResidence();
-            } else if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-                temp = commonColumn.houseRoomStore();
-            } else if (tenementType == '餐饮' || tenementType == '酒店') {
-                temp = commonColumn.houseRoomHotel();
-            } else if (tenementType == '生产') {
-                temp = commonColumn.houseRoomProduction();
-            } else if (tenementType == '仓储') {
-                temp = commonColumn.houseRoomStorage();
+            if (tenementType) {
+                AssessCommon.ajaxServerMethod({tenementType: tenementType,num:2}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                    temp = eval(value) ;
+                    $.each(temp, function (i, item) {
+                        cols.push(item);
+                    }) ;
+                    cols.push({field: 'fileViewName', title: '附件'});
+                    $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
+                    TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
+                        houseId: houseCommon.getHouseId()
+                    }, {
+                        showColumns: false,
+                        showRefresh: false,
+                        search: false,
+                        onLoadSuccess: function () {
+                            $('.tooltips').tooltip();
+                        }
+                    });
+                });
+            }else {
+                cols.push({field: 'fileViewName', title: '附件'});
+                cols.push({
+                    field: 'id', title: '操作', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                        str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                        str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ')"><i class="fa fa-copy fa-white"></i></button>';
+                        str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="粘贴" onclick="houseRoom.prototype.dataPaste(' + row.id + ')"><i class="fa fa-paste fa-white"></i></button>';
+                        str += '</div>';
+                        return str;
+                    }
+                });
+                $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
+                TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
+                    houseId: houseCommon.getHouseId()
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
             }
-            $.each(temp, function (i, item) {
-                cols.push(item);
-            })
-            cols.push({field: 'fileViewName', title: '附件'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ')"><i class="fa fa-copy fa-white"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="粘贴" onclick="houseRoom.prototype.dataPaste(' + row.id + ')"><i class="fa fa-paste fa-white"></i></button>';
-                    str += '</div>';
-                    return str;
-                }
-            });
-            $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
-                houseId: houseCommon.getHouseId()
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
         },
         removeData: function (id) {
             $.ajax({
@@ -2475,29 +2465,15 @@ var houseRoom;
 
                 $("#" + houseRoom.prototype.config().frm).find(".common").show();
                 $("#" + houseRoom.prototype.config().frm).find(".common").find("input").attr("disabled", false);
-                if (houseRoom.prototype.isNotBlank(tenementType)) {
-                    if (tenementType == '住宅' || tenementType == '办公') {
-                        $("#" + houseRoom.prototype.config().frm).find(".residence.base").show();
-                        $("#" + houseRoom.prototype.config().frm).find(".residence.base").find("input").attr("disabled", false);
-                    }
-                    if (tenementType == '商铺' || tenementType == '商场'|| tenementType == '车位') {
-                        $("#" + houseRoom.prototype.config().frm).find(".store.base").show();
-                        $("#" + houseRoom.prototype.config().frm).find(".store.base").find("input").attr("disabled", false);
 
-                    }
-                    if (tenementType == '餐饮' || tenementType == '酒店') {
-                        $("#" + houseRoom.prototype.config().frm).find(".hotel.base").show();
-                        $("#" + houseRoom.prototype.config().frm).find(".hotel.base").find("input").attr("disabled", false);
-                    }
-                    if (tenementType == '生产') {
-                        $("#" + houseRoom.prototype.config().frm).find(".production.base").show();
-                        $("#" + houseRoom.prototype.config().frm).find(".production.base").find("input").attr("disabled", false);
-                    }
-                    if (tenementType == '仓储') {
-                        $("#" + houseRoom.prototype.config().frm).find(".storage.base").show();
-                    }
+                if (tenementType) {
+                    AssessCommon.ajaxServerMethod({tenementType: tenementType,num:4}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                        $("#" + houseRoom.prototype.config().frm).find("."+value +".base").show();
+                        if (tenementType != '仓储'){
+                            $("#" + houseRoom.prototype.config().frm).find("."+value +".base").find("input").attr("disabled", false);
+                        }
+                    });
                 }
-
             } else {
                 notifyInfo("提示", "请先选择户型的物业类型")
             }
@@ -2569,7 +2545,7 @@ var houseRoom;
         houseShapeChange :function() {
             var tenementType = houseCommon.houseHuxingForm.find('[name="tenementType"]').val();
             var houseShape = $("#" + houseRoom.prototype.config().frm).find('select[name="houseShape"]').val();
-            if (houseRoom.prototype.isNotBlank(tenementType) && houseRoom.prototype.isNotBlank(tenementType)) {
+            if (houseRoom.prototype.isNotBlank(tenementType) && houseRoom.prototype.isNotBlank(houseShape)) {
                 if (tenementType == '住宅' || tenementType == '办公') {
                     if (houseShape == '不规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".residence.rule").hide();
