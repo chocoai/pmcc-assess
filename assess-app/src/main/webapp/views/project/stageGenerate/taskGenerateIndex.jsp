@@ -33,7 +33,7 @@
                                 <div class="card-body">
                                     <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}"
                                           enctype="multipart/form-data">
-                                        <input type="hidden"  name="areaGroupId" value="${generationVo.areaGroupId}">
+                                        <input type="hidden" name="areaGroupId" value="${generationVo.areaGroupId}">
                                         <input type="hidden" name="id" value="${generationVo.id}">
                                         <div class="row form-group">
                                             <div class="col-md-12">
@@ -527,11 +527,21 @@
 
     //提交
     function submit() {
-        reportGroupObj.getValidData('${projectInfo.id}' ,function (validData) {
-            if (validData.length != 0){
-                var message = validData.join("\n\r") ;
-                AlertSuccess("提示",message );
-                return false ;
+        var isValid = true;
+        $("[id^=groupForm]").each(function () {
+            if (!$(this).valid()) {
+                isValid = false;
+                return false;
+            }
+        });
+        if (isValid == false) {
+            return false;
+        }
+        reportGroupObj.getValidData('${projectInfo.id}', function (validData) {
+            if (validData.length != 0) {
+                var message = validData.join("\n\r");
+                AlertSuccess("提示", message);
+                return false;
             }
             var allData = [];
             $(".area_panel").each(function () {
@@ -548,56 +558,7 @@
                     submitToServer(JSON.stringify(data));
                 }
             });
-        }) ;
-    }
-
-    //提交
-    function commitApply() {
-        reportGroupObj.getValidData('${projectInfo.id}' ,function (validData) {
-            if (validData.length != 0){
-                var message = validData.join("\n\r") ;
-                AlertSuccess("提示",message );
-                return false ;
-            }
-            var allData = [];
-            var isPass = true;
-            $(".area_panel").each(function () {
-                $(this).find('.x_content').show();
-                var form = $(this).find('form');
-                isPass = form.valid();
-                allData.push(formSerializeArray(form));
-            });
-            if (!isPass) {
-                return false;
-            }
-            var data = {};
-            data.planId = '${projectPlan.id}';
-            data.areaGroupId = $("#areaGroupId").val();
-            var url = "${pageContext.request.contextPath}/generate/submitApply";
-            if ("${empty processInsId?"0":processInsId}" != "0") {
-                url = "${pageContext.request.contextPath}/generate/submitEditApproval";
-                var approvalData = formParams("frm_approval");
-                data = $.extend(data, approvalData);
-            }
-            saveGenerateReportInfo(allData, function () {
-                //提交流程
-                $.ajax({
-                    url: url,
-                    data: data,
-                    success: function (result) {
-                        if (result.ret) {
-                            AlertSuccess("成功", "提交成功", function () {
-                                window.close();
-                            });
-                        } else {
-                            AlertError(result.errmsg);
-                        }
-                    }
-                })
-            });
-        }) ;
-
-
+        });
     }
 
 </script>

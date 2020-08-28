@@ -4,74 +4,6 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
-<div id="boxSurveyAssetInfoGroup" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 50%;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">添加资产清查组</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <input type="hidden" name="inventoryId">
-                    <input type="hidden" name="assetInfoId">
-                    <input type="hidden" name="declareIds">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                组名称<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                                <input type="text" class="form-control input-full" name="groupName"
-                                                       placeholder="组名称" required="required">
-                                            </div>
-                                        </div>
-                                        <div class="form-inline x-valid" style="margin-top: 30px;">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                                组权证列表
-                                            </label>
-                                            <span class="boxSurveyAssetInfoGroup">
-                                <button type="button" class="btn btn-warning  btn-sm"
-                                        onclick="assetInfo.removeGroupSurveyAssetInfoItem() ;">
-                                    <i class="fa fa-minus"></i>
-                                    移除
-                                </button>
-                                </span>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                                <table class="table table-bordered" id="tb_infoItem_list"></table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm"
-                        onclick="assetInfo.saveSurveyAssetInfoGroup();">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -224,7 +156,7 @@
                                                            name="name"
                                                            class="form-control input-full">
                                                 </div>
-                                                <div class="col-sm-2 ">
+                                                <div class="col-sm-4 ">
                                                     <button type="button" class="btn btn-info btn-sm"
                                                             onclick="assetInfo.loadSurveyAssetInfoItemBaseList(this);">
                                                         <span class="btn-label"><i class="fa fa-search"></i></span>
@@ -235,29 +167,16 @@
                                                             onclick="assetInfo.delSurveyAssetInfoItemByDeclareId() ;"><span
                                                             class="btn-label"><i class="fa fa-minus"></i></span>移除
                                                     </button>
-
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <div class="btn-group" role="group"
-                                                         aria-label="Button group with nested dropdown">
-
-                                                        <button class="btn btn-success btn-sm"
-                                                                type="button" data-toggle="modal"
-                                                                onclick="assetInfo.addSurveyAssetInfoGroup()"><span
-                                                                class="btn-label"><i class="fa fa-plus"></i></span>添加清查组
-                                                        </button>
-                                                        <div class="btn-group" role="group">
-                                                            <button id="btnGroupDrop1" type="button"
-                                                                    class="btn btn-secondary dropdown-toggle btn-sm"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false">
-                                                                添加权证到组中
-                                                            </button>
-                                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1"
-                                                                 data-name="surveyAssetInfoGroup">
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <button class="btn btn-primary btn-sm"
+                                                            type="button" data-toggle="modal"
+                                                            onclick="assetInfo.checkUniformityBatch() ;"><span
+                                                            class="btn-label"><i class="fa fa-bars"></i></span>一致性清查
+                                                    </button>
+                                                    <button class="btn btn-primary btn-sm"
+                                                            type="button" data-toggle="modal"
+                                                            onclick="assetInfo.showEntityDamageModal() ;"><span
+                                                            class="btn-label"><i class="fa fa-car-crash"></i></span>损坏调查
+                                                    </button>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <button type="button" class="btn btn-info btn-sm"
@@ -285,21 +204,6 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline">
-                                                <div class="col-sm-2 ">
-
-                                                </div>
-                                                <div class="col-sm-2 ">
-
-                                                </div>
-                                                <div class="col-sm-1 ">
-
                                                 </div>
                                             </div>
                                         </div>
@@ -372,11 +276,174 @@
     </div>
 </div>
 </body>
+<div id="boxSurveyAssetInfoGroup" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加资产清查组</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="inventoryId">
+                    <input type="hidden" name="assetInfoId">
+                    <input type="hidden" name="declareIds">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                组名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input type="text" class="form-control input-full" name="groupName"
+                                                       placeholder="组名称" required="required">
+                                            </div>
+                                        </div>
+                                        <div class="form-inline x-valid" style="margin-top: 30px;">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                组权证列表
+                                            </label>
+                                            <span class="boxSurveyAssetInfoGroup">
+                                <button type="button" class="btn btn-warning  btn-sm"
+                                        onclick="assetInfo.removeGroupSurveyAssetInfoItem() ;">
+                                    <i class="fa fa-minus"></i>
+                                    移除
+                                </button>
+                                </span>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <table class="table table-bordered" id="tb_infoItem_list"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="assetInfo.saveSurveyAssetInfoGroup();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="boxEntityDamage" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">损坏调查</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="damageSurvey" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 col-form-label">
+                                    区位是否损坏
+                                </label>
+                                <div class="col-sm-3">
+                                    <select class="form-control input-full" id="rimIsNormal"
+                                            name="rimIsNormal" required
+                                            onchange="assetInfo.triggeEntityDamage()">
+                                        <option value="">请选择</option>
+                                        <option value="正常" selected="selected">正常</option>
+                                        <option value="不正常">不正常</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-form-label showZoneAdd" style="display:none">
+                                    区位损坏新增
+                                </label>
+                                <div class="col-sm-3 showZoneAdd" style="display:none">
+                                    <div class="btn btn-xs btn-success"
+                                         onclick="assetInfo.entityDamageAppendHtml('zoneBit','zoneProject')">
+                                        <i class="fa fa-plus"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="zoneBit"></div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 col-form-label">
+                                    实物状况<br/>是否损坏
+                                </label>
+                                <div class="col-sm-3">
+                                    <select class="form-control input-full" id="entityIsDamage"
+                                            name="entityIsDamage" required
+                                            onchange="assetInfo.triggeEntityDamage()">
+                                        <option value="">请选择</option>
+                                        <option value="损坏">损坏</option>
+                                        <option value="未损坏" selected="selected">未损坏</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 col-form-label showEntityAdd"
+                                       style="display:none">
+                                    实物损坏新增
+                                </label>
+                                <div class="col-sm-3 showEntityAdd" style="display:none">
+                                    <div class="btn btn-xs btn-success"
+                                         onclick="assetInfo.entityDamageAppendHtml('entity','entityProject')">
+                                        <i class="fa fa-plus"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entity"></div>
+                    <c:if test="${projectInfo.projectCategoryId == houseLand}">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 col-form-label">
+                                        影响评估的其他事项
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <div class="btn btn-xs btn-success"
+                                             onclick="assetInfo.entityDamageAppendHtml('otherProject','otherProject')">
+                                            <i class="fa fa-plus"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="otherProject"></div>
+                    </c:if>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="assetInfo.saveEntityDamage();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
-
-<script>
-
+<script type="text/javascript">
     var assetInfo = {};
 
     assetInfo.run = function (data, url, type, callback, funParams, errorCallback) {
@@ -444,7 +511,6 @@
             assetInfo.run(data, url, type, callback, funParams, errorCallback);
         }
     };
-
     assetInfo.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
         assetInfo.ajaxServerFun(data, url, type, callback, null, errorCallback);
     };
@@ -700,8 +766,6 @@
                 str += '<button type="button" onclick="assetInfo.delSurveyAssetInfoGroup(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
-
-
                 return str;
             }
         });
@@ -756,32 +820,59 @@
             }
         });
         cols.push({
-            field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
+            field: 'bisFinishUniformity', title: '一致性清查', width: "10%", formatter: function (value, row, index) {
                 var str = "";
-                if (value) {
-                    if (value == 'runing') {
-                        str += "<span class='label label-info'>";
-                        str += "待清查";
-                        str += "</span>";
-                    }
-                    if (value == 'finish') {
-                        str += "<span class='label label-success'>";
-                        str += "已清查";
-                        str += "</span>";
-                    }
+                if (true == value) {
+                    str += "<span class='label label-success'>";
+                    str += "完成";
+                    str += "</span>";
+                } else {
+                    str += "<span class='label label-info'>";
+                    str += "未处理";
+                    str += "</span>";
                 }
                 return str;
             }
         });
         cols.push({
-            field: 'id', title: '操作', width: "40%", formatter: function (value, row, index) {
+            field: 'bisFinishDamage', title: '损坏调查', width: "10%", formatter: function (value, row, index) {
+                var str = "";
+                if (true == value) {
+                    str += "<span class='label label-success'>";
+                    str += "完成";
+                    str += "</span>";
+                } else {
+                    str += "<span class='label label-info'>";
+                    str += "未处理";
+                    str += "</span>";
+                }
+                return str;
+            }
+        });
+        cols.push({
+            field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
+                var str = "";
+                if (value == 'runing') {
+                    str += "<span class='label label-info'>";
+                    str += "待清查";
+                    str += "</span>";
+                }
+                if (value == 'finish') {
+                    str += "<span class='label label-success'>";
+                    str += "已清查";
+                    str += "</span>";
+                }
+                return str;
+            }
+        });
+        cols.push({
+            field: 'id', title: '操作', width: "10%", formatter: function (value, row, index) {
                 var str = "";
                 if (!row.groupId) {
-                    str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="清查操作">';
-                    str += '<i class="fa fa-cog"></i>';
+                    str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn btn-primary btn-xs tooltips"  data-placement="bottom" data-original-title="清查操作">';
+                    str += '<i class="fa fa-quidditch"></i>';
                     str += '</button>';
                 }
-
                 return str;
             }
         });
@@ -944,30 +1035,7 @@
      * 单个权证   清查数据
      */
     assetInfo.itemHandel = function (id) {
-        var inventoryId = 0;
-        var item = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getRowByUniqueId', id);
-        if (item.inventoryId) {
-            inventoryId = item.inventoryId;
-        }
-        if (item.groupId) {
-            AlertError("已经被添加到组中不可作为单独事项去清查了", "假如作为单独事项来做清查业务  那么请从组中移除添加的这个认领权证");
-        } else {
-            assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "unit", item.id, item.name);
-            //验证权证是否填写了查勘，可清查
-            <%--$.ajax({--%>
-            <%--    url: '${pageContext.request.contextPath}/surveyAssetInventory/canInventory',--%>
-            <%--    type: 'post',--%>
-            <%--    data: {assetInfoItemId: id},--%>
-            <%--    dataType: 'json',--%>
-            <%--    success: function (result) {--%>
-            <%--        if (result.ret && result.data) {--%>
-            <%--            assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "unit", item.id, item.name);--%>
-            <%--        } else {--%>
-            <%--            notifyInfo("提示", "请先填写查勘信息后，才可进行清查");--%>
-            <%--        }--%>
-            <%--    }--%>
-            <%--})--%>
-        }
+        assetInfo.surveyAssetInventoryHandle(id);
     };
 
     /**
@@ -977,15 +1045,15 @@
      * @param type
      * @param masterId
      */
-    assetInfo.surveyAssetInventoryHandle = function (inventoryId, declareId, type, masterId, masterName) {
+    assetInfo.surveyAssetInventoryHandle = function (assetInfoItemId) {
         var frame = layer.open({
             type: 2,
             title: '',
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
-            content: '${pageContext.request.contextPath}/surveyAssetInventory/view/${projectPlanDetails.projectId}/${projectPlanDetails.id}/' + inventoryId + "/" + declareId + "/" + masterName,
+            area: ['90%', '90%'],
+            content: '${pageContext.request.contextPath}/surveyAssetInventory/view/' + assetInfoItemId,
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 //放弃按钮 不需要做处理
@@ -996,54 +1064,16 @@
                 var iframe = window[layero.find('iframe')[0]['name']];
                 iframe.newGetFormData(function (data) {
                     assetInfo.saveSurveyAssetInventory(data, function (result) {
-                        //以组的方式清查
-                        if (type == 'group') {
-                            assetInfo.getSurveyAssetInfoGroupById(masterId, function (obj) {
-                                obj.inventoryId = result.surveyAssetInventory.id;
-                                obj.status = 'finish';
-
-                                assetInfo.saveAndUpdateSurveyAssetInfoGroup(obj, function () {
-                                    assetInfo.loadSurveyAssetInfoGroupList();
-                                });
-                            });
-                            assetInfo.getSurveyAssetInfoItemListByQuery({
-                                groupId: masterId,
-                                assetInfoId: '${surveyAssetInfo.id}'
-                            }, function (data) {
-                                var objArr = [];
-                                $.each(data, function (i, obj) {
-                                    obj.status = 'finish';
-                                    objArr.push(obj);
-                                });
-                                if (objArr.length >= 1) {
-                                    assetInfo.addSurveyAssetInfoItem(objArr, function () {
-                                        assetInfo.loadSurveyAssetInfoItemBaseList();
-                                    });
-                                }
-                            });
-                        }
-                        //单个的方式清查
-                        if (type == 'unit') {
-                            assetInfo.getSurveyAssetInfoItemById(masterId, function (obj) {
-                                obj.inventoryId = result.surveyAssetInventory.id;
-                                obj.status = 'finish';
-                                assetInfo.saveAndUpdateSurveyAssetInfoItem(obj, function () {
-                                    assetInfo.loadSurveyAssetInfoItemBaseList();
-                                });
-                            })
-                        }
+                        assetInfo.loadSurveyAssetInfoItemBaseList();
                         layer.closeAll('iframe');
                         notifyInfo("成功", "清查业务数据填写成功");
                     });
                 });
-
             },
             btn2: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
-                //关闭按钮 不需要做处理
             }
         });
-        layer.full(frame);
     };
 
     // 资产清查组 show
@@ -1292,6 +1322,154 @@
         })
     }
 
+    //显示损坏调查弹窗
+    assetInfo.showEntityDamageModal = function () {
+        var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
+        var rows = target.bootstrapTable('getSelections');
+        if (rows == null || rows.length <= 0) {
+            notifyWarning("提示", "请选择清查对象数据");
+            return false;
+        }
+        $('#boxEntityDamage').modal();
+    }
+
+    //保存损坏调查
+    assetInfo.saveEntityDamage = function () {
+        var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
+        var rows = target.bootstrapTable('getSelections');
+        if (rows == null || rows.length <= 0) {
+            notifyWarning("提示", "请选择清查对象数据");
+            return false;
+        }
+        var infoItemArray = [];
+        $.each(rows, function (i, item) {
+            infoItemArray.push(item.id);
+        })
+
+        var surveyAssetInventory = {};
+        surveyAssetInventory.rimIsNormal = $("#rimIsNormal").val();
+        surveyAssetInventory.entityIsDamage = $("#entityIsDamage").val();
+        surveyAssetInventory.zoneDamage = [];
+        surveyAssetInventory.entityDamage = [];
+        surveyAssetInventory.otherProject = [];
+        $("#damageSurvey").find('.form-group').each(function () {
+            var zoneBit = {};
+            var zoneProjectName = $(this).find('[name^=zoneProjectName]').val();
+            var zoneProjectItem = $(this).find('[name^=zoneProjectItem]').val();
+            if (zoneProjectName && zoneProjectItem) {
+                zoneBit.zoneProjectName = zoneProjectName;
+                zoneBit.zoneProjectItem = zoneProjectItem;
+                surveyAssetInventory.zoneDamage.push(zoneBit);
+            }
+
+            var entity = {};
+            var entityProjectName = $(this).find('[name^=entityProjectName]').val();
+            var entityProjectItem = $(this).find('[name^=entityProjectItem]').val();
+            if (entityProjectName && entityProjectItem) {
+                entity.entityProjectName = entityProjectName;
+                entity.entityProjectItem = entityProjectItem;
+                surveyAssetInventory.entityDamage.push(entity);
+            }
+
+            var otherProject = {};
+            var otherProjectName = $(this).find('[name^=otherProjectName]').val();
+            var otherProjectItem = $(this).find('[name^=otherProjectItem]').val();
+            if (otherProjectName && otherProjectItem) {
+                otherProject.otherProjectName = otherProjectName;
+                otherProject.otherProjectItem = otherProjectItem;
+                surveyAssetInventory.otherProject.push(otherProject);
+            }
+        });
+
+        $.post('${pageContext.request.contextPath}/surveyAssetInfoItem/damageSurveyBatch', {
+            assetInfoItemIds: infoItemArray.join(),
+            formData: JSON.stringify(surveyAssetInventory)
+        }, function (result) {
+            if (result.ret) {
+                AlertSuccess('提示', '操作成功');
+                $('#boxEntityDamage').modal('hide');
+                assetInfo.loadSurveyAssetInfoItemBaseList();
+            } else {
+                AlertError("错误", result.errmsg);
+            }
+        }, 'json')
+    }
+
+    //批量一致性清查
+    assetInfo.checkUniformityBatch = function () {
+        var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
+        var rows = target.bootstrapTable('getSelections');
+        if (rows == null || rows.length <= 0) {
+            notifyWarning("提示", "请选择清查对象数据");
+            return false;
+        }
+        var infoItemArray = [];
+        $.each(rows, function (i, item) {
+            infoItemArray.push(item.id);
+        })
+        $.post('${pageContext.request.contextPath}/surveyAssetInfoItem/checkUniformityBatch', {
+            assetInfoItemIds: infoItemArray.join()
+        }, function (result) {
+            if (result.ret) {
+                AlertSuccess('提示', '操作成功');
+                $('#boxEntityDamage').modal('hide');
+                assetInfo.loadSurveyAssetInfoItemBaseList();
+            } else {
+                AlertError("错误", result.errmsg);
+            }
+        }, 'json')
+    }
+
+    //损坏调查显示隐藏
+    assetInfo.triggeEntityDamage = function () {
+        if ($("#rimIsNormal").val() == "不正常") {
+            $(".showZoneAdd").show();
+        } else {
+            $(".zoneBit").empty();
+            $(".showZoneAdd").hide();
+        }
+        if ($("#entityIsDamage").val() == "损坏") {
+            $(".showEntityAdd").show();
+        } else {
+            $(".entity").empty();
+            $(".showEntityAdd").hide();
+        }
+        if ($("#paymentStatus").val() == "不正常") {
+            $(".showPaymentAdd").show();
+            $("#showUploadFile").show();
+        } else {
+            $(".paymentItem").empty();
+            $(".showPaymentAdd").hide();
+            $("#showUploadFile").hide();
+        }
+    }
+
+    //appendHtml
+    assetInfo.entityDamageAppendHtml = function (className, fieldName) {
+        var html = "<div class='row form-group' >";
+        html += " <div class='col-md-12'>";
+        html += "<div class='form-inline x-valid'>";
+
+        html += "<label class='col-sm-1 control-label'>" + "项目" + "</label>";
+        html += "<div class='col-sm-3'>";
+        html += "<input type='text' required class='form-control input-full' name='" + fieldName + "Name'>";
+        html += "</div>";
+
+        html += "<label class='col-sm-1 control-label'>" + "明细" + "</label>";
+        html += "<div class='col-sm-3'>";
+        html += "<input type='text' required class='form-control input-full' name='" + fieldName + "Item'>";
+        html += "</div>";
+
+        html += " <div class='col-sm-1'>";
+        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='$(this).closest(\".form-group\").remove();'>" + "</span>";
+        html += "</div>";
+
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
+
+        $("." + className).append(html);
+    }
 
     $(document).ready(function () {
         assetInfo.loadDeclareRecordList();
@@ -1300,19 +1478,13 @@
     });
 
 </script>
-
-
 <script type="text/javascript">
-
-
     /**
      * 提交
      * @param mustUseBox
      * @returns {boolean}
      */
     function submit(mustUseBox) {
-//不要这样get获取数据  今天发现 getData 和 getRowByUniqueId 只能获取在页面上显示出来的数据,假如你的分页是10条,那么数据一定在10条以内,显然这样是错误的
-//        var dataAll = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getData');
         var query = {
             assetInfoId: '${surveyAssetInfo.id}',
             status: 'runing',
@@ -1336,12 +1508,7 @@
                 submitToServer(formData, mustUseBox);
             }
         });
-
     }
-
-
 </script>
-
-
 </html>
 

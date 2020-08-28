@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoItemService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -46,39 +47,32 @@ public class SurveyAssetInventoryController {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private SurveyAssetInfoItemService surveyAssetInfoItemService;
 
     private final String applyViewName = "/project/stageSurvey/inventory/surveyAssetInventoryIndex";
     private final String detailView = "/project/stageSurvey/inventory/surveyAssetInventoryDetail";
 
-    @GetMapping(value = "/view/{projectId}/{planDetailId}/{inventoryId}/{declareId}/{masterName}", name = "申请或者修改")
-    public ModelAndView applyView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId,@PathVariable(name = "masterName")String masterName) {
+    @GetMapping(value = "/view/{assetInfoItemId}", name = "申请或者修改")
+    public ModelAndView applyView(@PathVariable(name = "assetInfoItemId", required = true) Integer assetInfoItemId) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(applyViewName);
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
-        if (inventoryId != null && inventoryId != 0) {
-            //修改情况
-            setModelViewParam(inventoryId, declareRecord, modelAndView);
-        } else {
-            //初始状况
-            modelAndView.addObject("declareRecord", declareRecord);
-            List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentService.initAssetInventoryContentNew(0, projectId, inventoryId, declareRecord);
-            SurveyAssetInventoryVo surveyAssetInventoryVo = new SurveyAssetInventoryVo() ;
-            modelAndView.addObject("surveyAssetInventory", surveyAssetInventoryVo);
-            List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(list);
-            SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
-            modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
-            modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
-            //土地类型
-            BaseProjectClassify houseLand = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
-            modelAndView.addObject("houseLand", houseLand.getId());
+        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(assetInfoItemId);
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(assetInfoItem.getDeclareId());
+        if (assetInfoItem.getInventoryId() == null || assetInfoItem.getInventoryId() == 0) {
+            try {
+                surveyAssetInventoryService.initSurveyAssetInventory(assetInfoItemId);
+            } catch (BusinessException e) {
+                baseService.writeExceptionInfo(e);
+            }
         }
-        modelAndView.addObject("projectPlanDetails", projectPlanDetailsService.getProjectPlanDetailsById(planDetailId));
-        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)));
-        modelAndView.addObject("masterName", masterName);
+        setModelViewParam(assetInfoItem.getInventoryId(), declareRecord, modelAndView);
+        modelAndView.addObject("assetInfoItem", assetInfoItem);
+        modelAndView.addObject("masterName", assetInfoItem.getName());
         return modelAndView;
     }
 
     @GetMapping(value = "/detailView/{projectId}/{planDetailId}/{inventoryId}/{declareId}/{masterName}", name = "详情")
-    public ModelAndView detailsView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId , @PathVariable(name = "masterName")String masterName) {
+    public ModelAndView detailsView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId, @PathVariable(name = "masterName") String masterName) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(detailView);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
         setModelViewParam(inventoryId, declareRecord, modelAndView);
@@ -90,11 +84,11 @@ public class SurveyAssetInventoryController {
     public HttpResult saveSurveyAssetInventory(String formData) {
         try {
             SurveyAssetCommonDataDto surveyAssetCommonDataDto = surveyAssetInventoryService.format(formData);
-            surveyAssetInventoryService.save(0, 0, 0, "0", surveyAssetCommonDataDto);
-            return HttpResult.newCorrectResult(200, surveyAssetCommonDataDto);
+            surveyAssetInventoryService.saveSurveyAssetInventory(surveyAssetCommonDataDto);
+            return HttpResult.newCorrectResult(surveyAssetCommonDataDto);
         } catch (BusinessException e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -102,10 +96,10 @@ public class SurveyAssetInventoryController {
     public HttpResult parseSurveyAssetInventory(@PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "type") String type, @PathVariable(name = "masterId") String masterId) {
         try {
             surveyAssetInventoryService.parseSurveyAssetInventory(inventoryId, type, masterId);
-            return HttpResult.newCorrectResult(200);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -113,10 +107,10 @@ public class SurveyAssetInventoryController {
     public HttpResult getSurveyAssetInventoryById(Integer id) {
         try {
             SurveyAssetInventoryVo surveyAssetInventoryVo = surveyAssetInventoryService.getSurveyAssetInventoryVo(surveyAssetInventoryService.getSurveyAssetInventoryById(id));
-            return HttpResult.newCorrectResult(200, surveyAssetInventoryVo);
+            return HttpResult.newCorrectResult(surveyAssetInventoryVo);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -124,10 +118,10 @@ public class SurveyAssetInventoryController {
     public HttpResult canInventory(Integer assetInfoItemId) {
         try {
             Boolean canInventory = surveyAssetInventoryService.canInventory(assetInfoItemId);
-            return HttpResult.newCorrectResult(200, canInventory);
+            return HttpResult.newCorrectResult(canInventory);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 

@@ -615,6 +615,126 @@ public class SurveyAssetInfoItemExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisFinishDamageIsNull() {
+            addCriterion("bis_finish_damage is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageIsNotNull() {
+            addCriterion("bis_finish_damage is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageEqualTo(Boolean value) {
+            addCriterion("bis_finish_damage =", value, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageNotEqualTo(Boolean value) {
+            addCriterion("bis_finish_damage <>", value, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageGreaterThan(Boolean value) {
+            addCriterion("bis_finish_damage >", value, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_finish_damage >=", value, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageLessThan(Boolean value) {
+            addCriterion("bis_finish_damage <", value, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_finish_damage <=", value, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageIn(List<Boolean> values) {
+            addCriterion("bis_finish_damage in", values, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageNotIn(List<Boolean> values) {
+            addCriterion("bis_finish_damage not in", values, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_finish_damage between", value1, value2, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishDamageNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_finish_damage not between", value1, value2, "bisFinishDamage");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityIsNull() {
+            addCriterion("bis_finish_uniformity is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityIsNotNull() {
+            addCriterion("bis_finish_uniformity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityEqualTo(Boolean value) {
+            addCriterion("bis_finish_uniformity =", value, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityNotEqualTo(Boolean value) {
+            addCriterion("bis_finish_uniformity <>", value, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityGreaterThan(Boolean value) {
+            addCriterion("bis_finish_uniformity >", value, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_finish_uniformity >=", value, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityLessThan(Boolean value) {
+            addCriterion("bis_finish_uniformity <", value, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_finish_uniformity <=", value, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityIn(List<Boolean> values) {
+            addCriterion("bis_finish_uniformity in", values, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityNotIn(List<Boolean> values) {
+            addCriterion("bis_finish_uniformity not in", values, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_finish_uniformity between", value1, value2, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisFinishUniformityNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_finish_uniformity not between", value1, value2, "bisFinishUniformity");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

@@ -3,10 +3,7 @@ package com.copower.pmcc.assess.service.project.survey;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoItemDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
@@ -55,6 +52,12 @@ public class SurveyAssetInfoItemService {
     private BaseService baseService;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
+    @Autowired
+    private SurveyAssetInfoService surveyAssetInfoService;
+    @Autowired
+    private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
 
 
     public boolean updateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull) {
@@ -62,7 +65,7 @@ public class SurveyAssetInfoItemService {
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public boolean saveSurveyAssetInfoItem(SurveyAssetInfoItem oo) throws Exception {
+    public boolean addSurveyAssetInfoItem(SurveyAssetInfoItem oo) throws Exception {
         if (oo == null) {
             return false;
         }
@@ -73,7 +76,7 @@ public class SurveyAssetInfoItemService {
         if (CollectionUtils.isNotEmpty(infoItems)) {
             throw new Exception(String.join("", oo.getName() + ":已经存在"));
         }
-        boolean b = surveyAssetInfoItemDao.saveSurveyAssetInfoItem(oo);
+        boolean b = surveyAssetInfoItemDao.addSurveyAssetInfoItem(oo);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInfoItem.class), oo.getId());
         return b;
 
@@ -86,7 +89,7 @@ public class SurveyAssetInfoItemService {
         if (oo.getId() != null && oo.getId() != 0) {
             updateSurveyAssetInfoItem(oo, updateNull);
         } else {
-            saveSurveyAssetInfoItem(oo);
+            addSurveyAssetInfoItem(oo);
         }
     }
 
@@ -105,7 +108,7 @@ public class SurveyAssetInfoItemService {
                     if (Objects.equal(declareRecord.getInventoryStatus(), SysProjectEnum.RUNING.getValue())) {
                         continue;
                     }
-                    saveSurveyAssetInfoItem(assetInfoItem);
+                    addSurveyAssetInfoItem(assetInfoItem);
                     declareRecord.setInventoryStatus(SysProjectEnum.RUNING.getValue());
                     declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                     i++;
@@ -135,7 +138,7 @@ public class SurveyAssetInfoItemService {
         }
 
         recordById.setInventoryStatus(null);
-        declareRecordService.updateDeclareRecord(recordById,true) ;
+        declareRecordService.updateDeclareRecord(recordById, true);
 
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
@@ -165,20 +168,20 @@ public class SurveyAssetInfoItemService {
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(SurveyAssetInfoItem oo,Integer eatate,Integer building,Integer unit) {
+    public BootstrapTableVo getBootstrapTableVo(SurveyAssetInfoItem oo, Integer eatate, Integer building, Integer unit) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        List<BasicApplyBatchDetail> houseBatchDetailList= null;
-        if(unit!=null){
+        List<BasicApplyBatchDetail> houseBatchDetailList = null;
+        if (unit != null) {
             houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(unit);
-        }else  if(building!=null){
+        } else if (building != null) {
             houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(building);
-        }else  if(eatate!=null){
+        } else if (eatate != null) {
             houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(eatate);
         }
 //        oo.setCreator(commonService.thisUserAccount());
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInfoItem> surveyAssetInfoItems = getSurveyAssetInfoItemLikeList(oo, LangUtils.transform(houseBatchDetailList,o->o.getDeclareRecordId()));
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = getSurveyAssetInfoItemLikeList(oo, LangUtils.transform(houseBatchDetailList, o -> o.getDeclareRecordId()));
         if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
             for (SurveyAssetInfoItem assetInfoItem : surveyAssetInfoItems) {
                 if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0) {
@@ -201,10 +204,10 @@ public class SurveyAssetInfoItemService {
     }
 
     public SurveyAssetInfoItem getSurveyAssetInfoItemByDeclareId(Integer declareId) {
-        SurveyAssetInfoItem item=new SurveyAssetInfoItem();
+        SurveyAssetInfoItem item = new SurveyAssetInfoItem();
         item.setDeclareId(declareId);
         List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemDao.getSurveyAssetInfoItemListByExample(item);
-        if(CollectionUtils.isEmpty(assetInfoItems)) return null;
+        if (CollectionUtils.isEmpty(assetInfoItems)) return null;
         return assetInfoItems.get(0);
     }
 
@@ -213,8 +216,8 @@ public class SurveyAssetInfoItemService {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemListByExample(oo);
     }
 
-    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo,List<Integer> declareIds) {
-        return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(oo,declareIds);
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo, List<Integer> declareIds) {
+        return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(oo, declareIds);
     }
 
 
@@ -234,5 +237,86 @@ public class SurveyAssetInfoItemService {
         query.setAssetInfoId(assetInfoId);
         List<SurveyAssetInfoItem> infoItems = getSurveyAssetInfoItemListByQuery(query);
         return infoItems;
+    }
+
+    /**
+     * 批量处理损坏调查
+     *
+     * @param assetInfoItemIds
+     * @param inventory
+     */
+    public void damageSurveyBatch(String assetInfoItemIds, SurveyAssetInventory inventory) {
+        if (StringUtils.isBlank(assetInfoItemIds) || inventory == null) return;
+        List<Integer> list = FormatUtils.transformString2Integer(assetInfoItemIds);
+        for (Integer integer : list) {
+            try {
+                SurveyAssetInfoItem assetInfoItem = getSurveyAssetInfoItemById(integer);
+                if (assetInfoItem == null) continue;
+                SurveyAssetInventory targetInventory = null;
+                if (assetInfoItem.getInventoryId() == null) {
+                    targetInventory = new SurveyAssetInventory();
+                    SurveyAssetInfo surveyAssetInfo = surveyAssetInfoService.getSurveyAssetInfoById(assetInfoItem.getAssetInfoId());
+                    targetInventory.setProjectId(surveyAssetInfo.getProjectId());
+                    targetInventory.setPlanDetailId(surveyAssetInfo.getPlanDetailId());
+                    targetInventory.setDeclareRecordId(assetInfoItem.getDeclareId());
+                    targetInventory.setCreator(commonService.thisUserAccount());
+                    surveyAssetInventoryService.addSurveyAssetInventory(targetInventory);
+                } else {
+                    targetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoItem.getInventoryId());
+                }
+                targetInventory.setRimIsNormal(inventory.getRimIsNormal());
+                targetInventory.setZoneDamage(inventory.getZoneDamage());
+                targetInventory.setEntityIsDamage(inventory.getEntityIsDamage());
+                targetInventory.setEntityDamage(inventory.getEntityDamage());
+                surveyAssetInventoryService.updateSurveyAssetInventory(targetInventory);
+
+                assetInfoItem.setBisFinishDamage(true);
+                assetInfoItem.setInventoryId(targetInventory.getId());
+                updateSurveyAssetInfoItem(assetInfoItem, false);
+            } catch (Exception e) {
+                baseService.writeExceptionInfo(e);
+            }
+        }
+    }
+
+    /**
+     * 批量处理一致性清查
+     *
+     * @param assetInfoItemIds
+     */
+    public void checkUniformityBatch(String assetInfoItemIds) {
+        //1.先确定该项是否已做过清查，如果没有做过清查，先初始化清查必要数据
+        //2.找到需清查的数据项依次判断是否为一致
+        if (StringUtils.isBlank(assetInfoItemIds)) return;
+        List<Integer> list = FormatUtils.transformString2Integer(assetInfoItemIds);
+        for (Integer integer : list) {
+            try {
+                SurveyAssetInfoItem assetInfoItem = getSurveyAssetInfoItemById(integer);
+                SurveyAssetInventory targetInventory = null;
+                List<SurveyAssetInventoryContent> inventoryContents = null;
+                if (assetInfoItem.getInventoryId() == null) {
+                    targetInventory = new SurveyAssetInventory();
+                    SurveyAssetInfo surveyAssetInfo = surveyAssetInfoService.getSurveyAssetInfoById(assetInfoItem.getAssetInfoId());
+                    targetInventory.setProjectId(surveyAssetInfo.getProjectId());
+                    targetInventory.setPlanDetailId(surveyAssetInfo.getPlanDetailId());
+                    targetInventory.setDeclareRecordId(assetInfoItem.getDeclareId());
+                    targetInventory.setCreator(commonService.thisUserAccount());
+                    surveyAssetInventoryService.addSurveyAssetInventory(targetInventory);
+                } else {
+                    targetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoItem.getInventoryId());
+                }
+                inventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(targetInventory.getId());
+                if (CollectionUtils.isEmpty(inventoryContents)) {
+                    surveyAssetInventoryContentService.initContentByInventoryId(assetInfoItem, targetInventory.getId());
+                }else {
+                    surveyAssetInventoryContentService.setContentInitialValue(targetInventory.getId(),inventoryContents);
+                }
+                assetInfoItem.setBisFinishUniformity(true);
+                assetInfoItem.setInventoryId(targetInventory.getId());
+                updateSurveyAssetInfoItem(assetInfoItem, false);
+            } catch (Exception e) {
+                baseService.writeExceptionInfo(e);
+            }
+        }
     }
 }

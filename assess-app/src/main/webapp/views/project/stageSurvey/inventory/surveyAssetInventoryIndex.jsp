@@ -56,8 +56,6 @@
                                     <div class="row form-group bisCheckOriginalZero">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-
-
                                                 <label class="col-sm-1 col-form-label">
                                                     查看方法
                                                 </label>
@@ -65,7 +63,6 @@
                                                     <select class="form-control input-full" name="findMethod">
                                                     </select>
                                                 </div>
-
                                                 <label class="col-sm-1 control-label">
                                                     查看结果附件
                                                 </label>
@@ -73,7 +70,6 @@
                                                     <input id="networkFindFile" type="file" multiple="false">
                                                     <div id="_networkFindFile"></div>
                                                 </div>
-
                                                 <label class="col-sm-1 control-label">
                                                     查看说明
                                                 </label>
@@ -84,7 +80,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="row form-group bisCheckOriginalOne" style="display: none;">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -216,7 +211,7 @@
                                                                        id="areConsistent${item.id}"
                                                                        onclick="survey.areConsistentEvent(this) ;"
                                                                        name="areConsistent${item.id}"
-                                                                       value="一致" >
+                                                                       value="一致">
                                                                 <span class="form-check-sign">一致</span>
                                                             </label>
                                                         </div>
@@ -323,7 +318,7 @@
                                                     //清查内容附件上传和加载
                                                     survey.uploadFileCommon("${item.id}");
                                                     survey.showFileCommon("${item.id}");
-                                                    survey.initAgreement('#areConsistent${item.id}','${item.areConsistent}');
+                                                    survey.initAgreement('#areConsistent${item.id}', '${item.areConsistent}');
                                                 })
                                             </script>
                                         </c:forEach>
@@ -786,9 +781,15 @@
             if (data.paymentStatus) {
                 $("#paymentStatus").val(data.paymentStatus);
             }
-            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', data.zoneDamage);
-            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', data.entityDamage);
-            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', data.otherProject);
+            if (data.zoneDamage) {
+                writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', data.zoneDamage);
+            }
+            if (data.entityDamage) {
+                writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', data.entityDamage);
+            }
+            if (data.otherProject) {
+                writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', data.otherProject);
+            }
             writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
         try {
@@ -860,10 +861,8 @@
     /**
      * 初始化
      */
-    survey.initAgreement = function (selector,areConsistent) {
+    survey.initAgreement = function (selector, areConsistent) {
         var tr = $(selector).closest('tr');
-        console.log(areConsistent+"====****")
-
         if (areConsistent == "一致") {
             tr.find('.show-hide').hide();
             tr.find("input[type=checkbox]").prop('checked', true);
@@ -889,7 +888,7 @@
             if (actual == registration) {
                 tr.find('.show-hide').hide();
                 tr.find("input[type=checkbox]").prop('checked', true);
-            }else{
+            } else {
                 tr.find('.show-hide').show();
                 tr.find("input[type=checkbox]").prop('checked', false);
             }
@@ -993,12 +992,11 @@
             item.voucher = $(tr).find('[name^="voucher"]').val(); //证明人
             item.surveyTime = $(tr).find('[name^="surveyTime"]').val(); //查勘时间
             item.sureConsistent = $(tr).find('[name^="sureConsistent"]').val();   //确认一致
-            item.projectId = ${projectPlanDetails.projectId};
-            item.planDetailId = ${projectPlanDetails.id};
             item.id = $(tr).find('[name="id"]').val();    //id
             dataItem.push(item);
         });
         var data = {};
+        data.assetInfoItemId = '${assetInfoItem.id}';
         var surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
         var resultData = [];
         $.each(Object.keys(surveyAssetInventory), function (i, name) {
@@ -1013,8 +1011,6 @@
         surveyAssetInventory.influenceFactorRemarkText = resultData.join(",");
         data.surveyAssetInventory = surveyAssetInventory;
         data.assetInventoryContentList = dataItem;
-        data.surveyAssetInventory.projectId='${projectPlanDetails.projectId}';
-        data.surveyAssetInventory.planDetailId='${projectPlanDetails.id}';
         data.surveyAssetInventory.specialCase = $("#specialCase").val();
         data.surveyAssetInventory.rimIsNormal = $("#rimIsNormal").val();
         data.surveyAssetInventory.entityIsDamage = $("#entityIsDamage").val();
@@ -1118,7 +1114,7 @@
 
 
         html += " <div class='col-sm-1'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
         html += "</div>";
 
         html += "</div>";
@@ -1153,7 +1149,7 @@
 
 
             html += "<div class='col-sm-1'>";
-            html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+            html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
             html += "</div>";
 
             html += "</div>";
@@ -1202,6 +1198,7 @@
 
     function writePaymentHTMLData(json) {
         $(".paymentItem").empty();
+        if (!json) return;
         var jsonarray = eval(json);
         $.each(jsonarray, function (i, n) {
             var html = "<div class='row form-group' >";
@@ -1228,7 +1225,7 @@
             html += "</div>";
 
             html += " <div class='col-sm-1'>";
-            html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+            html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
             html += "</div>";
 
             html += "</div>";

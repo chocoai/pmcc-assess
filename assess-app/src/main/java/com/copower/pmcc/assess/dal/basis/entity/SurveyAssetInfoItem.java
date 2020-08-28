@@ -19,6 +19,10 @@ public class SurveyAssetInfoItem {
 
     private Integer inventoryId;
 
+    private Boolean bisFinishDamage;
+
+    private Boolean bisFinishUniformity;
+
     private String creator;
 
     private Date gmtCreated;
@@ -87,6 +91,22 @@ public class SurveyAssetInfoItem {
 
     public void setInventoryId(Integer inventoryId) {
         this.inventoryId = inventoryId;
+    }
+
+    public Boolean getBisFinishDamage() {
+        return bisFinishDamage;
+    }
+
+    public void setBisFinishDamage(Boolean bisFinishDamage) {
+        this.bisFinishDamage = bisFinishDamage;
+    }
+
+    public Boolean getBisFinishUniformity() {
+        return bisFinishUniformity;
+    }
+
+    public void setBisFinishUniformity(Boolean bisFinishUniformity) {
+        this.bisFinishUniformity = bisFinishUniformity;
     }
 
     public String getCreator() {

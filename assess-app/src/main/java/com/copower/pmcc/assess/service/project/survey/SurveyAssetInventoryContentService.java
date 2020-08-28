@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.DeclareCertificateTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
@@ -21,6 +23,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAn
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -42,6 +45,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +77,10 @@ public class SurveyAssetInventoryContentService {
     @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
+    private BasicUnitService basicUnitService;
+    @Autowired
+    private BasicHouseService basicHouseService;
+    @Autowired
     private DeclareRecordService declareRecordService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
@@ -82,17 +90,12 @@ public class SurveyAssetInventoryContentService {
     private BasicEstateVillageService basicEstateVillageService;
     @Autowired
     private ErpAreaService erpAreaService;
-
-    public BootstrapTableVo getList(Integer planDetailsId) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInventoryContent> surveyAssetInventoryContentsList = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(planDetailsId);
-        List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = getVoList(surveyAssetInventoryContentsList);
-        vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isEmpty(surveyAssetInventoryContentVos) ? new ArrayList<SurveyAssetInventoryContent>() : surveyAssetInventoryContentVos);
-        return vo;
-    }
+    @Autowired
+    private BasicEstateStreetInfoService basicEstateStreetInfoService;
+    @Autowired
+    private SurveyAssetInfoService surveyAssetInfoService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
     public List<SurveyAssetInventoryContent> getContentListByPlanDetailsId(Integer planDetailsId) {
         List<SurveyAssetInventoryContent> surveyAssetInventoryContentsList = surveyAssetInventoryContentDao.getSurveyAssetInventoryContent(planDetailsId);
@@ -126,222 +129,149 @@ public class SurveyAssetInventoryContentService {
         return surveyAssetInventoryContentDao.delete(id);
     }
 
-    /**
-     * 初始化资产清查项
-     *
-     * @param projectPlanDetails
-     * @param declareRecord
-     * @return
-     */
-    public List<SurveyAssetInventoryContent> initAssetInventoryContent(ProjectPlanDetails projectPlanDetails, DeclareRecord declareRecord) {
-        return initAssetInventoryContentNew(projectPlanDetails.getId(), projectPlanDetails.getProjectId(), null, declareRecord);
-    }
-
     public List<SurveyAssetInventoryContent> getSurveyAssetInventoryContentListByMasterId(Integer masterId) {
         return surveyAssetInventoryContentDao.getSurveyAssetInventoryContentListByMasterId(masterId);
     }
 
     /**
-     * 初始化资产清查项
+     * 初始化清查项
      *
-     * @param planDetailId
-     * @param projectId
-     * @param declareRecord
+     * @param inventoryId
      * @return
      */
-    public List<SurveyAssetInventoryContent> initAssetInventoryContentNew(Integer planDetailId, Integer projectId, Integer masterId, DeclareRecord declareRecord) {
-        if (planDetailId != null && planDetailId != 0) {
-            List<SurveyAssetInventoryContent> inventoryContents = getContentListByPlanDetailsId(planDetailId);
-            if (CollectionUtils.isNotEmpty(inventoryContents)) {
-                return inventoryContents;
-            }
-        }
-        List<SurveyAssetInventoryContent> inventoryContentList = Lists.newArrayList();
-        if (declareRecord == null) {
-            return inventoryContentList;
-        }
+    public List<SurveyAssetInventoryContent> initContentByInventoryId(SurveyAssetInfoItem infoItem, Integer inventoryId) throws BusinessException {
+        if (inventoryId == null) return null;
+        SurveyAssetInfo assetInfo = surveyAssetInfoService.getSurveyAssetInfoById(infoItem.getAssetInfoId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(assetInfo.getProjectId());
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(infoItem.getDeclareId());
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
-        if (CollectionUtils.isEmpty(baseDataDicList)) return inventoryContentList;
-        AssessProjectTypeEnum projectType = projectInfoService.getAssessProjectType(projectInfoService.getProjectInfoById(projectId).getProjectCategoryId());
-        for (BaseDataDic baseDataDic : baseDataDicList) {
-            SurveyAssetInventoryContent surveyAssetInventoryContent = new SurveyAssetInventoryContent();
-            surveyAssetInventoryContent.setProjectId(projectId);
-            surveyAssetInventoryContent.setPlanDetailsId(planDetailId);
-            surveyAssetInventoryContent.setDeclareId(declareRecord.getId());
-            surveyAssetInventoryContent.setInventoryContent(baseDataDic.getId());
-
-            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS.equals(baseDataDic.getFieldName())) {//登记地址与实际地址
-                SurveyAssetInventoryContent inventoryAddress = getInventoryAddress(declareRecord);
-                if (inventoryAddress != null) {
-                    surveyAssetInventoryContent.setRegistration(inventoryAddress.getRegistration());
-                    surveyAssetInventoryContent.setActual(inventoryAddress.getActual());
-                    if (Objects.equal(surveyAssetInventoryContent.getRegistration(), surveyAssetInventoryContent.getActual())) {
-                        surveyAssetInventoryContent.setAreConsistent("一致");
-                    } else {
-                        surveyAssetInventoryContent.setAreConsistent("不一致");
-                    }
+        if (CollectionUtils.isNotEmpty(baseDataDicList)) {
+            for (BaseDataDic dataDic : baseDataDicList) {
+                if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_FOUR_TO_LAND.equals(dataDic.getFieldName()) && !AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(assessProjectType)) {
+                    continue;
                 }
-                inventoryContentList.add(surveyAssetInventoryContent);
+                SurveyAssetInventoryContent inventoryContent = new SurveyAssetInventoryContent();
+                inventoryContent.setMasterId(inventoryId);
+                inventoryContent.setProjectId(assetInfo.getProjectId());
+                inventoryContent.setPlanDetailsId(assetInfo.getPlanDetailId());
+                inventoryContent.setDeclareId(declareRecord.getId());
+                inventoryContent.setInventoryContent(dataDic.getId());
+                inventoryContent.setCreator(commonService.thisUserAccount());
+                saveAssetInventoryContent(inventoryContent);
             }
+        }
+        List<SurveyAssetInventoryContent> list = getSurveyAssetInventoryContentListByMasterId(inventoryId);
+        setContentInitialValue(inventoryId, list);
+        return list;
+    }
 
-            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE.equals(baseDataDic.getFieldName())) {//登记结构与实际结构
-                if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectType)) {
-                    surveyAssetInventoryContent.setRegistration(declareRecord.getHousingStructure());
-                    inventoryContentList.add(surveyAssetInventoryContent);
-                }
+    /**
+     * 为清查项设置初始值
+     *
+     * @param inventoryId
+     * @param inventoryContents
+     */
+    public void setContentInitialValue(Integer inventoryId, List<SurveyAssetInventoryContent> inventoryContents) {
+        if (inventoryId == null) return;
+        if (CollectionUtils.isEmpty(inventoryContents)) return;
+        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(inventoryId);
+        if (surveyAssetInventory == null) return;
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveyAssetInventory.getDeclareRecordId());
+        List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
+        if (CollectionUtils.isEmpty(applyList)) return;
+        List<KeyValueDto> keyValueDtos = JSON.parseArray(applyList.get(0).getStructuralInfo(), KeyValueDto.class);
+        if (CollectionUtils.isEmpty(keyValueDtos)) return;
+        BasicBuilding basicBuilding = null;
+        BasicUnit basicUnit = null;
+        BasicHouse basicHouse = null;
+        List<BasicEstateStreetInfo> streetInfoList = null;
+        for (KeyValueDto keyValueDto : keyValueDtos) {
+            if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.ESTATE.getKey())) {
+                streetInfoList = basicEstateStreetInfoService.getStreetInfoListByEstateId(Integer.valueOf(keyValueDto.getValue()));
+            } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.BUILDING.getKey())) {
+                basicBuilding = basicBuildingService.getBasicBuildingById(Integer.valueOf(keyValueDto.getValue()));
+            } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.UNIT.getKey())) {
+                basicUnit = basicUnitService.getBasicUnitById(Integer.valueOf(keyValueDto.getValue()));
+            } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                basicHouse = basicHouseService.getBasicHouseById(Integer.valueOf(keyValueDto.getValue()));
             }
-
-            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE.equals(baseDataDic.getFieldName())) {//登记用途与实际用途
-                if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))
-                        || Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
-                    surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
-                }
-                if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
-                    surveyAssetInventoryContent.setRegistration(declareRecord.getLandCertUse());
-                }
-                if (StringUtils.isNotBlank(surveyAssetInventoryContent.getRegistration()) && StringUtils.isNotBlank(surveyAssetInventoryContent.getActual())) {
-                    if (Objects.equal(surveyAssetInventoryContent.getRegistration(), surveyAssetInventoryContent.getActual())) {
-                        surveyAssetInventoryContent.setAreConsistent("一致");
-                    } else {
-                        surveyAssetInventoryContent.setAreConsistent("不一致");
-                    }
-                }
-                inventoryContentList.add(surveyAssetInventoryContent);
-            }
-
-            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_SPACE.equals(baseDataDic.getFieldName())) {//登记空间位置与实际空间位置
-                if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectType)) {
-                    inventoryContentList.add(surveyAssetInventoryContent);
-                }
-            }
-            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS.equals(baseDataDic.getFieldName())) {//房产证与土地证证载地址
-                DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-                if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
-                    query.setType(DeclareRealtyHouseCert.class.getSimpleName());
-                    query.setHouseId(declareRecord.getDataTableId());
-                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-                    if (CollectionUtils.isNotEmpty(centerList)) {
-                        DeclareBuildEngineeringAndEquipmentCenter center = centerList.get(0);
-                        if (center.getLandId() != null && center.getLandId() != 0) {
-                            surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
-                            DeclareRealtyLandCert landCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(center.getLandId());
-                            if (landCert != null) {
-                                if (StringUtils.isNotBlank(landCert.getBeLocated())) {
-                                    surveyAssetInventoryContent.setActual(landCert.getBeLocated());
-                                    if (Objects.equal(landCert.getBeLocated(), declareRecord.getSeat())) {
-                                        surveyAssetInventoryContent.setAreConsistent("一致");
-                                    } else {
-                                        surveyAssetInventoryContent.setAreConsistent("不一致");
-                                    }
-                                }
-                                inventoryContentList.add(surveyAssetInventoryContent);
-                            }
+        }
+        for (SurveyAssetInventoryContent inventoryContent : inventoryContents) {
+            try {
+                BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(inventoryContent.getInventoryContent());
+                String key = baseDataDic.getFieldName();
+                if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS.equals(key)) {//登记地址与实际地址
+                    inventoryContent.setRegistration(declareRecord.getSeat());
+                    Boolean isStreetNumberSame = false;
+                    if (CollectionUtils.isNotEmpty(streetInfoList)) {
+                        inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + streetInfoList.get(0).getStreetNumber());
+                        if (LangUtils.transform(streetInfoList, o -> o.getStreetNumber()).contains(declareRecord.getStreetNumber())) {
+                            isStreetNumberSame = true;
                         }
                     }
-                }
-            }
-            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA.equals(baseDataDic.getFieldName())) {//登记面积与实际面积
-                if (declareRecord.getFloorArea() != null) {
-                    surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
-                }
-                if (declareRecord.getPracticalArea() != null) {
-                    surveyAssetInventoryContent.setActual(String.valueOf(declareRecord.getPracticalArea()));
-                }
-                if (declareRecord.getFloorArea() != null && declareRecord.getPracticalArea() != null) {
-                    if (Objects.equal(declareRecord.getFloorArea(), declareRecord.getPracticalArea())) {
-                        surveyAssetInventoryContent.setAreConsistent("一致");
-                    } else {
-                        surveyAssetInventoryContent.setAreConsistent("不一致");
+                    Boolean isBuildingNumberSame = false;
+                    if (basicBuilding != null) {
+                        inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicBuilding.getBuildingNumber());
+                        if (basicBuilding.getBuildingNumber().contains(declareRecord.getBuildingNumber())) {
+                            isBuildingNumberSame = true;
+                        }
                     }
+                    Boolean isUnitNumberSame = false;
+                    if (basicUnit != null) {
+                        inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicUnit.getUnitNumber());
+                        if (basicUnit.getUnitNumber().contains(declareRecord.getUnit())) {
+                            isUnitNumberSame = true;
+                        }
+                    }
+                    Boolean isHouseNumberSame = false;
+                    if (basicHouse != null) {
+                        inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicHouse.getHouseNumber());
+                        if (basicHouse.getHouseNumber().contains(declareRecord.getRoomNumber())) {
+                            isHouseNumberSame = true;
+                        }
+                    }
+                    if (isStreetNumberSame && isBuildingNumberSame && isUnitNumberSame && isHouseNumberSame) {
+                        inventoryContent.setActual(inventoryContent.getRegistration());
+                    }
+                } else if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE.equals(key)) { //登记结构与实际结构
+                    inventoryContent.setRegistration(declareRecord.getHousingStructure());
+                    if (basicBuilding != null) {
+                        String structure = baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory());
+                        if (StringUtils.defaultString(structure).contains(declareRecord.getHousingStructure())) {
+                            inventoryContent.setActual(declareRecord.getHousingStructure());
+                        } else {
+                            inventoryContent.setActual(structure);
+                        }
+                    }
+                } else if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE.equals(key)) {//登记用途与实际用途
+                    inventoryContent.setRegistration(declareRecord.getCertUse());
+                    if (basicHouse != null) {
+                        inventoryContent.setActual(basicHouse.getPracticalUse());
+                    }
+                } else if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_SPACE.equals(key)) {//登记空间位置与实际空间位置
+                    inventoryContent.setRegistration(declareRecord.getFloor());
+                    if (basicHouse != null) {
+                        inventoryContent.setActual(basicHouse.getFloor());
+                    }
+                } else if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA.equals(key)) {//登记面积与实际面积
+                    inventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
+                    if (basicHouse != null) {
+                        inventoryContent.setActual(String.valueOf(basicHouse.getArea()));
+                    }
+                } else if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS.equals(key)) {//房产证与土地证证载地址
+                    inventoryContent.setRegistration(declareRecord.getSeat());
+                    inventoryContent.setActual(declareRecord.getSeat());
                 }
-                inventoryContentList.add(surveyAssetInventoryContent);
-            }
-            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_FOUR_TO_LAND.equals(baseDataDic.getFieldName())) {//土地四至
-                if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectType)) {
-                    inventoryContentList.add(surveyAssetInventoryContent);
+                if (StringUtils.equals(inventoryContent.getRegistration(), inventoryContent.getActual())) {
+                    inventoryContent.setAreConsistent("一致");
+                } else {
+                    inventoryContent.setAreConsistent("不一致");
                 }
-            }
-        }
-        for (SurveyAssetInventoryContent item : inventoryContentList) {
-            try {
-                item.setMasterId(masterId);
-                surveyAssetInventoryContentService.saveAssetInventoryContent(item);
+                saveAssetInventoryContent(inventoryContent);
             } catch (BusinessException e) {
                 logger.error(e.getMessage(), e);
             }
         }
-        return inventoryContentList;
     }
-
-    /**
-     * 获取权证登记地址及实际地址，当权证为一组时取其中相同部分
-     *
-     * @param declareRecord
-     * @return
-     */
-    public SurveyAssetInventoryContent getInventoryAddress(DeclareRecord declareRecord) {
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
-        BaseProjectClassify projectLandCategory = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
-
-        SurveyAssetInventoryContent content = new SurveyAssetInventoryContent();
-        if (declareRecord == null) return content;
-        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemByDeclareId(declareRecord.getId());
-        List<String> actualList = Lists.newArrayList();
-        if (assetInfoItem == null || assetInfoItem.getGroupId() == null || assetInfoItem.getGroupId() <= 0) {
-            List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
-            if(CollectionUtils.isNotEmpty(applyList)){
-                for (BasicApply basicApply : applyList) {
-                    if(projectInfo.getProjectCategoryId().equals(projectLandCategory.getId())){
-                        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                        List<BasicEstateVillageVo> voList = basicEstateVillageService.getVillageListByEstateId(basicEstate.getId());
-                        if(CollectionUtils.isNotEmpty(voList)){
-                            for(BasicEstateVillageVo item:voList){
-                                String districtName = erpAreaService.getSysAreaName(item.getDistrict());
-                                actualList.add(String.format("%s%s%s%s",districtName,item.getVillageStreet(),item.getBurgStreet(),item.getNumberGroup()));
-                            }
-                        }
-                    }else{
-                        BasicBuildingVo building =  basicBuildingService.getBasicBuildingByBasicApply(basicApply);
-                        actualList.add(String.format("%s%s",building.getStreetNumber(),basicApply.getAddress()));
-                    }
-                }
-            }
-            String fusinString = publicService.fusinString(actualList, true);
-            content.setRegistration(declareRecord.getSeat());
-            content.setActual(fusinString);
-            return content;
-        } else {
-            List<Integer> ids = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(assetInfoItem.getGroupId());
-            List<SurveyAssetInfoItem> infoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemByIds(ids);
-            List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(infoItems, o -> o.getDeclareId()));
-            if (CollectionUtils.isNotEmpty(declareRecords)) {
-                List<String> registrationList = LangUtils.transform(declareRecords, o -> o.getSeat());
-                for (DeclareRecord record : declareRecords) {
-                    List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(record.getId());
-                    if (CollectionUtils.isNotEmpty(applyList)) {
-                        for (BasicApply basicApply : applyList) {
-                            if(projectInfo.getProjectCategoryId().equals(projectLandCategory.getId())){
-                                BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-                                List<BasicEstateVillageVo> voList = basicEstateVillageService.getVillageListByEstateId(basicEstate.getId());
-                                if(CollectionUtils.isNotEmpty(voList)){
-                                    for(BasicEstateVillageVo item:voList){
-                                        String districtName = erpAreaService.getSysAreaName(item.getDistrict());
-                                        actualList.add(String.format("%s%s%s%s",districtName,item.getVillageStreet(),item.getBurgStreet(),item.getNumberGroup()));
-                                    }
-                                }
-                            }else{
-                                BasicBuildingVo building =  basicBuildingService.getBasicBuildingByBasicApply(basicApply);
-                                actualList.add(String.format("%s%s",building.getStreetNumber(),basicApply.getAddress()));
-                            }
-                        }
-                    }
-                }
-                content.setRegistration(publicService.fusinString(registrationList, true));
-                content.setActual(publicService.fusinString(actualList, true));
-            }
-            return content;
-        }
-    }
-
-
 }

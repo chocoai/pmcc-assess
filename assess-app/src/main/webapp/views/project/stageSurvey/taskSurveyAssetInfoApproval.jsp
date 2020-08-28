@@ -50,7 +50,6 @@
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">
@@ -61,7 +60,6 @@
         </div>
     </div>
 </div>
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -71,8 +69,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-
                     <div class="col-md-12">
                         <div class="x_panel card full-height">
                             <div class="card-header collapse-link">
@@ -89,23 +85,28 @@
                             </div>
                             <div class="card-body">
                                 <form class="form-horizontal">
-                                    <div id="baseInfoItemToolbar">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="权证号" name="name">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-info btn-sm" type="button"
-                                                        onclick="assetInfo.loadSurveyAssetInfoItemBaseList(this);">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </div>
+                                    <div class="form-group form-inline">
+                                        <label for="queryName" class="col-sm-1 col-form-label">权证号</label>
+                                        <div class="col-sm-3 p-0">
+                                            <input type="text" data-rule-maxlength="50"
+                                                   placeholder="权证号" id="queryName" name="name"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-info  btn-sm" type="button"
+                                                    onclick="assetInfo.loadSurveyAssetInfoItemBaseList(this);">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                查询
+                                            </button>
                                         </div>
                                     </div>
-                                    <table class="table table-bordered" id="tb_infoBaseItem_list"></table>
                                 </form>
+                                <table class="table table-bordered" id="tb_infoBaseItem_list"></table>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-12" style="display: none;">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -302,19 +303,6 @@
             }
         });
         cols.push({
-            field: 'id', title: '查看清查业务数据', width: "40%", formatter: function (value, row, index) {
-                var str = "";
-                if (row.groupId) {
-
-                } else {
-                    str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看清查业务数据">';
-                    str += '<i class="fa fa-search"></i>';
-                    str += '</button>';
-                }
-                return str;
-            }
-        });
-        cols.push({
             field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
                 var str = "";
                 if (value) {
@@ -332,6 +320,20 @@
                 return str;
             }
         });
+        cols.push({
+            field: 'id', title: '操作', width: "10%", formatter: function (value, row, index) {
+                var str = "";
+                if (row.groupId) {
+
+                } else {
+                    str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看清查业务数据">';
+                    str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
+                }
+                return str;
+            }
+        });
+
         target.bootstrapTable('destroy');
         TableInit(target, "${pageContext.request.contextPath}/surveyAssetInfoItem/getBootstrapTableVo", cols, data, {
             method: "get",

@@ -46,7 +46,7 @@
                                                     发文标题<span class="symbol required"></span>
                                                 </label>
                                                 <div class="col-sm-7">
-                                                    <label class="form-control">${documentSend.title}</label>
+                                                    <label class="form-control input-full">${documentSend.title}</label>
                                                 </div>
                                             </div>
                                         </div>

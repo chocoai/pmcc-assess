@@ -1,38 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInfoItemMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="asset_info_id" property="assetInfoId" jdbcType="INTEGER" />
-    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="group_id" property="groupId" jdbcType="INTEGER" />
-    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
-    <result column="inventory_id" property="inventoryId" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInfoItemMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="asset_info_id" jdbcType="INTEGER" property="assetInfoId" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="declare_id" jdbcType="INTEGER" property="declareId" />
+    <result column="inventory_id" jdbcType="INTEGER" property="inventoryId" />
+    <result column="bis_finish_damage" jdbcType="BIT" property="bisFinishDamage" />
+    <result column="bis_finish_uniformity" jdbcType="BIT" property="bisFinishUniformity" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -43,25 +45,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -72,171 +74,191 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, asset_info_id, group_name, name, status, group_id, declare_id, inventory_id, 
-    creator, gmt_created, gmt_modified
+    bis_finish_damage, bis_finish_uniformity, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItemExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItemExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_survey_asset_info_item
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_survey_asset_info_item
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_survey_asset_info_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItemExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItemExample">
     delete from tb_survey_asset_info_item
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_asset_info_item (asset_info_id, group_name, name, 
       status, group_id, declare_id, 
-      inventory_id, creator, gmt_created, 
-      gmt_modified)
+      inventory_id, bis_finish_damage, bis_finish_uniformity, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{assetInfoId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, #{declareId,jdbcType=INTEGER}, 
-      #{inventoryId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{inventoryId,jdbcType=INTEGER}, #{bisFinishDamage,jdbcType=BIT}, #{bisFinishUniformity,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_asset_info_item
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="assetInfoId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="assetInfoId != null">
         asset_info_id,
       </if>
-      <if test="groupName != null" >
+      <if test="groupName != null">
         group_name,
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name,
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         status,
       </if>
-      <if test="groupId != null" >
+      <if test="groupId != null">
         group_id,
       </if>
-      <if test="declareId != null" >
+      <if test="declareId != null">
         declare_id,
       </if>
-      <if test="inventoryId != null" >
+      <if test="inventoryId != null">
         inventory_id,
       </if>
-      <if test="creator != null" >
+      <if test="bisFinishDamage != null">
+        bis_finish_damage,
+      </if>
+      <if test="bisFinishUniformity != null">
+        bis_finish_uniformity,
+      </if>
+      <if test="creator != null">
         creator,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="assetInfoId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="assetInfoId != null">
         #{assetInfoId,jdbcType=INTEGER},
       </if>
-      <if test="groupName != null" >
+      <if test="groupName != null">
         #{groupName,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="groupId != null" >
+      <if test="groupId != null">
         #{groupId,jdbcType=INTEGER},
       </if>
-      <if test="declareId != null" >
+      <if test="declareId != null">
         #{declareId,jdbcType=INTEGER},
       </if>
-      <if test="inventoryId != null" >
+      <if test="inventoryId != null">
         #{inventoryId,jdbcType=INTEGER},
       </if>
-      <if test="creator != null" >
+      <if test="bisFinishDamage != null">
+        #{bisFinishDamage,jdbcType=BIT},
+      </if>
+      <if test="bisFinishUniformity != null">
+        #{bisFinishUniformity,jdbcType=BIT},
+      </if>
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItemExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItemExample" resultType="java.lang.Long">
     select count(*) from tb_survey_asset_info_item
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_survey_asset_info_item
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.assetInfoId != null" >
+      <if test="record.assetInfoId != null">
         asset_info_id = #{record.assetInfoId,jdbcType=INTEGER},
       </if>
-      <if test="record.groupName != null" >
+      <if test="record.groupName != null">
         group_name = #{record.groupName,jdbcType=VARCHAR},
       </if>
-      <if test="record.name != null" >
+      <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null" >
+      <if test="record.status != null">
         status = #{record.status,jdbcType=VARCHAR},
       </if>
-      <if test="record.groupId != null" >
+      <if test="record.groupId != null">
         group_id = #{record.groupId,jdbcType=INTEGER},
       </if>
-      <if test="record.declareId != null" >
+      <if test="record.declareId != null">
         declare_id = #{record.declareId,jdbcType=INTEGER},
       </if>
-      <if test="record.inventoryId != null" >
+      <if test="record.inventoryId != null">
         inventory_id = #{record.inventoryId,jdbcType=INTEGER},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.bisFinishDamage != null">
+        bis_finish_damage = #{record.bisFinishDamage,jdbcType=BIT},
+      </if>
+      <if test="record.bisFinishUniformity != null">
+        bis_finish_uniformity = #{record.bisFinishUniformity,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_survey_asset_info_item
     set id = #{record.id,jdbcType=INTEGER},
       asset_info_id = #{record.assetInfoId,jdbcType=INTEGER},
@@ -246,50 +268,58 @@
       group_id = #{record.groupId,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       inventory_id = #{record.inventoryId,jdbcType=INTEGER},
+      bis_finish_damage = #{record.bisFinishDamage,jdbcType=BIT},
+      bis_finish_uniformity = #{record.bisFinishUniformity,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem">
     update tb_survey_asset_info_item
-    <set >
-      <if test="assetInfoId != null" >
+    <set>
+      <if test="assetInfoId != null">
         asset_info_id = #{assetInfoId,jdbcType=INTEGER},
       </if>
-      <if test="groupName != null" >
+      <if test="groupName != null">
         group_name = #{groupName,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="groupId != null" >
+      <if test="groupId != null">
         group_id = #{groupId,jdbcType=INTEGER},
       </if>
-      <if test="declareId != null" >
+      <if test="declareId != null">
         declare_id = #{declareId,jdbcType=INTEGER},
       </if>
-      <if test="inventoryId != null" >
+      <if test="inventoryId != null">
         inventory_id = #{inventoryId,jdbcType=INTEGER},
       </if>
-      <if test="creator != null" >
+      <if test="bisFinishDamage != null">
+        bis_finish_damage = #{bisFinishDamage,jdbcType=BIT},
+      </if>
+      <if test="bisFinishUniformity != null">
+        bis_finish_uniformity = #{bisFinishUniformity,jdbcType=BIT},
+      </if>
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem">
     update tb_survey_asset_info_item
     set asset_info_id = #{assetInfoId,jdbcType=INTEGER},
       group_name = #{groupName,jdbcType=VARCHAR},
@@ -298,6 +328,8 @@
       group_id = #{groupId,jdbcType=INTEGER},
       declare_id = #{declareId,jdbcType=INTEGER},
       inventory_id = #{inventoryId,jdbcType=INTEGER},
+      bis_finish_damage = #{bisFinishDamage,jdbcType=BIT},
+      bis_finish_uniformity = #{bisFinishUniformity,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

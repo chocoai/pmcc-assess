@@ -18,7 +18,7 @@ public class SurveyAssetInventoryDao {
     @Autowired
     private SurveyAssetInventoryMapper surveyAssetInventoryMapper;
 
-    public boolean update(SurveyAssetInventory surveyAssetInventory) {
+    public boolean updateSurveyAssetInventory(SurveyAssetInventory surveyAssetInventory) {
         int i = surveyAssetInventoryMapper.updateByPrimaryKeySelective(surveyAssetInventory);
         return i > 0;
     }
@@ -27,7 +27,7 @@ public class SurveyAssetInventoryDao {
         return surveyAssetInventoryMapper.selectByPrimaryKey(id) ;
     }
 
-    public int save(SurveyAssetInventory surveyAssetInventory) {
+    public int addSurveyAssetInventory(SurveyAssetInventory surveyAssetInventory) {
         surveyAssetInventoryMapper.insertSelective(surveyAssetInventory);
         return surveyAssetInventory.getId();
     }

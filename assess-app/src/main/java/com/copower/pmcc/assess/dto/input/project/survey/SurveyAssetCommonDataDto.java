@@ -9,7 +9,7 @@ import java.util.List;
  * Created by zly on 2018/5/10.
  */
 public class SurveyAssetCommonDataDto {
-
+    private Integer assetInfoItemId;
     private SurveyAssetInventory surveyAssetInventory;
     private List<SurveyAssetInventoryContent> assetInventoryContentList;
 
@@ -27,5 +27,13 @@ public class SurveyAssetCommonDataDto {
 
     public void setAssetInventoryContentList(List<SurveyAssetInventoryContent> assetInventoryContentList) {
         this.assetInventoryContentList = assetInventoryContentList;
+    }
+
+    public Integer getAssetInfoItemId() {
+        return assetInfoItemId;
+    }
+
+    public void setAssetInfoItemId(Integer assetInfoItemId) {
+        this.assetInfoItemId = assetInfoItemId;
     }
 }

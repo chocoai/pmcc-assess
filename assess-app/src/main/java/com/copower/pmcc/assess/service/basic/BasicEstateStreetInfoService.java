@@ -114,6 +114,13 @@ public class BasicEstateStreetInfoService {
         return basicEstateStreetInfoDao.basicEstateStreetInfoList(basicEstateStreetInfo);
     }
 
+    public List<BasicEstateStreetInfo> getStreetInfoListByEstateId(Integer estateId) {
+        if (estateId == null) return null;
+        BasicEstateStreetInfo where = new BasicEstateStreetInfo();
+        where.setEstateId(estateId);
+        return basicEstateStreetInfoDao.basicEstateStreetInfoList(where);
+    }
+
 
     public BootstrapTableVo getBootstrapTableVo(BasicEstateStreetInfo basicEstateStreetInfo) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();

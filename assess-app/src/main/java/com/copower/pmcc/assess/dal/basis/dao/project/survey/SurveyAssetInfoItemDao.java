@@ -48,7 +48,7 @@ public class SurveyAssetInfoItemDao {
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean saveSurveyAssetInfoItem(SurveyAssetInfoItem oo) {
+    public boolean addSurveyAssetInfoItem(SurveyAssetInfoItem oo) {
         return mapper.insertSelective(oo) == 1;
     }
 
