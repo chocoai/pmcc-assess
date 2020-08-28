@@ -472,6 +472,10 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldEnum.JudgeObjectEquitySheet.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectEquitySheet());
         }
+        //估价对象因素表
+        if (Objects.equal(ReportFieldEnum.JudgeObjectFactorSheet.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectFactorSheet());
+        }
         //汇总表
         if (Objects.equal(ReportFieldEnum.judgeSummarySheet.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeSummarySheet());

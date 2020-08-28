@@ -22,9 +22,12 @@ public class BasicTenementTypeController {
 
     @GetMapping(value = "/getTenementTypeValue")
     public HttpResult getTenementTypeValue(String tenementType, int num) {
-        Object obj = new Object();
+        Object obj = "";
         try {
             BasicTenementTypeEnum typeEnum = BasicTenementTypeEnum.getEnumByName(tenementType);
+            if (typeEnum == null){
+                return HttpResult.newCorrectResult(200, obj);
+            }
             switch (num) {
                 case 1:
                     obj = basicTenementTypeInterface.priceExportColumns(typeEnum);
