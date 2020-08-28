@@ -26,7 +26,7 @@ public class BasicTenementTypeImpl implements BasicTenementTypeInterface, Serial
                 case SHOP:
                 case MARKET:
                 case PARKING_SPACE:{
-                    return "commonColumn.houseRoomResidence()";
+                    return "commonColumn.houseRoomStore()";
                 }
                 case HOTEL:
                 case REPAST:{
