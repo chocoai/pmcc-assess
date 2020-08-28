@@ -715,6 +715,7 @@ commonColumn.houseRoomColumn = function () {
     return cols;
 }
 
+//住宅、办公
 commonColumn.houseRoomResidence = function () {
     var cols = [];
     cols.push({field: 'aeration', title: '通风'});
@@ -743,6 +744,7 @@ commonColumn.houseRoomResidence = function () {
     return cols;
 }
 
+//商铺、商场、车位
 commonColumn.houseRoomStore = function () {
     var cols = [];
     cols.push({field: 'adjacentPositionDescribe', title: '相邻位置描述'});
@@ -769,6 +771,7 @@ commonColumn.houseRoomStore = function () {
     return cols;
 }
 
+//酒店餐饮
 commonColumn.houseRoomHotel = function () {
     var cols = [];
     cols.push({field: 'aeration', title: '通风'});
@@ -794,6 +797,7 @@ commonColumn.houseRoomHotel = function () {
     return cols;
 }
 
+//生产
 commonColumn.houseRoomProduction = function () {
     var cols = [];
     cols.push({field: 'spanLength', title: '跨长'});
@@ -807,6 +811,7 @@ commonColumn.houseRoomProduction = function () {
     return cols;
 }
 
+//仓储
 commonColumn.houseRoomStorage = function () {
     var cols = [];
     cols.push({field: 'standardMeasureName', title: '计量标准'});

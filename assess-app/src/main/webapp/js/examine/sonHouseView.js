@@ -2161,6 +2161,17 @@ var houseRoom;
                         cols.push(item);
                     }) ;
                     cols.push({field: 'fileViewName', title: '附件'});
+                    cols.push({
+                        field: 'id', title: '操作', formatter: function (value, row, index) {
+                            var str = '<div class="btn-margin">';
+                            str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ')"><i class="fa fa-copy fa-white"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="粘贴" onclick="houseRoom.prototype.dataPaste(' + row.id + ')"><i class="fa fa-paste fa-white"></i></button>';
+                            str += '</div>';
+                            return str;
+                        }
+                    });
                     $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
                     TableInit(houseRoom.prototype.config().table, getContextPath() + "/basicHouseRoom/getBootstrapTableVo", cols, {
                         houseId: houseCommon.getHouseId()

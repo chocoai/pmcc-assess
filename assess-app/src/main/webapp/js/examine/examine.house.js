@@ -556,14 +556,6 @@
             deleteFlag: true,
             onUploadComplete: function () {
                 houseCommon.fileShow(fieldsName);
-                // if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
-                //     toolMapHandleFun.removeToolMapHandle({
-                //         type: "house",
-                //         tableId: houseCommon.getHouseId()
-                //     }, function () {
-                //
-                //     });
-                // }
             }
         });
     };
@@ -580,12 +572,9 @@
                 }
                 //土地
                 case AssessProjectClassifyKey.singleHouseLandCertificateTypeSimple: {
-
                     break;
                 }
-
             }
-
         });
     };
 
@@ -599,16 +588,6 @@
                 tableId: houseCommon.getHouseId()
             },
             deleteFlag: deleteFlag == undefined ? true : deleteFlag,
-            // deleteSuccess: function (attachemntId) {
-            //     if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
-            //         toolMapHandleFun.removeToolMapHandle({
-            //             type: "house",
-            //             tableId: houseCommon.getHouseId()
-            //         }, function () {
-            //
-            //         });
-            //     }
-            // }
         })
     };
 
