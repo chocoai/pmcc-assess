@@ -83,7 +83,7 @@ public class BasicHouseHuxingPriceService {
      * @return
      * @throws Exception
      */
-    public BasicHouseHuxingPrice getBasicHouseHuxingPriceById(Integer id) throws Exception {
+    public BasicHouseHuxingPrice getBasicHouseHuxingPriceById(Integer id) {
         return basicHouseHuxingPriceDao.getBasicHouseHuxingPriceById(id);
     }
 
@@ -192,8 +192,10 @@ public class BasicHouseHuxingPriceService {
         if (basicHouseHuxingPrice == null) {
             return null;
         }
+        //这里因为有json字段所以又取了一次
+        BasicHouseHuxingPrice price = getBasicHouseHuxingPriceById(basicHouseHuxingPrice.getId()) ;
         BasicHouseHuxingPriceVo vo = new BasicHouseHuxingPriceVo();
-        BeanUtils.copyProperties(basicHouseHuxingPrice, vo);
+        BeanUtils.copyProperties(price, vo);
         vo.setOrientationName(baseDataDicService.getNameById(basicHouseHuxingPrice.getOrientation()));
         vo.setStandardMeasureName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStandardMeasure()));
         vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStorageRequest()));
@@ -210,8 +212,8 @@ public class BasicHouseHuxingPriceService {
             }
             vo.setAdjacentPositionDescribe(s.toString());
         }
-        if (StringUtils.isNotEmpty(basicHouseHuxingPrice.getJsonData())) {
-            List<ExamineHousePriceDto> list = JSON.parseArray(basicHouseHuxingPrice.getJsonData(), ExamineHousePriceDto.class);
+        if (StringUtils.isNotEmpty(vo.getJsonData())) {
+            List<ExamineHousePriceDto> list = JSON.parseArray(vo.getJsonData(), ExamineHousePriceDto.class);
             if (CollectionUtils.isNotEmpty(list)) {
                 StringBuilder factorDescribe = new StringBuilder();
                 for (ExamineHousePriceDto item : list) {
