@@ -260,30 +260,27 @@ public class EvaluationHypothesisService {
                         group.add(map);
                     }
                 }
-
+                StringBuilder builder = new StringBuilder();
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
                 if (CollectionUtils.isNotEmpty(actualTimenumbers) || CollectionUtils.isNotEmpty(purposeNumbers)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(basis.getTemplate())));
-                }
-                if (CollectionUtils.isEmpty(actualTimenumbers) && CollectionUtils.isEmpty(purposeNumbers)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml("无未定事项假设。"));
+                    builder.append(publicService.tagfilter(basis.getTemplate()));
                 }
                 if (CollectionUtils.isNotEmpty(group)) {
                     if (group.size() == 1) {
                         for (Map.Entry<List<Integer>, String> entry : group.get(0).entrySet()) {
                             DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
-                            stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())).replace("#{竣工日期}", entry.getValue()).replace("#{估价对象号}", (generateCommonMethod.convertNumber(entry.getKey()) + "号")));
+                            builder.append(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{竣工日期}", entry.getValue()).replace("#{估价对象号}", (generateCommonMethod.convertNumber(entry.getKey()) + "号")));
                         }
                     } else {
                         DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.TIME_ACTUAL_SURVEY);
-                        stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())).replace("#{竣工日期}", String.join("、", completedTime)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号")));
+                        builder.append(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{竣工日期}", String.join("、", completedTime)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(actualTimenumbers) + "号")));
                     }
                 }
                 if (CollectionUtils.isNotEmpty(purposeNumbers)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_PURPOSE);
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate())).replace("#{设定用途}", settingPurpose.deleteCharAt(settingPurpose.length() - 1)).replace("#{实际用途}", actualPurpose.deleteCharAt(actualPurpose.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(purposeNumbers) + "号")));
+                    builder.append(publicService.tagfilter(dataReportTemplateByField.getTemplate()).replace("#{设定用途}", settingPurpose.deleteCharAt(settingPurpose.length() - 1)).replace("#{实际用途}", actualPurpose.deleteCharAt(actualPurpose.length() - 1)).replace("#{估价对象号}", (generateCommonMethod.convertNumber(purposeNumbers) + "号")));
                 }
+                stringBuilder.append(generateCommonMethod.getIndentHtml(StringUtils.defaultIfBlank(builder.toString(), "无未定事项假设")));
             }
 
             //不相一致假设
@@ -454,9 +451,10 @@ public class EvaluationHypothesisService {
                         }
                     }
                 }
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
                 if (valuationDate.compareTo(investigationsEndDate) != 0 || StringUtils.isNotBlank(surroundingsDamage) || StringUtils.isNotBlank(entityDamage)
                         || StringUtils.isNotBlank(havePledge) || StringUtils.isNotBlank(haveOther)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
+
                     stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(basis.getTemplate())));
                 }
                 if (valuationDate.compareTo(investigationsEndDate) != 0) {
@@ -488,8 +486,9 @@ public class EvaluationHypothesisService {
                 if (StringUtils.isNotBlank(content)) {
                     DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.HYPOTHESIS_DEPART_FROM_FACT_PLEDGE);
                     stringBuilder.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(dataReportTemplateByField.getTemplate().replace("#{内容}", content))));
+                } else {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml("无背离事实假设"));
                 }
-
             }
 
             //一般假设
