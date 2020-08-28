@@ -31,6 +31,7 @@ public enum ReportFieldEnum implements Serializable {
     HouseType("房产类型"),
 
     JudgeBuildResultSurveySheet("估价结果一览表"),
+    JudgeObjectFactorSheet("估价对象因素表"),
     JudgeBuildResultSurveySheetNotBeLocated("估价结果一览表不含坐落"),
     EquityStatusObjectSheet("估价对象权属"),
     EquityStatusObjectCheckListSheet("估价对象权属明细清单"),

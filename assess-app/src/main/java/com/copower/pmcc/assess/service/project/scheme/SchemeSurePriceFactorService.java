@@ -77,6 +77,10 @@ public class SchemeSurePriceFactorService {
         return certAdjustmentFactorList;
     }
 
+    public List<SchemeSurePriceFactor> getFactorListByJudgeObjectIds(List<Integer> judgeObjectIds){
+        return schemeSurePriceFactorDao.getFactorListByJudgeObjectIds(judgeObjectIds) ;
+    }
+
     /**
      * 拷贝调整因素
      *
