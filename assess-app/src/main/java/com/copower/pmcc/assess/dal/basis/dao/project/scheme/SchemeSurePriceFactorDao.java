@@ -61,6 +61,12 @@ public class SchemeSurePriceFactorDao {
         return schemeSurePriceFactorMapper.selectByExample(example);
     }
 
+    public List<SchemeSurePriceFactor> getFactorListByJudgeObjectIds(List<Integer> judgeObjectIds) {
+        SchemeSurePriceFactorExample example = new SchemeSurePriceFactorExample();
+        example.createCriteria().andJudgeObjectIdIn(judgeObjectIds);
+        return schemeSurePriceFactorMapper.selectByExample(example);
+    }
+
     /**
      * 新增
      *

@@ -58,6 +58,7 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.StringUtil;
 import com.google.common.base.Objects;
 import com.google.common.collect.*;
+import javafx.print.PageOrientation;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -147,6 +148,7 @@ public class GenerateBaseDataService {
     private DeclareBuildingPermitService declareBuildingPermitService;
     private DeclareLandUsePermitService declareLandUsePermitService;
     private DeclarePreSalePermitService declarePreSalePermitService;
+    private SchemeSurePriceFactorService schemeSurePriceFactorService;
 
     /**
      * 构造器必须传入的参数
@@ -3783,7 +3785,7 @@ public class GenerateBaseDataService {
         DocumentBuilder documentBuilder = new DocumentBuilder(doc);
         generateCommonMethod.settingBuildingTable(documentBuilder);
         AsposeUtils.setDefaultTable(documentBuilder);
-        buildResultSetTable(projectInfo,schemeJudgeObjectList,documentBuilder);
+        buildResultSetTable(projectInfo, schemeJudgeObjectList, documentBuilder);
         //handleJudgeBuildResultSurveySheetBase(seat, schemeJudgeObjectList, projectInfo, documentBuilder);
         AsposeUtils.saveWord(path, doc);
         return path;
@@ -4133,13 +4135,13 @@ public class GenerateBaseDataService {
                         BasicHouseHuxingPrice huxingPrice = huxingPriceList.get(i);
                         builder.insertCell();
                         builder.write(number + "-" + (i + 1));
-                        if (huxingPrice.getDeclareId() != null){
+                        if (huxingPrice.getDeclareId() != null) {
                             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(huxingPrice.getDeclareId());
                             builder.insertCell();
                             builder.write(declareRecord.getName());
                             builder.insertCell();
                             builder.write(declareRecord.getSeat());
-                        }else{
+                        } else {
                             builder.insertCell();
                             builder.write(certName);
                             builder.insertCell();
@@ -4397,8 +4399,8 @@ public class GenerateBaseDataService {
             return;
         }
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-        if (declareRecord == null){
-            declareRecord = new DeclareRecord() ;
+        if (declareRecord == null) {
+            declareRecord = new DeclareRecord();
         }
         if (isLabelJudgeObjectShowName) {
             linkedLists.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
@@ -5476,6 +5478,101 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    /**
+     * 确定单价因素表
+     *
+     * @return
+     */
+    public String getJudgeObjectFactorSheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.settingBuildingTable(documentBuilder);
+        //注意因素表一共我插入了两个分节符 ,第一个分节符得作用是强行与断掉word上一行开始得链接,而第二个分节符  强行断掉和下面得链接  ,如果这个替换放在末尾可以考虑把最后的分节符给注释掉
+        //插入分节符
+        documentBuilder.insertBreak(BreakType.SECTION_BREAK_NEW_PAGE);
+        //横向设置
+        PageSetup ps = documentBuilder.getPageSetup();
+        ps.setPaperSize(PaperSize.LEGAL);
+        ps.setOrientation(Orientation.LANDSCAPE);
+        ps.setTopMargin(ConvertUtil.inchToPoint(1.0));
+        ps.setBottomMargin(ConvertUtil.inchToPoint(1.0));
+        ps.setLeftMargin(ConvertUtil.inchToPoint(1.5));
+        ps.setRightMargin(ConvertUtil.inchToPoint(1.5));
+        ps.setHeaderDistance(ConvertUtil.inchToPoint(0.2));
+        ps.setFooterDistance(ConvertUtil.inchToPoint(0.2));
+
+
+        LinkedList<String> linkedList = new LinkedList<>();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                List<SchemeJudgeObjectVo> schemeJudgeObjectVoList = new ArrayList<>();
+                if (schemeJudgeObject.getBisMerge() != null && schemeJudgeObject.getBisMerge()) {
+                    schemeJudgeObjectVoList = schemeJudgeObjectService.getVoListByPid(schemeJudgeObject.getId());
+                } else {
+                    schemeJudgeObjectVoList.add(schemeJudgeObjectService.getSchemeJudgeObjectVo(schemeJudgeObject));
+                }
+                if (CollectionUtils.isEmpty(schemeJudgeObjectVoList)) {
+                    continue;
+                }
+                List<Integer> integerList = LangUtils.transform(schemeJudgeObjectVoList, obj -> obj.getId());
+                List<SchemeSurePriceFactor> schemeSurePriceFactorList = schemeSurePriceFactorService.getFactorListByJudgeObjectIds(integerList);
+                if (CollectionUtils.isEmpty(schemeSurePriceFactorList)) {
+                    continue;
+                }
+                documentBuilder.startTable();
+                List<String> stringList = LangUtils.transform(schemeSurePriceFactorList, obj -> obj.getFactor());
+                stringList = LangUtils.distinct(stringList);
+                linkedList.add("序列");
+                linkedList.addAll(stringList);
+                linkedList.add("单价");
+                AsposeUtils.writeWordTitle(documentBuilder, linkedList);
+                linkedList.clear();
+                for (SchemeJudgeObjectVo objectVo : schemeJudgeObjectVoList) {
+                    List<SchemeSurePriceFactor> surePriceFactorList = LangUtils.filter(schemeSurePriceFactorList, obj -> obj.getJudgeObjectId().equals(objectVo.getId()));
+                    StringBuilder sequenceBuilder = new StringBuilder();
+                    if (objectVo.getBisMerge() != null && objectVo.getBisMerge()) {
+                        sequenceBuilder.append(AsposeUtils.getValue(objectVo.getNumber()));
+                    } else if (objectVo.getBisSplit() != null && objectVo.getBisSplit()) {
+                        sequenceBuilder.append(AsposeUtils.getValue(objectVo.getNumber())).append("-").append(AsposeUtils.getValue(objectVo.getSplitNumber()));
+                    } else {
+                        sequenceBuilder.append(AsposeUtils.getValue(objectVo.getNumber()));
+                    }
+                    linkedList.add(AsposeUtils.getValue(sequenceBuilder.toString()));//序列
+                    //因素
+                    for (String key : stringList) {
+                        List<SchemeSurePriceFactor> factors = LangUtils.filter(surePriceFactorList, obj -> obj.getFactor().equals(key));
+                        if (CollectionUtils.isNotEmpty(factors)) {
+                            SchemeSurePriceFactor surePriceFactor = factors.get(0);
+                            StringBuilder stringBuilder = new StringBuilder();
+                            if (surePriceFactor.getType().equals(Integer.valueOf("0"))) {
+                                stringBuilder.append(AsposeUtils.getValue(surePriceFactor.getCoefficient()));
+                            } else if (surePriceFactor.getType().equals(Integer.valueOf("1"))) {
+                                BigDecimal bigDecimal = ArithmeticUtils.multiply(new BigDecimal(100), surePriceFactor.getCoefficient());
+                                stringBuilder.append(AsposeUtils.getValue(bigDecimal)).append("%");
+                            }
+                            linkedList.add(stringBuilder.toString());
+                        } else {
+                            linkedList.add("");
+                        }
+                    }
+                    linkedList.add(AsposeUtils.getValue(objectVo.getPrice()));//单价
+                    AsposeUtils.writeWordTitle(documentBuilder, linkedList);
+                    linkedList.clear();
+                }
+                documentBuilder.endTable();
+                //两个不同的估价对象因素用分段岔开  否则 相邻表格aspose组件会自动连在一起  即便设置了表格开始和结束同样会被默认为连接
+                documentBuilder.writeln();
+                documentBuilder.insertBreak(BreakType.PARAGRAPH_BREAK);
+            }
+        }
+        String localPath = getLocalPath();
+        //插入分节符
+        documentBuilder.insertBreak(BreakType.SECTION_BREAK_NEW_PAGE);
+        doc.save(localPath);
+        return localPath;
+    }
+
 
     /**
      * 户型及布局
@@ -6130,7 +6227,7 @@ public class GenerateBaseDataService {
         }
         if (!schemeJudgeObjectLinkedHashMap.isEmpty()) {
             for (Map.Entry<SchemeInfo, SchemeJudgeObject> entry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-                try{
+                try {
                     BaseDataDic baseDataDic = dataDicList.stream().filter(oo -> Objects.equal(entry.getKey().getMethodType(), oo.getId())).findFirst().get();
                     if (baseDataDic == null || StringUtils.isEmpty(baseDataDic.getFieldName())) {
                         continue;
@@ -6165,8 +6262,8 @@ public class GenerateBaseDataService {
                         default:
                             break;
                     }
-                }catch (Exception e){
-                    logger.error(e.getMessage(),e);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
                 }
             }
         }
@@ -7209,6 +7306,7 @@ public class GenerateBaseDataService {
         this.declareBuildingPermitService = SpringContextUtils.getBean(DeclareBuildingPermitService.class);
         this.declareLandUsePermitService = SpringContextUtils.getBean(DeclareLandUsePermitService.class);
         this.declarePreSalePermitService = SpringContextUtils.getBean(DeclarePreSalePermitService.class);
+        this.schemeSurePriceFactorService = SpringContextUtils.getBean(SchemeSurePriceFactorService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         if (areaGroup == null) {
