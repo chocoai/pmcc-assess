@@ -1176,6 +1176,40 @@
                                                 <input type="text" placeholder="楼层" name="floor"
                                                        class="form-control input-full">
                                             </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group residence">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+
+                                            <label class="col-sm-2 control-label">
+                                                坐落
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="坐落"
+                                                       name="seat" class="form-control input-full">
+                                            </div>
+
+                                            <label class="col-sm-2 control-label">
+                                                层高(m)
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="number" data-rule-number="true" placeholder="层高"
+                                                           name="layerHeight" class="form-control form-control-sm">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
+                                                                type="button" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">选择
+                                                        </button>
+                                                        <div class="dropdown-menu layerHeightList" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1305,29 +1339,6 @@
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="特殊因素"
                                                        name="specialFactors" class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none" class="row form-group residence">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                层高(m)
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <div class="input-group">
-                                                    <input type="number" data-rule-number="true" placeholder="层高"
-                                                           name="layerHeight" class="form-control form-control-sm">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-warning btn-sm dropdown-toggle"
-                                                                type="button" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">选择
-                                                        </button>
-                                                        <div class="dropdown-menu layerHeightList" >
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1748,13 +1759,32 @@
             var judgeObjectId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='judgeObjectId']").val();
             var columns = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='priceExportColumns']").val();
             var href = "${pageContext.request.contextPath}/schemeSurePrice/generateHuxingPrice";
-            href += "?columns=" + encodeURIComponent(columns) + "&houseId=" + houseId + "&judgeObjectId=" + judgeObjectId;
+            href += "?columns=" + encodeURIComponent( columns ) + "&houseId=" + houseId + "&judgeObjectId=" + judgeObjectId;
             window.open(href, "");
         },
         getPriceExportColumns: function (tenementType) {
             if (tenementType) {
-                AssessCommon.ajaxServerMethod({tenementType: tenementType,num:1}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
-                    $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='priceExportColumns']").val(JSON.stringify(value));
+                AssessCommon.ajaxServerMethod({tenementType: tenementType,num:4}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+                    var temp = value ;
+                    var columns = [];
+
+                    $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
+                        var column = {};
+                        var factorColumn = {};
+                        column.value = $.trim($(this).text());
+                        factorColumn.value = $.trim($(this).text()) + "因素";
+                        if (houseHuxingPrice.prototype.isNotBlank($(this).next().find("input").attr("name"))) {
+                            column.key = $(this).next().find("input").attr("name");
+                            factorColumn.key = $(this).next().find("input").attr("name") + "_factor";
+                        } else {
+                            column.key = $(this).next().find("select").attr("name");
+                            factorColumn.key = $(this).next().find("select").attr("name") + "_factor";
+                        }
+                        columns.push(column);
+                        columns.push(factorColumn);
+
+                    });
+                    $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='priceExportColumns']").val(JSON.stringify(columns));
                 });
             }
         }
