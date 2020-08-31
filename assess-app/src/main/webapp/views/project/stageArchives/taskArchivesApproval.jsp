@@ -29,18 +29,46 @@
                                         <label class="col-sm-2 col-form-label">
                                             档案存放位置<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-10">
                                             <input type="text" required placeholder="档案存放位置" name="saveLocation"
                                                    class="form-control input-full">
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 col-form-label">
                                             档案卷号<span class="symbol required"></span>
                                         </label>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-10">
                                             <div class="input-group">
                                                 <input type="text" placeholder="档案卷号" required
                                                        name="number"
                                                        class="form-control">
+
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-success btn-sm dropdown-toggle "
+                                                            type="button"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                    <span class="btn-label">
+												        <i class="fa fa-plus"></i>
+											        </span>
+                                                        自动生成卷号
+                                                    </button>
+                                                    <div class="dropdown-menu"
+                                                         style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                        <c:forEach items="${SysSymbolRuleDtoList}" var="itemData">
+                                                            <a class="dropdown-item"
+                                                               onclick="objArchives.changeFileNumber(this,'${itemData.id}');"
+                                                               href="javascript:void(0)">${itemData.numberRule}</a>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+
+
                                                 <div class="input-group-prepend">
                                                     <button class="btn btn-primary btn-sm "
                                                             style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
@@ -48,6 +76,8 @@
                                                             onclick="objArchives.openNumberModal(this);">
                                                         编辑
                                                     </button>
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -85,13 +115,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <p id="toolbarSub">
-                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                    data-toggle="modal" onclick="objArchives.addAdPlaceFileVolumeNumberDto()">
-											<span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                新增
-                            </button>
+                            <%--<button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"--%>
+                                    <%--data-toggle="modal" onclick="objArchives.addAdPlaceFileVolumeNumberDto()">--%>
+											<%--<span class="btn-label">--%>
+												<%--<i class="fa fa-plus"></i>--%>
+											<%--</span>--%>
+                                <%--新增--%>
+                            <%--</button>--%>
                         </p>
                         <table id="tbAdPlaceFileVolumeNumberList" class="table table-bordered"></table>
                     </div>
@@ -569,13 +599,7 @@
         frm.validate();
     };
 
-    objArchives.saveAdPlaceFileVolumeNumberDto = function () {
-        var box = $(objArchives.volumeNumberAddBox.selector);
-        var frm = box.find("form");
-        if (!frm.valid()) {
-            return false;
-        }
-        var data = formSerializeArray(frm);
+    objArchives.saveBaseAdPlaceFileVolumeNumberDto = function (data, callback) {
         Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/projectArchives/saveAdPlaceFileVolumeNumberDto",
@@ -585,9 +609,9 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess("成功", "数据已成功保存到数据库");
-                    objArchives.loadTableAdPlaceFileVolumeNumberDtoList();
-                    box.modal("hide");
+                    if (callback) {
+                        callback();
+                    }
                 } else {
                     AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
@@ -597,6 +621,20 @@
                 AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
+    };
+
+    objArchives.saveAdPlaceFileVolumeNumberDto = function () {
+        var box = $(objArchives.volumeNumberAddBox.selector);
+        var frm = box.find("form");
+        if (!frm.valid()) {
+            return false;
+        }
+        var data = formSerializeArray(frm);
+        objArchives.saveBaseAdPlaceFileVolumeNumberDto(data, function () {
+            AlertSuccess("成功", "数据已成功保存到数据库");
+            objArchives.loadTableAdPlaceFileVolumeNumberDtoList();
+            box.modal("hide");
+        });
     };
 
     objArchives.getAdPlaceFileGroupDtoById = function (id, callback) {
@@ -639,6 +677,32 @@
                 if (result.ret) {
                     frm.find("[name=number]").val(result.data.symbol);
                     AlertSuccess("成功", "已经成功获取自动生成的卷号");
+                } else {
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    };
+
+    objArchives.changeFileNumber = function (_this, ruleNumber) {
+        var frm = $(_this).closest("form");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/projectArchives/symbol",
+            type: "get",
+            dataType: "json",
+            data: {ruleId: ruleNumber},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    var symbol = result.data.symbol;
+                    frm.find("[name=number]").val(symbol);
+                    objArchives.saveBaseAdPlaceFileVolumeNumberDto({number: symbol,ruleNumber:ruleNumber}, function () {
+                        AlertSuccess("成功", "已经成功获取自动生成的卷号");
+                    });
                 } else {
                     AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }

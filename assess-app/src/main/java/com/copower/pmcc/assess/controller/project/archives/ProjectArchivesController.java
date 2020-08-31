@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project.archives;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.ad.api.dto.AdPlaceFileGroupDto;
+import com.copower.pmcc.ad.api.dto.AdPlaceFileItemDetailDto;
 import com.copower.pmcc.ad.api.dto.AdPlaceFileItemDto;
 import com.copower.pmcc.ad.api.dto.AdPlaceFileVolumeNumberDto;
 import com.copower.pmcc.assess.service.project.archives.ProjectArchivesDataService;
@@ -30,8 +31,8 @@ public class ProjectArchivesController {
 
     @ResponseBody
     @RequestMapping(value = "/getAdPlaceFileItemDtoListByParam", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(Integer publicProjectId,Integer groupId,String name,Integer fileType,Integer fileCategory,Boolean bisBinding) {
-        return projectArchivesDataService.getAdPlaceFileItemDtoListByParam(publicProjectId, groupId, name, fileType, fileCategory, bisBinding);
+    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(Integer publicProjectId,Integer groupId, String publicProjectName,String name,Integer fileType,Integer fileCategory,Boolean bisBinding) {
+        return projectArchivesDataService.getAdPlaceFileItemDtoListByParam(publicProjectId, groupId,  publicProjectName,name, fileType, fileCategory, bisBinding);
     }
 
     @ResponseBody
@@ -61,6 +62,31 @@ public class ProjectArchivesController {
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveAdPlaceFileItemDetailDto", method = {RequestMethod.POST}, name = "更新")
+    public HttpResult saveAdPlaceFileItemDetailDto(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
+        try {
+            AdPlaceFileItemDetailDto dto = JSONObject.parseObject(formData, AdPlaceFileItemDetailDto.class);
+            projectArchivesDataService.saveAdPlaceFileItemDetailDto(dto);
+            return HttpResult.newCorrectResult(dto);
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteAdPlaceFileItemDetailDtoByIds", method = {RequestMethod.POST}, name = "删除")
+    public HttpResult deleteAdPlaceFileItemDetailDtoByIds(String id) {
+        try {
+            projectArchivesDataService.deleteAdPlaceFileItemDetailDtoByIds(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
 
@@ -110,7 +136,7 @@ public class ProjectArchivesController {
             projectArchivesDataService.deleteAdPlaceFileItemDtoByIds(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
@@ -122,7 +148,7 @@ public class ProjectArchivesController {
             projectArchivesDataService.deleteAdPlaceFileGroupDtoByIds(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" ,e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
@@ -134,7 +160,7 @@ public class ProjectArchivesController {
             projectArchivesDataService.deleteAdPlaceFileVolumeNumberDtoByIds(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
@@ -146,7 +172,7 @@ public class ProjectArchivesController {
             projectArchivesDataService.lockOpenDataDicAdPlaceFileItemDtoById(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
@@ -157,7 +183,7 @@ public class ProjectArchivesController {
         try {
             return HttpResult.newCorrectResult(200,projectArchivesDataService.getAdPlaceFileGroupDtoById(id));
         } catch (Exception e1) {
-            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }

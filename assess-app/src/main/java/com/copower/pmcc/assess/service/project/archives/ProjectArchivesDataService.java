@@ -1,14 +1,8 @@
 package com.copower.pmcc.assess.service.project.archives;
 
-import com.copower.pmcc.ad.api.dto.AdBasePlaceFileDto;
-import com.copower.pmcc.ad.api.dto.AdPlaceFileGroupDto;
-import com.copower.pmcc.ad.api.dto.AdPlaceFileItemDto;
-import com.copower.pmcc.ad.api.dto.AdPlaceFileVolumeNumberDto;
+import com.copower.pmcc.ad.api.dto.*;
 import com.copower.pmcc.ad.api.enums.*;
-import com.copower.pmcc.ad.api.provider.AdRpcBasePlaceFileService;
-import com.copower.pmcc.ad.api.provider.AdRpcPlaceFileGroupService;
-import com.copower.pmcc.ad.api.provider.AdRpcPlaceFileItemService;
-import com.copower.pmcc.ad.api.provider.AdRpcPlaceFileVolumeNumberService;
+import com.copower.pmcc.ad.api.provider.*;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -23,7 +17,6 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.SysAppEnum;
-import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -54,8 +47,6 @@ public class ProjectArchivesDataService {
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
-    private ErpRpcProjectService rpcProjectService;
-    @Autowired
     private AdRpcBasePlaceFileService adRpcBasePlaceFileService;
     @Autowired
     private AdRpcPlaceFileGroupService adRpcPlaceFileGroupService;
@@ -75,9 +66,39 @@ public class ProjectArchivesDataService {
     private BasicEstateSurveyRecordService basicEstateSurveyRecordService;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
-
-
+    @Autowired
+    private AdRpcPlaceFileItemDetailService adRpcPlaceFileItemDetailService;
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    public void saveAdPlaceFileItemDetailDto(AdPlaceFileItemDetailDto obj){
+        if (obj == null) {
+            return;
+        }
+        if (obj.getId() == null || obj.getId() == 0) {
+            if (StringUtils.isBlank(obj.getCreator())) {
+                obj.setCreator(commonService.thisUserAccount());
+            }
+            Integer integer = adRpcPlaceFileItemDetailService.saveAdPlaceFileItemDetailDto(obj);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDetailDto.class), integer);
+            obj.setId(integer);
+        } else {
+            adRpcPlaceFileItemDetailService.updateAdPlaceFileItemDetailDto(obj);
+        }
+    }
+
+    public void deleteAdPlaceFileItemDetailDtoByIds(String id){
+        if (StringUtils.isBlank(id)) {
+            return;
+        }
+        List<Integer> ids = FormatUtils.transformString2Integer(id) ;
+        if (CollectionUtils.isEmpty(ids)) {
+            return;
+        }
+        adRpcPlaceFileItemDetailService.deleteAdPlaceFileItemDetailDtoByIds(ids) ;
+    }
+
+
+
 
     public AdBasePlaceFileDto getAdBasePlaceFileByFieldName( String fieldName){
         AdBasePlaceFileDto query = new AdBasePlaceFileDto();
@@ -261,34 +282,6 @@ public class ProjectArchivesDataService {
     }
 
 
-    /**
-     * 档案方式
-     *
-     * @return
-     */
-    public List<KeyValueDto> getFilePublicData() {
-        AdArchivesDataPublicEnum[] enums = AdArchivesDataPublicEnum.values();
-        List<KeyValueDto> list = new ArrayList<>(enums.length);
-        for (AdArchivesDataPublicEnum dataPublicEnum : enums) {
-            list.add(new KeyValueDto(String.valueOf(dataPublicEnum.getKey()), dataPublicEnum.getName()));
-        }
-        return list;
-    }
-
-    /**
-     * 档案来源
-     *
-     * @return
-     */
-    public List<KeyValueDto> getFileSourceData() {
-        AdArchivesDataSourceEnum[] enums = AdArchivesDataSourceEnum.values();
-        List<KeyValueDto> list = new ArrayList<>(enums.length);
-        for (AdArchivesDataSourceEnum sourceEnum : enums) {
-            list.add(new KeyValueDto(String.valueOf(sourceEnum.getKey()), sourceEnum.getName()));
-        }
-        return list;
-    }
-
 
     public List<AdBasePlaceFileDto> getAdBasePlaceFileList(String fieldName) {
         return adRpcBasePlaceFileService.getAdBasePlaceFileList(applicationConstant.getAppKey(), fieldName);
@@ -312,13 +305,6 @@ public class ProjectArchivesDataService {
             }
             if (StringUtils.isBlank(obj.getAppKey())) {
                 obj.setAppKey(applicationConstant.getAppKey());
-            }
-            //获取erp中真正的项目id
-            if (obj.getPublicProjectId() != null) {
-                SysProjectDto projectId = rpcProjectService.getProjectInfoByProjectId(obj.getPublicProjectId(), obj.getAppKey());
-                if (projectId != null) {
-                    obj.setPublicProjectId(projectId.getProjectId());
-                }
             }
             Integer integer = adRpcPlaceFileItemService.saveAdPlaceFileItemDto(obj);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDto.class), integer);
@@ -382,6 +368,9 @@ public class ProjectArchivesDataService {
         if (StringUtils.isBlank(obj.getAppKey())) {
             obj.setAppKey(applicationConstant.getAppKey());
         }
+        if (StringUtils.isBlank(obj.getCreator())) {
+            obj.setCreator(commonService.thisUserAccount());
+        }
         return adRpcPlaceFileVolumeNumberService.getAdPlaceFileVolumeNumberDtoListByParam(obj, requestBaseParam.getOffset(), requestBaseParam.getLimit());
     }
 
@@ -390,17 +379,10 @@ public class ProjectArchivesDataService {
      *
      * @return
      */
-    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(Integer publicProjectId, Integer groupId, String name, Integer fileType, Integer fileCategory, Boolean bisBinding) {
+    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(Integer publicProjectId, Integer groupId, String publicProjectName,String name, Integer fileType, Integer fileCategory, Boolean bisBinding) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         String appKey = applicationConstant.getAppKey();
-        //获取erp中真正的项目id
-        if (publicProjectId != null) {
-            SysProjectDto projectId = rpcProjectService.getProjectInfoByProjectId(publicProjectId, appKey);
-            if (projectId != null) {
-                publicProjectId = projectId.getProjectId();
-            }
-        }
-        BootstrapTableVo<AdPlaceFileItemDto> bootstrapTableVo = adRpcPlaceFileItemService.getAdPlaceFileItemDtoListByParam(appKey, publicProjectId, groupId, name, fileType, fileCategory, bisBinding, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BootstrapTableVo<AdPlaceFileItemDto> bootstrapTableVo = adRpcPlaceFileItemService.getAdPlaceFileItemDtoListByParam(appKey, publicProjectName,publicProjectId, groupId, name, fileType, fileCategory, bisBinding, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<AdPlaceFileItemDtoVo> voList = LangUtils.transform(bootstrapTableVo.getRows(), oo -> getAdPlaceFileItemDtoVo(oo));
         BootstrapTableVo tableVo = new BootstrapTableVo();
         tableVo.setTotal(bootstrapTableVo.getTotal());

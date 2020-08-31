@@ -214,6 +214,8 @@ public class AssessDataDicKeyConstant {
 
     public static final String AD_PLACE_FILE_SHELF_LIFE = "ad.place.file.shelf.life"; //评估系统 档案保存期限
     public static final String AD_PLACE_FILE_MARK = "ad.place.file.mark"; //评估系统 档案标识
+    public static final String AD_PLACE_FILE_MANNER = "ad.place.file.manner"; //评估系统 档案公开方式
+    public static final String AD_PLACE_FILE_SOURCE = "ad.place.file.source"; //评估系统 档案来源
 
     public static final String AD_PLACE_FILE_MARK_OPERATING = "ad.place.file.mark.operating"; //评估系统 档案标识 - 操作类 -
     public static final String AD_PLACE_FILE_MARK_OPERATING_ATTORNEY = "ad.place.file.mark.operating.attorney"; //评估系统 档案标识 - 操作类 - 委托书

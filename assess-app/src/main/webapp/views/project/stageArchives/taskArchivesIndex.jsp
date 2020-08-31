@@ -69,7 +69,7 @@
                                                     class="form-control input-full search-select select2">
                                                 <option value="">请选择</option>
                                                 <c:forEach items="${FileSourceData}" var="itemData">
-                                                    <option value="${itemData.key}">${itemData.value}</option>
+                                                    <option value="${itemData.id}">${itemData.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -88,7 +88,7 @@
                                                     class="form-control input-full search-select select2">
                                                 <option value="">请选择</option>
                                                 <c:forEach items="${FilePublicData}" var="itemData">
-                                                    <option value="${itemData.key}">${itemData.value}</option>
+                                                    <option value="${itemData.id}">${itemData.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -509,6 +509,7 @@
         }
         var data = formSerializeArray(frm);
         data.publicProjectId = '${projectInfo.id}';
+        data.publicProjectName = '${projectInfo.projectName}';
         if (!data.bisBinding) {
             data.bisBinding = false;
         }

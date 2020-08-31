@@ -79,8 +79,8 @@ public class ProjectTaskArchivesAssist implements ProjectTaskInterface {
 
     private void setModelParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         modelAndView.addObject("projectPlanDetails",projectPlanDetails) ;
-        modelAndView.addObject("FilePublicData",projectArchivesDataService.getFilePublicData()) ;
-        modelAndView.addObject("FileSourceData",projectArchivesDataService.getFileSourceData()) ;
+        modelAndView.addObject("FilePublicData",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MANNER)) ;
+        modelAndView.addObject("FileSourceData",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_SOURCE)) ;
         modelAndView.addObject("MarkAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK)) ;
         modelAndView.addObject("LifeAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_SHELF_LIFE)) ;
         modelAndView.addObject("SysSymbolRuleDtoList",projectArchivesDataService.getSysSymbolRuleDtoList()) ;
