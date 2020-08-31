@@ -20,6 +20,7 @@ import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectQrcodeRecordService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -109,6 +110,10 @@ public class ProjectTakeNumberController extends BaseController {
 
     @RequestMapping(value = "/detailView", name = "详情页", method = RequestMethod.GET)
     public ModelAndView detailsView(Integer boxId, String processInsId) {
+        if (boxId == null) {
+            BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
+            boxId = boxRuDto.getBoxId();
+        }
         return approvalView(boxId, processInsId, "-1", "");
     }
 
@@ -160,8 +165,8 @@ public class ProjectTakeNumberController extends BaseController {
             SysSymbolListDto sysSymbolListDto = projectNumberRecordService.getSysSymbolListDto(areaId, projectTakeNumber.getProjectId(), projectTakeNumber.getReportType(), projectTakeNumber.getAssessProjectType());
             ProjectTakeNumberDetail projectTakeNumberDetail = new ProjectTakeNumberDetail();
             projectTakeNumber.setNumberValue(sysSymbolListDto.getSymbol());
-            BeanUtils.copyProperties(projectTakeNumber,projectTakeNumberDetail);
-            projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail,false);
+            BeanUtils.copyProperties(projectTakeNumber, projectTakeNumberDetail);
+            projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail, false);
             return HttpResult.newCorrectResult(200, projectTakeNumberDetail);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -169,7 +174,7 @@ public class ProjectTakeNumberController extends BaseController {
         }
     }
 
-    @PostMapping(value = "/saveAndUpdateProjectTakeNumberDetail",name = "拿号从表 save")
+    @PostMapping(value = "/saveAndUpdateProjectTakeNumberDetail", name = "拿号从表 save")
     public HttpResult saveAndUpdateProjectTakeNumberDetail(String formData, @RequestParam(name = "updateNull", defaultValue = "false") boolean updateNull) {
         try {
             ProjectTakeNumberDetail projectTakeNumberDetail = JSONObject.parseObject(formData, ProjectTakeNumberDetail.class);
@@ -181,7 +186,7 @@ public class ProjectTakeNumberController extends BaseController {
         }
     }
 
-    @PostMapping(value = "/deleteProjectTakeNumberDetailById",name = "拿号 从表删除")
+    @PostMapping(value = "/deleteProjectTakeNumberDetailById", name = "拿号 从表删除")
     public HttpResult deleteProjectTakeNumberDetailById(String id) {
         try {
             projectTakeNumberDetailService.deleteProjectTakeNumberDetailById(id);
@@ -192,7 +197,7 @@ public class ProjectTakeNumberController extends BaseController {
         }
     }
 
-    @GetMapping(value = "/getProjectTakeNumberDetailById",name = "拿号 get")
+    @GetMapping(value = "/getProjectTakeNumberDetailById", name = "拿号 get")
     public HttpResult getProjectTakeNumberDetailById(Integer id) {
         try {
             return HttpResult.newCorrectResult(200, projectTakeNumberDetailService.getProjectTakeNumberDetailById(id));
@@ -204,11 +209,11 @@ public class ProjectTakeNumberController extends BaseController {
 
 
     @GetMapping(value = "/toolBaseOrCode", name = "二维码 拿取,加上一个功能替换,假如不存替换的附件id则不替换")
-    public HttpResult toolBaseOrCode(Integer takeNumberDetailId, Integer masterId,String attachmentIds) {
+    public HttpResult toolBaseOrCode(Integer takeNumberDetailId, Integer masterId, String attachmentIds) {
         try {
             ProjectTakeNumber projectTakeNumber = projectTakeNumberService.getProjectTakeNumberById(masterId);
-            ProjectTakeNumberDetail projectTakeNumberDetail = projectTakeNumberDetailService.getProjectTakeNumberDetailById(takeNumberDetailId) ;
-            SysAttachmentDto sysAttachmentDto = projectQrcodeRecordService.toolBaseOrCode(projectTakeNumber,projectTakeNumberDetail);
+            ProjectTakeNumberDetail projectTakeNumberDetail = projectTakeNumberDetailService.getProjectTakeNumberDetailById(takeNumberDetailId);
+            SysAttachmentDto sysAttachmentDto = projectQrcodeRecordService.toolBaseOrCode(projectTakeNumber, projectTakeNumberDetail);
             sysAttachmentDto.setFilePath(baseAttachmentService.getViewImageUrl(sysAttachmentDto.getId()));
             if (StringUtils.isNotBlank(attachmentIds)) {
                 //二维码附件

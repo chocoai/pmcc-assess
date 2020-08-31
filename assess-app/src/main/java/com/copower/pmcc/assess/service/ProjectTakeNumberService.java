@@ -121,7 +121,6 @@ public class ProjectTakeNumberService {
         processInfo.setProjectId(projectTakeNumber.getProjectId());
         String boxName = baseParameterService.getBaseParameter(baseParameterEnum);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
-        ;
         ProjectInfo costsProjectInfo = projectInfoService.getProjectInfoById(projectTakeNumber.getProjectId());
 
         processInfo.setFolio(String.format("%s【项目拿号申请】", costsProjectInfo.getProjectName()));//流程描述
@@ -179,12 +178,11 @@ public class ProjectTakeNumberService {
         }
     }
 
-
     public void editData(ProjectTakeNumber projectTakeNumber) {
         projectTakeNumberDao.modifyProjectTakeNumber(projectTakeNumber);
     }
 
-    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) {
+    public void applyCommit(String formData) {
         ProjectTakeNumber projectTakeNumber = JSONObject.parseObject(formData, ProjectTakeNumber.class);
         saveAndUpdateProjectTakeNumber(projectTakeNumber, false);
         List<ProjectTakeNumberDetail> projectTakeNumberDetailList = projectTakeNumberDetailService.getProjectTakeNumberDetailListByMasterId(projectTakeNumber.getId());

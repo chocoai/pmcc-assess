@@ -23,7 +23,7 @@
                                         <small>(${judgeObject.evaluationArea}㎡)</small>
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                        <button class="btn btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -109,10 +109,10 @@
                                                         <th width="10%">权证号</th>
                                                         <th width="10%">证载面积</th>
                                                         <th width="10%">评估面积</th>
-                                                        <th width="10%">楼层</th>
-                                                        <th width="10%">房号</th>
-                                                        <th width="10%">价格</th>
-                                                        <th width="40%">因素</th>
+                                                        <th width="5%">楼层</th>
+                                                        <th width="5%">房号</th>
+                                                        <th width="5%">价格</th>
+                                                        <th width="30%">因素</th>
                                                         <th width="10%">操作</th>
                                                     </tr>
                                                     </thead>
@@ -126,11 +126,10 @@
                                                             <td>${item.roomNumber}</td>
                                                             <td data-name="price">${item.price}</td>
                                                             <td data-name="coefficient">${item.factor}</td>
-                                                            <td><div class="btn btn-xs btn-primary"
-                                                                     onclick="determinePrice.getHouseRoomInfo(${item.id})">房间信息
-                                                            </div><div class="btn btn-xs btn-primary"
-                                                                                             onclick="determinePrice.getHouseId(${item.id})">单价调整
-                                                            </div></td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-xs btn-primary" onclick="determinePrice.getHouseRoomInfo(${item.id})">房间信息</button>
+                                                                <button type="button" style="margin-left: 2px;" class="btn btn-xs btn-primary" onclick="determinePrice.getHouseId(${item.id})">单价调整</button>
+                                                            </td>
                                                         </tr>
                                                     </c:forEach>
                                                     </tbody>
@@ -141,7 +140,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </c:if>
                     <div class="col-md-12">
                         <div class="card full-height">
@@ -176,9 +174,7 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
 <div id="divBoxHouseHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -186,30 +182,17 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">调查信息</h4>
+                <h4 class="modal-title">调价信息</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frmHouseHuxingPriceTable" class="form-horizontal">
                     <input type="hidden" name="houseId">
                     <input type="hidden" name="tenementType">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row row form-group">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="HouseHuxingPriceList">
-                                            <!-- cerare document add ajax data-->
-                                        </table>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table table-bordered" id="HouseHuxingPriceList">
+                        <!-- cerare document add ajax data-->
+                    </table>
                 </form>
             </div>
             <div class="modal-footer">
@@ -217,7 +200,6 @@
                     关闭
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -439,9 +421,6 @@
     determinePrice.loadHouseRoomList =  function (houseId,tenementType) {
         var cols = commonColumn.houseRoomColumn();
         var temp = [];
-        // if(houseCommon.houseHuxingForm.find('select[name="spatialDistribution"]').find("option:selected").text()=="多层"){
-        //     cols.push({field: 'currentFloor', title: '所在楼层'});
-        // }
         if (tenementType) {
             AssessCommon.ajaxServerMethod({tenementType: tenementType,num:2}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
                 temp = eval(value) ;
@@ -495,7 +474,7 @@
                         cols.push(item);
                     });
                     cols.push({field: 'price', title: '价格'});
-                    cols.push({field: 'adjustFactor', title: '因素'});
+                    cols.push({field: 'factorDescribe', title: '因素'});
                     $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
                     TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
                         houseId: houseId

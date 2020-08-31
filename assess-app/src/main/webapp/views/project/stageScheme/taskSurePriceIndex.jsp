@@ -129,17 +129,17 @@
                                             <table id="adjust_factor_table" class="table">
                                                 <thead>
                                                 <tr>
-                                                    <th width="5%"><input type="checkbox"
-                                                                          onclick="surePrice.checkboxToggle(this);">
+                                                    <th width="5%">
+                                                        <input type="checkbox" onclick="surePrice.checkboxToggle(this);">
                                                     </th>
                                                     <th width="10%">权证号</th>
                                                     <th width="10%">证载面积</th>
                                                     <th width="10%">评估面积</th>
-                                                    <th width="10%">楼层</th>
-                                                    <th width="10%">房号</th>
-                                                    <th width="10%">价格</th>
-                                                    <th width="50%">因素</th>
-                                                    <th>操作</th>
+                                                    <th width="5%">楼层</th>
+                                                    <th width="5%">房号</th>
+                                                    <th width="5%">价格</th>
+                                                    <th width="30%">因素</th>
+                                                    <th width="10%">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -215,24 +215,24 @@
         <td data-name="price">{price}</td>
         <td data-name="coefficient">{coefficient}</td>
         <td>
-            <div class="btn btn-xs btn-primary"
+            <button type="button" class="btn btn-xs btn-primary" style="margin-left:2px;"
                  onclick="surePrice.adjustFactor('{id}','{tenementType}')">调整
-            </div>
-            <div class="btn btn-xs btn-primary copy"
+            </button>
+            <button type="button" class="btn btn-xs btn-primary copy"
                  onclick="surePrice.copy(this);">复制
-            </div>
-            <div class="btn btn-xs btn-primary cancel-copy" style="display:none;"
+            </button>
+            <button type="button" class="btn btn-xs btn-primary cancel-copy" style="display:none;"
                  onclick="surePrice.cancelCopy(this)">取消复制
-            </div>
-            <div class="btn btn-xs btn-warning paste" style="display:none;"
+            </button>
+            <button type="button" class="btn btn-xs btn-warning paste" style="display:none;"
                  onclick="surePrice.paste(this)">粘贴
-            </div>
-            <div class="btn btn-xs btn-primary houseRommInfo"
+            </button>
+            <button type="button" class="btn btn-xs btn-primary houseRommInfo"
                  onclick="surePrice.getHouseRoomInfo('{id}')">房间信息
-            </div>
-            <div class="btn btn-xs btn-primary priceAdjust" style="display:{bisShow};"
+            </button>
+            <button type="button" style="margin-left:2px;" class="btn btn-xs btn-primary priceAdjust" style="display:{bisShow};"
                  onclick="surePrice.getHouseId('{id}')">单价调整
-            </div>
+            </button>
         </td>
     </tr>
 </script>
@@ -864,7 +864,7 @@
                             AssessCommon.ajaxServerMethod({tenementType: tenementType,num:4}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
                                 $("#" + houseHuxingPrice.prototype.config().frm).find("." + value).find(".control-label").each(function () {
                                     var factorColumn = {};
-                                    factorColumn.value = $.trim($(this).text()) + "因素";
+                                    factorColumn.value = $.trim($(this).text()) + "系数";
                                     if (houseHuxingPrice.prototype.isNotBlank($(this).next().find("input").attr("name"))) {
                                         factorColumn.key = $(this).next().find("input").attr("name") + "_factor";
                                     } else {
@@ -1048,51 +1048,35 @@
                     <input type="hidden" name="judgeObjectId">
                     <input type="hidden" name="tenementType">
                     <input type="hidden" name="priceExportColumns">
-                    <div class="row">
+                    <div class="row row form-group">
                         <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline form-inline x-valid">
-                                            <%--<button type="button" style="margin-left: 5px"--%>
-                                            <%--class="btn btn-success btn-sm"--%>
-                                            <%--onclick="houseHuxingPrice.prototype.showModel()"--%>
-                                            <%--data-toggle="modal" href="#divBoxHouseHuxingPrice">--%>
-                                            <%--<span class="btn-label">--%>
-                                            <%--<i class="fa fa-plus"></i>--%>
-                                            <%--</span>新增--%>
-                                            <%--</button>--%>
-                                            <div class="btn-group">
-                                                <button type="button" style="margin-left: 5px"
-                                                        class="btn btn-info btn-sm dropdown-toggle"
-                                                        data-toggle="dropdown">
+                            <div class="form-inline form-inline x-valid">
+                                <div class="btn-group">
+                                    <button type="button" style="margin-left: 5px"
+                                            class="btn btn-info btn-sm dropdown-toggle"
+                                            data-toggle="dropdown">
                                                      <span class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
                                                          </span>导入数据
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a class="btn"
-                                                           onclick="houseHuxingPrice.prototype.generateHuxingPrice()">导出</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="btn"
-                                                           onclick="$('#ajaxFileUpload').val('').trigger('click')"><span>导入</span></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a class="btn"
+                                               onclick="houseHuxingPrice.prototype.generateHuxingPrice()">导出</a>
+                                        </li>
+                                        <li>
+                                            <a class="btn"
+                                               onclick="$('#ajaxFileUpload').val('').trigger('click')"><span>导入</span></a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="row row form-group">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="HouseHuxingPriceList">
-                                            <!-- cerare document add ajax data-->
-                                        </table>
-                                    </div>
-                                </div>
-
-
                             </div>
+                        </div>
+                    </div>
+                    <div class="row row form-group">
+                        <div class="col-md-12">
+                            <table class="table table-bordered" id="HouseHuxingPriceList">
+                                <!-- cerare document add ajax data-->
+                            </table>
                         </div>
                     </div>
                 </form>
@@ -1102,7 +1086,6 @@
                     关闭
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -1116,7 +1099,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frmHouseHuxingPrice" class="form-horizontal">
                     <input type="hidden" name="id">
@@ -1176,15 +1158,12 @@
                                                 <input type="text" placeholder="楼层" name="floor"
                                                        class="form-control input-full">
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>
                                 <div style="display: none" class="row form-group residence">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-
                                             <label class="col-sm-2 control-label">
                                                 坐落
                                             </label>
@@ -1192,7 +1171,6 @@
                                                 <input type="text" placeholder="坐落"
                                                        name="seat" class="form-control input-full">
                                             </div>
-
                                             <label class="col-sm-2 control-label">
                                                 层高(m)
                                             </label>
@@ -1767,12 +1745,11 @@
                 AssessCommon.ajaxServerMethod({tenementType: tenementType,num:4}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
                     var temp = value ;
                     var columns = [];
-
                     $("#" + houseHuxingPrice.prototype.config().frm).find("." + temp).find(".control-label").each(function () {
                         var column = {};
                         var factorColumn = {};
                         column.value = $.trim($(this).text());
-                        factorColumn.value = $.trim($(this).text()) + "因素";
+                        factorColumn.value = $.trim($(this).text()) + "系数";
                         if (houseHuxingPrice.prototype.isNotBlank($(this).next().find("input").attr("name"))) {
                             column.key = $(this).next().find("input").attr("name");
                             factorColumn.key = $(this).next().find("input").attr("name") + "_factor";

@@ -25,7 +25,7 @@
                                         <small>${projectInfo.projectCategoryName}</small>
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                        <button class="btn btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -67,7 +67,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <%@include file="/views/project/stageInit/stageInitModel/projectPossessor.jsp" %>
                         </div>
                     </div>
@@ -86,14 +85,11 @@
                                     </div>
                                 </div>
                             </div>
-
                             <%@include file="/views/project/stageInit/stageInitModel/projectUnit_information.jsp" %>
-
                         </div>
                     </div>
                         <%@include file="apply/project_info_apply.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
@@ -108,8 +104,6 @@
                             </button>
                         </div>
                     </div>
-
-
                     <c:if test="${processInsId ne '0'}">
                         <%@include file="/views/share/form_log.jsp" %>
                         <form id="frm_approval">
@@ -121,7 +115,6 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
 <%@include file="/views/project/stageInit/stageInitModel/otherProjectIndexJs.jsp" %>
 </body>

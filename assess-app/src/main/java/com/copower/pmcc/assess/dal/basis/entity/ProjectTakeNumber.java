@@ -9,23 +9,21 @@ public class ProjectTakeNumber {
 
     private Integer projectId;
 
+    private Integer planDetailsId;
+
     private String assessProjectType;
 
+    private Integer areaGroupId;
+
+    private Integer reportGroupId;
+
+    private String reportGroupName;
+
     private Integer reportType;
-
-    private String remark;
-
-    private String status;
 
     private Integer numberRecordId;
 
     private String numberValue;
-
-    private String creator;
-
-    private Date gmtCreated;
-
-    private Date gmtModified;
 
     private String qualificationType;
 
@@ -39,7 +37,17 @@ public class ProjectTakeNumber {
 
     private String realEstateAppraiser;
 
-    private Integer planDetailsId;
+    private String status;
+
+    private String remark;
+
+    private Boolean bisQrcode;
+
+    private String creator;
+
+    private Date gmtCreated;
+
+    private Date gmtModified;
 
     public Integer getId() {
         return id;
@@ -65,6 +73,14 @@ public class ProjectTakeNumber {
         this.projectId = projectId;
     }
 
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
     public String getAssessProjectType() {
         return assessProjectType;
     }
@@ -73,28 +89,36 @@ public class ProjectTakeNumber {
         this.assessProjectType = assessProjectType == null ? null : assessProjectType.trim();
     }
 
+    public Integer getAreaGroupId() {
+        return areaGroupId;
+    }
+
+    public void setAreaGroupId(Integer areaGroupId) {
+        this.areaGroupId = areaGroupId;
+    }
+
+    public Integer getReportGroupId() {
+        return reportGroupId;
+    }
+
+    public void setReportGroupId(Integer reportGroupId) {
+        this.reportGroupId = reportGroupId;
+    }
+
+    public String getReportGroupName() {
+        return reportGroupName;
+    }
+
+    public void setReportGroupName(String reportGroupName) {
+        this.reportGroupName = reportGroupName == null ? null : reportGroupName.trim();
+    }
+
     public Integer getReportType() {
         return reportType;
     }
 
     public void setReportType(Integer reportType) {
         this.reportType = reportType;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
     }
 
     public Integer getNumberRecordId() {
@@ -111,30 +135,6 @@ public class ProjectTakeNumber {
 
     public void setNumberValue(String numberValue) {
         this.numberValue = numberValue == null ? null : numberValue.trim();
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
     }
 
     public String getQualificationType() {
@@ -185,11 +185,51 @@ public class ProjectTakeNumber {
         this.realEstateAppraiser = realEstateAppraiser == null ? null : realEstateAppraiser.trim();
     }
 
-    public Integer getPlanDetailsId() {
-        return planDetailsId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setPlanDetailsId(Integer planDetailsId) {
-        this.planDetailsId = planDetailsId;
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Boolean getBisQrcode() {
+        return bisQrcode;
+    }
+
+    public void setBisQrcode(Boolean bisQrcode) {
+        this.bisQrcode = bisQrcode;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

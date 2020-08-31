@@ -4099,15 +4099,15 @@ public class GenerateBaseDataService {
                     builder.write(basicHouse.getFloor());
 
                 builder.insertCell();
-                builder.write(schemeJudgeObject.getEvaluationArea().toString());
+                builder.write(ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getEvaluationArea()));
                 areaTotal = areaTotal.add(schemeJudgeObject.getEvaluationArea());
 
                 builder.insertCell();
-                builder.write(schemeJudgeObject.getPrice().toString());
+                builder.write(ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getPrice()));
 
                 BigDecimal evaluationPrice = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice()).divide(new BigDecimal("10000"), 2, RoundingMode.HALF_UP);
                 builder.insertCell();
-                builder.write(evaluationPrice.toString());
+                builder.write(ArithmeticUtils.getBigDecimalString(evaluationPrice));
                 priceTotal = priceTotal.add(evaluationPrice);
 
                 if (mortgageFlag == Boolean.TRUE) {//是否为抵押评估
@@ -4117,11 +4117,11 @@ public class GenerateBaseDataService {
                     if (reimbursementItem != null && reimbursementItem.getKnowTotalPrice() != null) {
                         knowTotalPrice = reimbursementItem.getKnowTotalPrice().divide(new BigDecimal("10000"), 2, RoundingMode.HALF_UP);
                     }
-                    builder.write(knowTotalPrice.toString());
+                    builder.write(ArithmeticUtils.getBigDecimalString(knowTotalPrice));
 
                     builder.insertCell();
                     BigDecimal mortgagePrice = evaluationPrice.subtract(knowTotalPrice);
-                    builder.write(mortgagePrice.toString());
+                    builder.write(ArithmeticUtils.getBigDecimalString(mortgagePrice));
 
                     reimbursementTotal = reimbursementTotal.add(knowTotalPrice);
                     mortgagePriceTotal = mortgagePriceTotal.add(mortgagePrice);
@@ -4163,10 +4163,10 @@ public class GenerateBaseDataService {
                             areaTotal = areaTotal.add(huxingPrice.getArea());
                         }
                         builder.insertCell();
-                        builder.write(String.valueOf(huxingPrice.getArea() == null ? "" : huxingPrice.getArea()));
+                        builder.write(huxingPrice.getArea() == null ? "" : ArithmeticUtils.getBigDecimalString(huxingPrice.getArea()));
 
                         builder.insertCell();
-                        builder.write(String.valueOf(huxingPrice.getPrice() == null ? "" : huxingPrice.getPrice()));
+                        builder.write(huxingPrice.getPrice() == null ? "" : ArithmeticUtils.getBigDecimalString(huxingPrice.getPrice()));
 
                         BigDecimal huxingTotalPrice = BigDecimal.ZERO;
                         if (huxingPrice.getArea() != null && huxingPrice.getPrice() != null) {
@@ -4175,13 +4175,13 @@ public class GenerateBaseDataService {
                             mortgagePriceTotal = mortgagePriceTotal.add(huxingTotalPrice);
                         }
                         builder.insertCell();
-                        builder.write(String.valueOf(huxingTotalPrice));
+                        builder.write(String.valueOf(ArithmeticUtils.getBigDecimalString(huxingTotalPrice)));
 
                         builder.insertCell();
                         builder.write(String.valueOf(BigDecimal.ZERO));
 
                         builder.insertCell();
-                        builder.write(String.valueOf(huxingTotalPrice));
+                        builder.write(String.valueOf(ArithmeticUtils.getBigDecimalString(huxingTotalPrice)));
 
                         builder.endRow();
                     }
@@ -4205,9 +4205,9 @@ public class GenerateBaseDataService {
         builder.write(priceTotal.toString());
         if (mortgageFlag == Boolean.TRUE) {//是否为抵押评估
             builder.insertCell();
-            builder.write(reimbursementTotal.toString());
+            builder.write(ArithmeticUtils.getBigDecimalString(reimbursementTotal));
             builder.insertCell();
-            builder.write(mortgagePriceTotal.toString());
+            builder.write(ArithmeticUtils.getBigDecimalString(mortgagePriceTotal));
         }
         builder.endRow();
         builder.endTable();

@@ -439,6 +439,11 @@
                     return formatDate(value, true);
                 }
             });
+            cols.push({
+                field: 'opt', title: '操作', formatter: function (value, row, index) {
+                    return "<a target='_blank' href='${pageContext.request.contextPath}/projectTakeNumber/detailView?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                }
+            });
             target.bootstrapTable('destroy');
             TableInit(target, "${pageContext.request.contextPath}/projectTakeNumber/getTakeNumberList", cols, {
                 projectId: ${projectInfo.id}

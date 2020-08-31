@@ -25,23 +25,22 @@ public class GenerateReportGroupController {
     @RequestMapping(value = "/getGenerateReportGroupById", name = "获取数据", method = {RequestMethod.GET})
     public HttpResult getGenerateReportGroupById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200, generateReportGroupService.getGenerateReportGroupById(id));
+            return HttpResult.newCorrectResult(generateReportGroupService.getGenerateReportGroupById(id));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/saveAndUpdateGenerateReportGroup", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateGenerateReportGroup(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
         try {
-            GenerateReportGroup generateReportGroup = JSONObject.parseObject(formData,GenerateReportGroup.class) ;
-            //generateReportGroupService.verifyLiquidationAnalysis(generateReportGroup);
+            GenerateReportGroup generateReportGroup = JSONObject.parseObject(formData, GenerateReportGroup.class);
             generateReportGroupService.saveAndUpdateGenerateReportGroup(generateReportGroup, updateNull);
-            return HttpResult.newCorrectResult(200, generateReportGroup);
+            return HttpResult.newCorrectResult(generateReportGroup);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -49,40 +48,36 @@ public class GenerateReportGroupController {
     public HttpResult deleteGenerateReportGroup(String id) {
         try {
             generateReportGroupService.deleteGenerateReportGroupById(id);
-            return HttpResult.newCorrectResult(200, "");
+            return HttpResult.newCorrectResult("");
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-    public BootstrapTableVo getBootstrapTableVo(GenerateReportGroup query) {
-        try {
-            return generateReportGroupService.getBootstrapTableVo(query);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return generateReportGroupService.getBootstrapTableVo(new GenerateReportGroup());
-        }
+    public BootstrapTableVo getBootstrapTableVo(Integer projectId) {
+        return generateReportGroupService.getBootstrapTableVo(projectId);
     }
 
     @RequestMapping(value = "/getGenerateReportGroupList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult getGenerateReportGroupList(GenerateReportGroup generateReportGroup) {
         try {
-            return HttpResult.newCorrectResult(200, generateReportGroupService.getGenerateReportGroupListByQuery(generateReportGroup));
+            generateReportGroupService.getGenerateReportGroupListByQuery(generateReportGroup);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/getValidData", name = "获取校验列表", method = {RequestMethod.GET})
     public HttpResult getValidData(Integer projectId) {
         try {
-            return HttpResult.newCorrectResult(200, generateReportGroupService.getValidData(projectId));
+            return HttpResult.newCorrectResult(generateReportGroupService.getValidData(projectId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 

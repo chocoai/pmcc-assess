@@ -41,7 +41,7 @@ public class BasicHouseHuxingPriceDao {
         BasicHouseHuxingPriceExample example = new BasicHouseHuxingPriceExample();
         BasicHouseHuxingPriceExample.Criteria criteria = example.createCriteria();
         MybatisUtils.convertObj2Criteria(basicHouseHuxingPrice, criteria);
-        return basicHouseHuxingPriceMapper.selectByExample(example);
+        return basicHouseHuxingPriceMapper.selectByExampleWithBLOBs(example);
     }
 
     public List<BasicHouseHuxingPrice> getListByQuery(List<Integer> houseIds, String houseNum) {

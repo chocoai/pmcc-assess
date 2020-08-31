@@ -76,7 +76,7 @@ public class ProjectTakeWordNumberAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        projectTakeNumberService.applyCommit(projectPlanDetails, processInsId, formData);
+        projectTakeNumberService.applyCommit(formData);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class ProjectTakeWordNumberAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        projectTakeNumberService.applyCommit(projectPlanDetails, processInsId, formData);
+        projectTakeNumberService.applyCommit(formData);
     }
 
     private void setParams(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails, boolean init) {
@@ -98,15 +98,6 @@ public class ProjectTakeWordNumberAssist implements ProjectTaskInterface {
         modelAndView.addObject(StringUtils.uncapitalize(ProjectTakeNumber.class.getSimpleName()), projectTakeNumberVo);
         List<Integer> takeNumberDetailIdLists = new ArrayList<>(1);
         List<ProjectTakeNumberDetail> projectTakeNumberDetailList = projectTakeNumberDetailService.getProjectTakeNumberDetailListByMasterId(projectTakeNumberVo.getId());
-//        if (CollectionUtils.isEmpty(projectTakeNumberDetailList)) {
-//            if (init) {
-//                ProjectTakeNumberDetail detail = new ProjectTakeNumberDetail();
-//                detail.setMasterId(projectTakeNumberVo.getId());
-//                projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(detail, false);
-//                projectTakeNumberDetailList.add(detail);
-//            }
-//
-//        }
         if (CollectionUtils.isNotEmpty(projectTakeNumberDetailList)) {
             projectTakeNumberDetailList.forEach(projectTakeNumberDetail -> takeNumberDetailIdLists.add(projectTakeNumberDetail.getId()));
             if (!init){

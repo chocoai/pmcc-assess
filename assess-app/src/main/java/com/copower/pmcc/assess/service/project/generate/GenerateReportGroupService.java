@@ -53,45 +53,45 @@ public class GenerateReportGroupService {
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
 
-    public List<String> getValidData(Integer projectId){
-        List<String> stringList = new ArrayList<>() ;
+    public List<String> getValidData(Integer projectId) {
+        List<String> stringList = new ArrayList<>();
         List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
         GenerateReportGroup query = null;
         Iterator<SchemeAreaGroup> iterator = schemeAreaGroupList.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             SchemeAreaGroup schemeAreaGroup = iterator.next();
             query = new GenerateReportGroup();
             query.setAreaGroupId(schemeAreaGroup.getId());
             List<GenerateReportGroup> reportGroups = getGenerateReportGroupListByQuery(query);
-            if (CollectionUtils.isEmpty(reportGroups)){
-                stringList.add(String.join("",schemeAreaGroup.getAreaName(),"  没有添加分组")) ;
+            if (CollectionUtils.isEmpty(reportGroups)) {
+                stringList.add(String.join("", schemeAreaGroup.getAreaName(), "  没有添加分组"));
                 continue;
             }
             Iterator<GenerateReportGroup> groupIterator = reportGroups.iterator();
             int count = 0;
-            while (groupIterator.hasNext()){
+            while (groupIterator.hasNext()) {
                 GenerateReportGroup reportGroup = groupIterator.next();
                 List<GenerateReportItem> generateReportItemListByMasterIdList = generateReportItemService.getGenerateReportItemListByMasterIdList(reportGroup.getId());
-                if (CollectionUtils.isNotEmpty(generateReportItemListByMasterIdList)){
-                    count ++;
+                if (CollectionUtils.isNotEmpty(generateReportItemListByMasterIdList)) {
+                    count++;
                 }
             }
-            if (count == 0){
-                stringList.add(String.join("",schemeAreaGroup.getAreaName(),"  组中没有添加估价对象")) ;
+            if (count == 0) {
+                stringList.add(String.join("", schemeAreaGroup.getAreaName(), "  组中没有添加估价对象"));
             }
         }
         return stringList;
     }
 
-    public List<SchemeJudgeObject> getSchemeJudgeObjectByGroupId(Integer groupId){
+    public List<SchemeJudgeObject> getSchemeJudgeObjectByGroupId(Integer groupId) {
         List<GenerateReportItem> generateReportItemListByMasterIdList = generateReportItemService.getGenerateReportItemListByMasterIdList(groupId);
-        List<SchemeJudgeObject> schemeJudgeObjectList = new ArrayList<>(generateReportItemListByMasterIdList.size()) ;
-        if (CollectionUtils.isNotEmpty(generateReportItemListByMasterIdList)){
+        List<SchemeJudgeObject> schemeJudgeObjectList = new ArrayList<>(generateReportItemListByMasterIdList.size());
+        if (CollectionUtils.isNotEmpty(generateReportItemListByMasterIdList)) {
             Iterator<GenerateReportItem> iterator = generateReportItemListByMasterIdList.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 GenerateReportItem reportItem = iterator.next();
                 SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(reportItem.getJudgeObjectId());
-                schemeJudgeObjectList.add(schemeJudgeObject) ;
+                schemeJudgeObjectList.add(schemeJudgeObject);
             }
         }
         return schemeJudgeObjectList;
@@ -162,25 +162,23 @@ public class GenerateReportGroupService {
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(GenerateReportGroup query) {
+    public BootstrapTableVo getBootstrapTableVo(Integer projectId) {
         BootstrapTableVo vo = new BootstrapTableVo();
+        if (projectId == null) return vo;
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<GenerateReportGroup> list = generateReportGroupDao.getGenerateReportGroupListByLike(query);
-        if (CollectionUtils.isNotEmpty(list)) {
-            Iterator<GenerateReportGroup> iterator = list.iterator();
-            while (iterator.hasNext()) {
-                GenerateReportGroup generateReportGroup = iterator.next();
-                handle(generateReportGroup);
+        GenerateReportGroup where = new GenerateReportGroup();
+        where.setProjectId(projectId);
+        List<GenerateReportGroup> list = generateReportGroupDao.getGenerateReportGroupListByExample(where);
+        if(CollectionUtils.isNotEmpty(list)){
+            for (GenerateReportGroup generateReportGroup : list) {
+                SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(generateReportGroup.getAreaGroupId());
+                generateReportGroup.setName(areaGroup.getAreaName()+"/"+generateReportGroup.getName());
             }
         }
         vo.setTotal(page.getTotal());
         vo.setRows(list);
         return vo;
-    }
-
-    public List<GenerateReportGroup> getGenerateReportGroupByIds(List<Integer> ids) {
-        return generateReportGroupDao.getGenerateReportGroupByIds(ids);
     }
 
     public GenerateReportGroup getGenerateReportGroupById(Integer id) {
@@ -225,15 +223,15 @@ public class GenerateReportGroupService {
             return;
         }
         List<Integer> integerList = new ArrayList<>();
-        List<String> stringList = new ArrayList<>() ;
+        List<String> stringList = new ArrayList<>();
         Iterator<GenerateReportItem> iterator = generateReportItemList.iterator();
         while (iterator.hasNext()) {
             GenerateReportItem reportItem = iterator.next();
-            String name = reportItem.getName() ;
-            if (StringUtils.containsAny(name,"估价对象")){
-                name = StringUtils.remove(name,"估价对象") ;
+            String name = reportItem.getName();
+            if (StringUtils.containsAny(name, "估价对象")) {
+                name = StringUtils.remove(name, "估价对象");
             }
-            stringList.add(name) ;
+            stringList.add(name);
             Integer parseIntJudgeNumber = null;
             try {
                 parseIntJudgeNumber = generateCommonMethod.parseIntJudgeNumber(reportItem.getNumber());
@@ -244,16 +242,9 @@ public class GenerateReportGroupService {
         if (CollectionUtils.isEmpty(integerList)) {
             return;
         }
-//        String name = String.join("", generateCommonMethod.convertNumber(integerList), "号");
-        String name = StringUtils.join(stringList,",");
+        String name = StringUtils.join(stringList, ",");
         generateReportGroup.setFullName(name);
     }
 
-    //验证是否有变现分析税费
-    public void verifyLiquidationAnalysis(GenerateReportGroup generateReportGroup)throws BusinessException{
-        List<SchemeLiquidationAnalysisGroup> groupByAreaId = schemeLiquidationAnalysisService.getGroupByAreaId(generateReportGroup.getAreaGroupId(), generateReportGroup.getProjectId());
-        if(CollectionUtils.isEmpty(groupByAreaId)){
-            throw new BusinessException("该区域未填写变现分析税费");
-        }
-    }
+
 }

@@ -23,30 +23,36 @@
         <div class="card-body">
             <form id="project_takeNumber_form" class="form-horizontal">
                 <input type="hidden" name="id" value="${projectTakeNumber.id}">
-
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
                             <label class="col-sm-1 col-form-label">
-                                报告类型<span class="symbol required"></span>
+                                报告类型
                             </label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full">${projectTakeNumber.reportTypeName}</label>
                             </div>
-                        </div>
-                    </div>
-                    <c:if test="${not empty numberValue}">
-                        <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
+                            <c:if test="${not empty projectTakeNumber.numberValue}">
+                                <label class="col-sm-1 col-form-label">
                                     文号
                                 </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${numberValue}</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full">${projectTakeNumber.numberValue}</label>
                                 </div>
-                            </div>
+                            </c:if>
+                            <c:if test="${true eq projectTakeNumber.bisQrcode}">
+                                <div class="col-sm-3">
+                                    <div class="form-check" style="justify-content:left">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" name="bisQrcode"
+                                                   checked="checked" disabled="disabled" value="true">
+                                            <span class="form-check-sign">${projectTakeNumber.reportGroupName}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </c:if>
                         </div>
-                    </c:if>
+                    </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12">
@@ -61,7 +67,6 @@
                     </div>
                 </div>
             </form>
-
         </div>
     </div>
 </div>

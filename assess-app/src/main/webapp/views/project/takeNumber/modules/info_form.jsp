@@ -23,20 +23,43 @@
         <div class="card-body">
             <form id="project_takeNumber_form" class="form-horizontal">
                 <input type="hidden" name="id" value="${projectTakeNumber.id}">
-
                 <div class="row form-group">
                     <div class="col-md-12">
-                        <div class="form-inline x-valid">
+                        <div class="form-inline">
                             <label class="col-sm-1 col-form-label">
                                 报告类型<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-3">
-                                <select name="reportType" class="form-control input-full search-select select2" required>
+                                <select name="reportType" class="form-control input-full search-select select2"
+                                        required>
                                 </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-check" style="justify-content:left">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" name="bisQrcode"
+                                        ${true eq projectTakeNumber.bisQrcode?'checked="checked"':''}
+                                               onclick="projectTakeNumber.triggerQrcode(this)" value="true">
+                                        <span class="form-check-sign">生成二维码</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <label class="col-sm-1 col-form-label report-group" style="display: none;">
+                                报告分组<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-3 report-group"
+                                 style="display: ${true eq projectTakeNumber.bisQrcode?'':'none'}">
+                                <input type="hidden" name="areaGroupId" value="${projectTakeNumber.areaGroupId}">
+                                <input type="hidden" name="reportGroupId" value="${projectTakeNumber.reportGroupId}">
+                                <input type="hidden" name="reportGroupName"
+                                       value="${projectTakeNumber.reportGroupName}">
+                                <button type="button" class="btn btn-sm btn-primary"
+                                        onclick="projectTakeNumber.showReportGroupModal()">选择分组
+                                </button>
+                                <span data-name="reportGroupName">${projectTakeNumber.reportGroupName}</span>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12">
@@ -45,17 +68,37 @@
                                 说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-11">
-                                    <textarea class="form-control input-full" id="remark" name="remark" rows="4" required
-                                              data-rule-maxlength="255" placeholder=""></textarea>
+                                    <textarea class="form-control input-full" id="remark" name="remark" rows="4"
+                                              required
+                                              data-rule-maxlength="255"
+                                              placeholder="">${projectTakeNumber.remark}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
+
+<%--选择报告组--%>
+<div id="reportGroupModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title"><h4>选择报告组</h4></div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="tbReportGroupList"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="application/javascript">
     var projectTakeNumber = {};
 
@@ -74,11 +117,10 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess("成功", "提交数据成功",function(){
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
-                }
-                else {
+                } else {
                     AlertError("提交数据失败，失败原因:" + result.errmsg);
                 }
             },
@@ -103,11 +145,10 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess("成功", "提交数据成功",function(){
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
-                }
-                else {
+                } else {
                     AlertError("提交数据失败，失败原因:" + result.errmsg);
                 }
             },
@@ -129,11 +170,10 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        AlertSuccess("成功", "流程撤销成功",function(){
+                        AlertSuccess("成功", "流程撤销成功", function () {
                             window.close();
                         });
-                    }
-                    else {
+                    } else {
                         AlertError("提交数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -144,11 +184,57 @@
         })
     };
 
+    //生成二维码切换
+    projectTakeNumber.triggerQrcode = function (_this) {
+        if ($(_this).prop('checked')) {
+            $('#project_takeNumber_form').find('.report-group').show();
+        } else {
+            $('#project_takeNumber_form').find('.report-group').hide();
+        }
+    }
+
+    //显示选择报告组弹窗
+    projectTakeNumber.showReportGroupModal = function () {
+        projectTakeNumber.loadReportGroupList();
+        $('#reportGroupModal').modal();
+    }
+
+    //加载报告组列表
+    projectTakeNumber.loadReportGroupList = function () {
+        var cols = [];
+        cols.push({field: 'name', title: '名称', width: '80%'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<button onclick="projectTakeNumber.selectReportGroup(' + row.areaGroupId + ',' + row.id + ',\'' + row.name + '\')" style="margin-left: 5px;" class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="选择">';
+                str += '<i class="fa fa-check"></i>';
+                str += '</button>';
+                return str;
+            }
+        });
+        $("#tbReportGroupList").bootstrapTable('destroy');
+        TableInit($('#tbReportGroupList'), "${pageContext.request.contextPath}/generateReportGroup/getBootstrapTableVo", cols, {
+            projectId: "${projectInfo.id}"
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    //选择报告组
+    projectTakeNumber.selectReportGroup = function (areaGroupId, reportGroupId, name) {
+        var form = $("#project_takeNumber_form");
+        form.find('[name=areaGroupId]').val(areaGroupId);
+        form.find('[name=reportGroupId]').val(reportGroupId);
+        form.find('[name=reportGroupName]').val(name);
+        form.find('[data-name=reportGroupName]').text(name);
+        $('#reportGroupModal').modal('hide');
+    }
 
     $(function () {
-        if ("${projectTakeNumber}") {
-            $("#remark").text("${projectTakeNumber.remark}")
-        }
         AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_TYPE, '${projectTakeNumber.reportType}', function (html, data) {
             $("#project_takeNumber_form").find("select[name='reportType']").empty().html(html).trigger('change');
         });

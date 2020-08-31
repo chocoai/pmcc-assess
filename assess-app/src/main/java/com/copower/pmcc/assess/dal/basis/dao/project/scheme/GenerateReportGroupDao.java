@@ -50,8 +50,6 @@ public class GenerateReportGroupDao {
     public List<GenerateReportGroup> getGenerateReportGroupListByExample(GenerateReportGroup oo) {
         GenerateReportGroupExample example = new GenerateReportGroupExample();
         GenerateReportGroupExample.Criteria criteria = example.createCriteria();
-        criteria.andIdIsNotNull();
-
         MybatisUtils.convertObj2Criteria(oo, criteria);
         example.setOrderByClause("id");
         return mapper.selectByExample(example);

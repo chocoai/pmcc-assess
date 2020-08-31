@@ -246,8 +246,9 @@ public class ProjectPlanService {
             }
         } catch (InterruptedException e) {
             logger.error("get the lock error;" + e.getMessage(), e);
-        } catch (BpmException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
+            lock.unlock();
         } finally {
             lock.unlock();
         }

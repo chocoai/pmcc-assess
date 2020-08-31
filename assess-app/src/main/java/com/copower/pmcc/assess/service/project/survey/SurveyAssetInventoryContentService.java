@@ -178,23 +178,25 @@ public class SurveyAssetInventoryContentService {
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(inventoryId);
         if (surveyAssetInventory == null) return;
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveyAssetInventory.getDeclareRecordId());
-        List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
-        if (CollectionUtils.isEmpty(applyList)) return;
-        List<KeyValueDto> keyValueDtos = JSON.parseArray(applyList.get(0).getStructuralInfo(), KeyValueDto.class);
-        if (CollectionUtils.isEmpty(keyValueDtos)) return;
         BasicBuilding basicBuilding = null;
         BasicUnit basicUnit = null;
         BasicHouse basicHouse = null;
         List<BasicEstateStreetInfo> streetInfoList = null;
-        for (KeyValueDto keyValueDto : keyValueDtos) {
-            if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.ESTATE.getKey())) {
-                streetInfoList = basicEstateStreetInfoService.getStreetInfoListByEstateId(Integer.valueOf(keyValueDto.getValue()));
-            } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.BUILDING.getKey())) {
-                basicBuilding = basicBuildingService.getBasicBuildingById(Integer.valueOf(keyValueDto.getValue()));
-            } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.UNIT.getKey())) {
-                basicUnit = basicUnitService.getBasicUnitById(Integer.valueOf(keyValueDto.getValue()));
-            } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
-                basicHouse = basicHouseService.getBasicHouseById(Integer.valueOf(keyValueDto.getValue()));
+        List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
+        if(CollectionUtils.isNotEmpty(applyList)){
+            List<KeyValueDto> keyValueDtos = JSON.parseArray(applyList.get(0).getStructuralInfo(), KeyValueDto.class);
+            if(CollectionUtils.isNotEmpty(keyValueDtos)){
+                for (KeyValueDto keyValueDto : keyValueDtos) {
+                    if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.ESTATE.getKey())) {
+                        streetInfoList = basicEstateStreetInfoService.getStreetInfoListByEstateId(Integer.valueOf(keyValueDto.getValue()));
+                    } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.BUILDING.getKey())) {
+                        basicBuilding = basicBuildingService.getBasicBuildingById(Integer.valueOf(keyValueDto.getValue()));
+                    } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.UNIT.getKey())) {
+                        basicUnit = basicUnitService.getBasicUnitById(Integer.valueOf(keyValueDto.getValue()));
+                    } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.HOUSE.getKey())) {
+                        basicHouse = basicHouseService.getBasicHouseById(Integer.valueOf(keyValueDto.getValue()));
+                    }
+                }
             }
         }
         for (SurveyAssetInventoryContent inventoryContent : inventoryContents) {

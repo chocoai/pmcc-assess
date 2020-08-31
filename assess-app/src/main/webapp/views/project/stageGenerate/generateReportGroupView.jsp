@@ -8,8 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-
-
 <div id="divBoxGenerateReportGroup" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -109,9 +107,8 @@
         <div class="card-header collapse-link">
             <div class="card-head-row">
                 <div class="card-title">
-                       {name}
+                    {name}
                 </div>
-
 
 
                 <div class="card-tools">
@@ -136,16 +133,12 @@
                             <div class="col-sm-3">
                                 <label class="form-control input-full">{fullName}</label>
                             </div>
-
-
                             <label class="col-sm-1 control-label">操作</label>
-
                             <div class="col-sm-7">
                                 <button type="button" class="btn btn-sm btn-primary"
                                         onclick="reportGroupObj.editData(this ,'{id}') ;">
                                     <i class="fa fa-pen"></i>
                                 </button>
-
                                 <button class="btn btn-warning btn-sm" type="button"
                                         onclick="reportGroupObj.cleanHTMLData(this ,'{id}')"><span class="btn-label"><i
                                         class="fa fa-minus"></i></span>
@@ -154,43 +147,33 @@
                         </div>
                     </div>
                 </div>
-
                 <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
-                    <div class="row form-group" style="display: none;" id="reportType{areaGroupId}{id}${reportType.id}" data-name="reportType{areaGroupId}{id}">
+                    <div class="row form-group" style="display: none;" id="reportType{areaGroupId}{id}${reportType.id}"
+                         data-name="reportType{areaGroupId}{id}">
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
-                                <div class="col-sm-1">
-                                    <button type="button" class="btn-primary btn btn-sm"
-                                            onclick="reportGroupObj.reGetDocumentNumber('${reportType.id}','{id}')">
-                                        重新拿号<i
-                                            class="fa fa-undo"></i></button>
-                                </div>
-
                                 <label class="col-sm-1">
                                     <!-- 报告附件方法 -->
-                                    <button type="button" class="btn-dark btn btn-sm" onclick="reportGroupObj.generateReport('${reportType.id}','{id}')">
+                                    <button type="button" class="btn-dark btn btn-sm"
+                                            onclick="reportGroupObj.generateReport('${reportType.id}','{id}')">
                                         生成${reportType.name}
                                         <i class="fa fa-file-word-o"></i></button>
                                 </label>
-
-
                                 <div class="col-sm-3">
                                     <!-- 报告附件id -->
                                     <div id="_${reportType.fieldName}{areaGroupId}{id}"></div>
                                 </div>
-
                                 <label class="col-sm-1">
                                     <!-- 报告附件方法 -->
-                                    <button type="button" class="btn-dark btn btn-sm" onclick="reportGroupObj.generateReportAttachment('${reportType.id}','{id}')">
+                                    <button type="button" class="btn-dark btn btn-sm"
+                                            onclick="reportGroupObj.generateReportAttachment('${reportType.id}','{id}')">
                                         生成${reportType.name}附件
                                         <i class="fa fa-file-word-o"></i></button>
                                 </label>
-
                                 <div class="col-sm-2">
                                     <!-- 报告附件id -->
                                     <div id="_${reportType.fieldName}_Attachment{areaGroupId}{id}"></div>
                                 </div>
-
                                 <div class="col-sm-1">
                                     <div class="input-group-append">
                                         <button class="btn btn-info btn-sm dropdown-toggle"
@@ -210,7 +193,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-1">
-                                    <input id="GGGGGG${reportType.fieldName}{areaGroupId}{id}" name="file" type="file" style="display: none"
+                                    <input id="GGGGGG${reportType.fieldName}{areaGroupId}{id}" name="file" type="file"
+                                           style="display: none"
                                            onchange="reportGroupObj.upFileLoadReport(this,'${reportType.fieldName}' ,'{id}' ,'{areaGroupId}' )">
                                     <div class="btn btn-primary btn-sm"
                                          onclick="$(this).prev().trigger('click')">上传报告
@@ -375,8 +359,11 @@
         reportGroupObj.ajaxServerFun({id: id}, "/generateReportItem/deleteGenerateReportItem", "post", callback, null, null);
     };
 
-    reportGroupObj.getGenerateReportItemByJudgeObjectIds = function (areaGroupId, ids,callback) {
-        reportGroupObj.ajaxServerFun({areaGroupId: areaGroupId ,ids:ids}, "/generateReportItem/getGenerateReportItemByJudgeObjectIds", "get", callback, null, null);
+    reportGroupObj.getGenerateReportItemByJudgeObjectIds = function (areaGroupId, ids, callback) {
+        reportGroupObj.ajaxServerFun({
+            areaGroupId: areaGroupId,
+            ids: ids
+        }, "/generateReportItem/getGenerateReportItemByJudgeObjectIds", "get", callback, null, null);
     };
 
     reportGroupObj.deleteGenerateReportGroup = function (id, callback) {
@@ -421,28 +408,28 @@
         var frm = $(_this).closest("form");
         var masterId = frm.find("[name=id]").val();
         var areaGroupId = frm.find("[name=areaGroupId]").val();
-        var form = $("#groupForm"+areaGroupId);
+        var form = $("#groupForm" + areaGroupId);
         var dataInfo = formSerializeArray(form);
         $.each(ids, function (k, judgeObjectId) {
-            var item = {judgeObjectId: judgeObjectId, masterId: masterId ,areaGroupId:areaGroupId};
+            var item = {judgeObjectId: judgeObjectId, masterId: masterId, areaGroupId: areaGroupId};
             arr.push(item);
         });
-        reportGroupObj.getGenerateReportItemByJudgeObjectIds(areaGroupId , id ,function (data) {
-            if (data.length == 0){
+        reportGroupObj.getGenerateReportItemByJudgeObjectIds(areaGroupId, id, function (data) {
+            if (data.length == 0) {
                 reportGroupObj.saveAndUpdateGenerateReportItemArray(arr, function () {
                     notifySuccess("成功", "估价对象选择成功!");
                     reportGroupObj.init(dataInfo);
                     reportGroupObj.handleJquery(reportGroupObj.reportItemList).bootstrapTable('refresh');
                 });
-            }else {
-                var tempArr = [] ;
-                $.each(data ,function (i,item) {
-                    tempArr.push("估价对象"+item.number) ;
-                }) ;
-                var message = tempArr.join(",") +"已经添加到组中了,请检查后重新添加" ;
-                AlertSuccess("提示",message );
+            } else {
+                var tempArr = [];
+                $.each(data, function (i, item) {
+                    tempArr.push("估价对象" + item.number);
+                });
+                var message = tempArr.join(",") + "已经添加到组中了,请检查后重新添加";
+                AlertSuccess("提示", message);
             }
-        }) ;
+        });
     };
 
     reportGroupObj.removeGenerateReportItem = function () {
@@ -466,8 +453,7 @@
     reportGroupObj.loadGenerateReportItemList = function (masterId) {
         var table = reportGroupObj.handleJquery(reportGroupObj.reportItemList);
         var cols = [];
-        cols.push({field: 'name', title: '委估对象名称', width: "45%"});
-        // cols.push({field: 'number', title: '委估对象编号', width: "35%"});
+        cols.push({field: 'name', title: '委估对象名称', width: "85%"});
         table.bootstrapTable('destroy');
         TableInit(table, "${pageContext.request.contextPath}/generateReportItem/getBootstrapTableVo", cols, {masterId: masterId}, {
             method: "get",
@@ -487,8 +473,8 @@
         frm.clearAll();
         reportGroupObj.getGenerateReportGroupById(id, function (data) {
             frm.initForm(data);
-            if (data.reportType){
-                 frm.find("select[name=reportType]").val(data.reportType.split(",")).trigger('change');
+            if (data.reportType) {
+                frm.find("select[name=reportType]").val(data.reportType.split(",")).trigger('change');
             }
             reportGroupObj.loadGenerateReportItemList(id);
             box.modal('show');
@@ -498,39 +484,42 @@
     reportGroupObj.saveData = function () {
         var box = reportGroupObj.handleJquery(reportGroupObj.box);
         var frm = box.find("form");
+        if (!frm.valid()) {
+            return false;
+        }
         var data = formSerializeArray(frm);
         reportGroupObj.saveAndUpdateGenerateReportGroup(data, function () {
             box.modal('hide');
             notifySuccess("成功", "修改数据成功!");
             reportGroupObj.initData();
-            reportGroupObj.reportTypeChangeEvent(data) ;
+            reportGroupObj.reportTypeChangeEvent(data);
         });
     };
 
-    reportGroupObj.reportTypeChangeEvent = function(data){
-        var target = $("#generateReportGroupTool" + data.areaGroupId) ;
-        var tempName = 'reportType'+data.areaGroupId+data.id;
+    reportGroupObj.reportTypeChangeEvent = function (data) {
+        var target = $("#generateReportGroupTool" + data.areaGroupId);
+        var tempName = 'reportType' + data.areaGroupId + data.id;
         target.find("div[data-name=" + tempName + "]").hide();
         if (data.reportType) {
             var ids = data.reportType.split(",");
-            if ($.isArray(ids)){
+            if ($.isArray(ids)) {
                 $.each(ids, function (i, node) {
                     $("#" + tempName + node).show();
                 });
             }
         }
-    } ;
+    };
 
     reportGroupObj.appendHTML = function (reportInfoId, areaGroupId) {
         reportGroupObj.getGenerateReportGroupList(areaGroupId, function (data) {
-            var item = {reportInfoId: reportInfoId, areaGroupId: areaGroupId, name: "组"+(data.length+1)};
+            var item = {reportInfoId: reportInfoId, areaGroupId: areaGroupId, name: "组" + (data.length + 1)};
             reportGroupObj.saveAndUpdateGenerateReportGroup(item, function (result) {
-                reportGroupObj.init({id:reportInfoId ,areaGroupId:areaGroupId});
+                reportGroupObj.init({id: reportInfoId, areaGroupId: areaGroupId});
             });
         });
     };
 
-    reportGroupObj.fileShow = function(fieldsName, deleteFlag, id){
+    reportGroupObj.fileShow = function (fieldsName, deleteFlag, id) {
         FileUtils.getFileShows({
             target: fieldsName,
             //showMode: 'table',
@@ -542,9 +531,9 @@
             editFlag: true,
             deleteFlag: deleteFlag == undefined ? true : deleteFlag
         })
-    } ;
+    };
 
-    reportGroupObj.upFileLoadReport = function(that, fileId, id, areaGroupId){
+    reportGroupObj.upFileLoadReport = function (that, fileId, id, areaGroupId) {
         var fileElementId = $(that).attr("id");
         $.ajaxFileUpload({
             type: "POST",
@@ -562,7 +551,7 @@
                 if (result.ret) {
                     getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
                         $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
-                            reportGroupObj.fileShow(n + "" + areaGroupId+""+id, true, id);
+                            reportGroupObj.fileShow(n + "" + areaGroupId + "" + id, true, id);
                         });
                     });
                 }
@@ -572,16 +561,16 @@
                 AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
-    } ;
+    };
 
     /**
      * 生成报告
      * @param reportType
      * @param id
      */
-    reportGroupObj.generateReport = function(reportType ,id){
-        reportGroupObj.getGenerateReportGroupById(id,function (group) {
-            var form = $("#groupForm"+group.areaGroupId);
+    reportGroupObj.generateReport = function (reportType, id) {
+        reportGroupObj.getGenerateReportGroupById(id, function (group) {
+            var form = $("#groupForm" + group.areaGroupId);
             var data = formSerializeArray(form);
             if (!form.valid()) {
                 return false;
@@ -599,21 +588,21 @@
             if (!AssessCommon.isNumber(data.assessCategory)) {
                 data.assessCategory = null;
             }
-            reportGroupObj.generateReportHandle(form ,group ,data ,reportType ,function () {
-                reportGroupObj.init(data) ;
+            reportGroupObj.generateReportHandle(form, group, data, reportType, function () {
+                reportGroupObj.init(data);
                 notifySuccess("成功", '报告生成成功');
-            }) ;
-        }) ;
-    } ;
+            });
+        });
+    };
 
     /**
      * 生成报告
      * @param reportType
      * @param id
      */
-    reportGroupObj.generateReportAttachment = function(reportType ,id){
-        reportGroupObj.getGenerateReportGroupById(id,function (group) {
-            var form = $("#groupForm"+group.areaGroupId);
+    reportGroupObj.generateReportAttachment = function (reportType, id) {
+        reportGroupObj.getGenerateReportGroupById(id, function (group) {
+            var form = $("#groupForm" + group.areaGroupId);
             var data = formSerializeArray(form);
             if (!form.valid()) {
                 return false;
@@ -635,27 +624,27 @@
                 info: JSON.stringify(data),
                 group: JSON.stringify(group)
             }, '/generateReport/generateReportAttachment', "post", function (data) {
-                if (data){
+                if (data) {
                     getSchemeReportGeneration(data, function (info) {
                         initFormSchemeReportGeneration(info, form, group.areaGroupId);
-                        reportGroupObj.init(data) ;
+                        reportGroupObj.init(data);
                         notifySuccess("成功", '报告附件生成成功');
                     });
                 }
-                if (!data){
+                if (!data) {
                     notifyInfo("提示", '报告附件没有配置');
                 }
             });
-        }) ;
-    } ;
+        });
+    };
 
     /**
      * @param reportType
      * @param id
      */
-    reportGroupObj.getReportNumber = function(reportType ,id){
-        reportGroupObj.getGenerateReportGroupById(id,function (group) {
-            var form = $("#groupForm"+group.areaGroupId);
+    reportGroupObj.getReportNumber = function (reportType, id) {
+        reportGroupObj.getGenerateReportGroupById(id, function (group) {
+            var form = $("#groupForm" + group.areaGroupId);
             var data = formSerializeArray(form);
             if (!form.valid()) {
                 return false;
@@ -673,21 +662,21 @@
             if (!AssessCommon.isNumber(data.assessCategory)) {
                 data.assessCategory = null;
             }
-            reportGroupObj.generateReportHandle(form ,group ,data ,reportType ,function () {
-                reportGroupObj.init(data) ;
+            reportGroupObj.generateReportHandle(form, group, data, reportType, function () {
+                reportGroupObj.init(data);
                 notifySuccess("成功", '拿号成功');
-            }) ;
-        }) ;
-    } ;
+            });
+        });
+    };
 
     /**
      * 重新拿号
      * @param reportType
      * @param id
      */
-    reportGroupObj.reGetDocumentNumber = function(reportType ,id){
-        reportGroupObj.getGenerateReportGroupById(id,function (group) {
-            var form = $("#groupForm"+group.areaGroupId);
+    reportGroupObj.reGetDocumentNumber = function (reportType, id) {
+        reportGroupObj.getGenerateReportGroupById(id, function (group) {
+            var form = $("#groupForm" + group.areaGroupId);
             var data = formSerializeArray(form);
             if (!form.valid()) {
                 return false;
@@ -700,12 +689,12 @@
                 data.assessCategory = null;
             }
             AlertConfirm("是否确认", "请注意报告二维码无法自动替换,假如要替换类似于报告二维码这样的数据请在页面上上删除报告二维码,然后用\\${报告二维码}这样的文本放置在删除的位置", function () {
-                reportGroupObj.generateReportHandle(form ,group ,data ,reportType ,function () {
-                    reportGroupObj.init(data) ;
+                reportGroupObj.generateReportHandle(form, group, data, reportType, function () {
+                    reportGroupObj.init(data);
                     notifySuccess("成功", '重新拿号成功!');
-                }) ;
+                });
             })
-        }) ;
+        });
     };
 
     /**
@@ -715,7 +704,7 @@
      * @param ids
      * @param callback
      */
-    reportGroupObj.generateReportHandle = function( form,group,info , ids,callback){
+    reportGroupObj.generateReportHandle = function (form, group, info, ids, callback) {
         objGenerate.ajaxServerMethod({
             ids: ids,
             info: JSON.stringify(info),
@@ -728,37 +717,37 @@
                 }
             });
         });
-    } ;
+    };
 
     reportGroupObj.init = function (generationVo) {
         var reportInfoId = generationVo.id;
         var areaGroupId = generationVo.areaGroupId;
-        var html = "" ;
-        html += "<button class='btn btn-sm btn-success' type='button' onclick='reportGroupObj.appendHTML(reportInfoId,areaGroupId);'>" ;
-        html += "<i class='fa fa-plus'></i>" ;
-        html += "</button>" ;
-        html = html.replace(/reportInfoId/g,reportInfoId);
-        html = html.replace(/areaGroupId/g,areaGroupId);
+        var html = "";
+        html += "<button class='btn btn-sm btn-success' type='button' onclick='reportGroupObj.appendHTML(reportInfoId,areaGroupId);'>";
+        html += "<i class='fa fa-plus'></i>";
+        html += "</button>";
+        html = html.replace(/reportInfoId/g, reportInfoId);
+        html = html.replace(/areaGroupId/g, areaGroupId);
         (function (target) {
-            target.empty() ;
+            target.empty();
             reportGroupObj.getGenerateReportGroupList(areaGroupId, function (data) {
                 if (data.length >= 1) {
                     $.each(data, function (i, item) {
                         target.append(reportGroupObj.replaceHtml(item));
-                        reportGroupObj.reportTypeChangeEvent(item) ;
+                        reportGroupObj.reportTypeChangeEvent(item);
                         getSchemeReportGenerationFileControlIdArray(function (schemeReportGenerationFileControlIdArray) {
                             $.each(schemeReportGenerationFileControlIdArray, function (i, n) {
-                                reportGroupObj.fileShow(n + "" + areaGroupId+""+item.id, true, item.id);
-                                reportGroupObj.fileShow(n + "_Attachment" + areaGroupId+""+item.id, true, item.id);
+                                reportGroupObj.fileShow(n + "" + areaGroupId + "" + item.id, true, item.id);
+                                reportGroupObj.fileShow(n + "_Attachment" + areaGroupId + "" + item.id, true, item.id);
                             });
                         });
                     });
                     setTimeout(function () {
                         var group = target.find(".form-group").first();
                         var btnX = group.find(".btn-warning");
-                        var parent =  btnX.parent() ;
-                        btnX.remove() ;
-                        parent.append(html) ;
+                        var parent = btnX.parent();
+                        btnX.remove();
+                        parent.append(html);
                     }, 100);
                 } else {
                     var item = {reportInfoId: reportInfoId, areaGroupId: areaGroupId, name: "组1"};

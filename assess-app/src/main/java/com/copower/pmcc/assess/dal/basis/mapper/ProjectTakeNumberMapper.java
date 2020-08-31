@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface ProjectTakeNumberMapper {
-    int countByExample(ProjectTakeNumberExample example);
+    long countByExample(ProjectTakeNumberExample example);
 
     int deleteByExample(ProjectTakeNumberExample example);
 

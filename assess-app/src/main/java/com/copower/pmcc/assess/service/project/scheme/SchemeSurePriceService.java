@@ -344,7 +344,6 @@ public class SchemeSurePriceService {
         if (CollectionUtils.isEmpty(vos)) {
             throw new BusinessException("没有获取到有效的数据");
         }
-
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
         Row row1 = sheet.createRow(0);
@@ -355,9 +354,9 @@ public class SchemeSurePriceService {
         base.put("name", "估价对象名称");
         base.put("roomNumber", "房号");
         base.put("floorArea", "评估面积");
-        base.put("floorArea_factor", "评估面积因素");
+        base.put("floorArea_factor", "评估面积系数");
         base.put("floor", "楼层");
-        base.put("floor_factor", "楼层因素");
+        base.put("floor_factor", "楼层系数");
         //动态标题
         for (Map.Entry<String, String> stringObjectEntry : base.entrySet()) {
             ExamineHousePriceDto dto = new ExamineHousePriceDto();
@@ -379,7 +378,6 @@ public class SchemeSurePriceService {
             sheet.setColumnWidth(i, 4000);
         }
         row1.setZeroHeight(true);
-
         //总列数
         int columnLength = row1.getPhysicalNumberOfCells();
         //数据字典字段
@@ -542,7 +540,7 @@ public class SchemeSurePriceService {
         StringBuilder s = new StringBuilder();
         for (int j = 0; j < colLength; j++) {
             String key = PoiUtils.getCellValue(keyRow.getCell(j));
-            String factorName = PoiUtils.getCellValue(titleRow.getCell(j)).replace("因素", "");
+            String factorName = PoiUtils.getCellValue(titleRow.getCell(j)).replace("系数", "");
             if (key.contains("factor")) {
                 String value = PoiUtils.getCellValue(row.getCell(j));
                 Integer type = ComputeDataTypeEnum.ABSOLUTE.getId();
@@ -654,7 +652,7 @@ public class SchemeSurePriceService {
 
     //验证是否是数字或小数
     public boolean isNumeric(String str) {
-        Pattern pattern = Pattern.compile("[0-9]*");
+        Pattern pattern = Pattern.compile("-?[0-9]*");
         if (str.indexOf(".") > 0) {//判断是否有小数点
             if (str.indexOf(".") == str.lastIndexOf(".") && str.split("\\.").length == 2) { //判断是否只有一个小数点
                 return pattern.matcher(str.replace(".", "")).matches();
@@ -721,9 +719,9 @@ public class SchemeSurePriceService {
         base.put("houseNumber", "房号");
         base.put("standardPrice", "标准价格");
         base.put("area", "面积");
-        base.put("area_factor", "面积因素");
+        base.put("area_factor", "面积系数");
         base.put("floor", "楼层");
-        base.put("floor_factor", "楼层因素");
+        base.put("floor_factor", "楼层系数");
         //动态标题
         for (Map.Entry<String, String> stringObjectEntry : base.entrySet()) {
             ExamineHousePriceDto dto = new ExamineHousePriceDto();
@@ -882,9 +880,7 @@ public class SchemeSurePriceService {
         baseMap.put("adjacentPosition", baseDataDicService.getCacheDataDicList("examine.house.room.adjacent.position"));
         baseMap.put("orientation", baseDataDicService.getCacheDataDicList("examine.house.room.orientation"));
 
-
         boolean check = declarePublicService.excelImportHelp(classArrayListMultimap, basicHouseHuxingPrice, builder, row, baseMap, requiredList);
-
         if (oldBasicHouseHuxingPrice.getId() != null) {
             BeanUtils.copyProperties(oldBasicHouseHuxingPrice, basicHouseHuxingPrice, "price");
         }

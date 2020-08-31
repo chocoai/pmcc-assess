@@ -192,10 +192,8 @@ public class BasicHouseHuxingPriceService {
         if (basicHouseHuxingPrice == null) {
             return null;
         }
-        //这里因为有json字段所以又取了一次
-        BasicHouseHuxingPrice price = getBasicHouseHuxingPriceById(basicHouseHuxingPrice.getId()) ;
         BasicHouseHuxingPriceVo vo = new BasicHouseHuxingPriceVo();
-        BeanUtils.copyProperties(price, vo);
+        BeanUtils.copyProperties(basicHouseHuxingPrice, vo);
         vo.setOrientationName(baseDataDicService.getNameById(basicHouseHuxingPrice.getOrientation()));
         vo.setStandardMeasureName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStandardMeasure()));
         vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStorageRequest()));
