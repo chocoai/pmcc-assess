@@ -217,10 +217,9 @@ public class AssessDataDicKeyConstant {
     public static final String AD_PLACE_FILE_MANNER = "ad.place.file.manner"; //评估系统 档案公开方式
     public static final String AD_PLACE_FILE_SOURCE = "ad.place.file.source"; //评估系统 档案来源
 
-    public static final String AD_PLACE_FILE_MARK_OPERATING = "ad.place.file.mark.operating"; //评估系统 档案标识 - 操作类 -
-    public static final String AD_PLACE_FILE_MARK_OPERATING_ATTORNEY = "ad.place.file.mark.operating.attorney"; //评估系统 档案标识 - 操作类 - 委托书
-    public static final String AD_PLACE_FILE_MARK_OPERATING_SURVEY = "ad.place.file.mark.operating.survey"; //评估系统 档案标识 - 操作类 - 房屋查勘表
-    public static final String AD_PLACE_FILE_MARK_OPERATING_SEND_DOC = "ad.place.file.mark.operating.send.doc"; //评估系统 档案标识 - 操作类 - 房屋查勘表
+
+    public static final String AD_PLACE_FILE_MARK_COMPREHENSIVE = "ad.place.file.mark.comprehensive"; //评估系统 档案标识 -  综合类
+    public static final String AD_PLACE_FILE_MARK_PROFESSION = "ad.place.file.mark.profession"; //评估系统 档案标识 - 专业类
 
 
 }
