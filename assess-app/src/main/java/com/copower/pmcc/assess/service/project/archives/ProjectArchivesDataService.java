@@ -196,12 +196,12 @@ public class ProjectArchivesDataService {
      * @param basePlaceFileDto
      * @param name
      * @param list
-     * @param comprehensive
+     * @param placeFileDto
      * @param adPlaceFileItemDtoList
      * @param saveList
      * @param atomicInteger
      */
-    private void consumerAdPlaceFileItemDto(AdBasePlaceFileDto basePlaceFileDto, String name, List<AdPlaceFileItemDto> list, AdBasePlaceFileDto comprehensive, List<AdPlaceFileItemDto> adPlaceFileItemDtoList, List<AdPlaceFileItemDto> saveList, AtomicInteger atomicInteger, ProjectInfo projectInfo) {
+    private void consumerAdPlaceFileItemDto(AdBasePlaceFileDto basePlaceFileDto, String name, List<AdPlaceFileItemDto> list, AdBasePlaceFileDto placeFileDto, List<AdPlaceFileItemDto> adPlaceFileItemDtoList, List<AdPlaceFileItemDto> saveList, AtomicInteger atomicInteger, ProjectInfo projectInfo ,List<AdBasePlaceFileDto> manner_list ,List<AdBasePlaceFileDto> source_list ,List<AdBasePlaceFileDto> life_list) {
         AdPlaceFileItemDto adPlaceFileItemDto = null;
         if (!StringUtils.contains(basePlaceFileDto.getName(), name)) {
             return;
@@ -215,7 +215,7 @@ public class ProjectArchivesDataService {
                 if (obj.getFileCategory() == null) {
                     return false;
                 }
-                if (obj.getFileType().equals(comprehensive.getId()) && obj.getFileCategory().equals(basePlaceFileDto.getId())) {
+                if (obj.getFileType().equals(placeFileDto.getId()) && obj.getFileCategory().equals(basePlaceFileDto.getId())) {
                     return true;
                 }
                 return false;
@@ -230,14 +230,34 @@ public class ProjectArchivesDataService {
         adPlaceFileItemDto.setModified(DateUtils.now());
         adPlaceFileItemDto.setCreated(DateUtils.now());
         adPlaceFileItemDto.setCreator(commonService.thisUserAccount());
-        adPlaceFileItemDto.setFileType(comprehensive.getId());
-        adPlaceFileItemDto.setFileTypeName(comprehensive.getName());
+        adPlaceFileItemDto.setFileType(placeFileDto.getId());
+        adPlaceFileItemDto.setFileTypeName(placeFileDto.getName());
         adPlaceFileItemDto.setSorting(atomicInteger.get());
         adPlaceFileItemDto.setName(basePlaceFileDto.getName());
         adPlaceFileItemDto.setFileCategory(basePlaceFileDto.getId());
         adPlaceFileItemDto.setFileCategoryName(basePlaceFileDto.getName());
         adPlaceFileItemDto.setPublicProjectId(projectInfo.getId());
         adPlaceFileItemDto.setPublicProjectName(projectInfo.getProjectName());
+        if (CollectionUtils.isNotEmpty(manner_list)) {
+            List<AdBasePlaceFileDto> placeFileDtoList = LangUtils.filter(manner_list, obj -> StringUtils.contains(obj.getName(), "内部标准"));
+            if (CollectionUtils.isNotEmpty(placeFileDtoList)) {
+                adPlaceFileItemDto.setPublicWay(placeFileDtoList.get(0).getId());
+            }
+        }
+        if (CollectionUtils.isNotEmpty(source_list)) {
+            List<AdBasePlaceFileDto> placeFileDtoList = LangUtils.filter(source_list, obj -> StringUtils.contains(obj.getName(), "自制"));
+            if (CollectionUtils.isNotEmpty(placeFileDtoList)) {
+                adPlaceFileItemDto.setFileSource(placeFileDtoList.get(0).getId());
+            }
+        }
+        if (CollectionUtils.isNotEmpty(life_list)) {
+            List<AdBasePlaceFileDto> placeFileDtoList = LangUtils.filter(life_list, obj -> StringUtils.contains(obj.getName(), "永久"));
+            if (CollectionUtils.isNotEmpty(placeFileDtoList)) {
+                adPlaceFileItemDto.setShelfLife(placeFileDtoList.get(0).getId());
+            }
+        }
+        //设置为永久保存
+        adPlaceFileItemDto.setBisBinding(true);
         atomicInteger.incrementAndGet();
         saveList.add(adPlaceFileItemDto);
     }
@@ -258,8 +278,16 @@ public class ProjectArchivesDataService {
         List<AdPlaceFileItemDto> list = adRpcPlaceFileItemService.getAdPlaceFileItemDtoListByObj(query);
         AdBasePlaceFileDto comprehensive = getAdBasePlaceFileByFieldName(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_COMPREHENSIVE);
         AdBasePlaceFileDto profession = getAdBasePlaceFileByFieldName(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_PROFESSION);
+
         List<AdBasePlaceFileDto> comprehensive_list = getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_COMPREHENSIVE);
         List<AdBasePlaceFileDto> profession_list = getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_PROFESSION);
+        List<AdBasePlaceFileDto> life_list = getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_SHELF_LIFE);
+
+        //公开方式
+        List<AdBasePlaceFileDto> manner_list = getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MANNER);
+        //档案来源
+        List<AdBasePlaceFileDto> source_list = getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_SOURCE);
+
         if (CollectionUtils.isEmpty(comprehensive_list) || CollectionUtils.isEmpty(profession_list)) {
             throw new BusinessException("没有配置档案类型");
         }
@@ -271,7 +299,7 @@ public class ProjectArchivesDataService {
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         for (AdBasePlaceFileDto basePlaceFileDto : comprehensive_list) {
             for (ArchivesFileComprehensiveEnum comprehensiveEnum : ArchivesFileComprehensiveEnum.values()) {
-                consumerAdPlaceFileItemDto(basePlaceFileDto, comprehensiveEnum.getName(), list, comprehensive, adPlaceFileItemDtoList, saveList, atomicInteger, projectInfo);
+                consumerAdPlaceFileItemDto(basePlaceFileDto, comprehensiveEnum.getName(), list, comprehensive, adPlaceFileItemDtoList, saveList, atomicInteger, projectInfo ,manner_list ,source_list ,life_list);
             }
         }
         if (CollectionUtils.isNotEmpty(saveList)) {
@@ -284,7 +312,7 @@ public class ProjectArchivesDataService {
 
         for (AdBasePlaceFileDto basePlaceFileDto : profession_list) {
             for (ArchivesFileProfessionEnum comprehensiveEnum : ArchivesFileProfessionEnum.values()) {
-                consumerAdPlaceFileItemDto(basePlaceFileDto, comprehensiveEnum.getName(), list, profession, adPlaceFileItemDtoList, saveList, atomicInteger, projectInfo);
+                consumerAdPlaceFileItemDto(basePlaceFileDto, comprehensiveEnum.getName(), list, profession, adPlaceFileItemDtoList, saveList, atomicInteger, projectInfo,manner_list ,source_list ,life_list);
             }
         }
         if (CollectionUtils.isNotEmpty(saveList)) {

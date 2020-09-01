@@ -931,7 +931,7 @@
         AssessCommon.ajaxServerMethod({masterId:id},"/projectArchives/getAdPlaceFileItemDetailDtoCount" ,"get",function (count) {
             count = Number(count) ;
             if (count > 0) {
-                notifyInfo("提示", "档案目录下有档案不能删除");
+                notifyInfo("提示", "档案目录下有档案不能删除,需要清除档案记录才能删除档案目录");
                 return false ;
             }
             AssessCommon.ajaxServerFun({id:id},"/projectArchives/deleteAdPlaceFileItemDtoByIds" ,"post",function () {
