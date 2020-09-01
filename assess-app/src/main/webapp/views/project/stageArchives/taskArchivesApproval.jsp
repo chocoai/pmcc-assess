@@ -405,7 +405,8 @@
                 }
             }
         });
-
+        cols.push({field: 'saveLocation', title: '存储位置', width: "5%"});
+        cols.push({field: 'number', title: '存放卷号', width: "10%"});
         cols.push({field: 'fileViewName', title: '文档', width: "15%"});
         var checkbox = '${xing_zheng_node}' == '${activityReName}';
         if (checkbox) {
@@ -419,9 +420,6 @@
                     return str;
                 }
             });
-        } else {
-            cols.push({field: 'saveLocation', title: '存放位置', width: "10%"});
-            cols.push({field: 'number', title: '存放卷号', width: "10%"});
         }
 
         table.bootstrapTable('destroy');
@@ -527,7 +525,7 @@
             }
         });
         table.bootstrapTable('destroy');
-        TableInit(table, "${pageContext.request.contextPath}/projectArchives/getAdPlaceFileVolumeNumberDtoListByParam", cols, {}, {
+        TableInit(table, "${pageContext.request.contextPath}/projectArchives/getAdPlaceFileVolumeNumberDtoListByParam", cols, {activityReName:'${activityReName}'}, {
             method: "get",
             showColumns: false,
             showRefresh: false,

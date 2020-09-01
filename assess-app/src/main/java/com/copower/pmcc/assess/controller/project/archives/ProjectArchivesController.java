@@ -44,11 +44,11 @@ public class ProjectArchivesController {
 
     @ResponseBody
     @RequestMapping(value = "/getAdPlaceFileVolumeNumberDtoListByParam", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getAdPlaceFileVolumeNumberDtoListByParam(AdPlaceFileVolumeNumberDto dto) {
+    public BootstrapTableVo getAdPlaceFileVolumeNumberDtoListByParam(AdPlaceFileVolumeNumberDto dto,String activityReName) {
         if (dto == null){
             dto = new AdPlaceFileVolumeNumberDto() ;
         }
-        return projectArchivesDataService.getAdPlaceFileVolumeNumberDtoListByParam(dto);
+        return projectArchivesDataService.getAdPlaceFileVolumeNumberDtoListByParam(dto,activityReName);
     }
 
 

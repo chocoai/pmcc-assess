@@ -636,14 +636,22 @@
         }
         var count = 0;
         var idArray = [];
+        var idFilterArray = [];
         $.each(rows, function (k, item) {
             if (item.groupId) {
                 count++;
             }
             idArray.push(item.id);
+            if (item.bisBinding){
+                idFilterArray.push(item.id);
+            }
         });
         if (count != 0) {
             notifyWarning("提示", "存在已经设置了卷号的档案");
+            return false;
+        }
+        if (idFilterArray.length != rows.length ) {
+            notifyWarning("提示", "只有永久存档的档案才能选择卷号");
             return false;
         }
         var box = $(objArchives.groupBox.selector);
