@@ -180,7 +180,7 @@
                 tableName: "tb_document_opinion",
                 tableId: ${documentOpinion.id},
                 fieldsName: '${fieldsName}',
-                proectId:${documentOpinion.projectId}
+                projectId:${documentOpinion.projectId}
             },
             editFlag: true,
             deleteFlag: false

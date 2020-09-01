@@ -130,7 +130,7 @@
             formData: {
                 tableName: "tb_document_opinion",
                 tableId: $("#id").val(),
-                proectId:${documentOpinion.projectId}
+                projectId:${documentOpinion.projectId}
             },
             deleteFlag: true,
             editFlag: true
@@ -194,7 +194,7 @@
             formData: {
                 tableName: "tb_document_opinion",
                 tableId: $("#id").val(),
-                proectId:${documentOpinion.projectId}
+                projectId:${documentOpinion.projectId}
             },
             editFlag: true,
             deleteFlag: true

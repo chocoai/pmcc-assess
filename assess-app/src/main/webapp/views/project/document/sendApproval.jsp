@@ -82,7 +82,7 @@
             formData: {
                 tableName: "tb_document_send",
                 tableId: ${documentSend.id},
-                proectId:${documentSend.projectId}
+                projectId:${documentSend.projectId}
             },
             editFlag: true,
             signatureFlag: '${activityCnName}'.indexOf("盖章") > -1,
