@@ -165,6 +165,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <p id="toolbarAdPlaceFileItemDetail">
+
                             <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
                             data-toggle="modal" onclick="objArchives.addAdPlaceFileItemDetailBox()">
                             <span class="btn-label">
@@ -172,6 +173,15 @@
                             </span>
                             新增
                             </button>
+
+                            <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
+                                    onclick="objArchives.batchDeleteAdPlaceFileItemDetail()">
+                            <span class="btn-label">
+                            <i class="fa fa-minus"></i>
+                            </span>
+                                批量删除
+                            </button>
+
                         </p>
                         <table id="AdPlaceFileItemDetailDtoTable" class="table table-bordered"></table>
                     </div>
@@ -533,14 +543,14 @@
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline">
-                                                    <label class="col-sm-1 control-label">
-                                                        项目名称
-                                                    </label>
-                                                    <div class="col-sm-2">
-                                                        <input type="text" data-rule-maxlength="50" placeholder="项目名称"
-                                                               name="publicProjectName"
-                                                               class="form-control input-full">
-                                                    </div>
+                                                    <%--<label class="col-sm-1 control-label">--%>
+                                                        <%--项目名称--%>
+                                                    <%--</label>--%>
+                                                    <%--<div class="col-sm-2">--%>
+                                                        <%--<input type="text" data-rule-maxlength="50" placeholder="项目名称"--%>
+                                                               <%--name="publicProjectName"--%>
+                                                               <%--class="form-control input-full">--%>
+                                                    <%--</div>--%>
                                                     <label class="col-sm-1 control-label">
                                                         是否装订存档
                                                     </label>
@@ -1003,11 +1013,11 @@
     objArchives.loadTableAdPlaceFileItemDetailList = function() {
         var table = $(objArchives.adPlaceFileItemDetailTable.selector);
         var cols = [];
-        cols.push({field: 'name', title: '档案名称', width: "10%"});
+        cols.push({field: 'name', title: '档案名称', width: "20%"});
 
         cols.push({field: 'fileViewName', title: '文档', width: "25%"});
         cols.push({
-            field: 'id', title: '操作', width: "15%", formatter: function (value, row, index) {
+            field: 'id', title: '操作', width: "35%", formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
 
                 str += '<button type="button" onclick="objArchives.editAdPlaceFileItemDetailDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
@@ -1031,7 +1041,7 @@
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
             }
-        });
+        },true);
     } ;
 
     //档案记录 server data
@@ -1052,6 +1062,7 @@
     objArchives.delAdPlaceFileItemDetailDto = function(id) {
         AssessCommon.ajaxServerFun({id:id},"/projectArchives/deleteAdPlaceFileItemDetailDtoByIds" ,"post",function () {
             objArchives.loadTableAdPlaceFileItemDetailList();
+            objArchives.loadTableList();
         } ,"delete") ;
     } ;
 
@@ -1098,6 +1109,21 @@
             },
             deleteFlag: true
         });
+    } ;
+
+    //档案记录 批量删除
+    objArchives.batchDeleteAdPlaceFileItemDetail = function () {
+        var table = $(objArchives.adPlaceFileItemDetailTable.selector);
+        var rows = table.bootstrapTable('getSelections');
+        if (rows.length == 0) {
+            notifyWarning("提示", "请选择要删除的档案记录!");
+            return false;
+        }
+        var idArray = [];
+        $.each(rows, function (k, item) {
+            idArray.push(item.id);
+        });
+        objArchives.delAdPlaceFileItemDetailDto(idArray.join(",")) ;
     } ;
 
 

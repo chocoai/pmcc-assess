@@ -278,14 +278,14 @@
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline">
-                                                    <label class="col-sm-1 control-label">
-                                                        项目名称
-                                                    </label>
-                                                    <div class="col-sm-2">
-                                                        <input type="text" data-rule-maxlength="50" placeholder="项目名称"
-                                                               name="publicProjectName"
-                                                               class="form-control input-full">
-                                                    </div>
+                                                    <%--<label class="col-sm-1 control-label">--%>
+                                                        <%--项目名称--%>
+                                                    <%--</label>--%>
+                                                    <%--<div class="col-sm-2">--%>
+                                                        <%--<input type="text" data-rule-maxlength="50" placeholder="项目名称"--%>
+                                                               <%--name="publicProjectName"--%>
+                                                               <%--class="form-control input-full">--%>
+                                                    <%--</div>--%>
                                                     <label class="col-sm-1 control-label">
                                                         是否装订存档
                                                     </label>
@@ -380,7 +380,8 @@
         var table = $(objArchives.table.selector);
         var cols = [];
         cols.push({field: 'name', title: '档案名称', width: "10%"});
-        cols.push({field: 'fileTypeName', title: '档案类型', width: "10%"});
+
+        cols.push({field: 'fileTypeName', title: '档案类型', width: "5%"});
         cols.push({field: 'fileCategoryName', title: '档案类别', width: "5%"});
         cols.push({field: 'fileSourceName', title: '档案来源', width: "5%"});
         cols.push({field: 'publicWayName', title: '公开方式', width: "5%"});
@@ -388,7 +389,7 @@
 
 
         cols.push({
-            field: 'groupId', title: '卷号设置与否', width: "15%", formatter: function (value, row) {
+            field: 'groupId', title: '卷号设置与否', width: "7%", formatter: function (value, row) {
                 if (row.groupId) {
                     return "是";
                 } else {
@@ -397,7 +398,7 @@
             }
         });
         cols.push({
-            field: 'bisBinding', title: '必须设置卷号', width: "15%", formatter: function (value, row) {
+            field: 'bisBinding', title: '必须设置卷号', width: "7%", formatter: function (value, row) {
                 if (value) {
                     return "是";
                 } else {
@@ -405,9 +406,9 @@
                 }
             }
         });
-        cols.push({field: 'saveLocation', title: '存储位置', width: "5%"});
-        cols.push({field: 'number', title: '存放卷号', width: "10%"});
-        cols.push({field: 'fileViewName', title: '文档', width: "15%"});
+        cols.push({field: 'count', title: '档案记录数', width: "5%"});
+        cols.push({field: 'saveLocation', title: '存储位置', width: "15%"});
+        cols.push({field: 'number', title: '存放卷号', width: "5%"});
         var checkbox = '${xing_zheng_node}' == '${activityReName}';
         if (checkbox) {
             cols.push({
