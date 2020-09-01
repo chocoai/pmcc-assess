@@ -31,7 +31,7 @@ public class ProjectTakeNumberDao {
     public List<ProjectTakeNumber> getProjectTakeNumber(ProjectTakeNumber where) {
         ProjectTakeNumberExample example = new ProjectTakeNumberExample();
         MybatisUtils.convertObj2Example(where, example);
-        return projectTakeNumberMapper.selectByExample(example);
+        return projectTakeNumberMapper.selectByExampleWithBLOBs(example);
     }
 
     public ProjectTakeNumber getProjectTakeNumberById(Integer id){
@@ -59,17 +59,5 @@ public class ProjectTakeNumberDao {
 
     public boolean updateProjectTakeNumber(ProjectTakeNumber projectTakeNumber,boolean updateNull){
         return updateNull ? projectTakeNumberMapper.updateByPrimaryKey(projectTakeNumber) == 1 : projectTakeNumberMapper.updateByPrimaryKeySelective(projectTakeNumber) == 1;
-    }
-
-    /**
-     * 根据条件更新
-     * @param record
-     * @param where
-     * @return
-     */
-    public int modifyProjectTakeNumber(ProjectTakeNumber record, ProjectTakeNumber where) {
-        ProjectTakeNumberExample example = new ProjectTakeNumberExample();
-        MybatisUtils.convertObj2Example(where, example);
-        return projectTakeNumberMapper.updateByExampleSelective(record, example);
     }
 }

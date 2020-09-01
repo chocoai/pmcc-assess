@@ -50,6 +50,9 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="col-sm-2">
+                                    <img style="width: 100px;height: 100px;" src="data:image/png,base64,${projectTakeNumber.qrcode}">
+                                </div>
                             </c:if>
                         </div>
                     </div>

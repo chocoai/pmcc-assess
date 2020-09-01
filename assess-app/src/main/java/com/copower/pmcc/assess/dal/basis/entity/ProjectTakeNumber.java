@@ -49,6 +49,8 @@ public class ProjectTakeNumber {
 
     private Date gmtModified;
 
+    private String qrcode;
+
     public Integer getId() {
         return id;
     }
@@ -231,5 +233,13 @@ public class ProjectTakeNumber {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode == null ? null : qrcode.trim();
     }
 }

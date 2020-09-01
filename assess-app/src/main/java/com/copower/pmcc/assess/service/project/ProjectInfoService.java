@@ -922,12 +922,12 @@ public class ProjectInfoService {
     /**
      * 获取项目委托单位
      *
-     * @param projectInfo
+     * @param projectId
      * @return
      */
-    public String getEntrustmentUnit(ProjectInfo projectInfo) {
+    public String getEntrustmentUnit(Integer projectId) {
         String value = "/";
-        InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectInfo.getId());
+        InitiateConsignorVo consignorVo = consignorService.getDataByProjectId(projectId);
         if (Objects.equal(consignorVo.getCsType(), InitiateContactsEnum.legalPerson.getId())) {
             value = consignorVo.getCsEntrustmentUnit();
         }

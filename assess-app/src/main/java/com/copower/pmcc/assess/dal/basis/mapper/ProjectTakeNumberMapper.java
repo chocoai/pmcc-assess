@@ -16,15 +16,21 @@ public interface ProjectTakeNumberMapper {
 
     int insertSelective(ProjectTakeNumber record);
 
+    List<ProjectTakeNumber> selectByExampleWithBLOBs(ProjectTakeNumberExample example);
+
     List<ProjectTakeNumber> selectByExample(ProjectTakeNumberExample example);
 
     ProjectTakeNumber selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") ProjectTakeNumber record, @Param("example") ProjectTakeNumberExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") ProjectTakeNumber record, @Param("example") ProjectTakeNumberExample example);
+
     int updateByExample(@Param("record") ProjectTakeNumber record, @Param("example") ProjectTakeNumberExample example);
 
     int updateByPrimaryKeySelective(ProjectTakeNumber record);
+
+    int updateByPrimaryKeyWithBLOBs(ProjectTakeNumber record);
 
     int updateByPrimaryKey(ProjectTakeNumber record);
 }

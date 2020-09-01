@@ -44,6 +44,12 @@ public class GenerateReportInfoService {
         return generateReportInfoDao.getGenerateReportInfoByAreaGroupId(areaGroupId, projectPlanId);
     }
 
+    public GenerateReportInfo getGenerateReportInfoByAreaId(Integer areaGroupId) {
+        GenerateReportInfo where = new GenerateReportInfo();
+        where.setAreaGroupId(areaGroupId);
+        return generateReportInfoDao.getGenerateReportInfo(where);
+    }
+
     public void saveGenerateReportInfo(GenerateReportInfo generateReportInfo) {
         if (generateReportInfo == null) return;
         if (generateReportInfo.getId() != null && generateReportInfo.getId() > 0) {
@@ -73,24 +79,24 @@ public class GenerateReportInfoService {
         where.setProjectId(projectId);
         List<GenerateReportInfo> generationList = generateReportGenerationList(where);
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
-        if(CollectionUtils.isEmpty(areaGroupList)) return;
+        if (CollectionUtils.isEmpty(areaGroupList)) return;
         Iterator<SchemeAreaGroup> areaGroupIterator = areaGroupList.iterator();
         while (areaGroupIterator.hasNext()) {
             SchemeAreaGroup areaGroup = (SchemeAreaGroup) areaGroupIterator.next();
             if (CollectionUtils.isNotEmpty(generationList)) {
                 Iterator<GenerateReportInfo> reportInfoIterator = generationList.iterator();
                 while (reportInfoIterator.hasNext()) {
-                    if(reportInfoIterator.next().getAreaGroupId().equals(areaGroup.getId())){
+                    if (reportInfoIterator.next().getAreaGroupId().equals(areaGroup.getId())) {
                         reportInfoIterator.remove();
                         areaGroupIterator.remove();
                     }
                 }
             }
         }
-        if(CollectionUtils.isNotEmpty(generationList)){
-            generationList.forEach(o->deleteGenerateReportInfo(o.getId()));
+        if (CollectionUtils.isNotEmpty(generationList)) {
+            generationList.forEach(o -> deleteGenerateReportInfo(o.getId()));
         }
-        if(CollectionUtils.isNotEmpty(areaGroupList)){
+        if (CollectionUtils.isNotEmpty(areaGroupList)) {
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
                 GenerateReportInfo generateReportInfo = new GenerateReportInfo();
                 generateReportInfo.setProjectId(projectId);
@@ -145,24 +151,24 @@ public class GenerateReportInfoService {
         }
         //取估价师名称
         if (StringUtils.isNotBlank(generateReportGeneration.getRealEstateAppraiser())) {
-            List<String> stringList = FormatUtils.transformString2List(generateReportGeneration.getRealEstateAppraiser()) ;
+            List<String> stringList = FormatUtils.transformString2List(generateReportGeneration.getRealEstateAppraiser());
             if (!CollectionUtils.isEmpty(stringList)) {
                 String userName = publicService.getUserNameByAccountList(stringList);
                 vo.setRealEstateAppraiserName(userName);
             }
         }
-        if (StringUtils.isNotBlank(generateReportGeneration.getReportType())){
-            List<String> stringList = FormatUtils.transformString2List(generateReportGeneration.getReportType()) ;
-            List<String> strings = new ArrayList<>(stringList.size()) ;
-            for (String s:stringList){
-                strings.add(baseDataDicService.getNameById(s)) ;
+        if (StringUtils.isNotBlank(generateReportGeneration.getReportType())) {
+            List<String> stringList = FormatUtils.transformString2List(generateReportGeneration.getReportType());
+            List<String> strings = new ArrayList<>(stringList.size());
+            for (String s : stringList) {
+                strings.add(baseDataDicService.getNameById(s));
             }
-            vo.setReportTypeName(StringUtils.join(strings,","));
+            vo.setReportTypeName(StringUtils.join(strings, ","));
         }
         return vo;
     }
 
-    public static Map<String, String> getQualificationTypes(){
+    public static Map<String, String> getQualificationTypes() {
         Map<String, String> qualificationTypes = new HashMap<>();
         qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCTDGJS.getName());
         qualificationTypes.put(AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getValue(), AdPersonalEnum.PERSONAL_QUALIFICATION_ASSESS_ZCZCGJS.getName());

@@ -207,43 +207,7 @@ public class GenerateBaseDataService {
         //1.先从本地查看是否已生成过二维码
         //2.如果已生成直接返回已生成的二维码
         //3.如果没有生成则调用接口生成二维码并记录数据到本地
-        ProjectQrcodeRecord qrcodeRecode = projectQrcodeRecordService.getProjectQrcodeRecode(projectId, areaId, this.reportType.getId());
-        String qrCode = null;
-        if (qrcodeRecode != null) {
-            qrCode = qrcodeRecode.getQrcode();//更新部分信息
-            ProjectDocumentDto projectDocumentDto = erpRpcToolsService.getProjectDocumentById(qrcodeRecode.getProjectDocumentId());
-            if (projectDocumentDto != null) {
-                projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
-                projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
-                erpRpcToolsService.saveProjectDocument(projectDocumentDto);
-            }
-        } else {
-            AdCompanyQualificationDto qualificationDto = getCompanyQualificationForPractising();
-            ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
-            projectDocumentDto.setProjectName(projectInfo.getProjectName());
-            projectDocumentDto.setCustomer(getPrincipal());
-            projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
-            projectDocumentDto.setDocumentNumber(getWordNumber());
-            projectDocumentDto.setProjectId(projectInfo.getId());
-            projectDocumentDto.setAppKey(applicationConstant.getAppKey());
-            projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
-            projectDocumentDto.setTableId(generateReportInfo.getId());
-            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
-            projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
-            projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
-            projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
-
-            qrcodeRecode = new ProjectQrcodeRecord();
-            qrcodeRecode.setProjectId(projectId);
-            qrcodeRecode.setAreaId(areaId);
-            qrcodeRecode.setReportType(this.reportType.getId());
-            qrcodeRecode.setProjectDocumentId(projectDocumentDto.getId());
-            qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
-            projectQrcodeRecordService.saveProjectQrcodeRecode(qrcodeRecode);
-            qrCode = projectDocumentDto.getQrcode();
-            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
-            erpRpcToolsService.saveProjectDocument(projectDocumentDto);
-        }
+        String qrCode= projectQrcodeRecordService.getReportQrcode(reportGroup,reportType,getWordNumber(),getPrincipal());
         return toolBaseOrCode(qrCode, 100L, 100L);
     }
 

@@ -26,6 +26,9 @@
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber">
+    <result column="qrcode" jdbcType="LONGVARCHAR" property="qrcode" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -91,6 +94,25 @@
     home_work_end_time, real_estate_appraiser, status, remark, bis_qrcode, creator, gmt_created, 
     gmt_modified
   </sql>
+  <sql id="Blob_Column_List">
+    qrcode
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumberExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_project_take_number
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumberExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -105,9 +127,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_project_take_number
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -132,8 +156,8 @@
       investigations_end_date, report_issuance_date, 
       home_work_end_time, real_estate_appraiser, 
       status, remark, bis_qrcode, 
-      creator, gmt_created, gmt_modified
-      )
+      creator, gmt_created, gmt_modified, 
+      qrcode)
     values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{assessProjectType,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{reportGroupId,jdbcType=INTEGER}, 
       #{reportGroupName,jdbcType=VARCHAR}, #{reportType,jdbcType=INTEGER}, #{numberRecordId,jdbcType=INTEGER}, 
@@ -141,8 +165,8 @@
       #{investigationsEndDate,jdbcType=TIMESTAMP}, #{reportIssuanceDate,jdbcType=TIMESTAMP}, 
       #{homeWorkEndTime,jdbcType=TIMESTAMP}, #{realEstateAppraiser,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{bisQrcode,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{qrcode,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -216,6 +240,9 @@
       <if test="gmtModified != null">
         gmt_modified,
       </if>
+      <if test="qrcode != null">
+        qrcode,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="processInsId != null">
@@ -283,6 +310,9 @@
       </if>
       <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qrcode != null">
+        #{qrcode,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -364,7 +394,40 @@
       <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.qrcode != null">
+        qrcode = #{record.qrcode,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tb_project_take_number
+    set id = #{record.id,jdbcType=INTEGER},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      assess_project_type = #{record.assessProjectType,jdbcType=VARCHAR},
+      area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      report_group_id = #{record.reportGroupId,jdbcType=INTEGER},
+      report_group_name = #{record.reportGroupName,jdbcType=VARCHAR},
+      report_type = #{record.reportType,jdbcType=INTEGER},
+      number_record_id = #{record.numberRecordId,jdbcType=INTEGER},
+      number_value = #{record.numberValue,jdbcType=VARCHAR},
+      qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
+      investigations_start_date = #{record.investigationsStartDate,jdbcType=TIMESTAMP},
+      investigations_end_date = #{record.investigationsEndDate,jdbcType=TIMESTAMP},
+      report_issuance_date = #{record.reportIssuanceDate,jdbcType=TIMESTAMP},
+      home_work_end_time = #{record.homeWorkEndTime,jdbcType=TIMESTAMP},
+      real_estate_appraiser = #{record.realEstateAppraiser,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      bis_qrcode = #{record.bisQrcode,jdbcType=BIT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      qrcode = #{record.qrcode,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -467,7 +530,37 @@
       <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="qrcode != null">
+        qrcode = #{qrcode,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber">
+    update tb_project_take_number
+    set process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      assess_project_type = #{assessProjectType,jdbcType=VARCHAR},
+      area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      report_group_id = #{reportGroupId,jdbcType=INTEGER},
+      report_group_name = #{reportGroupName,jdbcType=VARCHAR},
+      report_type = #{reportType,jdbcType=INTEGER},
+      number_record_id = #{numberRecordId,jdbcType=INTEGER},
+      number_value = #{numberValue,jdbcType=VARCHAR},
+      qualification_type = #{qualificationType,jdbcType=VARCHAR},
+      investigations_start_date = #{investigationsStartDate,jdbcType=TIMESTAMP},
+      investigations_end_date = #{investigationsEndDate,jdbcType=TIMESTAMP},
+      report_issuance_date = #{reportIssuanceDate,jdbcType=TIMESTAMP},
+      home_work_end_time = #{homeWorkEndTime,jdbcType=TIMESTAMP},
+      real_estate_appraiser = #{realEstateAppraiser,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      bis_qrcode = #{bisQrcode,jdbcType=BIT},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      qrcode = #{qrcode,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber">

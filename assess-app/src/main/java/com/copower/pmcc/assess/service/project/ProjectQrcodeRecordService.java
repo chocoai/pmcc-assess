@@ -1,14 +1,15 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectQrcodeRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectQrcodeRecord;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumberDetail;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
@@ -45,6 +46,12 @@ public class ProjectQrcodeRecordService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private AdRpcQualificationsService adRpcQualificationsService;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private GenerateReportInfoService generateReportInfoService;
 
     /**
      * 获取数据
@@ -114,4 +121,59 @@ public class ProjectQrcodeRecordService {
             projectQrcodeRecordDao.editProjectQrcodeRecord(projectQrcodeRecord);
         }
     }
+
+    /**
+     * 获取报告二维码
+     *
+     * @return
+     */
+    public String getReportQrcode(GenerateReportGroup reportGroup, String reportType, String documentNumber, String client) throws Exception {
+        //1.先从本地查看是否已生成过二维码
+        //2.如果已生成直接返回已生成的二维码
+        if (reportGroup == null || StringUtils.isBlank(reportType)) return null;
+        GenerateReportInfo generateReportInfo = generateReportInfoService.getGenerateReportInfoByAreaId(reportGroup.getAreaGroupId());
+        Integer reportTypeId = baseDataDicService.getCacheDataDicByFieldName(reportType).getId();
+        Integer projectId = generateReportInfo.getProjectId();
+        Integer areaId = generateReportInfo.getAreaGroupId();
+        ProjectQrcodeRecord qrcodeRecode = getProjectQrcodeRecode(projectId, areaId, reportTypeId);
+        String qrCode = null;
+        if (qrcodeRecode != null) {
+            qrCode = qrcodeRecode.getQrcode();//更新部分信息
+            ProjectDocumentDto projectDocumentDto = erpRpcToolsService.getProjectDocumentById(qrcodeRecode.getProjectDocumentId());
+            if (projectDocumentDto != null) {
+                projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
+                projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
+                erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+            }
+        } else {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(generateReportInfo.getProjectId());
+            AdCompanyQualificationDto qualificationDto = adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
+            ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
+            projectDocumentDto.setProjectName(projectInfo.getProjectName());
+            projectDocumentDto.setCustomer(client);
+            projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
+            projectDocumentDto.setDocumentNumber(documentNumber);
+            projectDocumentDto.setProjectId(projectInfo.getId());
+            projectDocumentDto.setAppKey(applicationConstant.getAppKey());
+            projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+            projectDocumentDto.setTableId(generateReportInfo.getId());
+            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
+            projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
+            projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
+            projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+
+            qrcodeRecode = new ProjectQrcodeRecord();
+            qrcodeRecode.setProjectId(projectId);
+            qrcodeRecode.setAreaId(areaId);
+            qrcodeRecode.setReportType(reportTypeId);
+            qrcodeRecode.setProjectDocumentId(projectDocumentDto.getId());
+            qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
+            saveProjectQrcodeRecode(qrcodeRecode);
+            qrCode = projectDocumentDto.getQrcode();
+            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
+            erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+        }
+        return qrCode;
+    }
+
 }

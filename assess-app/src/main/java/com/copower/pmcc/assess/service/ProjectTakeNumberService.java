@@ -200,9 +200,6 @@ public class ProjectTakeNumberService {
     }
 
     public void saveAndUpdateProjectTakeNumber(ProjectTakeNumber projectTakeNumber, Boolean updateNull) {
-        if (updateNull == null) {
-            updateNull = Boolean.FALSE;
-        }
         if (projectTakeNumber == null) {
             return;
         }
@@ -214,7 +211,7 @@ public class ProjectTakeNumberService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectTakeNumber.class), projectTakeNumber.getId());
 
         } else {
-            projectTakeNumberDao.updateProjectTakeNumber(projectTakeNumber, updateNull);
+            projectTakeNumberDao.updateProjectTakeNumber(projectTakeNumber, updateNull == null ? Boolean.FALSE : updateNull);
         }
     }
 

@@ -176,7 +176,7 @@ public class EvaluationBasisService {
         Integer imposeId = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_IMPOSE).getId();
         //对应委估对象
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        String unit = projectInfoService.getEntrustmentUnit(projectInfo);//获取委托单位
+        String unit = projectInfoService.getEntrustmentUnit(projectInfo.getId());//获取委托单位
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < basisList.size(); i++) {
             DataEvaluationBasis basis = basisList.get(i);
