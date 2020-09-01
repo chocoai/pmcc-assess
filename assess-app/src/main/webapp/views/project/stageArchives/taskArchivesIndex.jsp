@@ -11,7 +11,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">新增档案</h4>
+                <h4 class="modal-title">新增档案目录</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -24,7 +24,7 @@
                                 <div class="col-md-12">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 col-form-label">
-                                            档案名称<span class="symbol required"></span>
+                                            目录名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" required placeholder="档案名称" name="name"
@@ -134,7 +134,113 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="objArchives.saveArchives()">
+                    保存
+                </button>
+            </div>
 
+        </div>
+    </div>
+</div>
+
+<div id="AdPlaceFileItemDetailDtoListBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">档案记录</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p id="toolbarAdPlaceFileItemDetail">
+                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                            data-toggle="modal" onclick="objArchives.addAdPlaceFileItemDetailBox()">
+                            <span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                            </span>
+                            新增
+                            </button>
+                        </p>
+                        <table id="AdPlaceFileItemDetailDtoTable" class="table table-bordered"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="AdPlaceFileItemDetailDtoBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">新增档案</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 col-form-label">
+                                            档案名称<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" required placeholder="档案名称" name="name"
+                                                   class="form-control input-full">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
+                                            排序
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="排序" name="sorting" data-rule-number='true'
+                                                   class="form-control input-full">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 col-form-label">
+                                            备注
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <textarea  placeholder="备注" name="remark"
+                                                       class="form-control input-full"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <div class="form-inline x-valid">
@@ -161,7 +267,167 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="objArchives.saveArchives()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="objArchives.saveAdPlaceFileItemDetailDto()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="div_Archives_group_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">档案分组</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 col-form-label">
+                                            档案卷号<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group">
+                                                <input type="text" placeholder="档案卷号" required
+                                                       name="number"
+                                                       class="form-control">
+
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-success btn-sm dropdown-toggle "
+                                                            type="button"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                    <span class="btn-label">
+												        <i class="fa fa-plus"></i>
+											        </span>
+                                                        自动生成卷号
+                                                    </button>
+                                                    <div class="dropdown-menu"
+                                                         style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                        <c:forEach items="${SysSymbolRuleDtoList}" var="itemData">
+                                                            <a class="dropdown-item"
+                                                               onclick="objArchives.changeFileNumber(this,'${itemData.id}');"
+                                                               href="javascript:void(0)">${itemData.numberRule}</a>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-primary btn-sm "
+                                                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                            type="button"
+                                                            onclick="objArchives.openNumberModal(this);">
+                                                        编辑
+                                                    </button>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="objArchives.saveGroupArchives()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div id="div_AdPlaceFileVolumeNumberDto_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">卷号记录</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p id="toolbarSub">
+                        </p>
+                        <table id="tbAdPlaceFileVolumeNumberList" class="table table-bordered"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="div_AdPlaceFileVolumeNumber_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">新增卷号</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 col-form-label">
+                                            卷号<span class="symbol required"></span>
+                                        </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" placeholder="档案卷号" required
+                                                   name="number"
+                                                   class="form-control input-full">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="objArchives.saveAdPlaceFileVolumeNumberDto()">
                     保存
                 </button>
             </div>
@@ -198,7 +464,9 @@
 
                             <div class="card-body">
                                 <form class="form-horizontal">
+
                                     <input type="hidden" name="publicProjectId" value="${projectInfo.id}">
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline">
@@ -246,17 +514,77 @@
                                                         <span class="btn-label"><i
                                                                 class="fa fa-plus"></i></span>添加
                                                     </button>
-                                                    <button type="button" class="btn btn-primary btn-sm"
-                                                            onclick="objArchives.autoCreateProjectFileCompleteNow(this);">
-                                                        <span class="btn-label"><i
-                                                                class="fab fa-autoprefixer"></i></span>
-                                                        自动创建档案
+                                                    <button style="margin-left: 10px"
+                                                            class="btn btn-sm btn-info  btn-border"
+                                                            type="button"
+                                                            onclick="showOtherQuery(this)">
+                                                    <span class="btn-label">
+												<i class="fa fa-plus-circle"></i>
+											</span>
+                                                        高级查询
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <table class="table table-bordered" id="tb_Archives_list"></table>
+
+
+                                    <div id="showOtherQuery" style="display: none">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline">
+                                                    <label class="col-sm-1 control-label">
+                                                        项目名称
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" data-rule-maxlength="50" placeholder="项目名称"
+                                                               name="publicProjectName"
+                                                               class="form-control input-full">
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">
+                                                        是否装订存档
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <select name="bisBinding"
+                                                                class="form-control input-full search-select select2">
+                                                            <option value="">请选择</option>
+                                                            <option value="true">是</option>
+                                                            <option value="false">否</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-sm-3">
+                                                        <button type="button" class="btn btn-primary btn-sm"
+                                                                onclick="objArchives.autoCreateProjectFileCompleteNow(this);">
+                                                        <span class="btn-label"><i
+                                                                class="fab fa-autoprefixer"></i></span>
+                                                            自动创建档案
+                                                        </button>
+
+                                                        <button type="button" class="btn btn-primary btn-sm"
+                                                                onclick="objArchives.batchGroupHandel() ;">
+                                                            <span class="btn-label"><i
+                                                                    class="fa fa-cog"></i></span>
+                                                            批量设置卷号
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered" id="tb_Archives_list"></table>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -281,51 +609,218 @@
 
     objArchives.table = $("#tb_Archives_list");
     objArchives.box = $("#div_Archives_box");
-    objArchives.tableName = "tb_ad_place_file_item_dto";
+    objArchives.tableName = "tb_ad_place_file_item_detail_dto";
     objArchives.fieldsName = "project_proxy";
 
+    objArchives.adPlaceFileItemDetailBox = $("#AdPlaceFileItemDetailDtoBox");
+    objArchives.adPlaceFileItemDetailListBox = $("#AdPlaceFileItemDetailDtoListBox");
+    objArchives.adPlaceFileItemDetailTable = $("#AdPlaceFileItemDetailDtoTable");
+
+    objArchives.masterId = 0;
+
+    objArchives.volumeNumberAddBox = $("#div_AdPlaceFileVolumeNumber_box");
+    objArchives.volumeNumberBox = $("#div_AdPlaceFileVolumeNumberDto_box");
+    objArchives.volumeNumberTable = $("#tbAdPlaceFileVolumeNumberList");
+    objArchives.groupBox = $("#div_Archives_group_box");
+
+
+
+    ///-------------------------------------------------|档案卷和操作|----------------------------------------
+    //
+    objArchives.batchGroupHandel = function () {
+        var table = $(objArchives.table.selector);
+        var rows = table.bootstrapTable('getSelections');
+        if (rows.length == 0) {
+            notifyWarning("提示", "请选择要设置的档案!");
+            return false;
+        }
+        var count = 0;
+        var idArray = [];
+        $.each(rows, function (k, item) {
+            if (item.groupId) {
+                count++;
+            }
+            idArray.push(item.id);
+        });
+        if (count != 0) {
+            notifyWarning("提示", "存在已经设置了卷号的档案");
+            return false;
+        }
+        var box = $(objArchives.groupBox.selector);
+        var frm = box.find("form");
+        frm.clearAll();
+        frm.validate();
+        objArchives.targetId = idArray.join(",");
+        box.modal("show");
+    };
+
+    objArchives.saveGroupArchives = function () {
+        var box = $(objArchives.groupBox.selector);
+        var frm = box.find("form");
+        if (!frm.valid()) {
+            return false;
+        }
+        var data = formSerializeArray(frm);
+        var targetId = null;
+        //更新的时候不需要再次关联档案
+        if (!data.id) {
+            targetId = objArchives.targetId;
+        }
+        AssessCommon.ajaxServerFun({formData: JSON.stringify(data), targetId: targetId},"/projectArchives/saveAdPlaceFileGroupDto" ,"post",function () {
+            AlertSuccess("成功", "数据已成功保存到数据库");
+            objArchives.loadTableList();
+            box.modal("hide");
+        } ) ;
+    };
+
+    objArchives.openNumberModal = function () {
+        var box = $(objArchives.volumeNumberBox.selector);
+        box.modal("show");
+        objArchives.loadTableAdPlaceFileVolumeNumberDtoList();
+    };
+
+    objArchives.loadTableAdPlaceFileVolumeNumberDtoList = function () {
+        var table = $(objArchives.volumeNumberTable.selector);
+        var cols = [];
+        cols.push({field: 'number', title: '卷号', width: "30%"});
+        cols.push({
+            field: 'id', title: '操作', width: "25%", formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button type="button" onclick="objArchives.editAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+
+                // str += '<button type="button" onclick="objArchives.delAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                // str += '<i class="fa fa-minus"></i>';
+                // str += '</button>';
+
+                str += '<button type="button" onclick="objArchives.selectAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="选择此卷号">';
+                str += '<i class="fa fa-check"></i>';
+                str += '</button>';
+                return str;
+            }
+        });
+        table.bootstrapTable('destroy');
+        TableInit(table, "${pageContext.request.contextPath}/projectArchives/getAdPlaceFileVolumeNumberDtoListByParam", cols, {}, {
+            method: "get",
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            striped: true,
+            toolbar: '#toolbarSub',
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();   //提示
+            }
+        });
+    };
+
+    objArchives.editAdPlaceFileVolumeNumberDto = function (id) {
+        objArchives.addAdPlaceFileVolumeNumberDto();
+        var frm = $(objArchives.volumeNumberAddBox.selector).find("form");
+        var table = $(objArchives.volumeNumberTable.selector);
+        var data = table.bootstrapTable('getRowByUniqueId', id);
+        frm.initForm(data);
+    };
+
+    objArchives.saveAdPlaceFileVolumeNumberDto = function () {
+        var box = $(objArchives.volumeNumberAddBox.selector);
+        var frm = box.find("form");
+        if (!frm.valid()) {
+            return false;
+        }
+        var data = formSerializeArray(frm);
+        objArchives.saveBaseAdPlaceFileVolumeNumberDto(data, function () {
+            AlertSuccess("成功", "数据已成功保存到数据库");
+            objArchives.loadTableAdPlaceFileVolumeNumberDtoList();
+            box.modal("hide");
+        });
+    };
+
+
+    objArchives.selectAdPlaceFileVolumeNumberDto = function (id) {
+        var table = $(objArchives.volumeNumberTable.selector);
+        var data = table.bootstrapTable('getRowByUniqueId', id);
+        var box = $(objArchives.groupBox.selector);
+        var frm = box.find("form");
+        frm.find("[name=number]").val(data.number);
+        $(objArchives.volumeNumberBox.selector).modal("hide");
+    };
+
+    objArchives.delAdPlaceFileVolumeNumberDto = function (id) {
+        AssessCommon.ajaxServerFun({id:id},"/projectArchives/deleteAdPlaceFileVolumeNumberDtoByIds" ,"post",function () {
+            objArchives.loadTableAdPlaceFileVolumeNumberDtoList();
+        } ,"delete") ;
+    };
+
+    objArchives.addAdPlaceFileVolumeNumberDto = function () {
+        var box = $(objArchives.volumeNumberAddBox.selector);
+        box.modal("show");
+        var frm = box.find("form");
+        frm.clearAll();
+        frm.validate();
+    };
+
+    objArchives.saveBaseAdPlaceFileVolumeNumberDto = function (data, callback) {
+        AssessCommon.ajaxServerFun({formData: JSON.stringify(data)},"/projectArchives/saveAdPlaceFileVolumeNumberDto" ,"post",callback) ;
+    };
+
+
+    objArchives.getAdPlaceFileGroupDtoById = function (id, callback) {
+        AssessCommon.ajaxServerFun({id:id},"/projectArchives/getAdPlaceFileGroupDtoById" ,"get",callback ) ;
+    };
+
+    objArchives.autoFileNumber = function (_this) {
+        var frm = $(_this).closest("form");
+        var data = formSerializeArray(frm);
+        if (!data.ruleNumber) {
+            notifyInfo("提示", "必须选择卷号规则才能生成卷号");
+            return false;
+        }
+        AssessCommon.ajaxServerFun({ruleId: data.ruleNumber},"/projectArchives/symbol" ,"get",function (item) {
+            frm.find("[name=number]").val(item.symbol);
+            AlertSuccess("成功", "已经成功获取自动生成的卷号");
+        } ) ;
+    };
+
+    objArchives.changeFileNumber = function (_this, ruleNumber) {
+        var frm = $(_this).closest("form");
+        AssessCommon.ajaxServerFun({ruleId: ruleNumber},"/projectArchives/symbol" ,"get",function (item) {
+            var symbol = item.symbol;
+            frm.find("[name=number]").val(symbol);
+            objArchives.saveBaseAdPlaceFileVolumeNumberDto({number: symbol,ruleNumber:ruleNumber}, function () {
+                AlertSuccess("成功", "已经成功获取自动生成的卷号");
+            });
+        } ) ;
+    };
+    ///-------------------------------------------------||----------------------------------------
+
+    //档案 目录 类型和类别的下拉框切换
     objArchives.onChangeFileType = function (_this, fileCategory) {
         var frm = $(_this).closest("form");
         var value = $(_this).find("option:selected").val();
-        console.log(value);
         if (!value) {
             return false;
         }
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectArchives/getAdBasePlaceFileListByPid",
-            type: "get",
-            dataType: "json",
-            data: {pid: value},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    var retHtml = '';
-                    retHtml += '<option value="" selected>-请选择-</option>';
-                    $.each(result.data, function (k, item) {
-                        retHtml += '<option key="' + item.name + '" title="' + item.name + '" value="' + item.id + '"';
-                        if (fileCategory) {
-                            if (item.id == fileCategory) {
-                                retHtml += 'selected="selected"'
-                            }
-                        }
-                        retHtml += '>' + item.name + '</option>';
-                    });
-                    frm.find("select[name='fileCategory']").empty().html(retHtml).trigger('change');
-                    if (fileCategory) {
-                        frm.find("select[name='fileCategory']").val(fileCategory).trigger('change');
+        AssessCommon.ajaxServerFun({pid:value},"/projectArchives/getAdBasePlaceFileListByPid" ,"get",function (data) {
+            var retHtml = '';
+            retHtml += '<option value="" selected>-请选择-</option>';
+            $.each(data, function (k, item) {
+                retHtml += '<option key="' + item.name + '" title="' + item.name + '" value="' + item.id + '"';
+                if (fileCategory) {
+                    if (item.id == fileCategory) {
+                        retHtml += 'selected="selected"'
                     }
-                } else {
-                    AlertError("失败，失败原因:" + result.errmsg);
                 }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                retHtml += '>' + item.name + '</option>';
+            });
+            frm.find("select[name='fileCategory']").empty().html(retHtml).trigger('change');
+            if (fileCategory) {
+                frm.find("select[name='fileCategory']").val(fileCategory).trigger('change');
             }
-        })
+        } ) ;
     };
 
+    //档案 目录 list
     objArchives.loadTableList = function (_this) {
         var data = {publicProjectId: '${projectInfo.id}'};
         if (_this) {
@@ -339,18 +834,41 @@
         });
         var table = $(objArchives.table.selector);
         var cols = [];
-        cols.push({field: 'name', title: '档案名称', width: "10%"});
+        cols.push({field: 'name', title: '目录名称', width: "15%"});
         cols.push({field: 'fileTypeName', title: '档案类型', width: "10%"});
         cols.push({field: 'fileCategoryName', title: '档案类别', width: "10%"});
         cols.push({field: 'fileSourceName', title: '档案来源', width: "10%"});
         cols.push({field: 'publicWayName', title: '公开方式', width: "10%"});
         cols.push({field: 'shelfLifeName', title: '保存期限', width: "10%"});
 
+        cols.push({
+            field: 'groupId', title: '卷号设置与否', width: "7%", formatter: function (value, row) {
+                if (row.groupId) {
+                    return "是";
+                } else {
+                    return "否";
+                }
+            }
+        });
+        cols.push({
+            field: 'bisBinding', title: '必须设置卷号', width: "7%", formatter: function (value, row) {
+                if (value) {
+                    return "是";
+                } else {
+                    return "否";
+                }
+            }
+        });
 
-        cols.push({field: 'fileViewName', title: '文档', width: "25%"});
+
         cols.push({
             field: 'id', title: '操作', width: "15%", formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+
+                str += '<button type="button" onclick="objArchives.openAdPlaceFileItemDetailBox(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="档案列表">';
+                str += '<i class="fas fa-list-ul"></i>';
+                str += '</button>';
+
                 if (row.groupId) {
                     str += '<button type="button" onclick="objArchives.lockOpenDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="解除卷号绑定">';
                     str += '<i class="fas fa-lock-open"></i>';
@@ -377,116 +895,53 @@
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
             }
-        });
+        },true);
     };
 
+    //档案 目录 add box
     objArchives.appendArchives = function (id) {
         var box = $(objArchives.box.selector);
         box.modal("show");
         var frm = box.find("form");
         frm.clearAll();
         frm.validate();
-        var tableName = objArchives.tableName;
-        var fieldsName = objArchives.fieldsName;
-        FileUtils.getFileShows({
-            target: fieldsName,
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                fieldsName: fieldsName,
-                // projectId: id
-            },
-            deleteFlag: true
-        });
-        FileUtils.uploadFiles({
-            target: fieldsName,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: tableName,
-                tableId: id,
-                fieldsName: fieldsName,
-                // projectId: id
-            },
-            deleteFlag: true
-        });
     };
 
+    //档案 目录 delete
     objArchives.delDataDic = function (id) {
-        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectArchives/deleteAdPlaceFileItemDtoByIds",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        notifySuccess("成功", "删除数据成功");
-                        objArchives.loadTableList();
-                    } else {
-                        AlertError("删除数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        });
+        AssessCommon.ajaxServerMethod({masterId:id},"/projectArchives/getAdPlaceFileItemDetailDtoCount" ,"get",function (count) {
+            count = Number(count) ;
+            if (count > 0) {
+                notifyInfo("提示", "档案目录下有档案不能删除");
+                return false ;
+            }
+            AssessCommon.ajaxServerFun({id:id},"/projectArchives/deleteAdPlaceFileItemDtoByIds" ,"post",function () {
+                objArchives.loadTableList();
+            } ,"delete") ;
+        }) ;
     };
 
+    //档案 目录 lock data
     objArchives.lockOpenDataDic = function (id) {
         AlertConfirm("是否确认解除卷号设置", "解除相应的数据后将不可恢复可以重新再次设置卷号", function () {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectArchives/lockOpenDataDicAdPlaceFileItemDtoById",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        notifySuccess("成功", "解除卷号成功");
-                        objArchives.loadTableList();
-                    } else {
-                        AlertError("数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            AssessCommon.ajaxServerFun({id:id},"/projectArchives/lockOpenDataDicAdPlaceFileItemDtoById" ,"post",function () {
+                notifySuccess("成功", "解除卷号成功");
+                objArchives.loadTableList();
+            } ) ;
         });
     };
 
-
+    //档案 目录 auto save data
     objArchives.autoCreateProjectFileCompleteNow = function () {
         AlertConfirm("提示", "是否自动创建档案", function () {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectArchives/autoCreateProjectFileCompleteNow",
-                type: "post",
-                dataType: "json",
-                data: {projectId: '${projectInfo.id}'},
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        notifySuccess("成功", "创建档案成功");
-                        objArchives.loadTableList();
-                    } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            AssessCommon.ajaxServerFun({projectId: '${projectInfo.id}'},"/projectArchives/autoCreateProjectFileCompleteNow" ,"post",function () {
+                notifySuccess("成功", "创建档案成功");
+                objArchives.loadTableList();
+            } ) ;
         })
     };
 
+    //档案 目录 edit data
     objArchives.editDataDic = function (id) {
         objArchives.appendArchives(id);
         var frm = $(objArchives.box.selector).find("form");
@@ -501,6 +956,7 @@
         objArchives.onChangeFileType(ele, data.fileCategory);
     };
 
+    //档案 目录 server data
     objArchives.saveArchives = function () {
         var box = $(objArchives.box.selector);
         var frm = box.find("form");
@@ -513,29 +969,136 @@
         if (!data.bisBinding) {
             data.bisBinding = false;
         }
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectArchives/saveAdPlaceFileItemDto",
-            type: "post",
-            dataType: "json",
-            data: {formData: JSON.stringify(data)},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    AlertSuccess("成功", "数据已成功保存到数据库");
-                    objArchives.loadTableList();
-                    box.modal("hide");
-                } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result);
-            }
-        })
+        AssessCommon.ajaxServerFun({formData: JSON.stringify(data)},"/projectArchives/saveAdPlaceFileItemDto" ,"post",function () {
+            AlertSuccess("成功", "数据已成功保存到数据库");
+            objArchives.loadTableList();
+            box.modal("hide");
+        } ) ;
     };
 
+    //档案记录 table box
+    objArchives.openAdPlaceFileItemDetailBox = function(masterId) {
+        objArchives.masterId = masterId ;
+        var box = $(objArchives.adPlaceFileItemDetailListBox.selector);
+        box.modal("show");
+
+        objArchives.loadTableAdPlaceFileItemDetailList() ;
+    } ;
+
+
+
+    //档案记录 table list
+    objArchives.loadTableAdPlaceFileItemDetailList = function() {
+        var table = $(objArchives.adPlaceFileItemDetailTable.selector);
+        var cols = [];
+        cols.push({field: 'name', title: '档案名称', width: "10%"});
+
+        cols.push({field: 'fileViewName', title: '文档', width: "25%"});
+        cols.push({
+            field: 'id', title: '操作', width: "15%", formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+
+                str += '<button type="button" onclick="objArchives.editAdPlaceFileItemDetailDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+
+                str += '<button type="button" onclick="objArchives.delAdPlaceFileItemDetailDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
+                return str;
+            }
+        });
+        table.bootstrapTable('destroy');
+        TableInit(table, "${pageContext.request.contextPath}/projectArchives/getAdPlaceFileItemDetailDtoListByParam", cols, {masterId:objArchives.masterId}, {
+            method: "get",
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            striped: true,
+            toolbar: '#toolbarAdPlaceFileItemDetail',
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();   //提示
+            }
+        });
+    } ;
+
+    //档案记录 server data
+    objArchives.saveAdPlaceFileItemDetailDto = function() {
+        var box = $(objArchives.adPlaceFileItemDetailBox.selector);
+        box.modal("show");
+        var frm = box.find("form");
+        var data = formSerializeArray(frm);
+        data.masterId = objArchives.masterId ;
+        AssessCommon.ajaxServerFun({formData: JSON.stringify(data)},"/projectArchives/saveAdPlaceFileItemDetailDto" ,"post",function () {
+            AlertSuccess("成功", "数据已成功保存到数据库");
+            objArchives.loadTableAdPlaceFileItemDetailList();
+            box.modal("hide");
+        } ) ;
+    } ;
+
+    //档案记录 delete
+    objArchives.delAdPlaceFileItemDetailDto = function(id) {
+        AssessCommon.ajaxServerFun({id:id},"/projectArchives/deleteAdPlaceFileItemDetailDtoByIds" ,"post",function () {
+            objArchives.loadTableAdPlaceFileItemDetailList();
+        } ,"delete") ;
+    } ;
+
+    //档案记录 edit
+    objArchives.editAdPlaceFileItemDetailDto = function(id) {
+        var table = $(objArchives.adPlaceFileItemDetailTable.selector);
+        var data = table.bootstrapTable('getRowByUniqueId', id);
+        objArchives.addAdPlaceFileItemDetailBox(data) ;
+
+    } ;
+
+    //档案记录 add box
+    objArchives.addAdPlaceFileItemDetailBox = function(option) {
+        var data = {id:0} ;
+        if (option) {
+            data = $.extend(data,option) ;
+        }
+        var box = $(objArchives.adPlaceFileItemDetailBox.selector);
+        box.modal("show");
+        var frm = box.find("form");
+        frm.clearAll();
+        frm.validate();
+        frm.initForm(data);
+        var tableName = objArchives.tableName;
+        var fieldsName = objArchives.fieldsName;
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                tableName: tableName,
+                tableId: data.id,
+                fieldsName: fieldsName,
+                // projectId: id
+            },
+            deleteFlag: true
+        });
+        FileUtils.uploadFiles({
+            target: fieldsName,
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: data.id,
+                fieldsName: fieldsName,
+                // projectId: id
+            },
+            deleteFlag: true
+        });
+    } ;
+
+
+    function showOtherQuery(_that) {
+        $("#showOtherQuery").toggle();
+        var c = $(_that).find("i").attr("class");
+        if (c.indexOf("plus") != -1) {
+            $(_that).find("i").attr("class", "fa fa-minus-circle");
+        } else {
+            $(_that).find("i").attr("class", "fa fa-plus-circle");
+        }
+
+    }
 
     $(document).ready(function () {
         objArchives.loadTableList();

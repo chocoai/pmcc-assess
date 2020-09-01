@@ -70,6 +70,31 @@ public class ProjectArchivesDataService {
     private AdRpcPlaceFileItemDetailService adRpcPlaceFileItemDetailService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    public long getAdPlaceFileItemDetailDtoCount(Integer masterId ){
+        return adRpcPlaceFileItemDetailService.getCount(masterId);
+    }
+
+
+    public BootstrapTableVo<AdPlaceFileItemDetailDto> getAdPlaceFileItemDetailDtoListByParam(AdPlaceFileItemDetailDto obj){
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        BootstrapTableVo<AdPlaceFileItemDetailDto> bootstrapTableVo = adRpcPlaceFileItemDetailService.getAdPlaceFileItemDetailDtoListByParam(obj, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<AdPlaceFileItemDetailDto> rows = bootstrapTableVo.getRows();
+        if (CollectionUtils.isNotEmpty(rows)) {
+            for (AdPlaceFileItemDetailDto vo:rows) {
+                List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(obj.getId(), null, FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDetailDto.class));
+                StringBuilder builder = new StringBuilder();
+                if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
+                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
+                        builder.append(baseAttachmentService.getViewHtml(sysAttachmentDto)).append(" ");
+                    }
+                    vo.setFileViewName(builder.toString());
+                }
+            }
+        }
+        bootstrapTableVo.setRows(rows);
+        return bootstrapTableVo;
+    }
+
     public void saveAdPlaceFileItemDetailDto(AdPlaceFileItemDetailDto obj){
         if (obj == null) {
             return;
@@ -307,7 +332,6 @@ public class ProjectArchivesDataService {
                 obj.setAppKey(applicationConstant.getAppKey());
             }
             Integer integer = adRpcPlaceFileItemService.saveAdPlaceFileItemDto(obj);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDto.class), integer);
             obj.setId(integer);
         } else {
             adRpcPlaceFileItemService.updateAdPlaceFileItemDto(obj);
