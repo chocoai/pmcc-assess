@@ -66,6 +66,12 @@ public class ProjectArchivesController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getAdPlaceFileItemDetailDtoListByParam", method = {RequestMethod.GET}, name = "获取列表")
+    public BootstrapTableVo getAdPlaceFileItemDetailDtoListByParam(AdPlaceFileItemDetailDto dto) {
+        return projectArchivesDataService.getAdPlaceFileItemDetailDtoListByParam(dto);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/saveAdPlaceFileItemDetailDto", method = {RequestMethod.POST}, name = "更新")
     public HttpResult saveAdPlaceFileItemDetailDto(String formData, @RequestParam(defaultValue = "false") boolean updateNull) {
         try {
@@ -75,6 +81,17 @@ public class ProjectArchivesController {
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAdPlaceFileItemDetailDtoCount", method = {RequestMethod.GET}, name = "get count")
+    public HttpResult getAdPlaceFileItemDetailDtoCount(Integer masterId) {
+        try {
+            return HttpResult.newCorrectResult(200,projectArchivesDataService.getAdPlaceFileItemDetailDtoCount(masterId));
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" , e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
     }
 
