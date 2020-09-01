@@ -38,9 +38,6 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldSifaEnum.SifaValuationProjectName.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuationProjectName2());
         }
-        if (Objects.equal(ReportFieldSifaEnum.SifaJudgeBuildResultSurveySheet.getName(), name)) {
-            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudicialSchemeJudgeObjectSheet());
-        }
         return false;
     }
 
@@ -450,11 +447,7 @@ public final class GenerateReportAssembleHelp {
         }
         //估价结果一览表
         if (Objects.equal(ReportFieldEnum.JudgeBuildResultSurveySheet.getName(), name)) {
-            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildResultSurveySheet(true));
-        }
-        //估价结果一览表不含坐落
-        if (Objects.equal(ReportFieldEnum.JudgeBuildResultSurveySheetNotBeLocated.getName(), name)) {
-            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildResultSurveySheet(false));
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildResultSurveySheet());
         }
         //估价对象区位状况表
         if (Objects.equal(ReportFieldEnum.JudgeObjectAreaStatusSheet.getName(), name)) {

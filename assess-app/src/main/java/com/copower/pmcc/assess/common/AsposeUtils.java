@@ -789,11 +789,15 @@ public class AsposeUtils {
     public static void writeWordTitle(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
         if (CollectionUtils.isNotEmpty(titles)) {
             for (String title : titles) {
-                builder.insertCell();
-                if (title == null){
-                    title = "" ;
+                try{
+                    builder.insertCell();
+                    if (title == null){
+                        title = "" ;
+                    }
+                    builder.write(title);
+                }catch (Exception e){
+                    logger.error(e.getMessage(),e);
                 }
-                builder.write(title);
             }
             builder.endRow();
         }

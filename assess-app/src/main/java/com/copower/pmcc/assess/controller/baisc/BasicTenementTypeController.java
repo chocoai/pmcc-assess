@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicTenementTypeEnum;
-import com.copower.pmcc.assess.proxy.face.BasicTenementTypeInterface;
+import com.copower.pmcc.assess.service.basic.BasicTenementTypeService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BasicTenementTypeController {
     private Logger logger = LoggerFactory.getLogger(getClass()) ;
     @Autowired
-    private BasicTenementTypeInterface basicTenementTypeInterface;
+    private BasicTenementTypeService basicTenementTypeService;
 
     @GetMapping(value = "/getTenementTypeValue")
     public HttpResult getTenementTypeValue(String tenementType, int num) {
@@ -30,16 +30,16 @@ public class BasicTenementTypeController {
             }
             switch (num) {
                 case 1:
-                    obj = basicTenementTypeInterface.priceExportColumns(typeEnum);
+                    obj = basicTenementTypeService.priceExportColumns(typeEnum);
                     break;
                 case 2:
-                    obj = basicTenementTypeInterface.toColumns(typeEnum);
+                    obj = basicTenementTypeService.toColumns(typeEnum);
                     break;
                 case 3:
-                    obj = basicTenementTypeInterface.toOptions(typeEnum);
+                    obj = basicTenementTypeService.toOptions(typeEnum);
                     break;
                 case 4:
-                    obj = basicTenementTypeInterface.toHtmlViewClassNamePrefix(typeEnum);
+                    obj = basicTenementTypeService.toHtmlViewClassNamePrefix(typeEnum);
                     break;
                 default:
                     break;

@@ -72,7 +72,7 @@ public class SchemeSurePriceFactorService {
         return schemeJudgeObject;
     }
 
-    public List<SchemeSurePriceFactor> getSurePriceFactors(Integer judgeObjectId) {
+    public List<SchemeSurePriceFactor> getSurePriceFactorListByJudgeId(Integer judgeObjectId) {
         List<SchemeSurePriceFactor> certAdjustmentFactorList = schemeSurePriceFactorDao.getFactorListByJudgeObjectId(judgeObjectId);
         return certAdjustmentFactorList;
     }

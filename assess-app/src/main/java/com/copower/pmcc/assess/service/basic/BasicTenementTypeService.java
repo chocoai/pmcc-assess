@@ -1,8 +1,8 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicTenementTypeEnum;
-import com.copower.pmcc.assess.proxy.face.BasicTenementTypeInterface;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -13,29 +13,27 @@ import java.util.List;
  * 物业类型 可以转换出的各种数据
  */
 @Component
-public class BasicTenementTypeImpl implements BasicTenementTypeInterface, Serializable {
-
-    @Override
+public class BasicTenementTypeService {
     public String toColumns(BasicTenementTypeEnum... tenementTypeEnums) {
-        for (BasicTenementTypeEnum typeEnum : tenementTypeEnums){
-            switch (typeEnum){
+        for (BasicTenementTypeEnum typeEnum : tenementTypeEnums) {
+            switch (typeEnum) {
                 case OFFICE:
-                case RESIDENTIAL:{
+                case RESIDENTIAL: {
                     return "commonColumn.houseRoomResidence()";
                 }
                 case SHOP:
                 case MARKET:
-                case PARKING_SPACE:{
+                case PARKING_SPACE: {
                     return "commonColumn.houseRoomStore()";
                 }
                 case HOTEL:
-                case REPAST:{
+                case REPAST: {
                     return "commonColumn.houseRoomHotel()";
                 }
-                case PRODUCE:{
+                case PRODUCE: {
                     return "commonColumn.houseRoomProduction()";
                 }
-                case WARE_HOUSE:{
+                case WARE_HOUSE: {
                     return "commonColumn.houseRoomStorage()";
                 }
                 default: {
@@ -48,10 +46,10 @@ public class BasicTenementTypeImpl implements BasicTenementTypeInterface, Serial
 
     /**
      * 户型  专有部分的 下拉框
+     *
      * @param tenementTypeEnums
      * @return
      */
-    @Override
     public String toOptions(BasicTenementTypeEnum... tenementTypeEnums) {
         StringBuilder stringBuilder = new StringBuilder();
         for (BasicTenementTypeEnum typeEnum : tenementTypeEnums) {
@@ -106,8 +104,6 @@ public class BasicTenementTypeImpl implements BasicTenementTypeInterface, Serial
         }
         return stringBuilder.toString();
     }
-
-    @Override
     public KeyValueDto[] priceExportColumns(BasicTenementTypeEnum... tenementTypeEnums) {
         List<KeyValueDto> keyValueDtoList = new ArrayList<>();
         keyValueDtoList.add(new KeyValueDto("houseShape", "房间形状"));
@@ -166,7 +162,66 @@ public class BasicTenementTypeImpl implements BasicTenementTypeInterface, Serial
         return keyValueDtoList.toArray(new KeyValueDto[keyValueDtoList.size()]);
     }
 
-    @Override
+    /**
+     * 调整因素
+     *
+     * @return
+     */
+    public List<String> getAdjustFactorList(BasicTenementTypeEnum tenementTypeEnum) {
+        List<String> list = Lists.newArrayList("面积", "楼层", "层高", "形状", "特殊因素");
+        if (tenementTypeEnum != null) {
+            switch (tenementTypeEnum) {
+                case PARKING_SPACE:
+                case MARKET:
+                case SHOP: {
+                    list.add("开间");
+                    list.add("进深");
+                    list.add("相邻位置");
+                    list.add("距离");
+                    list.add("方位");
+                    break;
+                }
+                case OFFICE:
+                case RESIDENTIAL: {
+                    list.add("通风");
+                    list.add("采光");
+                    list.add("日照");
+                    list.add("隔音");
+                    list.add("长度");
+                    list.add("宽度");
+                    break;
+                }
+                case REPAST:
+                case HOTEL: {
+                    list.add("通风");
+                    list.add("采光");
+                    list.add("长度");
+                    list.add("宽度");
+                    break;
+                }
+                case PRODUCE: {
+                    list.add("跨长");
+                    list.add("跨数");
+                    list.add("通风");
+                    list.add("采光");
+                    list.add("最大跨距");
+                    list.add("最小跨距");
+                    list.add("标准跨距");
+                    break;
+                }
+                case WARE_HOUSE: {
+                    list.add("计量标准");
+                    list.add("仓储要求");
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+        return list;
+    }
+
     public String toHtmlViewClassNamePrefix(BasicTenementTypeEnum... tenementTypeEnums) {
         //注意下面返回的是页面class选择器的前缀和枚举没关系的
         for (BasicTenementTypeEnum typeEnum : tenementTypeEnums) {

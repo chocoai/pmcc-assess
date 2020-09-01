@@ -83,7 +83,7 @@ public class SchemeSurePriceController {
     @GetMapping(value = "/getSurePriceFactors", name = "获取调整单价系数")
     public HttpResult getSurePriceFactors(Integer judgeObjectId) {
         try {
-            List<SchemeSurePriceFactor> certAdjustmentFactors = schemeSurePriceFactorService.getSurePriceFactors(judgeObjectId);
+            List<SchemeSurePriceFactor> certAdjustmentFactors = schemeSurePriceFactorService.getSurePriceFactorListByJudgeId(judgeObjectId);
             return HttpResult.newCorrectResult(certAdjustmentFactors);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, errorInfo);

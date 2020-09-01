@@ -72,6 +72,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.copower.pmcc.assess.common.StreamUtils.distinctByKey;
+
 /**
  * 估价对象
  * Created by 13426 on 2018/5/21.
@@ -1277,6 +1279,72 @@ public class SchemeJudgeObjectService {
             }
         }
     }
+
+    /**
+     * 将估价对象转换为与权证一一对应的估价对象
+     *
+     * @param list
+     * @return
+     */
+    public List<SchemeJudgeObject> transformDeclareJudgeList(List<SchemeJudgeObject> list) {
+        if (CollectionUtils.isEmpty(list)) return null;
+        List<SchemeJudgeObject> resultList = Lists.newArrayList();
+        for (SchemeJudgeObject judgeObject : list) {
+            if (Boolean.TRUE.equals(judgeObject.getBisSplit())) {
+                continue;
+            } else if (Boolean.TRUE.equals(judgeObject.getBisMerge())) {//合并对象找到子项中权证对应的估价对象
+                List<SchemeJudgeObject> childJudgeObjectList = getListByPid(judgeObject.getId());
+                if(CollectionUtils.isNotEmpty(childJudgeObjectList)){
+                    for (SchemeJudgeObject schemeJudgeObject : childJudgeObjectList) {
+                        if (Boolean.TRUE.equals(schemeJudgeObject.getBisSplit())) {
+                            continue;
+                        }
+                        resultList.add(schemeJudgeObject);
+                    }
+                }
+            } else {
+                resultList.add(judgeObject);
+            }
+        }
+        if(CollectionUtils.isNotEmpty(resultList)){
+            resultList.stream().filter(distinctByKey(SchemeJudgeObject::getId)).collect(Collectors.toList());//根据id去重
+            resultList.stream().sorted(Comparator.comparing(SchemeJudgeObject::getSorting)).collect(Collectors.toList());//排序
+        }
+        return resultList;
+    }
+
+    /**
+     * 将估价对象转换为正常和拆分的估价对象
+     *
+     * @param list
+     * @return
+     */
+    public List<SchemeJudgeObject> transformFullJudgeList(List<SchemeJudgeObject> list) {
+        if (CollectionUtils.isEmpty(list)) return null;
+        List<SchemeJudgeObject> resultList = Lists.newArrayList();
+        for (SchemeJudgeObject judgeObject : list) {
+           if (Boolean.TRUE.equals(judgeObject.getBisMerge())) {//合并对象找到子项中权证对应的估价对象
+                List<SchemeJudgeObject> childJudgeObjectList = getListByPid(judgeObject.getId());
+                if(CollectionUtils.isNotEmpty(childJudgeObjectList)){
+                    for (SchemeJudgeObject schemeJudgeObject : childJudgeObjectList) {
+                        if (Boolean.TRUE.equals(schemeJudgeObject.getBisSplit())) {
+                            continue;
+                        }
+                        resultList.add(schemeJudgeObject);
+                    }
+                }
+            } else {
+                resultList.add(judgeObject);
+            }
+        }
+        if(CollectionUtils.isNotEmpty(resultList)){
+            resultList.stream().filter(distinctByKey(SchemeJudgeObject::getId)).collect(Collectors.toList());//根据id去重
+            resultList.stream().sorted(Comparator.comparing(SchemeJudgeObject::getSorting)).collect(Collectors.toList());//排序
+        }
+        return resultList;
+    }
+
+
 
     /**
      * 根据applyId获取对应的估价对象
