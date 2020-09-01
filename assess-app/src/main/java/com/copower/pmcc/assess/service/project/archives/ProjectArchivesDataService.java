@@ -4,6 +4,8 @@ import com.copower.pmcc.ad.api.dto.*;
 import com.copower.pmcc.ad.api.enums.*;
 import com.copower.pmcc.ad.api.provider.*;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
+import com.copower.pmcc.assess.common.enums.archives.ArchivesFileComprehensiveEnum;
+import com.copower.pmcc.assess.common.enums.archives.ArchivesFileProfessionEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -13,18 +15,21 @@ import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicEstateSurveyRecordService;
 import com.copower.pmcc.assess.service.document.DocumentSendService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.SysAppEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 档案
@@ -68,20 +74,22 @@ public class ProjectArchivesDataService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private AdRpcPlaceFileItemDetailService adRpcPlaceFileItemDetailService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public long getAdPlaceFileItemDetailDtoCount(Integer masterId ){
+    public long getAdPlaceFileItemDetailDtoCount(Integer masterId) {
         return adRpcPlaceFileItemDetailService.getCount(masterId);
     }
 
 
-    public BootstrapTableVo<AdPlaceFileItemDetailDto> getAdPlaceFileItemDetailDtoListByParam(AdPlaceFileItemDetailDto obj){
+    public BootstrapTableVo<AdPlaceFileItemDetailDto> getAdPlaceFileItemDetailDtoListByParam(AdPlaceFileItemDetailDto obj) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo<AdPlaceFileItemDetailDto> bootstrapTableVo = adRpcPlaceFileItemDetailService.getAdPlaceFileItemDetailDtoListByParam(obj, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<AdPlaceFileItemDetailDto> rows = bootstrapTableVo.getRows();
         if (CollectionUtils.isNotEmpty(rows)) {
-            for (AdPlaceFileItemDetailDto vo:rows) {
-                List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(obj.getId(), null, FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDetailDto.class));
+            for (AdPlaceFileItemDetailDto vo : rows) {
+                List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(vo.getId(), null, FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDetailDto.class));
                 StringBuilder builder = new StringBuilder();
                 if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
                     for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtos) {
@@ -95,7 +103,7 @@ public class ProjectArchivesDataService {
         return bootstrapTableVo;
     }
 
-    public void saveAdPlaceFileItemDetailDto(AdPlaceFileItemDetailDto obj){
+    public void saveAdPlaceFileItemDetailDto(AdPlaceFileItemDetailDto obj) {
         if (obj == null) {
             return;
         }
@@ -111,28 +119,26 @@ public class ProjectArchivesDataService {
         }
     }
 
-    public void deleteAdPlaceFileItemDetailDtoByIds(String id){
+    public void deleteAdPlaceFileItemDetailDtoByIds(String id) {
         if (StringUtils.isBlank(id)) {
             return;
         }
-        List<Integer> ids = FormatUtils.transformString2Integer(id) ;
+        List<Integer> ids = FormatUtils.transformString2Integer(id);
         if (CollectionUtils.isEmpty(ids)) {
             return;
         }
-        adRpcPlaceFileItemDetailService.deleteAdPlaceFileItemDetailDtoByIds(ids) ;
+        adRpcPlaceFileItemDetailService.deleteAdPlaceFileItemDetailDtoByIds(ids);
     }
 
 
-
-
-    public AdBasePlaceFileDto getAdBasePlaceFileByFieldName( String fieldName){
+    public AdBasePlaceFileDto getAdBasePlaceFileByFieldName(String fieldName) {
         AdBasePlaceFileDto query = new AdBasePlaceFileDto();
         query.setAppKey(applicationConstant.getAppKey());
         query.setFieldName(fieldName);
         query.setBisEnable(true);
         List<AdBasePlaceFileDto> adBasePlaceFileDtoList = adRpcBasePlaceFileService.getAdBasePlaceFileListByObj(query);
         if (CollectionUtils.isNotEmpty(adBasePlaceFileDtoList)) {
-            return adBasePlaceFileDtoList.get(0) ;
+            return adBasePlaceFileDtoList.get(0);
         }
         return null;
     }
@@ -162,103 +168,235 @@ public class ProjectArchivesDataService {
     }
 
     /**
+     * 档案目录填充
+     *
+     * @param basePlaceFileDto
+     * @param name
+     * @param list
+     * @param comprehensive
+     * @param adPlaceFileItemDtoList
+     * @param saveList
+     * @param atomicInteger
+     */
+    private void consumerAdPlaceFileItemDto(AdBasePlaceFileDto basePlaceFileDto, String name, List<AdPlaceFileItemDto> list, AdBasePlaceFileDto comprehensive, List<AdPlaceFileItemDto> adPlaceFileItemDtoList, List<AdPlaceFileItemDto> saveList, AtomicInteger atomicInteger ,ProjectInfo projectInfo) {
+        AdPlaceFileItemDto adPlaceFileItemDto = null;
+        if (!StringUtils.contains(basePlaceFileDto.getName(), name)) {
+            return;
+        }
+        List<AdPlaceFileItemDto> filter = null;
+        if (CollectionUtils.isNotEmpty(list)) {
+            filter = LangUtils.filter(list, obj -> {
+                if (obj.getFileType() == null) {
+                    return false;
+                }
+                if (obj.getFileCategory() == null) {
+                    return false;
+                }
+                if (obj.getFileType().equals(comprehensive.getId()) && obj.getFileCategory().equals(basePlaceFileDto.getId())) {
+                    return true;
+                }
+                return false;
+            });
+        }
+        if (CollectionUtils.isNotEmpty(filter)) {
+            adPlaceFileItemDtoList.addAll(filter);
+            return;
+        }
+        adPlaceFileItemDto = new AdPlaceFileItemDto();
+        adPlaceFileItemDto.setAppKey(applicationConstant.getAppKey());
+        adPlaceFileItemDto.setModified(DateUtils.now());
+        adPlaceFileItemDto.setCreated(DateUtils.now());
+        adPlaceFileItemDto.setCreator(commonService.thisUserAccount());
+        adPlaceFileItemDto.setFileType(comprehensive.getId());
+        adPlaceFileItemDto.setFileTypeName(comprehensive.getName());
+        adPlaceFileItemDto.setSorting(atomicInteger.get());
+        adPlaceFileItemDto.setName(basePlaceFileDto.getName());
+        adPlaceFileItemDto.setFileCategory(basePlaceFileDto.getId());
+        adPlaceFileItemDto.setFileCategoryName(basePlaceFileDto.getName());
+        adPlaceFileItemDto.setPublicProjectId(projectInfo.getId());
+        adPlaceFileItemDto.setPublicProjectName(projectInfo.getProjectName());
+        atomicInteger.incrementAndGet();
+        saveList.add(adPlaceFileItemDto);
+    }
+
+
+    /**
+     * 创建档案目录
+     *
+     * @param projectId
+     * @return
+     */
+    public Map<String, List<AdPlaceFileItemDto>> createArchivesDirectory(Integer projectId) throws BusinessException {
+        Map<String, List<AdPlaceFileItemDto>> map = new HashMap<>();
+        AdPlaceFileItemDto query = new AdPlaceFileItemDto();
+        query.setAppKey(applicationConstant.getAppKey());
+        query.setPublicProjectId(projectId);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        List<AdPlaceFileItemDto> list = adRpcPlaceFileItemService.getAdPlaceFileItemDtoListByObj(query);
+        AdBasePlaceFileDto comprehensive = getAdBasePlaceFileByFieldName(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_COMPREHENSIVE);
+        AdBasePlaceFileDto profession = getAdBasePlaceFileByFieldName(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_PROFESSION);
+        List<AdBasePlaceFileDto> comprehensive_list = getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_COMPREHENSIVE);
+        List<AdBasePlaceFileDto> profession_list = getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_PROFESSION);
+        if (CollectionUtils.isEmpty(comprehensive_list) || CollectionUtils.isEmpty(profession_list)) {
+            throw new BusinessException("没有配置档案类型");
+        }
+        if (comprehensive == null || profession == null) {
+            throw new BusinessException("没有配置档案类型");
+        }
+        List<AdPlaceFileItemDto> adPlaceFileItemDtoList = new ArrayList<>();
+        List<AdPlaceFileItemDto> saveList = new ArrayList<>();
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        for (AdBasePlaceFileDto basePlaceFileDto : comprehensive_list) {
+            for (ArchivesFileComprehensiveEnum comprehensiveEnum : ArchivesFileComprehensiveEnum.values()) {
+                consumerAdPlaceFileItemDto(basePlaceFileDto, comprehensiveEnum.getName(), list, comprehensive, adPlaceFileItemDtoList, saveList, atomicInteger ,projectInfo);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(saveList)) {
+            saveList = adRpcPlaceFileItemService.batchInsert(saveList);
+        }
+        adPlaceFileItemDtoList.addAll(saveList);
+        map.put(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_COMPREHENSIVE, Lists.newArrayList(adPlaceFileItemDtoList));
+        adPlaceFileItemDtoList.clear();
+        saveList.clear();
+
+        for (AdBasePlaceFileDto basePlaceFileDto : profession_list) {
+            for (ArchivesFileProfessionEnum comprehensiveEnum : ArchivesFileProfessionEnum.values()) {
+                consumerAdPlaceFileItemDto(basePlaceFileDto, comprehensiveEnum.getName(), list, profession, adPlaceFileItemDtoList, saveList, atomicInteger ,projectInfo);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(saveList)) {
+            saveList = adRpcPlaceFileItemService.batchInsert(saveList);
+        }
+        adPlaceFileItemDtoList.addAll(saveList);
+        map.put(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_PROFESSION, Lists.newArrayList(adPlaceFileItemDtoList));
+        adPlaceFileItemDtoList.clear();
+        saveList.clear();
+
+
+        return map;
+    }
+
+    /**
      * 自动生成档案
      *
      * @param projectId
      */
-    public void autoCreateProjectFileCompleteNow(Integer projectId) {
-        if (projectId == null){
+    public void autoCreateProjectFileCompleteNow(Integer projectId) throws BusinessException {
+        if (projectId == null) {
             return;
         }
-        Date now = DateUtils.now();
-        AdBasePlaceFileDto operating = getAdBasePlaceFileByFieldName(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_OPERATING) ;
-        AdBasePlaceFileDto attorney = getAdBasePlaceFileByFieldName(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_OPERATING_ATTORNEY) ;
-        AdBasePlaceFileDto survey = getAdBasePlaceFileByFieldName(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_OPERATING_SURVEY) ;
-        AdBasePlaceFileDto sendDoc = getAdBasePlaceFileByFieldName(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_OPERATING_SEND_DOC) ;
-        //委托书 id
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(projectId, "project_proxy", FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
-        int count = 1;
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                createAdPlaceFileItemDto(sysAttachmentDto, projectId, now, count ,operating ,attorney);
-                count++;
-            }
+        Map<String, List<AdPlaceFileItemDto>> map = createArchivesDirectory(projectId);
+        if (map.isEmpty()) {
+            return;
         }
-        //必须是流程结束后才能获取 发文
-        List<DocumentSend> documentSendList = documentSendService.getDocumentSendList(projectId, ProcessStatusEnum.FINISH.getValue());
-        if (CollectionUtils.isNotEmpty(documentSendList)) {
-            for (DocumentSend documentSend : documentSendList) {
-                sysAttachmentDtoList = baseAttachmentService.getByField_tableId(documentSend.getId(), null, FormatUtils.entityNameConvertToTableName(DocumentSend.class));
-                if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-                    for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
-                        createAdPlaceFileItemDto(sysAttachmentDto, projectId, now, count ,operating ,sendDoc);
-                        count++;
+        Iterator<Map.Entry<String, List<AdPlaceFileItemDto>>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, List<AdPlaceFileItemDto>> entry = iterator.next();
+            List<AdPlaceFileItemDto> itemDtoList = entry.getValue();
+            if (CollectionUtils.isEmpty(itemDtoList)) {
+                continue;
+            }
+            switch (entry.getKey()) {
+                case AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_COMPREHENSIVE: {
+                    for (AdPlaceFileItemDto adPlaceFileItemDto : itemDtoList) {
+                        //委托书
+                        if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileComprehensiveEnum.POWER_ATTORNEY.getName())) {
+                            List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(projectId, "project_proxy", FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+                            if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
+                                continue;
+                            }
+                            createAdPlaceFileItemDetailDto(sysAttachmentDtoList, adPlaceFileItemDto.getId());
+                        }
+                        //发文信函
+                        if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileComprehensiveEnum.LETTER.getName())) {
+                            List<DocumentSend> documentSendList = documentSendService.getDocumentSendList(projectId, ProcessStatusEnum.FINISH.getValue());
+                            if (CollectionUtils.isEmpty(documentSendList)) {
+                                continue;
+                            }
+                            for (DocumentSend documentSend : documentSendList) {
+                                List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(documentSend.getId(), null, FormatUtils.entityNameConvertToTableName(DocumentSend.class));
+                                if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
+                                    continue;
+                                }
+                                createAdPlaceFileItemDetailDto(sysAttachmentDtoList, adPlaceFileItemDto.getId());
+                            }
+                        }
                     }
+                    break;
                 }
-            }
-        }
-
-        //房屋查勘表附件
-        List<Integer> houseIds = new ArrayList<>();
-        List<BasicApplyBatchDetail> filterBasicApplyBatchDetailList = LangUtils.filter(basicApplyBatchDetailService.getBasicApplyBatchDetailByProjectId(projectId), o -> o.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey()));
-        if (CollectionUtils.isNotEmpty(filterBasicApplyBatchDetailList)) {
-            String tableName = FormatUtils.entityNameConvertToTableName(BasicHouse.class);
-            for (BasicApplyBatchDetail batchDetail : filterBasicApplyBatchDetailList) {
-                if (batchDetail.getTableName().equals(tableName)) {
-                    houseIds.add(batchDetail.getTableId());
-                }
-            }
-        }
-        if (CollectionUtils.isNotEmpty(houseIds)) {
-            List<Integer> integerList = new ArrayList<>();
-            for (Integer houseId : houseIds) {
-                BasicEstateSurveyRecord recordByHouseId = basicEstateSurveyRecordService.getEstateSurveyRecordByHouseId(houseId);
-                if (recordByHouseId == null) {
-                    continue;
-                }
-                integerList.add(recordByHouseId.getId());
-            }
-            if (CollectionUtils.isNotEmpty(integerList)) {
-                SysAttachmentDto query = new SysAttachmentDto();
-                query.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class));
-                List<SysAttachmentDto> serviceAttachmentList = baseAttachmentService.getAttachmentList(integerList, query);
-                if (CollectionUtils.isNotEmpty(serviceAttachmentList)) {
-                    for (SysAttachmentDto sysAttachmentDto : serviceAttachmentList) {
-                        createAdPlaceFileItemDto(sysAttachmentDto, projectId, now, count ,operating ,survey);
-                        count++;
+                case AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_PROFESSION: {
+                    for (AdPlaceFileItemDto adPlaceFileItemDto : itemDtoList) {
+                        if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileProfessionEnum.SITE_SURVEY.getName())) {
+                            //房屋查勘表附件
+                            List<Integer> houseIds = new ArrayList<>();
+                            List<BasicApplyBatchDetail> filterBasicApplyBatchDetailList = LangUtils.filter(basicApplyBatchDetailService.getBasicApplyBatchDetailByProjectId(projectId), o -> o.getType().startsWith(BasicFormClassifyEnum.HOUSE.getKey()));
+                            if (CollectionUtils.isEmpty(filterBasicApplyBatchDetailList)) {
+                                continue;
+                            }
+                            String tableName = FormatUtils.entityNameConvertToTableName(BasicHouse.class);
+                            for (BasicApplyBatchDetail batchDetail : filterBasicApplyBatchDetailList) {
+                                if (batchDetail.getTableName().equals(tableName)) {
+                                    houseIds.add(batchDetail.getTableId());
+                                }
+                            }
+                            if (CollectionUtils.isEmpty(houseIds)) {
+                                continue;
+                            }
+                            List<Integer> integerList = new ArrayList<>();
+                            for (Integer houseId : houseIds) {
+                                BasicEstateSurveyRecord recordByHouseId = basicEstateSurveyRecordService.getEstateSurveyRecordByHouseId(houseId);
+                                if (recordByHouseId == null) {
+                                    continue;
+                                }
+                                integerList.add(recordByHouseId.getId());
+                            }
+                            if (CollectionUtils.isEmpty(integerList)) {
+                                continue;
+                            }
+                            SysAttachmentDto query = new SysAttachmentDto();
+                            query.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class));
+                            List<SysAttachmentDto> serviceAttachmentList = baseAttachmentService.getAttachmentList(integerList, query);
+                            if (CollectionUtils.isEmpty(serviceAttachmentList)) {
+                                continue;
+                            }
+                            createAdPlaceFileItemDetailDto(serviceAttachmentList, adPlaceFileItemDto.getId());
+                        }
                     }
+                    break;
                 }
+                default:
+                    break;
             }
         }
     }
 
-    private void createAdPlaceFileItemDto(SysAttachmentDto sysAttachmentDto, Integer projectId, Date now, Integer count ,AdBasePlaceFileDto operating,AdBasePlaceFileDto basePlaceFileDto) {
+    /**
+     * 自动生成档案记录
+     * @param sysAttachmentDtoList
+     * @param masterId
+     */
+    private void createAdPlaceFileItemDetailDto(List<SysAttachmentDto> sysAttachmentDtoList, Integer masterId) {
         final String project_proxy = "project_proxy";
-        AdPlaceFileItemDto itemDto = new AdPlaceFileItemDto();
-        itemDto.setName(FilenameUtils.getBaseName(sysAttachmentDto.getFileName()));
-        itemDto.setPublicProjectId(projectId);
-        itemDto.setSorting(count);
-        itemDto.setCreated(now);
-        itemDto.setModified(now);
-        itemDto.setAppKey(applicationConstant.getAppKey());
-        itemDto.setCreator(commonService.thisUserAccount());
-        if (operating != null) {
-            itemDto.setFileType(operating.getId());
-            itemDto.setFileTypeName(operating.getName());
-        }
-        if (basePlaceFileDto != null) {
-            itemDto.setFileCategory(basePlaceFileDto.getId());
-            itemDto.setFileCategoryName(basePlaceFileDto.getName());
-        }
-        Integer integer = adRpcPlaceFileItemService.saveAdPlaceFileItemDto(itemDto);
-        SysAttachmentDto attachmentDto = new SysAttachmentDto();
-        attachmentDto.setTableId(integer);
-        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDto.class));
-        attachmentDto.setFieldsName(project_proxy);
-        try {
-            baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+        AdPlaceFileItemDetailDto detailDto = null;
+        Date now = DateUtils.now();
+        String userAccount = commonService.thisUserAccount();
+        for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList) {
+            detailDto = new AdPlaceFileItemDetailDto();
+            detailDto.setMasterId(masterId);
+            detailDto.setCreated(now);
+            detailDto.setModified(now);
+            detailDto.setCreator(userAccount);
+            detailDto.setName(FilenameUtils.getBaseName(sysAttachmentDto.getFileName()));
+            Integer integer = adRpcPlaceFileItemDetailService.saveAdPlaceFileItemDetailDto(detailDto);
+            SysAttachmentDto attachmentDto = new SysAttachmentDto();
+            attachmentDto.setTableId(integer);
+            attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(AdPlaceFileItemDetailDto.class));
+            attachmentDto.setFieldsName(project_proxy);
+            try {
+                baseAttachmentService.copyFtpAttachment(sysAttachmentDto.getId(), attachmentDto);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
 
@@ -305,7 +443,6 @@ public class ProjectArchivesDataService {
         }
         return sysSymbolRuleDtoList;
     }
-
 
 
     public List<AdBasePlaceFileDto> getAdBasePlaceFileList(String fieldName) {
@@ -403,10 +540,10 @@ public class ProjectArchivesDataService {
      *
      * @return
      */
-    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(Integer publicProjectId, Integer groupId, String publicProjectName,String name, Integer fileType, Integer fileCategory, Boolean bisBinding) {
+    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(Integer publicProjectId, Integer groupId, String publicProjectName, String name, Integer fileType, Integer fileCategory, Boolean bisBinding) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         String appKey = applicationConstant.getAppKey();
-        BootstrapTableVo<AdPlaceFileItemDto> bootstrapTableVo = adRpcPlaceFileItemService.getAdPlaceFileItemDtoListByParam(appKey, publicProjectName,publicProjectId, groupId, name, fileType, fileCategory, bisBinding, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BootstrapTableVo<AdPlaceFileItemDto> bootstrapTableVo = adRpcPlaceFileItemService.getAdPlaceFileItemDtoListByParam(appKey, publicProjectName, publicProjectId, groupId, name, fileType, fileCategory, bisBinding, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<AdPlaceFileItemDtoVo> voList = LangUtils.transform(bootstrapTableVo.getRows(), oo -> getAdPlaceFileItemDtoVo(oo));
         BootstrapTableVo tableVo = new BootstrapTableVo();
         tableVo.setTotal(bootstrapTableVo.getTotal());
@@ -441,6 +578,7 @@ public class ProjectArchivesDataService {
             }
             vo.setFileViewName(builder.toString());
         }
+        vo.setCount( getAdPlaceFileItemDetailDtoCount(vo.getId()));
         return vo;
     }
 

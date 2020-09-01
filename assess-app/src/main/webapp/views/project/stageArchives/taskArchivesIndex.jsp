@@ -840,6 +840,7 @@
         cols.push({field: 'fileSourceName', title: '档案来源', width: "10%"});
         cols.push({field: 'publicWayName', title: '公开方式', width: "10%"});
         cols.push({field: 'shelfLifeName', title: '保存期限', width: "10%"});
+        cols.push({field: 'count', title: '档案记录数', width: "10%"});
 
         cols.push({
             field: 'groupId', title: '卷号设置与否', width: "7%", formatter: function (value, row) {
@@ -953,7 +954,10 @@
         frm.find("select[name='fileSource']").val(data.fileSource).trigger('change');
         frm.find("select[name='publicWay']").val(data.publicWay).trigger('change');
         frm.find("select[name='shelfLife']").val(data.shelfLife).trigger('change');
-        objArchives.onChangeFileType(ele, data.fileCategory);
+
+        setTimeout(function () {
+            frm.find("select[name='fileCategory']").val(data.fileCategory).trigger('change');
+        },450) ;
     };
 
     //档案 目录 server data

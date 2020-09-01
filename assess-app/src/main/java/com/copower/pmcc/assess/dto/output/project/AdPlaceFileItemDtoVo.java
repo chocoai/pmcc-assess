@@ -11,6 +11,7 @@ public class AdPlaceFileItemDtoVo extends AdPlaceFileItemDto implements Serializ
     private String saveLocation;
 
     private String fileViewName;
+    private long count;
 
     public String getNumber() {
         return number;
@@ -34,5 +35,13 @@ public class AdPlaceFileItemDtoVo extends AdPlaceFileItemDto implements Serializ
 
     public void setFileViewName(String fileViewName) {
         this.fileViewName = fileViewName;
+    }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
     }
 }
