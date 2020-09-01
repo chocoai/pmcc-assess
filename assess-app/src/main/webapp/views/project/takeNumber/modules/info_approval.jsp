@@ -41,7 +41,7 @@
                                 </div>
                             </c:if>
                             <c:if test="${true eq projectTakeNumber.bisQrcode}">
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="form-check" style="justify-content:left">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox" name="bisQrcode"
@@ -50,9 +50,11 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
-                                    <img style="width: 100px;height: 100px;" src="data:image/png,base64,${projectTakeNumber.qrcode}">
-                                </div>
+                                <c:if test="${not empty projectTakeNumber.qrcode}">
+                                    <div class="col-sm-2">
+                                        <img style="width: 100px;height: 100px;" src="data:image/png;base64,${projectTakeNumber.qrcode}">
+                                    </div>
+                                </c:if>
                             </c:if>
                         </div>
                     </div>

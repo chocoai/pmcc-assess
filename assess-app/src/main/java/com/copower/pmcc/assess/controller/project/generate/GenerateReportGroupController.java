@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Auther: zch
  * @Date: 2018/11/6 11:39
@@ -63,8 +65,8 @@ public class GenerateReportGroupController {
     @RequestMapping(value = "/getGenerateReportGroupList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult getGenerateReportGroupList(GenerateReportGroup generateReportGroup) {
         try {
-            generateReportGroupService.getGenerateReportGroupListByQuery(generateReportGroup);
-            return HttpResult.newCorrectResult();
+            List<GenerateReportGroup> list = generateReportGroupService.getGenerateReportGroupListByQuery(generateReportGroup);
+            return HttpResult.newCorrectResult(list);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

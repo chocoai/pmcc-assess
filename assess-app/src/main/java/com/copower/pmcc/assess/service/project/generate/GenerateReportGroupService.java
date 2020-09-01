@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
 public class GenerateReportGroupService {
 
     @Autowired
+    private BaseService baseService;
+    @Autowired
     private CommonService commonService;
     @Autowired
     private GenerateReportGroupDao generateReportGroupDao;
@@ -240,6 +242,7 @@ public class GenerateReportGroupService {
                 parseIntJudgeNumber = generateCommonMethod.parseIntJudgeNumber(reportItem.getNumber());
                 integerList.add(parseIntJudgeNumber);
             } catch (Exception e) {
+                baseService.writeExceptionInfo(e,e.getMessage());
             }
         }
         if (CollectionUtils.isEmpty(integerList)) {

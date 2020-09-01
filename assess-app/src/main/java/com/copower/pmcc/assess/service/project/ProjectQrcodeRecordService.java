@@ -17,12 +17,14 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -61,8 +63,15 @@ public class ProjectQrcodeRecordService {
      * @param reportType
      * @return
      */
-    public ProjectQrcodeRecord getProjectQrcodeRecode(Integer projectId, Integer areaId, Integer reportType) {
-        return projectQrcodeRecordDao.getProjectQrcodeRecord(projectId, areaId, reportType);
+    public ProjectQrcodeRecord getProjectQrcodeRecode(Integer projectId, Integer areaId, Integer reportGroupId, Integer reportType) {
+        ProjectQrcodeRecord where = new ProjectQrcodeRecord();
+        where.setProjectId(projectId);
+        where.setAreaId(areaId);
+        where.setReportGroupId(reportGroupId);
+        where.setReportType(reportType);
+        List<ProjectQrcodeRecord> list = projectQrcodeRecordDao.getProjectQrcodeRecordList(where);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
     }
 
 
@@ -135,44 +144,35 @@ public class ProjectQrcodeRecordService {
         Integer reportTypeId = baseDataDicService.getCacheDataDicByFieldName(reportType).getId();
         Integer projectId = generateReportInfo.getProjectId();
         Integer areaId = generateReportInfo.getAreaGroupId();
-        ProjectQrcodeRecord qrcodeRecode = getProjectQrcodeRecode(projectId, areaId, reportTypeId);
         String qrCode = null;
-        if (qrcodeRecode != null) {
-            qrCode = qrcodeRecode.getQrcode();//更新部分信息
-            ProjectDocumentDto projectDocumentDto = erpRpcToolsService.getProjectDocumentById(qrcodeRecode.getProjectDocumentId());
-            if (projectDocumentDto != null) {
-                projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
-                projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
-                erpRpcToolsService.saveProjectDocument(projectDocumentDto);
-            }
-        } else {
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(generateReportInfo.getProjectId());
-            AdCompanyQualificationDto qualificationDto = adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
-            ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
-            projectDocumentDto.setProjectName(projectInfo.getProjectName());
-            projectDocumentDto.setCustomer(client);
-            projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
-            projectDocumentDto.setDocumentNumber(documentNumber);
-            projectDocumentDto.setProjectId(projectInfo.getId());
-            projectDocumentDto.setAppKey(applicationConstant.getAppKey());
-            projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
-            projectDocumentDto.setTableId(generateReportInfo.getId());
-            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
-            projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
-            projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
-            projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
+        ProjectQrcodeRecord qrcodeRecode = null;
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(generateReportInfo.getProjectId());
+        AdCompanyQualificationDto qualificationDto = adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
+        ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
+        projectDocumentDto.setProjectName(projectInfo.getProjectName());
+        projectDocumentDto.setCustomer(client);
+        projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
+        projectDocumentDto.setDocumentNumber(documentNumber);
+        projectDocumentDto.setProjectId(projectInfo.getId());
+        projectDocumentDto.setAppKey(applicationConstant.getAppKey());
+        projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+        projectDocumentDto.setTableId(generateReportInfo.getId());
+        projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
+        projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
+        projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
+        projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
 
-            qrcodeRecode = new ProjectQrcodeRecord();
-            qrcodeRecode.setProjectId(projectId);
-            qrcodeRecode.setAreaId(areaId);
-            qrcodeRecode.setReportType(reportTypeId);
-            qrcodeRecode.setProjectDocumentId(projectDocumentDto.getId());
-            qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
-            saveProjectQrcodeRecode(qrcodeRecode);
-            qrCode = projectDocumentDto.getQrcode();
-            projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
-            erpRpcToolsService.saveProjectDocument(projectDocumentDto);
-        }
+        qrcodeRecode = new ProjectQrcodeRecord();
+        qrcodeRecode.setProjectId(projectId);
+        qrcodeRecode.setAreaId(areaId);
+        qrcodeRecode.setReportType(reportTypeId);
+        qrcodeRecode.setReportGroupId(reportGroup.getId());
+        qrcodeRecode.setProjectDocumentId(projectDocumentDto.getId());
+        qrcodeRecode.setQrcode(projectDocumentDto.getQrcode());
+        saveProjectQrcodeRecode(qrcodeRecode);
+        qrCode = projectDocumentDto.getQrcode();
+        projectDocumentDto.setFieldsName(generateCommonMethod.getReportFieldsName(reportType, reportGroup));
+        erpRpcToolsService.saveProjectDocument(projectDocumentDto);
         return qrCode;
     }
 

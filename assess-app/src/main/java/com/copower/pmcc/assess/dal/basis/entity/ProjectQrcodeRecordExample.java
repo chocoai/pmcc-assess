@@ -345,6 +345,66 @@ public class ProjectQrcodeRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andReportGroupIdIsNull() {
+            addCriterion("report_group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdIsNotNull() {
+            addCriterion("report_group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdEqualTo(Integer value) {
+            addCriterion("report_group_id =", value, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdNotEqualTo(Integer value) {
+            addCriterion("report_group_id <>", value, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdGreaterThan(Integer value) {
+            addCriterion("report_group_id >", value, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("report_group_id >=", value, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdLessThan(Integer value) {
+            addCriterion("report_group_id <", value, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("report_group_id <=", value, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdIn(List<Integer> values) {
+            addCriterion("report_group_id in", values, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdNotIn(List<Integer> values) {
+            addCriterion("report_group_id not in", values, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("report_group_id between", value1, value2, "reportGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("report_group_id not between", value1, value2, "reportGroupId");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectDocumentIdIsNull() {
             addCriterion("project_document_id is null");
             return (Criteria) this;

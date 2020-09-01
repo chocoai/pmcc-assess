@@ -11,6 +11,8 @@ public class ProjectQrcodeRecord {
 
     private Integer areaId;
 
+    private Integer reportGroupId;
+
     private Integer projectDocumentId;
 
     private String creator;
@@ -51,6 +53,14 @@ public class ProjectQrcodeRecord {
 
     public void setAreaId(Integer areaId) {
         this.areaId = areaId;
+    }
+
+    public Integer getReportGroupId() {
+        return reportGroupId;
+    }
+
+    public void setReportGroupId(Integer reportGroupId) {
+        this.reportGroupId = reportGroupId;
     }
 
     public Integer getProjectDocumentId() {

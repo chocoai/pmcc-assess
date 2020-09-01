@@ -731,7 +731,7 @@
         (function (target) {
             target.empty();
             reportGroupObj.getGenerateReportGroupList(areaGroupId, function (data) {
-                if (data.length >= 1) {
+                if (data && data.length >= 1) {
                     $.each(data, function (i, item) {
                         target.append(reportGroupObj.replaceHtml(item));
                         reportGroupObj.reportTypeChangeEvent(item);
