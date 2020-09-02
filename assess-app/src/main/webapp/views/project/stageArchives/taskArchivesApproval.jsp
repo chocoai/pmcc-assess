@@ -114,25 +114,10 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <p id="toolbarSub">
-                            <%--<button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"--%>
-                                    <%--data-toggle="modal" onclick="objArchives.addAdPlaceFileVolumeNumberDto()">--%>
-											<%--<span class="btn-label">--%>
-												<%--<i class="fa fa-plus"></i>--%>
-											<%--</span>--%>
-                                <%--新增--%>
-                            <%--</button>--%>
-                        </p>
                         <table id="tbAdPlaceFileVolumeNumberList" class="table table-bordered"></table>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-            </div>
-
         </div>
     </div>
 </div>
@@ -508,17 +493,13 @@
         var table = $(objArchives.volumeNumberTable.selector);
         var cols = [];
         cols.push({field: 'number', title: '卷号', width: "30%"});
+        cols.push({field: 'saveLocation', title: '存放位置', width: "30%"});
         cols.push({
             field: 'id', title: '操作', width: "25%", formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<button type="button" onclick="objArchives.editAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
-                str += '<i class="fa fa-pen"></i>';
-                str += '</button>';
-
                 // str += '<button type="button" onclick="objArchives.delAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 // str += '<i class="fa fa-minus"></i>';
                 // str += '</button>';
-
                 str += '<button type="button" onclick="objArchives.selectAdPlaceFileVolumeNumberDto(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="选择此卷号">';
                 str += '<i class="fa fa-check"></i>';
                 str += '</button>';
@@ -615,19 +596,6 @@
             });
         } ) ;
     };
-
-
-    function showOtherQuery(_that) {
-        $("#showOtherQuery").toggle();
-        var c = $(_that).find("i").attr("class");
-        if (c.indexOf("plus") != -1) {
-            $(_that).find("i").attr("class", "fa fa-minus-circle");
-        } else {
-            $(_that).find("i").attr("class", "fa fa-plus-circle");
-        }
-
-    }
-
 
     $(document).ready(function () {
         objArchives.loadTableList();

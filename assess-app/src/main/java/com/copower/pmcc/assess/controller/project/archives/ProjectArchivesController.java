@@ -31,8 +31,8 @@ public class ProjectArchivesController {
 
     @ResponseBody
     @RequestMapping(value = "/getAdPlaceFileItemDtoListByParam", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(Integer publicProjectId,Integer groupId, String publicProjectName,String name,Integer fileType,Integer fileCategory,Boolean bisBinding) {
-        return projectArchivesDataService.getAdPlaceFileItemDtoListByParam(publicProjectId, groupId,  publicProjectName,name, fileType, fileCategory, bisBinding);
+    public BootstrapTableVo getAdPlaceFileItemDtoListByParam(AdPlaceFileItemDto adPlaceFileItemDto) {
+        return projectArchivesDataService.getAdPlaceFileItemDtoListByParam(adPlaceFileItemDto);
     }
 
     @ResponseBody
