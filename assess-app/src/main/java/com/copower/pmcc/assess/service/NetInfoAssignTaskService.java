@@ -99,17 +99,17 @@ public class NetInfoAssignTaskService {
             //修改状态
             List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds()));
             List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
-            if(CollectionUtils.isNotEmpty(netInfoRecordLands)){
-                netInfoRecordLands.forEach(o->{
+            if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
+                netInfoRecordLands.forEach(o -> {
                     o.setStatus(2);
-                    netInfoRecordLandDao.updateNetInfoRecordLand(o,true);
+                    netInfoRecordLandDao.updateNetInfoRecordLand(o, true);
                 });
             }
             List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
-            if(CollectionUtils.isNotEmpty(netInfoRecordHouses)){
-                netInfoRecordHouses.forEach(o->{
+            if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
+                netInfoRecordHouses.forEach(o -> {
                     o.setStatus(2);
-                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o,true);
+                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o, true);
                 });
             }
             List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
@@ -131,7 +131,7 @@ public class NetInfoAssignTaskService {
         String boxName = baseParameterService.getBaseParameter(baseParameterEnum);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         List<String> list = FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds());
-        processInfo.setFolio(String.format("【案例整理】%s%s(合计%s)",publicService.getUserNameByAccount(commonService.thisUserAccount()),DateUtils.todayDate(),list.size()));//流程描述
+        processInfo.setFolio(String.format("【案例整理】%s%s(合计%s)", publicService.getUserNameByAccount(commonService.thisUserAccount()), DateUtils.todayDate(), list.size()));//流程描述
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoAssignTask.class));
@@ -172,25 +172,43 @@ public class NetInfoAssignTaskService {
         return netInfoAssignTaskDao.getDataById(id);
     }
 
-    public void approvalCommit(ApprovalModelDto approvalModelDto,String processInsId) {
+    public NetInfoAssignTask getNetInfoAssignTaskBySource(String source) {
+        if (StringUtils.isBlank(source)) return null;
+        NetInfoAssignTask netInfoAssignTask = new NetInfoAssignTask();
+        netInfoAssignTask.setSource(source);
+        netInfoAssignTask.setCreator(commonService.thisUserAccount());
+        List<NetInfoAssignTask> taskList = netInfoAssignTaskDao.getNetInfoAssignTask(netInfoAssignTask);
+        if (CollectionUtils.isEmpty(taskList)) return null;
+        return taskList.get(0);
+    }
+
+    /**
+     * 创建考核任务
+     */
+    public void createAssessmentTask() {
+
+    }
+
+    public void approvalCommit(ApprovalModelDto approvalModelDto, String processInsId) {
         try {
             //审批提交写入审批人
             NetInfoAssignTask data = getDataByProcessInsId(processInsId);
             List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(data.getNetInfoIds()));
             List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
-            if(CollectionUtils.isNotEmpty(netInfoRecordLands)){
-                netInfoRecordLands.forEach(o->{
+            if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
+                netInfoRecordLands.forEach(o -> {
                     o.setApprover(commonService.thisUserAccount());
-                    netInfoRecordLandDao.updateNetInfoRecordLand(o,true);
+                    netInfoRecordLandDao.updateNetInfoRecordLand(o, true);
                 });
             }
             List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
-            if(CollectionUtils.isNotEmpty(netInfoRecordHouses)){
-                netInfoRecordHouses.forEach(o->{
+            if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
+                netInfoRecordHouses.forEach(o -> {
                     o.setApprover(commonService.thisUserAccount());
-                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o,true);
+                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o, true);
                 });
             }
+
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             e.printStackTrace();
@@ -231,12 +249,9 @@ public class NetInfoAssignTaskService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
-        //List<NetInfoRecordHouse> netInfoRecordHouses = LangUtils.transform(integers, o -> netInfoRecordHouseService.getSingleByMasterId(o));
-
         SysAttachmentDto where = new SysAttachmentDto();
         where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
         List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordHouses, o -> o.getId()), where);
-
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o -> netInfoRecordHouseService.getNetInfoRecordHouseVo(o, attachmentDtos)));
         return bootstrapTableVo;
@@ -247,13 +262,37 @@ public class NetInfoAssignTaskService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
-        //取最新一条
-        //List<NetInfoRecordLand> netInfoRecordLands = LangUtils.transform(integers, o -> netInfoRecordLandService.getSingleByMasterId(o));
-
         SysAttachmentDto where = new SysAttachmentDto();
         where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
         List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> netInfoRecordLandService.getNetInfoRecordLandVo(o, attachmentDtos)));
+        return bootstrapTableVo;
+    }
 
+    public BootstrapTableVo getHouseListByAssignTaskId(Integer assignTaskId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        if (assignTaskId == null) return bootstrapTableVo;
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByAssignTaskId(assignTaskId);
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordHouses, o -> o.getId()), where);
+        bootstrapTableVo.setTotal(page.getTotal());
+        bootstrapTableVo.setRows(netInfoRecordHouses == null ? new ArrayList() : LangUtils.transform(netInfoRecordHouses, o -> netInfoRecordHouseService.getNetInfoRecordHouseVo(o, attachmentDtos)));
+        return bootstrapTableVo;
+    }
+
+    public BootstrapTableVo getLandListByAssignTaskId(Integer assignTaskId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        if (assignTaskId == null) return bootstrapTableVo;
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByAssignTaskId(assignTaskId);
+        SysAttachmentDto where = new SysAttachmentDto();
+        where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
+        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> netInfoRecordLandService.getNetInfoRecordLandVo(o, attachmentDtos)));
         return bootstrapTableVo;

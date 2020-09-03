@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface NetInfoRecordLandMapper {
-    int countByExample(NetInfoRecordLandExample example);
+    long countByExample(NetInfoRecordLandExample example);
 
     int deleteByExample(NetInfoRecordLandExample example);
 

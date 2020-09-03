@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface NetInfoAssignTaskMapper {
-    int countByExample(NetInfoAssignTaskExample example);
+    long countByExample(NetInfoAssignTaskExample example);
 
     int deleteByExample(NetInfoAssignTaskExample example);
 

@@ -69,7 +69,7 @@ public class NetInfoRecordHouseController {
 
     @ResponseBody
     @RequestMapping(value = "/saveHouseDetail", method = {RequestMethod.POST}, name = "保存")
-    public HttpResult saveHouseDetail(String formData, boolean changeStatus) {
+    public HttpResult saveHouseDetail(String formData, Boolean changeStatus) {
         NetInfoRecordHouse netInfoRecordHouse = JSON.parseObject(formData, NetInfoRecordHouse.class);
         try {
             NetInfoRecordHouse houseData = netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(netInfoRecordHouse);
@@ -78,12 +78,14 @@ public class NetInfoRecordHouseController {
             where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
             List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordHouses, o -> o.getId()), where);
             //改为已填写状态
-            if (changeStatus) {
+            if (changeStatus != null) {
                 NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordHouse.getMasterId());
-                record.setBelongType(netInfoRecordHouse.getType());
-                if(record.getStatus()==1||record.getStatus()==2)
-                record.setStatus(2);
-                netInfoRecordService.updateInfo(record);
+                if(record!=null){
+                    record.setBelongType(netInfoRecordHouse.getType());
+                    if (record.getStatus() == 1 || record.getStatus() == 2)
+                        record.setStatus(2);
+                    netInfoRecordService.updateInfo(record);
+                }
             }
             return HttpResult.newCorrectResult(netInfoRecordHouseService.getNetInfoRecordHouseVo(houseData, attachmentDtos));
         } catch (Exception e) {

@@ -11,6 +11,8 @@ public class NetInfoAssignTask {
 
     private String processInsId;
 
+    private String source;
+
     private String status;
 
     private String creator;
@@ -49,6 +51,14 @@ public class NetInfoAssignTask {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source == null ? null : source.trim();
     }
 
     public String getStatus() {

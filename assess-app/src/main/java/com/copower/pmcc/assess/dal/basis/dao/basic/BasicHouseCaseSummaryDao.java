@@ -69,7 +69,7 @@ public class BasicHouseCaseSummaryDao {
         return basicHouseCaseSummaryMapper.deleteByPrimaryKey(id) > 0;
     }
 
-    public Integer getCountByFullName(String fullName){
+    public Long getCountByFullName(String fullName){
         BasicHouseCaseSummaryExample example = new BasicHouseCaseSummaryExample();
         example.createCriteria().andFullNameEqualTo(fullName);
         return basicHouseCaseSummaryMapper.countByExample(example);

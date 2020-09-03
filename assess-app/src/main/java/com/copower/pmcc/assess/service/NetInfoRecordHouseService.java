@@ -172,7 +172,9 @@ public class NetInfoRecordHouseService {
             vo.setFileViewName(stringBuilder.toString());
         }
         NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordHouse.getMasterId());
-        vo.setSourceSiteUrl(record.getSourceSiteUrl());
+        if (record != null) {
+            vo.setSourceSiteUrl(record.getSourceSiteUrl());
+        }
         return vo;
     }
 

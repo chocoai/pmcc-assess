@@ -40,7 +40,7 @@
 </div>
 
 
-<div class="sidebar sidebar-style-2">
+<div class="sidebar sidebar-style-2" style="margin-top: 102px;">
     <div class="scroll-wrapper sidebar-wrapper scrollbar scrollbar-inner" style="position: relative;">
         <div class="sidebar-wrapper scrollbar scrollbar-inner scroll-content"
              style="height: 2813px; margin-bottom: 0px; margin-right: 0px; max-height: none;">

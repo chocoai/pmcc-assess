@@ -6,6 +6,8 @@ import java.util.Date;
 public class NetInfoRecordHouse {
     private Integer id;
 
+    private Integer assignTaskId;
+
     private Integer masterId;
 
     private String type;
@@ -76,6 +78,14 @@ public class NetInfoRecordHouse {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getAssignTaskId() {
+        return assignTaskId;
+    }
+
+    public void setAssignTaskId(Integer assignTaskId) {
+        this.assignTaskId = assignTaskId;
     }
 
     public Integer getMasterId() {

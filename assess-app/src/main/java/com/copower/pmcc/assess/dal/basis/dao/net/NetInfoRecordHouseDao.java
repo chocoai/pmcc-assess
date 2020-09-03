@@ -76,4 +76,11 @@ public class NetInfoRecordHouseDao {
         criteria.andMasterIdIn(masterIds);
         return netInfoRecordHouseMapper.selectByExample(example);
     }
+
+    public List<NetInfoRecordHouse> getHouseListByAssignTaskId(Integer assignTaskId){
+        NetInfoRecordHouseExample example = new NetInfoRecordHouseExample();
+        NetInfoRecordHouseExample.Criteria criteria = example.createCriteria();
+        criteria.andAssignTaskIdEqualTo(assignTaskId);
+        return netInfoRecordHouseMapper.selectByExample(example);
+    }
 }

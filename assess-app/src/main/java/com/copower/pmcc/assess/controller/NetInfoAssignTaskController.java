@@ -67,11 +67,29 @@ public class NetInfoAssignTaskController extends BaseController {
         NetInfoAssignTask netInfoAssignTask = new NetInfoAssignTask();
         netInfoAssignTask.setNetInfoIds(ids);
         netInfoAssignTask.setCreator(commonService.thisUserAccount());
+        netInfoAssignTask.setSource("net");//网络
         netInfoAssignTaskService.addNetInfoAssignTask(netInfoAssignTask);
         //获取流程模型
         String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.NET_INFO_COMPLEMENT_PROCESS_KEY);
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("net/netInfoAssignTaskApply", boxReDto.getId());
+        modelAndView.addObject("netInfoAssignTask", netInfoAssignTask);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/applyOffline", name = "线下案例申请")
+    public ModelAndView applyOffline() throws BusinessException {
+        NetInfoAssignTask netInfoAssignTask = netInfoAssignTaskService.getNetInfoAssignTaskBySource("offline");
+        if(netInfoAssignTask==null){
+            netInfoAssignTask = new NetInfoAssignTask();
+            netInfoAssignTask.setCreator(commonService.thisUserAccount());
+            netInfoAssignTask.setSource("offline");//线下
+            netInfoAssignTaskService.addNetInfoAssignTask(netInfoAssignTask);
+        }
+        //获取流程模型
+        String boxName = baseParameterService.getBaseParameter(BaseParameterEnum.NET_INFO_COMPLEMENT_PROCESS_KEY);
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("net/netInfoAssignTaskApplyOffline", boxReDto.getId());
         modelAndView.addObject("netInfoAssignTask", netInfoAssignTask);
         return modelAndView;
     }
@@ -93,6 +111,8 @@ public class NetInfoAssignTaskController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("net/netInfoAssignTaskApproval", processInsId, boxId, taskId, agentUserAccount);
         NetInfoAssignTask data = netInfoAssignTaskService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("netInfoAssignTask", data);
+        //创建考核任务
+
         return modelAndView;
     }
 
@@ -158,6 +178,19 @@ public class NetInfoAssignTaskController extends BaseController {
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(ids));
         return netInfoAssignTaskService.getNetInfoRecordHouseList(integers);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getLandListByAssignTaskId", name = "取得土地信息", method = RequestMethod.GET)
+    public BootstrapTableVo getLandListByAssignTaskId(Integer assignTaskId) {
+        return netInfoAssignTaskService.getLandListByAssignTaskId(assignTaskId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getHouseListByAssignTaskId", name = "取得房产信息", method = RequestMethod.GET)
+    public BootstrapTableVo getHouseListByAssignTaskId(Integer assignTaskId) {
+        return netInfoAssignTaskService.getHouseListByAssignTaskId(assignTaskId);
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/backTask", name = "任务退回", method = RequestMethod.POST)

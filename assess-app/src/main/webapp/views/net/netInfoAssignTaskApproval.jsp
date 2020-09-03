@@ -14,7 +14,6 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body>
-
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -54,15 +53,11 @@
                                         </div>
                                     </div>
                                 </form>
-
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
             <!-- 公共尾部模块引用 -->
             <%@include file="/views/share/form_approval.jsp" %>
         </div>
@@ -107,9 +102,7 @@
         detailInfo.prototype.loadDataLandList();
     })
 
-    var detailInfo = function () {
-
-    };
+    var detailInfo = function () {};
     detailInfo.prototype = {
         loadDataHouseList: function () {
             var cols = [];

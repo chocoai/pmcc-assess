@@ -8,6 +8,8 @@ public class BasicHouseCaseSummary {
 
     private Integer caseHouseId;
 
+    private String source;
+
     private Integer type;
 
     private String province;
@@ -80,6 +82,14 @@ public class BasicHouseCaseSummary {
 
     public void setCaseHouseId(Integer caseHouseId) {
         this.caseHouseId = caseHouseId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source == null ? null : source.trim();
     }
 
     public Integer getType() {

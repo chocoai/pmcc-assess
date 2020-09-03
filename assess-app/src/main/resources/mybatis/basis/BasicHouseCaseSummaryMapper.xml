@@ -1,58 +1,59 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseCaseSummaryMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="case_house_id" property="caseHouseId" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="block_name" property="blockName" jdbcType="VARCHAR" />
-    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
-    <result column="street" property="street" jdbcType="VARCHAR" />
-    <result column="practical_use" property="practicalUse" jdbcType="INTEGER" />
-    <result column="trading_type" property="tradingType" jdbcType="INTEGER" />
-    <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP" />
-    <result column="trading_unit_price" property="tradingUnitPrice" jdbcType="DECIMAL" />
-    <result column="house_type" property="houseType" jdbcType="VARCHAR" />
-    <result column="house_category" property="houseCategory" jdbcType="VARCHAR" />
-    <result column="area" property="area" jdbcType="DECIMAL" />
-    <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
-    <result column="deal_type" property="dealType" jdbcType="INTEGER" />
-    <result column="current_price" property="currentPrice" jdbcType="DECIMAL" />
-    <result column="consult_price" property="consultPrice" jdbcType="DECIMAL" />
-    <result column="assess_standard_date" property="assessStandardDate" jdbcType="TIMESTAMP" />
-    <result column="realization_ratios" property="realizationRatios" jdbcType="DECIMAL" />
-    <result column="realization_cycle" property="realizationCycle" jdbcType="VARCHAR" />
-    <result column="deal_part_info" property="dealPartInfo" jdbcType="VARCHAR" />
-    <result column="approver" property="approver" jdbcType="VARCHAR" />
-    <result column="version" property="version" jdbcType="INTEGER" />
-    <result column="bis_newest" property="bisNewest" jdbcType="BIT" />
-    <result column="bis_from_self" property="bisFromSelf" jdbcType="BIT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseCaseSummaryMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="case_house_id" jdbcType="INTEGER" property="caseHouseId" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="block_name" jdbcType="VARCHAR" property="blockName" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="street" jdbcType="VARCHAR" property="street" />
+    <result column="practical_use" jdbcType="INTEGER" property="practicalUse" />
+    <result column="trading_type" jdbcType="INTEGER" property="tradingType" />
+    <result column="trading_time" jdbcType="TIMESTAMP" property="tradingTime" />
+    <result column="trading_unit_price" jdbcType="DECIMAL" property="tradingUnitPrice" />
+    <result column="house_type" jdbcType="VARCHAR" property="houseType" />
+    <result column="house_category" jdbcType="VARCHAR" property="houseCategory" />
+    <result column="area" jdbcType="DECIMAL" property="area" />
+    <result column="estate_name" jdbcType="VARCHAR" property="estateName" />
+    <result column="deal_type" jdbcType="INTEGER" property="dealType" />
+    <result column="current_price" jdbcType="DECIMAL" property="currentPrice" />
+    <result column="consult_price" jdbcType="DECIMAL" property="consultPrice" />
+    <result column="assess_standard_date" jdbcType="TIMESTAMP" property="assessStandardDate" />
+    <result column="realization_ratios" jdbcType="DECIMAL" property="realizationRatios" />
+    <result column="realization_cycle" jdbcType="VARCHAR" property="realizationCycle" />
+    <result column="deal_part_info" jdbcType="VARCHAR" property="dealPartInfo" />
+    <result column="approver" jdbcType="VARCHAR" property="approver" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="bis_newest" jdbcType="BIT" property="bisNewest" />
+    <result column="bis_from_self" jdbcType="BIT" property="bisFromSelf" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -63,25 +64,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -92,371 +93,381 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
-    id, case_house_id, type, province, city, district, block_name, full_name, street, 
-    practical_use, trading_type, trading_time, trading_unit_price, house_type, house_category, 
-    area, estate_name, deal_type, current_price, consult_price, assess_standard_date, 
+  <sql id="Base_Column_List">
+    id, case_house_id, source, type, province, city, district, block_name, full_name, 
+    street, practical_use, trading_type, trading_time, trading_unit_price, house_type, 
+    house_category, area, estate_name, deal_type, current_price, consult_price, assess_standard_date, 
     realization_ratios, realization_cycle, deal_part_info, approver, version, bis_newest, 
     bis_from_self, creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummaryExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummaryExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_basic_house_case_summary
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_basic_house_case_summary
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_basic_house_case_summary
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummaryExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummaryExample">
     delete from tb_basic_house_case_summary
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house_case_summary (case_house_id, type, province, 
-      city, district, block_name, 
-      full_name, street, practical_use, 
-      trading_type, trading_time, trading_unit_price, 
-      house_type, house_category, area, 
-      estate_name, deal_type, current_price, 
-      consult_price, assess_standard_date, realization_ratios, 
-      realization_cycle, deal_part_info, approver, 
-      version, bis_newest, bis_from_self, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{caseHouseId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{blockName,jdbcType=VARCHAR}, 
-      #{fullName,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{practicalUse,jdbcType=INTEGER}, 
-      #{tradingType,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, #{tradingUnitPrice,jdbcType=DECIMAL}, 
-      #{houseType,jdbcType=VARCHAR}, #{houseCategory,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
-      #{estateName,jdbcType=VARCHAR}, #{dealType,jdbcType=INTEGER}, #{currentPrice,jdbcType=DECIMAL}, 
-      #{consultPrice,jdbcType=DECIMAL}, #{assessStandardDate,jdbcType=TIMESTAMP}, #{realizationRatios,jdbcType=DECIMAL}, 
-      #{realizationCycle,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, #{approver,jdbcType=VARCHAR}, 
-      #{version,jdbcType=INTEGER}, #{bisNewest,jdbcType=BIT}, #{bisFromSelf,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_basic_house_case_summary (case_house_id, source, type, 
+      province, city, district, 
+      block_name, full_name, street, 
+      practical_use, trading_type, trading_time, 
+      trading_unit_price, house_type, house_category, 
+      area, estate_name, deal_type, 
+      current_price, consult_price, assess_standard_date, 
+      realization_ratios, realization_cycle, deal_part_info, 
+      approver, version, bis_newest, 
+      bis_from_self, creator, gmt_created, 
+      gmt_modified)
+    values (#{caseHouseId,jdbcType=INTEGER}, #{source,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+      #{blockName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
+      #{practicalUse,jdbcType=INTEGER}, #{tradingType,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
+      #{tradingUnitPrice,jdbcType=DECIMAL}, #{houseType,jdbcType=VARCHAR}, #{houseCategory,jdbcType=VARCHAR}, 
+      #{area,jdbcType=DECIMAL}, #{estateName,jdbcType=VARCHAR}, #{dealType,jdbcType=INTEGER}, 
+      #{currentPrice,jdbcType=DECIMAL}, #{consultPrice,jdbcType=DECIMAL}, #{assessStandardDate,jdbcType=TIMESTAMP}, 
+      #{realizationRatios,jdbcType=DECIMAL}, #{realizationCycle,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, 
+      #{approver,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{bisNewest,jdbcType=BIT}, 
+      #{bisFromSelf,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_house_case_summary
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="caseHouseId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="caseHouseId != null">
         case_house_id,
       </if>
-      <if test="type != null" >
+      <if test="source != null">
+        source,
+      </if>
+      <if test="type != null">
         type,
       </if>
-      <if test="province != null" >
+      <if test="province != null">
         province,
       </if>
-      <if test="city != null" >
+      <if test="city != null">
         city,
       </if>
-      <if test="district != null" >
+      <if test="district != null">
         district,
       </if>
-      <if test="blockName != null" >
+      <if test="blockName != null">
         block_name,
       </if>
-      <if test="fullName != null" >
+      <if test="fullName != null">
         full_name,
       </if>
-      <if test="street != null" >
+      <if test="street != null">
         street,
       </if>
-      <if test="practicalUse != null" >
+      <if test="practicalUse != null">
         practical_use,
       </if>
-      <if test="tradingType != null" >
+      <if test="tradingType != null">
         trading_type,
       </if>
-      <if test="tradingTime != null" >
+      <if test="tradingTime != null">
         trading_time,
       </if>
-      <if test="tradingUnitPrice != null" >
+      <if test="tradingUnitPrice != null">
         trading_unit_price,
       </if>
-      <if test="houseType != null" >
+      <if test="houseType != null">
         house_type,
       </if>
-      <if test="houseCategory != null" >
+      <if test="houseCategory != null">
         house_category,
       </if>
-      <if test="area != null" >
+      <if test="area != null">
         area,
       </if>
-      <if test="estateName != null" >
+      <if test="estateName != null">
         estate_name,
       </if>
-      <if test="dealType != null" >
+      <if test="dealType != null">
         deal_type,
       </if>
-      <if test="currentPrice != null" >
+      <if test="currentPrice != null">
         current_price,
       </if>
-      <if test="consultPrice != null" >
+      <if test="consultPrice != null">
         consult_price,
       </if>
-      <if test="assessStandardDate != null" >
+      <if test="assessStandardDate != null">
         assess_standard_date,
       </if>
-      <if test="realizationRatios != null" >
+      <if test="realizationRatios != null">
         realization_ratios,
       </if>
-      <if test="realizationCycle != null" >
+      <if test="realizationCycle != null">
         realization_cycle,
       </if>
-      <if test="dealPartInfo != null" >
+      <if test="dealPartInfo != null">
         deal_part_info,
       </if>
-      <if test="approver != null" >
+      <if test="approver != null">
         approver,
       </if>
-      <if test="version != null" >
+      <if test="version != null">
         version,
       </if>
-      <if test="bisNewest != null" >
+      <if test="bisNewest != null">
         bis_newest,
       </if>
-      <if test="bisFromSelf != null" >
+      <if test="bisFromSelf != null">
         bis_from_self,
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="caseHouseId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="caseHouseId != null">
         #{caseHouseId,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
         #{type,jdbcType=INTEGER},
       </if>
-      <if test="province != null" >
+      <if test="province != null">
         #{province,jdbcType=VARCHAR},
       </if>
-      <if test="city != null" >
+      <if test="city != null">
         #{city,jdbcType=VARCHAR},
       </if>
-      <if test="district != null" >
+      <if test="district != null">
         #{district,jdbcType=VARCHAR},
       </if>
-      <if test="blockName != null" >
+      <if test="blockName != null">
         #{blockName,jdbcType=VARCHAR},
       </if>
-      <if test="fullName != null" >
+      <if test="fullName != null">
         #{fullName,jdbcType=VARCHAR},
       </if>
-      <if test="street != null" >
+      <if test="street != null">
         #{street,jdbcType=VARCHAR},
       </if>
-      <if test="practicalUse != null" >
+      <if test="practicalUse != null">
         #{practicalUse,jdbcType=INTEGER},
       </if>
-      <if test="tradingType != null" >
+      <if test="tradingType != null">
         #{tradingType,jdbcType=INTEGER},
       </if>
-      <if test="tradingTime != null" >
+      <if test="tradingTime != null">
         #{tradingTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="tradingUnitPrice != null" >
+      <if test="tradingUnitPrice != null">
         #{tradingUnitPrice,jdbcType=DECIMAL},
       </if>
-      <if test="houseType != null" >
+      <if test="houseType != null">
         #{houseType,jdbcType=VARCHAR},
       </if>
-      <if test="houseCategory != null" >
+      <if test="houseCategory != null">
         #{houseCategory,jdbcType=VARCHAR},
       </if>
-      <if test="area != null" >
+      <if test="area != null">
         #{area,jdbcType=DECIMAL},
       </if>
-      <if test="estateName != null" >
+      <if test="estateName != null">
         #{estateName,jdbcType=VARCHAR},
       </if>
-      <if test="dealType != null" >
+      <if test="dealType != null">
         #{dealType,jdbcType=INTEGER},
       </if>
-      <if test="currentPrice != null" >
+      <if test="currentPrice != null">
         #{currentPrice,jdbcType=DECIMAL},
       </if>
-      <if test="consultPrice != null" >
+      <if test="consultPrice != null">
         #{consultPrice,jdbcType=DECIMAL},
       </if>
-      <if test="assessStandardDate != null" >
+      <if test="assessStandardDate != null">
         #{assessStandardDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="realizationRatios != null" >
+      <if test="realizationRatios != null">
         #{realizationRatios,jdbcType=DECIMAL},
       </if>
-      <if test="realizationCycle != null" >
+      <if test="realizationCycle != null">
         #{realizationCycle,jdbcType=VARCHAR},
       </if>
-      <if test="dealPartInfo != null" >
+      <if test="dealPartInfo != null">
         #{dealPartInfo,jdbcType=VARCHAR},
       </if>
-      <if test="approver != null" >
+      <if test="approver != null">
         #{approver,jdbcType=VARCHAR},
       </if>
-      <if test="version != null" >
+      <if test="version != null">
         #{version,jdbcType=INTEGER},
       </if>
-      <if test="bisNewest != null" >
+      <if test="bisNewest != null">
         #{bisNewest,jdbcType=BIT},
       </if>
-      <if test="bisFromSelf != null" >
+      <if test="bisFromSelf != null">
         #{bisFromSelf,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummaryExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummaryExample" resultType="java.lang.Long">
     select count(*) from tb_basic_house_case_summary
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_basic_house_case_summary
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.caseHouseId != null" >
+      <if test="record.caseHouseId != null">
         case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null" >
+      <if test="record.source != null">
+        source = #{record.source,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
         type = #{record.type,jdbcType=INTEGER},
       </if>
-      <if test="record.province != null" >
+      <if test="record.province != null">
         province = #{record.province,jdbcType=VARCHAR},
       </if>
-      <if test="record.city != null" >
+      <if test="record.city != null">
         city = #{record.city,jdbcType=VARCHAR},
       </if>
-      <if test="record.district != null" >
+      <if test="record.district != null">
         district = #{record.district,jdbcType=VARCHAR},
       </if>
-      <if test="record.blockName != null" >
+      <if test="record.blockName != null">
         block_name = #{record.blockName,jdbcType=VARCHAR},
       </if>
-      <if test="record.fullName != null" >
+      <if test="record.fullName != null">
         full_name = #{record.fullName,jdbcType=VARCHAR},
       </if>
-      <if test="record.street != null" >
+      <if test="record.street != null">
         street = #{record.street,jdbcType=VARCHAR},
       </if>
-      <if test="record.practicalUse != null" >
+      <if test="record.practicalUse != null">
         practical_use = #{record.practicalUse,jdbcType=INTEGER},
       </if>
-      <if test="record.tradingType != null" >
+      <if test="record.tradingType != null">
         trading_type = #{record.tradingType,jdbcType=INTEGER},
       </if>
-      <if test="record.tradingTime != null" >
+      <if test="record.tradingTime != null">
         trading_time = #{record.tradingTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.tradingUnitPrice != null" >
+      <if test="record.tradingUnitPrice != null">
         trading_unit_price = #{record.tradingUnitPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.houseType != null" >
+      <if test="record.houseType != null">
         house_type = #{record.houseType,jdbcType=VARCHAR},
       </if>
-      <if test="record.houseCategory != null" >
+      <if test="record.houseCategory != null">
         house_category = #{record.houseCategory,jdbcType=VARCHAR},
       </if>
-      <if test="record.area != null" >
+      <if test="record.area != null">
         area = #{record.area,jdbcType=DECIMAL},
       </if>
-      <if test="record.estateName != null" >
+      <if test="record.estateName != null">
         estate_name = #{record.estateName,jdbcType=VARCHAR},
       </if>
-      <if test="record.dealType != null" >
+      <if test="record.dealType != null">
         deal_type = #{record.dealType,jdbcType=INTEGER},
       </if>
-      <if test="record.currentPrice != null" >
+      <if test="record.currentPrice != null">
         current_price = #{record.currentPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.consultPrice != null" >
+      <if test="record.consultPrice != null">
         consult_price = #{record.consultPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.assessStandardDate != null" >
+      <if test="record.assessStandardDate != null">
         assess_standard_date = #{record.assessStandardDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.realizationRatios != null" >
+      <if test="record.realizationRatios != null">
         realization_ratios = #{record.realizationRatios,jdbcType=DECIMAL},
       </if>
-      <if test="record.realizationCycle != null" >
+      <if test="record.realizationCycle != null">
         realization_cycle = #{record.realizationCycle,jdbcType=VARCHAR},
       </if>
-      <if test="record.dealPartInfo != null" >
+      <if test="record.dealPartInfo != null">
         deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
       </if>
-      <if test="record.approver != null" >
+      <if test="record.approver != null">
         approver = #{record.approver,jdbcType=VARCHAR},
       </if>
-      <if test="record.version != null" >
+      <if test="record.version != null">
         version = #{record.version,jdbcType=INTEGER},
       </if>
-      <if test="record.bisNewest != null" >
+      <if test="record.bisNewest != null">
         bis_newest = #{record.bisNewest,jdbcType=BIT},
       </if>
-      <if test="record.bisFromSelf != null" >
+      <if test="record.bisFromSelf != null">
         bis_from_self = #{record.bisFromSelf,jdbcType=BIT},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_basic_house_case_summary
     set id = #{record.id,jdbcType=INTEGER},
       case_house_id = #{record.caseHouseId,jdbcType=INTEGER},
+      source = #{record.source,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
@@ -486,109 +497,113 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary">
     update tb_basic_house_case_summary
-    <set >
-      <if test="caseHouseId != null" >
+    <set>
+      <if test="caseHouseId != null">
         case_house_id = #{caseHouseId,jdbcType=INTEGER},
       </if>
-      <if test="type != null" >
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
         type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="province != null" >
+      <if test="province != null">
         province = #{province,jdbcType=VARCHAR},
       </if>
-      <if test="city != null" >
+      <if test="city != null">
         city = #{city,jdbcType=VARCHAR},
       </if>
-      <if test="district != null" >
+      <if test="district != null">
         district = #{district,jdbcType=VARCHAR},
       </if>
-      <if test="blockName != null" >
+      <if test="blockName != null">
         block_name = #{blockName,jdbcType=VARCHAR},
       </if>
-      <if test="fullName != null" >
+      <if test="fullName != null">
         full_name = #{fullName,jdbcType=VARCHAR},
       </if>
-      <if test="street != null" >
+      <if test="street != null">
         street = #{street,jdbcType=VARCHAR},
       </if>
-      <if test="practicalUse != null" >
+      <if test="practicalUse != null">
         practical_use = #{practicalUse,jdbcType=INTEGER},
       </if>
-      <if test="tradingType != null" >
+      <if test="tradingType != null">
         trading_type = #{tradingType,jdbcType=INTEGER},
       </if>
-      <if test="tradingTime != null" >
+      <if test="tradingTime != null">
         trading_time = #{tradingTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="tradingUnitPrice != null" >
+      <if test="tradingUnitPrice != null">
         trading_unit_price = #{tradingUnitPrice,jdbcType=DECIMAL},
       </if>
-      <if test="houseType != null" >
+      <if test="houseType != null">
         house_type = #{houseType,jdbcType=VARCHAR},
       </if>
-      <if test="houseCategory != null" >
+      <if test="houseCategory != null">
         house_category = #{houseCategory,jdbcType=VARCHAR},
       </if>
-      <if test="area != null" >
+      <if test="area != null">
         area = #{area,jdbcType=DECIMAL},
       </if>
-      <if test="estateName != null" >
+      <if test="estateName != null">
         estate_name = #{estateName,jdbcType=VARCHAR},
       </if>
-      <if test="dealType != null" >
+      <if test="dealType != null">
         deal_type = #{dealType,jdbcType=INTEGER},
       </if>
-      <if test="currentPrice != null" >
+      <if test="currentPrice != null">
         current_price = #{currentPrice,jdbcType=DECIMAL},
       </if>
-      <if test="consultPrice != null" >
+      <if test="consultPrice != null">
         consult_price = #{consultPrice,jdbcType=DECIMAL},
       </if>
-      <if test="assessStandardDate != null" >
+      <if test="assessStandardDate != null">
         assess_standard_date = #{assessStandardDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="realizationRatios != null" >
+      <if test="realizationRatios != null">
         realization_ratios = #{realizationRatios,jdbcType=DECIMAL},
       </if>
-      <if test="realizationCycle != null" >
+      <if test="realizationCycle != null">
         realization_cycle = #{realizationCycle,jdbcType=VARCHAR},
       </if>
-      <if test="dealPartInfo != null" >
+      <if test="dealPartInfo != null">
         deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
       </if>
-      <if test="approver != null" >
+      <if test="approver != null">
         approver = #{approver,jdbcType=VARCHAR},
       </if>
-      <if test="version != null" >
+      <if test="version != null">
         version = #{version,jdbcType=INTEGER},
       </if>
-      <if test="bisNewest != null" >
+      <if test="bisNewest != null">
         bis_newest = #{bisNewest,jdbcType=BIT},
       </if>
-      <if test="bisFromSelf != null" >
+      <if test="bisFromSelf != null">
         bis_from_self = #{bisFromSelf,jdbcType=BIT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary">
     update tb_basic_house_case_summary
     set case_house_id = #{caseHouseId,jdbcType=INTEGER},
+      source = #{source,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},

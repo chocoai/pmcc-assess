@@ -203,7 +203,7 @@ public class BasicHouseCaseSummaryService {
         basicHouseCaseSummaryDao.deleteBaseHouseSummaryById(id);
     }
 
-    public Integer getCountByFullName(String fullName) {
+    public Long getCountByFullName(String fullName) {
         return basicHouseCaseSummaryDao.getCountByFullName(fullName);
     }
 

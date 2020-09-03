@@ -16,6 +16,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,21 +47,22 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
-        if(!processExecution.getProcessStatus().isFinish()) return;
+        if (!processExecution.getProcessStatus().isFinish()) return;
         NetInfoAssignTask data = netInfoAssignTaskService.getDataByProcessInsId(processExecution.getProcessInstanceId());
+        if (data == null) return;
         data.setStatus(ProcessStatusEnum.FINISH.getValue());
         netInfoAssignTaskService.editData(data);
         //补全信息的数据状态改变
-        List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(data.getNetInfoIds()));
-        //修改土地或房产子表状态
-        for (Integer id : integers) {
-            NetInfoRecord netInfo = NetInfoRecordDao.getInfoById(id);
-
-            netInfo.setStatus(4);
-            NetInfoRecordDao.updateInfo(netInfo);
+        if(StringUtils.isNotBlank(data.getNetInfoIds())){
+            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(data.getNetInfoIds()));
+            //修改土地或房产子表状态
+            for (Integer id : integers) {
+                NetInfoRecord netInfo = NetInfoRecordDao.getInfoById(id);
+                netInfo.setStatus(4);
+                NetInfoRecordDao.updateInfo(netInfo);
+            }
         }
-
-        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+        List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByAssignTaskId(data.getId());
         if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
             for (NetInfoRecordHouse o : netInfoRecordHouses) {
                 o.setStatus(1);
@@ -105,8 +107,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
                 }
             }
         }
-        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByMasterIds(integers);
-
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByAssignTaskId(data.getId());
         if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
             netInfoRecordLands.forEach(o -> {
                 o.setStatus(1);

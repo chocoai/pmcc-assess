@@ -1,255 +1,102 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: huhao
+  Date: 2018/01/29
+  Time: 15:50
+  To change this template use File | Settings | File Templates.
+--%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en" class="no-js">
+<html>
 <head>
+    <title>案例整理申请</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
 <body>
 <div class="wrapper">
-    <%@include file="/views/share/main_navigation.jsp" %>
-    <%@include file="/views/share/main_head.jsp" %>
-    <div class="main-panel">
-        <div class="content">
-            <div class="panel-header bg-primary-gradient">
-                <div class="page-inner py-5">
-                </div>
-            </div>
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header">
+                            <div class="card-header collapse-link">
                                 <div class="card-head-row">
-                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                    <div class="card-title">
+                                        案列整理
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="frmQuery" class="form-horizontal">
-                                    <div class="form-group form-inline">
-                                        <label class="col-md-1 col-form-label">内容</label>
-                                        <div class="col-md-3 p-0">
-                                            <input type="text" data-rule-maxlength="50"
-                                                   placeholder="内容" id="queryContent" name="queryContent"
-                                                   class="form-control input-full">
-                                        </div>
-                                        <label class="col-md-1 col-form-label">标题</label>
-                                        <div class="col-md-3 p-0">
-                                            <input type="text" data-rule-maxlength="50"
-                                                   placeholder="标题" id="queryTitle" name="queryTitle"
-                                                   class="form-control input-full">
-                                        </div>
-                                        <label class="col-md-1 col-form-label">网站</label>
-                                        <div class="col-md-3 p-0">
-                                            <select class="form-control input-full" required id="queryWebName">
-                                                <option value="">--请选择--</option>
-                                                <c:if test="${not empty webTypes}">
-                                                    <c:forEach items="${webTypes}" var="item">
-                                                        <option value="${item}">${item}</option>
-                                                    </c:forEach>
-                                                </c:if>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-inline">
-                                        <label class="col-md-1 col-form-label">省</label>
-                                        <div class="col-md-3 p-0">
-                                            <select id="province" name="province"
-                                                    class="form-control input-full search-select select2"
-                                                    required="required">
-                                            </select>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">市</label>
-                                        <div class="col-md-3 p-0">
-                                            <select id="city" name="city"
-                                                    class="form-control input-full search-select select2"
-                                                    required="required">
-                                            </select>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">类型</label>
-                                        <div class="col-md-3 p-0">
-                                            <input type="text" data-rule-maxlength="50"
-                                                   placeholder="类型" id="queryType" name="queryType"
-                                                   class="form-control input-full">
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-inline">
-                                        <label class="col-md-1 col-form-label">开始日期</label>
-                                        <div class="col-md-3 p-0">
-                                            <input placeholder="开始日期" id="queryStartTime" data-date-format="yyyy-mm-dd"
-                                                   class="form-control input-full date-picker dbdate roomTime">
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束日期</label>
-                                        <div class="col-md-3 p-0">
-                                            <input placeholder="结束日期" id="queryEndTime" data-date-format="yyyy-mm-dd"
-                                                   class="form-control input-full date-picker dbdate roomTime">
-                                        </div>
-                                        <label class="col-md-1 col-form-label">状态</label>
-                                        <div class="col-md-3 p-0">
-                                            <select class="form-control input-full" required id="queryStatus">
-                                                <option value="">--请选择--</option>
-                                                <option value="1">未填写</option>
-                                                <option value="2">已填写</option>
-                                                <option value="3">审批中</option>
-                                                <option value="4">审批完成</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-inline">
-                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                onclick="detailInfo.prototype.loadDataDicList()">
-											<span class="btn-label">
-												<i class="fa fa-search"></i>
+                                <form id="frmAdd" class="form-horizontal">
+                                    <input type="hidden" name="masterId">
+                                    <p>
+                                        <button type="button" class="btn btn-success btn-sm" id="addBtn"
+                                                href="#divBoxFather"
+                                                onclick="detailInfo.prototype.addInit()"
+                                                data-toggle="modal">
+                                    <span class="btn-label">
+												<i class="fa fa-plus"></i>
 											</span>
-                                            查询
+                                            新增
                                         </button>
-                                        <button style="margin-left: 10px" type="button" class="btn btn-primary btn-sm"
-                                                onclick="detailInfo.prototype.assignTask()">
-                                            发起审批
-                                        </button>
-                                        <button style="margin-left: 10px" type="button" class="btn btn-primary btn-sm"
-                                                onclick="window.open('${pageContext.request.contextPath}/netInfoAssignTask/applyOffline')">
-                                            线下案例
-                                        </button>
-                                        <button style="margin-left: 10px" type="button" class="btn btn-warning btn-sm"
-                                                onclick="detailInfo.prototype.backTask()">
-                                            取消认领任务
-                                        </button>
-                                        <button style="margin-left: 10px" type="button" class="btn btn-warning btn-sm"
-                                                onclick="detailInfo.prototype.closeAllModal()">
-                                            关闭任务
-                                        </button>
+                                    </p>
+                                    <div class="x_title">房产</div>
+                                    <div class="x_content">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered" id="houseHistory">
+                                                    <!-- cerare document add ajax data-->
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-
-
+                                    <div class="x_title">土地</div>
+                                    <div class="x_content">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered" id="landHistory">
+                                                    <!-- cerare document add ajax data-->
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
-                                <input type="hidden" id="selectIds">
-                                <table class="table table-bordered" id="transaction_List">
-                                    <!-- cerare document add ajax data-->
-                                </table>
                             </div>
                         </div>
                     </div>
-
+                    <!-- 公共尾部模块引用 -->
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+                        <div class="card-body">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                取消
+                            </button>
+                            <button id="commit_btn" style="margin-left: 10px" class="btn btn-primary"
+                                    onclick="masterObj.commit();">
+                                提交
+                            </button>
+                        </div>
+                    </div>
+                    <c:if test="${processInsId != 0}">
+                        <%@include file="/views/share/form_log.jsp" %>
+                        <form id="process_variable_form">
+                            <%@include file="/views/share/form_edit.jsp" %>
+                        </form>
+                    </c:if>
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
-
-
-<div id="divBoxTableList" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">数据列表</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card-body">
-                            <form id="frmAdd" class="form-horizontal">
-                                <input type="hidden" name="masterId">
-                                <button type="button" class="btn btn-success btn-sm" id="addBtn" href="#divBoxFather"
-                                        onclick="detailInfo.prototype.addInit()"
-                                        data-toggle="modal">
-                                    <span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                    新增
-                                </button>
-                                <div class="x_title">房产</div>
-                                <div class="x_content">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered" id="houseHistory">
-                                                <!-- cerare document add ajax data-->
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="x_title">土地</div>
-
-                                <div class="x_content">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <table class="table table-bordered" id="landHistory">
-                                                <!-- cerare document add ajax data-->
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<div id="divBoxClose" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">关闭原因</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-
-            <div class="modal-body">
-                <form id="closeFrm" class="form-horizontal">
-                    <input type="hidden" id="id" name="id">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                关闭原因
-                                            </label>
-                                            <div class="col-sm-11">
-                                           <textarea placeholder="关闭原因" name="closeReason" id="closeReason" required
-                                                     class="form-control input-full"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="detailInfo.prototype.closeItem()">
-                    确认关闭
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
+</html>
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 80%">
@@ -265,13 +112,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="singleData">
-                                            <!-- cerare document add ajax data-->
-                                        </table>
-                                    </div>
-                                </div>
                                 <div class="row form-group">
                                     <input type="hidden" name="masterId">
                                     <input type="hidden" name="id">
@@ -377,10 +217,7 @@
 
                                                         </datalist>
                                                         <div class="input-group-prepend">
-                                                            <button class="btn btn-warning btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">
                                                                 清空
                                                             </button>
                                                         </div>
@@ -952,19 +789,93 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
     $(function () {
-        detailInfo.prototype.loadDataDicList();
-        AssessCommon.initAreaInfo({
-            useDefaultText: false,
-            provinceTarget: $("#province"),
-            cityTarget: $("#city"),
-            districtTarget: $("#district")
-        })
-    });
-    var detailInfo = function () {
+        detailInfo.prototype.loadHouseHistoryList();
+        detailInfo.prototype.loadLandHistoryList();
+    })
+    var masterObj = {};
 
+    /**
+     * 提交数据
+     * @returns {*}
+     */
+    masterObj.commit = function () {
+        if ("${processInsId}" == "0") {
+            //申请
+            commit();
+        } else {
+            //修改提交
+            editCommit();
+        }
+    }
+
+    //申请提交
+    function commit() {
+        var result = $("#transaction_List").bootstrapTable('getData');
+        if (result.length == 0) {
+            notifySuccess('成功', '至少添加一条数据');
+            return false;
+        }
+
+        var id = $("#master_form").find("input[name='id']").val();
+        console.log(id + '==')
+        Loading.progressShow("正在提交数据...");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/netInfoAssignTask/applyCommit",
+            type: "post",
+            data: {id: id},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    AlertSuccess("成功", "提交数据成功", function () {
+                        window.close();
+                    });
+                } else {
+                    AlertError("失败", "提交数据失败", "失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+    };
+
+    //返回修改
+    function editCommit() {
+        var result = $("#transaction_List").bootstrapTable('getData');
+        if (result.length == 0) {
+            notifySuccess('成功', '至少添加一条数据');
+            return false;
+        }
+        var data = formParams("master_form");
+
+        //返回修改要提交的数据
+        var approvalModelDto = formSerializeArray($("#process_variable_form"));
+        approvalModelDto.businessDataJson = JSON.stringify(data);
+        Loading.progressShow("正在提交数据...");
+        $.ajax({
+            url: "${pageContext.request.contextPath}/netInfoAssignTask/editCommit",
+            type: "post",
+            data: approvalModelDto,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    AlertSuccess("成功", "提交数据成功", function () {
+                        window.close();
+                    });
+                } else {
+                    AlertError("失败", "提交数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+    };
+
+
+    var detailInfo = function () {
     };
     detailInfo.prototype = {
         config: function () {
@@ -975,122 +886,26 @@
             data.singleTable = "singleData";
             return data;
         },
-        loadDataDicList: function () {
-            var cols = [];
-            cols.push({field: 'title', title: '标题', width: '20%'});
-            cols.push({field: 'province', title: '省', width: '5%'});
-            cols.push({field: 'city', title: '市', width: '5%'});
-            cols.push({
-                field: 'sourceSiteName', title: '来源网站', width: '18%', formatter: function (value, row, index) {
-                    var str = '<a href="' + row.sourceSiteUrl + '" target="_blank" >' + row.sourceSiteName + '</a>';
-                    str += '<br/>(' + row.sourceSiteUrl + ')';
-                    return str;
-                }
-            });
-            cols.push({field: 'type', title: '类型', width: '10%'});
-            cols.push({
-                field: 'beginTime', title: '开始时间', width: '10%', formatter: function (value, row, index) {
-                    return formatDate(row.beginTime, false);
-                }
-            });
-            cols.push({
-                field: 'status', width: '5%', title: '状态', formatter: function (value, row, index) {
-                    var s;
-                    if (row.status == 1) {
-                        s = '-';
-                    }
-                    if (row.status == 2) {
-                        s = '已填写';
-                    }
-                    if (row.status == 3) {
-                        s = '审批中';
-                    }
-                    if (row.status == 4) {
-                        s = '审批通过';
-                    }
-                    return s;
-                }
-            });
-            cols.push({
-                field: 'id', width: '9%', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="补全信息" onclick="detailInfo.prototype.showTableListModal(' + row.id + ',' + row.status + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<button onclick="detailInfo.prototype.showTableListModal(' + row.id + ',' + row.status + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="补全信息">';
-                    str += '<i class="fa fa-pen"></i>';
-                    str += '</button>';
-                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
-                    str += '<button onclick="detailInfo.prototype.openItem(' + index + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看网址">';
-                    str += '<i class="fa fa-eye"></i>';
-                    str += '</button>';
-                    //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="关闭" onclick="detailInfo.prototype.closeModal(' + row.id + ')"><i class="fa fa-trash-o"></i></a>';
-                    str += '<button onclick="detailInfo.prototype.closeModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="关闭">';
-                    str += '<i class="fa fa-minus"></i>';
-                    str += '</button>';
-                    str += '</div>';
-                    return str;
-
-                }
-            });
-            $("#" + detailInfo.prototype.config().table).bootstrapTable('destroy');
-            TableInit(detailInfo.prototype.config().table, "${pageContext.request.contextPath}/netInfoRecordMyTaskController/getInfoRecordList", cols, {
-                queryTitle: $("#queryTitle").val(),
-                queryWebName: $("#queryWebName").val(),
-                province: $("#province").val(),
-                city: $("#city").val(),
-                queryContent: $("#queryContent").val(),
-                queryType: $("#queryType").val(),
-                queryStartTime: $("#queryStartTime").val(),
-                queryEndTime: $("#queryEndTime").val(),
-                queryStatus: $("#queryStatus").val(),
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            }, true);
-        },
         openItem: function (index) {
             var row = $("#transaction_List").bootstrapTable('getData')[index];
             if (row.sourceSiteUrl) {
                 window.open(row.sourceSiteUrl, "");
             }
         },
-        showTableListModal: function (masterId, status) {
+        showTableListModal: function (masterId) {
             detailInfo.prototype.loadLandHistoryList(masterId);
             detailInfo.prototype.loadHouseHistoryList(masterId);
             $("#frmAdd").find("input[name='masterId']").val(masterId);
-            if (status == 3 || status == 4) {
-                $("#frmAdd").find("#addBtn").hide();
-            } else {
-                $("#frmAdd").find("#addBtn").show();
-            }
             $('#divBoxTableList').modal("show");
         },
         addInit: function () {
-            var id = $("#frmAdd").find("input[name='masterId']").val();
-            detailInfo.prototype.loadOnclickData(id);
-            $.ajax({
-                url: "${pageContext.request.contextPath}/netInfoRecordMyTaskController/getDetailByMasterId",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + detailInfo.prototype.config().frm).find("select[name='type']").prop("disabled", false);
-                        $("#" + detailInfo.prototype.config().frm).clearAll();
-                        detailInfo.prototype.showContent(result.data.type, result, id)
-                        $("#" + detailInfo.prototype.config().frm).find("select[name='type']").off('change').on('change', function () {
-                            detailInfo.prototype.showContent($(this).val(), result, id)
-                        });
-                        $('#' + detailInfo.prototype.config().box).modal("show");
-                    }
-                },
-                error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            $("#" + detailInfo.prototype.config().frm).find("select[name='type']").prop("disabled", false);
+            $("#" + detailInfo.prototype.config().frm).clearAll();
+            detailInfo.prototype.showContent('房产', {data:{type:'房产'}}, 0)
+            $("#" + detailInfo.prototype.config().frm).find("select[name='type']").off('change').on('change', function () {
+                detailInfo.prototype.showContent($(this).val(), {data:{type:'房产'}}, 0);
+            });
+            $('#' + detailInfo.prototype.config().box).modal("show");
         },
         showContent: function (type, result, id) {
             //加载数据
@@ -1204,51 +1019,26 @@
             var data = formParams(detailInfo.prototype.config().frm);
             data.dealPartInfo = $("#" + detailInfo.prototype.config().frm).find("#landDealPartInfo").val();
             data.type = $("#" + detailInfo.prototype.config().frm).find("select[name='type']").val();
+            data.assignTaskId = '${netInfoAssignTask.id}';
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordLand/saveLandDetail",
                 type: "post",
                 dataType: "json",
                 data: {
                     formData: JSON.stringify(data),
-                    changeStatus: true
+                    changeStatus: false
                 },
                 success: function (result) {
                     if (result.ret) {
-                        AlertSuccess("成功", "数据已成功保存到数据库");
+                        notifySuccess('成功', '保存成功');
                         $('#' + detailInfo.prototype.config().box).modal('hide');
                         detailInfo.prototype.loadLandHistoryList(masterId);
-                        detailInfo.prototype.updateLandStatus(result.data.id);
-                    }
-                    else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        updateLandStatus: function (landId) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/netInfoRecordLand/updateLandStatus",
-                type: "post",
-                dataType: "json",
-                data: {
-                    landId: landId,
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {
-                            id: result.data.id,
-                            row: result.data
-                        });
-                    }
-                    else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1260,114 +1050,28 @@
             var data = formParams(detailInfo.prototype.config().frm);
             data.dealPartInfo = $("#" + detailInfo.prototype.config().frm).find("#houseDealPartInfo").val();
             data.type = $("#" + detailInfo.prototype.config().frm).find("select[name='type']").val();
+            data.assignTaskId = '${netInfoAssignTask.id}';
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordHouse/saveHouseDetail",
                 type: "post",
                 dataType: "json",
                 data: {
                     formData: JSON.stringify(data),
-                    changeStatus: true
+                    changeStatus: false
                 },
                 success: function (result) {
                     if (result.ret) {
-                        AlertSuccess("成功", "数据已成功保存到数据库");
+                        notifySuccess('成功', '保存成功');
                         $('#' + detailInfo.prototype.config().box).modal('hide');
                         detailInfo.prototype.loadHouseHistoryList(masterId);
-                        detailInfo.prototype.updateHouseStatus(result.data.id);
-                    }
-                    else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
-        },
-        updateHouseStatus: function (houseId) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/netInfoRecordHouse/updateHouseStatus",
-                type: "post",
-                dataType: "json",
-                data: {
-                    houseId: houseId,
-                },
-                success: function (result) {
-                    if (result.ret) {
-                        $("#" + detailInfo.prototype.config().table).bootstrapTable('updateByUniqueId', {
-                            id: result.data.id,
-                            row: result.data
-                        });
-                    }
-                    else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        assignTask: function () {
-            var rows = $('#transaction_List').bootstrapTable('getSelections');
-            if (rows && rows.length > 0) {
-                var idArray = [];
-                $.each(rows, function (i, item) {
-                    if (item.status == 2) {
-                        idArray.push(item.id);
-                    }
-                })
-                var ids = idArray.join()
-                $("#selectIds").val(ids);
-                //确认
-                var href = "${pageContext.request.contextPath}/netInfoAssignTask/apply";
-                href += "?ids=" + ids;
-                window.open(href, "");
-            } else {
-                notifyInfo('提示', '请选择要审批的数据');
-            }
-        },
-        loadOnclickData: function (id) {
-            var cols = [];
-            cols.push({field: 'title', title: '标题', width: '15%'});
-            cols.push({field: 'province', title: '省', width: '5%'});
-            cols.push({field: 'city', title: '市', width: '5%'});
-            cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%'});
-            cols.push({field: 'type', title: '类型', width: '6%'});
-            cols.push({
-                field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
-                    return formatDate(row.beginTime, false);
-                }
-            });
-            cols.push({
-                field: 'endTime', title: '结束时间', width: '7%', formatter: function (value, row, index) {
-                    return formatDate(row.endTime, false);
-                }
-            });
-            cols.push({field: 'content', title: '内容', width: '25%'});
-            cols.push({field: 'initPrice', title: '起始价', width: '5%'});
-            cols.push({field: 'consultPrice', title: '估算价', width: '5%'});
-            cols.push({field: 'currentPrice', title: '成交价', width: '5%'});
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a  class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="' + row.sourceSiteUrl + '" ><i class="fa fa-eye"></i></a>';
-                    str += '</div>';
-                    return str;
-                }
-            });
-            $("#" + detailInfo.prototype.config().singleTable).bootstrapTable('destroy');
-            TableInit(detailInfo.prototype.config().singleTable, "${pageContext.request.contextPath}/netInfoRecordController/getInfoRecordListByIds", cols, {
-                ids: id
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                pagination: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
         },
         fileUpload: function (target, tableName, id) {
             FileUtils.uploadFiles({
@@ -1398,150 +1102,33 @@
         loadLandHistoryList: function (masterId) {
             var cols = [];
             cols.push({
-                field: 'info1', title: '信息1', formatter: function (value, row, index) {
-                    var result = '';
+                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
                     var str = AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
                     if (row.street) {
                         str += row.street;
                     }
-                    if (str) {
-                        result += '位置：' + str + '<br/>';
-                    }
-                    if (row.parcelSite) {
-                        result += '宗地位置：' + row.parcelSite + '<br/>';
-                    }
-                    if (row.name) {
-                        result += '地块名称：' + row.name + '<br/>';
-                    }
-                    if (row.parcelNumber) {
-                        result += '宗地编号：' + row.parcelNumber + '<br/>';
-                    }
-                    if (row.landPurpose) {
-                        result += '土地性质：' + row.landPurpose + '<br/>';
-                    }
-                    if (row.belongType) {
-                        result += '土地类型：' + row.belongType + '<br/>';
-                    }
-                    if (row.belongCategory) {
-                        result += '土地类别：' + row.belongCategory + '<br/>';
-                    }
-                    if (row.dealType) {
-                        result += '交易方式：' + row.dealTypeName + '<br/>';
-                    }
-                    return result;
+                    return str;
                 }
             });
-
-            cols.push({
-                field: 'info2', title: '信息2', formatter: function (value, row, index) {
-                    var result = '';
-                    if (row.negotiatedDate) {
-                        result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
-                    }
-                    if (row.area) {
-                        result += '面积：' + row.area + '<br/>';
-                    }
-                    if (row.areaUnit) {
-                        result += '单位：' + row.areaUnit + '<br/>';
-                    }
-                    if (row.landArea) {
-                        result += '净用地面积：' + row.landArea + '<br/>';
-                    }
-                    if (row.landAreaUnit) {
-                        result += '净用地面积单位：' + row.landAreaUnit + '<br/>';
-                    }
-                    if (row.currentPrice) {
-                        result += '成交总价（万元）：' + row.currentPrice + '<br/>';
-                    }
-                    if (row.unitPrice) {
-                        result += '成交单价（元/㎡）：' + row.unitPrice + '<br/>';
-                    }
-                    if (row.unitPriceMu) {
-                        result += '成交单价（万元/每亩）：' + row.unitPriceMu + '<br/>';
-                    }
-                    return result;
-                }
-            });
-            cols.push({
-                field: 'info3', title: '信息3', formatter: function (value, row, index) {
-                    var result = '';
-                    if (row.floorPrice) {
-                        result += '成交楼面地价（元/㎡）：' + row.floorPrice + '<br/>';
-                    }
-                    if (row.assessStandardDate) {
-                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
-                    }
-                    if (row.consultPrice) {
-                        result += '评估起拍单价（元/㎡）：' + row.consultPrice + '<br/>';
-                    }
-                    if (row.consultPriceMu) {
-                        result += '评估起拍单价（万元/每亩）：' + row.consultPriceMu + '<br/>';
-                    }
-                    if (row.realizationCycle) {
-                        result += '变现周期：' + row.realizationCycle + '<br/>';
-                    }
-                    if (row.landRealizationRatios) {
-                        result += '变现率：' + row.landRealizationRatios* 100 + '%<br/>';
-                    }
-                    if (row.plotRatio) {
-                        result += '容积率：' + row.plotRatio + '<br/>';
-                    }
-                    if (row.plotRatioRemark) {
-                        result += '容积率说明：' + row.plotRatioRemark + '<br/>';
-                    }
-                    return result;
-                }
-            });
-            cols.push({
-                field: 'info4', title: '信息4', formatter: function (value, row, index) {
-                    var result = '';
-                    if (row.greeningRate) {
-                        result += '绿化率：' + row.greeningRate * 100 + '%<br/>';
-                    }
-                    if (row.greeningRateRemark) {
-                        result += '绿化率说明：' + row.greeningRateRemark + '<br/>';
-                    }
-                    if (row.buildDensity) {
-                        result += '建筑密度：' + row.buildDensity* 100 + '%<br/>';
-                    }
-                    if (row.buildDensityRemark) {
-                        result += '建筑密度说明：' + row.buildDensityRemark + '<br/>';
-                    }
-                    if (row.buildHeight) {
-                        result += '建筑高度(米)：' + row.buildHeight + '<br/>';
-                    }
-                    if (row.buildHeightRemark) {
-                        result += '建筑高度说明：' + row.buildHeightRemark + '<br/>';
-                    }
-                    if (row.indexAmount) {
-                        result += '指标款(亩)：' + row.indexAmount + '<br/>';
-                    }
-                    if (row.indexAmountRemark) {
-                        result += '指标款(亩)说明：' + row.indexAmountRemark + '<br/>';
-                    }
-                    if (row.dealPartInfo) {
-                        result += '成交对象概况：' + row.dealPartInfo + '<br/>';
-                    }
-                    return result;
-                }
-            });
+            cols.push({field: 'name', title: '地块名称'});
+            cols.push({field: 'dealTypeName', title: '交易方式'});
+            cols.push({field: 'currentPrice', title: '成交价'});
+            cols.push({field: 'unitPrice', title: '单价'});
+            cols.push({field: 'floorPrice', title: '楼面地价'});
+            cols.push({field: 'landArea', title: '净用地面积'});
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    if (row.status == 0) {
-                        var str = '<div class="btn-margin">';
-                        str += '<button type="button" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-pen"></i></button>';
-                        str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteLandItem(' + row.id + ')"><i class="fa fa-minus"></i></button>';
-                        str += '</div>';
-                        return str;
-                    } else {
-                        return '-';
-                    }
+                field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-pen fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteLandItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></button>';
+                    str += '</div>';
+                    return str;
                 }
             });
             $("#landHistory").bootstrapTable('destroy');
-            TableInit("landHistory", "${pageContext.request.contextPath}/netInfoRecordLand/getLandListByMasterId", cols, {
-                masterId: masterId
+            TableInit("landHistory", "${pageContext.request.contextPath}/netInfoAssignTask/getLandListByAssignTaskId", cols, {
+                assignTaskId: '${netInfoAssignTask.id}'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1553,7 +1140,6 @@
         },
         getAndInitLand: function (id) {
             var masterId = $("#frmAdd").find("input[name='masterId']").val();
-            detailInfo.prototype.loadOnclickData(masterId);
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordLand/getDataById",
                 type: "get",
@@ -1562,13 +1148,13 @@
                 success: function (result) {
                     if (result.ret) {
                         $("#" + detailInfo.prototype.config().frm).clearAll();
-                        detailInfo.prototype.showContent(result.data.type, result, masterId);
+                        detailInfo.prototype.showContent(result.data.type, result, masterId)
                         $("#" + detailInfo.prototype.config().frm).find("select[name='type']").prop("disabled", true);
                         $('#' + detailInfo.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1582,15 +1168,14 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            notifySuccess("成功", "删除数据成功");
+                            notifySuccess('成功', '删除成功');
                             detailInfo.prototype.loadLandHistoryList(masterId);
-                        }
-                        else {
-                            AlertError("失败","删除数据失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             });
@@ -1598,115 +1183,52 @@
         loadHouseHistoryList: function (masterId) {
             var cols = [];
             cols.push({
-                field: 'info1', title: '信息1', formatter: function (value, row, index) {
-                    var result = '';
+                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
                     var str = AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
                     if (row.street) {
                         str += row.street;
                     }
-                    if (str) {
-                        result += '位置：' + str + '<br/>';
-                    }
-                    if (row.belongType) {
-                        result += '房产类型：' + row.belongType + '<br/>';
-                    }
-                    if (row.belongCategory) {
-                        result += '房产类别：' + row.belongCategory + '<br/>';
-                    }
-                    if (row.area) {
-                        result += '面积：' + row.area + '<br/>';
-                    }
-
-                    return result;
+                    return str;
                 }
             });
+
             cols.push({
-                field: 'info2', title: '信息2', formatter: function (value, row, index) {
+                field: 'name', title: '楼盘', formatter: function (value, row, index) {
                     var result = '';
-                    var str = '';
                     if (row.name) {
-                        str += row.name;
+                        result += row.name;
                     }
                     if (row.buildingNumber) {
-                        str += row.buildingNumber + "栋";
+                        result += row.buildingNumber + "栋";
                     }
                     if (row.unitNumber) {
-                        str += row.unitNumber + "单元";
+                        result += row.unitNumber + "单元";
                     }
                     if (row.houseNumber) {
-                        str += row.houseNumber+ "号";
-                    }
-
-                    if (str) {
-                        result += '楼盘：' + str + '<br/>';
-                    }
-                    if (row.dealType) {
-                        result += '交易方式：' + row.dealTypeName + '<br/>';
-                    }
-                    if (row.currentPrice) {
-                        result += '成交总价：' + row.currentPrice + '<br/>';
-                    }
-                    if (row.negotiatedDate) {
-                        result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
+                        result += row.houseNumber + "号";
                     }
                     return result;
                 }
             });
-
-            cols.push({
-                field: 'other3', title: '信息3', formatter: function (value, row, index) {
-                    var result = '';
-
-                    if (row.consultPrice) {
-                        result += '评估总价：' + row.consultPrice + '<br/>';
-                    }
-                    if (row.assessStandardDate) {
-                        result += '评估基准日期：' + formatDate(row.assessStandardDate) + '<br/>';
-                    }
-                    if (row.unitPrice) {
-                        result += '成交单价：' + row.unitPrice + '<br/>';
-                    }
-                    if (row.houseRealizationRatios) {
-                        result += '变现率：' + row.houseRealizationRatios * 100 + '%<br/>';
-                    }
-                    return result;
-                }
-            });
-            cols.push({
-                field: 'other4', title: '信息4', formatter: function (value, row, index) {
-                    var result = '';
-                    if (row.realizationCycle) {
-                        result += '变现周期：' + row.realizationCycle + '<br/>';
-                    }
-                    if (row.tradingTypeName) {
-                        result += '交易类型：' + row.tradingTypeName + '<br/>';
-                    }
-                    if (row.purchaseLimitStatus) {
-                        result += '限购状态：' + row.purchaseLimitStatus + '<br/>';
-                    }
-                    if (row.dealPartInfo) {
-                        result += '成交对象概况：' + row.dealPartInfo + '<br/>';
-                    }
-                    return result;
-                }
-            });
+            cols.push({field: 'currentPrice', title: '成交总价'});
+            cols.push({field: 'consultPrice', title: '评估总价'});
+            cols.push({field: 'dealTypeName', title: '交易方式'});
+            cols.push({field: 'dealTypeName', title: '交易方式'});
+            cols.push({field: 'tradingTypeName', title: '交易类型'});
+            cols.push({field: 'purchaseLimitStatus', title: '限购状态'});
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    if (row.status == 0) {
-                        var str = '<div class="btn-margin">';
-                        str += '<button type="button" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-pen"></i></button>';
-                        str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteHouseItem(' + row.id + ')"><i class="fa fa-minus"></i></button>';
-                        str += '</div>';
-                        return str;
-                    } else {
-                        return '-';
-                    }
+                field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-pen fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteHouseItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></button>';
+                    str += '</div>';
+                    return str;
                 }
             });
             $("#houseHistory").bootstrapTable('destroy');
-            TableInit("houseHistory", "${pageContext.request.contextPath}/netInfoRecordHouse/getHouseListByMasterId", cols, {
-                masterId: masterId
+            TableInit("houseHistory", "${pageContext.request.contextPath}/netInfoAssignTask/getHouseListByAssignTaskId", cols, {
+                assignTaskId: '${netInfoAssignTask.id}'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -1718,7 +1240,6 @@
         },
         getAndInitHouse: function (id) {
             var masterId = $("#frmAdd").find("input[name='masterId']").val();
-            detailInfo.prototype.loadOnclickData(masterId);
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordHouse/getDataById",
                 type: "get",
@@ -1733,7 +1254,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1747,15 +1268,14 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            notifySuccess("成功", "删除数据成功");
+                            notifySuccess('成功', '删除成功');
                             detailInfo.prototype.loadHouseHistoryList(masterId);
-                        }
-                        else {
-                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             });
@@ -1774,13 +1294,13 @@
                 $("#houseUnitPrice").val("");
             }
             if (landCurrentPrice >= 0 && landArea > 0) {
-                if(areaUnit&&areaUnit=="亩"){
-                    console.log(areaUnit+"=areaUnit")
+                if (areaUnit && areaUnit == "亩") {
+                    console.log(areaUnit + "=areaUnit")
                     var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
                     $("#unitPriceMu").val(landUnitPrice);
-                    $("#landUnitPrice").val((landCurrentPrice* 10000 / landArea / AssessCommon.BHOU).toFixed(2));
-                }else {
-                    var landUnitPrice = (landCurrentPrice * 10000/ landArea).toFixed(2);
+                    $("#landUnitPrice").val((landCurrentPrice * 10000 / landArea / AssessCommon.BHOU).toFixed(2));
+                } else {
+                    var landUnitPrice = (landCurrentPrice * 10000 / landArea).toFixed(2);
                     $("#landUnitPrice").val(landUnitPrice);
                     $("#unitPriceMu").val((landCurrentPrice / landArea * AssessCommon.BHOU).toFixed(2));
                 }
@@ -1829,104 +1349,6 @@
             } else {
                 $("#houseRealizationCycle").val('');
             }
-        },
-        backTask: function () {
-            var rows = $('#transaction_List').bootstrapTable('getSelections');
-            if (rows && rows.length > 0) {
-                var idArray = [];
-                $.each(rows, function (i, item) {
-                    if (item.status != 3 && item.status != 4) {
-                        idArray.push(item.id);
-                    }
-                })
-                var ids = idArray.join();
-                if (!ids) {
-                    notifyInfo('提示', '至少选择一条非审批中或审批通过的任务');
-                    return false;
-                }
-                AlertConfirm("确认取消任务", "取消后任务将退回", function () {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/netInfoAssignTask/backTask",
-                        type: "post",
-                        dataType: "json",
-                        data: {ids: ids},
-                        success: function (result) {
-                            if (result.ret) {
-                                notifySuccess("成功", "取消认领任务成功");
-                                detailInfo.prototype.loadDataDicList();
-                            }
-                            else {
-                                AlertError("失败","取消认领任务失败，失败原因:" + result.errmsg);
-                            }
-                        },
-                        error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
-                        }
-                    })
-                });
-            } else {
-                notifyInfo('提示', '请选择要取消认领的任务');
-            }
-        },
-        closeModal: function (id) {
-            $("#closeFrm").clearAll();
-            $("#closeFrm").find("input[name='id']").val(id);
-            $('#divBoxClose').modal("show");
-        },
-        closeAllModal: function () {
-            var rows = $('#transaction_List').bootstrapTable('getSelections');
-            if (! rows || rows.length == 0) {
-                notifyInfo('提示', '请选择要关闭的任务');
-                return false ;
-            }
-            var ids = [] ;
-            $.each(rows ,function ( k,item) {
-                ids.push(item.id) ;
-            }) ;
-            $("#closeFrm").clearAll();
-            $("#closeFrm").find("input[name='id']").val(ids.join(","));
-            $('#divBoxClose').modal("show");
-        },
-        closeItem: function () {
-            AlertConfirm("是否确认关闭", "关闭后任务将消失", function () {
-                if (!$("#closeFrm").valid()) {
-                    return false;
-                }
-                var closeReason = $("#closeFrm").find("#closeReason").val();
-                var id = $("#closeFrm").find("input[name='id']").val();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/netInfoRecordController/closeItem",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        id: id,
-                        closeReason: closeReason
-                    },
-                    success: function (result) {
-                        if (result.ret) {
-                            notifySuccess("成功", "关闭成功");
-                            $('#divBoxClose').modal('hide');
-                            detailInfo.prototype.loadDataDicList();
-                        }
-                        else {
-                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            });
-        },
-        getMuPrict: function (_this, targeName) {
-            var val = $(_this).val();
-            if (val && AssessCommon.isNumber(val)) {
-                $(_this).closest('.form-group').find('[name=' + targeName + ']').val(parseFloat(val) * 666.67 / 10000).toFixed(4);
-            }
         }
     }
-
 </script>
-
-
-</html>

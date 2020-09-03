@@ -127,8 +127,6 @@
                         <%@include file="/views/share/ApprovalVariable.jsp" %>
                     </div>
                 </form>
-                    <%--流程可考核，並且不是事后考核--%>
-
             </div>
         </div>
     </div>

@@ -166,6 +166,66 @@ public class NetInfoRecordHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andAssignTaskIdIsNull() {
+            addCriterion("assign_task_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdIsNotNull() {
+            addCriterion("assign_task_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdEqualTo(Integer value) {
+            addCriterion("assign_task_id =", value, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdNotEqualTo(Integer value) {
+            addCriterion("assign_task_id <>", value, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdGreaterThan(Integer value) {
+            addCriterion("assign_task_id >", value, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("assign_task_id >=", value, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdLessThan(Integer value) {
+            addCriterion("assign_task_id <", value, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdLessThanOrEqualTo(Integer value) {
+            addCriterion("assign_task_id <=", value, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdIn(List<Integer> values) {
+            addCriterion("assign_task_id in", values, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdNotIn(List<Integer> values) {
+            addCriterion("assign_task_id not in", values, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdBetween(Integer value1, Integer value2) {
+            addCriterion("assign_task_id between", value1, value2, "assignTaskId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAssignTaskIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("assign_task_id not between", value1, value2, "assignTaskId");
+            return (Criteria) this;
+        }
+
         public Criteria andMasterIdIsNull() {
             addCriterion("master_id is null");
             return (Criteria) this;

@@ -34,9 +34,9 @@ public class NetInfoAssignTaskDao {
         return netInfoAssignTaskMapper.selectByExample(example);
     }
 
-
     /**
      * 新增数据
+     *
      * @param record
      * @return
      */
@@ -46,6 +46,7 @@ public class NetInfoAssignTaskDao {
 
     /**
      * 更新数据
+     *
      * @param record
      * @return
      */
@@ -55,6 +56,7 @@ public class NetInfoAssignTaskDao {
 
     /**
      * 根据条件更新
+     *
      * @param record
      * @param where
      * @return

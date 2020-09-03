@@ -90,4 +90,11 @@ public class NetInfoRecordLandDao {
         return netInfoRecordLandMapper.selectByExample(example);
     }
 
+    public List<NetInfoRecordLand> getLandListByAssignTaskId(Integer assignTaskId) {
+        NetInfoRecordLandExample example = new NetInfoRecordLandExample();
+        NetInfoRecordLandExample.Criteria criteria = example.createCriteria();
+        criteria.andAssignTaskIdEqualTo(assignTaskId);
+        return netInfoRecordLandMapper.selectByExample(example);
+    }
+
 }
