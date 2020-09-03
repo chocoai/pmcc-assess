@@ -446,7 +446,8 @@
                                                 </label>
                                                 <div class="col-sm-2">
                                                     <input type="text" name="areaUnit" id="areaUnit" placeholder="平方米、亩"
-                                                           class="form-control input-full" onblur="detailInfo.prototype.getUnitPrice()">
+                                                           class="form-control input-full"
+                                                           onblur="detailInfo.prototype.getUnitPrice()">
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     净用地面积
@@ -1084,7 +1085,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1214,13 +1215,12 @@
                         $('#' + detailInfo.prototype.config().box).modal('hide');
                         detailInfo.prototype.loadLandHistoryList(masterId);
                         detailInfo.prototype.updateLandStatus(result.data.id);
-                    }
-                    else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1238,13 +1238,12 @@
                             id: result.data.id,
                             row: result.data
                         });
-                    }
-                    else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1270,13 +1269,12 @@
                         $('#' + detailInfo.prototype.config().box).modal('hide');
                         detailInfo.prototype.loadHouseHistoryList(masterId);
                         detailInfo.prototype.updateHouseStatus(result.data.id);
-                    }
-                    else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1294,13 +1292,12 @@
                             id: result.data.id,
                             row: result.data
                         });
-                    }
-                    else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1309,7 +1306,7 @@
             if (rows && rows.length > 0) {
                 var idArray = [];
                 $.each(rows, function (i, item) {
-                    if (item.status == 1) {
+                    if (item.status == 1 || item.status == 2) {
                         idArray.push(item.id);
                     }
                 })
@@ -1477,7 +1474,7 @@
                         result += '变现周期：' + row.realizationCycle + '<br/>';
                     }
                     if (row.landRealizationRatios) {
-                        result += '变现率：' + row.landRealizationRatios* 100 + '%<br/>';
+                        result += '变现率：' + row.landRealizationRatios * 100 + '%<br/>';
                     }
                     if (row.plotRatio) {
                         result += '容积率：' + row.plotRatio + '<br/>';
@@ -1498,7 +1495,7 @@
                         result += '绿化率说明：' + row.greeningRateRemark + '<br/>';
                     }
                     if (row.buildDensity) {
-                        result += '建筑密度：' + row.buildDensity* 100 + '%<br/>';
+                        result += '建筑密度：' + row.buildDensity * 100 + '%<br/>';
                     }
                     if (row.buildDensityRemark) {
                         result += '建筑密度说明：' + row.buildDensityRemark + '<br/>';
@@ -1564,7 +1561,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1580,13 +1577,12 @@
                         if (result.ret) {
                             notifySuccess("成功", "删除数据成功");
                             detailInfo.prototype.loadLandHistoryList(masterId);
-                        }
-                        else {
-                            AlertError("失败","删除数据失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("失败", "删除数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
@@ -1630,7 +1626,7 @@
                         str += row.unitNumber + "单元";
                     }
                     if (row.houseNumber) {
-                        str += row.houseNumber+ "号";
+                        str += row.houseNumber + "号";
                     }
 
                     if (str) {
@@ -1729,7 +1725,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1745,13 +1741,12 @@
                         if (result.ret) {
                             notifySuccess("成功", "删除数据成功");
                             detailInfo.prototype.loadHouseHistoryList(masterId);
-                        }
-                        else {
-                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
@@ -1770,13 +1765,13 @@
                 $("#houseUnitPrice").val("");
             }
             if (landCurrentPrice >= 0 && landArea > 0) {
-                if(areaUnit&&areaUnit=="亩"){
-                    console.log(areaUnit+"=areaUnit")
+                if (areaUnit && areaUnit == "亩") {
+                    console.log(areaUnit + "=areaUnit")
                     var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
                     $("#unitPriceMu").val(landUnitPrice);
-                    $("#landUnitPrice").val((landCurrentPrice* 10000 / landArea / AssessCommon.BHOU).toFixed(2));
-                }else {
-                    var landUnitPrice = (landCurrentPrice * 10000/ landArea).toFixed(2);
+                    $("#landUnitPrice").val((landCurrentPrice * 10000 / landArea / AssessCommon.BHOU).toFixed(2));
+                } else {
+                    var landUnitPrice = (landCurrentPrice * 10000 / landArea).toFixed(2);
                     $("#landUnitPrice").val(landUnitPrice);
                     $("#unitPriceMu").val((landCurrentPrice / landArea * AssessCommon.BHOU).toFixed(2));
                 }
@@ -1850,13 +1845,12 @@
                             if (result.ret) {
                                 notifySuccess("成功", "取消认领任务成功");
                                 detailInfo.prototype.loadDataDicList();
-                            }
-                            else {
-                                AlertError("失败","取消认领任务失败，失败原因:" + result.errmsg);
+                            } else {
+                                AlertError("失败", "取消认领任务失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 });
@@ -1871,14 +1865,14 @@
         },
         closeAllModal: function () {
             var rows = $('#transaction_List').bootstrapTable('getSelections');
-            if (! rows || rows.length == 0) {
+            if (!rows || rows.length == 0) {
                 notifyInfo('提示', '请选择要关闭的任务');
-                return false ;
+                return false;
             }
-            var ids = [] ;
-            $.each(rows ,function ( k,item) {
-                ids.push(item.id) ;
-            }) ;
+            var ids = [];
+            $.each(rows, function (k, item) {
+                ids.push(item.id);
+            });
             $("#closeFrm").clearAll();
             $("#closeFrm").find("input[name='id']").val(ids.join(","));
             $('#divBoxClose').modal("show");
@@ -1903,13 +1897,12 @@
                             notifySuccess("成功", "关闭成功");
                             $('#divBoxClose').modal('hide');
                             detailInfo.prototype.loadDataDicList();
-                        }
-                        else {
-                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
