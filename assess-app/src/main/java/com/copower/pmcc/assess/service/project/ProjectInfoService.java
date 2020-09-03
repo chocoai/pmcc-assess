@@ -944,6 +944,7 @@ public class ProjectInfoService {
      * @return
      */
     public Boolean chksValidInitDate(ProjectInfo projectInfo) {
+        if (projectInfo == null) return true;
         try {
             String parameter = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_DATE);
             if (org.apache.commons.lang3.StringUtils.isBlank(parameter)) return true;
@@ -964,6 +965,7 @@ public class ProjectInfoService {
      * @return
      */
     public Boolean chksValidProject(Integer projectId) {
+        if (projectId == null) return true;
         try {
             String projectIds = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
             if (org.apache.commons.lang3.StringUtils.isBlank(projectIds)) return true;

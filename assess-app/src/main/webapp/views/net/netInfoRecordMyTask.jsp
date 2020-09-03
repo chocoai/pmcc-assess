@@ -981,7 +981,7 @@
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
             cols.push({
-                field: 'sourceSiteName', title: '来源网站', width: '18%', formatter: function (value, row, index) {
+                field: 'sourceSiteName', title: '来源网站', width: '28%', formatter: function (value, row, index) {
                     var str = '<a href="' + row.sourceSiteUrl + '" target="_blank" >' + row.sourceSiteName + '</a>';
                     str += '<br/>(' + row.sourceSiteUrl + ')';
                     return str;
@@ -1015,16 +1015,13 @@
                 field: 'id', width: '9%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="补全信息" onclick="detailInfo.prototype.showTableListModal(' + row.id + ',' + row.status + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<button onclick="detailInfo.prototype.showTableListModal(' + row.id + ',' + row.status + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="补全信息">';
-                    str += '<i class="fa fa-pen"></i>';
-                    str += '</button>';
                     //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '<button onclick="detailInfo.prototype.openItem(' + index + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看网址">';
                     str += '<i class="fa fa-eye"></i>';
                     str += '</button>';
                     //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="关闭" onclick="detailInfo.prototype.closeModal(' + row.id + ')"><i class="fa fa-trash-o"></i></a>';
                     str += '<button onclick="detailInfo.prototype.closeModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="关闭">';
-                    str += '<i class="fa fa-minus"></i>';
+                    str += '<i class="fa fa-times"></i>';
                     str += '</button>';
                     str += '</div>';
                     return str;
@@ -1313,7 +1310,7 @@
             if (rows && rows.length > 0) {
                 var idArray = [];
                 $.each(rows, function (i, item) {
-                    if (item.status == 2) {
+                    if (item.status == 1) {
                         idArray.push(item.id);
                     }
                 })

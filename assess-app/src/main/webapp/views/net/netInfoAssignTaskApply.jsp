@@ -57,7 +57,8 @@
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-                            <button id="commit_btn" style="margin-left: 10px;" class="btn btn-primary" onclick="masterObj.commit();">
+                            <button id="commit_btn" style="margin-left: 10px;" class="btn btn-primary"
+                                    onclick="masterObj.commit();">
                                 提交
                             </button>
                         </div>
@@ -264,7 +265,10 @@
 
                                                         </datalist>
                                                         <div class="input-group-prepend">
-                                                            <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            <button class="btn btn-warning btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
                                                                 清空
                                                             </button>
                                                         </div>
@@ -330,7 +334,8 @@
                                                 </label>
                                                 <div class="col-sm-2">
                                                     <input type="text" name="areaUnit" id="areaUnit" placeholder="平方米、亩"
-                                                           class="form-control input-full" onblur="detailInfo.prototype.getUnitPrice()">
+                                                           class="form-control input-full"
+                                                           onblur="detailInfo.prototype.getUnitPrice()">
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     净用地面积
@@ -866,7 +871,7 @@
     function commit() {
         var result = $("#transaction_List").bootstrapTable('getData');
         if (result.length == 0) {
-            notifySuccess('成功','至少添加一条数据');
+            notifySuccess('成功', '至少添加一条数据');
             return false;
         }
         var id = $("#master_form").find("input[name='id']").val();
@@ -874,16 +879,15 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/netInfoAssignTask/applyCommit",
             type: "post",
-            data: {id:id},
+            data: {id: id},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
                     AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
-                }
-                else {
-                    AlertError("失败","提交数据失败","失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败", "提交数据失败", "失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
@@ -896,7 +900,7 @@
     function editCommit() {
         var result = $("#transaction_List").bootstrapTable('getData');
         if (result.length == 0) {
-            notifySuccess('成功','至少添加一条数据');
+            notifySuccess('成功', '至少添加一条数据');
             return false;
         }
         //返回修改要提交的数据
@@ -913,9 +917,8 @@
                     AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
-                }
-                else {
-                    AlertError("失败","提交数据失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败", "提交数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
@@ -1131,6 +1134,7 @@
             var data = formParams(detailInfo.prototype.config().frm);
             data.dealPartInfo = $("#" + detailInfo.prototype.config().frm).find("#landDealPartInfo").val();
             data.type = $("#" + detailInfo.prototype.config().frm).find("select[name='type']").val();
+            data.assignTaskId = '${netInfoAssignTask.id}';
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordLand/saveLandDetail",
                 type: "post",
@@ -1144,8 +1148,7 @@
                         notifySuccess('成功', '保存成功');
                         $('#' + detailInfo.prototype.config().box).modal('hide');
                         detailInfo.prototype.loadLandHistoryList(masterId);
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1162,6 +1165,7 @@
             var data = formParams(detailInfo.prototype.config().frm);
             data.dealPartInfo = $("#" + detailInfo.prototype.config().frm).find("#houseDealPartInfo").val();
             data.type = $("#" + detailInfo.prototype.config().frm).find("select[name='type']").val();
+            data.assignTaskId = '${netInfoAssignTask.id}';
             $.ajax({
                 url: "${pageContext.request.contextPath}/netInfoRecordHouse/saveHouseDetail",
                 type: "post",
@@ -1175,8 +1179,7 @@
                         notifySuccess('成功', '保存成功');
                         $('#' + detailInfo.prototype.config().box).modal('hide');
                         detailInfo.prototype.loadHouseHistoryList(masterId);
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1328,8 +1331,7 @@
                         if (result.ret) {
                             notifySuccess('成功', '删除成功');
                             detailInfo.prototype.loadLandHistoryList(masterId);
-                        }
-                        else {
+                        } else {
                             AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
@@ -1364,7 +1366,7 @@
                         result += row.unitNumber + "单元";
                     }
                     if (row.houseNumber) {
-                        result += row.houseNumber+ "号";
+                        result += row.houseNumber + "号";
                     }
                     return result;
                 }
@@ -1430,8 +1432,7 @@
                         if (result.ret) {
                             notifySuccess('成功', '删除成功');
                             detailInfo.prototype.loadHouseHistoryList(masterId);
-                        }
-                        else {
+                        } else {
                             AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
@@ -1455,13 +1456,13 @@
                 $("#houseUnitPrice").val("");
             }
             if (landCurrentPrice >= 0 && landArea > 0) {
-                if(areaUnit&&areaUnit=="亩"){
-                    console.log(areaUnit+"=areaUnit")
+                if (areaUnit && areaUnit == "亩") {
+                    console.log(areaUnit + "=areaUnit")
                     var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
                     $("#unitPriceMu").val(landUnitPrice);
-                    $("#landUnitPrice").val((landCurrentPrice* 10000 / landArea / AssessCommon.BHOU).toFixed(2));
-                }else {
-                    var landUnitPrice = (landCurrentPrice * 10000/ landArea).toFixed(2);
+                    $("#landUnitPrice").val((landCurrentPrice * 10000 / landArea / AssessCommon.BHOU).toFixed(2));
+                } else {
+                    var landUnitPrice = (landCurrentPrice * 10000 / landArea).toFixed(2);
                     $("#landUnitPrice").val(landUnitPrice);
                     $("#unitPriceMu").val((landCurrentPrice / landArea * AssessCommon.BHOU).toFixed(2));
                 }

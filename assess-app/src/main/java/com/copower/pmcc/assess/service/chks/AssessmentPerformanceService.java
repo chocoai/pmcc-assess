@@ -245,14 +245,7 @@ public class AssessmentPerformanceService {
         if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
             ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
             if (activitiTaskNodeDto == null) {//找出代理人的任务
-                List<String> agents = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
-                if (CollectionUtils.isNotEmpty(agents)) {
-                    for (String agent : agents) {
-                        activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, agent);
-                        if (activitiTaskNodeDto != null)
-                            break;
-                    }
-                }
+                activitiTaskNodeDto = assessmentCommonService.getAgentTaskNodeDto(taskId);
             }
             if (activitiTaskNodeDto == null) return;
             BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
@@ -314,8 +307,10 @@ public class AssessmentPerformanceService {
                     if (CollectionUtils.isEmpty(projectTaskList)) {
                         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
                         projectPlanResponsibility.setProcessInsId(approvalModelDto.getProcessInsId());
-                        if (projectInfo != null)
+                        if (projectInfo != null){
                             projectPlanResponsibility.setProjectId(projectInfo.getId());
+                            projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
+                        }
                         if (projectPlanDetails != null) {
                             projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
                             projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
@@ -327,7 +322,6 @@ public class AssessmentPerformanceService {
                         if (StringUtils.isNotBlank(approvalModelDto.getWorkPhase()))
                             stringBuilder.append("[").append(approvalModelDto.getWorkPhase()).append("]");
                         projectPlanResponsibility.setPlanDetailsName(stringBuilder.toString());
-                        projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
                         projectPlanResponsibility.setUserAccount(commonService.thisUserAccount());
                         projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
                         projectPlanResponsibility.setCreator(commonService.thisUserAccount());

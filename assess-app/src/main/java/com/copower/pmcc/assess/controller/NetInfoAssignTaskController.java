@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -62,6 +63,8 @@ public class NetInfoAssignTaskController extends BaseController {
     private NetInfoRecordHouseDao netInfoRecordHouseDao;
     @Autowired
     private NetInfoRecordLandDao netInfoRecordLandDao;
+    @Autowired
+    private AssessmentCommonService assessmentCommonService;
 
     @RequestMapping(value = "/apply", name = "拍卖信息补充申请")
     public ModelAndView apply(String ids) throws BusinessException {
@@ -113,6 +116,7 @@ public class NetInfoAssignTaskController extends BaseController {
         NetInfoAssignTask data = netInfoAssignTaskService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("netInfoAssignTask", data);
         //创建考核任务
+        assessmentCommonService.generateAssessmentTask(processInsId,boxId,taskId,null,null);
         return modelAndView;
     }
 
@@ -126,6 +130,7 @@ public class NetInfoAssignTaskController extends BaseController {
     public HttpResult approvalCommit(ApprovalModelDto approvalModelDto, String processInsId) {
         try {
             netInfoAssignTaskService.approvalCommit(approvalModelDto, processInsId);
+
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("提交失败", e);

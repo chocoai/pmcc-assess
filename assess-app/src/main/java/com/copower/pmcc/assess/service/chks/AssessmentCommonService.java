@@ -20,6 +20,7 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -59,7 +60,7 @@ public class AssessmentCommonService {
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
-    private BaseParameterService baseParameterService;
+    private BpmRpcToolsService bpmRpcToolsService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
@@ -77,7 +78,7 @@ public class AssessmentCommonService {
             if (!projectInfoService.chksValidInitDate(projectInfo)) {
                 return;
             }
-            if (!projectInfoService.chksValidProject(projectInfo.getId())) {
+            if (!projectInfoService.chksValidProject(projectInfo == null ? null : projectInfo.getId())) {
                 return;
             }
 
@@ -97,6 +98,9 @@ public class AssessmentCommonService {
     private BoxApprovalLogVo getPreBoxApprovalLogVo(List<BoxApprovalLogVo> rows, String taskId) throws BpmException {
         if (CollectionUtils.isNotEmpty(rows)) {
             ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
+            if (activitiTaskNodeDto == null) {//找出代理人的任务
+                activitiTaskNodeDto = getAgentTaskNodeDto(taskId);
+            }
             if (activitiTaskNodeDto == null) return null;
             for (BoxApprovalLogVo row : rows) {
                 if (TaskHandleStateEnum.AGREE.getDesc().equalsIgnoreCase(row.getConclusion()) && row.getSorting() < activitiTaskNodeDto.getCurrentStep())
@@ -104,6 +108,19 @@ public class AssessmentCommonService {
             }
         }
         return null;
+    }
+
+    public ActivitiTaskNodeDto getAgentTaskNodeDto(String taskId) throws BpmException {
+        ActivitiTaskNodeDto activitiTaskNodeDto=null;
+        List<String> agents = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
+        if (CollectionUtils.isNotEmpty(agents)) {
+            for (String agent : agents) {
+                activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, agent);
+                if (activitiTaskNodeDto != null)
+                    break;
+            }
+        }
+        return activitiTaskNodeDto;
     }
 
     /**

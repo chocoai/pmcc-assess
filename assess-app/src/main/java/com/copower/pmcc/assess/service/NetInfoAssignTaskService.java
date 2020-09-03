@@ -16,6 +16,7 @@ import com.copower.pmcc.assess.dto.output.net.NetInfoRecordHouseVo;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
 import com.copower.pmcc.assess.service.event.project.NetInfoAssignTaskEvent;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
@@ -83,6 +84,8 @@ public class NetInfoAssignTaskService {
     private PublicService publicService;
     @Autowired
     private NetInfoRecordService netInfoRecordService;
+    @Autowired
+    private AssessmentCommonService assessmentCommonService;
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -181,8 +184,8 @@ public class NetInfoAssignTaskService {
     /**
      * 创建考核任务
      */
-    public void createAssessmentTask() {
-
+    public void createAssessmentTask(Integer boxId, String processInsId, String taskId) {
+        assessmentCommonService.generateAssessmentTask(processInsId,boxId,taskId,null,null);
     }
 
     public void approvalCommit(ApprovalModelDto approvalModelDto, String processInsId) {
@@ -204,6 +207,7 @@ public class NetInfoAssignTaskService {
                 });
             }
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            assessmentCommonService.createProjectTask(approvalModelDto,null,null);
         } catch (BpmException e) {
             e.printStackTrace();
             log.error("提交失败", e);
