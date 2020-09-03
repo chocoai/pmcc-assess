@@ -533,7 +533,6 @@
             }
         });
     }
-
     //引用房屋案例
     function showQuoteHouseCase() {
         quoteHouseCase.openCaseListBox(true);
