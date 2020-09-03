@@ -812,19 +812,11 @@
 
     //申请提交
     function commit() {
-        var result = $("#transaction_List").bootstrapTable('getData');
-        if (result.length == 0) {
-            notifySuccess('成功', '至少添加一条数据');
-            return false;
-        }
-
-        var id = $("#master_form").find("input[name='id']").val();
-        console.log(id + '==')
         Loading.progressShow("正在提交数据...");
         $.ajax({
             url: "${pageContext.request.contextPath}/netInfoAssignTask/applyCommit",
             type: "post",
-            data: {id: id},
+            data: {id: '${netInfoAssignTask.id}'},
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
@@ -843,16 +835,9 @@
 
     //返回修改
     function editCommit() {
-        var result = $("#transaction_List").bootstrapTable('getData');
-        if (result.length == 0) {
-            notifySuccess('成功', '至少添加一条数据');
-            return false;
-        }
-        var data = formParams("master_form");
-
         //返回修改要提交的数据
         var approvalModelDto = formSerializeArray($("#process_variable_form"));
-        approvalModelDto.businessDataJson = JSON.stringify(data);
+        approvalModelDto.assignTaskId = '${netInfoAssignTask.id}';
         Loading.progressShow("正在提交数据...");
         $.ajax({
             url: "${pageContext.request.contextPath}/netInfoAssignTask/editCommit",

@@ -34,6 +34,15 @@ public class NetInfoAssignTaskDao {
         return netInfoAssignTaskMapper.selectByExample(example);
     }
 
+    public NetInfoAssignTask getNetInfoAssignTaskBySource(String source, String creator) {
+        NetInfoAssignTaskExample example = new NetInfoAssignTaskExample();
+        example.createCriteria().andStatusIsNull().andSourceEqualTo(source).andCreatorEqualTo(creator);
+        List<NetInfoAssignTask> taskList = netInfoAssignTaskMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(taskList)) return null;
+        return taskList.get(0);
+    }
+
+
     /**
      * 新增数据
      *

@@ -53,14 +53,12 @@
 
                     <!-- 公共尾部模块引用 -->
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-
-                            <button id="commit_btn" class="btn btn-success" onclick="masterObj.commit();">
-                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            <button id="commit_btn" style="margin-left: 10px;" class="btn btn-primary" onclick="masterObj.commit();">
+                                提交
                             </button>
                         </div>
                     </div>
@@ -871,9 +869,7 @@
             notifySuccess('成功','至少添加一条数据');
             return false;
         }
-
         var id = $("#master_form").find("input[name='id']").val();
-        console.log(id+'==')
         Loading.progressShow("正在提交数据...");
         $.ajax({
             url: "${pageContext.request.contextPath}/netInfoAssignTask/applyCommit",
@@ -903,11 +899,9 @@
             notifySuccess('成功','至少添加一条数据');
             return false;
         }
-        var data = formParams("master_form");
-
         //返回修改要提交的数据
         var approvalModelDto = formSerializeArray($("#process_variable_form"));
-        approvalModelDto.businessDataJson = JSON.stringify(data);
+        approvalModelDto.assignTaskId = '${netInfoAssignTask.id}';
         Loading.progressShow("正在提交数据...");
         $.ajax({
             url: "${pageContext.request.contextPath}/netInfoAssignTask/editCommit",

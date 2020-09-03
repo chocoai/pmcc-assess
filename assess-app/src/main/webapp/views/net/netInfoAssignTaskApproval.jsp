@@ -61,8 +61,8 @@
             <!-- 公共尾部模块引用 -->
             <%@include file="/views/share/form_approval.jsp" %>
         </div>
-<%@include file="/views/share/main_footer.jsp" %>
-</div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
 </div>
 
 </body>
@@ -85,9 +85,8 @@
                     AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
-                }
-                else {
-                    AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
@@ -102,7 +101,8 @@
         detailInfo.prototype.loadDataLandList();
     })
 
-    var detailInfo = function () {};
+    var detailInfo = function () {
+    };
     detailInfo.prototype = {
         loadDataHouseList: function () {
             var cols = [];
@@ -143,7 +143,7 @@
                         str += row.unitNumber + "单元";
                     }
                     if (row.houseNumber) {
-                        str += row.houseNumber+ "号";
+                        str += row.houseNumber + "号";
                     }
 
                     if (str) {
@@ -200,17 +200,19 @@
                 }
             });
             cols.push({field: 'fileViewName', title: '附件'});
-            cols.push({
-                field: 'id', title: '查看网址', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="' + row.sourceSiteUrl + '" ><i class="fa fa-eye fa-white"></i></a>';
-                    str += '</div>';
-                    return str;
-                }
-            });
+            if ('${netInfoAssignTask.source}' == 'net') {
+                cols.push({
+                    field: 'id', title: '查看网址', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="' + row.sourceSiteUrl + '" ><i class="fa fa-eye fa-white"></i></a>';
+                        str += '</div>';
+                        return str;
+                    }
+                });
+            }
             $("#house_list").bootstrapTable('destroy');
-            TableInit("house_list", "${pageContext.request.contextPath}/netInfoAssignTask/houseList", cols, {
-                ids: '${netInfoAssignTask.netInfoIds}'
+            TableInit("house_list", "${pageContext.request.contextPath}/netInfoAssignTask/getHouseListByAssignTaskId", cols, {
+                assignTaskId: '${netInfoAssignTask.id}'
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -307,7 +309,7 @@
                         result += '变现周期：' + row.realizationCycle + '<br/>';
                     }
                     if (row.landRealizationRatios) {
-                        result += '变现率：' + row.landRealizationRatios* 100 + '%<br/>';
+                        result += '变现率：' + row.landRealizationRatios * 100 + '%<br/>';
                     }
                     if (row.plotRatio) {
                         result += '容积率：' + row.plotRatio + '<br/>';
@@ -353,17 +355,19 @@
             });
 
             cols.push({field: 'fileViewName', title: '附件'});
-            cols.push({
-                field: 'id', title: '查看网址', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + row.masterId + ')"><i class="fa fa-eye fa-white"></i></button>';
-                    str += '</div>';
-                    return str;
-                }
-            });
+            if ('${netInfoAssignTask.source}' == 'net') {
+                cols.push({
+                    field: 'id', title: '查看网址', formatter: function (value, row, index) {
+                        var str = '<div class="btn-margin">';
+                        str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + row.masterId + ')"><i class="fa fa-eye fa-white"></i></button>';
+                        str += '</div>';
+                        return str;
+                    }
+                });
+            }
             $("#land_list").bootstrapTable('destroy');
-            TableInit("land_list", "${pageContext.request.contextPath}/netInfoAssignTask/landList", cols, {
-                ids: '${netInfoAssignTask.netInfoIds}'
+            TableInit("land_list", "${pageContext.request.contextPath}/netInfoAssignTask/getLandListByAssignTaskId", cols, {
+                assignTaskId: '${netInfoAssignTask.id}'
             }, {
                 showColumns: false,
                 showRefresh: false,

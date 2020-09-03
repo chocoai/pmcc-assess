@@ -24,6 +24,7 @@ import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,7 +81,7 @@ public class NetInfoAssignTaskController extends BaseController {
     @RequestMapping(value = "/applyOffline", name = "线下案例申请")
     public ModelAndView applyOffline() throws BusinessException {
         NetInfoAssignTask netInfoAssignTask = netInfoAssignTaskService.getNetInfoAssignTaskBySource("offline");
-        if(netInfoAssignTask==null){
+        if (netInfoAssignTask == null) {
             netInfoAssignTask = new NetInfoAssignTask();
             netInfoAssignTask.setCreator(commonService.thisUserAccount());
             netInfoAssignTask.setSource("offline");//线下
@@ -112,7 +113,6 @@ public class NetInfoAssignTaskController extends BaseController {
         NetInfoAssignTask data = netInfoAssignTaskService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("netInfoAssignTask", data);
         //创建考核任务
-
         return modelAndView;
     }
 
@@ -135,26 +135,29 @@ public class NetInfoAssignTaskController extends BaseController {
 
     @RequestMapping(value = "/editView", name = "返回修改视图", method = RequestMethod.GET)
     public ModelAndView editView(Integer boxId, String processInsId, String taskId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("net/netInfoAssignTaskApply", processInsId, boxId, taskId, agentUserAccount);
+        String viewUrl = "net/netInfoAssignTaskApply";
         NetInfoAssignTask data = netInfoAssignTaskService.getDataByProcessInsId(processInsId);
+        if ("offline".equals(data.getSource())) {
+            viewUrl = "net/netInfoAssignTaskApplyOffline";
+        }
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(viewUrl, processInsId, boxId, taskId, agentUserAccount);
         modelAndView.addObject("netInfoAssignTask", data);
         return modelAndView;
     }
 
     @RequestMapping(value = "/editCommit", name = "修改提交", method = RequestMethod.POST)
     @ResponseBody
-    public HttpResult editCommit(String businessDataJson, ApprovalModelDto approvalModelDto) {
+    public HttpResult editCommit(Integer assignTaskId, ApprovalModelDto approvalModelDto) {
         try {
-            JSONObject jsonObject = JSON.parseObject(businessDataJson);
-            Integer id = Integer.valueOf(jsonObject.getString("id"));
-            NetInfoAssignTask netInfoAssignTask = netInfoAssignTaskService.getDataById(id);
-
-            List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds()));
-            List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
-            if (CollectionUtils.isNotEmpty(infoRecords)) {
-                for (NetInfoRecord netInfo : infoRecords) {
-                    netInfo.setStatus(3);
-                    netInfoRecordService.updateInfo(netInfo);
+            NetInfoAssignTask netInfoAssignTask = netInfoAssignTaskService.getDataById(assignTaskId);
+            if(StringUtils.isNotBlank(netInfoAssignTask.getNetInfoIds())){
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds()));
+                List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
+                if (CollectionUtils.isNotEmpty(infoRecords)) {
+                    for (NetInfoRecord netInfo : infoRecords) {
+                        netInfo.setStatus(3);
+                        netInfoRecordService.updateInfo(netInfo);
+                    }
                 }
             }
             netInfoAssignTaskService.processEditSubmit(approvalModelDto);

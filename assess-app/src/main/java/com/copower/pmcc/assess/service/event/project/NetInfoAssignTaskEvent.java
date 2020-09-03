@@ -72,6 +72,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
                 if (basicHouseCaseSummaryService.getCountByFullName(fullName) <= 0) {
                     BasicHouseCaseSummary basicHouseCaseSummary = new BasicHouseCaseSummary();
                     basicHouseCaseSummary.setCaseHouseId(o.getId());
+                    basicHouseCaseSummary.setSource(data.getSource());
                     basicHouseCaseSummary.setProvince(o.getProvince());
                     basicHouseCaseSummary.setCity(o.getCity());
                     basicHouseCaseSummary.setDistrict(o.getDistrict());
