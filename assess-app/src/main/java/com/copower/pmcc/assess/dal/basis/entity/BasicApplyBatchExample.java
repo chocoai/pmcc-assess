@@ -1185,6 +1185,76 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
         public Criteria andDraftFlagIsNull() {
             addCriterion("draft_flag is null");
             return (Criteria) this;
@@ -1242,6 +1312,66 @@ public class BasicApplyBatchExample {
 
         public Criteria andDraftFlagNotBetween(Boolean value1, Boolean value2) {
             addCriterion("draft_flag not between", value1, value2, "draftFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseIsNull() {
+            addCriterion("bis_query_case is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseIsNotNull() {
+            addCriterion("bis_query_case is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseEqualTo(Boolean value) {
+            addCriterion("bis_query_case =", value, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseNotEqualTo(Boolean value) {
+            addCriterion("bis_query_case <>", value, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseGreaterThan(Boolean value) {
+            addCriterion("bis_query_case >", value, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_query_case >=", value, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseLessThan(Boolean value) {
+            addCriterion("bis_query_case <", value, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_query_case <=", value, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseIn(List<Boolean> values) {
+            addCriterion("bis_query_case in", values, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseNotIn(List<Boolean> values) {
+            addCriterion("bis_query_case not in", values, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_query_case between", value1, value2, "bisQueryCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisQueryCaseNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_query_case not between", value1, value2, "bisQueryCase");
             return (Criteria) this;
         }
 
@@ -1552,76 +1682,6 @@ public class BasicApplyBatchExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIsNull() {
-            addCriterion("remark is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIsNotNull() {
-            addCriterion("remark is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkEqualTo(String value) {
-            addCriterion("remark =", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("remark <>", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("remark >", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("remark >=", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLessThan(String value) {
-            addCriterion("remark <", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("remark <=", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLike(String value) {
-            addCriterion("remark like", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotLike(String value) {
-            addCriterion("remark not like", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIn(List<String> values) {
-            addCriterion("remark in", values, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("remark not in", values, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("remark between", value1, value2, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
     }

@@ -26,7 +26,7 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetailId}');">引用备选案例
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetail.id}');">引用备选案例
                                         </button>
                                     </div>
                                 </div>
@@ -683,7 +683,7 @@
                 return '${quoteId}';
             },
             onSelect: function (id, name) {
-                applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
+                applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetail.id}');
             }
         });
         buildingCommon.autocompleteStart();
@@ -734,6 +734,6 @@
     };
 
     function showCaseQuoteModal() {
-        applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetailId}');
+        applyInfoQuote.showCaseOtherModal('${quoteId}','${applyBatchDetail.id}');
     }
 </script>

@@ -1,12 +1,13 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
+import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoAssignTaskDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
-import com.copower.pmcc.assess.service.ErpAreaService;
+import com.copower.pmcc.assess.service.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
@@ -17,6 +18,7 @@ import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoServic
 import com.copower.pmcc.assess.service.project.generate.GenerateReportItemService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.*;
+import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -53,7 +55,15 @@ public class DataBlockService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private ProjectSpotCheckEvent projectSpotCheckEvent;
+    private NetInfoAssignTaskService netInfoAssignTaskService;
+    @Autowired
+    private NetInfoRecordService netInfoRecordService;
+    @Autowired
+    private NetInfoRecordHouseService netInfoRecordHouseService;
+    @Autowired
+    private NetInfoRecordLandService netInfoRecordLandService;
+    @Autowired
+    private NetInfoAssignTaskDao netInfoAssignTaskDao;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -167,6 +177,28 @@ public class DataBlockService {
     }
 
     public void updateOldData(String processInsId) throws Exception {
-        projectSpotCheckEvent.summarySpotScore(processInsId);
+        //更新assignTaskId 和source
+        NetInfoAssignTask where = new NetInfoAssignTask();
+        List<NetInfoAssignTask> infoAssignTasks = netInfoAssignTaskDao.getNetInfoAssignTask(where);
+        if (CollectionUtils.isEmpty(infoAssignTasks)) return;
+        for (NetInfoAssignTask infoAssignTask : infoAssignTasks) {
+            if (StringUtils.isBlank(infoAssignTask.getNetInfoIds())) continue;
+            List<Integer> list = FormatUtils.transformString2Integer(infoAssignTask.getNetInfoIds());
+            if (!CollectionUtils.isEmpty(list)) {
+                for (Integer integer : list) {
+                    NetInfoRecordHouse infoRecordHouse = netInfoRecordHouseService.getSingleByMasterId(integer);
+                    if (infoRecordHouse != null) {
+                        infoRecordHouse.setAssignTaskId(infoAssignTask.getId());
+                        netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(infoRecordHouse);
+                    }
+
+                    NetInfoRecordLand infoRecordLand = netInfoRecordLandService.getSingleByMasterId(integer);
+                    if (infoRecordLand != null) {
+                        infoRecordLand.setAssignTaskId(infoAssignTask.getId());
+                        netInfoRecordLandService.saveAndUpdateNetInfoRecordLand(infoRecordLand);
+                    }
+                }
+            }
+        }
     }
 }

@@ -27,7 +27,7 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetailId}');">引用备选案例
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetail.id}');">引用备选案例
                                         </button>
                                     </div>
                                 </div>
@@ -35,7 +35,7 @@
                             <div class="card-body">
                                 <form id="frm_estate" class="form-horizontal">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
-                                    <input type="hidden" name="applyBatchDetailId" value="${applyBatchDetailId}">
+                                    <input type="hidden" name="applyBatchDetailId" value="${applyBatchDetail.id}">
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -732,14 +732,14 @@
         var province = estateCommon.estateForm.find("[name='province']").val();
         var city = estateCommon.estateForm.find("[name='city']").val();
         var search = estateCommon.estateForm.find("input[name='name']").val();
-        applyInfoQuote.showCaseEstateModal(province, city, search,'${applyBatchDetailId}');
+        applyInfoQuote.showCaseEstateModal(province, city, search,'${applyBatchDetail.id}');
     }
 
     //提示有相同楼盘
     function isNeedReferenceEstate() {
         $.getJSON('${pageContext.request.contextPath}/basicApplyBatch/isNeedReferenceEstate',{
             projectId:'${basicApplyBatch.projectId}',
-            batchDetailId:'${applyBatchDetailId}',
+            batchDetailId:'${applyBatchDetail.id}',
             province:estateCommon.estateForm.find("[name='province']").val(),
             city:estateCommon.estateForm.find("[name='city']").val(),
             estateName:estateCommon.estateForm.find("input[name='name']").val()

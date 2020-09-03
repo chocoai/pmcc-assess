@@ -26,9 +26,15 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetailId}');">
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetail.id}');">
                                             引用备选案例
                                         </button>
+                                        <c:if test="${true eq basicApplyBatch.bisQueryCase}">
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                    onclick="quoteHouseCase.openCaseListBox();">
+                                                查询案例
+                                            </button>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>
@@ -510,7 +516,7 @@
         </div>
     </div>
 </div>
-
+<%@include file="/views/project/stageSurvey/common/quoteHouseCase.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
@@ -535,7 +541,7 @@
                 return '${quoteId}';
             },
             onSelect: function (id, name) {
-                applyInfoQuote.showCaseOtherModal('${quoteId}', '${applyBatchDetailId}');
+                applyInfoQuote.showCaseOtherModal('${quoteId}', '${applyBatchDetail.id}');
             }
         });
         if (${projectPhase eq 'caseStudyExtend'}) {
@@ -588,6 +594,6 @@
     };
 
     function showCaseQuoteModal() {
-        applyInfoQuote.showCaseOtherModal('${quoteId}', '${applyBatchDetailId}');
+        applyInfoQuote.showCaseOtherModal('${quoteId}', '${applyBatchDetail.id}');
     }
 </script>

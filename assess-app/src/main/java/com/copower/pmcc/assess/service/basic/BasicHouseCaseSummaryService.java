@@ -109,7 +109,7 @@ public class BasicHouseCaseSummaryService {
     }
 
     public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary basicHouseCaseSummary) throws Exception {
-        BasicHouseCaseSummaryParamsDto paramsDto = new BasicHouseCaseSummaryParamsDto() ;
+        BasicHouseCaseSummaryParamsDto paramsDto = new BasicHouseCaseSummaryParamsDto();
         paramsDto.setAreaStart(areaStart);
         paramsDto.setAreaEnd(areaEnd);
         paramsDto.setTradingTimeEnd(tradingTimeEnd);
@@ -209,61 +209,105 @@ public class BasicHouseCaseSummaryService {
 
     private HSSFWorkbook writeBaseExcelData(List<BasicHouseCaseSummary> baseHouseList) {
         HSSFWorkbook wb = new HSSFWorkbook();
-        CellStyle style = getCellStyle(wb) ;
+        CellStyle style = getCellStyle(wb);
         List<BasicHouseCaseSummaryVo> vos = LangUtils.transform(baseHouseList, o -> getBasicHouseCaseSummaryVo(o));
         HSSFSheet sheet = wb.createSheet("基础数据");
-        sheet.setColumnWidth(1,10000);
-        sheet.setColumnWidth(2,10000);
-        sheet.setColumnWidth(3,3500);
-        sheet.setColumnWidth(4,3500);
-        sheet.setColumnWidth(5,3500);
-        sheet.setColumnWidth(6,3500);
-        sheet.setColumnWidth(7,6500);
-        sheet.setColumnWidth(8,6500);
-        sheet.setColumnWidth(9,3500);
-        sheet.setColumnWidth(10,3500);
+        sheet.setColumnWidth(1, 10000);
+        sheet.setColumnWidth(2, 10000);
+        sheet.setColumnWidth(3, 3500);
+        sheet.setColumnWidth(4, 3500);
+        sheet.setColumnWidth(5, 3500);
+        sheet.setColumnWidth(6, 3500);
+        sheet.setColumnWidth(7, 6500);
+        sheet.setColumnWidth(8, 6500);
+        sheet.setColumnWidth(9, 3500);
+        sheet.setColumnWidth(10, 3500);
         int rowNum = 0;
         Row rowOne = sheet.createRow(rowNum);
         rowNum++;
         for (int i = 0; i < 11; i++) {
             Cell cell = rowOne.createCell(i);
             switch (i) {
-                case 0: cell.setCellValue("序号");break;
-                case 1: cell.setCellValue("地址");break;
-                case 2: cell.setCellValue("街道");break;
-                case 3: cell.setCellValue("成交单价");break;
-                case 4: cell.setCellValue("类型");break;
-                case 5: cell.setCellValue("面积");break;
-                case 6: cell.setCellValue("成交价");break;
-                case 7: cell.setCellValue("成交时间");break;
-                case 8: cell.setCellValue("创建时间");break;
-                case 9: cell.setCellValue("申请人");break;
-                case 10: cell.setCellValue("审批人");break;
+                case 0:
+                    cell.setCellValue("序号");
+                    break;
+                case 1:
+                    cell.setCellValue("地址");
+                    break;
+                case 2:
+                    cell.setCellValue("街道");
+                    break;
+                case 3:
+                    cell.setCellValue("成交单价");
+                    break;
+                case 4:
+                    cell.setCellValue("类型");
+                    break;
+                case 5:
+                    cell.setCellValue("面积");
+                    break;
+                case 6:
+                    cell.setCellValue("成交价");
+                    break;
+                case 7:
+                    cell.setCellValue("成交时间");
+                    break;
+                case 8:
+                    cell.setCellValue("创建时间");
+                    break;
+                case 9:
+                    cell.setCellValue("申请人");
+                    break;
+                case 10:
+                    cell.setCellValue("审批人");
+                    break;
                 default:
                     break;
             }
             cell.setCellStyle(style);
         }
-        if (CollectionUtils.isNotEmpty(vos)){
+        if (CollectionUtils.isNotEmpty(vos)) {
             Iterator<BasicHouseCaseSummaryVo> iterator = vos.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 BasicHouseCaseSummaryVo summaryVo = iterator.next();
                 Row row = sheet.createRow(rowNum);
                 rowNum++;
                 for (int i = 0; i < 11; i++) {
                     Cell cell = row.createCell(i);
                     switch (i) {
-                        case 0: cell.setCellValue(rowNum);break;
-                        case 1: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getFullName()) ?summaryVo.getFullName():"");break;
-                        case 2: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getStreet()) ?summaryVo.getStreet():"");break;
-                        case 3: cell.setCellValue(summaryVo.getTradingUnitPrice() != null?summaryVo.getTradingUnitPrice().toString():"");break;
-                        case 4: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getHouseType()) ?summaryVo.getHouseType():"");break;
-                        case 5: cell.setCellValue(summaryVo.getArea() != null?summaryVo.getArea().toString():"");break;
-                        case 6: cell.setCellValue(summaryVo.getCurrentPrice() != null?summaryVo.getCurrentPrice().toString():"");break;
-                        case 7: cell.setCellValue(summaryVo.getTradingTime() != null?DateUtils.format(summaryVo.getTradingTime(),DateUtils.DATE_CHINESE_PATTERN):"");break;
-                        case 8: cell.setCellValue(summaryVo.getGmtCreated() != null?DateUtils.format(summaryVo.getGmtCreated(),DateUtils.DATE_CHINESE_PATTERN):"");break;
-                        case 9: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getCreatorName()) ?summaryVo.getCreatorName():summaryVo.getCreator());break;
-                        case 10: cell.setCellValue(StringUtils.isNotBlank(summaryVo.getApproverName()) ?summaryVo.getApproverName():summaryVo.getApprover());break;
+                        case 0:
+                            cell.setCellValue(rowNum);
+                            break;
+                        case 1:
+                            cell.setCellValue(StringUtils.isNotBlank(summaryVo.getFullName()) ? summaryVo.getFullName() : "");
+                            break;
+                        case 2:
+                            cell.setCellValue(StringUtils.isNotBlank(summaryVo.getStreet()) ? summaryVo.getStreet() : "");
+                            break;
+                        case 3:
+                            cell.setCellValue(summaryVo.getTradingUnitPrice() != null ? summaryVo.getTradingUnitPrice().toString() : "");
+                            break;
+                        case 4:
+                            cell.setCellValue(StringUtils.isNotBlank(summaryVo.getHouseType()) ? summaryVo.getHouseType() : "");
+                            break;
+                        case 5:
+                            cell.setCellValue(summaryVo.getArea() != null ? summaryVo.getArea().toString() : "");
+                            break;
+                        case 6:
+                            cell.setCellValue(summaryVo.getCurrentPrice() != null ? summaryVo.getCurrentPrice().toString() : "");
+                            break;
+                        case 7:
+                            cell.setCellValue(summaryVo.getTradingTime() != null ? DateUtils.format(summaryVo.getTradingTime(), DateUtils.DATE_CHINESE_PATTERN) : "");
+                            break;
+                        case 8:
+                            cell.setCellValue(summaryVo.getGmtCreated() != null ? DateUtils.format(summaryVo.getGmtCreated(), DateUtils.DATE_CHINESE_PATTERN) : "");
+                            break;
+                        case 9:
+                            cell.setCellValue(StringUtils.isNotBlank(summaryVo.getCreatorName()) ? summaryVo.getCreatorName() : summaryVo.getCreator());
+                            break;
+                        case 10:
+                            cell.setCellValue(StringUtils.isNotBlank(summaryVo.getApproverName()) ? summaryVo.getApproverName() : summaryVo.getApprover());
+                            break;
                         default:
                             break;
                     }
@@ -278,11 +322,11 @@ public class BasicHouseCaseSummaryService {
         HSSFWorkbook wb = new HSSFWorkbook();
         List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
         HSSFSheet wbSheet = wb.createSheet("申请人统计");
-        commonWriteStatisticsDtoExcel(statisticsDtoList, wbSheet,getCellStyle(wb));
+        commonWriteStatisticsDtoExcel(statisticsDtoList, wbSheet, getCellStyle(wb));
         return wb;
     }
 
-    private CellStyle getCellStyle(HSSFWorkbook wb){
+    private CellStyle getCellStyle(HSSFWorkbook wb) {
         HSSFCellStyle style = wb.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);//居中
         style.setWrapText(true);
@@ -295,9 +339,9 @@ public class BasicHouseCaseSummaryService {
         return style;
     }
 
-    private void commonWriteStatisticsDtoExcel(List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList, HSSFSheet sheet ,CellStyle style) {
-        sheet.setColumnWidth(0,6000);
-        sheet.setColumnWidth(1,6000);
+    private void commonWriteStatisticsDtoExcel(List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList, HSSFSheet sheet, CellStyle style) {
+        sheet.setColumnWidth(0, 6000);
+        sheet.setColumnWidth(1, 6000);
         int rowNum = 0;
         Row rowOne = sheet.createRow(rowNum);
         rowNum++;
@@ -311,7 +355,7 @@ public class BasicHouseCaseSummaryService {
             }
             cell.setCellStyle(style);
         }
-        if (CollectionUtils.isEmpty(statisticsDtoList)){
+        if (CollectionUtils.isEmpty(statisticsDtoList)) {
             return;
         }
         Iterator<StatisticsDto> iterator = statisticsDtoList.iterator();
@@ -336,7 +380,7 @@ public class BasicHouseCaseSummaryService {
         HSSFWorkbook wb = new HSSFWorkbook();
         List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
         HSSFSheet wbSheet = wb.createSheet("审核人统计");
-        commonWriteStatisticsDtoExcel(statisticsDtoList, wbSheet ,getCellStyle(wb));
+        commonWriteStatisticsDtoExcel(statisticsDtoList, wbSheet, getCellStyle(wb));
         return wb;
     }
 
@@ -349,8 +393,8 @@ public class BasicHouseCaseSummaryService {
      */
     public String reportData(BasicHouseCaseSummaryParamsDto paramsDto) throws Exception {
         List<BasicHouseCaseSummary> baseHouseList = customCaseMapper.findCaseBaseHouseList(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportApplyStatistics = customCaseMapper.findReportApplyStatistics(paramsDto.getEndDate(),  paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(),  paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportAuditStatistics = customCaseMapper.findReportAuditStatistics(paramsDto.getEndDate(),  paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(),  paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportApplyStatistics = customCaseMapper.findReportApplyStatistics(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> reportAuditStatistics = customCaseMapper.findReportAuditStatistics(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
         HSSFWorkbook baseWorkBook = writeBaseExcelData(baseHouseList);
         HSSFWorkbook applyWorkBook = writeApplyExcelData(reportApplyStatistics);
         HSSFWorkbook auditWorkBook = writeAuditExcelData(reportAuditStatistics);
@@ -377,8 +421,8 @@ public class BasicHouseCaseSummaryService {
         return path;
     }
 
-    public String uploadFilesToFTP(String path){
-        File file = new File(path) ;
+    public String uploadFilesToFTP(String path) {
+        File file = new File(path);
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(0);
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
@@ -436,6 +480,41 @@ public class BasicHouseCaseSummaryService {
         //通过id引用数据结构及关联的数据信息
         BasicHouseCaseSummary houseCaseSummary = getBasicHouseCaseSummaryById(id);
         if (houseCaseSummary == null) return null;
-        return basicApplyBatchService.referenceDataByDetailId(houseCaseSummary.getCaseHouseId(),projectId,planDetailsId);
+        return basicApplyBatchService.referenceDataByDetailId(houseCaseSummary.getCaseHouseId(), projectId, planDetailsId);
+    }
+
+    /**
+     * 根据楼盘名称判断是否有对应案例数据
+     *
+     * @param province
+     * @param city
+     * @param estateName
+     * @return
+     */
+    public Boolean hasCaseByEstateName(String province, String city, String estateName) {
+        if (StringUtils.isBlank(province) || StringUtils.isBlank(city) || StringUtils.isBlank(estateName)) return false;
+        BasicHouseCaseSummary where = new BasicHouseCaseSummary();
+        where.setProvince(province);
+        where.setCity(city);
+        where.setEstateName(estateName);
+        return basicHouseCaseSummaryDao.getBaseHouseSummaryCount(where) > 0;
+    }
+
+    /**
+     * 根据街道号判断是否有对应案例数据
+     *
+     * @param province
+     * @param city
+     * @param streetNumber
+     * @return
+     */
+    public Boolean hasCaseByStreetNumber(String province, String city, String streetNumber) {
+        if (StringUtils.isBlank(province) || StringUtils.isBlank(city) || StringUtils.isBlank(streetNumber))
+            return false;
+        BasicHouseCaseSummary where = new BasicHouseCaseSummary();
+        where.setProvince(province);
+        where.setCity(city);
+        where.setStreet(streetNumber);
+        return basicHouseCaseSummaryDao.getBaseHouseSummaryCount(where) > 0;
     }
 }

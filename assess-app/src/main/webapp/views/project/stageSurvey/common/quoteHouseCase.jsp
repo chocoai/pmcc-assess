@@ -339,7 +339,7 @@
     var quoteHouseCase = {};
     var houseFrm = $("#frmCaseBaseHouse");
 
-    quoteHouseCase.openCaseListBox = function(){
+    quoteHouseCase.openCaseListBox = function(canQuote){
         houseFrm.clearAll();
         AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, '', function (html, data) {
             houseFrm.find("select[name='tradingType']").empty().html(html).trigger('change');
@@ -351,7 +351,7 @@
             districtTarget: $("#district"),
 
         });
-        quoteHouseCase.loadDataList();
+        quoteHouseCase.loadDataList(canQuote);
         $("#divQuoteListBox").modal("show");
     };
 
@@ -402,7 +402,7 @@
 
     }
 
-    quoteHouseCase.loadDataList = function () {
+    quoteHouseCase.loadDataList = function (canQuote) {
         var cols = [];
         cols.push({
             field: 'name', title: '名称', formatter: function (value, row, index) {
@@ -442,8 +442,9 @@
                     str += '<button type="button" onclick="quoteHouseCase.findHouse(' + row.caseHouseId + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
-                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="quoteHouseCase.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
-
+                    if(true == canQuote){
+                        str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="quoteHouseCase.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
+                    }
                 } else {
                     str += '<button type="button" onclick="quoteHouseCase.showItem(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
                     str += '<i class="fa fa-search"></i>';

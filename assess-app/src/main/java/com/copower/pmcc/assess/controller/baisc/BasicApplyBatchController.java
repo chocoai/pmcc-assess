@@ -496,7 +496,7 @@ public class BasicApplyBatchController extends BaseController {
         if (parentBatchDetail != null) {
             modelAndView.addObject("quoteId", parentBatchDetail.getQuoteId());
         }
-        modelAndView.addObject("applyBatchDetailId", basicFormClassifyParamDto.getApplyBatchDetailId());
+        modelAndView.addObject("applyBatchDetail", applyBatchDetail);
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
         modelAndView.addObject("formClassify", basicFormClassifyParamDto.getFormClassify());
         modelAndView.addObject("tbId", basicFormClassifyParamDto.getTbId());

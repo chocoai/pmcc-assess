@@ -37,7 +37,11 @@ public class BasicApplyBatch {
 
     private String status;
 
+    private String remark;
+
     private Boolean draftFlag;
+
+    private Boolean bisQueryCase;
 
     private Boolean bisCase;
 
@@ -48,8 +52,6 @@ public class BasicApplyBatch {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String remark;
 
     public Integer getId() {
         return id;
@@ -187,12 +189,28 @@ public class BasicApplyBatch {
         this.status = status == null ? null : status.trim();
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
     public Boolean getDraftFlag() {
         return draftFlag;
     }
 
     public void setDraftFlag(Boolean draftFlag) {
         this.draftFlag = draftFlag;
+    }
+
+    public Boolean getBisQueryCase() {
+        return bisQueryCase;
+    }
+
+    public void setBisQueryCase(Boolean bisQueryCase) {
+        this.bisQueryCase = bisQueryCase;
     }
 
     public Boolean getBisCase() {
@@ -233,13 +251,5 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
     }
 }

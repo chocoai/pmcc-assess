@@ -19,13 +19,14 @@
     <result column="base_type" jdbcType="VARCHAR" property="baseType" />
     <result column="show_tab" jdbcType="BIT" property="showTab" />
     <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="draft_flag" jdbcType="BIT" property="draftFlag" />
+    <result column="bis_query_case" jdbcType="BIT" property="bisQueryCase" />
     <result column="bis_case" jdbcType="BIT" property="bisCase" />
     <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -88,8 +89,8 @@
   <sql id="Base_Column_List">
     id, process_ins_id, project_id, plan_details_id, reference_apply_batch_id, case_apply_batch_id, 
     province, city, classify, type, estate_id, estate_name, building_status, quote_id, 
-    base_type, show_tab, status, draft_flag, bis_case, bis_delete, creator, gmt_created, 
-    gmt_modified, remark
+    base_type, show_tab, status, remark, draft_flag, bis_query_case, bis_case, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchExample" resultMap="BaseResultMap">
     select
@@ -130,19 +131,19 @@
       province, city, classify, 
       type, estate_id, estate_name, 
       building_status, quote_id, base_type, 
-      show_tab, status, draft_flag, 
-      bis_case, bis_delete, creator, 
-      gmt_created, gmt_modified, remark
-      )
+      show_tab, status, remark, 
+      draft_flag, bis_query_case, bis_case, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{referenceApplyBatchId,jdbcType=INTEGER}, #{caseApplyBatchId,jdbcType=INTEGER}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, 
       #{buildingStatus,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, 
-      #{showTab,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, 
-      #{bisCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
-      )
+      #{showTab,jdbcType=BIT}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{draftFlag,jdbcType=BIT}, #{bisQueryCase,jdbcType=BIT}, #{bisCase,jdbcType=BIT}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -198,8 +199,14 @@
       <if test="status != null">
         status,
       </if>
+      <if test="remark != null">
+        remark,
+      </if>
       <if test="draftFlag != null">
         draft_flag,
+      </if>
+      <if test="bisQueryCase != null">
+        bis_query_case,
       </if>
       <if test="bisCase != null">
         bis_case,
@@ -215,9 +222,6 @@
       </if>
       <if test="gmtModified != null">
         gmt_modified,
-      </if>
-      <if test="remark != null">
-        remark,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -269,8 +273,14 @@
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="draftFlag != null">
         #{draftFlag,jdbcType=BIT},
+      </if>
+      <if test="bisQueryCase != null">
+        #{bisQueryCase,jdbcType=BIT},
       </if>
       <if test="bisCase != null">
         #{bisCase,jdbcType=BIT},
@@ -286,9 +296,6 @@
       </if>
       <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -352,8 +359,14 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=VARCHAR},
       </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
       <if test="record.draftFlag != null">
         draft_flag = #{record.draftFlag,jdbcType=BIT},
+      </if>
+      <if test="record.bisQueryCase != null">
+        bis_query_case = #{record.bisQueryCase,jdbcType=BIT},
       </if>
       <if test="record.bisCase != null">
         bis_case = #{record.bisCase,jdbcType=BIT},
@@ -369,9 +382,6 @@
       </if>
       <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.remark != null">
-        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -397,13 +407,14 @@
       base_type = #{record.baseType,jdbcType=VARCHAR},
       show_tab = #{record.showTab,jdbcType=BIT},
       status = #{record.status,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
       draft_flag = #{record.draftFlag,jdbcType=BIT},
+      bis_query_case = #{record.bisQueryCase,jdbcType=BIT},
       bis_case = #{record.bisCase,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      remark = #{record.remark,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -459,8 +470,14 @@
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="draftFlag != null">
         draft_flag = #{draftFlag,jdbcType=BIT},
+      </if>
+      <if test="bisQueryCase != null">
+        bis_query_case = #{bisQueryCase,jdbcType=BIT},
       </if>
       <if test="bisCase != null">
         bis_case = #{bisCase,jdbcType=BIT},
@@ -476,9 +493,6 @@
       </if>
       <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -501,13 +515,14 @@
       base_type = #{baseType,jdbcType=VARCHAR},
       show_tab = #{showTab,jdbcType=BIT},
       status = #{status,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
       draft_flag = #{draftFlag,jdbcType=BIT},
+      bis_query_case = #{bisQueryCase,jdbcType=BIT},
       bis_case = #{bisCase,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      remark = #{remark,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -10,10 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
-import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.dto.model.*;
 import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
@@ -305,13 +302,14 @@ public class AssessmentPerformanceService {
                     }
                 } else {
                     if (CollectionUtils.isEmpty(projectTaskList)) {
+                        BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(approvalModelDto.getProcessInsId());
                         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
                         projectPlanResponsibility.setProcessInsId(approvalModelDto.getProcessInsId());
                         if (projectInfo != null){
                             projectPlanResponsibility.setProjectId(projectInfo.getId());
                             projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
                         }else {
-                            projectPlanResponsibility.setProjectName(boxReDto.getCnName()+DateUtils.formatNowToYMD());
+                            projectPlanResponsibility.setProjectName(boxRuDto.getDescription());
                         }
                         if (projectPlanDetails != null) {
                             projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());

@@ -112,6 +112,8 @@ public class BasicEstateService extends BasicEntityAbstract {
     private BasicCommonQuoteFieldInfoService basicCommonQuoteFieldInfoService;
     @Autowired
     private BasicEstateStreetInfoService basicEstateStreetInfoService;
+    @Autowired
+    private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -418,10 +420,14 @@ public class BasicEstateService extends BasicEntityAbstract {
         if (basicEstate != null) {
             BasicApplyBatchDetail estateDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
             if (estateDetail != null) {
+                BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+                basicEstateStreetInfo.setEstateId(basicEstate.getId());
+                List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
                 estateDetail.setName(basicEstate.getName());
                 estateDetail.setDisplayName(basicEstate.getName());
                 estateDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(estateDetail.getId()));
-                setEstateBatchDetailModifyType(basicEstate,basicEstateLandState,estateDetail);
+                setEstateBatchDetailModifyType(basicEstate, basicEstateLandState, estateDetail);
+
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateDetail);
                 BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(estateDetail.getApplyBatchId());
                 if (basicApplyBatch != null) {
@@ -430,9 +436,14 @@ public class BasicEstateService extends BasicEntityAbstract {
                     basicApplyBatch.setProvince(basicEstate.getProvince());
                     basicApplyBatch.setCity(basicEstate.getCity());
                     //街道号
-                    BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
-                    basicEstateStreetInfo.setEstateId(basicEstate.getId());
-                    List<BasicEstateStreetInfo> streetInfoList = basicEstateStreetInfoService.basicEstateStreetInfoList(basicEstateStreetInfo);
+                    Boolean hasCase = basicHouseCaseSummaryService.hasCaseByEstateName(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getName());
+                    if (Boolean.FALSE.equals(hasCase) && !CollectionUtils.isEmpty(streetInfoList)) {
+                        for (BasicEstateStreetInfo estateStreetInfo : streetInfoList) {
+                            hasCase = basicHouseCaseSummaryService.hasCaseByStreetNumber(basicEstate.getProvince(), basicEstate.getCity(), estateStreetInfo.getStreetNumber());
+                            if (Boolean.TRUE.equals(hasCase)) break;
+                        }
+                    }
+                    basicApplyBatch.setBisQueryCase(hasCase);
                     if (!CollectionUtils.isEmpty(streetInfoList)) {
                         List<String> strs = LangUtils.transform(streetInfoList, o -> o.getStreetNumber());
                         if (!CollectionUtils.isEmpty(strs)) {
@@ -676,14 +687,14 @@ public class BasicEstateService extends BasicEntityAbstract {
         if (BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
             BasicEstate dbBasicEstate = getBasicEstateById(basicEstate.getId());
             if (dbBasicEstate == null) return;
-            List<String> fieldNameList = Lists.newArrayList("applyId","classify","type","quoteId","mapId","relevanceId","version","bisCase","bisEnable","bisDelete");
+            List<String> fieldNameList = Lists.newArrayList("applyId", "classify", "type", "quoteId", "mapId", "relevanceId", "version", "bisCase", "bisEnable", "bisDelete");
             fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
             Boolean isEqual = publicService.equalsObjectExcludeField(basicEstate, dbBasicEstate, fieldNameList);
             if (isEqual == false) {
                 applyBatchDetail.setModifyType(BasicDataHandleEnum.MODIFY.getKey());
                 return;
             }
-            fieldNameList = Lists.newArrayList("applyId","estateId","bisDelete");
+            fieldNameList = Lists.newArrayList("applyId", "estateId", "bisDelete");
             fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
             BasicEstateLandState dbEstateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
             isEqual = publicService.equalsObjectExcludeField(basicEstateLandState, dbEstateLandState, fieldNameList);

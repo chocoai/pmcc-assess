@@ -536,7 +536,7 @@
 
     //引用房屋案例
     function showQuoteHouseCase() {
-        quoteHouseCase.openCaseListBox();
+        quoteHouseCase.openCaseListBox(true);
     }
 </script>
 <script type="text/javascript">

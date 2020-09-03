@@ -42,6 +42,12 @@ public class BasicHouseCaseSummaryDao {
         return basicHouseCaseSummaryMapper.selectByExample(example);
     }
 
+    public long getBaseHouseSummaryCount(BasicHouseCaseSummary BasicHouseCaseSummary) {
+        BasicHouseCaseSummaryExample example = new BasicHouseCaseSummaryExample();
+        MybatisUtils.convertObj2Example(BasicHouseCaseSummary, example);
+        return basicHouseCaseSummaryMapper.countByExample(example);
+    }
+
     /**
      * 新增
      * @param BasicHouseCaseSummary

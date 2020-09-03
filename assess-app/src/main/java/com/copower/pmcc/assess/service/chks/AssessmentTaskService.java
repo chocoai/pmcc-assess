@@ -59,7 +59,6 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             if (boxRuDto == null) return;
             List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxRuDto.getBoxId(), activityId, assessmentTypeEnum.getValue());
             if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
-
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxRuDto.getBoxId());
             AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
             dto.setProcessInsId(processInsId);
@@ -67,6 +66,8 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             if (projectInfo != null) {
                 dto.setProjectId(projectInfo.getId());
                 dto.setProjectName(projectInfo.getProjectName());
+            }else {
+                dto.setProjectName(boxRuDto.getDescription());
             }
             dto.setTaskId(taskId);
             dto.setBoxId(boxReDto.getId());
