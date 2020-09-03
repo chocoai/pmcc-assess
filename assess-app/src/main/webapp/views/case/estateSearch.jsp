@@ -155,6 +155,8 @@
             }
             var cols = [];
             cols.push({field: 'estateName', title: '名称'});
+            cols.push({field: 'provinceName', title: '省'});
+            cols.push({field: 'cityName', title: '市'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
