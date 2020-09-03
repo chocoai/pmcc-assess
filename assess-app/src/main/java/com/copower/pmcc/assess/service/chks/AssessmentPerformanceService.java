@@ -310,6 +310,8 @@ public class AssessmentPerformanceService {
                         if (projectInfo != null){
                             projectPlanResponsibility.setProjectId(projectInfo.getId());
                             projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
+                        }else {
+                            projectPlanResponsibility.setProjectName(boxReDto.getCnName()+DateUtils.formatNowToYMD());
                         }
                         if (projectPlanDetails != null) {
                             projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
@@ -325,7 +327,7 @@ public class AssessmentPerformanceService {
                         projectPlanResponsibility.setUserAccount(commonService.thisUserAccount());
                         projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
                         projectPlanResponsibility.setCreator(commonService.thisUserAccount());
-                        projectPlanResponsibility.setConclusion(String.format("(考核)%s-%s", commonService.thisUserAccount(), approvalModelDto.getProcessInsId()));//
+                        projectPlanResponsibility.setConclusion(String.format("【考核】%s-%s", commonService.thisUserAccount(), approvalModelDto.getProcessInsId()));//
                         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
                         projectPlanResponsibility.setUrl(String.format("/%s%s?boxId=%s&processInsId=%s", applicationConstant.getAppKey(), boxReDto.getProcessDisplayUrl(), approvalModelDto.getBoxId(), approvalModelDto.getProcessInsId()));
                         bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);

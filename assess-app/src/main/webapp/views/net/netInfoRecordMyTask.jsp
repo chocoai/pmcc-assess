@@ -1025,7 +1025,6 @@
                     str += '</button>';
                     str += '</div>';
                     return str;
-
                 }
             });
             $("#" + detailInfo.prototype.config().table).bootstrapTable('destroy');
