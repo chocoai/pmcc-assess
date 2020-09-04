@@ -215,21 +215,21 @@ public class SurveyAssetInventoryContentService {
                     Boolean isBuildingNumberSame = false;
                     if (basicBuilding != null && StringUtils.isNotBlank(basicBuilding.getBuildingNumber())) {
                         inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicBuilding.getBuildingNumber());
-                        if (basicBuilding.getBuildingNumber().contains(declareRecord.getBuildingNumber())) {
+                        if (basicBuilding.getBuildingNumber().contains(StringUtils.defaultString(declareRecord.getBuildingNumber()))) {
                             isBuildingNumberSame = true;
                         }
                     }
                     Boolean isUnitNumberSame = false;
                     if (basicUnit != null && StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
                         inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicUnit.getUnitNumber());
-                        if (basicUnit.getUnitNumber().contains(declareRecord.getUnit())) {
+                        if (basicUnit.getUnitNumber().contains(StringUtils.defaultString(declareRecord.getUnit()))) {
                             isUnitNumberSame = true;
                         }
                     }
                     Boolean isHouseNumberSame = false;
                     if (basicHouse != null && StringUtils.isNotBlank(basicHouse.getHouseNumber())) {
                         inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicHouse.getHouseNumber());
-                        if (basicHouse.getHouseNumber().contains(declareRecord.getRoomNumber())) {
+                        if (basicHouse.getHouseNumber().contains(StringUtils.defaultString(declareRecord.getRoomNumber()))) {
                             isHouseNumberSame = true;
                         }
                     }
@@ -240,7 +240,7 @@ public class SurveyAssetInventoryContentService {
                     inventoryContent.setRegistration(declareRecord.getHousingStructure());
                     if (basicBuilding != null) {
                         String structure = baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory());
-                        if (StringUtils.defaultString(structure).contains(declareRecord.getHousingStructure())) {
+                        if (StringUtils.defaultString(structure).contains(StringUtils.defaultString(declareRecord.getHousingStructure()))) {
                             inventoryContent.setActual(declareRecord.getHousingStructure());
                         } else {
                             inventoryContent.setActual(structure);
