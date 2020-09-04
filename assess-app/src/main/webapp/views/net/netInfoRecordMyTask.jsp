@@ -17,7 +17,6 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">
@@ -1015,12 +1014,14 @@
             cols.push({
                 field: 'id', width: '9%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="补全信息" onclick="detailInfo.prototype.showTableListModal(' + row.id + ',' + row.status + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<button onclick="detailInfo.prototype.showTableListModal(' + row.id + ',' + row.status + ')" style="margin-left: 5px;" class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="补全信息">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
+
                     str += '<button onclick="detailInfo.prototype.openItem(' + index + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看网址">';
                     str += '<i class="fa fa-eye"></i>';
                     str += '</button>';
-                    //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="关闭" onclick="detailInfo.prototype.closeModal(' + row.id + ')"><i class="fa fa-trash-o"></i></a>';
+
                     str += '<button onclick="detailInfo.prototype.closeModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="关闭">';
                     str += '<i class="fa fa-times"></i>';
                     str += '</button>';
@@ -1310,7 +1311,7 @@
                         idArray.push(item.id);
                     }
                 })
-                var ids = idArray.join()
+                var ids = idArray.join();
                 $("#selectIds").val(ids);
                 //确认
                 var href = "${pageContext.request.contextPath}/netInfoAssignTask/apply";

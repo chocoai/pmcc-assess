@@ -99,6 +99,36 @@ public class NetInfoAssignTaskService {
             ProcessUserDto processUserDto = submitTask(netInfoAssignTask, baseParameterEnum);
             if (processUserDto != null) netInfoAssignTask.setProcessInsId(processUserDto.getProcessInsId());
             netInfoAssignTaskDao.modifyNetInfoAssignTask(netInfoAssignTask);
+            //更新house、land中没有设置assignTaskId的数据
+            if (StringUtils.isNotBlank(netInfoAssignTask.getNetInfoIds())) {
+                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds()));
+                List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
+                if (CollectionUtils.isNotEmpty(infoRecords)) {
+                    for (NetInfoRecord netInfo : infoRecords) {
+                        netInfo.setStatus(3);
+                        netInfoRecordService.updateInfo(netInfo);
+                    }
+                }
+                List<NetInfoRecordHouse> houses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);
+                if (CollectionUtils.isNotEmpty(houses)) {
+                    for (NetInfoRecordHouse house : houses) {
+                        if (house.getAssignTaskId() == null) {
+                            house.setAssignTaskId(id);
+                            netInfoRecordHouseDao.updateNetInfoRecordHouse(house,false);
+                        }
+                    }
+                }
+                List<NetInfoRecordLand> lands = netInfoRecordLandDao.getLandListByMasterIds(integers);
+                if(CollectionUtils.isNotEmpty(lands)){
+                    for (NetInfoRecordLand land : lands) {
+                        if (land.getAssignTaskId() == null) {
+                            land.setAssignTaskId(id);
+                            netInfoRecordLandDao.updateNetInfoRecordLand(land, true);
+                        }
+                    }
+                }
+            }
+
             //修改状态
             List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByAssignTaskId(id);
             if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
@@ -115,16 +145,7 @@ public class NetInfoAssignTaskService {
                 });
             }
 
-            if (StringUtils.isNotBlank(netInfoAssignTask.getNetInfoIds())) {
-                List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(netInfoAssignTask.getNetInfoIds()));
-                List<NetInfoRecord> infoRecords = LangUtils.transform(integers, o -> netInfoRecordDao.getInfoById(o));
-                if (CollectionUtils.isNotEmpty(infoRecords)) {
-                    for (NetInfoRecord netInfo : infoRecords) {
-                        netInfo.setStatus(3);
-                        netInfoRecordService.updateInfo(netInfo);
-                    }
-                }
-            }
+
         } catch (BusinessException e) {
             throw new BusinessException(e.getMessage());
         }
@@ -185,7 +206,7 @@ public class NetInfoAssignTaskService {
      * 创建考核任务
      */
     public void createAssessmentTask(Integer boxId, String processInsId, String taskId) {
-        assessmentCommonService.generateAssessmentTask(processInsId,boxId,taskId,null,null);
+        assessmentCommonService.generateAssessmentTask(processInsId, boxId, taskId, null, null);
     }
 
     public void approvalCommit(ApprovalModelDto approvalModelDto, String processInsId) {
@@ -207,7 +228,7 @@ public class NetInfoAssignTaskService {
                 });
             }
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
-            assessmentCommonService.createProjectTask(approvalModelDto,null,null);
+            assessmentCommonService.createProjectTask(approvalModelDto, null, null);
         } catch (BpmException e) {
             e.printStackTrace();
             log.error("提交失败", e);
