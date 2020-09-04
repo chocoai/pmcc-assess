@@ -65,7 +65,7 @@ public class SurveyAssetInventoryController {
                 baseService.writeExceptionInfo(e);
             }
         }
-        setModelViewParam(assetInfoItem.getInventoryId(), declareRecord, modelAndView);
+        setModelViewParam(assetInfoItemId, declareRecord, modelAndView);
         modelAndView.addObject("assetInfoItem", assetInfoItem);
         modelAndView.addObject("masterName", assetInfoItem.getName());
         return modelAndView;
