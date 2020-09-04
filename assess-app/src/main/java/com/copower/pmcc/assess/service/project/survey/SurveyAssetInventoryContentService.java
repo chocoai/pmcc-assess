@@ -183,9 +183,9 @@ public class SurveyAssetInventoryContentService {
         BasicHouse basicHouse = null;
         List<BasicEstateStreetInfo> streetInfoList = null;
         List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareRecord.getId());
-        if(CollectionUtils.isNotEmpty(applyList)){
+        if (CollectionUtils.isNotEmpty(applyList)) {
             List<KeyValueDto> keyValueDtos = JSON.parseArray(applyList.get(0).getStructuralInfo(), KeyValueDto.class);
-            if(CollectionUtils.isNotEmpty(keyValueDtos)){
+            if (CollectionUtils.isNotEmpty(keyValueDtos)) {
                 for (KeyValueDto keyValueDto : keyValueDtos) {
                     if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.ESTATE.getKey())) {
                         streetInfoList = basicEstateStreetInfoService.getStreetInfoListByEstateId(Integer.valueOf(keyValueDto.getValue()));
@@ -213,21 +213,21 @@ public class SurveyAssetInventoryContentService {
                         }
                     }
                     Boolean isBuildingNumberSame = false;
-                    if (basicBuilding != null) {
+                    if (basicBuilding != null && StringUtils.isNotBlank(basicBuilding.getBuildingNumber())) {
                         inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicBuilding.getBuildingNumber());
                         if (basicBuilding.getBuildingNumber().contains(declareRecord.getBuildingNumber())) {
                             isBuildingNumberSame = true;
                         }
                     }
                     Boolean isUnitNumberSame = false;
-                    if (basicUnit != null) {
+                    if (basicUnit != null && StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
                         inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicUnit.getUnitNumber());
                         if (basicUnit.getUnitNumber().contains(declareRecord.getUnit())) {
                             isUnitNumberSame = true;
                         }
                     }
                     Boolean isHouseNumberSame = false;
-                    if (basicHouse != null) {
+                    if (basicHouse != null && StringUtils.isNotBlank(basicHouse.getHouseNumber())) {
                         inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicHouse.getHouseNumber());
                         if (basicHouse.getHouseNumber().contains(declareRecord.getRoomNumber())) {
                             isHouseNumberSame = true;

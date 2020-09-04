@@ -303,32 +303,4 @@ public class ProjectTaskController extends BaseController {
         return bootstrapTableVo;
     }
 
-
-    /**
-     * 考核参数设置
-     *
-     * @param boxId
-     * @param boxReActivitiId
-     * @param modelAndView
-     */
-    private void setCheckParams(Integer boxId, Integer boxReActivitiId, String processInsId, ModelAndView modelAndView) {
-        //当前节点  可以查看的权限节点信息列表
-        try {
-            if (!modelAndView.getModelMap().containsAttribute(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()))) {
-                modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
-            }
-            if (!modelAndView.getModelMap().containsAttribute(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()))) {
-                modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
-            }
-            if (boxReActivitiId != null) {
-                //modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
-            } else {
-                //modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getActivityDtoListByProcessInsId(processInsId,boxId));
-            }
-            //modelAndView.addObject("chksExaminePeopleList", chksAssessmentProjectPerformanceService.getExaminePeopleList(processInsId,boxId));
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-        }
-    }
-
 }

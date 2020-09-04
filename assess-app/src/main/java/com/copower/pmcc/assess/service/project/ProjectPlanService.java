@@ -196,7 +196,7 @@ public class ProjectPlanService {
         RLock lock = redissonClient.getLock(prefix);
         boolean res = false;
         try { // 尝试加锁,最多等待10秒,上锁以后20秒自动解锁
-            res = lock.tryLock(10, 20, TimeUnit.SECONDS);
+            res = lock.tryLock(30, 20, TimeUnit.SECONDS);
             if (!res) {//加锁不成功,不执行逻辑
                 logger.debug("----enterNextStage, Did not get the lock");
                 return;

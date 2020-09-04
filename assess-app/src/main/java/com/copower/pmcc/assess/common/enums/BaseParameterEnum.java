@@ -58,8 +58,7 @@ public enum BaseParameterEnum {
     NET_INFO_UPGRADE_PROCESS_KEY("net.info.upgrade.process.key", "拍卖信息升级", "box"),
     CASE_BASE_INFO_APPLY_KEY("case.base.info.apply.key", "案例信息申请key", "box"),
     DATA_LAND_LEVEL_APPLY_KEY("data.land.level.apply.key", "土地级别流程申请key", "box"),
-    CASE_BASE_INFO_BATCH_APPLY_KEY("case.base.info.batch.apply.key", "案例信息批量申请key", "box"),
-    CASE_ASSIGN_APPLY_KEY("case.assign.apply.key", "案例信息补充申请key", "box");
+    CASE_BASE_INFO_BATCH_APPLY_KEY("case.base.info.batch.apply.key", "案例信息批量申请key", "box");
 
     private String parameterKey;
     private String remarks;
