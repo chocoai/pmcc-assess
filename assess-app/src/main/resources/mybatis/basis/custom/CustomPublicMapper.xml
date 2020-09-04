@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomPublicMapper">
+    <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.custom.entity.CustomSurveyEstateTimes">
+        <result column="estate_name" property="estateName" jdbcType="VARCHAR"/>
+        <result column="survey_count" property="surveyCount" jdbcType="INTEGER"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="survey_date" property="surveyDate" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getSurveyEstateTimesList" parameterType="map" resultMap="BaseResultMap">
+        SELECT A.estate_name,COUNT(1) as survey_count,GROUP_CONCAT(C.project_name) as project_name,
+        GROUP_CONCAT(date_format(A.gmt_created,'%Y-%m-%d') ORDER BY A.id DESC) as survey_date  FROM tb_basic_apply_batch A
+        JOIN tb_project_plan_details B ON A.plan_details_id=B.id
+        JOIN tb_project_info C ON A.project_id=C.id
+        WHERE A.project_id
+        in (
+        SELECT D.id FROM tb_project_info D JOIN tb_project_member E ON D.id=E.project_id WHERE 1=1
+        <if test="userAccount!=null and userAccount!=''">
+            AND E.user_account_manager = #{userAccount}
+        </if>
+        ) AND A.bis_delete=0
+        <if test="projectPhaseId!=null">
+            AND B.project_phase_id = #{projectPhaseId}
+        </if>
+        GROUP BY A.estate_name
+        ORDER BY A.id DESC
+    </select>
+</mapper>
+
