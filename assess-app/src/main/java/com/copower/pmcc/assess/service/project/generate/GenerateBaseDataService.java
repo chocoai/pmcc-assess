@@ -1,20 +1,17 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.assess.common.*;
-import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
-import com.copower.pmcc.assess.common.enums.report.ReportFieldUniversalBankEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldJiansheBankEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldUniversalBankEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -29,7 +26,6 @@ import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
-import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -49,16 +45,21 @@ import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
-import com.copower.pmcc.erp.api.dto.*;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.*;
+import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.StringUtil;
 import com.google.common.base.Objects;
 import com.google.common.collect.*;
-import javafx.print.PageOrientation;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -67,7 +68,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-import javax.websocket.RemoteEndpoint;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -5858,8 +5858,9 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
-        if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
-            for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
+        List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.transformFullJudgeList(this.schemeJudgeObjectDeclareList);
+        if (CollectionUtils.isNotEmpty(judgeObjects)) {
+            for (SchemeJudgeObject schemeJudgeObject : judgeObjects) {
                 List<SchemeReportFileItem> schemeReportFileItemList = schemeReportFileService.getReportListBySchemeJudgeObjectId(schemeJudgeObject.getId());
                 if (CollectionUtils.isNotEmpty(schemeReportFileItemList)) {
                     builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);

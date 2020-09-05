@@ -673,17 +673,19 @@ public class GenerateMdIncomeService implements Serializable {
                 if (i != 0) {
                     dateRangeBuilder.append(StringUtils.repeat(" ", 3));
                 }
-                dateRangeBuilder.append("第");
-                dateRangeBuilder.append(getChineseNumber(i));
-                dateRangeBuilder.append("段");
-                dateRangeBuilder.append(DateUtils.format(vo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
-                dateRangeBuilder.append("-");
-                if (vo.getEndDate() != null) {
-                    dateRangeBuilder.append(DateUtils.format(vo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
-                } else {
-                    dateRangeBuilder.append("未知");
+                if(leaseVoList.size()>1){
+                    dateRangeBuilder.append("第");
+                    dateRangeBuilder.append(getChineseNumber(i));
+                    dateRangeBuilder.append("段");
+                    dateRangeBuilder.append(DateUtils.format(vo.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN));
+                    dateRangeBuilder.append("-");
+                    if (vo.getEndDate() != null) {
+                        dateRangeBuilder.append(DateUtils.format(vo.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                    } else {
+                        dateRangeBuilder.append("未知");
+                    }
+                    stringBuilder.append(dateRangeBuilder.toString());
                 }
-                stringBuilder.append(dateRangeBuilder.toString());
 
                 StringBuilder priceExplainBuilder = new StringBuilder(8);
                 String singleKey = new String();
@@ -706,7 +708,7 @@ public class GenerateMdIncomeService implements Serializable {
                 }
                 stringBuilder.append(priceExplainBuilder.toString());
 
-                if (leaseVoList.size() > 1) {
+                if (leaseVoList.size() > 0) {
                     linkedList.add(stringBuilder.toString());
                 } else {
                     linkedList.add(singleKey);
