@@ -1327,9 +1327,6 @@ public class SchemeJudgeObjectService {
                 List<SchemeJudgeObject> childJudgeObjectList = getListByPid(judgeObject.getId());
                 if(CollectionUtils.isNotEmpty(childJudgeObjectList)){
                     for (SchemeJudgeObject schemeJudgeObject : childJudgeObjectList) {
-                        if (Boolean.TRUE.equals(schemeJudgeObject.getBisSplit())) {
-                            continue;
-                        }
                         resultList.add(schemeJudgeObject);
                     }
                 }
