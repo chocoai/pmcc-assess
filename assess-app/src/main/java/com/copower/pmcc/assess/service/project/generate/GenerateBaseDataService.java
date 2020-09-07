@@ -3818,7 +3818,7 @@ public class GenerateBaseDataService {
                     builder.write(number + "-1");
                 } else {
                     Integer splitNumber = schemeJudgeObject.getSplitNumber();
-                    builder.write(number + splitNumber == null ? "" : "-" + splitNumber);
+                    builder.write(number + (splitNumber == null ? "" : "-" + splitNumber));
                 }
 
                 builder.insertCell();
