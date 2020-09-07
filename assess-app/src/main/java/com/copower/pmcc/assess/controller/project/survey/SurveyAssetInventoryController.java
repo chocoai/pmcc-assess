@@ -58,14 +58,15 @@ public class SurveyAssetInventoryController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(applyViewName);
         SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(assetInfoItemId);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(assetInfoItem.getDeclareId());
+        SurveyAssetInventory assetInventory = null;
         if (assetInfoItem.getInventoryId() == null || assetInfoItem.getInventoryId() == 0) {
             try {
-                surveyAssetInventoryService.initSurveyAssetInventory(assetInfoItemId);
+                assetInventory = surveyAssetInventoryService.initSurveyAssetInventory(assetInfoItemId);
             } catch (BusinessException e) {
                 baseService.writeExceptionInfo(e);
             }
         }
-        setModelViewParam(assetInfoItemId, declareRecord, modelAndView);
+        setModelViewParam(assetInventory != null ? assetInventory.getId() : null, declareRecord, modelAndView);
         modelAndView.addObject("assetInfoItem", assetInfoItem);
         modelAndView.addObject("masterName", assetInfoItem.getName());
         return modelAndView;
