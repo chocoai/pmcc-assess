@@ -106,4 +106,20 @@ public class ProjectPlanDetailsController {
         List<ProjectPhase> projectPhaseList = projectPlanDetailsService.getProjectPhaseListByPlanId(planId);
         return new BootstrapTableVo(page.getTotal(), projectPhaseList);
     }
+
+    @PostMapping(name = "绑定区域", value = "/bindAreaGroup")
+    public HttpResult bindAreaGroup(Integer planDetailsId, Integer areaGroupId,String areaName) {
+        try {
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            if (planDetails != null) {
+                planDetails.setAreaId(areaGroupId);
+                planDetails.setPlanRemarks(areaName);
+                projectPlanDetailsService.saveProjectPlanDetails(planDetails);
+            }
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "绑定区域");
+            return HttpResult.newErrorResult("绑定区域异常");
+        }
+    }
 }

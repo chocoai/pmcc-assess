@@ -5,10 +5,12 @@ import com.copower.pmcc.assess.dal.basis.dao.project.compile.CompileReportDao;
 import com.copower.pmcc.assess.dal.basis.entity.CompileReport;
 import com.copower.pmcc.assess.dal.basis.entity.CompileReportDetail;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.dto.input.project.compile.CompileReportApplyDto;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.CommonService;
@@ -33,22 +35,22 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Autowired
     private CompileReportService compileReportService;
     @Autowired
-    private ProjectPhaseService projectPhaseService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
+    private SchemeAreaGroupService schemeAreaGroupService;
+
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageCompile/taskCompileIndex", "", 0, "0", "");
         CompileReport compileReport = compileReportService.getCompileReportByPlanDetailsId(projectPlanDetails.getId());
         if (compileReport == null) {
-            ProjectPlanDetails pPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(projectPlanDetails.getPid());
             compileReport = new CompileReport();
             compileReport.setProjectId(projectPlanDetails.getProjectId());
             compileReport.setPlanDetailsId(projectPlanDetails.getId());
             compileReport.setCreator(commonService.thisUserAccount());
             compileReportDao.addCompileReport(compileReport);
         }
+        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectPlanDetails.getProjectId());
+        modelAndView.addObject("areaGroupList", areaGroupList);
         compileReportService.initReportDetail(projectPlanDetails);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;

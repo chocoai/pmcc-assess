@@ -44,62 +44,7 @@ public class CompileReportService {
     @Autowired
     private SchemeAreaGroupDao schemeAreaGroupDao;
     @Autowired
-    private ProjectPlanDetailsDao projectPlanDetailsDao;
-    @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
-    private GenerateCommonMethod generateCommonMethod;
-    @Autowired
     private DataReportAnalysisBackgroundService dataReportAnalysisBackgroundService;
-
-    /**
-     * 初始化计划信息
-     *
-     * @param projectPlan
-     */
-    public void initializePlan(ProjectPlan projectPlan) {
-        Integer planId = projectPlan.getId();
-        Integer projectId = projectPlan.getProjectId();
-        Integer workStageId = projectPlan.getWorkStageId();
-        ProjectPlanDetails projectPlanDetailsWhere = new ProjectPlanDetails();
-        projectPlanDetailsWhere.setProjectId(projectId);
-        projectPlanDetailsWhere.setPlanId(planId);
-        List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getListObject(projectPlanDetailsWhere);
-        if (CollectionUtils.isNotEmpty(planDetails)) {
-            return;//避免重复初始化
-        }
-        List<SchemeAreaGroup> schemeAreaGroups = schemeAreaGroupDao.getAreaGroupEnableByProjectId(projectId);
-        int i = 1;
-        //一级分类 地址
-        if (CollectionUtils.isNotEmpty(schemeAreaGroups)) {
-            for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroups) {
-                ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-                projectPlanDetails.setProjectWorkStageId(workStageId);
-                projectPlanDetails.setPlanId(planId);
-                projectPlanDetails.setProjectId(projectId);
-                projectPlanDetails.setProjectPhaseName(schemeAreaGroup.getAreaName());
-                projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-                projectPlanDetails.setAreaId(schemeAreaGroup.getId());
-                projectPlanDetails.setBisLastLayer(false);
-                projectPlanDetails.setSorting(i++);
-                projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-            }
-        }
-    }
-
-    /**
-     * 根据区域id获取报告分析数据
-     *
-     * @param areaId
-     * @param reportAnalysisType
-     * @return
-     */
-    public List<CompileReportDetail> getCompileReportDetailList(Integer areaId, Integer reportAnalysisType) {
-        CompileReportDetail where = new CompileReportDetail();
-        where.setAreaId(areaId);
-        where.setReportAnalysisType(reportAnalysisType);
-        return compileReportDetailDao.getReportDetailList(where);
-    }
 
     /**
      * 保存分析信息
@@ -148,7 +93,8 @@ public class CompileReportService {
         CompileReportDetail compileReportDetail = null;
         for (BaseDataDic baseDataDic : dataDicList) {
             SchemeAreaGroup schemeAreaGroup = schemeAreaGroupDao.getSchemeAreaGroup(projectPlanDetails.getAreaId());
-            DataReportAnalysis analysis = dataReportAnalysisBackgroundService.getReportAnalysisByAreaId(schemeAreaGroup.getDistrict(), baseDataDic.getId(), schemeAreaGroup.getValueTimePoint());
+            if (schemeAreaGroup == null) continue;
+            DataReportAnalysis analysis = dataReportAnalysisBackgroundService.getReportAnalysisByAreaId(schemeAreaGroup.getId(), baseDataDic.getId());
             //根据各种条件获取对应的模板数据
             compileReportDetail = new CompileReportDetail();
             compileReportDetail.setCreator(commonService.thisUserAccount());

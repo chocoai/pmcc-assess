@@ -5,9 +5,12 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.DataReportAnalysis;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +31,7 @@ public class DataReportAnalysisBackgroundService {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ErpAreaService erpAreaService;
+    private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private DataReportTemplateItemService dataReportTemplateItemService;
 
@@ -50,24 +53,27 @@ public class DataReportAnalysisBackgroundService {
         }
     }
 
-    public DataReportAnalysis getReportAnalysisByAreaId(String district, Integer type, Date time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+    /**
+     * 获取该区域配置的模板
+     *
+     * @param areaId
+     * @param type
+     * @return
+     */
+    public DataReportAnalysis getReportAnalysisByAreaId(Integer areaId, Integer type) {
+        if (areaId == null || type == null) return null;
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
+        if (schemeAreaGroup == null) return null;
         BaseDataDic cacheDataDicByFieldName = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND);
         DataReportAnalysis dataReportAnalysis = new DataReportAnalysis();
         dataReportAnalysis.setMarketBackgroundType(type);
-        dataReportAnalysis.setDistrict(district);
-        String formatTime = sdf.format(time);
-        dataReportAnalysis.setRelYear(Integer.valueOf(formatTime));
+        dataReportAnalysis.setProvince(schemeAreaGroup.getProvince());
+        dataReportAnalysis.setCity(schemeAreaGroup.getCity());
+        dataReportAnalysis.setDistrict(schemeAreaGroup.getDistrict());
+        dataReportAnalysis.setRelYear(DateUtils.getYear(schemeAreaGroup.getValueTimePoint()));
         dataReportAnalysis.setReportAnalysisType(cacheDataDicByFieldName.getId());
         List<DataReportAnalysis> dataReportAnalysisList = dataReportAnalysisDao.getDataReportAnalysisList(dataReportAnalysis);
-        if(CollectionUtils.isNotEmpty(dataReportAnalysisList)){
-            return dataReportAnalysisList.get(0);
-        }
-        dataReportAnalysis.setRelYear(null);
-        dataReportAnalysisList = dataReportAnalysisDao.getDataReportAnalysisList(dataReportAnalysis);
-        if(CollectionUtils.isNotEmpty(dataReportAnalysisList)){
-            return dataReportAnalysisList.get(0);
-        }
-        return null;
+        if (CollectionUtils.isEmpty(dataReportAnalysisList)) return null;
+        return dataReportAnalysisList.get(0);
     }
 }
