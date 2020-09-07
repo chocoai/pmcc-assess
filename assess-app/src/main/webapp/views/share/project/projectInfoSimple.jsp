@@ -310,28 +310,6 @@
                     notifyInfo('提示','有效合同为0');
                     return false;
                 }
-                <%--contractObj.getProjectById('${projectInfo.id}', function (data) {--%>
-                    <%--if (data.contractList) {--%>
-                        <%--if (data.contractList.length >= 1) {--%>
-                            <%--//把之前的累加上--%>
-                            <%--$.each(data.contractList, function (i, item) {--%>
-                                <%--uuids.push(item.key);--%>
-                                <%--names.push(item.value);--%>
-                            <%--});--%>
-                        <%--}--%>
-                    <%--}--%>
-                    <%--//去重--%>
-                    <%--uuids = contractObj.unique(uuids);--%>
-                    <%--names = contractObj.unique(names);--%>
-                    <%--contractObj.projectUpdate({--%>
-                        <%--id: '${projectInfo.id}',--%>
-                        <%--contractId: uuids.join(","),--%>
-                        <%--contractName: names.join(",")--%>
-                    <%--}, function () {--%>
-                        <%--$(_this).closest('.input-group').find("label[name='contractName']").html(viewArray.join("/ "));--%>
-                        <%--settingContract() ;--%>
-                    <%--});--%>
-                <%--});--%>
 
                 contractObj.projectUpdate({
                     id: '${projectInfo.id}',

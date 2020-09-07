@@ -293,6 +293,7 @@ public class AssessmentPerformanceService {
                 query.setExaminePeople(processControllerComponent.getThisUser());
                 performanceDtos = performanceService.getPerformancesByParam(query);
                 ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                projectResponsibilityDto.setBusinessKey(AssessmentCommonService.PROJECT_TASK_BUSINESS_KEY_PERFORMANCE);
                 projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
                 projectResponsibilityDto.setProcessInsId(approvalModelDto.getProcessInsId());
                 List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);

@@ -239,6 +239,7 @@ public class ProjectInfoService {
                     //发起任务
                     ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
                     projectPlanResponsibility.setProjectId(projectInfo.getId());
+                    projectPlanResponsibility.setBusinessKey(ProjectStatusEnum.NORMAL.getKey());
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("[").append("分派").append("]");
                     projectPlanResponsibility.setPlanDetailsName(stringBuilder.toString());
@@ -894,6 +895,7 @@ public class ProjectInfoService {
                 projectPlanResponsibility.setProjectId(projectInfo.getId());
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("[").append("分派").append("]");
+                projectPlanResponsibility.setBusinessKey(ProjectStatusEnum.NORMAL.getKey());
                 projectPlanResponsibility.setPlanDetailsName(stringBuilder.toString());
                 projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
                 projectPlanResponsibility.setUserAccount(projectMember.getUserAccountManager());

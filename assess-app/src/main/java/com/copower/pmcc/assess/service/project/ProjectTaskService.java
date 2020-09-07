@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
@@ -27,6 +28,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -117,6 +119,7 @@ public class ProjectTaskService {
         ProcessUserDto processUserDto = new ProcessUserDto();
         ProcessInfo processInfo = new ProcessInfo();
         String boxName = projectPhase.getBoxName();
+        projectPlanDetails.setSubmitUser(processControllerComponent.getThisUser());
         if (projectPhase.getBisUseBox() == Boolean.TRUE || projectTaskDto.getMustUseBox() == Boolean.TRUE) {
             //发起相应的流程
             String folio = projectPlanDetails.getProjectPhaseName() + "【成果提交】" + projectInfo.getProjectName();
@@ -149,10 +152,9 @@ public class ProjectTaskService {
             sysAttachmentNew.setProcessInsId(processUserDto.getProcessInsId());
             baseAttachmentService.updateAttachementByExample(sysAttachment, sysAttachmentNew);
             //更新业务
+            setSubmitUserAll(projectPlanDetails, processUserDto.getProcessInsId());
             projectPlanDetails.setProcessInsId(processUserDto.getProcessInsId());
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-            projectPlanDetails.setSubmitUser(processControllerComponent.getThisUser());
-            setSubmitUserAll(projectPlanDetails);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         }
         //保存业务数据
@@ -262,7 +264,7 @@ public class ProjectTaskService {
             projectPlanDetails.setTaskRemarks(taskRemarks);
         }
         projectPlanDetails.setSubmitUser(processControllerComponent.getThisUser());
-        setSubmitUserAll(projectPlanDetails);
+        setSubmitUserAll(projectPlanDetails, approvalModelDto.getProcessInsId());
         projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         projectMemberService.autoAddFinishTaskMember(projectPlanDetails);
         try {
@@ -310,14 +312,40 @@ public class ProjectTaskService {
      *
      * @param projectPlanDetails
      */
-    private void setSubmitUserAll(ProjectPlanDetails projectPlanDetails) {
+    private void setSubmitUserAll(ProjectPlanDetails projectPlanDetails, String processInsId) {
         if (projectPlanDetails == null) return;
+        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
         String currUser = processControllerComponent.getThisUser();
-        Set<String> set = Sets.newHashSet();
-        if (StringUtils.isNotBlank(projectPlanDetails.getSubmitUserAll())) {
-            set.addAll(FormatUtils.transformString2List(projectPlanDetails.getSubmitUserAll()));
+        if (StringUtils.isBlank(projectPlanDetails.getSubmitUserAll())) {
+            KeyValueDto keyValueDto = new KeyValueDto();
+            keyValueDto.setKey(currUser);
+            keyValueDto.setValue(processInsId);
+            keyValueDtos.add(keyValueDto);
+        } else {
+            String submitUserAll = projectPlanDetails.getSubmitUserAll();
+            List<KeyValueDto> dtoList = JSON.parseArray(submitUserAll, KeyValueDto.class);
+            if (CollectionUtils.isNotEmpty(dtoList)) {
+                List<String> userList = LangUtils.transform(dtoList, o -> o.getKey());
+                if (userList.contains(currUser)) {//只更新流程实例id
+                    dtoList.forEach(o -> {
+                        if (o.getKey().equals(currUser)) {
+                            o.setValue(processInsId);
+                        }
+                    });
+                    keyValueDtos.addAll(dtoList);
+                } else {
+                    KeyValueDto keyValueDto = new KeyValueDto();
+                    keyValueDto.setKey(currUser);
+                    keyValueDto.setValue(processInsId);
+                    keyValueDtos.add(keyValueDto);
+                }
+            } else {
+                KeyValueDto keyValueDto = new KeyValueDto();
+                keyValueDto.setKey(currUser);
+                keyValueDto.setValue(processInsId);
+                keyValueDtos.add(keyValueDto);
+            }
         }
-        set.add(currUser);
-        projectPlanDetails.setSubmitUserAll(StringUtils.join(set, ','));
+        projectPlanDetails.setSubmitUserAll(JSON.toJSONString(keyValueDtos));
     }
 }

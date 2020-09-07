@@ -433,6 +433,7 @@ public class ProjectAssessmentBonusService {
             for (String manager : managerList) {//为项目经理添加任务
                 String url = String.format("/%s/projectAssessmentBonus/index?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
                 ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                projectPlanResponsibility.setBusinessKey(ProjectStatusEnum.NORMAL.getKey());
                 projectPlanResponsibility.setPlanDetailsName(String.format("【%s】", publicService.getUserNameByAccount(manager)));
                 projectPlanResponsibility.setProjectName(assessmentBonus.getTitle());
                 projectPlanResponsibility.setUserAccount(manager);
@@ -455,6 +456,7 @@ public class ProjectAssessmentBonusService {
                 for (String s : jszgList) {
                     String url = String.format("/%s/projectAssessmentBonus/apply?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
                     ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                    projectPlanResponsibility.setBusinessKey(ProjectStatusEnum.NORMAL.getKey());
                     projectPlanResponsibility.setPlanDetailsName(String.format("【%s】", publicService.getUserNameByAccount(s)));
                     projectPlanResponsibility.setProjectName(assessmentBonus.getTitle());
                     projectPlanResponsibility.setUserAccount(s);

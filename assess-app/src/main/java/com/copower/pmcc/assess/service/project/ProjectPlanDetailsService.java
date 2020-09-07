@@ -284,6 +284,7 @@ public class ProjectPlanDetailsService {
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProjectId(projectId);
         projectResponsibilityDto.setPlanId(planId);
+        projectResponsibilityDto.setBusinessKey(ProjectStatusEnum.NORMAL.getKey());
         projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
         projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
         List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getAgentProjectTaskList(projectResponsibilityDto);
@@ -571,8 +572,6 @@ public class ProjectPlanDetailsService {
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return null;
         if (StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue())) {
-            //重启需删除该事项的考核相关任务
-            assessmentPerformanceService.clearAssessmentProjectPerformanceAll(projectPlanDetails.getProcessInsId());
             try {
                 if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId()) && !projectPlanDetails.getProcessInsId().equals("0")
                         && projectPlanDetails.getStatus().equalsIgnoreCase(ProcessStatusEnum.RUN.getValue()))
@@ -612,11 +611,7 @@ public class ProjectPlanDetailsService {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
             ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
             projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-
         }
-
-
-
         return getProjectPlanDetailsVo(projectPlanDetails);
     }
 
@@ -644,6 +639,7 @@ public class ProjectPlanDetailsService {
         projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
         projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
         projectResponsibilityDto.setPlanDetailsId(projectPlanDetails.getId());
+        projectResponsibilityDto.setBusinessKey(ProjectStatusEnum.NORMAL.getKey());
         ProjectResponsibilityDto projectTask = bpmRpcProjectTaskService.getProjectTask(projectResponsibilityDto);
         if (projectTask != null) {
             projectTask.setUserAccount(newExecuteUser);

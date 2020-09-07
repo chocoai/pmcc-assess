@@ -104,6 +104,7 @@ public class ProjectPlanService {
     public void saveProjectPlanDetailsResponsibility(ProjectPlanDetails item, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) throws BpmException {
         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
         projectPlanResponsibility.setPlanId(item.getPlanId());
+        projectPlanResponsibility.setBusinessKey(ProjectStatusEnum.NORMAL.getKey());
         projectPlanResponsibility.setPlanDetailsId(item.getId());
         projectPlanResponsibility.setPlanDetailsName(String.format("%s[%s]", workStageName, item.getProjectPhaseName()));
         projectPlanResponsibility.setProjectId(item.getProjectId());
