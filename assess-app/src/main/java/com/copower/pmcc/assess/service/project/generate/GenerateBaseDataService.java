@@ -3813,7 +3813,7 @@ public class GenerateBaseDataService {
                 String floorCount = StringUtils.EMPTY;//总层数
                 BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
                 List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(basicApply.getBasicHouseId());
-                if (CollectionUtils.isEmpty(huxingPriceList)) {
+                if (CollectionUtils.isNotEmpty(huxingPriceList)) {
                     number = number + "-1";
                 }
                 builder.insertCell();

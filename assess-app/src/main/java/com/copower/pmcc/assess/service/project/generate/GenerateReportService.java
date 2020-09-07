@@ -281,11 +281,11 @@ public class GenerateReportService {
             baseService.writeExceptionInfo(e, "erp上传文件出错");
         }
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            if (reportGroup.getSymbolOperation().equals(ReportSymbolOperationEnum.GET.getKey()) || reportGroup.getSymbolOperation().equals(ReportSymbolOperationEnum.RESET.getKey())){
+            if (reportGroup.getSymbolOperation().equals(ReportSymbolOperationEnum.GET.getKey()) || reportGroup.getSymbolOperation().equals(ReportSymbolOperationEnum.RESET.getKey())) {
                 List<SysAttachmentDto> attachmentDtoList = LangUtils.filter(sysAttachmentDtoList, obj -> obj.getFieldsName().equals(sysAttachmentDto.getFieldsName()));
-                if (CollectionUtils.isNotEmpty(attachmentDtoList)){
+                if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
                     List<Integer> integerList = LangUtils.transform(attachmentDtoList, obj -> obj.getId());
-                    baseAttachmentService.deleteAttachment(integerList) ;
+                    baseAttachmentService.deleteAttachment(integerList);
                 }
             }
         }
@@ -618,6 +618,7 @@ public class GenerateReportService {
         for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroups) {
             GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, schemeAreaGroup.getId(), new BaseDataDic(), new ProjectPlan(), new GenerateReportGroup());
             List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(schemeAreaGroup.getId());
+            schemeJudgeObjectList = schemeJudgeObjectService.transformFullJudgeList(schemeJudgeObjectList);
             String path = generateBaseDataService.getjudgeBuildResultSurveySheet(schemeJudgeObjectList, projectInfoVo);
             resultSheetReportCreateSysAttachmentNew(schemeAreaGroup.getAreaName(), path, fieldsName, tableName, projectId, false);
         }
@@ -637,9 +638,9 @@ public class GenerateReportService {
             List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
             if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
                 List<SysAttachmentDto> attachmentDtoList = LangUtils.filter(sysAttachmentDtoList, obj -> obj.getFieldsName().equals(sysAttachmentDto.getFieldsName()));
-                if (CollectionUtils.isNotEmpty(attachmentDtoList)){
+                if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
                     List<Integer> integerList = LangUtils.transform(attachmentDtoList, obj -> obj.getId());
-                    baseAttachmentService.deleteAttachment(integerList) ;
+                    baseAttachmentService.deleteAttachment(integerList);
                 }
             }
         }
