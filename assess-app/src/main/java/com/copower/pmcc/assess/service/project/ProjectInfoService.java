@@ -801,7 +801,7 @@ public class ProjectInfoService {
         if (CollectionUtils.isEmpty(planList))
             throw new BusinessException("未找到进行中的阶段");
         Integer planId = planList.get(0).getId();
-        Integer totalPlanDetails = projectPlanDetailsService.getTotalPlanDetails(planId);//查看该阶段是否有任务
+        Long totalPlanDetails = projectPlanDetailsService.getTotalPlanDetails(planId);//查看该阶段是否有任务
         if (totalPlanDetails <= 0)
             throw new BusinessException("请先为该阶段添加相关任务");
         boolean isAllFinish = projectPlanDetailsService.isAllPlanDetailsFinish(planId); //判断当前阶段是否任务是否完成

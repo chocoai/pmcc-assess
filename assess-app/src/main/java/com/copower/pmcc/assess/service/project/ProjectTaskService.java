@@ -40,6 +40,8 @@ import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -54,6 +56,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 描述:
@@ -148,6 +151,8 @@ public class ProjectTaskService {
             //更新业务
             projectPlanDetails.setProcessInsId(processUserDto.getProcessInsId());
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+            projectPlanDetails.setSubmitUser(processControllerComponent.getThisUser());
+            setSubmitUserAll(projectPlanDetails);
             projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         }
         //保存业务数据
@@ -185,10 +190,10 @@ public class ProjectTaskService {
                 bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
             }
         } catch (BusinessException e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
                 bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());
             }
@@ -255,8 +260,10 @@ public class ProjectTaskService {
         if (StringUtils.isNotBlank(actualHours)) {
             projectPlanDetails.setActualHours(new BigDecimal(actualHours));
             projectPlanDetails.setTaskRemarks(taskRemarks);
-            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         }
+        projectPlanDetails.setSubmitUser(processControllerComponent.getThisUser());
+        setSubmitUserAll(projectPlanDetails);
+        projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
         projectMemberService.autoAddFinishTaskMember(projectPlanDetails);
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
@@ -296,5 +303,21 @@ public class ProjectTaskService {
         if (sysUser != null)
             vo.setReturnPersonName(sysUser.getUserName());
         return vo;
+    }
+
+    /**
+     * 设置该任务的所有提交人
+     *
+     * @param projectPlanDetails
+     */
+    private void setSubmitUserAll(ProjectPlanDetails projectPlanDetails) {
+        if (projectPlanDetails == null) return;
+        String currUser = processControllerComponent.getThisUser();
+        Set<String> set = Sets.newHashSet();
+        if (StringUtils.isNotBlank(projectPlanDetails.getSubmitUserAll())) {
+            set.addAll(FormatUtils.transformString2List(projectPlanDetails.getSubmitUserAll()));
+        }
+        set.add(currUser);
+        projectPlanDetails.setSubmitUserAll(StringUtils.join(set, ','));
     }
 }

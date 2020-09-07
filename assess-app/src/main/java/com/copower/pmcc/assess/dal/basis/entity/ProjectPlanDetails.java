@@ -34,11 +34,7 @@ public class ProjectPlanDetails {
 
     private Boolean bisEnable;
 
-    private BigDecimal proportion;
-
     private Integer sorting;
-
-    private Integer firstPid;
 
     private Boolean bisStart;
 
@@ -48,25 +44,23 @@ public class ProjectPlanDetails {
 
     private String taskRemarks;
 
+    private String submitUser;
+
+    private String submitUserAll;
+
     private BigDecimal actualHours;
 
-    private String status;
-
-    private Integer returnDetailsId;
-
-    private String returnDetailsReason;
-
-    private Boolean bisNew;
-
-    private Boolean bisLastLayer;
-
-    private Boolean bisRestart;
-
-    private Integer declareRecordId;
+    private Integer areaId;
 
     private Integer judgeObjectId;
 
-    private Integer areaId;
+    private Integer declareRecordId;
+
+    private String status;
+
+    private Boolean bisRestart;
+
+    private Boolean bisLastLayer;
 
     private String creator;
 
@@ -194,28 +188,12 @@ public class ProjectPlanDetails {
         this.bisEnable = bisEnable;
     }
 
-    public BigDecimal getProportion() {
-        return proportion;
-    }
-
-    public void setProportion(BigDecimal proportion) {
-        this.proportion = proportion;
-    }
-
     public Integer getSorting() {
         return sorting;
     }
 
     public void setSorting(Integer sorting) {
         this.sorting = sorting;
-    }
-
-    public Integer getFirstPid() {
-        return firstPid;
-    }
-
-    public void setFirstPid(Integer firstPid) {
-        this.firstPid = firstPid;
     }
 
     public Boolean getBisStart() {
@@ -250,6 +228,22 @@ public class ProjectPlanDetails {
         this.taskRemarks = taskRemarks == null ? null : taskRemarks.trim();
     }
 
+    public String getSubmitUser() {
+        return submitUser;
+    }
+
+    public void setSubmitUser(String submitUser) {
+        this.submitUser = submitUser == null ? null : submitUser.trim();
+    }
+
+    public String getSubmitUserAll() {
+        return submitUserAll;
+    }
+
+    public void setSubmitUserAll(String submitUserAll) {
+        this.submitUserAll = submitUserAll == null ? null : submitUserAll.trim();
+    }
+
     public BigDecimal getActualHours() {
         return actualHours;
     }
@@ -258,60 +252,12 @@ public class ProjectPlanDetails {
         this.actualHours = actualHours;
     }
 
-    public String getStatus() {
-        return status;
+    public Integer getAreaId() {
+        return areaId;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
-    }
-
-    public Integer getReturnDetailsId() {
-        return returnDetailsId;
-    }
-
-    public void setReturnDetailsId(Integer returnDetailsId) {
-        this.returnDetailsId = returnDetailsId;
-    }
-
-    public String getReturnDetailsReason() {
-        return returnDetailsReason;
-    }
-
-    public void setReturnDetailsReason(String returnDetailsReason) {
-        this.returnDetailsReason = returnDetailsReason == null ? null : returnDetailsReason.trim();
-    }
-
-    public Boolean getBisNew() {
-        return bisNew;
-    }
-
-    public void setBisNew(Boolean bisNew) {
-        this.bisNew = bisNew;
-    }
-
-    public Boolean getBisLastLayer() {
-        return bisLastLayer;
-    }
-
-    public void setBisLastLayer(Boolean bisLastLayer) {
-        this.bisLastLayer = bisLastLayer;
-    }
-
-    public Boolean getBisRestart() {
-        return bisRestart;
-    }
-
-    public void setBisRestart(Boolean bisRestart) {
-        this.bisRestart = bisRestart;
-    }
-
-    public Integer getDeclareRecordId() {
-        return declareRecordId;
-    }
-
-    public void setDeclareRecordId(Integer declareRecordId) {
-        this.declareRecordId = declareRecordId;
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     public Integer getJudgeObjectId() {
@@ -322,12 +268,36 @@ public class ProjectPlanDetails {
         this.judgeObjectId = judgeObjectId;
     }
 
-    public Integer getAreaId() {
-        return areaId;
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
     }
 
-    public void setAreaId(Integer areaId) {
-        this.areaId = areaId;
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
+    }
+
+    public Boolean getBisRestart() {
+        return bisRestart;
+    }
+
+    public void setBisRestart(Boolean bisRestart) {
+        this.bisRestart = bisRestart;
+    }
+
+    public Boolean getBisLastLayer() {
+        return bisLastLayer;
+    }
+
+    public void setBisLastLayer(Boolean bisLastLayer) {
+        this.bisLastLayer = bisLastLayer;
     }
 
     public String getCreator() {

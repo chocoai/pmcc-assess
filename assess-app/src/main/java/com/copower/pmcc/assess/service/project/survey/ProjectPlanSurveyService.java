@@ -96,7 +96,6 @@ public class ProjectPlanSurveyService {
             projectPlanDetail.setStatus(ProcessStatusEnum.RUN.getValue());
             projectPlanDetail.setPlanHours(projectPhase.getPhaseTime());
             projectPlanDetail.setPid(0);
-            projectPlanDetail.setFirstPid(0);
             projectPlanDetail.setProjectPhaseId(projectPhase.getId());
             projectPlanDetail.setSorting(10000 + projectPhase.getPhaseSort());
             projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetail);

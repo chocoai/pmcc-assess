@@ -205,6 +205,7 @@ public class ProjectPlanDetailsService {
                 item.setProcessInsId("0");
                 item.setPid(0);
                 item.setSorting(0);
+                item.setBisLastLayer(true);
                 item.setStatus(ProjectStatusEnum.RUNING.getKey());
                 try {
                     saveProjectPlanDetails(item);
@@ -675,7 +676,7 @@ public class ProjectPlanDetailsService {
      * @param planId
      * @return
      */
-    public Integer getTotalPlanDetails(Integer planId) {
+    public Long getTotalPlanDetails(Integer planId) {
         return projectPlanDetailsDao.getTotalPlanDetails(planId);
     }
 

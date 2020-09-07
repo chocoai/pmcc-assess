@@ -121,12 +121,6 @@ public class ProjectPlanDetailsDao {
         return null;
     }
 
-    public Integer getPlanChildCount(Integer pid, Integer projectId, Integer workStageId) {
-        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
-        example.createCriteria().andPidEqualTo(pid).andProjectIdEqualTo(projectId).andProjectWorkStageIdEqualTo(workStageId);
-        return projectPlanDetailsMapper.countByExample(example);
-    }
-
     public Boolean addProjectPlanDetails(ProjectPlanDetails projectPlanDetails) {
         int i = projectPlanDetailsMapper.insertSelective(projectPlanDetails);
         return i == 1;
@@ -190,7 +184,7 @@ public class ProjectPlanDetailsDao {
         return projectPlanDetailsMapper.selectByExample(example);
     }
 
-    public Integer getTotalPlanDetails(Integer planId) {
+    public Long getTotalPlanDetails(Integer planId) {
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         example.createCriteria().andPlanIdEqualTo(planId);
         return projectPlanDetailsMapper.countByExample(example);
