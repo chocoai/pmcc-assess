@@ -617,7 +617,7 @@ public class GenerateReportService {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroups) {
             GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, schemeAreaGroup.getId(), new BaseDataDic(), new ProjectPlan(), new GenerateReportGroup());
-            List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(schemeAreaGroup.getId());
+            List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(schemeAreaGroup.getId());
             String path = generateBaseDataService.getjudgeBuildResultSurveySheet(schemeJudgeObjectList, projectInfoVo);
             resultSheetReportCreateSysAttachmentNew(schemeAreaGroup.getAreaName(), path, fieldsName, tableName, projectId, false);
         }

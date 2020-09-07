@@ -3811,7 +3811,11 @@ public class GenerateBaseDataService {
                 String certUser = schemeJudgeObject.getCertUse();//证载用途
                 String practicalUse = schemeJudgeObject.getPracticalUse();//实际用途
                 String floorCount = StringUtils.EMPTY;//总层数
-
+                BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+                List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(basicApply.getBasicHouseId());
+                if (CollectionUtils.isEmpty(huxingPriceList)) {
+                    number = number + "-1";
+                }
                 builder.insertCell();
                 builder.write(number);
 
@@ -3828,7 +3832,6 @@ public class GenerateBaseDataService {
                 builder.write(practicalUse);
 
                 builder.insertCell();
-                BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                 BasicBuildingVo buildingVo = generateBaseExamineService.getBasicBuilding();
                 if (buildingVo != null) {
@@ -3876,12 +3879,11 @@ public class GenerateBaseDataService {
                 builder.endRow();
 
                 //再检查是否关联的差异表数据
-                List<BasicHouseHuxingPrice> huxingPriceList = basicHouseHuxingPriceService.getBasicHouseHuxingPriceList(basicApply.getBasicHouseId());
                 if (CollectionUtils.isNotEmpty(huxingPriceList)) {
                     for (int i = 0; i < huxingPriceList.size(); i++) {
                         BasicHouseHuxingPrice huxingPrice = huxingPriceList.get(i);
                         builder.insertCell();
-                        builder.write(number + "-" + (i + 1));
+                        builder.write(number + "-" + (i + 2));
                         if (huxingPrice.getDeclareId() != null) {
                             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(huxingPrice.getDeclareId());
                             builder.insertCell();
@@ -3924,12 +3926,13 @@ public class GenerateBaseDataService {
                         builder.insertCell();
                         builder.write(String.valueOf(ArithmeticUtils.getBigDecimalString(huxingTotalPrice)));
 
-                        builder.insertCell();
-                        builder.write(String.valueOf(BigDecimal.ZERO));
+                        if (mortgageFlag == Boolean.TRUE) {//是否为抵押评估
+                            builder.insertCell();
+                            builder.write(String.valueOf(BigDecimal.ZERO));
 
-                        builder.insertCell();
-                        builder.write(String.valueOf(ArithmeticUtils.getBigDecimalString(huxingTotalPrice)));
-
+                            builder.insertCell();
+                            builder.write(String.valueOf(ArithmeticUtils.getBigDecimalString(huxingTotalPrice)));
+                        }
                         builder.endRow();
                     }
                 }
