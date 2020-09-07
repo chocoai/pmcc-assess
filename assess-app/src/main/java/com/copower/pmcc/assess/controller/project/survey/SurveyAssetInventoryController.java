@@ -42,10 +42,6 @@ public class SurveyAssetInventoryController {
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
     @Autowired
-    private ProjectInfoService projectInfoService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
     private BaseService baseService;
     @Autowired
     private SurveyAssetInfoItemService surveyAssetInfoItemService;
@@ -66,7 +62,7 @@ public class SurveyAssetInventoryController {
                 baseService.writeExceptionInfo(e);
             }
         }
-        setModelViewParam(assetInventory != null ? assetInventory.getId() : null, declareRecord, modelAndView);
+        setModelViewParam(assetInventory != null ? assetInventory.getId() : assetInfoItem.getInventoryId(), declareRecord, modelAndView);
         modelAndView.addObject("assetInfoItem", assetInfoItem);
         modelAndView.addObject("masterName", assetInfoItem.getName());
         return modelAndView;
