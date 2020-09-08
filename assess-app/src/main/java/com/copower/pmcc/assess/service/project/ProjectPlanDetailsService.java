@@ -13,6 +13,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectPhaseInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
 import com.copower.pmcc.assess.service.chks.AssessmentPerformanceService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -117,7 +118,7 @@ public class ProjectPlanDetailsService {
     @Autowired
     private BpmRpcToolsService bpmRpcToolsService;
     @Autowired
-    private AssessmentPerformanceService assessmentPerformanceService;
+    private AssessmentCommonService assessmentCommonService;
 
     public ProjectPlanDetails getProjectPlanDetailsById(Integer id) {
         return projectPlanDetailsDao.getProjectPlanDetailsById(id);
@@ -576,10 +577,11 @@ public class ProjectPlanDetailsService {
                 if (StringUtils.isNotBlank(projectPlanDetails.getProcessInsId()) && !projectPlanDetails.getProcessInsId().equals("0")
                         && projectPlanDetails.getStatus().equalsIgnoreCase(ProcessStatusEnum.RUN.getValue()))
                     bpmRpcActivitiProcessManageService.closeProcess(projectPlanDetails.getProcessInsId());//关闭当前流程
+
+                assessmentCommonService.setAssessmentDataToProphase(projectPlanDetails);
             } catch (Exception ex) {
                 logger.error(ex.getMessage(), ex);
             }
-
             if (StringUtils.isNotBlank(formData)) {
                 //新增一条重启记录
                 ProjectTaskReturnRecord projectTaskReturnRecord = JSON.parseObject(formData, ProjectTaskReturnRecord.class);
@@ -611,6 +613,8 @@ public class ProjectPlanDetailsService {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
             ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
             projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+        }else {
+            throw new BusinessException("该状态下无法重启");
         }
         return getProjectPlanDetailsVo(projectPlanDetails);
     }

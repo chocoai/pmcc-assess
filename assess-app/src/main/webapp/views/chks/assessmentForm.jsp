@@ -15,143 +15,283 @@
             </div>
         </div>
         <div class="card-body" style="display: none">
-            <form id="assessmentPerformanceForm" class="form-horizontal">
-                <div class="row form-group">
-                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                考核类型
-                            </label>
-                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                <select class="form-control input-full" name="assessmentType">
-                                    <option value="">-请选择-</option>
-                                    <option value="quality">质量考核</option>
-                                    <option value="work.hours">工时考核</option>
-                                </select>
-                            </div>
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                状态
-                            </label>
-                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                <select class="form-control input-full" name="examineStatus">
-                                    <option value="">-请选择-</option>
-                                    <option value="runing">进行中</option>
-                                    <option value="finish">完成</option>
-                                </select>
-                            </div>
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                被考核人
-                            </label>
-                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                <div class="input-group">
-                                    <input type="hidden" name="byExaminePeople">
-                                    <input type="text" class="form-control" readonly="readonly"
-                                           name="byExaminePeopleName"
-                                           onclick="assessmentCommonHandle.selectUserAccountMember(this);">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-warning btn-sm "
-                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button"
-                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                            清空
-                                        </button>
+            <ul class="nav nav-pills nav-secondary" id="assessment-tab" role="tablist">
+                <li class="nav-item submenu" onclick="assessmentCommonHandle.loadAssessmentPerformanceList();">
+                    <a class="nav-link active show" id="assessment-home-tab" data-toggle="pill" href="#assessment-home"
+                       role="tab" aria-controls="assessment-home" aria-selected="false">本次考核数据</a>
+                </li>
+
+                <c:if test="${not empty projectPlanDetails}">
+                    <li class="nav-item submenu"  onclick="assessmentCommonHandle.loadAssessmentPerformanceProphaseList();">
+                        <a class="nav-link" id="assessment-profile-tab" data-toggle="pill" href="#assessment-profile"
+                           role="tab" aria-controls="assessment-profile" aria-selected="true">前期考核数据</a>
+                    </li>
+                </c:if>
+            </ul>
+            <div class="tab-content mt-2 mb-3" id="assessment-tabContent">
+                <div class="tab-pane fade active show" id="assessment-home" role="tabpanel"
+                     aria-labelledby="assessment-home-tab">
+                    <form id="assessmentPerformanceForm" class="form-horizontal">
+                        <input type="hidden" name="bisProphase" value="false">
+                        <input type="hidden" name="processInsId" value="${processInsId}">
+                        <div class="row form-group">
+                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                        考核类型
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <select class="form-control input-full" name="assessmentType">
+                                            <option value="">-请选择-</option>
+                                            <option value="quality">质量考核</option>
+                                            <option value="work.hours">工时考核</option>
+                                        </select>
                                     </div>
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-primary btn-sm "
-                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button"
-                                                onclick="assessmentCommonHandle.selectUserAccountMember(this);">选择
-                                        </button>
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                        状态
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <select class="form-control input-full" name="examineStatus">
+                                            <option value="">-请选择-</option>
+                                            <option value="runing">进行中</option>
+                                            <option value="finish">完成</option>
+                                        </select>
                                     </div>
-                                </div>
-                            </div>
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                考核人
-                            </label>
-                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                <div class="input-group">
-                                    <input type="hidden" name="examinePeople">
-                                    <input type="text" class="form-control" readonly="readonly" name="examinePeopleName"
-                                           onclick="assessmentCommonHandle.selectUserAccountMember(this);">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-warning btn-sm "
-                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button"
-                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                            清空
-                                        </button>
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                        被考核人
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <div class="input-group">
+                                            <input type="hidden" name="byExaminePeople">
+                                            <input type="text" class="form-control" readonly="readonly"
+                                                   name="byExaminePeopleName"
+                                                   onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-warning btn-sm "
+                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                        type="button"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');">
+                                                    清空
+                                                </button>
+                                            </div>
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-primary btn-sm "
+                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                        type="button"
+                                                        onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                                                    选择
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-primary btn-sm "
-                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button"
-                                                onclick="assessmentCommonHandle.selectUserAccountMember(this);">选择
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                名称
-                            </label>
-                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                <input type="text" placeholder="名称" name="businessKey" class="form-control input-full">
-                            </div>
-                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                <button type="button"
-                                        onclick="assessmentCommonHandle.loadAssessmentPerformanceList($(this).closest('form'));"
-                                        class="btn btn-info btn-sm"><i class="fa fa-search"></i>查询
-                                </button>
-                                <button style="margin-left: 5px" class="btn btn-info  btn-sm" type="button"
-                                        onclick="$(this).closest('form').clearAll();">
-                                    <span class="fa fa-undo-alt" aria-hidden="true"></span>
-                                    重置
-                                </button>
-                                <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
-                                        onclick="assessmentCommonHandle.copyData(this);"><i
-                                        class="fa fa-copy" aria-hidden="true"></i> 拷贝
-                                </button>
-                                <button type="button" class="btn btn-warning btn-sm" style="margin-left: 5px;"
-                                        onclick="assessmentCommonHandle.pasteAll(this);"><i
-                                        class="fa fa-clipboard" aria-hidden="true"></i>粘贴
-                                </button>
-                                <button type="button"
-                                        onclick="assessmentCommonHandle.batchSetFinish();"
-                                        class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i>一键完成
-                                </button>
-                            </div>
-                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                <div class="input-group ">
-                                    <input type="hidden" data-name="id">
-                                    <input type="text" readonly="readonly" data-name="copyName"
-                                           class="form-control form-control-sm"
-                                           placeholder="无拷贝数据">
-                                    <div class="input-group-prepend ">
-                                        <button class="btn btn-warning btn-sm"
-                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button"
-                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                            <i class="fa "></i>
-                                            清空拷贝
-                                        </button>
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                        考核人
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <div class="input-group">
+                                            <input type="hidden" name="examinePeople">
+                                            <input type="text" class="form-control" readonly="readonly"
+                                                   name="examinePeopleName"
+                                                   onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-warning btn-sm "
+                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                        type="button"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');">
+                                                    清空
+                                                </button>
+                                            </div>
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-primary btn-sm "
+                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                        type="button"
+                                                        onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                                                    选择
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="row form-group">
+                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                        名称
+                                    </label>
+                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                        <input type="text" placeholder="名称" name="businessKey"
+                                               class="form-control input-full">
+                                    </div>
+                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                        <button type="button"
+                                                onclick="assessmentCommonHandle.loadAssessmentPerformanceList();"
+                                                class="btn btn-info btn-sm"><i class="fa fa-search"></i>查询
+                                        </button>
+                                        <button style="margin-left: 5px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="$(this).closest('form').clearAll();">
+                                            <span class="fa fa-undo-alt" aria-hidden="true"></span>
+                                            重置
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
+                                                onclick="assessmentCommonHandle.copyData(this);"><i
+                                                class="fa fa-copy" aria-hidden="true"></i> 拷贝
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-sm" style="margin-left: 5px;"
+                                                onclick="assessmentCommonHandle.pasteAll(this);"><i
+                                                class="fa fa-clipboard" aria-hidden="true"></i>粘贴
+                                        </button>
+                                        <button type="button"
+                                                onclick="assessmentCommonHandle.batchSetFinish();"
+                                                class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i>一键完成
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                        <div class="input-group ">
+                                            <input type="hidden" data-name="id">
+                                            <input type="text" readonly="readonly" data-name="copyName"
+                                                   class="form-control form-control-sm"
+                                                   placeholder="无拷贝数据">
+                                            <div class="input-group-prepend ">
+                                                <button class="btn btn-warning btn-sm"
+                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                        type="button"
+                                                        onclick="$(this).closest('.input-group').find('input').val('');">
+                                                    <i class="fa "></i>
+                                                    清空拷贝
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table" id="assessmentPerformanceTableList">
+                    </table>
                 </div>
-            </form>
-            <table class="table" id="assessmentPerformanceTableList">
-            </table>
+
+                <c:if test="${not empty projectPlanDetails}">
+                    <div class="tab-pane fade" id="assessment-profile" role="tabpanel"
+                         aria-labelledby="assessment-profile-tab">
+                        <form id="assessmentPerformanceProphaseForm" class="form-horizontal">
+                            <input type="hidden" name="bisProphase" value="true">
+                            <input type="hidden" name="processInsId" value="${processInsId}">
+                            <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            考核类型
+                                        </label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <select class="form-control input-full" name="assessmentType">
+                                                <option value="">-请选择-</option>
+                                                <option value="quality">质量考核</option>
+                                                <option value="work.hours">工时考核</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            状态
+                                        </label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <select class="form-control input-full" name="examineStatus">
+                                                <option value="">-请选择-</option>
+                                                <option value="runing">进行中</option>
+                                                <option value="finish">完成</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            被考核人
+                                        </label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <div class="input-group">
+                                                <input type="hidden" name="byExaminePeople">
+                                                <input type="text" class="form-control" readonly="readonly"
+                                                       name="byExaminePeopleName"
+                                                       onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-warning btn-sm "
+                                                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                            type="button"
+                                                            onclick="$(this).closest('.input-group').find('input').val('');">
+                                                        清空
+                                                    </button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-primary btn-sm "
+                                                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                            type="button"
+                                                            onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                                                        选择
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            考核人
+                                        </label>
+                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                            <div class="input-group">
+                                                <input type="hidden" name="examinePeople">
+                                                <input type="text" class="form-control" readonly="readonly"
+                                                       name="examinePeopleName"
+                                                       onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-warning btn-sm "
+                                                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                            type="button"
+                                                            onclick="$(this).closest('.input-group').find('input').val('');">
+                                                        清空
+                                                    </button>
+                                                </div>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-primary btn-sm "
+                                                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                            type="button"
+                                                            onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                                                        选择
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                            名称
+                                        </label>
+                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                            <input type="text" placeholder="名称" name="businessKey"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <button type="button"
+                                                    onclick="assessmentCommonHandle.loadAssessmentPerformanceProphaseList();"
+                                                    class="btn btn-info btn-sm"><i class="fa fa-search"></i>查询
+                                            </button>
+                                            <button style="margin-left: 5px" class="btn btn-info  btn-sm" type="button"
+                                                    onclick="$(this).closest('form').clearAll();">
+                                                <span class="fa fa-undo-alt" aria-hidden="true"></span>
+                                                重置
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <table class="table" id="assessmentPerformanceProphaseTableList">
+                        </table>
+                    </div>
+                </c:if>
+            </div>
         </div>
     </div>
 </div>
-
 
 <%--调整记录列表弹窗--%>
 <div id="divAdjustListModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
@@ -622,11 +762,22 @@
         assessmentCommonHandle.ajaxServerMethod({id: id}, "/assessmentPerformance/getPerformanceById", "get", callback, null);
     };
 
-    /*
-    考核列表
-    */
-    assessmentCommonHandle.loadAssessmentPerformanceList = function (form) {
+    //本次考核列表
+    assessmentCommonHandle.loadAssessmentPerformanceList = function () {
         var table = $("#assessmentPerformanceTableList");
+        var form = $("#assessmentPerformanceForm");
+        assessmentCommonHandle.loadAssessmentPerformancesCommon(table, form);
+    };
+
+    //前期考核数据列表
+    assessmentCommonHandle.loadAssessmentPerformanceProphaseList = function () {
+        var table = $("#assessmentPerformanceProphaseTableList");
+        var form = $("#assessmentPerformanceProphaseForm");
+        assessmentCommonHandle.loadAssessmentPerformancesCommon(table, form);
+    };
+
+    //加载列表公共方法
+    assessmentCommonHandle.loadAssessmentPerformancesCommon = function (table, form) {
         var cols = [];
         cols.push({
             field: 'ckeckbox',
@@ -704,7 +855,6 @@
         });
 
         var query = {
-            processInsId: '${processInsId}',
             activityId: '${activityId}',
             userAccount: '${currUserAccount}',
             reActivityName: '${reActivityName}',
@@ -723,7 +873,7 @@
         };
         table.bootstrapTable('destroy');
         TableInit(table, "${pageContext.request.contextPath}/assessmentPerformance/getPerformanceList", cols, query, method);
-    };
+    }
 
     //选择人员
     assessmentCommonHandle.selectUserAccountMember = function (this_) {
@@ -1201,5 +1351,6 @@
     /*初始化*/
     $(document).ready(function () {
         assessmentCommonHandle.loadAssessmentPerformanceList();
+        assessmentCommonHandle.loadAssessmentPerformanceProphaseList();
     });
 </script>

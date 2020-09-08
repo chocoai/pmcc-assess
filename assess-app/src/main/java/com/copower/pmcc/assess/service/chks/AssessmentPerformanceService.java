@@ -108,6 +108,9 @@ public class AssessmentPerformanceService {
         where.setActivityId(null);
         where.setSpotId(0);
         where.setAdjustId(0);
+        if (Boolean.TRUE.equals(where.getBisProphase())) {//往期数据不能使用流程id进行查询
+            where.setProcessInsId(null);
+        }
         Boolean isSpotGroupUser = assessmentCommonService.isSpotGroupUser(boxId, commonService.thisUserAccount());
         if (isAdmin || isSpotGroupUser) {//管理员和抽查组可查看全部数据
             bootstrapTableVo = performanceService.getPerformanceDtoListByParam(where, null, requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -306,10 +309,10 @@ public class AssessmentPerformanceService {
                         BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(approvalModelDto.getProcessInsId());
                         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
                         projectPlanResponsibility.setProcessInsId(approvalModelDto.getProcessInsId());
-                        if (projectInfo != null){
+                        if (projectInfo != null) {
                             projectPlanResponsibility.setProjectId(projectInfo.getId());
                             projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
-                        }else {
+                        } else {
                             projectPlanResponsibility.setProjectName(boxRuDto.getDescription());
                         }
                         if (projectPlanDetails != null) {

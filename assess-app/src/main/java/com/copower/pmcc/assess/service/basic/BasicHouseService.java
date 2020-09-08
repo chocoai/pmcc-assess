@@ -161,14 +161,6 @@ public class BasicHouseService extends BasicEntityAbstract {
         return vo;
     }
 
-    public List<CustomCaseEntity> autoCompleteCaseHouse(String houseNumber, Integer unitId) throws Exception {
-        if (StringUtils.isBlank(houseNumber) || unitId == null) return null;
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomCaseEntity> houseList = basicHouseDao.getLatestVersionHouseList(houseNumber, unitId);
-        return houseList;
-    }
-
     public BasicHouseVo getBasicHouseVo(BasicHouse basicHouse) {
         if (basicHouse == null) {
             return null;
@@ -225,6 +217,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         String baseSql = "update %s set bis_delete=1 where house_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class), houseId));
         sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
 
@@ -254,7 +247,6 @@ public class BasicHouseService extends BasicEntityAbstract {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), houseId));
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -466,7 +458,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                         houseDetail.setName(basicHouse.getHouseNumber());
                         houseDetail.setDisplayName(basicHouse.getHouseNumber());
                         houseDetail.setFullName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseDetail.getId()));
-                        setHouseBatchDetailModifyType(basicHouse,huxing,basicTrading,houseDetail);
+                        setHouseBatchDetailModifyType(basicHouse, huxing, basicTrading, houseDetail);
                         basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
                     }
                     basicHouse.setApplyId(houseDetail.getId());
@@ -593,6 +585,30 @@ public class BasicHouseService extends BasicEntityAbstract {
             basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(unitHuxing, false);
         }
 
+        BasicEstateSurveyRecord surveyRecord = basicEstateSurveyRecordService.getEstateSurveyRecordByHouseId(sourceId);
+        if (surveyRecord != null) {
+            BasicEstateSurveyRecord targetSurveyRecord = basicEstateSurveyRecordService.getEstateSurveyRecordByHouseId(targetBasicHouse.getId());
+            if (targetSurveyRecord == null) {
+                targetSurveyRecord = new BasicEstateSurveyRecord();
+                BeanUtils.copyProperties(surveyRecord, targetSurveyRecord);
+                targetSurveyRecord.setId(null);
+                targetSurveyRecord.setHouseId(targetBasicHouse.getId());
+                targetSurveyRecord.setCreator(commonService.thisUserAccount());
+                targetSurveyRecord.setGmtCreated(null);
+                targetSurveyRecord.setGmtModified(null);
+            } else {
+                BeanUtils.copyProperties(surveyRecord, targetSurveyRecord, "id");
+                targetSurveyRecord.setHouseId(targetBasicHouse.getId());
+            }
+            basicEstateSurveyRecordService.saveBasicEstateSurveyRecord(targetSurveyRecord);
+            //附件拷贝
+            baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class), surveyRecord.getId(), targetSurveyRecord.getId());
+        } else {
+            surveyRecord = new BasicEstateSurveyRecord();
+            surveyRecord.setHouseId(targetBasicHouse.getId());
+            basicEstateSurveyRecordService.addBasicEstateSurveyRecord(surveyRecord);
+        }
+
         if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetId);
 
@@ -676,10 +692,6 @@ public class BasicHouseService extends BasicEntityAbstract {
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//土地类型sql
-
-            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class));
-            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateSurveyRecord.class));
-            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//查勘记录表sql
 
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
 
@@ -824,7 +836,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         if (BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
             BasicHouse dbBasicHouse = getBasicHouseById(basicHouse.getId());
             if (dbBasicHouse == null) return;
-            List<String> fieldNameList = Lists.newArrayList("applyId","newDegree", "quoteId", "mapId", "relevanceId", "version", "bisCase", "bisEnable", "bisDelete");
+            List<String> fieldNameList = Lists.newArrayList("applyId", "newDegree", "quoteId", "mapId", "relevanceId", "version", "bisCase", "bisEnable", "bisDelete");
             fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
             Boolean isEqual = publicService.equalsObjectExcludeField(basicHouse, dbBasicHouse, fieldNameList);
             if (isEqual == false) {

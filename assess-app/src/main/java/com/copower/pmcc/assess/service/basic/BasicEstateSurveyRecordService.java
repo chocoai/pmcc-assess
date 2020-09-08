@@ -19,58 +19,68 @@ public class BasicEstateSurveyRecordService {
     @Autowired
     private BasicEstateSurveyRecordDao basicEstateSurveyRecordDao;
 
-    public BasicEstateSurveyRecord initBasicEstateSurveyRecord(Integer houseId){
+    public BasicEstateSurveyRecord initBasicEstateSurveyRecord(Integer houseId) {
         BasicEstateSurveyRecord query = new BasicEstateSurveyRecord();
         query.setHouseId(houseId);
         List<BasicEstateSurveyRecord> basicEstateSurveyRecordList = getBasicEstateSurveyRecordList(query);
-        if (CollectionUtils.isNotEmpty(basicEstateSurveyRecordList)){
-            return basicEstateSurveyRecordList.get(0) ;
-        }else {
+        if (CollectionUtils.isNotEmpty(basicEstateSurveyRecordList)) {
+            return basicEstateSurveyRecordList.get(0);
+        } else {
             query.setCreator(commonService.thisUserAccount());
-            addBasicEstateSurveyRecord(query) ;
+            addBasicEstateSurveyRecord(query);
             return query;
         }
     }
 
-    public BasicEstateSurveyRecord getEstateSurveyRecordByHouseId(Integer houseId){
-        if (houseId == null){
+    public BasicEstateSurveyRecord getEstateSurveyRecordByHouseId(Integer houseId) {
+        if (houseId == null) {
             return null;
         }
         BasicEstateSurveyRecord query = new BasicEstateSurveyRecord();
         query.setHouseId(houseId);
         List<BasicEstateSurveyRecord> basicEstateSurveyRecordList = getBasicEstateSurveyRecordList(query);
-        if (CollectionUtils.isNotEmpty(basicEstateSurveyRecordList)){
-            return basicEstateSurveyRecordList.get(0) ;
+        if (CollectionUtils.isNotEmpty(basicEstateSurveyRecordList)) {
+            return basicEstateSurveyRecordList.get(0);
         }
         return null;
     }
 
-    public void deleteBasicEstateSurveyRecordByHouseId(Integer houseId){
+    public void saveBasicEstateSurveyRecord(BasicEstateSurveyRecord surveyRecord) {
+        if (surveyRecord == null) return;
+        if (surveyRecord.getId() != null || surveyRecord.getId() > 0) {
+            updateBasicEstateSurveyRecord(surveyRecord,false);
+        } else {
+            surveyRecord.setCreator(commonService.thisUserAccount());
+            addBasicEstateSurveyRecord(surveyRecord);
+        }
+    }
+
+    public void deleteBasicEstateSurveyRecordByHouseId(Integer houseId) {
         basicEstateSurveyRecordDao.deleteBasicEstateSurveyRecordByHouseId(houseId);
     }
 
-    public BasicEstateSurveyRecord getBasicEstateSurveyRecordById(Integer id){
-        return basicEstateSurveyRecordDao.getBasicEstateSurveyRecordById(id) ;
+    public BasicEstateSurveyRecord getBasicEstateSurveyRecordById(Integer id) {
+        return basicEstateSurveyRecordDao.getBasicEstateSurveyRecordById(id);
     }
 
-    public Integer addBasicEstateSurveyRecord(BasicEstateSurveyRecord basicEstateSurveyRecord){
-        return basicEstateSurveyRecordDao.addBasicEstateSurveyRecord(basicEstateSurveyRecord) ;
+    public Integer addBasicEstateSurveyRecord(BasicEstateSurveyRecord basicEstateSurveyRecord) {
+        return basicEstateSurveyRecordDao.addBasicEstateSurveyRecord(basicEstateSurveyRecord);
     }
 
-    public boolean updateBasicEstateSurveyRecord(BasicEstateSurveyRecord basicEstateSurveyRecord, boolean updateNull){
-        return basicEstateSurveyRecordDao.updateBasicEstateSurveyRecord(basicEstateSurveyRecord, updateNull) ;
+    public boolean updateBasicEstateSurveyRecord(BasicEstateSurveyRecord basicEstateSurveyRecord, boolean updateNull) {
+        return basicEstateSurveyRecordDao.updateBasicEstateSurveyRecord(basicEstateSurveyRecord, updateNull);
     }
 
-    public boolean deleteBasicEstateSurveyRecord(Integer id){
-        return basicEstateSurveyRecordDao.deleteBasicEstateSurveyRecord(id) ;
+    public boolean deleteBasicEstateSurveyRecord(Integer id) {
+        return basicEstateSurveyRecordDao.deleteBasicEstateSurveyRecord(id);
     }
 
-    public List<BasicEstateSurveyRecord> getBasicEstateSurveyRecordList(BasicEstateSurveyRecord basicEstateSurveyRecord){
-        return basicEstateSurveyRecordDao.getBasicEstateSurveyRecordList(basicEstateSurveyRecord) ;
+    public List<BasicEstateSurveyRecord> getBasicEstateSurveyRecordList(BasicEstateSurveyRecord basicEstateSurveyRecord) {
+        return basicEstateSurveyRecordDao.getBasicEstateSurveyRecordList(basicEstateSurveyRecord);
     }
 
-    public Long getCountByHouseId(Integer houseId){
-        return basicEstateSurveyRecordDao.getCountByHouseId(houseId) ;
+    public Long getCountByHouseId(Integer houseId) {
+        return basicEstateSurveyRecordDao.getCountByHouseId(houseId);
     }
 
 }

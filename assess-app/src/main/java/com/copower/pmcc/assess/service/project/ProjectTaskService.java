@@ -334,6 +334,7 @@ public class ProjectTaskService {
                     });
                     keyValueDtos.addAll(dtoList);
                 } else {
+                    keyValueDtos.addAll(dtoList);
                     KeyValueDto keyValueDto = new KeyValueDto();
                     keyValueDto.setKey(currUser);
                     keyValueDto.setValue(processInsId);

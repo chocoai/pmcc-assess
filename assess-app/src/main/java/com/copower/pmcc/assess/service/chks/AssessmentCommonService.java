@@ -5,22 +5,21 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseParameter;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
-import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
+import com.copower.pmcc.bpm.api.provider.*;
 import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -55,6 +54,8 @@ public class AssessmentCommonService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -111,7 +112,7 @@ public class AssessmentCommonService {
     }
 
     public ActivitiTaskNodeDto getAgentTaskNodeDto(String taskId) throws BpmException {
-        ActivitiTaskNodeDto activitiTaskNodeDto=null;
+        ActivitiTaskNodeDto activitiTaskNodeDto = null;
         List<String> agents = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
         if (CollectionUtils.isNotEmpty(agents)) {
             for (String agent : agents) {
@@ -186,19 +187,33 @@ public class AssessmentCommonService {
     }
 
     /**
-     * 获取抽查节点数据
+     * 将工作事项之前的数据都设置为前期数据状态
      *
-     * @param boxId
-     * @return
+     * @param projectPlanDetails
      */
-    public List<Integer> getSpotBoxReActivityIds(Integer boxId) {
-        List<BoxReActivityDto> reActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
-        if (CollectionUtils.isEmpty(reActivityDtos)) return null;
-        List<Integer> list = Lists.newArrayList();
-        for (BoxReActivityDto reActivityDto : reActivityDtos) {
-            if (reActivityDto.getBisSpotCheck() == Boolean.TRUE)
-                list.add(reActivityDto.getId());
+    public void setAssessmentDataToProphase(ProjectPlanDetails projectPlanDetails) {
+        if (projectPlanDetails == null) return;
+        //将与该工作事项相关的考核任务删除
+        ProjectResponsibilityDto responsibilityDto = new ProjectResponsibilityDto();
+        responsibilityDto.setAppKey(applicationConstant.getAppKey());
+        responsibilityDto.setProjectId(projectPlanDetails.getProjectId());
+        responsibilityDto.setPlanDetailsId(projectPlanDetails.getId());
+        responsibilityDto.setBusinessKey(PROJECT_TASK_BUSINESS_KEY_PERFORMANCE);
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(responsibilityDto);
+        if (CollectionUtils.isNotEmpty(projectTaskList)) {
+            projectTaskList.forEach(o -> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
         }
-        return list;
+
+        AssessmentPerformanceDto where = new AssessmentPerformanceDto();
+        where.setProjectId(projectPlanDetails.getProjectId());
+        where.setPlanDetailsId(projectPlanDetails.getId());
+        where.setBisProphase(false);
+        List<AssessmentPerformanceDto> performanceDtoList = performanceService.getPerformancesByParam(where);
+        if (CollectionUtils.isNotEmpty(performanceDtoList)) {
+            for (AssessmentPerformanceDto assessmentPerformanceDto : performanceDtoList) {
+                assessmentPerformanceDto.setBisProphase(true);
+                performanceService.updatePerformanceDto(assessmentPerformanceDto, false);
+            }
+        }
     }
 }
