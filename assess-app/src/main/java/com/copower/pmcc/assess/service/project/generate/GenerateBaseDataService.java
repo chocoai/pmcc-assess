@@ -3822,16 +3822,16 @@ public class GenerateBaseDataService {
                 }
 
                 builder.insertCell();
-                builder.write(certName);
+                builder.write(StringUtils.defaultString(certName));
 
                 builder.insertCell();
-                builder.write(seat);
+                builder.write(StringUtils.defaultString(seat));
 
                 builder.insertCell();
-                builder.write(certUser);
+                builder.write(StringUtils.defaultString(certUser));
 
                 builder.insertCell();
-                builder.write(practicalUse);
+                builder.write(StringUtils.defaultString(practicalUse));
 
                 builder.insertCell();
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
@@ -3894,9 +3894,9 @@ public class GenerateBaseDataService {
                             builder.write(declareRecord.getSeat());
                         } else {
                             builder.insertCell();
-                            builder.write(certName);
+                            builder.write(StringUtils.defaultString(certName));
                             builder.insertCell();
-                            builder.write(huxingPrice.getSeat());
+                            builder.write(StringUtils.defaultString(huxingPrice.getSeat()));
                         }
                         builder.insertCell();
                         builder.write(certUser);
