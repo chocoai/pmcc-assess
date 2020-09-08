@@ -56,8 +56,8 @@
                                             <select name="fileSource" required
                                                     class="form-control input-full search-select select2">
                                                 <option value="">请选择</option>
-                                                <c:forEach items="${FileSourceData}" var="itemData">
-                                                    <option value="${itemData.id}">${itemData.name}</option>
+                                                <c:forEach items="${AdArchivesDataSourceEnum}" var="itemData">
+                                                    <option value="${itemData.key}">${itemData.value}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -68,8 +68,8 @@
                                             <select name="publicWay" required
                                                     class="form-control input-full search-select select2">
                                                 <option value="">请选择</option>
-                                                <c:forEach items="${FilePublicData}" var="itemData">
-                                                    <option value="${itemData.id}">${itemData.name}</option>
+                                                <c:forEach items="${AdArchivesDataPublicEnum}" var="itemData">
+                                                    <option value="${itemData.key}">${itemData.value}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
