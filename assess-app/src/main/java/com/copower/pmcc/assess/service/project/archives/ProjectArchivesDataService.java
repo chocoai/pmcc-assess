@@ -41,6 +41,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +51,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 
 /**
  * 档案
@@ -194,10 +196,7 @@ public class ProjectArchivesDataService {
      * 档案目录填充
      *
      * @param basePlaceFileDto
-     * @param name
-     * @param list
      * @param placeFileDto
-     * @param adPlaceFileItemDtoList
      * @param saveList
      * @param atomicInteger
      */
@@ -216,6 +215,21 @@ public class ProjectArchivesDataService {
         adPlaceFileItemDto.setFileCategoryName(basePlaceFileDto.getName());
         adPlaceFileItemDto.setPublicProjectId(projectInfo.getId());
         adPlaceFileItemDto.setPublicProjectName(projectInfo.getProjectName());
+        if (StringUtils.isNotBlank(basePlaceFileDto.getDefaultDeadline()) && NumberUtils.isNumber(basePlaceFileDto.getDefaultDeadline())) {
+            adPlaceFileItemDto.setShelfLife(Integer.parseInt(basePlaceFileDto.getDefaultDeadline()));
+        }
+        if (StringUtils.isNotBlank(basePlaceFileDto.getDefaultStandard()) && NumberUtils.isNumber(basePlaceFileDto.getDefaultStandard())) {
+            adPlaceFileItemDto.setPublicWay(Integer.parseInt(basePlaceFileDto.getDefaultStandard()));
+        }
+        if (StringUtils.isNotBlank(basePlaceFileDto.getDefaultSource()) && NumberUtils.isNumber(basePlaceFileDto.getDefaultSource())) {
+            adPlaceFileItemDto.setFileSource(Integer.parseInt(basePlaceFileDto.getDefaultSource()));
+        }
+        if (basePlaceFileDto.getDefaultBisBinding() != null){
+            adPlaceFileItemDto.setBisBinding(basePlaceFileDto.getDefaultBisBinding());
+        }
+        if (basePlaceFileDto.getSorting() != null) {
+            adPlaceFileItemDto.setSorting(basePlaceFileDto.getSorting());
+        }
         atomicInteger.incrementAndGet();
         saveList.add(adPlaceFileItemDto);
     }
@@ -815,5 +829,24 @@ public class ProjectArchivesDataService {
                 adRpcPlaceFileGroupService.updateAdPlaceFileGroupDto(fileGroupDto);
             }
         }
+    }
+
+
+    public List<KeyValueDto> getAdArchivesDataPublicEnum() {
+        AdArchivesDataPublicEnum[] adArchivesDataPublicEnums = AdArchivesDataPublicEnum.values();
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(adArchivesDataPublicEnums.length);
+        for (AdArchivesDataPublicEnum publicEnum : adArchivesDataPublicEnums) {
+            keyValueDtoList.add(new KeyValueDto(publicEnum.getKey(), publicEnum.getName()));
+        }
+        return keyValueDtoList;
+    }
+
+    public List<KeyValueDto> getAdArchivesDataSourceEnum() {
+        AdArchivesDataSourceEnum[] archivesDataSourceEnums = AdArchivesDataSourceEnum.values();
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(archivesDataSourceEnums.length);
+        for (AdArchivesDataSourceEnum sourceEnum : archivesDataSourceEnums) {
+            keyValueDtoList.add(new KeyValueDto(sourceEnum.getKey(), sourceEnum.getName()));
+        }
+        return keyValueDtoList;
     }
 }
