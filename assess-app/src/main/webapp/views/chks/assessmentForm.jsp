@@ -1140,7 +1140,8 @@
         }, function (data) {
             notifySuccess("成功", "考核成功!");
             $(_this).closest('.modal').modal("hide");
-            assessmentCommonHandle.loadAssessmentPerformanceList($('#assessmentPerformanceForm'));
+            assessmentCommonHandle.loadAssessmentPerformanceList();
+            assessmentCommonHandle.loadAssessmentPerformanceProphaseList();
         });
     };
 
@@ -1164,7 +1165,7 @@
             success: function (result) {
                 if (result.ret) {
                     notifySuccess('成功', '操作成功');
-                    assessmentCommonHandle.loadAssessmentPerformanceList($('#assessmentPerformanceForm'));
+                    assessmentCommonHandle.loadAssessmentPerformanceList();
                 } else {
                     AlertError("失败", result.errmsg);
                 }

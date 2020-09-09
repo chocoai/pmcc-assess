@@ -45,8 +45,6 @@ public class HomeController {
     @ResponseBody
     @RequestMapping(value = "/getWorkLogByProjectId", name = "取得项目日志信息", method = RequestMethod.GET)
     public BootstrapTableVo getWorkLogByProjectId(Integer publicProjectId) {
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-//        BootstrapTableVo bootstrapTableVo = bpmRpcToolsService.getWorkLogByProjectId(publicProjectId, requestBaseParam.getOffset(), requestBaseParam.getLimit(), requestBaseParam.getSearch());
         BootstrapTableVo bootstrapTableVo = workLogService.getWorkLogByProjectId(publicProjectId);
         return bootstrapTableVo;
     }
