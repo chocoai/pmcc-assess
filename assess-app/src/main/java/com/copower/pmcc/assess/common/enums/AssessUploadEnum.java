@@ -19,6 +19,7 @@ public enum AssessUploadEnum {
 
     ESTATE_FLOOR_TOTAL_PLAN("estate_floor_total_plan", "楼盘总平面图"),
     ESTATE_FLOOR_APPEARANCE_FIGURE("estate_floor_Appearance_figure", "楼盘外观图"),
+    ESTATE_FLOOR_GATE_PLAN("estate_floor_gate_plan", "楼盘大门图"),
     ESTATE_WATER_SUPPLY_PLAN("estate_water_supply_plan", "楼盘供水平面图"),
     ESTATE_POWER_SUPPLY_PLAN("estate_power_supply_plan", "楼盘供电平面图"),
     ESTATE_AIR_SUPPLY_PLAN("estate_air_supply_plan", "楼盘供气平面图"),
@@ -28,7 +29,7 @@ public enum AssessUploadEnum {
     HOUSE_NEW_HUXING_PLAN("house_new_huxing_plan", "新户型图"),
     HOUSE_IMG_PLAN("house_img_plan", "房屋平面图"),
     HOUSE_DECORATE("house_decorate", "房屋外观图"),
-    HOUSE_FILE("house_file", "其它附件"),
+    HOUSE_ROOM_IMAGE("house_room_image", "房间照片"),
     HOUSE_ROOM_FILE("house_room_file", "房间附件"),
 
     BUILDING_FLOOR_PLAN("building_floor_plan", "平面图 (楼栋)"),

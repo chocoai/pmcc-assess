@@ -928,9 +928,9 @@
     //根据类型获取委估对象下实况图片
     function getLiveSituationByCertifyPart() {
         var schemeJudgeObjectId = $("#frmItemFile").find("input[name='schemeJudgeObjectId']").val();
-        var certifyPart = $("#frmItemFile").find("select[name='certifyPart']").val();
+        var certifyPart = $("#frmItemFile").find("select[name='certifyPartCategory']").val();
         if (!certifyPart) {
-            notifyInfo("提示","先选择查勘部位");
+            notifyInfo("提示","先选择附件类别");
             return;
         }
         $.ajax({
