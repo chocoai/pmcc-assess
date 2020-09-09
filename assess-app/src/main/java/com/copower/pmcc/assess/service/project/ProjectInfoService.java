@@ -47,8 +47,10 @@ import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysDepartmentDto;
+import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
+import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -71,6 +73,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -84,7 +87,6 @@ import java.util.stream.Stream;
 public class ProjectInfoService {
 
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -138,6 +140,8 @@ public class ProjectInfoService {
     private BaseParameterService baseParameterService;
     @Autowired
     private AssessmentCommonService assessmentCommonService;
+    @Autowired
+    private ErpRpcProjectService erpRpcProjectService;
 
     /**
      * 获取项目每年的项目个数  递增最大数字
@@ -979,6 +983,54 @@ public class ProjectInfoService {
             }
         } catch (BusinessException e) {
             return false;
+        }
+    }
+
+    /**
+     * 批量设置项目成员
+     *
+     * @param projectIds
+     * @param account
+     */
+    public void batchSettingProjectMembers(String projectIds, String account) {
+        if (StringUtils.isBlank(projectIds) || StringUtils.isBlank(account)) {
+            return;
+        }
+        List<Integer> integerList = FormatUtils.transformString2Integer(projectIds);
+        List<ProjectInfo> projectInfoList = projectInfoDao.getProjectInfoByProjectIds(integerList);
+        if (CollectionUtils.isEmpty(projectInfoList)) {
+            return;
+        }
+        List<String> stringList = FormatUtils.transformString2List(account, ",");
+        if (CollectionUtils.isEmpty(stringList)) {
+            return;
+        }
+        List<ProjectMember> projectMemberList = projectMemberDao.getProjectMemberListByProjectIds(integerList);
+        if (CollectionUtils.isEmpty(projectMemberList)) {
+            return;
+        }
+        String appKey = applicationConstant.getAppKey();
+        for (ProjectInfo projectInfo : projectInfoList) {
+            List<ProjectMember> memberList = LangUtils.filter(projectMemberList, obj -> obj.getProjectId().equals(projectInfo.getId()));
+            if (CollectionUtils.isEmpty(memberList)) {
+                continue;
+            }
+            for (ProjectMember projectMember : memberList) {
+                List<String> strings = new ArrayList<>();
+                if (StringUtils.isNotBlank(projectMember.getUserAccountMember())) {
+                    strings.addAll(FormatUtils.transformString2List(projectMember.getUserAccountMember(), ","));
+                }
+                strings.addAll(stringList);
+                //去除重复
+                strings = strings.stream().distinct().collect(Collectors.toList());
+                String member = StringUtils.join(strings, ",");
+                projectMember.setUserAccountMember(member);
+                projectMemberDao.updateProjectMember(projectMember);
+                SysProjectDto record = new SysProjectDto();
+                record.setProjectMember(member);
+                //更新erp信息
+                erpRpcProjectService.updateProjectInfo(projectInfo.getId(), appKey, record);
+            }
         }
     }
 }

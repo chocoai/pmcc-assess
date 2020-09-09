@@ -39,6 +39,13 @@ public class ProjectMemberDao {
         return projectMembers;
     }
 
+    public List<ProjectMember> getProjectMemberListByProjectIds(List<Integer> projectIds) {
+        ProjectMemberExample example = new ProjectMemberExample();
+        example.createCriteria().andProjectIdIn(projectIds).andBisEnableEqualTo(true);
+        List<ProjectMember> projectMembers = projectMemberMapper.selectByExample(example);
+        return projectMembers;
+    }
+
     public List<ProjectMember> getProjectMemberList(ProjectMember projectMember) {
         ProjectMemberExample example = new ProjectMemberExample();
         MybatisUtils.convertObj2Example(projectMember, example);

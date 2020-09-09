@@ -122,6 +122,24 @@ public class ProjectCenterController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/settingProjectMember", name = "对项目设置项目成员")
+    public ModelAndView settingProjectMember() {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/settingProjectMember");
+        List<KeyValueDto> statusEnumList = ProjectStatusEnum.getProjectStatusEnumList(ProjectStatusEnum.NORMAL.getKey(),
+                ProjectStatusEnum.FINISH.getKey(), ProjectStatusEnum.CLOSE.getKey(), ProjectStatusEnum.DRAFT.getKey());
+        modelAndView.addObject("statusEnumList", statusEnumList);
+        //委托目的
+        List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+        modelAndView.addObject("entrustPurposeList", entrustPurposeList);
+        //贷款类型
+        List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
+        modelAndView.addObject("loanTypeList", loanTypeList);
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
+        List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
+        modelAndView.addObject("projectCategoryList", keyValueDtoList);
+        return modelAndView;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/getParticipationProject", name = "取得参与项目", method = RequestMethod.GET)
     public BootstrapTableVo getParticipationProject(QueryProjectInfo queryProjectInfo) throws Exception {

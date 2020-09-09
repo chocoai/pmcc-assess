@@ -469,4 +469,16 @@ public class ProjectInfoController {
         return vo;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/batchSettingProjectMembers", name = "批量设置项目成员", method = RequestMethod.POST)
+    public HttpResult batchSettingProjectMembers(String projectIds,String account) {
+        try {
+            projectInfoService.batchSettingProjectMembers(projectIds,account);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "批量设置项目成员");
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
 }
