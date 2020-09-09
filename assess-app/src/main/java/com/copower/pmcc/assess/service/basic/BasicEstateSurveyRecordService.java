@@ -46,8 +46,10 @@ public class BasicEstateSurveyRecordService {
     }
 
     public void saveBasicEstateSurveyRecord(BasicEstateSurveyRecord surveyRecord) {
-        if (surveyRecord == null) return;
-        if (surveyRecord.getId() != null || surveyRecord.getId() > 0) {
+        if (surveyRecord == null) {
+            return;
+        }
+        if (surveyRecord.getId() != null && surveyRecord.getId() > 0) {
             updateBasicEstateSurveyRecord(surveyRecord,false);
         } else {
             surveyRecord.setCreator(commonService.thisUserAccount());
