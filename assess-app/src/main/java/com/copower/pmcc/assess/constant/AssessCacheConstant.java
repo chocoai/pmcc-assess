@@ -12,6 +12,7 @@ public class AssessCacheConstant {
 
     //计划任务job
     public static final String PMCC_ASSESS_JOB_CLIMBING_CASE = "pmcc:assess:job:climbing:case";
+    public static final String PMCC_ASSESS_JOB_PROJECT_AUTO_FINISH = "pmcc:assess:job:project:auto:finish";
 
     //项目分类
     public static final String PMCC_ASSESS_PROJECT_CLASSIFY = "pmcc:assess:project:classify";

@@ -748,7 +748,7 @@ public class SchemeJudgeObjectService {
         // 2.一旦委估对象都发生了变化,只是单纯添加了
 
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
-        List<ProjectPlan> planList = projectPlanService.getProjectplanByProjectId(projectId, null);
+        List<ProjectPlan> planList = projectPlanService.getProjectPlanListByProjectId(projectId, null);
         for (ProjectPlan plan : planList) {
             if (plan.getStageSort().intValue() > projectPlan.getStageSort().intValue()) {
                 //设置状态为等待 删除阶段下的任务

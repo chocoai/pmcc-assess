@@ -76,7 +76,7 @@ if(CollectionUtils.isNotEmpty(projectPlanHistories))
 projectPlanHistories=new ArrayList<>();
         SysUserDto sysUser = processControllerComponent.getThisUserInfo();
         List<ProjectPlanHistoryDto> projectPlanHistoryDtos = JSON.parseArray(planString, ProjectPlanHistoryDto.class);
-        List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(Integer.valueOf(projectId), "");
+        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanListByProjectId(Integer.valueOf(projectId), "");
         projectPlans = LangUtils.filter(projectPlans, o -> {
             return o.getBisRestart().equals(false);
         });

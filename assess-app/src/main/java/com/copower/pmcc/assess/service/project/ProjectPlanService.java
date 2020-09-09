@@ -85,7 +85,7 @@ public class ProjectPlanService {
         return projectPlanDao.getProjectPlanById(id);
     }
 
-    public List<ProjectPlan> getProjectplanByProjectId(Integer projectId, String status) {
+    public List<ProjectPlan> getProjectPlanListByProjectId(Integer projectId, String status) {
         return projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), status);
     }
 

@@ -366,7 +366,7 @@ public class ProjectInfoService {
             projectPlanDao.addProjectPlan(projectPlan);
             i++;//系统对不同项目进行分别排序，你处理某些阶段不需要执行的问题
         }
-        List<ProjectPlan> projectPlans = projectPlanService.getProjectplanByProjectId(projectInfo.getId(), "");
+        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanListByProjectId(projectInfo.getId(), "");
         projectPlanService.enterNextStage(projectPlans.get(0).getId());
     }
 
