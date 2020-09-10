@@ -331,7 +331,7 @@ public class ProjectArchivesDataService {
                             if (CollectionUtils.isEmpty(documentSendList)) {
                                 continue;
                             }
-                            List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
+                            List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId(),null);
                             if (CollectionUtils.isEmpty(documentTemplateList)) {
                                 continue;
                             }
@@ -361,7 +361,7 @@ public class ProjectArchivesDataService {
                             BaseDataDic signBillDataDic = null;
                             signBillDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_REPORT_SIGNFOR);
                             if (signBillDataDic != null) {
-                                signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId());
+                                signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId(),null);
                             }
                             if (CollectionUtils.isEmpty(signBill)) {
                                 continue;

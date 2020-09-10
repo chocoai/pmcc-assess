@@ -163,6 +163,10 @@ public class BasicHouseCaseSummaryService {
                 houseCaseSummaryVo.setCreatorName(sysUser.getUserName());
             }
         }
+        BasicApplyBatch applyBatch = basicApplyBatchService.getCaseBasicApplyBatch(houseSummary.getProvince(), houseSummary.getCity(), houseSummary.getEstateName());
+        if (applyBatch != null) {
+            houseCaseSummaryVo.setBasicApplyBatchId(applyBatch.getId());
+        }
         return houseCaseSummaryVo;
     }
 

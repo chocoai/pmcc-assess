@@ -35,20 +35,58 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <p id="toolbar_template">
-                                    <button style="margin-left: 5px" class="btn btn-success btn-sm"
-                                            onclick="addTemplate()">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">模板名称</label>
+                                        <div class="col-md-2 p-0">
+                                            <input type="text" data-rule-maxlength="50"
+                                                   placeholder="模板名称" name="templateName"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-md-1 col-form-label">项目类型</label>
+                                        <div class="col-md-2 p-0">
+                                            <select name="assessProjectType" class="form-control input-full">
+                                                <option value="">-请选择-</option>
+                                                <c:if test="${not empty assessProjectTypeList}">
+                                                    <c:forEach var="items" items="${assessProjectTypeList}">
+                                                        <option value="${items.key}">${items.explain}</option>
+                                                    </c:forEach>
+                                                </c:if>
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">模板类型</label>
+                                        <div class="col-md-2 p-0">
+                                            <select name="templateType" class="form-control input-full">
+                                                <option value="">-请选择-</option>
+                                                <c:if test="${not empty templateTypes}">
+                                                    <c:forEach items="${templateTypes}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </c:if>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 p-0">
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                    onclick="loadTemplateList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                查询
+                                            </button>
+                                            <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                    onclick="addTemplate()">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                        新增
-                                    </button>
-                                </p>
+                                                新增
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                                 <table id="tb_template_list" class="table table-bordered"></table>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -235,17 +273,17 @@
 
     function loadTemplateList() {
         var cols = [];
-        cols.push({field: 'templateName',width:"25%",  title: '模板名称'});
+        cols.push({field: 'templateName', width: "25%", title: '模板名称'});
         cols.push({
-            field: 'provideDate', width:"15%", title: '提供日期', formatter: function (value, row, index) {
+            field: 'provideDate', width: "15%", title: '提供日期', formatter: function (value, row, index) {
                 return formatDate(value);
             }
         });
-        cols.push({field: 'assessProjectTypeName',width:"15%",  title: '项目类型'});
-        cols.push({field: 'reportTypeName',width:"15%",  title: '文号规则'});
-        cols.push({field: 'templateTypeName', width:"15%", title: '模板类型'});
+        cols.push({field: 'assessProjectTypeName', width: "15%", title: '项目类型'});
+        cols.push({field: 'reportTypeName', width: "15%", title: '文号规则'});
+        cols.push({field: 'templateTypeName', width: "15%", title: '模板类型'});
         cols.push({
-            field: 'opation', width:"15%", title: '操作', formatter: function (value, row, index) {
+            field: 'opation', width: "15%", title: '操作', formatter: function (value, row, index) {
                 var str = '<button onclick="editTemplate(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
@@ -259,7 +297,9 @@
                 return str;
             }
         });
-        TableInit(templateTable, "${pageContext.request.contextPath}/DocumentTemplate/getDocumentTemplate", cols, {}, {
+        var data = formSerializeArray($('#frmQuery'));
+        templateTable.bootstrapTable('destroy');
+        TableInit(templateTable, "${pageContext.request.contextPath}/DocumentTemplate/getDocumentTemplate", cols, data, {
             showColumns: false,
             toolbar: "toolbar_template",
             onLoadSuccess: function () {
@@ -318,8 +358,7 @@
                     TableReload(templateTable);
                     AlertSuccess("成功", "数据已成功保存到数据库");
                     $('#modalTemplate').modal('hide');
-                }
-                else {
+                } else {
                     AlertError("错误", "保存数据失败");
                 }
             },
@@ -356,13 +395,12 @@
                             $("#frmTemplate").find('[name=numbetRuleId]').val(numbetRuleId);
                         }
                     }
-                }
-                else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
 

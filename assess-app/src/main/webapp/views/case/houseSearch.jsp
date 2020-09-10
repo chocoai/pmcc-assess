@@ -16,7 +16,6 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">
@@ -378,8 +377,7 @@
                     url += '&tbId=' + result.data.tbId;
                     url += '&tbType=' + result.data.tbType;
                     window.open(url, "");
-                }
-                else {
+                } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
@@ -397,7 +395,7 @@
         houseFrm.find('.select2').select2('val', '').trigger('change');
     };
 
-    houseSearch.showOtherQuery = function(_that) {
+    houseSearch.showOtherQuery = function (_that) {
         $("#showOtherQuery").toggle();
         var c = $(_that).find("i").attr("class");
         if (c.indexOf("plus") != -1) {
@@ -415,7 +413,12 @@
         var cols = [];
         cols.push({
             field: 'name', title: '名称', formatter: function (value, row, index) {
-                var s = row.fullName;
+                var s = '';
+                if (row.basicApplyBatchId) {
+                    s += '<a target="_blank" href="${pageContext.request.contextPath}/basic/checkCaseDetail?applyBatchId=' + row.basicApplyBatchId + '">' + row.fullName + '</a>';
+                } else {
+                    s += row.fullName;
+                }
                 if (row.creatorName) {
                     s += "<span style='margin-left: 5px;' class='label label-info'>" + row.creatorName + "</span>"
                 }

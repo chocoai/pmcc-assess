@@ -75,11 +75,11 @@ public class DocumentTemplateController {
     //region 模板类型
     @ResponseBody
     @GetMapping(value = "/getDocumentTemplate", name = "取得模板类型")
-    public BootstrapTableVo getDocumentTemplate() {
+    public BootstrapTableVo getDocumentTemplate(String templateName, Integer templateType, String assessProjectType) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList(requestBaseParam.getSearch(), null);
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList(templateName, templateType, assessProjectType);
         List<DocumentTemplateVo> transform = LangUtils.transform(documentTemplateList, o -> documentTemplateService.getDocumentTemplateVo(o));
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(transform) ? new ArrayList<DocumentTemplateVo>() : transform);

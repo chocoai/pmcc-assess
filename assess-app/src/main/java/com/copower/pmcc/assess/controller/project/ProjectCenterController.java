@@ -187,8 +187,8 @@ public class ProjectCenterController {
         modelAndView.addObject("projectId", projectId);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
-        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
-        List<DocumentTemplate> documentClientTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH_CLIENT).getId());
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId(),null);
+        List<DocumentTemplate> documentClientTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH_CLIENT).getId(),null);
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         modelAndView.addObject("documentClientTemplateList", documentClientTemplateList);
 
@@ -197,7 +197,7 @@ public class ProjectCenterController {
         BaseDataDic signBillDataDic = null;
         signBillDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_REPORT_SIGNFOR);
         if (signBillDataDic != null) {
-            signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId());
+            signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId(),null);
             modelAndView.addObject("signBill", signBill);
         }
         //项目经理

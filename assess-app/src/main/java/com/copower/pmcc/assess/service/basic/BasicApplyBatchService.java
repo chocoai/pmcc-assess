@@ -840,6 +840,9 @@ public class BasicApplyBatchService {
      * @return
      */
     public BasicApplyBatch getCaseBasicApplyBatch(String province, String city, String estateName) {
+        if (StringUtils.isBlank(province) || StringUtils.isBlank(city) || StringUtils.isBlank(estateName)) {
+            return null;
+        }
         BasicApplyBatch where = new BasicApplyBatch();
         where.setProvince(province);
         where.setCity(city);

@@ -126,11 +126,11 @@ public class DocumentTemplateService {
         }
     }
 
-    public List<DocumentTemplate> getDocumentTemplateList(String search,Integer templateType) {
+    public List<DocumentTemplate> getDocumentTemplateList(String search,Integer templateType,String projectType) {
         if (StringUtils.isNotBlank(search)) {
             search = String.format("%%%s%%", search);
         }
-        List<DocumentTemplate> documentTemplateList = documentDao.getDocumentTemplateList(search, templateType);
+        List<DocumentTemplate> documentTemplateList = documentDao.getDocumentTemplateList(search, templateType,projectType);
         return documentTemplateList;
     }
 

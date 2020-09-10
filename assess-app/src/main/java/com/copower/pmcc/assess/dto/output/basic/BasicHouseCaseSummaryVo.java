@@ -14,6 +14,7 @@ public class BasicHouseCaseSummaryVo extends BasicHouseCaseSummary {
     private String approverName;
     private String creatorName;
     private String dealTypeName;
+    private Integer basicApplyBatchId;
 
     public String getCreatorName() {
         return creatorName;
@@ -77,5 +78,13 @@ public class BasicHouseCaseSummaryVo extends BasicHouseCaseSummary {
 
     public void setTradingTypeName(String tradingTypeName) {
         this.tradingTypeName = tradingTypeName;
+    }
+
+    public Integer getBasicApplyBatchId() {
+        return basicApplyBatchId;
+    }
+
+    public void setBasicApplyBatchId(Integer basicApplyBatchId) {
+        this.basicApplyBatchId = basicApplyBatchId;
     }
 }

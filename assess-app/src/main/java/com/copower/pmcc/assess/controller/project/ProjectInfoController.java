@@ -295,7 +295,7 @@ public class ProjectInfoController {
         //区域
         modelAndView.addObject("areaGroupList", schemeAreaGroupService.getSchemeAreaGroupVos(projectId));
         //项目发文件
-        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId());
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId(),null);
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());

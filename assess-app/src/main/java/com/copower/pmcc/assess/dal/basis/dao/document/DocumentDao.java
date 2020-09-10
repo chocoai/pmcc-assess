@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2019-05-30
  * @time: 18:05
  */
@@ -29,11 +29,11 @@ public class DocumentDao {
     @Autowired
     private DocumentOpinionMapper documentOpinionMapper;
 
-    public List<DocumentSend> getDocumentSendList(Integer projectId,String status){
+    public List<DocumentSend> getDocumentSendList(Integer projectId, String status) {
         DocumentSendExample example = new DocumentSendExample();
         DocumentSendExample.Criteria criteria = example.createCriteria();
-        criteria.andProjectIdEqualTo(projectId) ;
-        criteria.andStatusEqualTo(status) ;
+        criteria.andProjectIdEqualTo(projectId);
+        criteria.andStatusEqualTo(status);
         return documentSendMapper.selectByExampleWithBLOBs(example);
     }
 
@@ -70,17 +70,22 @@ public class DocumentDao {
         MybatisUtils.convertObj2Example(documentTemplate, example);
         return documentTemplateMapper.selectByExample(example);
     }
-    public List<DocumentTemplate> getDocumentTemplateList(String search, Integer templateType) {
+
+    public List<DocumentTemplate> getDocumentTemplateList(String search, Integer templateType,String projectType) {
         DocumentTemplateExample example = new DocumentTemplateExample();
-       if(StringUtils.isNotBlank(search))
-       {
-           example.createCriteria().andTemplateNameLike(search);
-       }
-       if(templateType != null){
-           example.createCriteria().andTemplateTypeEqualTo(templateType);
-       }
+        DocumentTemplateExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(search)) {
+            criteria.andTemplateNameLike(search);
+        }
+        if (templateType != null) {
+            criteria.andTemplateTypeEqualTo(templateType);
+        }
+        if (StringUtils.isNotBlank(projectType)) {
+            criteria.andAssessProjectTypeEqualTo(projectType);
+        }
         return documentTemplateMapper.selectByExample(example);
     }
+
     public DocumentTemplate getDocumentTemplate(Integer id) {
         return documentTemplateMapper.selectByPrimaryKey(id);
     }
@@ -110,11 +115,13 @@ public class DocumentDao {
         MybatisUtils.convertObj2Example(documentBookmark, example);
         return documentTemplateBookmarkMapper.selectByExample(example);
     }
+
     public List<DocumentTemplateBookmark> getDocumentTemplateBookmarkList(Integer templateId) {
         DocumentTemplateBookmarkExample example = new DocumentTemplateBookmarkExample();
         example.createCriteria().andTemplateIdEqualTo(templateId);
         return documentTemplateBookmarkMapper.selectByExample(example);
     }
+
     public DocumentTemplateBookmark getDocumentTemplateBookmark(Integer id) {
         return documentTemplateBookmarkMapper.selectByPrimaryKey(id);
     }
@@ -126,11 +133,13 @@ public class DocumentDao {
     public void deleteDocumentTemplateBookmark(Integer id) {
         documentTemplateBookmarkMapper.deleteByPrimaryKey(id);
     }
+
     public void deleteDocumentTemplateBookmark(List<Integer> ids) {
         DocumentTemplateBookmarkExample example = new DocumentTemplateBookmarkExample();
         example.createCriteria().andIdIn(ids);
         documentTemplateBookmarkMapper.deleteByExample(example);
     }
+
     public void updateDocumentTemplateBookmark(DocumentTemplateBookmark documentBookmark) {
         documentTemplateBookmarkMapper.updateByPrimaryKeySelective(documentBookmark);
     }

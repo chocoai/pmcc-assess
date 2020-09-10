@@ -59,7 +59,7 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageGenerate/taskGenerateIndex", "", 0, "-1", "");
         //意见稿模板
-        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("",baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_OPINION).getId());
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("",baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_OPINION).getId(),null);
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         setModelParam(projectPlanService.getProjectplanById(projectPlanDetails.getPlanId()), modelAndView);
         return modelAndView;
