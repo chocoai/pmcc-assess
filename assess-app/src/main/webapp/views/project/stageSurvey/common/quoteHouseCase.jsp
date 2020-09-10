@@ -406,7 +406,12 @@
         var cols = [];
         cols.push({
             field: 'name', title: '名称', formatter: function (value, row, index) {
-                var s = row.fullName;
+                var s = '';
+                if (row.basicApplyBatchId) {
+                    s += '<a target="_blank" href="${pageContext.request.contextPath}/basic/checkCaseDetail?applyBatchId=' + row.basicApplyBatchId + '">' + row.fullName + '</a>';
+                } else {
+                    s += row.fullName;
+                }
                 if (row.creatorName) {
                     s += "<span style='margin-left: 5px;' class='label label-info'>" + row.creatorName + "</span>"
                 }

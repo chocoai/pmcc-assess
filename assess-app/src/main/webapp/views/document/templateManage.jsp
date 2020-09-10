@@ -73,7 +73,7 @@
 											</span>
                                                 查询
                                             </button>
-                                            <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                            <button type="button" style="margin-left: 5px" class="btn btn-success btn-sm"
                                                     onclick="addTemplate()">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
