@@ -21,6 +21,7 @@ import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.*;
 import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceLogDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -215,5 +216,13 @@ public class AssessmentCommonService {
                 performanceService.updatePerformanceDto(assessmentPerformanceDto, false);
             }
         }
+    }
+
+    /**
+     * 记录考核相关操作日志
+     * @param logDto
+     */
+    public void recordAssessmentPerformanceLog(AssessmentPerformanceLogDto logDto){
+        performanceService.recordAssessmentPerformanceLog(logDto);
     }
 }

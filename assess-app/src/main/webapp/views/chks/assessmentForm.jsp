@@ -22,7 +22,8 @@
                 </li>
 
                 <c:if test="${not empty projectPlanDetails}">
-                    <li class="nav-item submenu"  onclick="assessmentCommonHandle.loadAssessmentPerformanceProphaseList();">
+                    <li class="nav-item submenu"
+                        onclick="assessmentCommonHandle.loadAssessmentPerformanceProphaseList();">
                         <a class="nav-link" id="assessment-profile-tab" data-toggle="pill" href="#assessment-profile"
                            role="tab" aria-controls="assessment-profile" aria-selected="true">前期考核数据</a>
                     </li>
@@ -143,7 +144,7 @@
                                                 class="fa fa-clipboard" aria-hidden="true"></i>粘贴
                                         </button>
                                         <button type="button"
-                                                onclick="assessmentCommonHandle.batchSetFinish();"
+                                                onclick="assessmentCommonHandle.batchSetIneffective();"
                                                 class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i>一键完成
                                         </button>
                                     </div>
@@ -278,6 +279,10 @@
                                                     onclick="$(this).closest('form').clearAll();">
                                                 <span class="fa fa-undo-alt" aria-hidden="true"></span>
                                                 重置
+                                            </button>
+                                            <button type="button"
+                                                    onclick="assessmentCommonHandle.batchSetIneffective();"
+                                                    class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i>一键无效
                                             </button>
                                         </div>
                                     </div>
@@ -799,6 +804,9 @@
         });
         cols.push({
             field: 'examineStatus', title: '状态', formatter: function (value, row, index) {
+                if (false == row.bisEffective) {
+                    return "<span class=\"label label-danger\">无效</span> ";
+                }
                 if (value == 'runing') {
                     return "<span class=\"label label-info\">进行中</span> ";
                 }
@@ -838,6 +846,9 @@
         cols.push({
             field: 'examineStatus', title: '操作', formatter: function (value, row, index) {
                 var str = "";
+                if (false == row.bisEffective) {
+                    return str;
+                }
                 if (row.canFill) {//考核内容可填写
                     str += '<button type="button" class="btn  btn-xs btn-primary tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.showPerformanceModal(' + row.id + ',\'' + row.assessmentType + '\')" > <i class="fa fa-pen fa-white"></i></button>';
                 }
@@ -1145,27 +1156,27 @@
         });
     };
 
-    //一键完成
-    assessmentCommonHandle.batchSetFinish = function () {
-        var table = $("#assessmentPerformanceTableList");
+    //一键无效
+    assessmentCommonHandle.batchSetIneffective = function () {
+        var table = $("#assessmentPerformanceProphaseTableList");
         var rows = table.bootstrapTable('getSelections');
         if (rows.length <= 0) {
-            notifyInfo("提示", "请选择要完成的数据");
+            notifyInfo("提示", "请勾选数据");
             return;
         }
         var ids = '';
         $.each(rows, function (i, item) {
             ids += item.id + ',';
-        })
+        });
         $.ajax({
-            url: '${pageContext.request.contextPath}/assessmentPerformance/batchSetFinish',
+            url: '${pageContext.request.contextPath}/assessmentPerformance/batchSetIneffective',
             data: {ids: ids.replace(/,$/, '')},
             type: 'post',
             dataType: 'json',
             success: function (result) {
                 if (result.ret) {
                     notifySuccess('成功', '操作成功');
-                    assessmentCommonHandle.loadAssessmentPerformanceList();
+                    assessmentCommonHandle.loadAssessmentPerformanceProphaseList();
                 } else {
                     AlertError("失败", result.errmsg);
                 }

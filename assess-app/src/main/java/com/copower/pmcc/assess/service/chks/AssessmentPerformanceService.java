@@ -163,6 +163,23 @@ public class AssessmentPerformanceService {
     }
 
     /**
+     * 批量设置无效
+     *
+     * @param ids
+     */
+    public void batchSetIneffective(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) return;
+        List<AssessmentPerformanceDto> list = performanceService.getPerformancesByIds(ids);
+        if (CollectionUtils.isEmpty(list)) return;
+        for (AssessmentPerformanceDto assessmentProjectPerformanceDto : list) {
+            if (commonService.thisUserAccount().equals(assessmentProjectPerformanceDto.getExaminePeople())) {
+                assessmentProjectPerformanceDto.setBisEffective(false);
+                performanceService.updatePerformanceDto(assessmentProjectPerformanceDto, false);
+            }
+        }
+    }
+
+    /**
      * 保存考核信息
      *
      * @param assessmentPerformanceDto
@@ -584,5 +601,47 @@ public class AssessmentPerformanceService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         BootstrapTableVo vo = performanceService.getPerformanceDtoListByParam(where, null, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         return vo;
+    }
+
+    /**
+     * 引用上次数据处理逻辑
+     * @param ids
+     * @param boxId
+     * @param activityId
+     * @param planDetilsId
+     */
+    public void refPrevPerformance(List<Integer> ids, Integer boxId, Integer activityId, Integer planDetilsId) {
+        //先判断该节点时间是否存在前次数据，不存在直接返回
+        //1.模型id、节点id、类型、key值、tableName、tableId、planDetilsId、
+        //2.当找到了对应的数据，有且只有一条配置数据，则开始初始化及复制对应的从数据项内容
+        //3.当找到的是多条数据，则项找到最新这一天数据，并且根据流程实例id检测，是否在同一流程下有多条，如果是则不处理，否则复制处理
+        if (CollectionUtils.isEmpty(ids)) return;
+        for (Integer id : ids) {
+            AssessmentPerformanceDto currPerformanceDto = performanceService.getPerformanceById(id);
+            Integer tableId = 0;
+            String tableName = "";
+            String assessmentKey = "";
+            String assessmentType = "";
+            AssessmentPerformanceDto where = null;
+            List<AssessmentPerformanceDto> pervformances = performanceService.getPerformancesByParam(where);
+            if (CollectionUtils.isEmpty(pervformances)) continue;
+            AssessmentPerformanceDto prevPerformance = pervformances.get(0);
+            List<AssessmentPerformanceDto> filter = LangUtils.filter(pervformances, o -> StringUtils.equals(o.getProcessInsId(), prevPerformance.getProcessInsId()));
+            if (CollectionUtils.isNotEmpty(filter) && filter.size() > 0) continue;
+            List<AssessmentPerformanceDetailDto> prevDetailDtos = performanceService.getPerformanceDetailListByPerformanceId(prevPerformance.getId());
+            if (CollectionUtils.isEmpty(prevDetailDtos)) continue;
+            List<AssessmentPerformanceDetailDto> currDetailDtos = performanceService.getPerformanceDetailListByPerformanceId(currPerformanceDto.getId());
+            if (CollectionUtils.isEmpty(currDetailDtos)) {//先初始化从表数据
+
+            }
+            Map<Integer, AssessmentPerformanceDetailDto> map = FormatUtils.mappingSingleEntity(prevDetailDtos, o -> o.getContentId());
+            for (AssessmentPerformanceDetailDto currDetailDto : currDetailDtos) {
+                if (map.get(currDetailDto.getContentId()) == null) continue;
+                AssessmentPerformanceDetailDto prevDetailDto = map.get(currDetailDto.getContentId());
+                currDetailDto.setActualScore(prevDetailDto.getActualScore());
+                currDetailDto.setRemark(prevDetailDto.getRemark());
+                performanceService.updatePerformanceDetailDto(currDetailDto, false);
+            }
+        }
     }
 }

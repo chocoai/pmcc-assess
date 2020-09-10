@@ -132,5 +132,17 @@ public class AssessmentPerformanceController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
+    @PostMapping(value = "/batchSetIneffective", name = "批量设置考核数据为无效")
+    public HttpResult batchSetIneffective(String ids) {
+        try {
+            List<Integer> list = FormatUtils.transformString2Integer(ids);
+            assessmentPerformanceService.batchSetIneffective(list);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "批量设置考核数据为无效出错");
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }
 
