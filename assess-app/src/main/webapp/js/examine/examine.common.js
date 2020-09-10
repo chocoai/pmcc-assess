@@ -218,4 +218,18 @@ examineCommon.landLevelSelect = function (this_) {
 examineCommon.getMarkerAreaInHeight = '80%';
 examineCommon.getMarkerAreaInWidth = '80%';
 
+examineCommon.settingTab = function(roleFilter){
+    //找到任何元素包含  属性tab-role的集合
+    $(document).find("[tab-role]").each(function (i,ele) {
+        var target = $(ele) ;
+        var role = target.attr("tab-role");
+        //相同的角色显示  而不相同的则隐藏
+        if (role == roleFilter) {
+            target.show() ;
+        }else {
+            target.hide() ;
+        }
+    }) ;
+} ;
+
 window.examineCommon = examineCommon;

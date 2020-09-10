@@ -27,16 +27,40 @@
                                                 onclick="showCaseQuoteModal();">引用案例
                                         </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetail.id}');">引用备选案例
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetail.id}');">
+                                            引用备选案例
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
+
+                                <ul class="nav nav-pills nav-secondary nav-pills-no-bd" role="tablist">
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link active show" onclick="examineCommon.settingTab('base');"
+                                           data-toggle="pill" role="tab" aria-controls="tab-estate-base"
+                                           aria-selected="true">基础信息</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           onclick="examineCommon.settingTab('method');" role="tab"
+                                           aria-controls="tab-estate-measure"
+                                           aria-selected="false">测算信息</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           onclick="examineCommon.settingTab('report');" role="tab"
+                                           aria-controls="tab-estate-report"
+                                           aria-selected="false">报告信息</a>
+                                    </li>
+                                </ul>
+
+
                                 <form id="frm_estate" class="form-horizontal">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
                                     <input type="hidden" name="applyBatchDetailId" value="${applyBatchDetail.id}">
-                                    <div class="row form-group">
+
+                                    <div class="row form-group" tab-role="base">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">省
@@ -65,9 +89,9 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">楼盘名称<span
+                                                <label tab-role="base" class="col-sm-1">楼盘名称<span
                                                         class="symbol required"></span></label>
-                                                <div class="col-sm-3">
+                                                <div tab-role="base" class="col-sm-3">
                                                     <div class="input-group">
                                                         <input type="text" id="txt_estate_search"
                                                                data-rule-maxlength="100" placeholder="楼盘名称"
@@ -84,17 +108,17 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <label class="col-sm-1">楼盘方位<span
+                                                <label tab-role="base" class="col-sm-1">楼盘方位<span
                                                         class="symbol required"></span></label>
-                                                <div class="col-sm-3">
+                                                <div tab-role="base" class="col-sm-3">
                                                     <select name="position"
                                                             class="form-control input-full search-select position select2"
                                                             required>
                                                     </select>
                                                 </div>
-                                                <label class="col-sm-1">基础版块<span
+                                                <label tab-role="report" class="col-sm-1">基础版块<span
                                                         class="symbol required"></span></label>
-                                                <div class="col-sm-3">
+                                                <div tab-role="report" class="col-sm-3">
                                                     <div class="input-group">
                                                         <input type="hidden" name="blockId"
                                                                value="${basicEstate.blockId}">
@@ -124,7 +148,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div tab-role="report" class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">基础版块描述<span
@@ -136,7 +160,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div class="row form-group" tab-role="base">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <div class="col-sm-12">
@@ -156,7 +180,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div tab-role="method" class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">占地面积</label>
@@ -196,9 +220,9 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">总楼栋数<span
+                                                <label tab-role="base" class="col-sm-1">总楼栋数<span
                                                         class="symbol required"></span></label>
-                                                <div class="col-sm-3">
+                                                <div tab-role="base" class="col-sm-3">
                                                     <input type="number" data-rule-maxlength="100"
                                                            data-rule-number='true'
                                                            placeholder="总楼栋数(请输入数字)" name="buildingNumber"
@@ -206,8 +230,8 @@
                                                            class="form-control input-full"
                                                            value="${basicEstate.buildingNumber}">
                                                 </div>
-                                                <label class="col-sm-1">开发商</label>
-                                                <div class="col-sm-3">
+                                                <label  tab-role="method" class="col-sm-1">开发商</label>
+                                                <div  tab-role="method" class="col-sm-3">
                                                     <input type="text" placeholder="开发商"
                                                            class="form-control input-full"
                                                            name="developerName"
@@ -216,10 +240,10 @@
                                                            class="form-control input-full" name="developer"
                                                            value="${basicEstate.developer}">
                                                 </div>
-                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                <label  tab-role="method" class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                                     开盘时间
                                                 </label>
-                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                <div  tab-role="method" class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                                     <input type="text" placeholder="开盘时间"
                                                            data-date-format='yyyy-mm-dd'
                                                            name="openTime"
@@ -228,7 +252,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div tab-role="report" class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">楼盘区位分析<span
@@ -240,14 +264,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="nonIndustrialFile"></div>
+                                    <div tab-role="base" id="nonIndustrialFile"></div>
                                     <c:if test="${formType eq 'industry'}">
-                                        <div id="industrialFile"></div>
+                                        <div tab-role="base" id="industrialFile"></div>
                                     </c:if>
-                                    <div class="card-header">
+                                    <div  tab-role="base"  class="card-header">
                                         <div class="card-category">基础设施情况</div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div  tab-role="base"  class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1">基础设施完备度<span
@@ -274,7 +298,7 @@
                                     </div>
                                     <form id="frm_estateLandState" class="form-horizontal">
                                         <input type="hidden" name="id" value="${basicEstateLandState.id}">
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1">土地名称<span
@@ -290,7 +314,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <div class="col-sm-12">
@@ -317,7 +341,7 @@
 
                                         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
                                             color="#6f5499" size="10">
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1">四至(1)<span
@@ -371,7 +395,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1">四至(4)<span
@@ -415,7 +439,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1">地形</label>
@@ -439,7 +463,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1">土地利用现状</label>
@@ -470,16 +494,16 @@
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 control-label">宗地内现状</label>
                                                     <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <textarea class="form-control input-full" name="currentSituation" required
+                        <textarea class="form-control input-full" name="currentSituation"
                                   placeholder="宗地内现状">${basicEstateLandState.currentSituation}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-header">
+                                        <div class="card-header" >
                                             <div class="card-category">开发限制条件</div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="method">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1">容积率</label>
@@ -540,10 +564,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-header">
+                                        <div tab-role="base" class="card-header">
                                             <div class="card-category">土壤</div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1">污染<span
@@ -570,9 +594,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" >
                                             <div class="col-md-12">
-                                                <div class="form-inline x-valid">
+                                                <div class="form-inline x-valid" tab-role="base">
                                                     <label class="col-sm-1">承载力<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
@@ -617,8 +641,7 @@
                                     <%@include file="/views/project/stageSurvey/common/matchingMainConversion.jsp" %>
                                     <c:if test="${formType eq 'industry'}">
                                         <%@include file="/views/project/stageSurvey/common/estateSupplyWater.jsp" %>
-                                        <%@include
-                                                file="/views/project/stageSurvey/common/estateSupplyDrainWater.jsp" %>
+                                        <%@include file="/views/project/stageSurvey/common/estateSupplyDrainWater.jsp" %>
                                         <%@include file="/views/project/stageSurvey/common/estateSupplyPower.jsp" %>
                                         <%@include file="/views/project/stageSurvey/common/estateSupplyHeating.jsp" %>
                                         <%@include file="/views/project/stageSurvey/common/estateSupplyGas.jsp" %>
@@ -686,17 +709,18 @@
         estateCommon.initById('${basicEstate.id}');
         //楼盘自动填充插件
         estateCommon.autocompleteStart();
+        examineCommon.settingTab('base');
     });
 
     //保存数据信息
     function saveDataInfo() {
-        var item = {};
-        item.basicEstate = formSerializeArray(estateCommon.estateForm);
-        item.basicEstate.id = estateCommon.estateForm.find("input[name='id']").val();
-        item.basicEstate.name = estateCommon.estateForm.find("input[name='name']").val();
+        if (!estateCommon.estateForm.valid()) {
+            return false;
+        }
+        if (!estateCommon.estateLandStateForm.valid()) {
+            return false;
+        }
 
-        var data = formSerializeArray(estateCommon.estateLandStateForm);
-        item.basicEstateLandState = data;
         var formData = JSON.stringify(examineCommon.getFormData());
         Loading.progressShow();
         $.ajax({
@@ -732,20 +756,20 @@
         var province = estateCommon.estateForm.find("[name='province']").val();
         var city = estateCommon.estateForm.find("[name='city']").val();
         var search = estateCommon.estateForm.find("input[name='name']").val();
-        applyInfoQuote.showCaseEstateModal(province, city, search,'${applyBatchDetail.id}');
+        applyInfoQuote.showCaseEstateModal(province, city, search, '${applyBatchDetail.id}');
     }
 
     //提示有相同楼盘
     function isNeedReferenceEstate() {
-        $.getJSON('${pageContext.request.contextPath}/basicApplyBatch/isNeedReferenceEstate',{
-            projectId:'${basicApplyBatch.projectId}',
-            batchDetailId:'${applyBatchDetail.id}',
-            province:estateCommon.estateForm.find("[name='province']").val(),
-            city:estateCommon.estateForm.find("[name='city']").val(),
-            estateName:estateCommon.estateForm.find("input[name='name']").val()
-        },function (result) {
-            if(result.ret&&result.data){
-                notifyInfo('提示','系统存在相同楼盘，可直接引用');
+        $.getJSON('${pageContext.request.contextPath}/basicApplyBatch/isNeedReferenceEstate', {
+            projectId: '${basicApplyBatch.projectId}',
+            batchDetailId: '${applyBatchDetail.id}',
+            province: estateCommon.estateForm.find("[name='province']").val(),
+            city: estateCommon.estateForm.find("[name='city']").val(),
+            estateName: estateCommon.estateForm.find("input[name='name']").val()
+        }, function (result) {
+            if (result.ret && result.data) {
+                notifyInfo('提示', '系统存在相同楼盘，可直接引用');
             }
         })
     }

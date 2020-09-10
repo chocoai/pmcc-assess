@@ -637,7 +637,8 @@ public class BasicEstateService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/estate");
+//        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/estate");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/estate");
         modelAndView.addObject("basicEstate", getBasicEstateById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
