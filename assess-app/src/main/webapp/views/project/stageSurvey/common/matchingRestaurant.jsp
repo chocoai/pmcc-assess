@@ -3,7 +3,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="col-md-12"   tab-role="base">
+<div class="col-md-12"   tab-role="method">
     <div class="card full-height">
         <div class="card-header collapse-link">
             <div class="card-head-row">

@@ -116,6 +116,16 @@
                                                             required>
                                                     </select>
                                                 </div>
+                                                <label tab-role="base" class="col-sm-1">总楼栋数<span
+                                                        class="symbol required"></span></label>
+                                                <div tab-role="base" class="col-sm-3">
+                                                    <input type="number" data-rule-maxlength="100"
+                                                           data-rule-number='true'
+                                                           placeholder="总楼栋数(请输入数字)" name="buildingNumber"
+                                                           required
+                                                           class="form-control input-full"
+                                                           value="${basicEstate.buildingNumber}">
+                                                </div>
                                                 <label tab-role="report" class="col-sm-1">基础版块<span
                                                         class="symbol required"></span></label>
                                                 <div tab-role="report" class="col-sm-3">
@@ -217,21 +227,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <div class="row form-group" tab-role="method">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label tab-role="base" class="col-sm-1">总楼栋数<span
-                                                        class="symbol required"></span></label>
-                                                <div tab-role="base" class="col-sm-3">
-                                                    <input type="number" data-rule-maxlength="100"
-                                                           data-rule-number='true'
-                                                           placeholder="总楼栋数(请输入数字)" name="buildingNumber"
-                                                           required
-                                                           class="form-control input-full"
-                                                           value="${basicEstate.buildingNumber}">
-                                                </div>
-                                                <label  tab-role="method" class="col-sm-1">开发商</label>
-                                                <div  tab-role="method" class="col-sm-3">
+                                                <label   class="col-sm-1">开发商</label>
+                                                <div   class="col-sm-3">
                                                     <input type="text" placeholder="开发商"
                                                            class="form-control input-full"
                                                            name="developerName"
@@ -240,10 +240,10 @@
                                                            class="form-control input-full" name="developer"
                                                            value="${basicEstate.developer}">
                                                 </div>
-                                                <label  tab-role="method" class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                <label   class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                                     开盘时间
                                                 </label>
-                                                <div  tab-role="method" class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                <div   class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                                     <input type="text" placeholder="开盘时间"
                                                            data-date-format='yyyy-mm-dd'
                                                            name="openTime"
@@ -293,7 +293,7 @@
                                     </div>
                                 </form>
                                 <div class="x_content">
-                                    <div class="card-header">
+                                    <div class="card-header" tab-role="base:method">
                                         <div class="card-title">土地实体情况</div>
                                     </div>
                                     <form id="frm_estateLandState" class="form-horizontal">
@@ -339,7 +339,7 @@
                                         </div>
 
 
-                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                        <hr tab-role="base" style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
                                             color="#6f5499" size="10">
                                         <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
@@ -489,7 +489,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group"  tab-role="method">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 control-label">宗地内现状</label>
@@ -500,7 +500,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-header" >
+                                        <div class="card-header" tab-role="method">
                                             <div class="card-category">开发限制条件</div>
                                         </div>
                                         <div class="row form-group" tab-role="method">
@@ -532,7 +532,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="method">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1">兼容比例</label>
@@ -594,9 +594,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group" >
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
-                                                <div class="form-inline x-valid" tab-role="base">
+                                                <div class="form-inline x-valid" >
                                                     <label class="col-sm-1">承载力<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
@@ -607,7 +607,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" tab-role="base">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid" style="display: none">
                                                     <label class="col-sm-1">投资强度（万元/亩）</label>

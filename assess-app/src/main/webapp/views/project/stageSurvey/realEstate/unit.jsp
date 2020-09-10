@@ -142,6 +142,11 @@
 
     //保存数据信息
     function saveDataInfo() {
+
+        if (!unitCommon.unitForm.valid()) {
+            return false;
+        }
+
         Loading.progressShow();
         var item = {};
         item.basicUnit = formSerializeArray(unitCommon.unitForm);
