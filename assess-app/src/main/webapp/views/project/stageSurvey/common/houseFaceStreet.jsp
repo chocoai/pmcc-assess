@@ -2,7 +2,7 @@
  临街（路）状况
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="col-md-12">
+<div class="col-md-12"   tab-role="base">
     <div class="card full-height">
         <div class="card-header collapse-link">
             <div class="card-head-row">
