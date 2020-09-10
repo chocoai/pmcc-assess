@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.archives;
 
+import com.copower.pmcc.ad.api.enums.AdArchivesDefaultKey;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
@@ -82,11 +83,9 @@ public class ProjectTaskArchivesAssist implements ProjectTaskInterface {
         modelAndView.addObject("AdArchivesDataPublicEnum", projectArchivesDataService.getAdArchivesDataPublicEnum());
         modelAndView.addObject("AdArchivesDataSourceEnum", projectArchivesDataService.getAdArchivesDataSourceEnum());
 
-//        modelAndView.addObject("FilePublicData",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MANNER)) ;
-//        modelAndView.addObject("FileSourceData",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_SOURCE)) ;
 
         modelAndView.addObject("MarkAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_MARK)) ;
-        modelAndView.addObject("LifeAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileList(AssessDataDicKeyConstant.AD_PLACE_FILE_SHELF_LIFE)) ;
+        modelAndView.addObject("LifeAdBasePlaceFileDtoList",projectArchivesDataService.getAdBasePlaceFileList(AdArchivesDefaultKey.AD_PLACE_FILE_SHELF_LIFE.getKey())) ;
         modelAndView.addObject("SysSymbolRuleDtoList",projectArchivesDataService.getSysSymbolRuleDtoList()) ;
     }
 
