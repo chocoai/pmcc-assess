@@ -223,8 +223,9 @@ examineCommon.settingTab = function(roleFilter){
     $(document).find("[tab-role]").each(function (i,ele) {
         var target = $(ele) ;
         var role = target.attr("tab-role");
+        // console.log(role+" "+roleFilter) ;
         //相同的角色显示  而不相同的则隐藏
-        if (role == roleFilter) {
+        if (role.indexOf(roleFilter) != -1) {
             target.show() ;
         }else {
             target.hide() ;

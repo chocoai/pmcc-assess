@@ -44,12 +44,6 @@
                                            aria-controls="tab-estate-measure"
                                            aria-selected="false">测算信息</a>
                                     </li>
-                                    <li class="nav-item submenu">
-                                        <a class="nav-link" data-toggle="pill"
-                                           onclick="examineCommon.settingTab('report');" role="tab"
-                                           aria-controls="tab-estate-report"
-                                           aria-selected="false">报告信息</a>
-                                    </li>
                                 </ul>
 
                                 <div class="x_content">
@@ -108,28 +102,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row form-group">
+                                                    <div class="row form-group" tab-role="base"  style="display: none;">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-                                                                <label class="col-sm-1"  tab-role="method">
-                                                                    土地使用年限
-                                                                </label>
-                                                                <div class="col-md-3"  tab-role="method">
-                                                                    <input type="number" placeholder="土地使用年限(数字)"
-                                                                           data-rule-number='true'
-                                                                           name="landUseYear"
-                                                                           class="form-control input-full"
-                                                                           value="${basicBuilding.landUseYear}">
-                                                                </div>
-                                                                <label  tab-role="base" class="col-sm-1">单元数<span
-                                                                        class="symbol required"></span></label>
-                                                                <div  tab-role="base" class="col-md-3">
-                                                                    <input type="text" name="unitCount" required
-                                                                           class="form-control input-full"
-                                                                           value="${basicBuilding.unitCount}">
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-offset-1  constructionInstallationEngineeringFeeEvent"
-                                                                     style="display: none;">
+                                                                <div class="col-md-3 col-lg-offset-1  constructionInstallationEngineeringFeeEvent">
                                                                     <button type="button" class="btn btn-info btn-sm"
                                                                             onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
                                                                         建筑安装完工度调查
@@ -231,55 +207,110 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row form-group">
+                                                    <div class="row form-group" tab-role="method">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-                                                                <label class="col-sm-1"  tab-role="method">
+                                                                <label class="col-sm-1"  >
                                                                     建筑面积(平方米)
                                                                 </label>
-                                                                <div class="col-md-3"  tab-role="method">
+                                                                <div class="col-md-3"  >
                                                                     <input type="number" placeholder="建筑面积(数字)"
                                                                            data-rule-number='true'
                                                                            name="buildingArea"
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.buildingArea}">
                                                                 </div>
-                                                                <label class="col-sm-1"  tab-role="method">
+                                                                <label class="col-sm-1"  >
                                                                     占地面积(平方米)
                                                                 </label>
-                                                                <div class="col-md-3"  tab-role="method">
+                                                                <div class="col-md-3" >
                                                                     <input type="number" placeholder="占地面积(数字)"
                                                                            data-rule-number='true'
                                                                            name="coverAnArea"
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.coverAnArea}">
                                                                 </div>
-                                                                <label class="col-sm-1"  tab-role="base">
+
+                                                                <label class="col-sm-1"  >
+                                                                    土地使用年限
+                                                                </label>
+                                                                <div class="col-md-3"  >
+                                                                    <input type="number" placeholder="土地使用年限(数字)"
+                                                                           data-rule-number='true'
+                                                                           name="landUseYear"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.landUseYear}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row form-group" tab-role="base">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1"  >
                                                                     建筑结构类型
                                                                 </label>
-                                                                <div class="col-md-3"  tab-role="base">
+                                                                <div class="col-md-3"  >
                                                                     <select name="buildingStructureType"
                                                                             class="form-control input-full buildingStructureType">
+                                                                    </select>
+                                                                </div>
+
+                                                                <label class="col-sm-1"  >
+                                                                    建筑结构类别
+                                                                </label>
+                                                                <div class="col-md-3"  >
+                                                                    <select name="buildingStructureCategory"
+                                                                            class="form-control input-full buildingStructureCategory">
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row form-group">
+
+                                                    <div class="row form-group"  tab-role="base">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-                                                                <label class="col-sm-1"  tab-role="base">
-                                                                    建筑结构类别
+                                                                <label class="col-sm-1" >
+                                                                    外观风格<span class="symbol required"></span>
                                                                 </label>
-                                                                <div class="col-md-3"  tab-role="base">
-                                                                    <select name="buildingStructureCategory"
-                                                                            class="form-control input-full buildingStructureCategory">
+                                                                <div class="col-md-3"  >
+                                                                    <select name="appearanceStyle" required
+                                                                            class="form-control input-full appearanceStyle">
                                                                     </select>
                                                                 </div>
-                                                                <label class="col-sm-1"  tab-role="method">
+
+                                                                <label class="col-md-1"  >
+                                                                    街道号
+                                                                </label>
+                                                                <div class="col-md-3"  >
+                                                                    <select name="streetInfoId" class="form-control input-full">
+                                                                        <c:forEach var="item" items="${streetInfoList}">
+                                                                            <option value="${item.id}">${item.streetNumber}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
+
+                                                                <label   class="col-sm-1">单元数<span
+                                                                        class="symbol required"></span></label>
+                                                                <div   class="col-md-3">
+                                                                    <input type="text" name="unitCount" required
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.unitCount}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row form-group" tab-role="method">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1"  >
                                                                     建筑使用年限<span class="symbol required"></span>
                                                                 </label>
-                                                                <div class="col-md-3"  tab-role="method">
+                                                                <div class="col-md-3"  >
                                                                     <c:if test="${basicApply.type == 0 || basicApply.type==null || basicApply.type == 3}">
                                                                         <select name="residenceUseYear" required
                                                                                 class="form-control input-full residenceUseYear  ">
@@ -291,17 +322,20 @@
                                                                         </select>
                                                                     </c:if>
                                                                 </div>
-                                                                <label class="col-sm-1"  tab-role="base">
-                                                                    外观风格<span class="symbol required"></span>
+                                                                <label class="col-sm-1"  >
+                                                                    配套公共设施使用费
                                                                 </label>
-                                                                <div class="col-md-3"  tab-role="base">
-                                                                    <select name="appearanceStyle" required
-                                                                            class="form-control input-full appearanceStyle">
-                                                                    </select>
+                                                                <div class="col-md-3"  >
+                                                                    <input type="number" placeholder="配套公共设施使用费(数字)"
+                                                                           name="facilitiesUseFee"
+                                                                           data-rule-number='true'
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.facilitiesUseFee}">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="row form-group"  tab-role="base">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
@@ -378,7 +412,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row form-group"  tab-role="base">
+                                                    <div class="row form-group"  tab-role="method">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
@@ -415,23 +449,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row form-group">
+                                                    <div class="row form-group" tab-role="method">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-                                                                <label class="col-sm-1"  tab-role="method">
-                                                                    配套公共设施使用费
-                                                                </label>
-                                                                <div class="col-md-3"  tab-role="method">
-                                                                    <input type="number" placeholder="配套公共设施使用费(数字)"
-                                                                           name="facilitiesUseFee"
-                                                                           data-rule-number='true'
-                                                                           class="form-control input-full"
-                                                                           value="${basicBuilding.facilitiesUseFee}">
-                                                                </div>
-                                                                <label class="col-sm-1"  tab-role="method">
+
+                                                                <label class="col-sm-1"  >
                                                                     物业公司名称
                                                                 </label>
-                                                                <div class="col-md-3"  tab-role="method">
+                                                                <div class="col-md-3"  >
                                                                     <input type="text" name="propertyName"
                                                                            placeholder="物业公司名称"
                                                                            class="form-control input-full"
@@ -441,10 +466,19 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.property}">
                                                                 </div>
-                                                                <label class="col-sm-1"  tab-role="base">
+                                                                <label class="col-sm-1"  tab-role="method">
+                                                                    物业公司社会信誉
+                                                                </label>
+                                                                <div class="col-md-3"  tab-role="method">
+                                                                    <select name="propertySocialPrestige"
+                                                                            class="form-control input-full">
+                                                                        <option value="">-请选择-</option>
+                                                                    </select>
+                                                                </div>
+                                                                <label class="col-sm-1"  >
                                                                     物业公司性质
                                                                 </label>
-                                                                <div class="col-md-3"  tab-role="base">
+                                                                <div class="col-md-3"  >
                                                                     <select name="propertyCompanyNature"
                                                                             class="form-control input-full">
                                                                         <option value="">-请选择-</option>
@@ -466,32 +500,8 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1"  tab-role="method">
-                                                                    物业公司社会信誉
-                                                                </label>
-                                                                <div class="col-md-3"  tab-role="method">
-                                                                    <select name="propertySocialPrestige"
-                                                                            class="form-control input-full">
-                                                                        <option value="">-请选择-</option>
-                                                                    </select>
-                                                                </div>
-                                                                <label class="col-md-1"  tab-role="base">
-                                                                    街道号
-                                                                </label>
-                                                                <div class="col-md-3"  tab-role="base">
-                                                                    <select name="streetInfoId" class="form-control input-full">
-                                                                        <c:forEach var="item" items="${streetInfoList}">
-                                                                            <option value="${item.id}">${item.streetNumber}</option>
-                                                                        </c:forEach>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
+
+                                                    <div class="row form-group" tab-role="method">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
@@ -535,7 +545,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div id="basicBuilding"></div>
+                                                    <div tab-role="method" id="basicBuilding"></div>
 
                                                 </div>
                                             </div>

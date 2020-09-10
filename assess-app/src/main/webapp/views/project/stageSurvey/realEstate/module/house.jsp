@@ -52,15 +52,9 @@
                                            aria-controls="tab-estate-measure"
                                            aria-selected="false">测算信息</a>
                                     </li>
-                                    <li class="nav-item submenu">
-                                        <a class="nav-link" data-toggle="pill"
-                                           onclick="examineCommon.settingTab('report');" role="tab"
-                                           aria-controls="tab-estate-report"
-                                           aria-selected="false">报告信息</a>
-                                    </li>
                                 </ul>
 
-                                <div class="col-md-12">
+                                <div class="col-md-12" tab-role="method">
                                     <div class="card full-height">
                                         <div class="card-header collapse-link">
                                             <div class="card-head-row">
@@ -73,7 +67,7 @@
                                             <form id="basicHouseHuxing" class="form-horizontal">
                                                 <input type="hidden" name="id">
                                                 <input type="hidden" name="applyBatchId">
-                                                <div   tab-role="base" class="row form-group">
+                                                <div    class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
                                                             <label class="col-sm-1">物业类型<span
@@ -116,7 +110,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div   tab-role="base" class="row form-group">
+                                                <div   class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
                                                             <label class="col-sm-1">朝向<span
@@ -147,7 +141,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div   tab-role="base" class="row form-group">
+                                                <div    class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
                                                             <label class="col-sm-1">水电费标准<span
@@ -165,12 +159,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div   tab-role="method" id="houseHuxingFilePart"></div>
+                                                <div    id="houseHuxingFilePart"></div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12" tab-role="base">
                                     <div class="card full-height">
                                         <div class="card-header collapse-link">
                                             <div class="card-head-row">
@@ -191,7 +185,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="card-body">
-                                                            <div class="row form-group"   tab-role="base">
+                                                            <div class="row form-group"   >
                                                                 <div class="col-md-12">
                                                                     <div class="form-inline x-valid">
                                                                         <label class="col-sm-1">房号<span
@@ -223,7 +217,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row form-group"   tab-role="base">
+                                                            <div class="row form-group"   >
                                                                 <div class="col-md-12">
                                                                     <div class="form-inline x-valid">
                                                                         <label class="col-sm-1">调查方式<span
@@ -281,7 +275,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row form-group"   tab-role="base">
+                                                            <div class="row form-group"   >
                                                                 <div class="col-md-12">
                                                                     <div class="form-inline x-valid">
                                                                         <label class="col-sm-1">装修情况<span
@@ -323,7 +317,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div   tab-role="base" id="houseFilePart"></div>
+                                                            <div    id="houseFilePart"></div>
                                                         </div>
                                                     </div>
                                                 </div>
