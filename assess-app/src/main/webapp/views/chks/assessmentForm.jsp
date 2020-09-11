@@ -144,8 +144,8 @@
                                                 class="fa fa-clipboard" aria-hidden="true"></i>粘贴
                                         </button>
                                         <button type="button"
-                                                onclick="assessmentCommonHandle.batchSetIneffective();"
-                                                class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i>一键完成
+                                                onclick="assessmentCommonHandle.refPrevPerformance();"
+                                                class="btn btn-primary btn-sm"><i class="fa fa-retweet"></i>引用前次数据
                                         </button>
                                     </div>
                                     <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
@@ -1155,6 +1155,34 @@
             assessmentCommonHandle.loadAssessmentPerformanceProphaseList();
         });
     };
+
+    //引用前次数据
+    assessmentCommonHandle.refPrevPerformance = function () {
+        var table = $("#assessmentPerformanceTableList");
+        var rows = table.bootstrapTable('getSelections');
+        if (rows.length <= 0) {
+            notifyInfo("提示", "请勾选数据");
+            return;
+        }
+        var ids = '';
+        $.each(rows, function (i, item) {
+            ids += item.id + ',';
+        });
+        $.ajax({
+            url: '${pageContext.request.contextPath}/assessmentPerformance/refPrevPerformance',
+            data: {ids: ids.replace(/,$/, '')},
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess('成功', '操作成功');
+                    assessmentCommonHandle.loadAssessmentPerformanceList();
+                } else {
+                    AlertError("失败", result.errmsg);
+                }
+            }
+        })
+    }
 
     //一键无效
     assessmentCommonHandle.batchSetIneffective = function () {

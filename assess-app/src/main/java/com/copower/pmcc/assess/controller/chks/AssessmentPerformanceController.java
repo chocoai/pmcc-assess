@@ -144,5 +144,17 @@ public class AssessmentPerformanceController {
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
+
+    @PostMapping(value = "/refPrevPerformance", name = "引用上次考核对应值")
+    public HttpResult refPrevPerformance(String ids) {
+        try {
+            List<Integer> list = FormatUtils.transformString2Integer(ids);
+            assessmentPerformanceService.refPrevPerformance(list);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "引用上次考核对应值出错");
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
 }
 
