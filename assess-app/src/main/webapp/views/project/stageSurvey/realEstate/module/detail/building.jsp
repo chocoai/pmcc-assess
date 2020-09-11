@@ -394,7 +394,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div tab-role="method" id="basicBuilding"></div>
+                                    <div tab-role="base" id="basicBuilding"></div>
                                 </form>
                             </div>
                         </div>

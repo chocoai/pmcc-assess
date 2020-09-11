@@ -15,8 +15,27 @@
                 <div class="row mt--2">
                     <div class="col-md-12">
                         <div class="card full-height">
+
+
+
                             <div class="card-body">
-                                <div class="col-md-12">
+                                <ul class="nav nav-pills nav-secondary nav-pills-no-bd" role="tablist">
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link active show" onclick="examineCommon.settingTab('base');"
+                                           data-toggle="pill" role="tab" aria-controls="tab-estate-base"
+                                           aria-selected="true">基础信息</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           onclick="examineCommon.settingTab('method');" role="tab"
+                                           aria-controls="tab-estate-measure"
+                                           aria-selected="false">测算信息</a>
+                                    </li>
+                                </ul>
+
+
+
+                                <div class="col-md-12" tab-role="base">
                                     <div class="card full-height">
                                         <div class="card-header collapse-link">
                                             <div class="card-head-row">
@@ -92,7 +111,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+
+                                <div class="col-md-12" tab-role="base">
                                     <div class="card full-height">
                                         <div class="card-header collapse-link">
                                             <div class="card-head-row">
@@ -186,8 +206,9 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <c:if test="${projectPhase eq 'caseStudyExtend'}">
-                                    <div class="x_title">
+                                    <div class="x_title" tab-role="method">
                                         <h3>
                                             交易信息
                                             <small>
@@ -202,7 +223,7 @@
                                         </h3>
                                         <div class="clearfix"></div>
                                     </div>
-                                    <div id="basicHouseTradingAppend"></div>
+                                    <div tab-role="method" id="basicHouseTradingAppend"></div>
                                     <%@include file="/views/project/stageSurvey/commonDetail/houseTradingCase.jsp" %>
                                 </c:if>
                                 <div class="x_content">
@@ -261,6 +282,7 @@
         if(${projectPhase eq 'caseStudyExtend'}){
             houseTrading.init();
         }
+        examineCommon.settingTab('base');
     })
 </script>
 </html>
