@@ -489,7 +489,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group"  tab-role="method">
+                                        <div class="row form-group"  tab-role="report">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 control-label">宗地内现状</label>

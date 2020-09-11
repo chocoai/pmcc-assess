@@ -54,7 +54,7 @@
                                     </li>
                                 </ul>
 
-                                <div class="col-md-12" tab-role="method">
+                                <div class="col-md-12" tab-role="base">
                                     <div class="card full-height">
                                         <div class="card-header collapse-link">
                                             <div class="card-head-row">
@@ -326,7 +326,7 @@
                                     </div>
                                 </div>
                                 <c:if test="${projectPhase eq 'caseStudyExtend'}">
-                                    <div class="x_title">
+                                    <div class="x_title"  tab-role="method">
                                         <h3>
                                             交易信息
                                             <small>
@@ -341,7 +341,7 @@
                                         </h3>
                                         <div class="clearfix"></div>
                                     </div>
-                                    <div id="basicHouseTradingAppend"></div>
+                                    <div  tab-role="method" id="basicHouseTradingAppend"></div>
                                     <%@include file="/views/project/stageSurvey/common/houseTradingCase.jsp" %>
                                 </c:if>
                                 <div class="x_content">
