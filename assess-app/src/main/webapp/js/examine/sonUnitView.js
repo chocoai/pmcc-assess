@@ -77,8 +77,7 @@ var unitDecorate;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         unitDecorate.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -107,8 +106,7 @@ var unitDecorate;
                         notifySuccess("成功", "保存成功");
                         $('#' + unitDecorate.prototype.config().box).modal('hide');
                         unitDecorate.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -289,7 +287,7 @@ unitCommonPart.prototype.config = function () {
     return data;
 };
 //附件上传
-unitCommonPart.prototype.fileUpload= function (fieldsName, id) {
+unitCommonPart.prototype.fileUpload = function (fieldsName, id) {
     FileUtils.uploadFiles({
         target: fieldsName,
         disabledTarget: "btn_submit",
@@ -304,7 +302,7 @@ unitCommonPart.prototype.fileUpload= function (fieldsName, id) {
         }
     });
 };
-unitCommonPart.prototype.fileShow= function (fieldsName, id) {
+unitCommonPart.prototype.fileShow = function (fieldsName, id) {
     FileUtils.getFileShows({
         target: fieldsName,
         formData: {
@@ -354,8 +352,7 @@ unitCommonPart.prototype.removeData = function (id) {
             if (result.ret) {
                 notifySuccess("成功", "删除成功");
                 unitCommonPart.prototype.loadDataDicList();
-            }
-            else {
+            } else {
                 AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
             }
         },
@@ -396,8 +393,7 @@ unitCommonPart.prototype.saveData = function () {
                 notifySuccess("成功", "保存成功");
                 $('#' + unitCommonPart.prototype.config().box).modal('hide');
                 unitCommonPart.prototype.loadDataDicList();
-            }
-            else {
+            } else {
                 AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
             }
         },
@@ -486,12 +482,12 @@ unitCommonPart.prototype.init = function (item) {
                 target.append(html);
             }
             for (var i = 1; i <= resultData.length; i++) {
-                var locationListId = "#unitLocationList"+i;
+                var locationListId = "#unitLocationList" + i;
                 AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitLocation, null, function (html, data) {
                     $(locationListId).empty().html(html).trigger('change');
                 }, false);
 
-                var unitDescriptionListId = "#unitDescriptionList"+i;
+                var unitDescriptionListId = "#unitDescriptionList" + i;
                 AssessCommon.loadTextAppendDicHtml(AssessDicKey.unit_commonPart_description, null, function (html, data) {
                     $(unitDescriptionListId).empty().html(html).trigger('change');
                 }, false);
@@ -567,12 +563,12 @@ unitCommonPart.prototype.appendRecording = function (_this) {
         target.append(html);
     }
     for (var i = 1 + start; i <= len; i++) {
-        var locationListId = "#unitLocationList"+i;
+        var locationListId = "#unitLocationList" + i;
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.examineUnitLocation, null, function (html, data) {
             $(locationListId).empty().html(html).trigger('change');
         }, false);
 
-        var unitDescriptionListId = "#unitDescriptionList"+i;
+        var unitDescriptionListId = "#unitDescriptionList" + i;
         AssessCommon.loadTextAppendDicHtml(AssessDicKey.unit_commonPart_description, null, function (html, data) {
             $(unitDescriptionListId).empty().html(html).trigger('change');
         }, false);
@@ -664,8 +660,7 @@ var unitHuxing;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         unitHuxing.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -708,8 +703,7 @@ var unitHuxing;
                         notifySuccess("成功", "保存成功");
                         $('#' + unitHuxing.prototype.config().box).modal('hide');
                         unitHuxing.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1005,8 +999,7 @@ var unitElevator;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         unitElevator.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1035,8 +1028,7 @@ var unitElevator;
                         notifySuccess("成功", "保存成功");
                         $('#' + unitElevator.prototype.config().box).modal('hide');
                         unitElevator.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1162,8 +1154,7 @@ var unitStairs;
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
                         unitStairs.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1193,8 +1184,7 @@ var unitStairs;
                         notifySuccess("成功", "保存成功");
                         $('#' + unitStairs.prototype.config().box).modal('hide');
                         unitStairs.prototype.loadDataDicList();
-                    }
-                    else {
+                    } else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1221,17 +1211,17 @@ var unitStairs;
             unitStairs.prototype.fileUpload("unitStairsFile", item.id);
             unitStairs.prototype.fileShow("unitStairsFile", item.id);
         },
-        openPartItemModal:function () {
-            var box = $("#" + unitStairs.prototype.config().boxItem) ;
+        openPartItemModal: function () {
+            var box = $("#" + unitStairs.prototype.config().boxItem);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitCommonPart, null, function (html, data) {
-                var unitCommonPart = "" ;
-                $.each(data,function (i,item) {
-                    if (item.fieldName == AssessDicKey.examineUnitCommonPart_stairs){
-                        unitCommonPart = item.name ;
+                var unitCommonPart = "";
+                $.each(data, function (i, item) {
+                    if (item.fieldName == AssessDicKey.examineUnitCommonPart_stairs) {
+                        unitCommonPart = item.name;
                     }
-                }) ;
+                });
                 var json = {unitId: unitCommon.getUnitId()};
-                if (unitCommonPart){
+                if (unitCommonPart) {
                     json.unitCommonPart = unitCommonPart;
                 }
                 UnitCommonPartFun.getBasicUnitCommonPartList(json, function (dataAll) {
@@ -1246,14 +1236,15 @@ var unitStairs;
                         }
                         if (resultData) {
                             $.each(resultData, function (j, item) {
-                                var name = item.name;
-                                unitCommonParts.push(name);
+                                if (item.name && item.name.indexOf('楼梯间') > -1) {
+                                    unitCommonParts.push(item.name);
+                                }
                             })
                         }
                     });
-                    if (unitCommonParts.length == 0){
+                    if (unitCommonParts.length == 0) {
                         notifyWarning("提示", "请在公共部分选择部位楼梯间添加部位记录!");
-                        return false ;
+                        return false;
                     }
                     var target = box.find(".card-body");
                     target.empty();
@@ -1279,13 +1270,13 @@ var unitStairs;
                 });
             });
         },
-        splicePartItem:function () {
-            var box = $("#" + unitStairs.prototype.config().boxItem) ;
+        splicePartItem: function () {
+            var box = $("#" + unitStairs.prototype.config().boxItem);
             var frm = $('#' + unitStairs.prototype.config().box).find("form");
             var value = [];
             box.find("input[name='partItemCheckBox']:checked").each(function (i) {
                 value.push($(this).val());
-            }) ;
+            });
             frm.find("input[name='staircase']").val(value);
             box.modal("hide");
         }

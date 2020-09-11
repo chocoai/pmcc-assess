@@ -206,7 +206,7 @@ public class GenerateReportService {
             String localPath = baseAttachmentService.downloadFtpFileToLocal(dtoList.get(0).getId());
             List<String> names = getReportEnums();
             ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
-            GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseDataDic, projectPlan, reportGroup);
+            GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseDataDic, reportGroup);
             //count 计数器,防止  枚举虽然定义了，但是没有写对应的方法，因此递归设置最多的次数
             int count = 0;
             //最大递归次数 , 最好是不要过大 (ps max-count 就是递归次数)
@@ -369,7 +369,7 @@ public class GenerateReportService {
         }
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(generateReportInfo.getProjectPlanId());
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
-        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), reportType, projectPlan, reportGroup);
+        GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), reportType, reportGroup);
         //重新拿号
         if (Objects.equal(reportGroup.getSymbolOperation(), ReportSymbolOperationEnum.RESET.getKey())) {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
@@ -616,14 +616,13 @@ public class GenerateReportService {
         }
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
         for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroups) {
-            GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, schemeAreaGroup.getId(), new BaseDataDic(), new ProjectPlan(), new GenerateReportGroup());
+            GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, schemeAreaGroup.getId(), new BaseDataDic(), new GenerateReportGroup());
             List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(schemeAreaGroup.getId());
             schemeJudgeObjectList = schemeJudgeObjectService.transformFullJudgeList(schemeJudgeObjectList);
             String path = generateBaseDataService.getjudgeBuildResultSurveySheet(schemeJudgeObjectList, projectInfoVo);
             resultSheetReportCreateSysAttachmentNew(schemeAreaGroup.getAreaName(), path, fieldsName, tableName, projectId, false);
         }
     }
-
 
     private void resultSheetReportCreateSysAttachmentNew(String prefix, String path, String fieldsName, String tableName, Integer tableId, boolean delete) throws Exception {
         if (StringUtils.isEmpty(path)) {

@@ -512,19 +512,21 @@ public class SchemeLiquidationAnalysisService {
                     List<SchemeJudgeObject> listByPid = schemeJudgeObjectService.getListByPid(judgeObject.getId());
                     if (CollectionUtils.isNotEmpty(listByPid)) {
                         for (SchemeJudgeObject schemeJudgeObjectVo : listByPid) {
+                            BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(schemeJudgeObjectVo);
                             if (schemeJudgeObjectVo.getEvaluationArea() != null) {
                                 groupArea = groupArea.add(schemeJudgeObjectVo.getEvaluationArea());
                                 if (schemeJudgeObjectVo.getPrice() != null) {
-                                    groupPrice = groupPrice.add(schemeJudgeObjectVo.getEvaluationArea().multiply(schemeJudgeObjectVo.getPrice()));
+                                    groupPrice = groupPrice.add(evaluationArea.multiply(schemeJudgeObjectVo.getPrice()));
                                 }
                             }
                         }
                     }
                 } else {
+                    BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(judgeObject);
                     if (judgeObject.getEvaluationArea() != null) {
                         groupArea = groupArea.add(judgeObject.getEvaluationArea());
                         if (judgeObject.getPrice() != null) {
-                            groupPrice = groupPrice.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                            groupPrice = groupPrice.add(evaluationArea.multiply(judgeObject.getPrice()));
                         }
                     }
                 }

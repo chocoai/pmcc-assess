@@ -98,11 +98,10 @@ public class GenerateCommonMethod {
         BigDecimal temp = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
-                    if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
-                        BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
-                        temp = temp.add(bigDecimal);
-                    }
+                BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(schemeJudgeObject);
+                if (evaluationArea != null && schemeJudgeObject.getPrice() != null) {
+                    BigDecimal bigDecimal = evaluationArea.multiply(schemeJudgeObject.getPrice());
+                    temp = temp.add(bigDecimal);
                 }
             }
         }

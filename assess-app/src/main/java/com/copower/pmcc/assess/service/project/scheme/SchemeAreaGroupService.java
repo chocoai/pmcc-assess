@@ -87,6 +87,8 @@ public class SchemeAreaGroupService {
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
+    private BasicHouseTradingService basicHouseTradingService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -350,6 +352,12 @@ public class SchemeAreaGroupService {
                     schemeJudgeObject.setCertUse(declareRecord.getLandCertUse());
                     schemeJudgeObject.setPracticalUse(landCategoryInfo.getLandUseType());
                     schemeJudgeObject.setActualPlotRatio(landCategoryInfo.getPlotRatio());
+                }
+                BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+                BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_OTHER_UNIT_PRICE);
+                if (dataDic != null && houseTrading != null && dataDic.getId().equals(houseTrading.getPriceConnotation())) {
+                    schemeJudgeObject.setEvaluationNumber(new BigDecimal("1"));
+                    schemeJudgeObject.setEvaluationNumberUnit(houseTrading.getPriceConnotationUnit());
                 }
             }
             schemeJudgeObject.setNumber(String.valueOf(declareRecord.getNumber()));
@@ -700,8 +708,9 @@ public class SchemeAreaGroupService {
         BigDecimal result = new BigDecimal("0");
         if (CollectionUtils.isNotEmpty(judgeObjects)) {
             for (SchemeJudgeObject judgeObject : judgeObjects) {
-                if (judgeObject.getEvaluationArea() != null && judgeObject.getPrice() != null) {
-                    result = result.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(judgeObject);
+                if (evaluationArea!= null && judgeObject.getPrice() != null) {
+                    result = result.add(evaluationArea.multiply(judgeObject.getPrice()));
                 }
             }
         }

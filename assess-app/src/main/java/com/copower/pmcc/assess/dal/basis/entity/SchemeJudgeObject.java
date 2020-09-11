@@ -58,6 +58,10 @@ public class SchemeJudgeObject {
 
     private BigDecimal evaluationArea;
 
+    private BigDecimal evaluationNumber;
+
+    private String evaluationNumberUnit;
+
     private BigDecimal price;
 
     private String factor;
@@ -84,6 +88,14 @@ public class SchemeJudgeObject {
 
     private Integer splitFrom;
 
+    private String parcelOuterDevelop;
+
+    private String parcelInnerDevelop;
+
+    private String parcelSettingInnerDevelop;
+
+    private String currentSituation;
+
     private Boolean bisSplit;
 
     private Boolean bisMerge;
@@ -99,14 +111,6 @@ public class SchemeJudgeObject {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String parcelOuterDevelop;
-
-    private String parcelInnerDevelop;
-
-    private String parcelSettingInnerDevelop;
-
-    private String currentSituation;
 
     public Integer getId() {
         return id;
@@ -324,6 +328,22 @@ public class SchemeJudgeObject {
         this.evaluationArea = evaluationArea;
     }
 
+    public BigDecimal getEvaluationNumber() {
+        return evaluationNumber;
+    }
+
+    public void setEvaluationNumber(BigDecimal evaluationNumber) {
+        this.evaluationNumber = evaluationNumber;
+    }
+
+    public String getEvaluationNumberUnit() {
+        return evaluationNumberUnit;
+    }
+
+    public void setEvaluationNumberUnit(String evaluationNumberUnit) {
+        this.evaluationNumberUnit = evaluationNumberUnit == null ? null : evaluationNumberUnit.trim();
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -428,6 +448,38 @@ public class SchemeJudgeObject {
         this.splitFrom = splitFrom;
     }
 
+    public String getParcelOuterDevelop() {
+        return parcelOuterDevelop;
+    }
+
+    public void setParcelOuterDevelop(String parcelOuterDevelop) {
+        this.parcelOuterDevelop = parcelOuterDevelop == null ? null : parcelOuterDevelop.trim();
+    }
+
+    public String getParcelInnerDevelop() {
+        return parcelInnerDevelop;
+    }
+
+    public void setParcelInnerDevelop(String parcelInnerDevelop) {
+        this.parcelInnerDevelop = parcelInnerDevelop == null ? null : parcelInnerDevelop.trim();
+    }
+
+    public String getParcelSettingInnerDevelop() {
+        return parcelSettingInnerDevelop;
+    }
+
+    public void setParcelSettingInnerDevelop(String parcelSettingInnerDevelop) {
+        this.parcelSettingInnerDevelop = parcelSettingInnerDevelop == null ? null : parcelSettingInnerDevelop.trim();
+    }
+
+    public String getCurrentSituation() {
+        return currentSituation;
+    }
+
+    public void setCurrentSituation(String currentSituation) {
+        this.currentSituation = currentSituation == null ? null : currentSituation.trim();
+    }
+
     public Boolean getBisSplit() {
         return bisSplit;
     }
@@ -490,37 +542,5 @@ public class SchemeJudgeObject {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getParcelOuterDevelop() {
-        return parcelOuterDevelop;
-    }
-
-    public void setParcelOuterDevelop(String parcelOuterDevelop) {
-        this.parcelOuterDevelop = parcelOuterDevelop == null ? null : parcelOuterDevelop.trim();
-    }
-
-    public String getParcelInnerDevelop() {
-        return parcelInnerDevelop;
-    }
-
-    public void setParcelInnerDevelop(String parcelInnerDevelop) {
-        this.parcelInnerDevelop = parcelInnerDevelop == null ? null : parcelInnerDevelop.trim();
-    }
-
-    public String getParcelSettingInnerDevelop() {
-        return parcelSettingInnerDevelop;
-    }
-
-    public void setParcelSettingInnerDevelop(String parcelSettingInnerDevelop) {
-        this.parcelSettingInnerDevelop = parcelSettingInnerDevelop == null ? null : parcelSettingInnerDevelop.trim();
-    }
-
-    public String getCurrentSituation() {
-        return currentSituation;
-    }
-
-    public void setCurrentSituation(String currentSituation) {
-        this.currentSituation = currentSituation == null ? null : currentSituation.trim();
     }
 }

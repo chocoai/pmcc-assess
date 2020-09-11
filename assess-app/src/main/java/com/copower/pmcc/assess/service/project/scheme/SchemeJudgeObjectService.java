@@ -1294,7 +1294,7 @@ public class SchemeJudgeObjectService {
                 continue;
             } else if (Boolean.TRUE.equals(judgeObject.getBisMerge())) {//合并对象找到子项中权证对应的估价对象
                 List<SchemeJudgeObject> childJudgeObjectList = getListByPid(judgeObject.getId());
-                if(CollectionUtils.isNotEmpty(childJudgeObjectList)){
+                if (CollectionUtils.isNotEmpty(childJudgeObjectList)) {
                     for (SchemeJudgeObject schemeJudgeObject : childJudgeObjectList) {
                         if (Boolean.TRUE.equals(schemeJudgeObject.getBisSplit())) {
                             continue;
@@ -1306,7 +1306,7 @@ public class SchemeJudgeObjectService {
                 resultList.add(judgeObject);
             }
         }
-        if(CollectionUtils.isNotEmpty(resultList)){
+        if (CollectionUtils.isNotEmpty(resultList)) {
             resultList.stream().filter(distinctByKey(SchemeJudgeObject::getId)).collect(Collectors.toList());//根据id去重
             resultList.stream().sorted(Comparator.comparing(SchemeJudgeObject::getSorting)).collect(Collectors.toList());//排序
         }
@@ -1323,9 +1323,9 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isEmpty(list)) return null;
         List<SchemeJudgeObject> resultList = Lists.newArrayList();
         for (SchemeJudgeObject judgeObject : list) {
-           if (Boolean.TRUE.equals(judgeObject.getBisMerge())) {//合并对象找到子项中权证对应的估价对象
+            if (Boolean.TRUE.equals(judgeObject.getBisMerge())) {//合并对象找到子项中权证对应的估价对象
                 List<SchemeJudgeObject> childJudgeObjectList = getListByPid(judgeObject.getId());
-                if(CollectionUtils.isNotEmpty(childJudgeObjectList)){
+                if (CollectionUtils.isNotEmpty(childJudgeObjectList)) {
                     for (SchemeJudgeObject schemeJudgeObject : childJudgeObjectList) {
                         resultList.add(schemeJudgeObject);
                     }
@@ -1334,14 +1334,12 @@ public class SchemeJudgeObjectService {
                 resultList.add(judgeObject);
             }
         }
-        if(CollectionUtils.isNotEmpty(resultList)){
+        if (CollectionUtils.isNotEmpty(resultList)) {
             resultList.stream().filter(distinctByKey(SchemeJudgeObject::getId)).collect(Collectors.toList());//根据id去重
             resultList.stream().sorted(Comparator.comparing(SchemeJudgeObject::getSorting)).collect(Collectors.toList());//排序
         }
         return resultList;
     }
-
-
 
     /**
      * 根据applyId获取对应的估价对象
@@ -1357,5 +1355,19 @@ public class SchemeJudgeObjectService {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(where);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
         return judgeObjectList.get(0);
+    }
+
+    /**
+     * 获取估价对象的评估面积或数量
+     *
+     * @param judgeObject
+     * @return
+     */
+    public BigDecimal getEvaluationAreaOrNumber(SchemeJudgeObject judgeObject) {
+        if (judgeObject == null) return BigDecimal.ZERO;
+        if (judgeObject.getEvaluationNumber() != null && judgeObject.getEvaluationNumber().compareTo(BigDecimal.ZERO) > 0) {
+            return judgeObject.getEvaluationNumber();
+        }
+        return judgeObject.getEvaluationArea() == null ? BigDecimal.ZERO : judgeObject.getEvaluationArea();
     }
 }

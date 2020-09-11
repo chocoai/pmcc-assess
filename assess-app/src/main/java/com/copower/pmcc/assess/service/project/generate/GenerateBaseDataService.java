@@ -1821,11 +1821,10 @@ public class GenerateBaseDataService {
         BigDecimal temp = new BigDecimal(0);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-                if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
-                    if (NumberUtils.isNumber(schemeJudgeObject.getEvaluationArea().toString()) && NumberUtils.isNumber(schemeJudgeObject.getPrice().toString())) {
-                        BigDecimal bigDecimal = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice());
-                        temp = temp.add(bigDecimal.setScale(2, RoundingMode.HALF_UP));
-                    }
+                BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(schemeJudgeObject);
+                if (evaluationArea != null && schemeJudgeObject.getPrice() != null) {
+                    BigDecimal bigDecimal = evaluationArea.multiply(schemeJudgeObject.getPrice());
+                    temp = temp.add(bigDecimal.setScale(2, RoundingMode.HALF_UP));
                 }
             }
         }
@@ -3856,8 +3855,8 @@ public class GenerateBaseDataService {
 
                 builder.insertCell();
                 builder.write(ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getPrice()));
-
-                BigDecimal evaluationPrice = schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice()).divide(new BigDecimal("10000"), 2, RoundingMode.HALF_UP);
+                BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(schemeJudgeObject);
+                BigDecimal evaluationPrice = evaluationArea.multiply(schemeJudgeObject.getPrice()).divide(new BigDecimal("10000"), 2, RoundingMode.HALF_UP);
                 builder.insertCell();
                 builder.write(ArithmeticUtils.getBigDecimalString(evaluationPrice));
                 priceTotal = priceTotal.add(evaluationPrice);
@@ -6734,7 +6733,7 @@ public class GenerateBaseDataService {
     private GenerateBaseDataService() {
     }
 
-    public GenerateBaseDataService(ProjectInfoVo projectInfoVo, Integer areaId, BaseDataDic reportType, ProjectPlan projectPlan, GenerateReportGroup reportGroup) {
+    public GenerateBaseDataService(ProjectInfoVo projectInfoVo, Integer areaId, BaseDataDic reportType, GenerateReportGroup reportGroup) {
         this.projectId = projectInfoVo.getId();
         this.projectInfo = projectInfoVo;
         this.areaId = areaId;

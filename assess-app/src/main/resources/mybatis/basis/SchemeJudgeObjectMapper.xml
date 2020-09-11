@@ -29,6 +29,8 @@
     <result column="best_use" jdbcType="INTEGER" property="bestUse" />
     <result column="floor_area" jdbcType="DECIMAL" property="floorArea" />
     <result column="evaluation_area" jdbcType="DECIMAL" property="evaluationArea" />
+    <result column="evaluation_number" jdbcType="DECIMAL" property="evaluationNumber" />
+    <result column="evaluation_number_unit" jdbcType="VARCHAR" property="evaluationNumberUnit" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="factor" jdbcType="VARCHAR" property="factor" />
     <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
@@ -42,6 +44,10 @@
     <result column="merge_explain" jdbcType="VARCHAR" property="mergeExplain" />
     <result column="split_explain" jdbcType="VARCHAR" property="splitExplain" />
     <result column="split_from" jdbcType="INTEGER" property="splitFrom" />
+    <result column="parcel_outer_develop" jdbcType="VARCHAR" property="parcelOuterDevelop" />
+    <result column="parcel_inner_develop" jdbcType="VARCHAR" property="parcelInnerDevelop" />
+    <result column="parcel_setting_inner_develop" jdbcType="VARCHAR" property="parcelSettingInnerDevelop" />
+    <result column="current_situation" jdbcType="VARCHAR" property="currentSituation" />
     <result column="bis_split" jdbcType="BIT" property="bisSplit" />
     <result column="bis_merge" jdbcType="BIT" property="bisMerge" />
     <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
@@ -50,10 +56,6 @@
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-    <result column="parcel_outer_develop" jdbcType="VARCHAR" property="parcelOuterDevelop" />
-    <result column="parcel_inner_develop" jdbcType="VARCHAR" property="parcelInnerDevelop" />
-    <result column="parcel_setting_inner_develop" jdbcType="VARCHAR" property="parcelSettingInnerDevelop" />
-    <result column="current_situation" jdbcType="VARCHAR" property="currentSituation" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -118,11 +120,12 @@
     basic_apply_id, number, original_number, split_number, name, cert_name, ownership, 
     seat, cert_use, practical_use, land_cert_use, land_practical_use, land_use_end_date, 
     land_legal_year, land_remaining_year, set_use_classify, set_use, best_use, floor_area, 
-    evaluation_area, price, factor, original_price, set_plot_ratio, plan_plot_ratio, 
-    actual_plot_ratio, standard_judge_id, standard_judge_explain, judge_function, not_applicable_reason, 
-    merge_explain, split_explain, split_from, bis_split, bis_merge, bis_enable, bis_set_function, 
-    sorting, creator, gmt_created, gmt_modified, parcel_outer_develop, parcel_inner_develop, 
-    parcel_setting_inner_develop, current_situation
+    evaluation_area, evaluation_number, evaluation_number_unit, price, factor, original_price, 
+    set_plot_ratio, plan_plot_ratio, actual_plot_ratio, standard_judge_id, standard_judge_explain, 
+    judge_function, not_applicable_reason, merge_explain, split_explain, split_from, 
+    parcel_outer_develop, parcel_inner_develop, parcel_setting_inner_develop, current_situation, 
+    bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" resultMap="BaseResultMap">
     select
@@ -166,16 +169,17 @@
       practical_use, land_cert_use, land_practical_use, 
       land_use_end_date, land_legal_year, land_remaining_year, 
       set_use_classify, set_use, best_use, 
-      floor_area, evaluation_area, price, 
-      factor, original_price, set_plot_ratio, 
-      plan_plot_ratio, actual_plot_ratio, standard_judge_id, 
-      standard_judge_explain, judge_function, not_applicable_reason, 
-      merge_explain, split_explain, split_from, 
-      bis_split, bis_merge, bis_enable, 
-      bis_set_function, sorting, creator, 
-      gmt_created, gmt_modified, parcel_outer_develop, 
+      floor_area, evaluation_area, evaluation_number, 
+      evaluation_number_unit, price, factor, 
+      original_price, set_plot_ratio, plan_plot_ratio, 
+      actual_plot_ratio, standard_judge_id, standard_judge_explain, 
+      judge_function, not_applicable_reason, merge_explain, 
+      split_explain, split_from, parcel_outer_develop, 
       parcel_inner_develop, parcel_setting_inner_develop, 
-      current_situation)
+      current_situation, bis_split, bis_merge, 
+      bis_enable, bis_set_function, sorting, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{buildingStatus,jdbcType=INTEGER}, 
       #{basicApplyId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{originalNumber,jdbcType=VARCHAR}, 
@@ -184,16 +188,17 @@
       #{practicalUse,jdbcType=VARCHAR}, #{landCertUse,jdbcType=VARCHAR}, #{landPracticalUse,jdbcType=VARCHAR}, 
       #{landUseEndDate,jdbcType=TIMESTAMP}, #{landLegalYear,jdbcType=DECIMAL}, #{landRemainingYear,jdbcType=DECIMAL}, 
       #{setUseClassify,jdbcType=INTEGER}, #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, 
-      #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
-      #{factor,jdbcType=VARCHAR}, #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, 
-      #{planPlotRatio,jdbcType=DECIMAL}, #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, 
-      #{standardJudgeExplain,jdbcType=VARCHAR}, #{judgeFunction,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
-      #{mergeExplain,jdbcType=VARCHAR}, #{splitExplain,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, 
-      #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
-      #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{parcelOuterDevelop,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{evaluationNumber,jdbcType=DECIMAL}, 
+      #{evaluationNumberUnit,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{factor,jdbcType=VARCHAR}, 
+      #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, #{planPlotRatio,jdbcType=DECIMAL}, 
+      #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, #{standardJudgeExplain,jdbcType=VARCHAR}, 
+      #{judgeFunction,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, #{mergeExplain,jdbcType=VARCHAR}, 
+      #{splitExplain,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, #{parcelOuterDevelop,jdbcType=VARCHAR}, 
       #{parcelInnerDevelop,jdbcType=VARCHAR}, #{parcelSettingInnerDevelop,jdbcType=VARCHAR}, 
-      #{currentSituation,jdbcType=VARCHAR})
+      #{currentSituation,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
+      #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -279,6 +284,12 @@
       <if test="evaluationArea != null">
         evaluation_area,
       </if>
+      <if test="evaluationNumber != null">
+        evaluation_number,
+      </if>
+      <if test="evaluationNumberUnit != null">
+        evaluation_number_unit,
+      </if>
       <if test="price != null">
         price,
       </if>
@@ -318,6 +329,18 @@
       <if test="splitFrom != null">
         split_from,
       </if>
+      <if test="parcelOuterDevelop != null">
+        parcel_outer_develop,
+      </if>
+      <if test="parcelInnerDevelop != null">
+        parcel_inner_develop,
+      </if>
+      <if test="parcelSettingInnerDevelop != null">
+        parcel_setting_inner_develop,
+      </if>
+      <if test="currentSituation != null">
+        current_situation,
+      </if>
       <if test="bisSplit != null">
         bis_split,
       </if>
@@ -341,18 +364,6 @@
       </if>
       <if test="gmtModified != null">
         gmt_modified,
-      </if>
-      <if test="parcelOuterDevelop != null">
-        parcel_outer_develop,
-      </if>
-      <if test="parcelInnerDevelop != null">
-        parcel_inner_develop,
-      </if>
-      <if test="parcelSettingInnerDevelop != null">
-        parcel_setting_inner_develop,
-      </if>
-      <if test="currentSituation != null">
-        current_situation,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -434,6 +445,12 @@
       <if test="evaluationArea != null">
         #{evaluationArea,jdbcType=DECIMAL},
       </if>
+      <if test="evaluationNumber != null">
+        #{evaluationNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationNumberUnit != null">
+        #{evaluationNumberUnit,jdbcType=VARCHAR},
+      </if>
       <if test="price != null">
         #{price,jdbcType=DECIMAL},
       </if>
@@ -473,6 +490,18 @@
       <if test="splitFrom != null">
         #{splitFrom,jdbcType=INTEGER},
       </if>
+      <if test="parcelOuterDevelop != null">
+        #{parcelOuterDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelInnerDevelop != null">
+        #{parcelInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInnerDevelop != null">
+        #{parcelSettingInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="currentSituation != null">
+        #{currentSituation,jdbcType=VARCHAR},
+      </if>
       <if test="bisSplit != null">
         #{bisSplit,jdbcType=BIT},
       </if>
@@ -496,18 +525,6 @@
       </if>
       <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="parcelOuterDevelop != null">
-        #{parcelOuterDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="parcelInnerDevelop != null">
-        #{parcelInnerDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="parcelSettingInnerDevelop != null">
-        #{parcelSettingInnerDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="currentSituation != null">
-        #{currentSituation,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -601,6 +618,12 @@
       <if test="record.evaluationArea != null">
         evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
       </if>
+      <if test="record.evaluationNumber != null">
+        evaluation_number = #{record.evaluationNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evaluationNumberUnit != null">
+        evaluation_number_unit = #{record.evaluationNumberUnit,jdbcType=VARCHAR},
+      </if>
       <if test="record.price != null">
         price = #{record.price,jdbcType=DECIMAL},
       </if>
@@ -640,6 +663,18 @@
       <if test="record.splitFrom != null">
         split_from = #{record.splitFrom,jdbcType=INTEGER},
       </if>
+      <if test="record.parcelOuterDevelop != null">
+        parcel_outer_develop = #{record.parcelOuterDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelInnerDevelop != null">
+        parcel_inner_develop = #{record.parcelInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelSettingInnerDevelop != null">
+        parcel_setting_inner_develop = #{record.parcelSettingInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currentSituation != null">
+        current_situation = #{record.currentSituation,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisSplit != null">
         bis_split = #{record.bisSplit,jdbcType=BIT},
       </if>
@@ -663,18 +698,6 @@
       </if>
       <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.parcelOuterDevelop != null">
-        parcel_outer_develop = #{record.parcelOuterDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="record.parcelInnerDevelop != null">
-        parcel_inner_develop = #{record.parcelInnerDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="record.parcelSettingInnerDevelop != null">
-        parcel_setting_inner_develop = #{record.parcelSettingInnerDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="record.currentSituation != null">
-        current_situation = #{record.currentSituation,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -710,6 +733,8 @@
       best_use = #{record.bestUse,jdbcType=INTEGER},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
       evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
+      evaluation_number = #{record.evaluationNumber,jdbcType=DECIMAL},
+      evaluation_number_unit = #{record.evaluationNumberUnit,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       factor = #{record.factor,jdbcType=VARCHAR},
       original_price = #{record.originalPrice,jdbcType=DECIMAL},
@@ -723,6 +748,10 @@
       merge_explain = #{record.mergeExplain,jdbcType=VARCHAR},
       split_explain = #{record.splitExplain,jdbcType=VARCHAR},
       split_from = #{record.splitFrom,jdbcType=INTEGER},
+      parcel_outer_develop = #{record.parcelOuterDevelop,jdbcType=VARCHAR},
+      parcel_inner_develop = #{record.parcelInnerDevelop,jdbcType=VARCHAR},
+      parcel_setting_inner_develop = #{record.parcelSettingInnerDevelop,jdbcType=VARCHAR},
+      current_situation = #{record.currentSituation,jdbcType=VARCHAR},
       bis_split = #{record.bisSplit,jdbcType=BIT},
       bis_merge = #{record.bisMerge,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -730,11 +759,7 @@
       sorting = #{record.sorting,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      parcel_outer_develop = #{record.parcelOuterDevelop,jdbcType=VARCHAR},
-      parcel_inner_develop = #{record.parcelInnerDevelop,jdbcType=VARCHAR},
-      parcel_setting_inner_develop = #{record.parcelSettingInnerDevelop,jdbcType=VARCHAR},
-      current_situation = #{record.currentSituation,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -820,6 +845,12 @@
       <if test="evaluationArea != null">
         evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
       </if>
+      <if test="evaluationNumber != null">
+        evaluation_number = #{evaluationNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationNumberUnit != null">
+        evaluation_number_unit = #{evaluationNumberUnit,jdbcType=VARCHAR},
+      </if>
       <if test="price != null">
         price = #{price,jdbcType=DECIMAL},
       </if>
@@ -859,6 +890,18 @@
       <if test="splitFrom != null">
         split_from = #{splitFrom,jdbcType=INTEGER},
       </if>
+      <if test="parcelOuterDevelop != null">
+        parcel_outer_develop = #{parcelOuterDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelInnerDevelop != null">
+        parcel_inner_develop = #{parcelInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInnerDevelop != null">
+        parcel_setting_inner_develop = #{parcelSettingInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="currentSituation != null">
+        current_situation = #{currentSituation,jdbcType=VARCHAR},
+      </if>
       <if test="bisSplit != null">
         bis_split = #{bisSplit,jdbcType=BIT},
       </if>
@@ -882,18 +925,6 @@
       </if>
       <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="parcelOuterDevelop != null">
-        parcel_outer_develop = #{parcelOuterDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="parcelInnerDevelop != null">
-        parcel_inner_develop = #{parcelInnerDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="parcelSettingInnerDevelop != null">
-        parcel_setting_inner_develop = #{parcelSettingInnerDevelop,jdbcType=VARCHAR},
-      </if>
-      <if test="currentSituation != null">
-        current_situation = #{currentSituation,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -926,6 +957,8 @@
       best_use = #{bestUse,jdbcType=INTEGER},
       floor_area = #{floorArea,jdbcType=DECIMAL},
       evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
+      evaluation_number = #{evaluationNumber,jdbcType=DECIMAL},
+      evaluation_number_unit = #{evaluationNumberUnit,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       factor = #{factor,jdbcType=VARCHAR},
       original_price = #{originalPrice,jdbcType=DECIMAL},
@@ -939,6 +972,10 @@
       merge_explain = #{mergeExplain,jdbcType=VARCHAR},
       split_explain = #{splitExplain,jdbcType=VARCHAR},
       split_from = #{splitFrom,jdbcType=INTEGER},
+      parcel_outer_develop = #{parcelOuterDevelop,jdbcType=VARCHAR},
+      parcel_inner_develop = #{parcelInnerDevelop,jdbcType=VARCHAR},
+      parcel_setting_inner_develop = #{parcelSettingInnerDevelop,jdbcType=VARCHAR},
+      current_situation = #{currentSituation,jdbcType=VARCHAR},
       bis_split = #{bisSplit,jdbcType=BIT},
       bis_merge = #{bisMerge,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},
@@ -946,11 +983,7 @@
       sorting = #{sorting,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      parcel_outer_develop = #{parcelOuterDevelop,jdbcType=VARCHAR},
-      parcel_inner_develop = #{parcelInnerDevelop,jdbcType=VARCHAR},
-      parcel_setting_inner_develop = #{parcelSettingInnerDevelop,jdbcType=VARCHAR},
-      current_situation = #{currentSituation,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

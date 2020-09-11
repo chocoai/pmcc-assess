@@ -474,6 +474,12 @@
                                     <div class="col-sm-2 x-valid">
                                         <label class="form-control input-full">{evaluationArea}</label>
                                     </div>
+                                    <label class="col-sm-1 control-label" data-name="evaluationNumberContainer{id}" style="display: none;">
+                                        评估数量({evaluationNumberUnit})
+                                    </label>
+                                    <div class="col-sm-2 x-valid" data-name="evaluationNumberContainer{id}" style="display: none;">
+                                        <label class="form-control input-full">{evaluationNumber}</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -632,6 +638,8 @@
                         html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
                         html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
+                        html = html.replace(/{evaluationNumber}/g, item.evaluationNumber == undefined ? "" : item.evaluationNumber);
+                        html = html.replace(/{evaluationNumberUnit}/g, item.evaluationNumberUnit == undefined ? "" : item.evaluationNumberUnit);
                         html = html.replace(/{setPlotRatio}/g, item.setPlotRatio == undefined ? "" : item.setPlotRatio);
                         html = html.replace(/{planPlotRatio}/g, item.planPlotRatio == undefined ? "" : item.planPlotRatio);
                         html = html.replace(/{actualPlotRatio}/g, item.actualPlotRatio == undefined ? "" : item.actualPlotRatio);
@@ -648,7 +656,9 @@
                         tbody.append(html);
                         //设值
                         var lastTr = tbody.find(".x_panel:last");
-
+                        if(item.evaluationNumber){
+                            lastTr.find('[data-name=evaluationNumberContainer' + item.id + ']').show();
+                        }
                         if (item.bisMerge) {
                             lastTr.find('[data-name=mergeExplainContainer' + item.id + ']').show();
                         }

@@ -146,14 +146,16 @@ public class CustomReportAppraiserAssociationService {
             //获取面积，评估总价
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(data.getAreaId());
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                vo.setEvaluationArea(judgeObjectList.get(0).getEvaluationArea());
-                if (judgeObjectList.get(0).getEvaluationArea() != null && judgeObjectList.get(0).getPrice() != null) {
-                    vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
+                SchemeJudgeObject schemeJudgeObject=judgeObjectList.get(0);
+                BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(schemeJudgeObject);
+                vo.setEvaluationArea(schemeJudgeObject.getEvaluationArea());
+                if (evaluationArea != null && schemeJudgeObject.getPrice() != null) {
+                    vo.setAssessTotal(evaluationArea.multiply(schemeJudgeObject.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
                 }
                 //单价
-                vo.setPrice(judgeObjectList.get(0).getPrice());
+                vo.setPrice(schemeJudgeObject.getPrice());
                 //坐落
-                vo.setSeat(judgeObjectList.get(0).getSeat());
+                vo.setSeat(schemeJudgeObject.getSeat());
             }
         }
         //委托人

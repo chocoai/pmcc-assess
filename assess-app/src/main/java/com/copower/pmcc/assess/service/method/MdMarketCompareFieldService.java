@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.EnvironmentalScienceEnum;
 import com.copower.pmcc.assess.common.enums.basic.ExamineHouseEquipmentTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -192,8 +193,10 @@ public class MdMarketCompareFieldService extends BaseService {
                             break;
                         case PRICE_CONNOTATION://单价内涵
                             String priceConnotationName = baseDataDicService.getNameById(houseTrading.getPriceConnotation());
-                            if ("其它".equals(priceConnotationName))
+                            BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_OTHER_UNIT_PRICE);
+                            if (dataDic != null && dataDic.getId().equals(houseTrading.getPriceConnotation())) {
                                 priceConnotationName = houseTrading.getPriceConnotationUnit();
+                            }
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.PRICE_CONNOTATION.getKey(), priceConnotationName, dataSetUseField));
                             break;
                         case LOCATION://房地产坐落
@@ -737,7 +740,7 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_SHAPE.getKey(), generateCommonMethod.trimText(shape), dataSetUseField));
                             break;
                         case LAND_GEOLOGY://地质
-                            String geology=generateLandFactorService.getGeology(examineEstate);
+                            String geology = generateLandFactorService.getGeology(examineEstate);
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_GEOLOGY.getKey(), generateCommonMethod.trimText(geology), dataSetUseField));
                             break;
                         case LAND_TOPOGRAPHY://地形、地势

@@ -160,12 +160,14 @@ public class CustomReportJiaoTongBankService {
             //评估总价
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(data.getAreaId());
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                if (judgeObjectList.get(0).getEvaluationArea() != null && judgeObjectList.get(0).getPrice() != null) {
-                    vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
+                SchemeJudgeObject judgeObject= judgeObjectList.get(0);
+                BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(judgeObject);
+                if(evaluationArea!=null&&judgeObject.getPrice()!=null){
+                    vo.setAssessTotal(evaluationArea.multiply(judgeObject.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
                 }
-                vo.setArea(judgeObjectList.get(0).getEvaluationArea());
-                vo.setAssessPrice(judgeObjectList.get(0).getPrice());
-                vo.setSeat(judgeObjectList.get(0).getSeat());
+                vo.setArea(judgeObject.getEvaluationArea());
+                vo.setAssessPrice(judgeObject.getPrice());
+                vo.setSeat(judgeObject.getSeat());
             }
         }
         //委托人

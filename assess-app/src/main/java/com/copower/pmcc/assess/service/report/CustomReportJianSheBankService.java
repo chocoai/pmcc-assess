@@ -137,13 +137,15 @@ public class CustomReportJianSheBankService {
             //评估总价
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(data.getAreaId());
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                vo.setArea(judgeObjectList.get(0).getEvaluationArea());
-                vo.setAssessPrice(judgeObjectList.get(0).getPrice());
+                SchemeJudgeObject schemeJudgeObject=judgeObjectList.get(0);
+                BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(schemeJudgeObject);
+                vo.setArea(schemeJudgeObject.getEvaluationArea());
+                vo.setAssessPrice(schemeJudgeObject.getPrice());
 
-                if (judgeObjectList.get(0).getEvaluationArea() != null && judgeObjectList.get(0).getPrice() != null) {
-                    vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
+                if (evaluationArea != null && schemeJudgeObject.getPrice() != null) {
+                    vo.setAssessTotal(evaluationArea.multiply(schemeJudgeObject.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
                     //估价对象坐落位置
-                    vo.setSeat(judgeObjectList.get(0).getSeat());
+                    vo.setSeat(schemeJudgeObject.getSeat());
                     BasicApply basicApply =  basicApplyService.getByBasicApplyId(judgeObjectList.get(0).getBasicApplyId());
                     if (basicApply != null) {
                         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());

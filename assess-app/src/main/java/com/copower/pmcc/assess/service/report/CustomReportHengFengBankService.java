@@ -154,13 +154,15 @@ public class CustomReportHengFengBankService {
             vo.setMethodNames(districtmethods);
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(data.getAreaId());
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
-                vo.setArea(judgeObjectList.get(0).getEvaluationArea());
+                SchemeJudgeObject schemeJudgeObject=judgeObjectList.get(0);
+                BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(schemeJudgeObject);
+                vo.setArea(schemeJudgeObject.getEvaluationArea());
                 //评估总价
-                if (judgeObjectList.get(0).getEvaluationArea() != null && judgeObjectList.get(0).getPrice() != null) {
-                    vo.setAssessTotal(judgeObjectList.get(0).getEvaluationArea().multiply(judgeObjectList.get(0).getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
+                if (evaluationArea != null && schemeJudgeObject.getPrice() != null) {
+                    vo.setAssessTotal(evaluationArea.multiply(schemeJudgeObject.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
                 }
                 //抵押物地址
-                vo.setSeat(judgeObjectList.get(0).getSeat());
+                vo.setSeat(schemeJudgeObject.getSeat());
             }
         }
         //委托人
