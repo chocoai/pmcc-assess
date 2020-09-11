@@ -293,7 +293,7 @@
                                     </div>
                                 </form>
                                 <div class="x_content">
-                                    <div class="card-header" tab-role="base:method">
+                                    <div class="card-header" >
                                         <div class="card-title">土地实体情况</div>
                                     </div>
                                     <form id="frm_estateLandState" class="form-horizontal">

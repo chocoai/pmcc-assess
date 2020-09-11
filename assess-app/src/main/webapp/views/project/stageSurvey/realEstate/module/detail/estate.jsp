@@ -236,7 +236,7 @@
 
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header collapse-link" tab-role="base:method">
+                            <div class="card-header collapse-link" >
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         土地实体情况
@@ -382,7 +382,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group"  tab-role="method">
+                                    <div class="row form-group"  tab-role="report">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">宗地内现状</label>

@@ -10,7 +10,7 @@
  查勘记录表
 --%>
 <!DOCTYPE html>
-<div class="col-md-12">
+<div class="col-md-12"  tab-role="method">
     <div class="card full-height">
         <div class="card-header collapse-link">
             <div class="card-head-row">
