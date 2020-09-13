@@ -475,8 +475,8 @@ public class BasicBuildingService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-//        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/building");
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/building");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/building");
+        //ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/building");
         BasicBuildingVo buildingVo = getBasicBuildingVoById(basicFormClassifyParamDto.getTbId());
         modelAndView.addObject("basicBuilding", buildingVo);
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
@@ -495,8 +495,8 @@ public class BasicBuildingService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-//        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/building");
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/detail/building");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/building");
+        //ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/detail/building");
         BasicBuildingVo buildingVo = getBasicBuildingVoById(basicFormClassifyParamDto.getTbId());
         modelAndView.addObject("basicBuilding", buildingVo);
         return modelAndView;
@@ -536,7 +536,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
         if (BasicDataHandleEnum.REFERENCE.getKey().equalsIgnoreCase(applyBatchDetail.getModifyType())) {
             BasicBuilding dbBasicBuilding = getBasicBuildingById(basicBuilding.getId());
             if (dbBasicBuilding == null) return;
-            List<String> fieldNameList = Lists.newArrayList("applyId","estateId", "quoteId", "mapId", "relevanceId", "version", "bisCase", "bisEnable", "bisDelete");
+            List<String> fieldNameList = Lists.newArrayList("applyId", "estateId", "quoteId", "mapId", "relevanceId", "version", "bisCase", "bisEnable", "bisDelete");
             fieldNameList.addAll(BaseConstant.ASSESS_IGNORE_LIST);
             Boolean isEqual = publicService.equalsObjectExcludeField(basicBuilding, dbBasicBuilding, fieldNameList);
             if (isEqual == false) {

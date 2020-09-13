@@ -781,8 +781,8 @@ public class BasicHouseService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-//        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/house");
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/house");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/house");
+        //ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/house");
         modelAndView.addObject("basicHouse", getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
@@ -792,8 +792,8 @@ public class BasicHouseService extends BasicEntityAbstract {
 
     @Override
     public ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
-//        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/house");
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/detail/house");
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/house");
+        //ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/module/detail/house");
         modelAndView.addObject("basicHouse", getBasicHouseVo(getBasicHouseById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
