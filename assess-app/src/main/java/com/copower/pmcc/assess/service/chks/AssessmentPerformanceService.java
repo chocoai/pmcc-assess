@@ -132,7 +132,10 @@ public class AssessmentPerformanceService {
                     row.setCanFill(approvlFill || detailFill);
                 }
                 //状态为结束，并且为当前人的下级节点数据可调整
-                if (ProcessStatusEnum.FINISH.getValue().equalsIgnoreCase(row.getExamineStatus()) && row.getSorting() <= currMaxSorting) {
+                //一旦有下一个级次的考核人完成考核，则该级次除管理员和抽查组的人员，其他人员不能修改
+                if (isAdmin || isSpotGroupUser) {
+                    row.setCanAdjust(true);
+                } else if (ProcessStatusEnum.FINISH.getValue().equalsIgnoreCase(row.getExamineStatus()) && row.getSorting() <= currMaxSorting) {
                     row.setCanAdjust(true);
                 }
                 //状态为结束，管理员、抽查组成员可查看或抽查数据--只针对质量考核
@@ -618,7 +621,7 @@ public class AssessmentPerformanceService {
         //3.当找到的是多条数据，则项找到最新这一天数据，并且根据流程实例id检测，是否在同一流程下有多条，如果是则不处理，否则复制处理
         if (CollectionUtils.isEmpty(ids)) return;
         for (Integer id : ids) {
-            try{
+            try {
                 AssessmentPerformanceDto currPerformanceDto = performanceService.getPerformanceById(id);
                 AssessmentPerformanceDto where = new AssessmentPerformanceDto();
                 where.setBoxId(currPerformanceDto.getBoxId());
@@ -647,8 +650,8 @@ public class AssessmentPerformanceService {
                     currDetailDto.setRemark(prevDetailDto.getRemark());
                     performanceService.updatePerformanceDetailDto(currDetailDto, false);
                 }
-            }catch (Exception e){
-                logger.error(e.getMessage(),e);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
             }
         }
     }
