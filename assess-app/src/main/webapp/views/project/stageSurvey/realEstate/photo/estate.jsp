@@ -19,7 +19,6 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         附件上传页面
-
                                     </div>
                                 </div>
                             </div>
@@ -27,9 +26,7 @@
                                 <form id="frm_estate" class="form-horizontal">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
                                     <input type="hidden" name="quoteId" value="${basicEstate.quoteId}">
-
-
-                                    <div class="row form-group" style="display: none;">
+                                    <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <div class="col-sm-12">
@@ -50,8 +47,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                     <div id="nonIndustrialFile"></div>
                                     <c:if test="${formType eq 'industry'}">
                                         <div id="industrialFile"></div>
@@ -66,13 +61,10 @@
                                         <input type="hidden" name="id" value="${basicEstateLandState.id}">
                                     </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                     <%@include file="/views/project/stageSurvey/common/canvasQRcodePagination.jsp" %>
-
                 </div>
             </div>
         </div>

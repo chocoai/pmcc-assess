@@ -23,14 +23,22 @@
                        class="form-control form-control-sm"
                        value="{gateName}">
                 <div class="input-group-append">
-                    <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择</button>
+                    <button class="btn btn-warning btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">选择
+                    </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">南门</a>
-                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">北门</a>
-                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">东门</a>
-                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">西门</a>
-                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">正门</a>
-                        <a class="dropdown-item" onclick="$(this).closest('.input-group').find('input').val($(this).text());">后门</a>
+                        <a class="dropdown-item"
+                           onclick="estateStreetInfoObj.gateSelected(this);">南门</a>
+                        <a class="dropdown-item"
+                           onclick="estateStreetInfoObj.gateSelected(this);">北门</a>
+                        <a class="dropdown-item"
+                           onclick="estateStreetInfoObj.gateSelected(this);">东门</a>
+                        <a class="dropdown-item"
+                           onclick="estateStreetInfoObj.gateSelected(this);">西门</a>
+                        <a class="dropdown-item"
+                           onclick="estateStreetInfoObj.gateSelected(this);">正门</a>
+                        <a class="dropdown-item"
+                           onclick="estateStreetInfoObj.gateSelected(this);">后门</a>
                     </div>
                 </div>
             </div>
@@ -231,16 +239,23 @@
         estateStreetInfoObj.saveData(data);
     };
 
+    //大门选择
+    estateStreetInfoObj.gateSelected = function (_this) {
+        var input = $(_this).closest('.input-group').find('input');
+        input.val($(_this).text());
+        estateStreetInfoObj.onblur(input);
+    }
+
     estateStreetInfoObj.init = function (estateId) {
         (function (table) {
             var frm = table.closest("form");
-            table.find("tbody").empty() ;
+            table.find("tbody").empty();
             var data = formSerializeArray(frm);
-            if (! estateId){
-                estateId = data.id ;
+            if (!estateId) {
+                estateId = data.id;
             }
             estateStreetInfoObj.getBasicEstateStreetInfoList({estateId: estateId}, function (data) {
-                if (data.length >= 1){
+                if (data.length >= 1) {
                     $.each(data, function (i, item) {
                         table.find("tbody").append(estateStreetInfoObj.replaceHtml(item));
                         estateStreetInfoObj.showFile(estateStreetInfoObj.fileId + item.id, AssessDBKey.BasicEstateStreetInfo, item.id);
@@ -258,21 +273,20 @@
                         });
                     });
                     setTimeout(function () {
-                        var html = "" ;
-                        html += "<button class='btn btn-sm btn-success' type='button' onclick='estateStreetInfoObj.appendHTML(this);'>" ;
-                        html += "<i class='fa fa-plus'></i>" ;
-                        html += "</button>" ;
-                        table.find("tbody").find("tr").first().find("td").last().empty().append(html) ;
+                        var html = "";
+                        html += "<button class='btn btn-sm btn-success' type='button' onclick='estateStreetInfoObj.appendHTML(this);'>";
+                        html += "<i class='fa fa-plus'></i>";
+                        html += "</button>";
+                        table.find("tbody").find("tr").first().find("td").last().empty().append(html);
                     }, 100);
-                }else {
-                    estateStreetInfoObj.saveData({estateId: estateId},function (id) {
-                        estateStreetInfoObj.init(estateId) ;
+                } else {
+                    estateStreetInfoObj.saveData({estateId: estateId}, function (id) {
+                        estateStreetInfoObj.init(estateId);
                     });
                 }
             });
         }($(".estateStreetInfos")));
-    } ;
-
+    };
 
 
 </script>

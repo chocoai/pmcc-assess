@@ -35,9 +35,7 @@
                                     <form class="form-horizontal" id="basicHouseFrm">
                                         <input type="hidden" name="id" value="${basicHouse.id}">
                                         <input type="hidden" name="quoteId" value="${basicHouse.quoteId}">
-                                        <input type="hidden" name="unitId" value="${basicHouse.unitId}">
                                         <input type="hidden" name="estateId" value="${basicHouse.estateId}">
-                                        <input type="hidden" name="buildingId" value="${basicHouse.buildingId}">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card-body">
