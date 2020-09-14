@@ -69,6 +69,7 @@ public class PlanComplieExecute implements ProjectPlanExecuteInterface {
             projectPlanDetails.setPlanEndDate(new Date());
             projectPlanDetails.setBisEnable(true);
             projectPlanDetails.setProcessInsId("0");
+            projectPlanDetails.setBisLastLayer(true);
             projectPlanDetails.setPlanRemarks(schemeAreaGroup.getAreaName());
             projectPlanDetails.setPid(0);
             projectPlanDetails.setSorting(i++);

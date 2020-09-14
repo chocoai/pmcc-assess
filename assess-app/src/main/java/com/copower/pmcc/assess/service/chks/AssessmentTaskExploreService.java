@@ -161,7 +161,9 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                         detailDto.setActualScore(assessmentItemDto.getStandardScore());
                         break;
                     case WORK_HOURS_BUILDING://楼栋根据本次填写的数量计算分数
-                        List<BasicApplyBatchDetail> filterBuilding = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING.getTableName()));
+                        List<BasicApplyBatchDetail> filterBuilding = LangUtils.filter(basicApplyBatchDetailList, o ->
+                                o.getType().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING.getKey()) ||
+                                        o.getType().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING_BASE.getKey()));
                         if (CollectionUtils.isNotEmpty(filterBuilding)) {
                             BigDecimal actualScoreBuilding = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterBuilding.size() - 1))));
                             actualScoreBuilding = actualScoreBuilding.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreBuilding;
@@ -169,7 +171,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                         }
                         break;
                     case WORK_HOURS_UNIT://单元根据本次填写的数量计算分数
-                        List<BasicApplyBatchDetail> filterUnit = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING.getTableName()));
+                        List<BasicApplyBatchDetail> filterUnit = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.UNIT.getTableName()));
                         if (CollectionUtils.isNotEmpty(filterUnit)) {
                             BigDecimal actualScoreUnit = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterUnit.size() - 1))));
                             actualScoreUnit = actualScoreUnit.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreUnit;
@@ -177,7 +179,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                         }
                         break;
                     case WORK_HOURS_HOUSE://房屋根据本次填写的数量计算分数
-                        List<BasicApplyBatchDetail> filterHouse = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING.getTableName()));
+                        List<BasicApplyBatchDetail> filterHouse = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.HOUSE.getTableName()));
                         if (CollectionUtils.isNotEmpty(filterHouse)) {
                             BigDecimal actualScoreHouse = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterHouse.size() - 1))));
                             actualScoreHouse = actualScoreHouse.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreHouse;

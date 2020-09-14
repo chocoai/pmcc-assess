@@ -102,6 +102,8 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
             }
         }
 
+        List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, AssessmentTypeEnum.WORK_HOURS.getValue());
+        if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
         //添加工时考核任务
         AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
         dto.setProcessInsId(processInsId);

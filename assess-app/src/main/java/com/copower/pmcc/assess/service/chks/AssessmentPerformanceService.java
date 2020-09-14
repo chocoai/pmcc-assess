@@ -133,10 +133,16 @@ public class AssessmentPerformanceService {
                 }
                 //状态为结束，并且为当前人的下级节点数据可调整
                 //一旦有下一个级次的考核人完成考核，则该级次除管理员和抽查组的人员，其他人员不能修改
-                if (isAdmin || isSpotGroupUser) {
-                    row.setCanAdjust(true);
-                } else if (ProcessStatusEnum.FINISH.getValue().equalsIgnoreCase(row.getExamineStatus()) && row.getSorting() <= currMaxSorting) {
-                    row.setCanAdjust(true);
+                if (ProcessStatusEnum.FINISH.getValue().equalsIgnoreCase(row.getExamineStatus())) {
+                    if (isAdmin || isSpotGroupUser) {
+                        row.setCanAdjust(true);
+                    } else if (Boolean.TRUE.equals(row.getCanAdjust()) && commonService.thisUserAccount().equals(row.getExaminePeople())) {
+                        row.setCanAdjust(true);
+                    }  else {
+                        row.setCanAdjust(false);
+                    }
+                } else {
+                    row.setCanAdjust(false);
                 }
                 //状态为结束，管理员、抽查组成员可查看或抽查数据--只针对质量考核
                 if (ProcessStatusEnum.FINISH.getValue().equalsIgnoreCase(row.getExamineStatus()) &&

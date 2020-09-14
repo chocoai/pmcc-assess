@@ -61,6 +61,7 @@ public class PlanSchemeExecute implements ProjectPlanExecuteInterface {
             projectPlanDetails.setBisEnable(true);
             projectPlanDetails.setProcessInsId("0");
             projectPlanDetails.setPlanRemarks("评估方案设置(设置市场比较法,收益法等)");
+            projectPlanDetails.setBisLastLayer(true);
             projectPlanDetails.setPid(0);
             projectPlanDetails.setSorting(1);
             projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());

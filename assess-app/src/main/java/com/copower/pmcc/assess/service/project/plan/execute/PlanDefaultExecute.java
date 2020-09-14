@@ -60,6 +60,7 @@ public class PlanDefaultExecute implements ProjectPlanExecuteInterface {
                 projectPlanDetails.setBisEnable(true);
                 projectPlanDetails.setProcessInsId("0");
                 projectPlanDetails.setPid(0);
+                projectPlanDetails.setBisLastLayer(true);
                 projectPlanDetails.setSorting(projectPhase.getPhaseSort());
                 projectPlanDetails.setStatus(ProjectStatusEnum.RUNING.getKey());
                 projectPlanDetailsService.saveProjectPlanDetails(projectPlanDetails);
