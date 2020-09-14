@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoAssignTaskDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.mapper.ProjectInfoMapper;
 import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.*;
@@ -12,6 +14,8 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.event.project.ProjectSpotCheckEvent;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
@@ -24,6 +28,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -55,16 +60,13 @@ public class DataBlockService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private NetInfoAssignTaskService netInfoAssignTaskService;
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
-    private NetInfoRecordService netInfoRecordService;
+    private ProjectInfoMapper projectInfoMapper;
     @Autowired
-    private NetInfoRecordHouseService netInfoRecordHouseService;
+    private ProjectPhaseService projectPhaseService;
     @Autowired
-    private NetInfoRecordLandService netInfoRecordLandService;
-    @Autowired
-    private NetInfoAssignTaskDao netInfoAssignTaskDao;
-
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -177,25 +179,46 @@ public class DataBlockService {
     }
 
     public void updateOldData(String processInsId) throws Exception {
-        //更新assignTaskId 和source
-        NetInfoAssignTask where = new NetInfoAssignTask();
-        List<NetInfoAssignTask> infoAssignTasks = netInfoAssignTaskDao.getNetInfoAssignTask(where);
-        if (CollectionUtils.isEmpty(infoAssignTasks)) return;
-        for (NetInfoAssignTask infoAssignTask : infoAssignTasks) {
-            if (StringUtils.isBlank(infoAssignTask.getNetInfoIds())) continue;
-            List<Integer> list = FormatUtils.transformString2Integer(infoAssignTask.getNetInfoIds());
-            if (!CollectionUtils.isEmpty(list)) {
-                for (Integer integer : list) {
-                    NetInfoRecordHouse infoRecordHouse = netInfoRecordHouseService.getSingleByMasterId(integer);
-                    if (infoRecordHouse != null) {
-                        infoRecordHouse.setAssignTaskId(infoAssignTask.getId());
-                        netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(infoRecordHouse);
+        //1.先找出7、8月的项目，再找出项目中的查勘和案例数据确定其中的重复数据
+        ProjectInfoExample example = new ProjectInfoExample();
+        example.createCriteria().andGmtCreatedBetween(DateUtils.convertDate("2020-07-01"), DateUtils.convertDate("2020-09-01"));
+        List<ProjectInfo> projectInfoList = projectInfoMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(projectInfoList)) return;
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
+        ProjectPhase caseStudyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
+        for (ProjectInfo projectInfo : projectInfoList) {
+            ProjectPlanDetails where = new ProjectPlanDetails();
+            where.setProjectId(projectInfo.getId());
+            where.setProjectPhaseId(sceneExplorePhase.getId());
+            List<ProjectPlanDetails> sceneExploreDetails = projectPlanDetailsService.getProjectDetails(where);
+            if (!CollectionUtils.isEmpty(sceneExploreDetails) && sceneExploreDetails.size() > 1) {
+                for (int i = 1; i < sceneExploreDetails.size(); i++) {
+                    BasicApplyBatchDetail detailWhere = new BasicApplyBatchDetail();
+                    detailWhere.setProjectId(projectInfo.getId());
+                    detailWhere.setPlanDetailsId(sceneExploreDetails.get(i).getId());
+                    List<BasicApplyBatchDetail> applyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailList(detailWhere);
+                    if(!CollectionUtils.isEmpty(applyBatchDetails)){
+                        for (BasicApplyBatchDetail applyBatchDetail : applyBatchDetails) {
+                            basicApplyBatchDetailService.validIsSameBatchDetal(applyBatchDetail);
+                        }
                     }
+                }
+            }
 
-                    NetInfoRecordLand infoRecordLand = netInfoRecordLandService.getSingleByMasterId(integer);
-                    if (infoRecordLand != null) {
-                        infoRecordLand.setAssignTaskId(infoAssignTask.getId());
-                        netInfoRecordLandService.saveAndUpdateNetInfoRecordLand(infoRecordLand);
+            where = new ProjectPlanDetails();
+            where.setProjectId(projectInfo.getId());
+            where.setProjectPhaseId(caseStudyPhase.getId());
+            List<ProjectPlanDetails> caseStudyDetails = projectPlanDetailsService.getProjectDetails(where);
+            if (!CollectionUtils.isEmpty(caseStudyDetails)) {
+                for (int i = 0; i < caseStudyDetails.size(); i++) {
+                    BasicApplyBatchDetail detailWhere = new BasicApplyBatchDetail();
+                    detailWhere.setProjectId(projectInfo.getId());
+                    detailWhere.setPlanDetailsId(caseStudyDetails.get(i).getId());
+                    List<BasicApplyBatchDetail> applyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailList(detailWhere);
+                    if(!CollectionUtils.isEmpty(applyBatchDetails)){
+                        for (BasicApplyBatchDetail applyBatchDetail : applyBatchDetails) {
+                            basicApplyBatchDetailService.validIsSameBatchDetal(applyBatchDetail);
+                        }
                     }
                 }
             }

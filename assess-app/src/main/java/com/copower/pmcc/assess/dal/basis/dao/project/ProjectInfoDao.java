@@ -124,22 +124,6 @@ public class ProjectInfoDao {
         return projectInfoMapper.selectByExample(example);
     }
 
-    public List<ProjectInfo> getMyProjectList(ProjectInfo projectInfo) {
-        ProjectInfoExample example = new ProjectInfoExample();
-        ProjectInfoExample.Criteria criteria = example.createCriteria();
-        criteria.andCreatorEqualTo(projectInfo.getCreator());
-        //项目名称模糊查询
-        if (StringUtils.isNotEmpty(projectInfo.getProjectName())) {
-            criteria.andProjectNameLike(String.format("%%%s%%", projectInfo.getProjectName()));
-        }
-        //项目状态查询
-        if (StringUtils.isNotEmpty(projectInfo.getProjectStatus())) {
-            criteria.andProjectStatusEqualTo(projectInfo.getProjectStatus());
-        }
-        example.setOrderByClause("id desc");
-        return projectInfoMapper.selectByExample(example);
-    }
-
     public List<ProjectInfo> getProjectListByUserAccount(QueryProjectInfo queryProjectInfo) {
         return customProjectInfoMapper.getProjectListByUserAccount(queryProjectInfo);
     }

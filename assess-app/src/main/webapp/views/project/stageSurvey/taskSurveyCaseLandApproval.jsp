@@ -181,10 +181,6 @@
     //进入填写信息页面
     function fillInformation() {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node.executor != '${projectPlanDetails.executeUserAccount}') {
-            notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
-            return false;
-        }
         var frm = $("#basicBatchApplyFrm");
         var data = formSerializeArray(frm);
         data.tbType = node.type;

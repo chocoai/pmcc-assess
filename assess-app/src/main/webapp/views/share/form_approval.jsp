@@ -9,9 +9,14 @@
 <c:if test="${flog=='approval'}">
     <div class="col-md-12">
         <div class="card full-height">
-            <div class="card-header">
+            <div class="card-header collapse-link">
                 <div class="card-head-row">
                     <div class="card-title">审批信息</div>
+                    <div class="card-tools">
+                        <button class="btn btn-link btn-primary btn-xs"><span
+                                class="fa fa-angle-down"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="card-body">

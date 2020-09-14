@@ -175,7 +175,7 @@ public class BasicApplyBatchDetailService {
     }
 
     //验证是否为项目下相同数据
-    private void validIsSameBatchDetal(BasicApplyBatchDetail basicApplyBatchDetail) {
+    public void validIsSameBatchDetal(BasicApplyBatchDetail basicApplyBatchDetail) {
         //如果在相同项目下，fullName相同，并且是正常状态，并排除当前数据。那该数据则为同数据
         if (basicApplyBatchDetail.getProjectId() != null) {
             BasicApplyBatchDetail where = new BasicApplyBatchDetail();
