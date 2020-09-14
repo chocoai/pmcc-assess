@@ -344,6 +344,10 @@ public class BasicUnitService extends BasicEntityAbstract {
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitStairs.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//单元 单元楼梯信息 sql
 
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitCommonPart.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitCommonPart.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//公共部分sql
+
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return targetBasicUnit;

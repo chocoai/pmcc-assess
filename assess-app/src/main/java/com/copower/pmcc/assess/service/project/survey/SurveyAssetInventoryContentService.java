@@ -61,19 +61,15 @@ public class SurveyAssetInventoryContentService {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
-    @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     @Autowired
-    private SurveyAssetInfoItemService surveyAssetInfoItemService;
-    @Autowired
     private DeclareRealtyLandCertService declareRealtyLandCertService;
     @Autowired
-    private BasicApplyService basicApplyService;
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     @Autowired
-    private PublicService publicService;
+    private BasicApplyService basicApplyService;
     @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
@@ -82,14 +78,6 @@ public class SurveyAssetInventoryContentService {
     private BasicHouseService basicHouseService;
     @Autowired
     private DeclareRecordService declareRecordService;
-    @Autowired
-    private BaseProjectClassifyService baseProjectClassifyService;
-    @Autowired
-    private BasicEstateService basicEstateService;
-    @Autowired
-    private BasicEstateVillageService basicEstateVillageService;
-    @Autowired
-    private ErpAreaService erpAreaService;
     @Autowired
     private BasicEstateStreetInfoService basicEstateStreetInfoService;
     @Autowired
@@ -189,7 +177,7 @@ public class SurveyAssetInventoryContentService {
                 for (KeyValueDto keyValueDto : keyValueDtos) {
                     if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.ESTATE.getKey())) {
                         streetInfoList = basicEstateStreetInfoService.getStreetInfoListByEstateId(Integer.valueOf(keyValueDto.getValue()));
-                    } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.BUILDING.getKey())) {
+                    } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.BUILDING.getKey()) && !keyValueDto.getKey().equals(BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey())) {
                         basicBuilding = basicBuildingService.getBasicBuildingById(Integer.valueOf(keyValueDto.getValue()));
                     } else if (keyValueDto.getKey().startsWith(BasicFormClassifyEnum.UNIT.getKey())) {
                         basicUnit = basicUnitService.getBasicUnitById(Integer.valueOf(keyValueDto.getValue()));
@@ -207,7 +195,7 @@ public class SurveyAssetInventoryContentService {
                     inventoryContent.setRegistration(declareRecord.getSeat());
                     Boolean isStreetNumberSame = false;
                     if (CollectionUtils.isNotEmpty(streetInfoList)) {
-                        inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + streetInfoList.get(0).getStreetNumber());
+                        inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + StringUtils.defaultString(streetInfoList.get(0).getStreetNumber()));
                         if (LangUtils.transform(streetInfoList, o -> o.getStreetNumber()).contains(declareRecord.getStreetNumber())) {
                             isStreetNumberSame = true;
                         }
@@ -262,8 +250,7 @@ public class SurveyAssetInventoryContentService {
                         inventoryContent.setActual(String.valueOf(basicHouse.getArea()));
                     }
                 } else if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS.equals(key)) {//房产证与土地证证载地址
-                    inventoryContent.setRegistration(declareRecord.getSeat());
-                    inventoryContent.setActual(declareRecord.getSeat());
+                    validEstateLandAddressSame(inventoryContent, declareRecord);
                 }
                 if (StringUtils.equals(inventoryContent.getRegistration(), inventoryContent.getActual())) {
                     inventoryContent.setAreConsistent("一致");
@@ -273,6 +260,30 @@ public class SurveyAssetInventoryContentService {
                 saveAssetInventoryContent(inventoryContent);
             } catch (BusinessException e) {
                 logger.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * 验证房产证与土地证是否一致
+     *
+     * @param inventoryContent
+     * @param declareRecord
+     */
+    private void validEstateLandAddressSame(SurveyAssetInventoryContent inventoryContent, DeclareRecord declareRecord) {
+        if (inventoryContent == null || declareRecord == null) return;
+        inventoryContent.setRegistration(declareRecord.getSeat());
+        DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = declareBuildEngineeringAndEquipmentCenterService.getDataByDeclareRecord(declareRecord.getId());
+        if (equipmentCenter == null) return;
+        if (DeclareCertificateTypeEnum.HOUSE.getKey().equals(declareRecord.getType())) {
+            DeclareRealtyLandCert landCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(equipmentCenter.getLandId());
+            if (landCert != null) {
+                inventoryContent.setActual(landCert.getBeLocated());
+            }
+        } else if (DeclareCertificateTypeEnum.LAND.getKey().equals(declareRecord.getType())) {
+            DeclareRealtyHouseCert houseCert = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(equipmentCenter.getHouseId());
+            if (houseCert != null) {
+                inventoryContent.setActual(houseCert.getBeLocated());
             }
         }
     }

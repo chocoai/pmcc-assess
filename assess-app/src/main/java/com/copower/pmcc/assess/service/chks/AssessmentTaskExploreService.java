@@ -162,8 +162,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                         break;
                     case WORK_HOURS_BUILDING://楼栋根据本次填写的数量计算分数
                         List<BasicApplyBatchDetail> filterBuilding = LangUtils.filter(basicApplyBatchDetailList, o ->
-                                o.getType().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING.getKey()) ||
-                                        o.getType().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING_BASE.getKey()));
+                                o.getType().startsWith(BasicFormClassifyEnum.BUILDING.getKey()) && !o.getType().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey()));
                         if (CollectionUtils.isNotEmpty(filterBuilding)) {
                             BigDecimal actualScoreBuilding = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterBuilding.size() - 1))));
                             actualScoreBuilding = actualScoreBuilding.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreBuilding;
