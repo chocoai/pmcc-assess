@@ -1,23 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<div class="main-header">--%>
 
-
-<%--    <!-- Navbar Header -->--%>
-<%--    <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">--%>
-
-<%--        <div class="container-fluid">--%>
-<%--            <div class="nav-toggle">--%>
-<%--                <button class="btn btn-toggle toggle-sidebar"><i class="icon-menu"></i></button>--%>
-<%--            </div>--%>
-<%--            <div class="collapse" id="search-nav"  style="max-width: 100%">--%>
-<%--                <h3 style="color: #ffffff">--%>
-<%--                    <span class="label label-warning">${projectInfo.projectStatus}</span> <span style="cursor: pointer;" onclick="window.location.href='${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}'">${projectInfo.projectName}</span>--%>
-<%--                </h3>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </nav>--%>
-<%--    <!-- End Navbar -->--%>
-<%--</div>--%>
 <div class="main-header">
     <div class="logo-header" data-background-color="blue"><a target="_self"
                                                              href="${pageContext.request.contextPath}/home/main"

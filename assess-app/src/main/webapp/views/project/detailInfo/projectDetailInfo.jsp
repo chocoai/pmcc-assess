@@ -114,12 +114,14 @@
                                                         项目拿号
                                                     </button>
                                                 </div>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-info btn-sm" type="button"
-                                                            onclick="projectDetails.projectReviewScore()">
-                                                        复核与指导工分
-                                                    </button>
-                                                </div>
+                                                <c:if test="${projectInfo.projectStatus eq 'finish' or projectInfo.projectStatus eq 'close'}">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-info btn-sm" type="button"
+                                                                onclick="projectDetails.projectReviewScore()">
+                                                            复核与指导工分
+                                                        </button>
+                                                    </div>
+                                                </c:if>
                                                 <c:if test="${companyName eq 'xinglx'}">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-info btn-sm" type="button"
