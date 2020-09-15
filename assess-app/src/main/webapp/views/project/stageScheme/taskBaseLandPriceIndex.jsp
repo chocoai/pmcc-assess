@@ -887,27 +887,23 @@
     //change 事件 因素分自动调整
     function landLevelHandle(that) {
         var td = $(that).closest('td');
-        var achievement = $(that).closest('tr').find('[name=landFactorTotalScore]')
-        achievement.attr('data-value', '').val('');
-        $.ajax({
-            url: '${pageContext.request.contextPath}/dataLandLevelDetailAchievement/getAchievementByParam',
-            data: {
-                levelDetailId: td.find('[name=levelDetailId]').val(),
-                type: td.find('[name=type]').val(),
-                classification: td.find('[name=classification]').val(),
-                category: td.find('[name=category]').val(),
-                grade: $(that).val()
-            },
-            type: 'get',
-            dataType: 'json',
-            success: function (result) {
-                if (result.ret && result.data) {
-
-                    achievement.attr('data-value', result.data.achievement);
-                    AssessCommon.elementParsePercent(achievement);
-                }
+        var landLevelGrade = td.find("select[name=landLevelGrade]").find("option:selected").val() ;
+        var landLevelContent = $(that).closest('tr').find('[name=landLevelContent]').val() ;
+        if (! landLevelContent) {
+            return false ;
+        }
+        var objArr = jQuery.parseJSON(landLevelContent) ;
+        if (!$.isArray(objArr)) {
+            return false ;
+        }
+        var achievement = $(that).closest('tr').find('[name=landFactorTotalScore]');
+        $.each(objArr ,function (k,obj) {
+            if (obj.grade == landLevelGrade) {
+                achievement.attr('data-value', obj.achievement);
+                AssessCommon.elementParsePercent(achievement);
+                getAreaAndSeveralAmend() ;
             }
-        })
+        }) ;
     };
 </script>
 
