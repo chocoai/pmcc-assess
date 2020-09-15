@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 09:45
  */
 @Component
-@WorkFlowAnnotation(desc = "兴良信 报告信息")
+@WorkFlowAnnotation(desc = "报告信息【兴良信】")
 public class ProjectXlxReportIndividualAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

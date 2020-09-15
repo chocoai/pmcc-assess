@@ -34,7 +34,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "成本逼近法成果")
+@WorkFlowAnnotation(desc = "成本逼近法")
 public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired

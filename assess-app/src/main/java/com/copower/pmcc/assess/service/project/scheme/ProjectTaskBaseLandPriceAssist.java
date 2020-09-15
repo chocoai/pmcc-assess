@@ -36,7 +36,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "基准地价法成果")
+@WorkFlowAnnotation(desc = "基准地价法")
 public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired

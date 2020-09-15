@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "资产-清查成果")
+@WorkFlowAnnotation(desc = "资产清查【资产】")
 public class AssetsTaskInventoryAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

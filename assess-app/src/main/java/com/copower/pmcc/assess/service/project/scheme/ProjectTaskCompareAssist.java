@@ -32,7 +32,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "市场比较法成果")
+@WorkFlowAnnotation(desc = "市场比较法")
 public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

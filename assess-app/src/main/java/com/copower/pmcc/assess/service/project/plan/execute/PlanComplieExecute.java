@@ -28,7 +28,7 @@ import java.util.List;
  * 房报告编写计划执行时对应方法
  */
 @Component
-@WorkFlowAnnotation(desc = "报告编写自动")
+@WorkFlowAnnotation(desc = "报告编写")
 public class PlanComplieExecute implements ProjectPlanExecuteInterface {
     @Autowired
     private ProjectInfoService projectInfoService;

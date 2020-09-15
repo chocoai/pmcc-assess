@@ -30,7 +30,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "土地比较法成果")
+@WorkFlowAnnotation(desc = "土地比较法")
 public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

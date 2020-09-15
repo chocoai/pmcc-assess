@@ -28,7 +28,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "资产申报(纯土地)")
+@WorkFlowAnnotation(desc = "资产申报【纯土地】")
 public class ProjectTaskDeclareLandPureAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

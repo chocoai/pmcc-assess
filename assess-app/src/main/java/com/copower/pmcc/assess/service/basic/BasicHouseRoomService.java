@@ -182,7 +182,7 @@ public class BasicHouseRoomService {
             }
             vo.setAdjacentPositionDescribe(s.toString());
         }
-        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseRoom.getId(), "house_room_file", "tb_basic_house_room");
+        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseRoom.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class));
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
             if (sysAttachmentDtos.size() >= 1) {

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 房地产评估简单版中现场查勘计划执行时对应方法
  */
 @Component
-@WorkFlowAnnotation(desc = "现场查勘自动")
+@WorkFlowAnnotation(desc = "现场查勘")
 public class PlanSurveyExecute implements ProjectPlanExecuteInterface {
     @Autowired
     private ProjectPlanService projectPlanService;

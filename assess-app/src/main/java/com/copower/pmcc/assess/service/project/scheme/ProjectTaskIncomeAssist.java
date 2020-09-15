@@ -35,7 +35,7 @@ import java.math.BigDecimal;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "收益法成果")
+@WorkFlowAnnotation(desc = "收益法")
 public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired

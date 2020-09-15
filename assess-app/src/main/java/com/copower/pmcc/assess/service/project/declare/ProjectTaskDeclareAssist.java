@@ -28,7 +28,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "房产-申报成果")
+@WorkFlowAnnotation(desc = "资产申报")
 public class ProjectTaskDeclareAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

@@ -32,7 +32,7 @@ import java.util.Map;
  * Created by wangpc on 2019-10-22.
  */
 @Component
-@WorkFlowAnnotation(desc = "出具报告成果")
+@WorkFlowAnnotation(desc = "出具报告")
 public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

@@ -32,7 +32,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "成本法成果")
+@WorkFlowAnnotation(desc = "成本法")
 public class ProjectTaskCostAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

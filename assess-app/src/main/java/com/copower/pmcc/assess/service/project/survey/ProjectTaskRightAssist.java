@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Component
-@WorkFlowAnnotation(desc = "他项权利成果")
+@WorkFlowAnnotation(desc = "他项权利")
 public class ProjectTaskRightAssist implements ProjectTaskInterface {
     @Autowired
     private BaseService baseService;

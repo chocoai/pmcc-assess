@@ -29,7 +29,7 @@ import java.util.List;
  */
 
 @Component
-@WorkFlowAnnotation(desc = "资产清查成果")
+@WorkFlowAnnotation(desc = "资产清查")
 public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

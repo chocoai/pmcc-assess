@@ -36,7 +36,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "案例调查成果（新）")
+@WorkFlowAnnotation(desc = "案例调查")
 public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;

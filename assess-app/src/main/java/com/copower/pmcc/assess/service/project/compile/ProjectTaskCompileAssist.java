@@ -24,7 +24,7 @@ import java.util.List;
 
 
 @Component
-@WorkFlowAnnotation(desc = "市场背景描述与分析成果")
+@WorkFlowAnnotation(desc = "市场背景描述与分析")
 public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
@@ -36,7 +36,6 @@ public class ProjectTaskCompileAssist implements ProjectTaskInterface {
     private CompileReportService compileReportService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
-
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {

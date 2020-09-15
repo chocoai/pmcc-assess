@@ -22,7 +22,7 @@ import java.util.Date;
  * 直接自动跳过计划编制
  */
 @Component
-@WorkFlowAnnotation(desc = "评估方案自动")
+@WorkFlowAnnotation(desc = "评估方案")
 public class PlanSchemeExecute implements ProjectPlanExecuteInterface {
     @Autowired
     private ProjectInfoService projectInfoService;

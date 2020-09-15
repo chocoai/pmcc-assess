@@ -29,7 +29,7 @@ import java.util.List;
  * @time: 14:15
  */
 @Component
-@WorkFlowAnnotation(desc = "假设开发法成果")
+@WorkFlowAnnotation(desc = "假设开发法")
 public class ProjectTaskDevelopmentAssist implements ProjectTaskInterface {
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
