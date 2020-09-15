@@ -1891,6 +1891,9 @@
 
     }
 
+    /**
+     * 计算价格 根据数据传入到服务端 匹配后的计算结果
+     */
     function getThisPrice(that) {
         var id = $(that).closest("tr").find("input[name='id']").val();
         var masterId = $("#master").find("input[name='id']").val();
@@ -1968,6 +1971,10 @@
         }
     }
 
+    /**
+     * 获取生成明细 土地取得费及相关税费 单行计算数据
+     * @param that
+     */
     function getApproachTaxesData(that) {
         var data = {};
         data.id = $(that).find("input[name='id']").val();

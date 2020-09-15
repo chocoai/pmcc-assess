@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface MdCostApproachTaxesMapper {
-    int countByExample(MdCostApproachTaxesExample example);
+    long countByExample(MdCostApproachTaxesExample example);
 
     int deleteByExample(MdCostApproachTaxesExample example);
 
@@ -14,17 +14,21 @@ public interface MdCostApproachTaxesMapper {
 
     int insert(MdCostApproachTaxes record);
 
-    int insertSelective(MdCostApproachTaxes record);
+    int insertSelective(@Param("record") MdCostApproachTaxes record, @Param("selective") MdCostApproachTaxes.Column ... selective);
 
     List<MdCostApproachTaxes> selectByExample(MdCostApproachTaxesExample example);
 
     MdCostApproachTaxes selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") MdCostApproachTaxes record, @Param("example") MdCostApproachTaxesExample example);
+    int updateByExampleSelective(@Param("record") MdCostApproachTaxes record, @Param("example") MdCostApproachTaxesExample example, @Param("selective") MdCostApproachTaxes.Column ... selective);
 
     int updateByExample(@Param("record") MdCostApproachTaxes record, @Param("example") MdCostApproachTaxesExample example);
 
-    int updateByPrimaryKeySelective(MdCostApproachTaxes record);
+    int updateByPrimaryKeySelective(@Param("record") MdCostApproachTaxes record, @Param("selective") MdCostApproachTaxes.Column ... selective);
 
     int updateByPrimaryKey(MdCostApproachTaxes record);
+
+    int batchInsert(@Param("list") List<MdCostApproachTaxes> list);
+
+    int batchInsertSelective(@Param("list") List<MdCostApproachTaxes> list, @Param("selective") MdCostApproachTaxes.Column ... selective);
 }

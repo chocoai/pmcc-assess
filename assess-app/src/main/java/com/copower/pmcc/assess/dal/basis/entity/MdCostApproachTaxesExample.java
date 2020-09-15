@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class MdCostApproachTaxesExample {
+    /**
+     * tb_md_cost_approach_taxes
+     */
     protected String orderByClause;
 
+    /**
+     * tb_md_cost_approach_taxes
+     */
     protected boolean distinct;
 
+    /**
+     * tb_md_cost_approach_taxes
+     */
     protected List<Criteria> oredCriteria;
 
     public MdCostApproachTaxesExample() {
@@ -65,6 +74,9 @@ public class MdCostApproachTaxesExample {
         distinct = false;
     }
 
+    /**
+     * tb_md_cost_approach_taxes
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -814,6 +826,9 @@ public class MdCostApproachTaxesExample {
         }
     }
 
+    /**
+     * tb_md_cost_approach_taxes
+     */
     public static class Criterion {
         private String condition;
 

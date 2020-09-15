@@ -15,20 +15,19 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
  * @Auther: HUHAO
  * @Date: 2018/9/7 10:00
- * @Description:
+ * @Description:基准地价法
  */
 @RequestMapping(value = "/baseLandPrice")
-@Controller
+@RestController
 public class MdBaseLandPriceController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -49,7 +48,6 @@ public class MdBaseLandPriceController {
     private BasicApplyService basicApplyService;
 
 
-    @ResponseBody
     @RequestMapping(value = "/getLandIndexId", name = "获取土地指数表id", method = RequestMethod.GET)
     public HttpResult getLandIndexId(Integer judgeObjectId) {
         try {
@@ -70,12 +68,12 @@ public class MdBaseLandPriceController {
             }
             return HttpResult.newCorrectResult(landIndexId);
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("获取失败");
         }
     }
 
 
-    @ResponseBody
     @RequestMapping(value = "/getLevelDetailId", name = "获取土地级别id", method = RequestMethod.GET)
     public HttpResult getLevelDetailId(Integer judgeObjectId) {
         try {
@@ -85,6 +83,7 @@ public class MdBaseLandPriceController {
             BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
             return HttpResult.newCorrectResult(landStateByEstateId.getLandLevel());
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             return HttpResult.newErrorResult("获取失败");
         }
     }

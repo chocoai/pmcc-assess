@@ -1,57 +1,59 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdBaseLandPriceMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
-    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="reward_rate_id" property="rewardRateId" jdbcType="INTEGER" />
-    <result column="reward_rate" property="rewardRate" jdbcType="VARCHAR" />
-    <result column="standard_premium" property="standardPremium" jdbcType="DECIMAL" />
-    <result column="standard_premium_remark" property="standardPremiumRemark" jdbcType="VARCHAR" />
-    <result column="legal_age" property="legalAge" jdbcType="DECIMAL" />
-    <result column="legal_age_remark" property="legalAgeRemark" jdbcType="VARCHAR" />
-    <result column="land_surplus_year" property="landSurplusYear" jdbcType="DECIMAL" />
-    <result column="land_surplus_year_remark" property="landSurplusYearRemark" jdbcType="VARCHAR" />
-    <result column="period_amend" property="periodAmend" jdbcType="DECIMAL" />
-    <result column="develop_correct" property="developCorrect" jdbcType="DECIMAL" />
-    <result column="develop_correct_remark" property="developCorrectRemark" jdbcType="VARCHAR" />
-    <result column="volumetric_rate" property="volumetricRate" jdbcType="DECIMAL" />
-    <result column="volumetric_rate_remark" property="volumetricRateRemark" jdbcType="VARCHAR" />
-    <result column="evaluation_area" property="evaluationArea" jdbcType="DECIMAL" />
-    <result column="evaluation_area_remark" property="evaluationAreaRemark" jdbcType="VARCHAR" />
-    <result column="date_amend" property="dateAmend" jdbcType="DECIMAL" />
-    <result column="volume_fraction_amend" property="volumeFractionAmend" jdbcType="DECIMAL" />
-    <result column="area_and_several_amend" property="areaAndSeveralAmend" jdbcType="DECIMAL" />
-    <result column="parcel_price" property="parcelPrice" jdbcType="DECIMAL" />
-    <result column="parcel_bhou_price" property="parcelBhouPrice" jdbcType="DECIMAL" />
-    <result column="parcel_total_price" property="parcelTotalPrice" jdbcType="DECIMAL" />
-    <result column="floor_premium" property="floorPremium" jdbcType="DECIMAL" />
-    <result column="correction_difference" property="correctionDifference" jdbcType="VARCHAR" />
-    <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdBaseLandPriceMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="plan_details_id" jdbcType="INTEGER" property="planDetailsId" />
+    <result column="process_ins_id" jdbcType="VARCHAR" property="processInsId" />
+    <result column="reward_rate_id" jdbcType="INTEGER" property="rewardRateId" />
+    <result column="reward_rate" jdbcType="VARCHAR" property="rewardRate" />
+    <result column="standard_premium" jdbcType="DECIMAL" property="standardPremium" />
+    <result column="standard_premium_remark" jdbcType="VARCHAR" property="standardPremiumRemark" />
+    <result column="legal_age" jdbcType="DECIMAL" property="legalAge" />
+    <result column="legal_age_remark" jdbcType="VARCHAR" property="legalAgeRemark" />
+    <result column="land_surplus_year" jdbcType="DECIMAL" property="landSurplusYear" />
+    <result column="land_surplus_year_remark" jdbcType="VARCHAR" property="landSurplusYearRemark" />
+    <result column="period_amend" jdbcType="DECIMAL" property="periodAmend" />
+    <result column="develop_correct" jdbcType="DECIMAL" property="developCorrect" />
+    <result column="develop_correct_remark" jdbcType="VARCHAR" property="developCorrectRemark" />
+    <result column="volumetric_rate" jdbcType="DECIMAL" property="volumetricRate" />
+    <result column="volumetric_rate_remark" jdbcType="VARCHAR" property="volumetricRateRemark" />
+    <result column="evaluation_area" jdbcType="DECIMAL" property="evaluationArea" />
+    <result column="evaluation_area_remark" jdbcType="VARCHAR" property="evaluationAreaRemark" />
+    <result column="date_amend" jdbcType="DECIMAL" property="dateAmend" />
+    <result column="volume_fraction_amend" jdbcType="DECIMAL" property="volumeFractionAmend" />
+    <result column="area_and_several_amend" jdbcType="DECIMAL" property="areaAndSeveralAmend" />
+    <result column="parcel_price" jdbcType="DECIMAL" property="parcelPrice" />
+    <result column="parcel_bhou_price" jdbcType="DECIMAL" property="parcelBhouPrice" />
+    <result column="parcel_total_price" jdbcType="DECIMAL" property="parcelTotalPrice" />
+    <result column="floor_premium" jdbcType="DECIMAL" property="floorPremium" />
+    <result column="correction_difference" jdbcType="VARCHAR" property="correctionDifference" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice">
+    <result column="land_level_content" jdbcType="LONGVARCHAR" property="landLevelContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -62,25 +64,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -91,46 +93,67 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, plan_details_id, process_ins_id, reward_rate_id, reward_rate, standard_premium, 
     standard_premium_remark, legal_age, legal_age_remark, land_surplus_year, land_surplus_year_remark, 
     period_amend, develop_correct, develop_correct_remark, volumetric_rate, volumetric_rate_remark, 
     evaluation_area, evaluation_area_remark, date_amend, volume_fraction_amend, area_and_several_amend, 
     parcel_price, parcel_bhou_price, parcel_total_price, floor_premium, correction_difference, 
-    land_level_content, creator, gmt_created, gmt_modified
+    creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" >
+  <sql id="Blob_Column_List">
+    land_level_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" resultMap="ResultMapWithBLOBs">
     select
-    <if test="distinct" >
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_md_base_land_price
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_md_base_land_price
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_md_base_land_price
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_md_base_land_price
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample">
     delete from tb_md_base_land_price
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_base_land_price (plan_details_id, process_ins_id, reward_rate_id, 
@@ -141,8 +164,8 @@
       evaluation_area, evaluation_area_remark, date_amend, 
       volume_fraction_amend, area_and_several_amend, 
       parcel_price, parcel_bhou_price, parcel_total_price, 
-      floor_premium, correction_difference, land_level_content, 
-      creator, gmt_created, gmt_modified
+      floor_premium, correction_difference, creator, 
+      gmt_created, gmt_modified, land_level_content
       )
     values (#{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{rewardRateId,jdbcType=INTEGER}, 
       #{rewardRate,jdbcType=VARCHAR}, #{standardPremium,jdbcType=DECIMAL}, #{standardPremiumRemark,jdbcType=VARCHAR}, 
@@ -152,299 +175,329 @@
       #{evaluationArea,jdbcType=DECIMAL}, #{evaluationAreaRemark,jdbcType=VARCHAR}, #{dateAmend,jdbcType=DECIMAL}, 
       #{volumeFractionAmend,jdbcType=DECIMAL}, #{areaAndSeveralAmend,jdbcType=DECIMAL}, 
       #{parcelPrice,jdbcType=DECIMAL}, #{parcelBhouPrice,jdbcType=DECIMAL}, #{parcelTotalPrice,jdbcType=DECIMAL}, 
-      #{floorPremium,jdbcType=DECIMAL}, #{correctionDifference,jdbcType=VARCHAR}, #{landLevelContent,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      #{floorPremium,jdbcType=DECIMAL}, #{correctionDifference,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{landLevelContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_md_base_land_price
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="planDetailsId != null" >
-        plan_details_id,
-      </if>
-      <if test="processInsId != null" >
-        process_ins_id,
-      </if>
-      <if test="rewardRateId != null" >
-        reward_rate_id,
-      </if>
-      <if test="rewardRate != null" >
-        reward_rate,
-      </if>
-      <if test="standardPremium != null" >
-        standard_premium,
-      </if>
-      <if test="standardPremiumRemark != null" >
-        standard_premium_remark,
-      </if>
-      <if test="legalAge != null" >
-        legal_age,
-      </if>
-      <if test="legalAgeRemark != null" >
-        legal_age_remark,
-      </if>
-      <if test="landSurplusYear != null" >
-        land_surplus_year,
-      </if>
-      <if test="landSurplusYearRemark != null" >
-        land_surplus_year_remark,
-      </if>
-      <if test="periodAmend != null" >
-        period_amend,
-      </if>
-      <if test="developCorrect != null" >
-        develop_correct,
-      </if>
-      <if test="developCorrectRemark != null" >
-        develop_correct_remark,
-      </if>
-      <if test="volumetricRate != null" >
-        volumetric_rate,
-      </if>
-      <if test="volumetricRateRemark != null" >
-        volumetric_rate_remark,
-      </if>
-      <if test="evaluationArea != null" >
-        evaluation_area,
-      </if>
-      <if test="evaluationAreaRemark != null" >
-        evaluation_area_remark,
-      </if>
-      <if test="dateAmend != null" >
-        date_amend,
-      </if>
-      <if test="volumeFractionAmend != null" >
-        volume_fraction_amend,
-      </if>
-      <if test="areaAndSeveralAmend != null" >
-        area_and_several_amend,
-      </if>
-      <if test="parcelPrice != null" >
-        parcel_price,
-      </if>
-      <if test="parcelBhouPrice != null" >
-        parcel_bhou_price,
-      </if>
-      <if test="parcelTotalPrice != null" >
-        parcel_total_price,
-      </if>
-      <if test="floorPremium != null" >
-        floor_premium,
-      </if>
-      <if test="correctionDifference != null" >
-        correction_difference,
-      </if>
-      <if test="landLevelContent != null" >
-        land_level_content,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="planDetailsId != null" >
-        #{planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="processInsId != null" >
-        #{processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="rewardRateId != null" >
-        #{rewardRateId,jdbcType=INTEGER},
-      </if>
-      <if test="rewardRate != null" >
-        #{rewardRate,jdbcType=VARCHAR},
-      </if>
-      <if test="standardPremium != null" >
-        #{standardPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="standardPremiumRemark != null" >
-        #{standardPremiumRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="legalAge != null" >
-        #{legalAge,jdbcType=DECIMAL},
-      </if>
-      <if test="legalAgeRemark != null" >
-        #{legalAgeRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="landSurplusYear != null" >
-        #{landSurplusYear,jdbcType=DECIMAL},
-      </if>
-      <if test="landSurplusYearRemark != null" >
-        #{landSurplusYearRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="periodAmend != null" >
-        #{periodAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="developCorrect != null" >
-        #{developCorrect,jdbcType=DECIMAL},
-      </if>
-      <if test="developCorrectRemark != null" >
-        #{developCorrectRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="volumetricRate != null" >
-        #{volumetricRate,jdbcType=DECIMAL},
-      </if>
-      <if test="volumetricRateRemark != null" >
-        #{volumetricRateRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="evaluationArea != null" >
-        #{evaluationArea,jdbcType=DECIMAL},
-      </if>
-      <if test="evaluationAreaRemark != null" >
-        #{evaluationAreaRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="dateAmend != null" >
-        #{dateAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="volumeFractionAmend != null" >
-        #{volumeFractionAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="areaAndSeveralAmend != null" >
-        #{areaAndSeveralAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="parcelPrice != null" >
-        #{parcelPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="parcelBhouPrice != null" >
-        #{parcelBhouPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="parcelTotalPrice != null" >
-        #{parcelTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="floorPremium != null" >
-        #{floorPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="correctionDifference != null" >
-        #{correctionDifference,jdbcType=VARCHAR},
-      </if>
-      <if test="landLevelContent != null" >
-        #{landLevelContent,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.planDetailsId != null">
+            plan_details_id,
+          </if>
+          <if test="record.processInsId != null">
+            process_ins_id,
+          </if>
+          <if test="record.rewardRateId != null">
+            reward_rate_id,
+          </if>
+          <if test="record.rewardRate != null">
+            reward_rate,
+          </if>
+          <if test="record.standardPremium != null">
+            standard_premium,
+          </if>
+          <if test="record.standardPremiumRemark != null">
+            standard_premium_remark,
+          </if>
+          <if test="record.legalAge != null">
+            legal_age,
+          </if>
+          <if test="record.legalAgeRemark != null">
+            legal_age_remark,
+          </if>
+          <if test="record.landSurplusYear != null">
+            land_surplus_year,
+          </if>
+          <if test="record.landSurplusYearRemark != null">
+            land_surplus_year_remark,
+          </if>
+          <if test="record.periodAmend != null">
+            period_amend,
+          </if>
+          <if test="record.developCorrect != null">
+            develop_correct,
+          </if>
+          <if test="record.developCorrectRemark != null">
+            develop_correct_remark,
+          </if>
+          <if test="record.volumetricRate != null">
+            volumetric_rate,
+          </if>
+          <if test="record.volumetricRateRemark != null">
+            volumetric_rate_remark,
+          </if>
+          <if test="record.evaluationArea != null">
+            evaluation_area,
+          </if>
+          <if test="record.evaluationAreaRemark != null">
+            evaluation_area_remark,
+          </if>
+          <if test="record.dateAmend != null">
+            date_amend,
+          </if>
+          <if test="record.volumeFractionAmend != null">
+            volume_fraction_amend,
+          </if>
+          <if test="record.areaAndSeveralAmend != null">
+            area_and_several_amend,
+          </if>
+          <if test="record.parcelPrice != null">
+            parcel_price,
+          </if>
+          <if test="record.parcelBhouPrice != null">
+            parcel_bhou_price,
+          </if>
+          <if test="record.parcelTotalPrice != null">
+            parcel_total_price,
+          </if>
+          <if test="record.floorPremium != null">
+            floor_premium,
+          </if>
+          <if test="record.correctionDifference != null">
+            correction_difference,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+          <if test="record.landLevelContent != null">
+            land_level_content,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.planDetailsId != null">
+            #{record.planDetailsId,jdbcType=INTEGER},
+          </if>
+          <if test="record.processInsId != null">
+            #{record.processInsId,jdbcType=VARCHAR},
+          </if>
+          <if test="record.rewardRateId != null">
+            #{record.rewardRateId,jdbcType=INTEGER},
+          </if>
+          <if test="record.rewardRate != null">
+            #{record.rewardRate,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardPremium != null">
+            #{record.standardPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.standardPremiumRemark != null">
+            #{record.standardPremiumRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.legalAge != null">
+            #{record.legalAge,jdbcType=DECIMAL},
+          </if>
+          <if test="record.legalAgeRemark != null">
+            #{record.legalAgeRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landSurplusYear != null">
+            #{record.landSurplusYear,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landSurplusYearRemark != null">
+            #{record.landSurplusYearRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.periodAmend != null">
+            #{record.periodAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.developCorrect != null">
+            #{record.developCorrect,jdbcType=DECIMAL},
+          </if>
+          <if test="record.developCorrectRemark != null">
+            #{record.developCorrectRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.volumetricRate != null">
+            #{record.volumetricRate,jdbcType=DECIMAL},
+          </if>
+          <if test="record.volumetricRateRemark != null">
+            #{record.volumetricRateRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.evaluationArea != null">
+            #{record.evaluationArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.evaluationAreaRemark != null">
+            #{record.evaluationAreaRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dateAmend != null">
+            #{record.dateAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.volumeFractionAmend != null">
+            #{record.volumeFractionAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.areaAndSeveralAmend != null">
+            #{record.areaAndSeveralAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelPrice != null">
+            #{record.parcelPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelBhouPrice != null">
+            #{record.parcelBhouPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelTotalPrice != null">
+            #{record.parcelTotalPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floorPremium != null">
+            #{record.floorPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.correctionDifference != null">
+            #{record.correctionDifference,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.landLevelContent != null">
+            #{record.landLevelContent,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPriceExample" resultType="java.lang.Long">
     select count(*) from tb_md_base_land_price
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_md_base_land_price
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.planDetailsId != null" >
-        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="record.processInsId != null" >
-        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.rewardRateId != null" >
-        reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
-      </if>
-      <if test="record.rewardRate != null" >
-        reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
-      </if>
-      <if test="record.standardPremium != null" >
-        standard_premium = #{record.standardPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="record.standardPremiumRemark != null" >
-        standard_premium_remark = #{record.standardPremiumRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.legalAge != null" >
-        legal_age = #{record.legalAge,jdbcType=DECIMAL},
-      </if>
-      <if test="record.legalAgeRemark != null" >
-        legal_age_remark = #{record.legalAgeRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landSurplusYear != null" >
-        land_surplus_year = #{record.landSurplusYear,jdbcType=DECIMAL},
-      </if>
-      <if test="record.landSurplusYearRemark != null" >
-        land_surplus_year_remark = #{record.landSurplusYearRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.periodAmend != null" >
-        period_amend = #{record.periodAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="record.developCorrect != null" >
-        develop_correct = #{record.developCorrect,jdbcType=DECIMAL},
-      </if>
-      <if test="record.developCorrectRemark != null" >
-        develop_correct_remark = #{record.developCorrectRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.volumetricRate != null" >
-        volumetric_rate = #{record.volumetricRate,jdbcType=DECIMAL},
-      </if>
-      <if test="record.volumetricRateRemark != null" >
-        volumetric_rate_remark = #{record.volumetricRateRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.evaluationArea != null" >
-        evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
-      </if>
-      <if test="record.evaluationAreaRemark != null" >
-        evaluation_area_remark = #{record.evaluationAreaRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.dateAmend != null" >
-        date_amend = #{record.dateAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="record.volumeFractionAmend != null" >
-        volume_fraction_amend = #{record.volumeFractionAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="record.areaAndSeveralAmend != null" >
-        area_and_several_amend = #{record.areaAndSeveralAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="record.parcelPrice != null" >
-        parcel_price = #{record.parcelPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.parcelBhouPrice != null" >
-        parcel_bhou_price = #{record.parcelBhouPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.parcelTotalPrice != null" >
-        parcel_total_price = #{record.parcelTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.floorPremium != null" >
-        floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="record.correctionDifference != null" >
-        correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
-      </if>
-      <if test="record.landLevelContent != null" >
-        land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    <if test="_parameter != null" >
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.planDetailsId != null">
+            plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+          </if>
+          <if test="record.processInsId != null">
+            process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+          </if>
+          <if test="record.rewardRateId != null">
+            reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+          </if>
+          <if test="record.rewardRate != null">
+            reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardPremium != null">
+            standard_premium = #{record.standardPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.standardPremiumRemark != null">
+            standard_premium_remark = #{record.standardPremiumRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.legalAge != null">
+            legal_age = #{record.legalAge,jdbcType=DECIMAL},
+          </if>
+          <if test="record.legalAgeRemark != null">
+            legal_age_remark = #{record.legalAgeRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landSurplusYear != null">
+            land_surplus_year = #{record.landSurplusYear,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landSurplusYearRemark != null">
+            land_surplus_year_remark = #{record.landSurplusYearRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.periodAmend != null">
+            period_amend = #{record.periodAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.developCorrect != null">
+            develop_correct = #{record.developCorrect,jdbcType=DECIMAL},
+          </if>
+          <if test="record.developCorrectRemark != null">
+            develop_correct_remark = #{record.developCorrectRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.volumetricRate != null">
+            volumetric_rate = #{record.volumetricRate,jdbcType=DECIMAL},
+          </if>
+          <if test="record.volumetricRateRemark != null">
+            volumetric_rate_remark = #{record.volumetricRateRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.evaluationArea != null">
+            evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.evaluationAreaRemark != null">
+            evaluation_area_remark = #{record.evaluationAreaRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dateAmend != null">
+            date_amend = #{record.dateAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.volumeFractionAmend != null">
+            volume_fraction_amend = #{record.volumeFractionAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.areaAndSeveralAmend != null">
+            area_and_several_amend = #{record.areaAndSeveralAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelPrice != null">
+            parcel_price = #{record.parcelPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelBhouPrice != null">
+            parcel_bhou_price = #{record.parcelBhouPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelTotalPrice != null">
+            parcel_total_price = #{record.parcelTotalPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floorPremium != null">
+            floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.correctionDifference != null">
+            correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.landLevelContent != null">
+            land_level_content = #{record.landLevelContent,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExampleWithBLOBs" parameterType="map">
     update tb_md_base_land_price
     set id = #{record.id,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
@@ -472,108 +525,153 @@
       parcel_total_price = #{record.parcelTotalPrice,jdbcType=DECIMAL},
       floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
       correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
-      land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      land_level_content = #{record.landLevelContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
+  <update id="updateByExample" parameterType="map">
     update tb_md_base_land_price
-    <set >
-      <if test="planDetailsId != null" >
-        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
-      </if>
-      <if test="processInsId != null" >
-        process_ins_id = #{processInsId,jdbcType=VARCHAR},
-      </if>
-      <if test="rewardRateId != null" >
-        reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
-      </if>
-      <if test="rewardRate != null" >
-        reward_rate = #{rewardRate,jdbcType=VARCHAR},
-      </if>
-      <if test="standardPremium != null" >
-        standard_premium = #{standardPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="standardPremiumRemark != null" >
-        standard_premium_remark = #{standardPremiumRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="legalAge != null" >
-        legal_age = #{legalAge,jdbcType=DECIMAL},
-      </if>
-      <if test="legalAgeRemark != null" >
-        legal_age_remark = #{legalAgeRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="landSurplusYear != null" >
-        land_surplus_year = #{landSurplusYear,jdbcType=DECIMAL},
-      </if>
-      <if test="landSurplusYearRemark != null" >
-        land_surplus_year_remark = #{landSurplusYearRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="periodAmend != null" >
-        period_amend = #{periodAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="developCorrect != null" >
-        develop_correct = #{developCorrect,jdbcType=DECIMAL},
-      </if>
-      <if test="developCorrectRemark != null" >
-        develop_correct_remark = #{developCorrectRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="volumetricRate != null" >
-        volumetric_rate = #{volumetricRate,jdbcType=DECIMAL},
-      </if>
-      <if test="volumetricRateRemark != null" >
-        volumetric_rate_remark = #{volumetricRateRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="evaluationArea != null" >
-        evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
-      </if>
-      <if test="evaluationAreaRemark != null" >
-        evaluation_area_remark = #{evaluationAreaRemark,jdbcType=VARCHAR},
-      </if>
-      <if test="dateAmend != null" >
-        date_amend = #{dateAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="volumeFractionAmend != null" >
-        volume_fraction_amend = #{volumeFractionAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="areaAndSeveralAmend != null" >
-        area_and_several_amend = #{areaAndSeveralAmend,jdbcType=DECIMAL},
-      </if>
-      <if test="parcelPrice != null" >
-        parcel_price = #{parcelPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="parcelBhouPrice != null" >
-        parcel_bhou_price = #{parcelBhouPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="parcelTotalPrice != null" >
-        parcel_total_price = #{parcelTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="floorPremium != null" >
-        floor_premium = #{floorPremium,jdbcType=DECIMAL},
-      </if>
-      <if test="correctionDifference != null" >
-        correction_difference = #{correctionDifference,jdbcType=VARCHAR},
-      </if>
-      <if test="landLevelContent != null" >
-        land_level_content = #{landLevelContent,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    set id = #{record.id,jdbcType=INTEGER},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+      reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
+      standard_premium = #{record.standardPremium,jdbcType=DECIMAL},
+      standard_premium_remark = #{record.standardPremiumRemark,jdbcType=VARCHAR},
+      legal_age = #{record.legalAge,jdbcType=DECIMAL},
+      legal_age_remark = #{record.legalAgeRemark,jdbcType=VARCHAR},
+      land_surplus_year = #{record.landSurplusYear,jdbcType=DECIMAL},
+      land_surplus_year_remark = #{record.landSurplusYearRemark,jdbcType=VARCHAR},
+      period_amend = #{record.periodAmend,jdbcType=DECIMAL},
+      develop_correct = #{record.developCorrect,jdbcType=DECIMAL},
+      develop_correct_remark = #{record.developCorrectRemark,jdbcType=VARCHAR},
+      volumetric_rate = #{record.volumetricRate,jdbcType=DECIMAL},
+      volumetric_rate_remark = #{record.volumetricRateRemark,jdbcType=VARCHAR},
+      evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
+      evaluation_area_remark = #{record.evaluationAreaRemark,jdbcType=VARCHAR},
+      date_amend = #{record.dateAmend,jdbcType=DECIMAL},
+      volume_fraction_amend = #{record.volumeFractionAmend,jdbcType=DECIMAL},
+      area_and_several_amend = #{record.areaAndSeveralAmend,jdbcType=DECIMAL},
+      parcel_price = #{record.parcelPrice,jdbcType=DECIMAL},
+      parcel_bhou_price = #{record.parcelBhouPrice,jdbcType=DECIMAL},
+      parcel_total_price = #{record.parcelTotalPrice,jdbcType=DECIMAL},
+      floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
+      correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice" >
+  <update id="updateByPrimaryKeySelective" parameterType="map">
+    update tb_md_base_land_price
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.planDetailsId != null">
+            plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+          </if>
+          <if test="record.processInsId != null">
+            process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+          </if>
+          <if test="record.rewardRateId != null">
+            reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+          </if>
+          <if test="record.rewardRate != null">
+            reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
+          </if>
+          <if test="record.standardPremium != null">
+            standard_premium = #{record.standardPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.standardPremiumRemark != null">
+            standard_premium_remark = #{record.standardPremiumRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.legalAge != null">
+            legal_age = #{record.legalAge,jdbcType=DECIMAL},
+          </if>
+          <if test="record.legalAgeRemark != null">
+            legal_age_remark = #{record.legalAgeRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.landSurplusYear != null">
+            land_surplus_year = #{record.landSurplusYear,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landSurplusYearRemark != null">
+            land_surplus_year_remark = #{record.landSurplusYearRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.periodAmend != null">
+            period_amend = #{record.periodAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.developCorrect != null">
+            develop_correct = #{record.developCorrect,jdbcType=DECIMAL},
+          </if>
+          <if test="record.developCorrectRemark != null">
+            develop_correct_remark = #{record.developCorrectRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.volumetricRate != null">
+            volumetric_rate = #{record.volumetricRate,jdbcType=DECIMAL},
+          </if>
+          <if test="record.volumetricRateRemark != null">
+            volumetric_rate_remark = #{record.volumetricRateRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.evaluationArea != null">
+            evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
+          </if>
+          <if test="record.evaluationAreaRemark != null">
+            evaluation_area_remark = #{record.evaluationAreaRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dateAmend != null">
+            date_amend = #{record.dateAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.volumeFractionAmend != null">
+            volume_fraction_amend = #{record.volumeFractionAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.areaAndSeveralAmend != null">
+            area_and_several_amend = #{record.areaAndSeveralAmend,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelPrice != null">
+            parcel_price = #{record.parcelPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelBhouPrice != null">
+            parcel_bhou_price = #{record.parcelBhouPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelTotalPrice != null">
+            parcel_total_price = #{record.parcelTotalPrice,jdbcType=DECIMAL},
+          </if>
+          <if test="record.floorPremium != null">
+            floor_premium = #{record.floorPremium,jdbcType=DECIMAL},
+          </if>
+          <if test="record.correctionDifference != null">
+            correction_difference = #{record.correctionDifference,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.landLevelContent != null">
+            land_level_content = #{record.landLevelContent,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice">
     update tb_md_base_land_price
     set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
@@ -600,10 +698,169 @@
       parcel_total_price = #{parcelTotalPrice,jdbcType=DECIMAL},
       floor_premium = #{floorPremium,jdbcType=DECIMAL},
       correction_difference = #{correctionDifference,jdbcType=VARCHAR},
-      land_level_content = #{landLevelContent,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      land_level_content = #{landLevelContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice">
+    update tb_md_base_land_price
+    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
+      reward_rate = #{rewardRate,jdbcType=VARCHAR},
+      standard_premium = #{standardPremium,jdbcType=DECIMAL},
+      standard_premium_remark = #{standardPremiumRemark,jdbcType=VARCHAR},
+      legal_age = #{legalAge,jdbcType=DECIMAL},
+      legal_age_remark = #{legalAgeRemark,jdbcType=VARCHAR},
+      land_surplus_year = #{landSurplusYear,jdbcType=DECIMAL},
+      land_surplus_year_remark = #{landSurplusYearRemark,jdbcType=VARCHAR},
+      period_amend = #{periodAmend,jdbcType=DECIMAL},
+      develop_correct = #{developCorrect,jdbcType=DECIMAL},
+      develop_correct_remark = #{developCorrectRemark,jdbcType=VARCHAR},
+      volumetric_rate = #{volumetricRate,jdbcType=DECIMAL},
+      volumetric_rate_remark = #{volumetricRateRemark,jdbcType=VARCHAR},
+      evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
+      evaluation_area_remark = #{evaluationAreaRemark,jdbcType=VARCHAR},
+      date_amend = #{dateAmend,jdbcType=DECIMAL},
+      volume_fraction_amend = #{volumeFractionAmend,jdbcType=DECIMAL},
+      area_and_several_amend = #{areaAndSeveralAmend,jdbcType=DECIMAL},
+      parcel_price = #{parcelPrice,jdbcType=DECIMAL},
+      parcel_bhou_price = #{parcelBhouPrice,jdbcType=DECIMAL},
+      parcel_total_price = #{parcelTotalPrice,jdbcType=DECIMAL},
+      floor_premium = #{floorPremium,jdbcType=DECIMAL},
+      correction_difference = #{correctionDifference,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_md_base_land_price
+    (plan_details_id, process_ins_id, reward_rate_id, reward_rate, standard_premium, 
+      standard_premium_remark, legal_age, legal_age_remark, land_surplus_year, land_surplus_year_remark, 
+      period_amend, develop_correct, develop_correct_remark, volumetric_rate, volumetric_rate_remark, 
+      evaluation_area, evaluation_area_remark, date_amend, volume_fraction_amend, area_and_several_amend, 
+      parcel_price, parcel_bhou_price, parcel_total_price, floor_premium, correction_difference, 
+      creator, gmt_created, gmt_modified, land_level_content)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.planDetailsId,jdbcType=INTEGER}, #{item.processInsId,jdbcType=VARCHAR}, #{item.rewardRateId,jdbcType=INTEGER}, 
+        #{item.rewardRate,jdbcType=VARCHAR}, #{item.standardPremium,jdbcType=DECIMAL}, 
+        #{item.standardPremiumRemark,jdbcType=VARCHAR}, #{item.legalAge,jdbcType=DECIMAL}, 
+        #{item.legalAgeRemark,jdbcType=VARCHAR}, #{item.landSurplusYear,jdbcType=DECIMAL}, 
+        #{item.landSurplusYearRemark,jdbcType=VARCHAR}, #{item.periodAmend,jdbcType=DECIMAL}, 
+        #{item.developCorrect,jdbcType=DECIMAL}, #{item.developCorrectRemark,jdbcType=VARCHAR}, 
+        #{item.volumetricRate,jdbcType=DECIMAL}, #{item.volumetricRateRemark,jdbcType=VARCHAR}, 
+        #{item.evaluationArea,jdbcType=DECIMAL}, #{item.evaluationAreaRemark,jdbcType=VARCHAR}, 
+        #{item.dateAmend,jdbcType=DECIMAL}, #{item.volumeFractionAmend,jdbcType=DECIMAL}, 
+        #{item.areaAndSeveralAmend,jdbcType=DECIMAL}, #{item.parcelPrice,jdbcType=DECIMAL}, 
+        #{item.parcelBhouPrice,jdbcType=DECIMAL}, #{item.parcelTotalPrice,jdbcType=DECIMAL}, 
+        #{item.floorPremium,jdbcType=DECIMAL}, #{item.correctionDifference,jdbcType=VARCHAR}, 
+        #{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}, 
+        #{item.landLevelContent,jdbcType=LONGVARCHAR})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_md_base_land_price (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'plan_details_id'.toString() == column.value">
+          #{item.planDetailsId,jdbcType=INTEGER}
+        </if>
+        <if test="'process_ins_id'.toString() == column.value">
+          #{item.processInsId,jdbcType=VARCHAR}
+        </if>
+        <if test="'reward_rate_id'.toString() == column.value">
+          #{item.rewardRateId,jdbcType=INTEGER}
+        </if>
+        <if test="'reward_rate'.toString() == column.value">
+          #{item.rewardRate,jdbcType=VARCHAR}
+        </if>
+        <if test="'standard_premium'.toString() == column.value">
+          #{item.standardPremium,jdbcType=DECIMAL}
+        </if>
+        <if test="'standard_premium_remark'.toString() == column.value">
+          #{item.standardPremiumRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="'legal_age'.toString() == column.value">
+          #{item.legalAge,jdbcType=DECIMAL}
+        </if>
+        <if test="'legal_age_remark'.toString() == column.value">
+          #{item.legalAgeRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="'land_surplus_year'.toString() == column.value">
+          #{item.landSurplusYear,jdbcType=DECIMAL}
+        </if>
+        <if test="'land_surplus_year_remark'.toString() == column.value">
+          #{item.landSurplusYearRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="'period_amend'.toString() == column.value">
+          #{item.periodAmend,jdbcType=DECIMAL}
+        </if>
+        <if test="'develop_correct'.toString() == column.value">
+          #{item.developCorrect,jdbcType=DECIMAL}
+        </if>
+        <if test="'develop_correct_remark'.toString() == column.value">
+          #{item.developCorrectRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="'volumetric_rate'.toString() == column.value">
+          #{item.volumetricRate,jdbcType=DECIMAL}
+        </if>
+        <if test="'volumetric_rate_remark'.toString() == column.value">
+          #{item.volumetricRateRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="'evaluation_area'.toString() == column.value">
+          #{item.evaluationArea,jdbcType=DECIMAL}
+        </if>
+        <if test="'evaluation_area_remark'.toString() == column.value">
+          #{item.evaluationAreaRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="'date_amend'.toString() == column.value">
+          #{item.dateAmend,jdbcType=DECIMAL}
+        </if>
+        <if test="'volume_fraction_amend'.toString() == column.value">
+          #{item.volumeFractionAmend,jdbcType=DECIMAL}
+        </if>
+        <if test="'area_and_several_amend'.toString() == column.value">
+          #{item.areaAndSeveralAmend,jdbcType=DECIMAL}
+        </if>
+        <if test="'parcel_price'.toString() == column.value">
+          #{item.parcelPrice,jdbcType=DECIMAL}
+        </if>
+        <if test="'parcel_bhou_price'.toString() == column.value">
+          #{item.parcelBhouPrice,jdbcType=DECIMAL}
+        </if>
+        <if test="'parcel_total_price'.toString() == column.value">
+          #{item.parcelTotalPrice,jdbcType=DECIMAL}
+        </if>
+        <if test="'floor_premium'.toString() == column.value">
+          #{item.floorPremium,jdbcType=DECIMAL}
+        </if>
+        <if test="'correction_difference'.toString() == column.value">
+          #{item.correctionDifference,jdbcType=VARCHAR}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'land_level_content'.toString() == column.value">
+          #{item.landLevelContent,jdbcType=LONGVARCHAR}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>

@@ -86,7 +86,7 @@ public class MdCostApproachService {
         if (CollectionUtils.isNotEmpty(costApproachTaxes)) {
             for (MdCostApproachTaxes taxes : costApproachTaxes) {
                 MdCostApproachTaxes approachTaxes = costApproachTaxesDao.getCostApproachTaxesById(taxes.getId());
-                BeanUtils.copyProperties(taxes,approachTaxes,"creator");
+                BeanUtils.copyProperties(taxes, approachTaxes, "creator");
                 costApproachTaxesDao.updateCostApproachTaxes(approachTaxes);
             }
         }
@@ -103,10 +103,12 @@ public class MdCostApproachService {
         //不含代征地每平税费 = 土地取得费及相关税费 - 代征地每平税费
         BigDecimal landAcquisitionBhou = getLandAcquisitionBhou(mdCostApproach.getId());
         MdCostApproachTaxes landAcquisition = getMdCostApproachTaxesListByMasterId(mdCostApproach.getId(), AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION);
-        if (landAcquisition != null) {
+        if (landAcquisition != null && landAcquisitionBhou != null && landAcquisition.getPrice()!= null) {
             landAcquisitionBhou = landAcquisitionBhou.subtract(landAcquisition.getPrice());
         }
-        mdCostApproach.setHaveNotLandAcquisition(landAcquisitionBhou.divide(Bhou, 2, BigDecimal.ROUND_HALF_UP));
+        if (landAcquisitionBhou != null) {
+            mdCostApproach.setHaveNotLandAcquisition(landAcquisitionBhou.divide(Bhou, 2, BigDecimal.ROUND_HALF_UP));
+        }
         if (mdCostApproach.getId() != null && mdCostApproach.getId().intValue() > 0) {
             costApproachDao.editMdCostApproach(mdCostApproach);
         } else {
