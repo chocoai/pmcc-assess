@@ -241,7 +241,7 @@ public class DeclarePublicService {
         baseMap.put("publicSituation", baseDataDicService.getCacheDataDicList("project.declare.common.situation"));
         baseMap.put("acquisitionType", baseDataDicService.getCacheDataDicList("project.declare.acquisition.type"));
         boolean check = excelImportHelp(classArrayListMultimap, target, builder, row, baseMap, requiredList);
-        if (target.getAutoInitNumber() == null || target.getAutoInitNumber() == 0){
+        if (target.getAutoInitNumber() == null || target.getAutoInitNumber() == 0) {
             return false;
         }
         //验证(区域)
@@ -267,30 +267,34 @@ public class DeclarePublicService {
             }
             target.setLocation(location);
             String yearStr = StringUtils.substringBeforeLast(target.getCertName(), "不动产");
-            target.setYear(generateCommonMethod.getNumber(yearStr));
+            if (StringUtils.isBlank(target.getYear())) {
+                target.setYear(generateCommonMethod.getNumber(yearStr));
+            }
             String numberStr = StringUtils.substringAfterLast(target.getCertName(), "不动产");
-            target.setNumber(generateCommonMethod.getNumber(numberStr));
+            if (StringUtils.isBlank(target.getNumber())) {
+                target.setNumber(generateCommonMethod.getNumber(numberStr));
+            }
         }
         //坐落 子项
         if (org.apache.commons.lang3.StringUtils.isNotBlank(target.getBeLocated())) {
             Map<String, String> locatedMap = beLocatedSplicing(target.getBeLocated());
             if (!locatedMap.isEmpty()) {
-                if (locatedMap.containsKey(STREET)) {
+                if (locatedMap.containsKey(STREET) && StringUtils.isBlank(target.getStreetNumber())) {
                     target.setStreetNumber(locatedMap.get(STREET));
                 }
-                if (locatedMap.containsKey(UNIT)) {
+                if (locatedMap.containsKey(UNIT) && StringUtils.isBlank(target.getUnit())) {
                     target.setUnit(locatedMap.get(UNIT));
                 }
-                if (locatedMap.containsKey(FLOOR)) {
+                if (locatedMap.containsKey(FLOOR) && StringUtils.isBlank(target.getFloor())) {
                     target.setFloor(locatedMap.get(FLOOR));
                 }
-                if (locatedMap.containsKey(ATTACHED)) {
+                if (locatedMap.containsKey(ATTACHED) && StringUtils.isBlank(target.getAttachedNumber())) {
                     target.setAttachedNumber(locatedMap.get(ATTACHED));
                 }
-                if (locatedMap.containsKey(BUILDING)) {
+                if (locatedMap.containsKey(BUILDING) && StringUtils.isBlank(target.getBuildingNumber())) {
                     target.setBuildingNumber(locatedMap.get(BUILDING));
                 }
-                if (locatedMap.containsKey(RoomNumber)) {
+                if (locatedMap.containsKey(RoomNumber) && StringUtils.isBlank(target.getRoomNumber())) {
                     target.setRoomNumber(locatedMap.get(RoomNumber));
                 }
             }
@@ -326,7 +330,7 @@ public class DeclarePublicService {
         baseMap.put("landRightType", baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type"));
         baseMap.put("publicSituation", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_COMMON_SITUATION));
         boolean check = excelImportHelp(classArrayListMultimap, declareRealtyLandCert, builder, row, baseMap, requiredList);
-        if (declareRealtyLandCert.getAutoInitNumber() == null || declareRealtyLandCert.getAutoInitNumber() == 0){
+        if (declareRealtyLandCert.getAutoInitNumber() == null || declareRealtyLandCert.getAutoInitNumber() == 0) {
             return false;
         }
         //验证(区域)
@@ -361,10 +365,14 @@ public class DeclarePublicService {
                 stringList.stream().forEachOrdered(s -> {
                     if (NumberUtils.isNumber(s)) {
                         if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), String.format("%d%s", Integer.parseInt(s), frequency))) {
-                            declareRealtyLandCert.setYear(s);
+                            if (StringUtils.isBlank(declareRealtyLandCert.getYear())) {
+                                declareRealtyLandCert.setYear(s);
+                            }
                         }
                         if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), String.format("%d%s", Integer.parseInt(s), NUMBER))) {
-                            declareRealtyLandCert.setNumber(s);
+                            if (StringUtils.isBlank(declareRealtyLandCert.getNumber())) {
+                                declareRealtyLandCert.setNumber(s);
+                            }
                         }
                     }
                 });
@@ -381,22 +389,22 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(declareRealtyLandCert.getBeLocated())) {
             Map<String, String> locatedMap = beLocatedSplicing(declareRealtyLandCert.getBeLocated());
             if (!locatedMap.isEmpty()) {
-                if (locatedMap.containsKey(STREET)) {
+                if (locatedMap.containsKey(STREET) && StringUtils.isBlank(declareRealtyLandCert.getStreetNumber())) {
                     declareRealtyLandCert.setStreetNumber(locatedMap.get(STREET));
                 }
-                if (locatedMap.containsKey(UNIT)) {
+                if (locatedMap.containsKey(UNIT) && StringUtils.isBlank(declareRealtyLandCert.getUnit())) {
                     declareRealtyLandCert.setUnit(locatedMap.get(UNIT));
                 }
-                if (locatedMap.containsKey(FLOOR)) {
+                if (locatedMap.containsKey(FLOOR) && StringUtils.isBlank(declareRealtyLandCert.getFloor())) {
                     declareRealtyLandCert.setFloor(locatedMap.get(FLOOR));
                 }
-                if (locatedMap.containsKey(ATTACHED)) {
+                if (locatedMap.containsKey(ATTACHED) && StringUtils.isBlank(declareRealtyLandCert.getAttachedNumber())) {
                     declareRealtyLandCert.setAttachedNumber(locatedMap.get(ATTACHED));
                 }
-                if (locatedMap.containsKey(BUILDING)) {
+                if (locatedMap.containsKey(BUILDING) && StringUtils.isBlank(declareRealtyLandCert.getBuildingNumber())) {
                     declareRealtyLandCert.setBuildingNumber(locatedMap.get(BUILDING));
                 }
-                if (locatedMap.containsKey(RoomNumber)) {
+                if (locatedMap.containsKey(RoomNumber) && StringUtils.isBlank(declareRealtyLandCert.getRoomNumber())) {
                     declareRealtyLandCert.setRoomNumber(locatedMap.get(RoomNumber));
                 }
             }
@@ -431,7 +439,7 @@ public class DeclarePublicService {
         baseMap.put("nature", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_ROOM_TYPE));
         baseMap.put("publicSituation", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_COMMON_SITUATION));
         boolean check = excelImportHelp(classArrayListMultimap, declareRealtyHouseCert, builder, row, baseMap, requiredList);
-        if (declareRealtyHouseCert.getAutoInitNumber() == null || declareRealtyHouseCert.getAutoInitNumber() == 0){
+        if (declareRealtyHouseCert.getAutoInitNumber() == null || declareRealtyHouseCert.getAutoInitNumber() == 0) {
             return false;
         }
         if (StringUtils.isNotBlank(declareRealtyHouseCert.getCertName())) {
@@ -455,7 +463,9 @@ public class DeclarePublicService {
             biConsumer.accept(declareRealtyHouseCert.getCertName(), String.join("", BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT, BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK));
             biConsumer.accept(declareRealtyHouseCert.getCertName(), BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT);
             biConsumer.accept(declareRealtyHouseCert.getCertName(), BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK);
-            declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(declareRealtyHouseCert.getCertName()));//编号
+            if (StringUtils.isBlank(declareRealtyHouseCert.getNumber())) {
+                declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(declareRealtyHouseCert.getCertName()));//编号
+            }
         }
         //验证(区域)
         if (erpAreaService.checkArea(declareRealtyHouseCert.getProvince(), declareRealtyHouseCert.getCity(), declareRealtyHouseCert.getDistrict(), builder, map)) {
@@ -476,22 +486,22 @@ public class DeclarePublicService {
         if (org.apache.commons.lang3.StringUtils.isNotBlank(declareRealtyHouseCert.getBeLocated())) {
             Map<String, String> locatedMap = beLocatedSplicing(declareRealtyHouseCert.getBeLocated());
             if (!locatedMap.isEmpty()) {
-                if (locatedMap.containsKey(STREET)) {
+                if (locatedMap.containsKey(STREET) && StringUtils.isBlank(declareRealtyHouseCert.getStreetNumber())) {
                     declareRealtyHouseCert.setStreetNumber(locatedMap.get(STREET));
                 }
-                if (locatedMap.containsKey(UNIT)) {
+                if (locatedMap.containsKey(UNIT) && StringUtils.isBlank(declareRealtyHouseCert.getUnit())) {
                     declareRealtyHouseCert.setUnit(locatedMap.get(UNIT));
                 }
-                if (locatedMap.containsKey(FLOOR)) {
+                if (locatedMap.containsKey(FLOOR) && StringUtils.isBlank(declareRealtyHouseCert.getFloor())) {
                     declareRealtyHouseCert.setFloor(locatedMap.get(FLOOR));
                 }
-                if (locatedMap.containsKey(ATTACHED)) {
+                if (locatedMap.containsKey(ATTACHED) && StringUtils.isBlank(declareRealtyHouseCert.getAttachedNumber())) {
                     declareRealtyHouseCert.setAttachedNumber(locatedMap.get(ATTACHED));
                 }
-                if (locatedMap.containsKey(BUILDING)) {
+                if (locatedMap.containsKey(BUILDING) && StringUtils.isBlank(declareRealtyHouseCert.getBuildingNumber())) {
                     declareRealtyHouseCert.setBuildingNumber(locatedMap.get(BUILDING));
                 }
-                if (locatedMap.containsKey(RoomNumber)) {
+                if (locatedMap.containsKey(RoomNumber) && StringUtils.isBlank(declareRealtyHouseCert.getRoomNumber())) {
                     declareRealtyHouseCert.setRoomNumber(locatedMap.get(RoomNumber));
                 }
             }
@@ -528,7 +538,7 @@ public class DeclarePublicService {
      * @return
      */
     private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap, List<String> requiredList, boolean isBreak) {
-        return ExcelImportUtils.excelImportHelp(classArrayListMultimap, target, stringBuilder, row, baseMap, requiredList, isBreak) ;
+        return ExcelImportUtils.excelImportHelp(classArrayListMultimap, target, stringBuilder, row, baseMap, requiredList, isBreak);
     }
 
     private void excelImportWriteErrorInfo(final int rowIndex, final int colIndex, String info, boolean required, final StringBuilder stringBuilder) {
@@ -1110,7 +1120,7 @@ public class DeclarePublicService {
     }
 
     private List<List<String>> splitsList(List<String> list, int splitSize) {
-       return ExcelImportUtils.splitsStringList(list, splitSize) ;
+        return ExcelImportUtils.splitsStringList(list, splitSize);
     }
 
 
@@ -1120,6 +1130,6 @@ public class DeclarePublicService {
      * @return <publicArea,<java.math.BigDecimal,2>> 字段名称,
      */
     public Multimap<String, Map.Entry<Class<?>, Integer>> getMultimapByClass(Class<?> c, org.apache.poi.ss.usermodel.Row row) {
-       return ExcelImportUtils.getMultimapByClass(c, row) ;
+        return ExcelImportUtils.getMultimapByClass(c, row);
     }
 }
