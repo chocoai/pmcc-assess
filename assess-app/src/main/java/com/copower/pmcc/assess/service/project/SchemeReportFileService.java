@@ -332,11 +332,11 @@ public class SchemeReportFileService extends BaseService {
                 List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
                 if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                     for (BasicHouseRoom item : basicHouseRoomList) {
-                        dtoList = baseAttachmentService.getByField_tableId(item.getId(), AssessUploadEnum.HOUSE_ROOM_FILE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class));
+                        dtoList = baseAttachmentService.getByField_tableId(item.getId(), null, FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class));
                         removeGenerateFile(dtoList);
                         if (CollectionUtils.isNotEmpty(dtoList)) {
                             dtoList.forEach(o -> {
-                                o.setReName(AssessUploadEnum.HOUSE_ROOM_FILE.getValue());
+                                o.setReName(AssessUploadEnum.HOUSE_ROOM_IMAGE.getValue());
                                 attachmentDtoList.add(o);
                             });
                         }

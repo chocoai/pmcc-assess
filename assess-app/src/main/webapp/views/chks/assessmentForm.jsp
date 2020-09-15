@@ -1151,8 +1151,8 @@
         }, function (data) {
             notifySuccess("成功", "考核成功!");
             $(_this).closest('.modal').modal("hide");
-            assessmentCommonHandle.loadAssessmentPerformanceList();
-            assessmentCommonHandle.loadAssessmentPerformanceProphaseList();
+            $('#assessmentPerformanceTableList').bootstrapTable('refresh');
+            $('#assessmentPerformanceProphaseTableList').bootstrapTable('refresh');
         });
     };
 

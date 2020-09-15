@@ -42,7 +42,6 @@
                                                            placeholder="字段名称" id="queryFieldName" name="queryFieldName"
                                                            class="form-control input-full">
                                                 </div>
-
                                                 <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                         onclick="reloadDataDicList()">
 											<span class="btn-label">
@@ -59,8 +58,6 @@
                                                     新增
                                                 </button>
                                             </div>
-
-
                                         </form>
                                         <table class="table table-bordered" id="tb_List">
                                             <!-- cerare document add ajax data-->
@@ -180,7 +177,6 @@
     </div>
 </div>
 
-
 <!--子项管理-->
 <div id="divSubDataDic" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -221,7 +217,6 @@
         </div>
     </div>
 </div>
-
 
 <div id="divSubDataDicManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -325,107 +320,7 @@
     </div>
 </div>
 
-<%--
-<div id="divSubDataDicManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">子项管理</h3>
-            </div>
-            <input type="hidden" id="mainId" name="mainId" value="0">
-            <form id="frmSub" class="form-horizontal">
-                <input type="hidden" id="subId" name="id" value="0">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div>
-                                        <label class="col-sm-3 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                                   id="subName" name="name" class="form-control input-full">
-                                        </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            字段名称
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" data-rule-maxlength="100" placeholder="字段名称"
-                                                   id="subFieldName" name="fieldName" class="form-control input-full">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div>
-                                        <label class="col-sm-3 control-label">
-                                            是否启用<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="subBisEnable" name="bisEnable" value="true"
-                                                       checked="checked">
-                                            </label>
-                                        </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            排序
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input type="text" data-rule-digits="true" placeholder="排序"
-                                                   id="subSorting" name="sorting" class="form-control input-full">
-                                        </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-3 control-label">
-                                            备注
-                                        </label>
-                                        <div class="col-sm-8">
-                                    <textarea placeholder="备注" id="subRemark" name="remark"
-                                              class="form-control input-full"></textarea>
-                                        </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDataDic()">
-                        保存
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
---%>
-
 <%@include file="/views/base/dataKeyValue.jsp" %>
-
 <script type="application/javascript">
     $(function () {
         loadDataDicList();
@@ -444,12 +339,6 @@
         cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                // var str = '<div class="btn-margin">';
-                // str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" >查看子项</i></a>';
-                // str += '<a class="btn btn-xs btn-success" href="javascript:editDataDic(' + row.id + ');" >编辑</i></a>';
-                // str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tb_List\')">删除</a>';
-                // str += '</div>';
-                // return str;
                 var str = '<button onclick="setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
@@ -608,19 +497,15 @@
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                // str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" ><i class="fa fa-edit">查看子项</i></a>';
                 str += '<button onclick="setSubDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
-                // str += '<a class="btn btn-xs btn-success" href="javascript:editSubDataDic(' + row.id + ');" ><i class="fa fa-edit">编辑</i></a>';
                 str += '<button onclick="editSubDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                // str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
-                str += '<button onclick="delDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button onclick="delDataDic(' + row.id + ',\'tbDataDicList\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
-                // str += '<a class="btn btn-xs btn-success" href="javascript:addKeyValue(' + row.id + ');" ><i class="fa fa-edit">keyValue</i></a>';
                 str += '<button onclick="addKeyValue(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom">keyValue';
                 str += '</button>';
                 str += '</div>';
@@ -728,7 +613,6 @@
             strLevelHtml += '<a href="javascript:setSubDataDic(' + keyValueDto.key + ')">' + keyValueDto.value + '</a>' + ">";
         }
     }
-
 
     function addKeyValue(id) {
         keyValueManage.editDataDic(id);

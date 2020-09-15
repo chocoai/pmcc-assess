@@ -30,7 +30,6 @@ public enum AssessUploadEnum {
     HOUSE_IMG_PLAN("house_img_plan", "房屋平面图"),
     HOUSE_DECORATE("house_decorate", "房屋外观图"),
     HOUSE_ROOM_IMAGE("house_room_image", "房间照片"),
-    HOUSE_ROOM_FILE("house_room_file", "房间附件"),
 
     BUILDING_FLOOR_PLAN("building_floor_plan", "平面图 (楼栋)"),
     BUILDING_FIGURE_OUTSIDE("building_figure_outside", "外装图(楼栋)"),
