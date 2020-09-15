@@ -33,11 +33,8 @@
                                                     <table class="table estateStreetInfos">
                                                         <thead>
                                                         <tr>
-                                                            <th style="width: 10%">街道号</th>
-                                                            <th style="width: 10%">大门名称</th>
-                                                            <th style="width: 10%">附号</th>
-                                                            <th style="width: 7%">大门图</th>
-                                                            <th style="width: 7%"></th>
+                                                            <th style="width: 20%">街道号</th>
+                                                            <th style="width: 60%">大门图</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -74,7 +71,7 @@
 </body>
 </html>
 
-<%@include file="/views/project/stageSurvey/common/estateStreetInfo.jsp" %>
+<%@include file="/views/project/stageSurvey/common/estateStreetInfoPhoto.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
