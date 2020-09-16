@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdBaseLandPriceMapper">
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="judge_object_id" jdbcType="INTEGER" property="judgeObjectId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="plan_details_id" jdbcType="INTEGER" property="planDetailsId" />
     <result column="process_ins_id" jdbcType="VARCHAR" property="processInsId" />
     <result column="reward_rate_id" jdbcType="INTEGER" property="rewardRateId" />
@@ -94,12 +96,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, plan_details_id, process_ins_id, reward_rate_id, reward_rate, standard_premium, 
-    standard_premium_remark, legal_age, legal_age_remark, land_surplus_year, land_surplus_year_remark, 
-    period_amend, develop_correct, develop_correct_remark, volumetric_rate, volumetric_rate_remark, 
-    evaluation_area, evaluation_area_remark, date_amend, volume_fraction_amend, area_and_several_amend, 
-    parcel_price, parcel_bhou_price, parcel_total_price, floor_premium, correction_difference, 
-    creator, gmt_created, gmt_modified
+    id, judge_object_id, name, plan_details_id, process_ins_id, reward_rate_id, reward_rate, 
+    standard_premium, standard_premium_remark, legal_age, legal_age_remark, land_surplus_year, 
+    land_surplus_year_remark, period_amend, develop_correct, develop_correct_remark, 
+    volumetric_rate, volumetric_rate_remark, evaluation_area, evaluation_area_remark, 
+    date_amend, volume_fraction_amend, area_and_several_amend, parcel_price, parcel_bhou_price, 
+    parcel_total_price, floor_premium, correction_difference, creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List">
     land_level_content
@@ -156,8 +158,9 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_base_land_price (plan_details_id, process_ins_id, reward_rate_id, 
-      reward_rate, standard_premium, standard_premium_remark, 
+    insert into tb_md_base_land_price (judge_object_id, name, plan_details_id, 
+      process_ins_id, reward_rate_id, reward_rate, 
+      standard_premium, standard_premium_remark, 
       legal_age, legal_age_remark, land_surplus_year, 
       land_surplus_year_remark, period_amend, develop_correct, 
       develop_correct_remark, volumetric_rate, volumetric_rate_remark, 
@@ -167,8 +170,9 @@
       floor_premium, correction_difference, creator, 
       gmt_created, gmt_modified, land_level_content
       )
-    values (#{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{rewardRateId,jdbcType=INTEGER}, 
-      #{rewardRate,jdbcType=VARCHAR}, #{standardPremium,jdbcType=DECIMAL}, #{standardPremiumRemark,jdbcType=VARCHAR}, 
+    values (#{judgeObjectId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, 
+      #{processInsId,jdbcType=VARCHAR}, #{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, 
+      #{standardPremium,jdbcType=DECIMAL}, #{standardPremiumRemark,jdbcType=VARCHAR}, 
       #{legalAge,jdbcType=DECIMAL}, #{legalAgeRemark,jdbcType=VARCHAR}, #{landSurplusYear,jdbcType=DECIMAL}, 
       #{landSurplusYearRemark,jdbcType=VARCHAR}, #{periodAmend,jdbcType=DECIMAL}, #{developCorrect,jdbcType=DECIMAL}, 
       #{developCorrectRemark,jdbcType=VARCHAR}, #{volumetricRate,jdbcType=DECIMAL}, #{volumetricRateRemark,jdbcType=VARCHAR}, 
@@ -192,6 +196,12 @@
       </when>
       <otherwise>
         <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.judgeObjectId != null">
+            judge_object_id,
+          </if>
+          <if test="record.name != null">
+            name,
+          </if>
           <if test="record.planDetailsId != null">
             plan_details_id,
           </if>
@@ -292,6 +302,12 @@
       </when>
       <otherwise>
         <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.judgeObjectId != null">
+            #{record.judgeObjectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.name != null">
+            #{record.name,jdbcType=VARCHAR},
+          </if>
           <if test="record.planDetailsId != null">
             #{record.planDetailsId,jdbcType=INTEGER},
           </if>
@@ -403,6 +419,12 @@
           <if test="record.id != null">
             id = #{record.id,jdbcType=INTEGER},
           </if>
+          <if test="record.judgeObjectId != null">
+            judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.name != null">
+            name = #{record.name,jdbcType=VARCHAR},
+          </if>
           <if test="record.planDetailsId != null">
             plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
           </if>
@@ -500,6 +522,8 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update tb_md_base_land_price
     set id = #{record.id,jdbcType=INTEGER},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
@@ -536,6 +560,8 @@
   <update id="updateByExample" parameterType="map">
     update tb_md_base_land_price
     set id = #{record.id,jdbcType=INTEGER},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
@@ -579,6 +605,12 @@
       </when>
       <otherwise>
         <trim suffixOverrides=",">
+          <if test="record.judgeObjectId != null">
+            judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.name != null">
+            name = #{record.name,jdbcType=VARCHAR},
+          </if>
           <if test="record.planDetailsId != null">
             plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
           </if>
@@ -673,7 +705,9 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice">
     update tb_md_base_land_price
-    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+    set judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
       reward_rate = #{rewardRate,jdbcType=VARCHAR},
@@ -706,7 +740,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdBaseLandPrice">
     update tb_md_base_land_price
-    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+    set judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
       reward_rate = #{rewardRate,jdbcType=VARCHAR},
@@ -738,18 +774,19 @@
   </update>
   <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
     insert into tb_md_base_land_price
-    (plan_details_id, process_ins_id, reward_rate_id, reward_rate, standard_premium, 
-      standard_premium_remark, legal_age, legal_age_remark, land_surplus_year, land_surplus_year_remark, 
-      period_amend, develop_correct, develop_correct_remark, volumetric_rate, volumetric_rate_remark, 
-      evaluation_area, evaluation_area_remark, date_amend, volume_fraction_amend, area_and_several_amend, 
-      parcel_price, parcel_bhou_price, parcel_total_price, floor_premium, correction_difference, 
-      creator, gmt_created, gmt_modified, land_level_content)
+    (judge_object_id, name, plan_details_id, process_ins_id, reward_rate_id, reward_rate, 
+      standard_premium, standard_premium_remark, legal_age, legal_age_remark, land_surplus_year, 
+      land_surplus_year_remark, period_amend, develop_correct, develop_correct_remark, 
+      volumetric_rate, volumetric_rate_remark, evaluation_area, evaluation_area_remark, 
+      date_amend, volume_fraction_amend, area_and_several_amend, parcel_price, parcel_bhou_price, 
+      parcel_total_price, floor_premium, correction_difference, creator, gmt_created, 
+      gmt_modified, land_level_content)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.planDetailsId,jdbcType=INTEGER}, #{item.processInsId,jdbcType=VARCHAR}, #{item.rewardRateId,jdbcType=INTEGER}, 
-        #{item.rewardRate,jdbcType=VARCHAR}, #{item.standardPremium,jdbcType=DECIMAL}, 
-        #{item.standardPremiumRemark,jdbcType=VARCHAR}, #{item.legalAge,jdbcType=DECIMAL}, 
-        #{item.legalAgeRemark,jdbcType=VARCHAR}, #{item.landSurplusYear,jdbcType=DECIMAL}, 
+      (#{item.judgeObjectId,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, #{item.planDetailsId,jdbcType=INTEGER}, 
+        #{item.processInsId,jdbcType=VARCHAR}, #{item.rewardRateId,jdbcType=INTEGER}, #{item.rewardRate,jdbcType=VARCHAR}, 
+        #{item.standardPremium,jdbcType=DECIMAL}, #{item.standardPremiumRemark,jdbcType=VARCHAR}, 
+        #{item.legalAge,jdbcType=DECIMAL}, #{item.legalAgeRemark,jdbcType=VARCHAR}, #{item.landSurplusYear,jdbcType=DECIMAL}, 
         #{item.landSurplusYearRemark,jdbcType=VARCHAR}, #{item.periodAmend,jdbcType=DECIMAL}, 
         #{item.developCorrect,jdbcType=DECIMAL}, #{item.developCorrectRemark,jdbcType=VARCHAR}, 
         #{item.volumetricRate,jdbcType=DECIMAL}, #{item.volumetricRateRemark,jdbcType=VARCHAR}, 
@@ -772,6 +809,12 @@
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
+        <if test="'judge_object_id'.toString() == column.value">
+          #{item.judgeObjectId,jdbcType=INTEGER}
+        </if>
+        <if test="'name'.toString() == column.value">
+          #{item.name,jdbcType=VARCHAR}
+        </if>
         <if test="'plan_details_id'.toString() == column.value">
           #{item.planDetailsId,jdbcType=INTEGER}
         </if>

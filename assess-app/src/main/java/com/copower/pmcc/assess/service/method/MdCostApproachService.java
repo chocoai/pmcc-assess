@@ -79,7 +79,7 @@ public class MdCostApproachService {
         return costApproachDao.getMdCostApproach(where);
     }
 
-    public void applyCommit(String formData, String processInsId) {
+    public MdCostApproach applyCommit(String formData, String processInsId) {
         //税费明细
         JSONObject jsonObject = JSON.parseObject(formData);
         List<MdCostApproachTaxes> costApproachTaxes = JSON.parseArray(jsonObject.getString("costApproachTaxes"), MdCostApproachTaxes.class);
@@ -92,8 +92,15 @@ public class MdCostApproachService {
         }
 
         MdCostApproach mdCostApproach = JSON.parseObject(jsonObject.getString("master"), MdCostApproach.class);
-        mdCostApproach.setProcessInsId(processInsId);
+        if (StringUtils.isNotBlank(processInsId)) {
+            mdCostApproach.setProcessInsId(processInsId);
+        }
         this.saveMdCostApproach(mdCostApproach);
+        return mdCostApproach;
+    }
+
+    public MdCostApproach applyCommit(String formData) {
+        return applyCommit(formData,null);
     }
 
 
@@ -103,7 +110,7 @@ public class MdCostApproachService {
         //不含代征地每平税费 = 土地取得费及相关税费 - 代征地每平税费
         BigDecimal landAcquisitionBhou = getLandAcquisitionBhou(mdCostApproach.getId());
         MdCostApproachTaxes landAcquisition = getMdCostApproachTaxesListByMasterId(mdCostApproach.getId(), AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_ACQUISITION);
-        if (landAcquisition != null && landAcquisitionBhou != null && landAcquisition.getPrice()!= null) {
+        if (landAcquisition != null && landAcquisitionBhou != null && landAcquisition.getPrice() != null) {
             landAcquisitionBhou = landAcquisitionBhou.subtract(landAcquisition.getPrice());
         }
         if (landAcquisitionBhou != null) {
@@ -471,7 +478,6 @@ public class MdCostApproachService {
             return vo;
         }
         BeanUtils.copyProperties(oo, vo);
-
         if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getParcelSettingOuter())) {
             List<Integer> ids = FormatUtils.transformString2Integer(oo.getParcelSettingOuter());
             if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)) {
@@ -482,7 +488,6 @@ public class MdCostApproachService {
                 vo.setParcelSettingOuterName(org.apache.commons.lang3.StringUtils.join(stringList, "，"));
             }
         }
-
         if (org.apache.commons.lang3.StringUtils.isNotBlank(oo.getParcelSettingInner())) {
             List<Integer> ids = FormatUtils.transformString2Integer(oo.getParcelSettingInner());
             if (org.apache.commons.collections.CollectionUtils.isNotEmpty(ids)) {
@@ -493,6 +498,34 @@ public class MdCostApproachService {
                 vo.setParcelSettingInnerName(org.apache.commons.lang3.StringUtils.join(stringList, "，"));
             }
         }
+        if (StringUtils.isBlank(vo.getLandLevelContent())) {
+            MdCostApproach data = getDataById(vo.getId());
+            if (data != null) {
+                vo.setLandLevelContent(data.getLandLevelContent());
+            }
+        }
         return vo;
+    }
+
+    public void initTaxeItem(MdCostApproach mdCostApproach) {
+        List<MdCostApproachTaxes> taxesListByMasterId = getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
+        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
+        //全部清空后生成
+        if (CollectionUtils.isNotEmpty(taxesListByMasterId)) {
+            for (MdCostApproachTaxes item : taxesListByMasterId) {
+                costApproachTaxesDao.deleteCostApproachTaxes(item.getId());
+            }
+        }
+        if (CollectionUtils.isNotEmpty(dataDicList)) {
+            for (BaseDataDic type : dataDicList) {
+                MdCostApproachTaxes taxes = new MdCostApproachTaxes();
+                taxes.setTypeName(type.getName());
+                taxes.setTypeKey(type.getFieldName());
+                taxes.setMasterId(mdCostApproach.getId());
+                taxes.setCreator(commonService.thisUserAccount());
+                costApproachTaxesDao.addCostApproachTaxes(taxes);
+            }
+        }
+
     }
 }
