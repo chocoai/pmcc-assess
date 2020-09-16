@@ -1,10 +1,17 @@
 package com.copower.pmcc.assess.controller.method;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachTaxesDao;
-import com.copower.pmcc.assess.dal.basis.entity.MdCostApproachItem;
-import com.copower.pmcc.assess.dal.basis.entity.MdCostApproachTaxes;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -12,8 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @Auther: HUHAO
@@ -32,6 +41,62 @@ public class MdCostApproachController {
     private MdCostApproachItemDao costApproachItemDao;
     @Autowired
     private MdCostApproachTaxesDao costApproachTaxesDao;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private DataLandLevelDetailService dataLandLevelDetailService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private MdCostApproachService mdCostApproachService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+
+    @RequestMapping(value = "/index", name = "成本逼近法")
+    public ModelAndView index(Integer dataId, Integer judgeObjectId) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/maketCostApproachIndex");
+        MdCostApproach mdCostApproach = null;
+        if (dataId != null && dataId != 0) {
+            mdCostApproach = costApproachService.getDataById(dataId);
+        } else {
+            mdCostApproach = new MdCostApproach();
+            mdCostApproach.setJudgeObjectId(judgeObjectId);
+            mdCostApproachService.saveMdCostApproach(mdCostApproach);
+        }
+        mdCostApproachService.initTaxeItem(mdCostApproach);
+        modelAndView.addObject("master", mdCostApproach);
+        modelAndView.addObject("apply", "apply");
+        setViewParam(mdCostApproach, judgeObjectId, modelAndView);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/detail", name = "成本逼近法")
+    public ModelAndView detail(Integer dataId) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/maketCostApproachDetail");
+        MdCostApproach mdCostApproach = costApproachService.getDataById(dataId);
+        List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
+        modelAndView.addObject("taxesVos", list);
+        modelAndView.addObject("master", costApproachService.getMdCostApproachVo(mdCostApproach));
+        setViewParam(mdCostApproach, mdCostApproach.getJudgeObjectId(), modelAndView);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/saveResult", name = "保存数据", method = RequestMethod.POST)
+    public HttpResult saveResult(String formData){
+        try {
+            MdCostApproach mdCostApproach = costApproachService.applyCommit(formData);
+            return HttpResult.newCorrectResult(200,mdCostApproach);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("获取失败");
+        }
+    }
 
 
     @RequestMapping(value = "/getMdCostApproachItemList", name = "调查价格列表", method = RequestMethod.GET)
@@ -72,7 +137,7 @@ public class MdCostApproachController {
             MdCostApproachItem costApproachItem = costApproachItemDao.getCostApproachItemById(id);
             return HttpResult.newCorrectResult(costApproachItem);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");
         }
     }
@@ -122,7 +187,7 @@ public class MdCostApproachController {
             MdCostApproachTaxes costApproachTaxes = costApproachTaxesDao.getCostApproachTaxesById(id);
             return HttpResult.newCorrectResult(costApproachTaxes);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");
         }
     }
@@ -133,8 +198,44 @@ public class MdCostApproachController {
             BigDecimal landAcquisitionBhou = costApproachService.getLandAcquisitionBhou(masterId);
             return HttpResult.newCorrectResult(landAcquisitionBhou);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");
+        }
+    }
+
+    /**
+     * 给modelview设置显示参数
+     *
+     * @param modelAndView
+     */
+    private void setViewParam(MdCostApproach mdCostApproach, Integer judgeObjectId, ModelAndView modelAndView) {
+        List<MdCostApproachTaxes> taxesList = mdCostApproachService.getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
+        modelAndView.addObject("taxesVos", taxesList);
+        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
+        modelAndView.addObject("taxesTypes", dataDicList);
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        modelAndView.addObject("judgeObject", schemeJudgeObject);
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+        BasicEstate basicEstate = null;
+        try {
+            basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if (basicEstate == null) {
+                return;
+            }
+        } catch (Exception e) {
+            logger.error(String.format("没有获取到数据 ==> %s", e.getMessage()));
+        }
+        if (basicApply.getLandCategoryId() != null) {
+            BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+            if (categoryInfo != null) {
+                modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());
+                modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
+                modelAndView.addObject("levelDetailId", categoryInfo.getLandLevel());
+                DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
+                if (levelDetail != null) {
+                    modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+                }
+            }
         }
     }
 }

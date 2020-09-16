@@ -13,6 +13,16 @@ public class MdCostApproach implements Serializable {
     private Integer id;
 
     /**
+     * 估价对象名称
+     */
+    private String name;
+
+    /**
+     * 估计对象id
+     */
+    private Integer judgeObjectId;
+
+    /**
      * 
      */
     private Integer planDetailsId;
@@ -226,6 +236,38 @@ public class MdCostApproach implements Serializable {
      */
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    /**
+     * 估价对象名称
+     * @return name 估价对象名称
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 估价对象名称
+     * @param name 估价对象名称
+     */
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 估计对象id
+     * @return judge_object_id 估计对象id
+     */
+    public Integer getJudgeObjectId() {
+        return judgeObjectId;
+    }
+
+    /**
+     * 估计对象id
+     * @param judgeObjectId 估计对象id
+     */
+    public void setJudgeObjectId(Integer judgeObjectId) {
+        this.judgeObjectId = judgeObjectId;
     }
 
     /**
@@ -879,6 +921,24 @@ public class MdCostApproach implements Serializable {
         }
 
         /**
+         * 估价对象名称
+         * @param name 估价对象名称
+         */
+        public Builder name(String name) {
+            obj.setName(name);
+            return this;
+        }
+
+        /**
+         * 估计对象id
+         * @param judgeObjectId 估计对象id
+         */
+        public Builder judgeObjectId(Integer judgeObjectId) {
+            obj.setJudgeObjectId(judgeObjectId);
+            return this;
+        }
+
+        /**
          * 
          * @param planDetailsId 
          */
@@ -1236,6 +1296,8 @@ public class MdCostApproach implements Serializable {
 
     public enum Column {
         id("id", "id", "INTEGER", false),
+        name("name", "name", "VARCHAR", false),
+        judgeObjectId("judge_object_id", "judgeObjectId", "INTEGER", false),
         planDetailsId("plan_details_id", "planDetailsId", "INTEGER", false),
         processInsId("process_ins_id", "processInsId", "VARCHAR", false),
         farmlandArea("farmland_area", "farmlandArea", "DECIMAL", false),

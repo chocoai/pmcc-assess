@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.MdCostApproachMapper">
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="judge_object_id" jdbcType="INTEGER" property="judgeObjectId" />
     <result column="plan_details_id" jdbcType="INTEGER" property="planDetailsId" />
     <result column="process_ins_id" jdbcType="VARCHAR" property="processInsId" />
     <result column="farmland_area" jdbcType="DECIMAL" property="farmlandArea" />
@@ -104,15 +106,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, plan_details_id, process_ins_id, farmland_area, plough_area, population_number, 
-    reward_rate_id, reward_rate, circulation_expense, circulation_expense_remark, flat_expense, 
-    flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, calculated_interest_remark, 
-    profit_margin, profit_margin_remark, incremental_benefit, incremental_benefit_remark, 
-    plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, plot_ratio_element_amend_remark, 
-    creator, gmt_created, gmt_modified, land_remaining_year, land_remaining_year_remark, 
-    parcel_setting_outer, parcel_setting_inner, land_use_price, year_fixed, parcel_unit, 
-    land_cost_price_unit, land_acquisition_unit, land_production_profit_unit, land_production_interest_unit, 
-    have_not_land_acquisition
+    id, name, judge_object_id, plan_details_id, process_ins_id, farmland_area, plough_area, 
+    population_number, reward_rate_id, reward_rate, circulation_expense, circulation_expense_remark, 
+    flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, 
+    calculated_interest_remark, profit_margin, profit_margin_remark, incremental_benefit, 
+    incremental_benefit_remark, plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, 
+    plot_ratio_element_amend_remark, creator, gmt_created, gmt_modified, land_remaining_year, 
+    land_remaining_year_remark, parcel_setting_outer, parcel_setting_inner, land_use_price, 
+    year_fixed, parcel_unit, land_cost_price_unit, land_acquisition_unit, land_production_profit_unit, 
+    land_production_interest_unit, have_not_land_acquisition
   </sql>
   <sql id="Blob_Column_List">
     land_level_content
@@ -169,9 +171,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_md_cost_approach (plan_details_id, process_ins_id, farmland_area, 
-      plough_area, population_number, reward_rate_id, 
-      reward_rate, circulation_expense, circulation_expense_remark, 
+    insert into tb_md_cost_approach (name, judge_object_id, plan_details_id, 
+      process_ins_id, farmland_area, plough_area, 
+      population_number, reward_rate_id, reward_rate, 
+      circulation_expense, circulation_expense_remark, 
       flat_expense, flat_expense_remark, machine_cycle, 
       machine_cycle_remark, calculated_interest, 
       calculated_interest_remark, profit_margin, 
@@ -186,9 +189,10 @@
       land_production_profit_unit, land_production_interest_unit, 
       have_not_land_acquisition, land_level_content
       )
-    values (#{planDetailsId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{farmlandArea,jdbcType=DECIMAL}, 
-      #{ploughArea,jdbcType=DECIMAL}, #{populationNumber,jdbcType=INTEGER}, #{rewardRateId,jdbcType=INTEGER}, 
-      #{rewardRate,jdbcType=VARCHAR}, #{circulationExpense,jdbcType=DECIMAL}, #{circulationExpenseRemark,jdbcType=VARCHAR}, 
+    values (#{name,jdbcType=VARCHAR}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
+      #{processInsId,jdbcType=VARCHAR}, #{farmlandArea,jdbcType=DECIMAL}, #{ploughArea,jdbcType=DECIMAL}, 
+      #{populationNumber,jdbcType=INTEGER}, #{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, 
+      #{circulationExpense,jdbcType=DECIMAL}, #{circulationExpenseRemark,jdbcType=VARCHAR}, 
       #{flatExpense,jdbcType=DECIMAL}, #{flatExpenseRemark,jdbcType=VARCHAR}, #{machineCycle,jdbcType=DECIMAL}, 
       #{machineCycleRemark,jdbcType=VARCHAR}, #{calculatedInterest,jdbcType=VARCHAR}, 
       #{calculatedInterestRemark,jdbcType=VARCHAR}, #{profitMargin,jdbcType=VARCHAR}, 
@@ -217,6 +221,12 @@
       </when>
       <otherwise>
         <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.name != null">
+            name,
+          </if>
+          <if test="record.judgeObjectId != null">
+            judge_object_id,
+          </if>
           <if test="record.planDetailsId != null">
             plan_details_id,
           </if>
@@ -347,6 +357,12 @@
       </when>
       <otherwise>
         <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.name != null">
+            #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.judgeObjectId != null">
+            #{record.judgeObjectId,jdbcType=INTEGER},
+          </if>
           <if test="record.planDetailsId != null">
             #{record.planDetailsId,jdbcType=INTEGER},
           </if>
@@ -488,6 +504,12 @@
           <if test="record.id != null">
             id = #{record.id,jdbcType=INTEGER},
           </if>
+          <if test="record.name != null">
+            name = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.judgeObjectId != null">
+            judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+          </if>
           <if test="record.planDetailsId != null">
             plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
           </if>
@@ -615,6 +637,8 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update tb_md_cost_approach
     set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       farmland_area = #{record.farmlandArea,jdbcType=DECIMAL},
@@ -661,6 +685,8 @@
   <update id="updateByExample" parameterType="map">
     update tb_md_cost_approach
     set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       farmland_area = #{record.farmlandArea,jdbcType=DECIMAL},
@@ -714,6 +740,12 @@
       </when>
       <otherwise>
         <trim suffixOverrides=",">
+          <if test="record.name != null">
+            name = #{record.name,jdbcType=VARCHAR},
+          </if>
+          <if test="record.judgeObjectId != null">
+            judge_object_id = #{record.judgeObjectId,jdbcType=INTEGER},
+          </if>
           <if test="record.planDetailsId != null">
             plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
           </if>
@@ -838,7 +870,9 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach">
     update tb_md_cost_approach
-    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+    set name = #{name,jdbcType=VARCHAR},
+      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       farmland_area = #{farmlandArea,jdbcType=DECIMAL},
       plough_area = #{ploughArea,jdbcType=DECIMAL},
@@ -881,7 +915,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach">
     update tb_md_cost_approach
-    set plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+    set name = #{name,jdbcType=VARCHAR},
+      judge_object_id = #{judgeObjectId,jdbcType=INTEGER},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
       farmland_area = #{farmlandArea,jdbcType=DECIMAL},
       plough_area = #{ploughArea,jdbcType=DECIMAL},
@@ -923,9 +959,9 @@
   </update>
   <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
     insert into tb_md_cost_approach
-    (plan_details_id, process_ins_id, farmland_area, plough_area, population_number, 
-      reward_rate_id, reward_rate, circulation_expense, circulation_expense_remark, flat_expense, 
-      flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, 
+    (name, judge_object_id, plan_details_id, process_ins_id, farmland_area, plough_area, 
+      population_number, reward_rate_id, reward_rate, circulation_expense, circulation_expense_remark, 
+      flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, 
       calculated_interest_remark, profit_margin, profit_margin_remark, incremental_benefit, 
       incremental_benefit_remark, plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, 
       plot_ratio_element_amend_remark, creator, gmt_created, gmt_modified, land_remaining_year, 
@@ -934,9 +970,10 @@
       land_production_interest_unit, have_not_land_acquisition, land_level_content)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.planDetailsId,jdbcType=INTEGER}, #{item.processInsId,jdbcType=VARCHAR}, #{item.farmlandArea,jdbcType=DECIMAL}, 
-        #{item.ploughArea,jdbcType=DECIMAL}, #{item.populationNumber,jdbcType=INTEGER}, 
-        #{item.rewardRateId,jdbcType=INTEGER}, #{item.rewardRate,jdbcType=VARCHAR}, #{item.circulationExpense,jdbcType=DECIMAL}, 
+      (#{item.name,jdbcType=VARCHAR}, #{item.judgeObjectId,jdbcType=INTEGER}, #{item.planDetailsId,jdbcType=INTEGER}, 
+        #{item.processInsId,jdbcType=VARCHAR}, #{item.farmlandArea,jdbcType=DECIMAL}, #{item.ploughArea,jdbcType=DECIMAL}, 
+        #{item.populationNumber,jdbcType=INTEGER}, #{item.rewardRateId,jdbcType=INTEGER}, 
+        #{item.rewardRate,jdbcType=VARCHAR}, #{item.circulationExpense,jdbcType=DECIMAL}, 
         #{item.circulationExpenseRemark,jdbcType=VARCHAR}, #{item.flatExpense,jdbcType=DECIMAL}, 
         #{item.flatExpenseRemark,jdbcType=VARCHAR}, #{item.machineCycle,jdbcType=DECIMAL}, 
         #{item.machineCycleRemark,jdbcType=VARCHAR}, #{item.calculatedInterest,jdbcType=VARCHAR}, 
@@ -965,6 +1002,12 @@
     <foreach collection="list" item="item" separator=",">
       (
       <foreach collection="selective" item="column" separator=",">
+        <if test="'name'.toString() == column.value">
+          #{item.name,jdbcType=VARCHAR}
+        </if>
+        <if test="'judge_object_id'.toString() == column.value">
+          #{item.judgeObjectId,jdbcType=INTEGER}
+        </if>
         <if test="'plan_details_id'.toString() == column.value">
           #{item.planDetailsId,jdbcType=INTEGER}
         </if>

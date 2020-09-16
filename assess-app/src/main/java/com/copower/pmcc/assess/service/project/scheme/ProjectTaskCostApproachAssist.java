@@ -67,6 +67,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         if (mdCostApproach == null) {
             mdCostApproach = new MdCostApproach();
             mdCostApproach.setPlanDetailsId(projectPlanDetails.getId());
+            mdCostApproach.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
             mdCostApproachService.saveMdCostApproach(mdCostApproach);
             SchemeInfo schemeInfo = new SchemeInfo();
             schemeInfo.setProjectId(projectPlanDetails.getProjectId());
@@ -74,7 +75,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
             schemeInfo.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
             schemeInfo.setMethodType(baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST_APPROACH).getId());
             schemeInfo.setMethodDataId(mdCostApproach.getId());
-            initTaxeItem(mdCostApproach);
+            mdCostApproachService.initTaxeItem(mdCostApproach);
             try {
                 schemeInfoService.saveSchemeInfo(schemeInfo);
             } catch (BusinessException e) {
@@ -181,27 +182,5 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
                 }
             }
         }
-    }
-
-    public void initTaxeItem(MdCostApproach mdCostApproach) {
-        List<MdCostApproachTaxes> taxesListByMasterId = mdCostApproachService.getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
-        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
-        //全部清空后生成
-        if (CollectionUtils.isNotEmpty(taxesListByMasterId)) {
-            for (MdCostApproachTaxes item : taxesListByMasterId) {
-                costApproachTaxesDao.deleteCostApproachTaxes(item.getId());
-            }
-        }
-        if (CollectionUtils.isNotEmpty(dataDicList)) {
-            for (BaseDataDic type : dataDicList) {
-                MdCostApproachTaxes taxes = new MdCostApproachTaxes();
-                taxes.setTypeName(type.getName());
-                taxes.setTypeKey(type.getFieldName());
-                taxes.setMasterId(mdCostApproach.getId());
-                taxes.setCreator(commonService.thisUserAccount());
-                costApproachTaxesDao.addCostApproachTaxes(taxes);
-            }
-        }
-
     }
 }

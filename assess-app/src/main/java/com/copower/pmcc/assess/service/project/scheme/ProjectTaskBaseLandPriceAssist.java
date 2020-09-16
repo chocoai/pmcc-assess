@@ -71,6 +71,7 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getDataByPlanDetailsId(projectPlanDetails.getId());
         if (mdBaseLandPrice == null) {
             mdBaseLandPrice = new MdBaseLandPrice();
+            mdBaseLandPrice.setJudgeObjectId(projectPlanDetails.getJudgeObjectId());
             mdBaseLandPrice.setPlanDetailsId(projectPlanDetails.getId());
             mdBaseLandPriceService.saveMdBaseLandPrice(mdBaseLandPrice);
             SchemeInfo schemeInfo = new SchemeInfo();

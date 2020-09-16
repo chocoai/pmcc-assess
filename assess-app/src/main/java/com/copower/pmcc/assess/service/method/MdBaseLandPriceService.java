@@ -50,6 +50,10 @@ public class MdBaseLandPriceService {
     @Autowired
     private BasicApplyService basicApplyService;
 
+    public MdBaseLandPriceDao getMdBaseLandPriceDao(){
+        return mdBaseLandPriceDao;
+    }
+
     public List<MdBaseLandPrice> getObjectList(MdBaseLandPrice mdBaseLandPrice) {
         return mdBaseLandPriceDao.getObjectList(mdBaseLandPrice);
     }
@@ -77,7 +81,7 @@ public class MdBaseLandPriceService {
 
     public void saveMdBaseLandPrice(MdBaseLandPrice mdBaseLandPrice) {
         mdBaseLandPrice.setLandLevelContent(StringUtils.isNotEmpty(mdBaseLandPrice.getLandLevelContent())?mdBaseLandPrice.getLandLevelContent():null);
-        if (mdBaseLandPrice.getId() != null && mdBaseLandPrice.getId().intValue() > 0) {
+        if (mdBaseLandPrice.getId() != null && mdBaseLandPrice.getId() > 0) {
             mdBaseLandPriceDao.editMdBaseLandPrice(mdBaseLandPrice);
         } else {
             mdBaseLandPrice.setCreator(processControllerComponent.getThisUser());
@@ -163,4 +167,13 @@ public class MdBaseLandPriceService {
         return null;
     }
 
+    public MdBaseLandPrice initObject(Integer judgeObjectId) {
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        MdBaseLandPrice obj = new MdBaseLandPrice();
+        obj.setName(schemeJudgeObject.getName());
+        obj.setCreator(processControllerComponent.getThisUser());
+        mdBaseLandPriceDao.addMdBaseLandPrice(obj);
+        obj.setJudgeObjectId(judgeObjectId);
+        return obj;
+    }
 }
