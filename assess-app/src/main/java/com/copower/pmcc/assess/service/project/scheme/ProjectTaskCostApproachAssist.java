@@ -1,23 +1,14 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachTaxesDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
-import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,25 +31,11 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
-    @Autowired
     private MdCostApproachService mdCostApproachService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private BasicApplyService basicApplyService;
-    @Autowired
-    private BasicEstateService basicEstateService;
-    @Autowired
     private SchemeInfoService schemeInfoService;
-    @Autowired
-    private MdCostApproachTaxesDao costApproachTaxesDao;
-    @Autowired
-    private CommonService commonService;
-    @Autowired
-    private DataLandLevelDetailService dataLandLevelDetailService;
-    @Autowired
-    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -85,7 +62,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
 
         modelAndView.addObject("master", mdCostApproach);
         modelAndView.addObject("apply", "apply");
-        setViewParam(mdCostApproach, projectPlanDetails, modelAndView);
+        mdCostApproachService.setViewParam(mdCostApproach, projectPlanDetails.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
 
@@ -96,7 +73,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         modelAndView.addObject("master", data);
         List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(data.getId());
         modelAndView.addObject("taxesVos", list);
-        setViewParam(data, projectPlanDetails, modelAndView);
+        mdCostApproachService.setViewParam(data, projectPlanDetails.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
 
@@ -107,7 +84,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         modelAndView.addObject("master", data);
         List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(data.getId());
         modelAndView.addObject("taxesVos", list);
-        setViewParam(data, projectPlanDetails, modelAndView);
+        mdCostApproachService.setViewParam(data, projectPlanDetails.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
 
@@ -118,7 +95,7 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         modelAndView.addObject("master", data);
         List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(data.getId());
         modelAndView.addObject("taxesVos", list);
-        setViewParam(data, projectPlanDetails, modelAndView);
+        mdCostApproachService.setViewParam(data, projectPlanDetails.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
 
@@ -145,42 +122,5 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         mdCostApproachService.applyCommit(formData, processInsId);
     }
 
-    /**
-     * 给modelview设置显示参数
-     *
-     * @param modelAndView
-     */
-    private void setViewParam(MdCostApproach mdCostApproach, ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        List<MdCostApproachTaxes> taxesList = mdCostApproachService.getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
-        modelAndView.addObject("taxesVos", taxesList);
 
-
-        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
-        modelAndView.addObject("taxesTypes", dataDicList);
-        Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        modelAndView.addObject("judgeObject", schemeJudgeObject);
-        BasicApply basicApply =  basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-        BasicEstate basicEstate = null;
-        try {
-            basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-            if (basicEstate == null) {
-                return;
-            }
-        } catch (Exception e) {
-            logger.error(String.format("没有获取到数据 ==> %s", e.getMessage()));
-        }
-        if(basicApply.getLandCategoryId()!=null){
-            BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
-            if(categoryInfo!=null){
-                modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());
-                modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
-                modelAndView.addObject("levelDetailId", categoryInfo.getLandLevel());
-                DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
-                if(levelDetail!=null){
-                    modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
-                }
-            }
-        }
-    }
 }

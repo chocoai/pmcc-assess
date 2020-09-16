@@ -7,13 +7,15 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachTaxesDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.MdCostApproach;
-import com.copower.pmcc.assess.dal.basis.entity.MdCostApproachItem;
-import com.copower.pmcc.assess.dal.basis.entity.MdCostApproachTaxes;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.method.MdCostApproachTaxesVo;
 import com.copower.pmcc.assess.dto.output.method.MdCostApproachVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -28,9 +30,12 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -57,7 +62,18 @@ public class MdCostApproachService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private DataLandLevelDetailService dataLandLevelDetailService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private SchemeJudgeObjectService schemeJudgeObjectService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     public static BigDecimal Bhou = new BigDecimal("666.67");
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<MdCostApproach> getObjectList(MdCostApproach mdCostApproach) {
         return costApproachDao.getObjectList(mdCostApproach);
@@ -526,6 +542,42 @@ public class MdCostApproachService {
                 costApproachTaxesDao.addCostApproachTaxes(taxes);
             }
         }
-
     }
+
+    /**
+     * 给modelview设置显示参数
+     *
+     * @param modelAndView
+     */
+    public void setViewParam(MdCostApproach mdCostApproach, Integer judgeObjectId, ModelAndView modelAndView) {
+        List<MdCostApproachTaxes> taxesList = getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
+        modelAndView.addObject("taxesVos", taxesList);
+        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
+        modelAndView.addObject("taxesTypes", dataDicList);
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        modelAndView.addObject("judgeObject", schemeJudgeObject);
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+        BasicEstate basicEstate = null;
+        try {
+            basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if (basicEstate == null) {
+                return;
+            }
+        } catch (Exception e) {
+            logger.error(String.format("没有获取到数据 ==> %s", e.getMessage()));
+        }
+        if (basicApply.getLandCategoryId() != null) {
+            BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+            if (categoryInfo != null) {
+                modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());
+                modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
+                modelAndView.addObject("levelDetailId", categoryInfo.getLandLevel());
+                DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
+                if (levelDetail != null) {
+                    modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+                }
+            }
+        }
+    }
+
 }

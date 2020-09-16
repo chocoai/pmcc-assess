@@ -72,7 +72,7 @@ public class MdCostApproachController {
         mdCostApproachService.initTaxeItem(mdCostApproach);
         modelAndView.addObject("master", mdCostApproach);
         modelAndView.addObject("apply", "apply");
-        setViewParam(mdCostApproach, judgeObjectId, modelAndView);
+        mdCostApproachService.setViewParam(mdCostApproach, judgeObjectId, modelAndView);
         return modelAndView;
     }
 
@@ -83,7 +83,7 @@ public class MdCostApproachController {
         List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
         modelAndView.addObject("taxesVos", list);
         modelAndView.addObject("master", costApproachService.getMdCostApproachVo(mdCostApproach));
-        setViewParam(mdCostApproach, mdCostApproach.getJudgeObjectId(), modelAndView);
+        mdCostApproachService.setViewParam(mdCostApproach, mdCostApproach.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
 
@@ -203,39 +203,5 @@ public class MdCostApproachController {
         }
     }
 
-    /**
-     * 给modelview设置显示参数
-     *
-     * @param modelAndView
-     */
-    private void setViewParam(MdCostApproach mdCostApproach, Integer judgeObjectId, ModelAndView modelAndView) {
-        List<MdCostApproachTaxes> taxesList = mdCostApproachService.getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
-        modelAndView.addObject("taxesVos", taxesList);
-        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_SETTING);
-        modelAndView.addObject("taxesTypes", dataDicList);
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        modelAndView.addObject("judgeObject", schemeJudgeObject);
-        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-        BasicEstate basicEstate = null;
-        try {
-            basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-            if (basicEstate == null) {
-                return;
-            }
-        } catch (Exception e) {
-            logger.error(String.format("没有获取到数据 ==> %s", e.getMessage()));
-        }
-        if (basicApply.getLandCategoryId() != null) {
-            BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
-            if (categoryInfo != null) {
-                modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());
-                modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
-                modelAndView.addObject("levelDetailId", categoryInfo.getLandLevel());
-                DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
-                if (levelDetail != null) {
-                    modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
-                }
-            }
-        }
-    }
+
 }

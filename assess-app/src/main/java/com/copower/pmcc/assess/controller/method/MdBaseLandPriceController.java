@@ -6,15 +6,10 @@ import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
-import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
-import com.copower.pmcc.assess.service.data.DataLandLevelDetailVolumeService;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
@@ -26,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -41,25 +35,15 @@ public class MdBaseLandPriceController {
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private DeclareRecordService declareRecordService;
-    @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private DataHousePriceIndexDao dataHousePriceIndexDao;
-    @Autowired
-    private SurveyCommonService surveyCommonService;
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private BasicApplyService basicApplyService;
-    @Autowired
-    private DataLandLevelDetailVolumeService dataLandLevelDetailVolumeService;
-    @Autowired
-    private DataLandLevelDetailService dataLandLevelDetailService;
-    @Autowired
-    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     @Autowired
     private MdBaseLandPriceService mdBaseLandPriceService;
     @Autowired
@@ -76,7 +60,7 @@ public class MdBaseLandPriceController {
         }
         modelAndView.addObject("master", mdBaseLandPrice);
         modelAndView.addObject("apply", "apply");
-        setViewParam(judgeObjectId, modelAndView);
+        mdBaseLandPriceService.setViewParam(judgeObjectId, modelAndView);
         return modelAndView;
     }
 
@@ -85,7 +69,7 @@ public class MdBaseLandPriceController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/marketBaseLandPriceDetail");
         MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getMdBaseLandPriceDao().getMdBaseLandPrice(dataId);
         modelAndView.addObject("master", mdBaseLandPrice);
-        setViewParam(mdBaseLandPrice.getJudgeObjectId(), modelAndView);
+        mdBaseLandPriceService.setViewParam(mdBaseLandPrice.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
 
@@ -143,64 +127,4 @@ public class MdBaseLandPriceController {
         }
     }
 
-    /**
-     * 给modelview设置显示参数
-     *
-     * @param modelAndView
-     */
-    private void setViewParam(Integer judgeObjectId, ModelAndView modelAndView) {
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        modelAndView.addObject("judgeObject", schemeJudgeObject);
-        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-
-        if (basicApply == null) {
-            return;
-        }
-        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        if (basicEstate == null) {
-            return;
-        }
-        BasicEstateLandCategoryInfo categoryInfo = null;
-        if (basicApply.getLandCategoryId() != null) {
-            categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
-        } else {
-            List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
-            categoryInfo = categoryInfoList.get(0);
-            BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
-            modelAndView.addObject("volumetricRate", landStateByEstateId.getPlotRatio());
-        }
-
-
-        if (categoryInfo != null) {
-            modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());
-            modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
-            modelAndView.addObject("levelDetailId", categoryInfo.getLandLevel());
-            DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
-            if (levelDetail != null) {
-                modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
-                //基准地价
-                DataLandLevelDetail hasStandardPremiumData = dataLandLevelDetailService.hasStandardPremiumParent(levelDetail.getId());
-                modelAndView.addObject("standardPremium", hasStandardPremiumData.getPrice());
-                //法定年限
-                DataLandLevelDetail hasLegalAgeData = dataLandLevelDetailService.hasLegalAgeParent(levelDetail.getId());
-                modelAndView.addObject("legalAge", hasLegalAgeData.getLegalAge());
-                //容积率修正
-                DataLandLevelDetail hasVolumeFractionAmendData = dataLandLevelDetailService.hasVolumeFractionAmendParent(levelDetail.getId());
-                BigDecimal amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(levelDetail.getVolumeRate(), hasVolumeFractionAmendData.getId());
-                String volumeFractionAmend = "未配置";
-                if (amendValue != null) {
-                    volumeFractionAmend = String.format("%.2f", amendValue);
-                }
-                modelAndView.addObject("volumeFractionAmend", volumeFractionAmend);
-                modelAndView.addObject("hasVolumeFractionAmendId", hasVolumeFractionAmendData.getId());
-                modelAndView.addObject("volumetricRate", categoryInfo.getPlotRatio());
-            }
-
-        }
-
-        //期日修正系数
-        BigDecimal dateAmend = mdBaseLandPriceService.getBaseLandPriceDateAmend(schemeJudgeObject.getId());
-        modelAndView.addObject("dateAmend", dateAmend);
-
-    }
 }
