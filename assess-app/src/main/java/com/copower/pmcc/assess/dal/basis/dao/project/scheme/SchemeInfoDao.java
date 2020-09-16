@@ -56,25 +56,39 @@ public class SchemeInfoDao {
         return schemeInfoMapper.selectByExample(example);
     }
 
-    public List<SchemeInfo> getSchemeInfoByProjectId(Integer methodType,Integer methodDataId,Integer projectId){
+    public List<SchemeInfo> getSchemeInfoListByJudgeIds(List<Integer> judgeIds, Integer methodType) {
         SchemeInfoExample example = new SchemeInfoExample();
         SchemeInfoExample.Criteria criterion = example.createCriteria();
-        criterion.andProjectIdEqualTo(projectId) ;
+        if (CollectionUtils.isNotEmpty(judgeIds)) {
+            criterion.andJudgeObjectIdIn(judgeIds);
+        }
+        if (methodType != null) {
+            criterion.andMethodTypeEqualTo(methodType);
+        }
+        example.setOrderByClause("id desc");
+        return schemeInfoMapper.selectByExample(example);
+    }
+
+    public List<SchemeInfo> getSchemeInfoByProjectId(Integer methodType, Integer methodDataId, Integer projectId) {
+        SchemeInfoExample example = new SchemeInfoExample();
+        SchemeInfoExample.Criteria criterion = example.createCriteria();
+        criterion.andProjectIdEqualTo(projectId);
         criterion.andMethodDataIdNotEqualTo(methodDataId);
-        criterion.andMethodTypeEqualTo(methodType) ;
+        criterion.andMethodTypeEqualTo(methodType);
         return schemeInfoMapper.selectByExample(example);
     }
 
     //流程id不为空的
-    public List<SchemeInfo> getSchemeInfoStart(Integer methodType,Integer methodDataId,Integer projectId){
+    public List<SchemeInfo> getSchemeInfoStart(Integer methodType, Integer methodDataId, Integer projectId) {
         SchemeInfoExample example = new SchemeInfoExample();
         SchemeInfoExample.Criteria criterion = example.createCriteria();
-        criterion.andProjectIdEqualTo(projectId) ;
+        criterion.andProjectIdEqualTo(projectId);
         criterion.andMethodDataIdNotEqualTo(methodDataId);
-        criterion.andMethodTypeEqualTo(methodType) ;
-        criterion.andProcessInsIdIsNotNull() ;
+        criterion.andMethodTypeEqualTo(methodType);
+        criterion.andProcessInsIdIsNotNull();
         return schemeInfoMapper.selectByExample(example);
     }
+
     /**
      * 新增
      *

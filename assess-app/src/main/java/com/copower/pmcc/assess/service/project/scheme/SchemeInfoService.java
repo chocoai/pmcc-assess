@@ -79,6 +79,11 @@ public class SchemeInfoService {
         return schemeInfoDao.getInfoList(oo);
     }
 
+    public List<SchemeInfo> getSchemeInfoListByJudgeIds(List<Integer> judgeIds, Integer methodType) {
+        if (CollectionUtils.isEmpty(judgeIds)) return null;
+        return schemeInfoDao.getSchemeInfoListByJudgeIds(judgeIds, methodType);
+    }
+
     public void deleteSchemeInfoByProjectId(Integer projectId) {
         List<SchemeInfo> schemeInfoList = getSchemeInfoList(projectId);
         if (!CollectionUtils.isEmpty(schemeInfoList)) {
@@ -93,13 +98,13 @@ public class SchemeInfoService {
         return schemeInfo;
     }
 
-    public BootstrapTableVo getBootstrapTableVo(Integer methodType,Integer methodDataId,Integer projectId){
+    public BootstrapTableVo getBootstrapTableVo(Integer methodType, Integer methodDataId, Integer projectId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<SchemeInfo> schemeInfoList = schemeInfoDao.getSchemeInfoByProjectId(methodType, methodDataId, projectId);
         List<SchemeInfoVo> voList = Lists.newArrayList();
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(schemeInfoList)){
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(schemeInfoList)) {
             schemeInfoList.forEach(oo -> voList.add(getSchemeInfoVo(oo)));
         }
         vo.setTotal(page.getTotal());
@@ -114,8 +119,8 @@ public class SchemeInfoService {
         SchemeInfoVo vo = new SchemeInfoVo();
         BeanUtils.copyProperties(schemeInfo, vo);
         if (schemeInfo.getJudgeObjectId() != null) {
-            SchemeJudgeObject schemeJudgeObject =schemeJudgeObjectService.getSchemeJudgeObject(schemeInfo.getJudgeObjectId());
-            if (schemeJudgeObject != null){
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeInfo.getJudgeObjectId());
+            if (schemeJudgeObject != null) {
                 vo.setJudgeObjectName(schemeJudgeObject.getName());
                 vo.setCertName(schemeJudgeObject.getCertName());
             }
@@ -124,18 +129,18 @@ public class SchemeInfoService {
         return vo;
     }
 
-    public BootstrapTableVo getSchemeIncomeVo(Integer methodType,Integer methodDataId,Integer projectId){
+    public BootstrapTableVo getSchemeIncomeVo(Integer methodType, Integer methodDataId, Integer projectId) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<SchemeInfo> schemeInfoList = schemeInfoDao.getSchemeInfoStart(methodType, methodDataId, projectId);
         List<SchemeInfoVo> voList = Lists.newArrayList();
-        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(schemeInfoList)){
+        if (org.apache.commons.collections.CollectionUtils.isNotEmpty(schemeInfoList)) {
             //事项被删除的排除
-            for (SchemeInfo item: schemeInfoList) {
+            for (SchemeInfo item : schemeInfoList) {
                 ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(item.getPlanDetailsId());
-                if (planDetails!=null){
-                    voList.add(getSchemeInfoVo(item)) ;
+                if (planDetails != null) {
+                    voList.add(getSchemeInfoVo(item));
                 }
             }
         }

@@ -42,6 +42,7 @@ import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.*;
 import com.copower.pmcc.assess.service.project.scheme.*;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -96,6 +97,7 @@ public class GenerateBaseDataService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     private ProjectPhaseService projectPhaseService;
     private DeclareRecordService declareRecordService;
+    private DataSetUseFieldService dataSetUseFieldService;
     private SchemeSurePriceService schemeSurePriceService;
     private SchemeReimbursementService schemeReimbursementService;
     private com.copower.pmcc.assess.service.AdRpcQualificationsAppService adRpcQualificationsService;
@@ -134,7 +136,7 @@ public class GenerateBaseDataService {
     private ProjectQrcodeRecordService projectQrcodeRecordService;
     private ErpRpcToolsService erpRpcToolsService;
     private ApplicationConstant applicationConstant;
-    private DataSetUseFieldService dataSetUseFieldService;
+    private SurveyAssetInventoryService surveyAssetInventoryService;
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
     private BasicUnitHuxingService basicUnitHuxingService;
     private BaseService baseService;
@@ -1912,6 +1914,7 @@ public class GenerateBaseDataService {
                 baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS),
                 baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS)));
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        schemeJudgeObjectList = schemeJudgeObjectService.transformDeclareJudgeList(schemeJudgeObjectList);
         if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                 if (schemeJudgeObject.getDeclareRecordId() != null) {
@@ -1944,6 +1947,11 @@ public class GenerateBaseDataService {
                             stringBuilder.delete(0, stringBuilder.toString().length());
                         }
                     }
+                    //添加转让限制说明
+                    SurveyAssetInventory assetInventory = surveyAssetInventoryService.getDataByDeclareId(schemeJudgeObject.getDeclareRecordId());
+                    if (assetInventory != null && StringUtils.isNotBlank(assetInventory.getTransferLimit())) {
+                        stringArrayList.add(String.format("%s%s%s", schemeJudgeObject.getName(), assetInventory.getTransferLimit(), StringUtils.repeat(ControlChar.LINE_BREAK, 1)));
+                    }
                 }
             }
         }
@@ -1958,6 +1966,22 @@ public class GenerateBaseDataService {
                 }
                 stringList.add(stringBuilder.toString());
                 stringBuilder.delete(0, stringBuilder.toString().length());
+            }
+        }
+        //添加租约限制说明,找出使用了收益法的估价对象，且为有租约限制的数据，写入租约限制的描述
+        BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
+        if (dataDic != null) {
+            List<SchemeInfo> infoList = schemeInfoService.getSchemeInfoListByJudgeIds(LangUtils.transform(getSchemeJudgeObjectList(), o -> o.getId()), dataDic.getId());
+            if (CollectionUtils.isNotEmpty(infoList)) {
+                for (SchemeInfo schemeInfo : infoList) {
+                    if (schemeInfo.getMethodDataId() != null) {
+                        MdIncome income = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
+                        if (income != null && income.getLeaseMode().equals(0)) {
+                            SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeInfo.getJudgeObjectId());
+                            stringList.add(String.format("%s%s%s", judgeObject.getName(), income.getRestrictionExplain(), StringUtils.repeat(ControlChar.LINE_BREAK, 1)));
+                        }
+                    }
+                }
             }
         }
         return StringUtils.join(stringList, "");
@@ -6746,6 +6770,7 @@ public class GenerateBaseDataService {
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.projectNumberRecordService = SpringContextUtils.getBean(ProjectNumberRecordService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
         this.schemeJudgeFunctionService = SpringContextUtils.getBean(SchemeJudgeFunctionService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
         this.projectPlanDetailsService = SpringContextUtils.getBean(ProjectPlanDetailsService.class);
@@ -6783,7 +6808,7 @@ public class GenerateBaseDataService {
         this.erpRpcToolsService = SpringContextUtils.getBean(ErpRpcToolsService.class);
         this.applicationConstant = SpringContextUtils.getBean(ApplicationConstant.class);
         this.declareBuildEngineeringAndEquipmentCenterService = SpringContextUtils.getBean(DeclareBuildEngineeringAndEquipmentCenterService.class);
-        this.dataSetUseFieldService = SpringContextUtils.getBean(DataSetUseFieldService.class);
+        this.surveyAssetInventoryService = SpringContextUtils.getBean(SurveyAssetInventoryService.class);
         this.basicUnitHuxingService = SpringContextUtils.getBean(BasicUnitHuxingService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
         this.erpRpcUserService = SpringContextUtils.getBean(ErpRpcUserService.class);

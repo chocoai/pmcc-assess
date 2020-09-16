@@ -55,6 +55,7 @@ public class SurveyAssetInventoryDao {
     public SurveyAssetInventory getDataByDeclareId(Integer declareId) {
         SurveyAssetInventoryExample example = new SurveyAssetInventoryExample();
         example.createCriteria().andDeclareRecordIdEqualTo(declareId);
+        example.setOrderByClause("id desc");
         List<SurveyAssetInventory> surveyAssetInventory = surveyAssetInventoryMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(surveyAssetInventory)) {
             return surveyAssetInventory.get(0);
