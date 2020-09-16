@@ -15,14 +15,17 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.executor.TaskEventExecutor;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.erp.api.dto.*;
 import com.copower.pmcc.erp.api.provider.ErpRpcDepartmentService;
@@ -36,6 +39,7 @@ import com.copower.pmcc.erp.redis.client.SimpleRedisStandalone;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.codec.language.bm.Lang;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -57,6 +61,7 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2018-5-29.
@@ -88,6 +93,8 @@ public class PublicService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
 
     /**
      * 获取当前公司
@@ -706,5 +713,20 @@ public class PublicService {
             log.error(e.getMessage(), e);
         }
         return true;
+    }
+
+    /**
+     * 获取模型最后一个节点
+     *
+     * @param boxId
+     * @return
+     */
+    public BoxReActivityDto getLastActivityByBoxId(Integer boxId) {
+        if (boxId == null) return null;
+        List<BoxReActivityDto> activityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+        if (CollectionUtils.isEmpty(activityDtos)) return null;
+        activityDtos = LangUtils.filter(activityDtos, p -> !ProcessActivityEnum.END.getValue().equals(p.getName()));
+        activityDtos = activityDtos.stream().sorted(Comparator.comparing(BoxReActivityDto::getSortMultilevel).reversed()).collect(Collectors.toList());
+        return activityDtos.get(0);
     }
 }

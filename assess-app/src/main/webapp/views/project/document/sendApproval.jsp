@@ -66,6 +66,73 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        回传资料
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                回传资料
+                                            </label>
+                                            <div class="col-sm-7">
+                                                <c:if test="${flog=='approval'and activityReName eq lastActivity.name}">
+                                                    <input id="post_back_file_upload" name="post_back_file_upload"
+                                                           type="file"
+                                                           class="uploadifive-button" multiple="false">
+                                                    <script type="text/javascript">
+                                                        $(function () {
+                                                            FileUtils.uploadFiles({
+                                                                target: "post_back_file_upload",
+                                                                disabledTarget: "btn_submit",
+                                                                formData: {
+                                                                    tableName: "tb_document_send",
+                                                                    tableId: ${documentSend.id},
+                                                                    fieldsName: 'postBack',
+                                                                    projectId:${documentSend.projectId}
+                                                                },
+                                                                deleteFlag: true,
+                                                                editFlag: true
+                                                            });
+                                                        })
+                                                    </script>
+                                                </c:if>
+                                                <div id="_post_back_file_upload"></div>
+                                                <script type="text/javascript">
+                                                    $(function () {
+                                                        FileUtils.getFileShows({
+                                                            target: "post_back_file_upload",
+                                                            formData: {
+                                                                tableName: "tb_document_send",
+                                                                tableId: ${documentSend.id},
+                                                                fieldsName: 'postBack',
+                                                                projectId:${documentSend.projectId}
+                                                            },
+                                                            editFlag: ${flog=='approval' and activityReName eq lastActivity.name},
+                                                            deleteFlag: ${flog=='approval' and activityReName eq lastActivity.name}
+                                                        });
+                                                    })
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
@@ -82,13 +149,15 @@
             formData: {
                 tableName: "tb_document_send",
                 tableId: ${documentSend.id},
+                fieldsName: 'document',
                 projectId:${documentSend.projectId}
             },
-            editFlag: true,
+            editFlag: ${flog=='approval'},
             signatureFlag: '${activityCnName}'.indexOf("盖章") > -1,
             deleteFlag: false
         });
     })
+
     function saveform() {
         if (!$("#frm_approval").valid()) {
             return false;
@@ -103,17 +172,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess("成功","提交数据成功", function () {
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
-                }
-                else {
+                } else {
                     AlertError(result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

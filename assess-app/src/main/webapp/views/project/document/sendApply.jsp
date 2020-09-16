@@ -116,6 +116,7 @@
             formData: {
                 tableName: "tb_document_send",
                 tableId: $("#id").val(),
+                fieldsName: 'document',
                 projectId:${documentSend.projectId}
             },
             deleteFlag: true,
@@ -165,6 +166,7 @@
             formData: {
                 tableName: "tb_document_send",
                 tableId: $("#id").val(),
+                fieldsName: 'document',
                 projectId:${documentSend.projectId}
             },
             editFlag: true,

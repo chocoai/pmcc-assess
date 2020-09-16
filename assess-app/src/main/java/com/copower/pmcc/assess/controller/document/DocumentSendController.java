@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.document;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentSend;
 import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.document.DocumentSendService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/11/17
  * @time: 14:49
  */
@@ -42,26 +43,28 @@ public class DocumentSendController {
     private DocumentSendService documentSendService;
     @Autowired
     private DocumentTemplateService documentTemplateService;
+    @Autowired
+    private PublicService publicService;
 
     @RequestMapping(value = "/applyIndex/{templateId}&{projectId}", name = "公司盖章发文页面")
-    public ModelAndView applyIndex(@PathVariable("templateId") Integer templateId,@PathVariable("projectId") Integer projectId) {
+    public ModelAndView applyIndex(@PathVariable("templateId") Integer templateId, @PathVariable("projectId") Integer projectId) {
         String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_DETAILS_DOCUMENT_SEND_PROCESS_KEY.getParameterKey());
-        return getModelAndView(templateId, projectId,boxName);
+        return getModelAndView(templateId, projectId, boxName);
     }
 
     @RequestMapping(value = "/applyClientIndex/{templateId}&{projectId}", name = "委托方盖章发文")
-    public ModelAndView applyClientIndex(@PathVariable("templateId") Integer templateId,@PathVariable("projectId") Integer projectId) {
+    public ModelAndView applyClientIndex(@PathVariable("templateId") Integer templateId, @PathVariable("projectId") Integer projectId) {
         String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_DETAILS_DOCUMENT_SEND_CLIENT_PROCESS_KEY.getParameterKey());
-        return getModelAndView(templateId, projectId,boxName);
+        return getModelAndView(templateId, projectId, boxName);
     }
 
     @RequestMapping(value = "/applySignBillIndex/{templateId}&{projectId}", name = "报告签收单")
-    public ModelAndView applySignBillIndex(@PathVariable("templateId") Integer templateId,@PathVariable("projectId") Integer projectId) {
+    public ModelAndView applySignBillIndex(@PathVariable("templateId") Integer templateId, @PathVariable("projectId") Integer projectId) {
         String boxName = baseParameterService.getParameterValues(BaseParameterEnum.PROJECT_DETAILS_DOCUMENT_SIGN_BILL_PROCESS_KEY.getParameterKey());
-        return getModelAndView(templateId, projectId,boxName);
+        return getModelAndView(templateId, projectId, boxName);
     }
 
-    private ModelAndView getModelAndView(Integer templateId, Integer projectId,String boxName) {
+    private ModelAndView getModelAndView(Integer templateId, Integer projectId, String boxName) {
         DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(templateId);
 
         Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
@@ -84,6 +87,7 @@ public class DocumentSendController {
         modelAndView.addObject("documentSend", documentSend);
         String fieldsHtml = documentSendService.getFieldsHtml(templateId, documentSend.getExtendConten().toString(), false);
         modelAndView.addObject("fieldsHtml", fieldsHtml);
+        modelAndView.addObject("lastActivity", publicService.getLastActivityByBoxId(boxId));
         return modelAndView;
     }
 
@@ -96,6 +100,7 @@ public class DocumentSendController {
         modelAndView.addObject("projectId", documentSend.getProjectId());
         String fieldsHtml = documentSendService.getFieldsHtml(documentSend.getContractType(), documentSend.getExtendConten().toString(), true);
         modelAndView.addObject("fieldsHtml", fieldsHtml);
+        modelAndView.addObject("lastActivity", publicService.getLastActivityByBoxId(boxId));
         return modelAndView;
     }
 
@@ -109,6 +114,7 @@ public class DocumentSendController {
         String fieldsHtml = documentSendService.getFieldsHtml(documentSend.getContractType(), documentSend.getExtendConten().toString(), false);
         modelAndView.addObject("fieldsHtml", fieldsHtml);
         modelAndView.addObject("bisEdit", 1);
+        modelAndView.addObject("lastActivity", publicService.getLastActivityByBoxId(boxId));
         return modelAndView;
 
     }
@@ -122,6 +128,7 @@ public class DocumentSendController {
         modelAndView.addObject("projectId", documentSend.getProjectId());
         String fieldsHtml = documentSendService.getFieldsHtml(documentSend.getContractType(), documentSend.getExtendConten().toString(), true);
         modelAndView.addObject("fieldsHtml", fieldsHtml);
+        modelAndView.addObject("lastActivity", publicService.getLastActivityByBoxId(boxRuDto.getBoxId()));
         return modelAndView;
     }
 
@@ -139,6 +146,7 @@ public class DocumentSendController {
         modelAndView.addObject("documentSend", documentSend);
         String fieldsHtml = documentSendService.getFieldsHtml(documentSend.getContractType(), documentSend.getExtendConten().toString(), true);
         modelAndView.addObject("fieldsHtml", fieldsHtml);
+        modelAndView.addObject("lastActivity", publicService.getLastActivityByBoxId(boxRuDto.getBoxId()));
         return modelAndView;
     }
 

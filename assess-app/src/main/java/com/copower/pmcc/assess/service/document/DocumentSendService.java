@@ -156,6 +156,7 @@ public class DocumentSendService {
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(DocumentSend.class));
         processInfo.setTableId(documentSend.getId());
         processInfo.setProjectId(documentSend.getProjectId());
+        processInfo.setStartUser(processControllerComponent.getThisUser());
         String processInsId = "";
         try {
             if (StringUtils.isBlank(appointUserAccount)) {
@@ -171,7 +172,8 @@ public class DocumentSendService {
             SysAttachmentDto sysAttachment = new SysAttachmentDto();
             sysAttachment.setProcessInsId("0");
             sysAttachment.setCreater(processControllerComponent.getThisUser());
-            sysAttachment.setTableName(processInfo.getTableName());
+            sysAttachment.setTableName(FormatUtils.entityNameConvertToTableName(DocumentSend.class));
+            sysAttachment.setProjectId(documentSend.getProjectId());
             SysAttachmentDto sysAttachmentNew = new SysAttachmentDto();
             sysAttachmentNew.setProcessInsId(processInsId);
             sysAttachmentNew.setTableId(processInfo.getTableId());
