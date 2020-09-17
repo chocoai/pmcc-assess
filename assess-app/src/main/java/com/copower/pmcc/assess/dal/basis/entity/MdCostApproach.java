@@ -138,21 +138,6 @@ public class MdCostApproach implements Serializable {
     private String plotRatioElementAmendRemark;
 
     /**
-     * 创建人
-     */
-    private String creator;
-
-    /**
-     * 创建时间
-     */
-    private Date gmtCreated;
-
-    /**
-     * 最后更新时间，记录变化后会自动更新时间戳
-     */
-    private Date gmtModified;
-
-    /**
      * 剩余年限
      */
     private BigDecimal landRemainingYear;
@@ -173,6 +158,11 @@ public class MdCostApproach implements Serializable {
     private String parcelSettingInner;
 
     /**
+     * 无限年期土地使用权价格(元/亩)
+     */
+    private BigDecimal landUseBhou;
+
+    /**
      * 无限年期土地使用权价格
      */
     private BigDecimal landUsePrice;
@@ -181,6 +171,11 @@ public class MdCostApproach implements Serializable {
      * 年期修正系数
      */
     private BigDecimal yearFixed;
+
+    /**
+     * 委估宗地价格(万元/亩)
+     */
+    private BigDecimal parcelBhou;
 
     /**
      * 委估宗地单价
@@ -193,9 +188,19 @@ public class MdCostApproach implements Serializable {
     private BigDecimal landCostPriceUnit;
 
     /**
+     * 土地取得成本（元/亩）
+     */
+    private BigDecimal landCostPriceBhou;
+
+    /**
      * 土地取得费及相关税费
      */
     private BigDecimal landAcquisitionUnit;
+
+    /**
+     * 土地开发利润(元/亩)
+     */
+    private BigDecimal landProductionProfitBhou;
 
     /**
      * 土地开发利润
@@ -211,6 +216,81 @@ public class MdCostApproach implements Serializable {
      * 不含代征地每平税费
      */
     private BigDecimal haveNotLandAcquisition;
+
+    /**
+     * 土地开发利息(元/亩)
+     */
+    private BigDecimal landProductionInterestBhou;
+
+    /**
+     * 土地开发费(元/亩)
+     */
+    private BigDecimal landProductionBhou;
+
+    /**
+     * 土地开发费(元/㎡)
+     */
+    private BigDecimal landProductionUnit;
+
+    /**
+     * 根据masterId获取土地取得费
+     */
+    private BigDecimal landAcquisitionBhou;
+
+    /**
+     *  非耕地比例
+     */
+    private String noPloughArearatio;
+
+    /**
+     *  耕地比例
+     */
+    private String ploughArearatio;
+
+    /**
+     * 年期修正（万元/亩）
+     */
+    private BigDecimal priceCorrectionBhou;
+
+    /**
+     * 年期修正（元/㎡）
+     */
+    private BigDecimal priceCorrectionUnit;
+
+    /**
+     * 宗地个别因素修正(万元/亩)
+     */
+    private BigDecimal plotRatioElementAmendBhou;
+
+    /**
+     * 宗地个别因素修正(元/㎡)
+     */
+    private BigDecimal plotRatioElementAmendUnit;
+
+    /**
+     *  容积率修正(万元/亩)
+     */
+    private BigDecimal plotRatioAdjustBhou;
+
+    /**
+     * 容积率修正(元/㎡)
+     */
+    private BigDecimal plotRatioAdjustUnit;
+
+    /**
+     * 最后更新时间，记录变化后会自动更新时间戳
+     */
+    private Date gmtModified;
+
+    /**
+     * 创建时间
+     */
+    private Date gmtCreated;
+
+    /**
+     * 创建人
+     */
+    private String creator;
 
     /**
      * 修正明细
@@ -639,54 +719,6 @@ public class MdCostApproach implements Serializable {
     }
 
     /**
-     * 创建人
-     * @return creator 创建人
-     */
-    public String getCreator() {
-        return creator;
-    }
-
-    /**
-     * 创建人
-     * @param creator 创建人
-     */
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    /**
-     * 创建时间
-     * @return gmt_created 创建时间
-     */
-    public Date getGmtCreated() {
-        return gmtCreated;
-    }
-
-    /**
-     * 创建时间
-     * @param gmtCreated 创建时间
-     */
-    public void setGmtCreated(Date gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    /**
-     * 最后更新时间，记录变化后会自动更新时间戳
-     * @return gmt_modified 最后更新时间，记录变化后会自动更新时间戳
-     */
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    /**
-     * 最后更新时间，记录变化后会自动更新时间戳
-     * @param gmtModified 最后更新时间，记录变化后会自动更新时间戳
-     */
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
-    /**
      * 剩余年限
      * @return land_remaining_year 剩余年限
      */
@@ -751,6 +783,22 @@ public class MdCostApproach implements Serializable {
     }
 
     /**
+     * 无限年期土地使用权价格(元/亩)
+     * @return land_use_bhou 无限年期土地使用权价格(元/亩)
+     */
+    public BigDecimal getLandUseBhou() {
+        return landUseBhou;
+    }
+
+    /**
+     * 无限年期土地使用权价格(元/亩)
+     * @param landUseBhou 无限年期土地使用权价格(元/亩)
+     */
+    public void setLandUseBhou(BigDecimal landUseBhou) {
+        this.landUseBhou = landUseBhou;
+    }
+
+    /**
      * 无限年期土地使用权价格
      * @return land_use_price 无限年期土地使用权价格
      */
@@ -780,6 +828,22 @@ public class MdCostApproach implements Serializable {
      */
     public void setYearFixed(BigDecimal yearFixed) {
         this.yearFixed = yearFixed;
+    }
+
+    /**
+     * 委估宗地价格(万元/亩)
+     * @return parcel_bhou 委估宗地价格(万元/亩)
+     */
+    public BigDecimal getParcelBhou() {
+        return parcelBhou;
+    }
+
+    /**
+     * 委估宗地价格(万元/亩)
+     * @param parcelBhou 委估宗地价格(万元/亩)
+     */
+    public void setParcelBhou(BigDecimal parcelBhou) {
+        this.parcelBhou = parcelBhou;
     }
 
     /**
@@ -815,6 +879,22 @@ public class MdCostApproach implements Serializable {
     }
 
     /**
+     * 土地取得成本（元/亩）
+     * @return land_cost_price_bhou 土地取得成本（元/亩）
+     */
+    public BigDecimal getLandCostPriceBhou() {
+        return landCostPriceBhou;
+    }
+
+    /**
+     * 土地取得成本（元/亩）
+     * @param landCostPriceBhou 土地取得成本（元/亩）
+     */
+    public void setLandCostPriceBhou(BigDecimal landCostPriceBhou) {
+        this.landCostPriceBhou = landCostPriceBhou;
+    }
+
+    /**
      * 土地取得费及相关税费
      * @return land_acquisition_unit 土地取得费及相关税费
      */
@@ -828,6 +908,22 @@ public class MdCostApproach implements Serializable {
      */
     public void setLandAcquisitionUnit(BigDecimal landAcquisitionUnit) {
         this.landAcquisitionUnit = landAcquisitionUnit;
+    }
+
+    /**
+     * 土地开发利润(元/亩)
+     * @return land_production_profit_bhou 土地开发利润(元/亩)
+     */
+    public BigDecimal getLandProductionProfitBhou() {
+        return landProductionProfitBhou;
+    }
+
+    /**
+     * 土地开发利润(元/亩)
+     * @param landProductionProfitBhou 土地开发利润(元/亩)
+     */
+    public void setLandProductionProfitBhou(BigDecimal landProductionProfitBhou) {
+        this.landProductionProfitBhou = landProductionProfitBhou;
     }
 
     /**
@@ -876,6 +972,246 @@ public class MdCostApproach implements Serializable {
      */
     public void setHaveNotLandAcquisition(BigDecimal haveNotLandAcquisition) {
         this.haveNotLandAcquisition = haveNotLandAcquisition;
+    }
+
+    /**
+     * 土地开发利息(元/亩)
+     * @return land_production_interest_bhou 土地开发利息(元/亩)
+     */
+    public BigDecimal getLandProductionInterestBhou() {
+        return landProductionInterestBhou;
+    }
+
+    /**
+     * 土地开发利息(元/亩)
+     * @param landProductionInterestBhou 土地开发利息(元/亩)
+     */
+    public void setLandProductionInterestBhou(BigDecimal landProductionInterestBhou) {
+        this.landProductionInterestBhou = landProductionInterestBhou;
+    }
+
+    /**
+     * 土地开发费(元/亩)
+     * @return land_production_bhou 土地开发费(元/亩)
+     */
+    public BigDecimal getLandProductionBhou() {
+        return landProductionBhou;
+    }
+
+    /**
+     * 土地开发费(元/亩)
+     * @param landProductionBhou 土地开发费(元/亩)
+     */
+    public void setLandProductionBhou(BigDecimal landProductionBhou) {
+        this.landProductionBhou = landProductionBhou;
+    }
+
+    /**
+     * 土地开发费(元/㎡)
+     * @return land_production_unit 土地开发费(元/㎡)
+     */
+    public BigDecimal getLandProductionUnit() {
+        return landProductionUnit;
+    }
+
+    /**
+     * 土地开发费(元/㎡)
+     * @param landProductionUnit 土地开发费(元/㎡)
+     */
+    public void setLandProductionUnit(BigDecimal landProductionUnit) {
+        this.landProductionUnit = landProductionUnit;
+    }
+
+    /**
+     * 根据masterId获取土地取得费
+     * @return land_acquisition_bhou 根据masterId获取土地取得费
+     */
+    public BigDecimal getLandAcquisitionBhou() {
+        return landAcquisitionBhou;
+    }
+
+    /**
+     * 根据masterId获取土地取得费
+     * @param landAcquisitionBhou 根据masterId获取土地取得费
+     */
+    public void setLandAcquisitionBhou(BigDecimal landAcquisitionBhou) {
+        this.landAcquisitionBhou = landAcquisitionBhou;
+    }
+
+    /**
+     *  非耕地比例
+     * @return no_plough_arearatio  非耕地比例
+     */
+    public String getNoPloughArearatio() {
+        return noPloughArearatio;
+    }
+
+    /**
+     *  非耕地比例
+     * @param noPloughArearatio  非耕地比例
+     */
+    public void setNoPloughArearatio(String noPloughArearatio) {
+        this.noPloughArearatio = noPloughArearatio == null ? null : noPloughArearatio.trim();
+    }
+
+    /**
+     *  耕地比例
+     * @return plough_arearatio  耕地比例
+     */
+    public String getPloughArearatio() {
+        return ploughArearatio;
+    }
+
+    /**
+     *  耕地比例
+     * @param ploughArearatio  耕地比例
+     */
+    public void setPloughArearatio(String ploughArearatio) {
+        this.ploughArearatio = ploughArearatio == null ? null : ploughArearatio.trim();
+    }
+
+    /**
+     * 年期修正（万元/亩）
+     * @return price_correction_bhou 年期修正（万元/亩）
+     */
+    public BigDecimal getPriceCorrectionBhou() {
+        return priceCorrectionBhou;
+    }
+
+    /**
+     * 年期修正（万元/亩）
+     * @param priceCorrectionBhou 年期修正（万元/亩）
+     */
+    public void setPriceCorrectionBhou(BigDecimal priceCorrectionBhou) {
+        this.priceCorrectionBhou = priceCorrectionBhou;
+    }
+
+    /**
+     * 年期修正（元/㎡）
+     * @return price_correction_unit 年期修正（元/㎡）
+     */
+    public BigDecimal getPriceCorrectionUnit() {
+        return priceCorrectionUnit;
+    }
+
+    /**
+     * 年期修正（元/㎡）
+     * @param priceCorrectionUnit 年期修正（元/㎡）
+     */
+    public void setPriceCorrectionUnit(BigDecimal priceCorrectionUnit) {
+        this.priceCorrectionUnit = priceCorrectionUnit;
+    }
+
+    /**
+     * 宗地个别因素修正(万元/亩)
+     * @return plot_ratio_element_amend_bhou 宗地个别因素修正(万元/亩)
+     */
+    public BigDecimal getPlotRatioElementAmendBhou() {
+        return plotRatioElementAmendBhou;
+    }
+
+    /**
+     * 宗地个别因素修正(万元/亩)
+     * @param plotRatioElementAmendBhou 宗地个别因素修正(万元/亩)
+     */
+    public void setPlotRatioElementAmendBhou(BigDecimal plotRatioElementAmendBhou) {
+        this.plotRatioElementAmendBhou = plotRatioElementAmendBhou;
+    }
+
+    /**
+     * 宗地个别因素修正(元/㎡)
+     * @return plot_ratio_element_amend_unit 宗地个别因素修正(元/㎡)
+     */
+    public BigDecimal getPlotRatioElementAmendUnit() {
+        return plotRatioElementAmendUnit;
+    }
+
+    /**
+     * 宗地个别因素修正(元/㎡)
+     * @param plotRatioElementAmendUnit 宗地个别因素修正(元/㎡)
+     */
+    public void setPlotRatioElementAmendUnit(BigDecimal plotRatioElementAmendUnit) {
+        this.plotRatioElementAmendUnit = plotRatioElementAmendUnit;
+    }
+
+    /**
+     *  容积率修正(万元/亩)
+     * @return plot_ratio_adjust_bhou  容积率修正(万元/亩)
+     */
+    public BigDecimal getPlotRatioAdjustBhou() {
+        return plotRatioAdjustBhou;
+    }
+
+    /**
+     *  容积率修正(万元/亩)
+     * @param plotRatioAdjustBhou  容积率修正(万元/亩)
+     */
+    public void setPlotRatioAdjustBhou(BigDecimal plotRatioAdjustBhou) {
+        this.plotRatioAdjustBhou = plotRatioAdjustBhou;
+    }
+
+    /**
+     * 容积率修正(元/㎡)
+     * @return plot_ratio_adjust_unit 容积率修正(元/㎡)
+     */
+    public BigDecimal getPlotRatioAdjustUnit() {
+        return plotRatioAdjustUnit;
+    }
+
+    /**
+     * 容积率修正(元/㎡)
+     * @param plotRatioAdjustUnit 容积率修正(元/㎡)
+     */
+    public void setPlotRatioAdjustUnit(BigDecimal plotRatioAdjustUnit) {
+        this.plotRatioAdjustUnit = plotRatioAdjustUnit;
+    }
+
+    /**
+     * 最后更新时间，记录变化后会自动更新时间戳
+     * @return gmt_modified 最后更新时间，记录变化后会自动更新时间戳
+     */
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    /**
+     * 最后更新时间，记录变化后会自动更新时间戳
+     * @param gmtModified 最后更新时间，记录变化后会自动更新时间戳
+     */
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    /**
+     * 创建时间
+     * @return gmt_created 创建时间
+     */
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    /**
+     * 创建时间
+     * @param gmtCreated 创建时间
+     */
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
+
+    /**
+     * 创建人
+     * @return creator 创建人
+     */
+    public String getCreator() {
+        return creator;
+    }
+
+    /**
+     * 创建人
+     * @param creator 创建人
+     */
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     /**
@@ -971,6 +1307,15 @@ public class MdCostApproach implements Serializable {
          */
         public Builder ploughArea(BigDecimal ploughArea) {
             obj.setPloughArea(ploughArea);
+            return this;
+        }
+
+        /**
+         *  耕地比例
+         * @param ploughArearatio  耕地比例
+         */
+        public Builder ploughArearatio(String ploughArearatio) {
+            obj.setPloughArearatio(ploughArearatio);
             return this;
         }
 
@@ -1119,6 +1464,24 @@ public class MdCostApproach implements Serializable {
         }
 
         /**
+         * 容积率修正(元/㎡)
+         * @param plotRatioAdjustUnit 容积率修正(元/㎡)
+         */
+        public Builder plotRatioAdjustUnit(BigDecimal plotRatioAdjustUnit) {
+            obj.setPlotRatioAdjustUnit(plotRatioAdjustUnit);
+            return this;
+        }
+
+        /**
+         *  容积率修正(万元/亩)
+         * @param plotRatioAdjustBhou  容积率修正(万元/亩)
+         */
+        public Builder plotRatioAdjustBhou(BigDecimal plotRatioAdjustBhou) {
+            obj.setPlotRatioAdjustBhou(plotRatioAdjustBhou);
+            return this;
+        }
+
+        /**
          * 容积率调整说明
          * @param plotRatioAdjustRemark 容积率调整说明
          */
@@ -1137,38 +1500,29 @@ public class MdCostApproach implements Serializable {
         }
 
         /**
+         * 宗地个别因素修正(元/㎡)
+         * @param plotRatioElementAmendUnit 宗地个别因素修正(元/㎡)
+         */
+        public Builder plotRatioElementAmendUnit(BigDecimal plotRatioElementAmendUnit) {
+            obj.setPlotRatioElementAmendUnit(plotRatioElementAmendUnit);
+            return this;
+        }
+
+        /**
+         * 宗地个别因素修正(万元/亩)
+         * @param plotRatioElementAmendBhou 宗地个别因素修正(万元/亩)
+         */
+        public Builder plotRatioElementAmendBhou(BigDecimal plotRatioElementAmendBhou) {
+            obj.setPlotRatioElementAmendBhou(plotRatioElementAmendBhou);
+            return this;
+        }
+
+        /**
          * 容积率个别因素修正说明
          * @param plotRatioElementAmendRemark 容积率个别因素修正说明
          */
         public Builder plotRatioElementAmendRemark(String plotRatioElementAmendRemark) {
             obj.setPlotRatioElementAmendRemark(plotRatioElementAmendRemark);
-            return this;
-        }
-
-        /**
-         * 创建人
-         * @param creator 创建人
-         */
-        public Builder creator(String creator) {
-            obj.setCreator(creator);
-            return this;
-        }
-
-        /**
-         * 创建时间
-         * @param gmtCreated 创建时间
-         */
-        public Builder gmtCreated(Date gmtCreated) {
-            obj.setGmtCreated(gmtCreated);
-            return this;
-        }
-
-        /**
-         * 最后更新时间，记录变化后会自动更新时间戳
-         * @param gmtModified 最后更新时间，记录变化后会自动更新时间戳
-         */
-        public Builder gmtModified(Date gmtModified) {
-            obj.setGmtModified(gmtModified);
             return this;
         }
 
@@ -1209,6 +1563,15 @@ public class MdCostApproach implements Serializable {
         }
 
         /**
+         * 无限年期土地使用权价格(元/亩)
+         * @param landUseBhou 无限年期土地使用权价格(元/亩)
+         */
+        public Builder landUseBhou(BigDecimal landUseBhou) {
+            obj.setLandUseBhou(landUseBhou);
+            return this;
+        }
+
+        /**
          * 无限年期土地使用权价格
          * @param landUsePrice 无限年期土地使用权价格
          */
@@ -1223,6 +1586,15 @@ public class MdCostApproach implements Serializable {
          */
         public Builder yearFixed(BigDecimal yearFixed) {
             obj.setYearFixed(yearFixed);
+            return this;
+        }
+
+        /**
+         * 委估宗地价格(万元/亩)
+         * @param parcelBhou 委估宗地价格(万元/亩)
+         */
+        public Builder parcelBhou(BigDecimal parcelBhou) {
+            obj.setParcelBhou(parcelBhou);
             return this;
         }
 
@@ -1245,11 +1617,29 @@ public class MdCostApproach implements Serializable {
         }
 
         /**
+         * 土地取得成本（元/亩）
+         * @param landCostPriceBhou 土地取得成本（元/亩）
+         */
+        public Builder landCostPriceBhou(BigDecimal landCostPriceBhou) {
+            obj.setLandCostPriceBhou(landCostPriceBhou);
+            return this;
+        }
+
+        /**
          * 土地取得费及相关税费
          * @param landAcquisitionUnit 土地取得费及相关税费
          */
         public Builder landAcquisitionUnit(BigDecimal landAcquisitionUnit) {
             obj.setLandAcquisitionUnit(landAcquisitionUnit);
+            return this;
+        }
+
+        /**
+         * 土地开发利润(元/亩)
+         * @param landProductionProfitBhou 土地开发利润(元/亩)
+         */
+        public Builder landProductionProfitBhou(BigDecimal landProductionProfitBhou) {
+            obj.setLandProductionProfitBhou(landProductionProfitBhou);
             return this;
         }
 
@@ -1277,6 +1667,96 @@ public class MdCostApproach implements Serializable {
          */
         public Builder haveNotLandAcquisition(BigDecimal haveNotLandAcquisition) {
             obj.setHaveNotLandAcquisition(haveNotLandAcquisition);
+            return this;
+        }
+
+        /**
+         * 土地开发利息(元/亩)
+         * @param landProductionInterestBhou 土地开发利息(元/亩)
+         */
+        public Builder landProductionInterestBhou(BigDecimal landProductionInterestBhou) {
+            obj.setLandProductionInterestBhou(landProductionInterestBhou);
+            return this;
+        }
+
+        /**
+         * 土地开发费(元/亩)
+         * @param landProductionBhou 土地开发费(元/亩)
+         */
+        public Builder landProductionBhou(BigDecimal landProductionBhou) {
+            obj.setLandProductionBhou(landProductionBhou);
+            return this;
+        }
+
+        /**
+         * 土地开发费(元/㎡)
+         * @param landProductionUnit 土地开发费(元/㎡)
+         */
+        public Builder landProductionUnit(BigDecimal landProductionUnit) {
+            obj.setLandProductionUnit(landProductionUnit);
+            return this;
+        }
+
+        /**
+         * 根据masterId获取土地取得费
+         * @param landAcquisitionBhou 根据masterId获取土地取得费
+         */
+        public Builder landAcquisitionBhou(BigDecimal landAcquisitionBhou) {
+            obj.setLandAcquisitionBhou(landAcquisitionBhou);
+            return this;
+        }
+
+        /**
+         *  非耕地比例
+         * @param noPloughArearatio  非耕地比例
+         */
+        public Builder noPloughArearatio(String noPloughArearatio) {
+            obj.setNoPloughArearatio(noPloughArearatio);
+            return this;
+        }
+
+        /**
+         * 年期修正（万元/亩）
+         * @param priceCorrectionBhou 年期修正（万元/亩）
+         */
+        public Builder priceCorrectionBhou(BigDecimal priceCorrectionBhou) {
+            obj.setPriceCorrectionBhou(priceCorrectionBhou);
+            return this;
+        }
+
+        /**
+         * 年期修正（元/㎡）
+         * @param priceCorrectionUnit 年期修正（元/㎡）
+         */
+        public Builder priceCorrectionUnit(BigDecimal priceCorrectionUnit) {
+            obj.setPriceCorrectionUnit(priceCorrectionUnit);
+            return this;
+        }
+
+        /**
+         * 最后更新时间，记录变化后会自动更新时间戳
+         * @param gmtModified 最后更新时间，记录变化后会自动更新时间戳
+         */
+        public Builder gmtModified(Date gmtModified) {
+            obj.setGmtModified(gmtModified);
+            return this;
+        }
+
+        /**
+         * 创建时间
+         * @param gmtCreated 创建时间
+         */
+        public Builder gmtCreated(Date gmtCreated) {
+            obj.setGmtCreated(gmtCreated);
+            return this;
+        }
+
+        /**
+         * 创建人
+         * @param creator 创建人
+         */
+        public Builder creator(String creator) {
+            obj.setCreator(creator);
             return this;
         }
 
@@ -1321,21 +1801,37 @@ public class MdCostApproach implements Serializable {
         plotRatioAdjustRemark("plot_ratio_adjust_remark", "plotRatioAdjustRemark", "VARCHAR", false),
         plotRatioElementAmend("plot_ratio_element_amend", "plotRatioElementAmend", "DECIMAL", false),
         plotRatioElementAmendRemark("plot_ratio_element_amend_remark", "plotRatioElementAmendRemark", "VARCHAR", false),
-        creator("creator", "creator", "VARCHAR", false),
-        gmtCreated("gmt_created", "gmtCreated", "TIMESTAMP", false),
-        gmtModified("gmt_modified", "gmtModified", "TIMESTAMP", false),
         landRemainingYear("land_remaining_year", "landRemainingYear", "DECIMAL", false),
         landRemainingYearRemark("land_remaining_year_remark", "landRemainingYearRemark", "VARCHAR", false),
         parcelSettingOuter("parcel_setting_outer", "parcelSettingOuter", "VARCHAR", false),
         parcelSettingInner("parcel_setting_inner", "parcelSettingInner", "VARCHAR", false),
+        landUseBhou("land_use_bhou", "landUseBhou", "DECIMAL", false),
         landUsePrice("land_use_price", "landUsePrice", "DECIMAL", false),
         yearFixed("year_fixed", "yearFixed", "DECIMAL", false),
+        parcelBhou("parcel_bhou", "parcelBhou", "DECIMAL", false),
         parcelUnit("parcel_unit", "parcelUnit", "DECIMAL", false),
         landCostPriceUnit("land_cost_price_unit", "landCostPriceUnit", "DECIMAL", false),
+        landCostPriceBhou("land_cost_price_bhou", "landCostPriceBhou", "DECIMAL", false),
         landAcquisitionUnit("land_acquisition_unit", "landAcquisitionUnit", "DECIMAL", false),
+        landProductionProfitBhou("land_production_profit_bhou", "landProductionProfitBhou", "DECIMAL", false),
         landProductionProfitUnit("land_production_profit_unit", "landProductionProfitUnit", "DECIMAL", false),
         landProductionInterestUnit("land_production_interest_unit", "landProductionInterestUnit", "DECIMAL", false),
         haveNotLandAcquisition("have_not_land_acquisition", "haveNotLandAcquisition", "DECIMAL", false),
+        landProductionInterestBhou("land_production_interest_bhou", "landProductionInterestBhou", "DECIMAL", false),
+        landProductionBhou("land_production_bhou", "landProductionBhou", "DECIMAL", false),
+        landProductionUnit("land_production_unit", "landProductionUnit", "DECIMAL", false),
+        landAcquisitionBhou("land_acquisition_bhou", "landAcquisitionBhou", "DECIMAL", false),
+        noPloughArearatio("no_plough_arearatio", "noPloughArearatio", "VARCHAR", false),
+        ploughArearatio("plough_arearatio", "ploughArearatio", "VARCHAR", false),
+        priceCorrectionBhou("price_correction_bhou", "priceCorrectionBhou", "DECIMAL", false),
+        priceCorrectionUnit("price_correction_unit", "priceCorrectionUnit", "DECIMAL", false),
+        plotRatioElementAmendBhou("plot_ratio_element_amend_bhou", "plotRatioElementAmendBhou", "DECIMAL", false),
+        plotRatioElementAmendUnit("plot_ratio_element_amend_unit", "plotRatioElementAmendUnit", "DECIMAL", false),
+        plotRatioAdjustBhou("plot_ratio_adjust_bhou", "plotRatioAdjustBhou", "DECIMAL", false),
+        plotRatioAdjustUnit("plot_ratio_adjust_unit", "plotRatioAdjustUnit", "DECIMAL", false),
+        gmtModified("gmt_modified", "gmtModified", "TIMESTAMP", false),
+        gmtCreated("gmt_created", "gmtCreated", "TIMESTAMP", false),
+        creator("creator", "creator", "VARCHAR", false),
         landLevelContent("land_level_content", "landLevelContent", "LONGVARCHAR", false);
 
         /**
