@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -16,11 +17,13 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -124,6 +127,21 @@ public class MdBaseLandPriceController {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");
+        }
+    }
+
+    @PostMapping(value = "/calculationNumeric", name = "后台自动计算")
+    public HttpResult calculationNumeric(String fomData, BigDecimal dateAmend, BigDecimal volumeFractionAmend) {
+        try {
+            MdBaseLandPrice target = JSONObject.parseObject(fomData, MdBaseLandPrice.class);
+            if (dateAmend == null){
+//                dateAmend = new BigDecimal("1.250") ;
+            }
+            mdBaseLandPriceService.calculationNumeric(target,dateAmend,volumeFractionAmend);
+            return HttpResult.newCorrectResult(200, target);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("请检查输入的数据");
         }
     }
 

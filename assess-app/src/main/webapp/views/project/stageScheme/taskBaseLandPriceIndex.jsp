@@ -45,7 +45,6 @@
             return false;
         }
         var formData = formParams("master");
-        formData.rewardRate = AssessCommon.pointToPercent(formData.rewardRate);
         formData.dateAmend = $.trim($("#dateAmend").text()) ? $("#dateAmend").text() : '';
         formData.periodAmend = $.trim($("#periodAmend").text()) ? $("#periodAmend").text() : '';
         formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").text()) ? $("#volumeFractionAmend").text() : '';
