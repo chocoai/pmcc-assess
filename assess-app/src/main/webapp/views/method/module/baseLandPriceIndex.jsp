@@ -87,8 +87,9 @@
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <input type="text"
-                                           class="form-control x-percent"
-                                           name="areaAndSeveralAmend"
+                                           class="form-control x-percent" onblur="calculationNumeric(this);"
+                                           name="areaAndSeveralAmend" value="${master.areaAndSeveralAmend}"
+                                           data-value="${master.areaAndSeveralAmend}"
                                            id="areaAndSeveralAmend">
                                 </div>
                             </div>
@@ -147,7 +148,7 @@
                                        class="form-control input-full"
                                        id="standardPremium" name="standardPremium"
                                        required
-                                       onblur="getParcelPrice()"
+                                       onblur="calculationNumeric(this);"
                                        value="${master.standardPremium}"
                                        data-rule-number="true">
                             </div>
@@ -173,10 +174,9 @@
                                 <div class="input-group">
                                     <input type="text" required
                                            class="form-control x-percent"
-                                           id="rewardRate"
+                                           id="rewardRate" onblur="calculationNumeric(this);"
                                            name="rewardRate" placeholder="还原率"
-                                           readonly="readonly"
-                                           value="${master.rewardRate}">
+                                           value="${master.rewardRate}" data-value="${master.rewardRate}" >
 
                                     <div class="input-group-prepend">
                                         <input type="hidden" name="rewardRateId"
@@ -203,7 +203,7 @@
                                        class="form-control input-full"
                                        id="legalAge"
                                        name="legalAge" required
-                                       onblur="getPeriodAmend()"
+                                       onblur="calculationNumeric(this);"
                                        value="${master.legalAge}"
                                        data-rule-number="true">
                             </div>
@@ -229,7 +229,7 @@
                                        class="form-control input-full"
                                        id="landSurplusYear"
                                        name="landSurplusYear" required
-                                       onblur="getPeriodAmend()"
+                                       onblur="calculationNumeric(this);"
                                        value="${master.landSurplusYear}"
                                        data-rule-number="true">
                             </div>
@@ -257,7 +257,7 @@
                                        class="form-control input-full"
                                        id="developCorrect"
                                        name="developCorrect" required
-                                       onblur="getParcelPrice()"
+                                       onblur="calculationNumeric(this);"
                                        value="${master.developCorrect}"
                                        data-rule-number="true">
                             </div>
@@ -284,7 +284,7 @@
                                        class="form-control input-full"
                                        id="evaluationArea"
                                        name="evaluationArea" required
-                                       onblur="getParcelPrice()"
+                                       onblur="calculationNumeric(this);"
                                        value="${master.evaluationArea}"
                                        data-rule-number="true">
                             </div>
@@ -311,7 +311,7 @@
                                        class="form-control input-full"
                                        id="volumetricRate"
                                        name="volumetricRate" required
-                                       onblur="getParcelPrice()"
+                                       onblur="calculationNumeric(this);"
                                        value="${master.volumetricRate}"
                                        data-rule-number="true">
                             </div>
@@ -430,83 +430,9 @@
                 group.find('[name=rewardRateId]').val(data.id);
                 var element = group.find(':text');
                 element.val(data.resultValue);
-                AssessCommon.elementParsePoint(group.find('[name=rewardRate]').val(data.resultValue));
-                //获取年期修正系数
-                getPeriodAmend();
+                AssessCommon.elementParsePoint(group.find('[name=rewardRate]').val(data.resultValue)).trigger('blur');
             }
         })
-    }
-
-    //获取委估宗地单价（元/㎡）
-    function getParcelPrice() {
-        //基准地价E4
-        var standardPremium = parseFloat($("#standardPremium").val());
-        //期日修正系数E5
-        var dateAmend = parseFloat($("#dateAmend").text());
-        //年期修正系数E6
-        var periodAmend = parseFloat($("#periodAmend").text());
-        //容积率修正E10
-        var volumeFractionAmend = parseFloat($("#volumeFractionAmend").text());
-        //区域及个别修正系数E11
-        var areaAndSeveralAmend = parseFloat(AssessCommon.percentToPoint($("#areaAndSeveralAmend").val())) ? parseFloat(AssessCommon.percentToPoint($("#areaAndSeveralAmend").val())) : 0;
-        //开发程度修正E12
-        var developCorrect = parseFloat($("#developCorrect").val()) ? parseFloat($("#developCorrect").val()) : 0;
-        //委估宗地面积E15
-        var evaluationArea = parseFloat($("#evaluationArea").val());
-        //委估对象容积率G17
-        var volumetricRate = parseFloat($("#volumetricRate").val());
-
-        if (standardPremium && dateAmend && periodAmend && volumeFractionAmend) {
-            var money = standardPremium * dateAmend * periodAmend * volumeFractionAmend * (1 + areaAndSeveralAmend) + developCorrect;
-            if (money) {
-                //宗地单价
-                $("#parcelPrice").text(getSomePlaces(money, 2));
-                //宗地亩价
-                $("#parcelBhouPrice").text(getBhouPrice(money, 2));
-                //宗地总价
-                if (evaluationArea) {
-                    $("#parcelTotalPrice").text(getSomePlaces(evaluationArea * money / 10000, 2));
-                }
-                //楼面地价
-                if (volumetricRate) {
-                    $("#floorPremium").text(getSomePlaces(money / volumetricRate, 2));
-                }
-                //修正差额
-                $("#correctionDifference").text(getSomePlaces((money / standardPremium - 1) * 100, 2) + "%");
-            }
-        }
-    }
-
-    //获取一亩的价
-    function getBhouPrice(num, v) {
-        return getSomePlaces(num * AssessCommon.BHOU / 10000, v);
-    }
-
-    //v取几位小数
-    function getSomePlaces(num, v) {
-        var vv = Math.pow(10, v);
-        return Math.round(num * vv) / vv;
-    }
-
-    //获取年期修正系数
-    function getPeriodAmend() {
-        //E7
-        var rewardRate = parseFloat(AssessCommon.percentToPoint($("#rewardRate").val()));
-        //E9
-        var landSurplusYear = parseFloat($("#landSurplusYear").val());
-        //E8
-        var legalAge = parseFloat($("#legalAge").val());
-        //(1-1/(1+E7)^E9)/(1-1/(1+E7)^E8)
-        if (rewardRate && landSurplusYear && legalAge) {
-            var temp = 1 / Math.pow(1 + parseFloat(rewardRate), landSurplusYear);
-
-            var temp2 = 1 / Math.pow(1 + parseFloat(rewardRate), legalAge);
-            var result = (1 - temp) / (1 - temp2);
-
-            $("#periodAmend").text(getSomePlaces(result, 4))
-        }
-        //获取委估宗地单价（元/㎡）
-        getParcelPrice();
     }
 
     //土地指数表
@@ -588,7 +514,7 @@
                 tableId: '${landLevelId}'
             },
             deleteFlag: false
-        })
+        });
 
         var landLevelContent = $("#landLevelContent").val();
         if (landLevelContent) {
@@ -771,10 +697,6 @@
         } else {
             $("#areaAndSeveralAmend").val('');
         }
-
-        //获取委估宗地单价（元/㎡）
-        getParcelPrice();
-        getPeriodAmend();
     }
 
     //删除呀
@@ -810,23 +732,23 @@
     //change 事件 因素分自动调整
     function landLevelHandle(that) {
         var td = $(that).closest('td');
-        var landLevelGrade = td.find("select[name=landLevelGrade]").find("option:selected").val() ;
-        var landLevelContent = $(that).closest('tr').find('[name=landLevelContent]').val() ;
-        if (! landLevelContent) {
-            return false ;
+        var landLevelGrade = td.find("select[name=landLevelGrade]").find("option:selected").val();
+        var landLevelContent = $(that).closest('tr').find('[name=landLevelContent]').val();
+        if (!landLevelContent) {
+            return false;
         }
-        var objArr = jQuery.parseJSON(landLevelContent) ;
+        var objArr = jQuery.parseJSON(landLevelContent);
         if (!$.isArray(objArr)) {
-            return false ;
+            return false;
         }
         var achievement = $(that).closest('tr').find('[name=landFactorTotalScore]');
-        $.each(objArr ,function (k,obj) {
+        $.each(objArr, function (k, obj) {
             if (obj.grade == landLevelGrade) {
                 achievement.attr('data-value', obj.achievement);
                 AssessCommon.elementParsePercent(achievement);
-                getAreaAndSeveralAmend() ;
+                getAreaAndSeveralAmend();
             }
-        }) ;
+        });
     };
 
     $(function () {
@@ -853,8 +775,44 @@
         if (!'${master.volumetricRate}') {
             $("#volumetricRate").val(getSomePlaces(parseFloat('${volumetricRate}'), 2));
         }
-
-        getPeriodAmend();
+        calculationNumeric();
     });
 
+    //v取几位小数
+    function getSomePlaces(num, v) {
+        var vv = Math.pow(10, v);
+        return Math.round(num * vv) / vv;
+    }
+
+</script>
+
+<script>
+
+    function calculationNumeric(that) {
+        var formData = formParams("master");
+        formData.dateAmend = $.trim($("#dateAmend").text()) ? $("#dateAmend").text() : '';
+        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").text()) ? $("#volumeFractionAmend").text() : '';
+        formData.areaAndSeveralAmend = AssessCommon.percentToPoint($("#areaAndSeveralAmend").val());
+        $.ajax({
+            url: getContextPath() + "/baseLandPrice/calculationNumeric",
+            type: "post",
+            data: {
+                fomData: JSON.stringify(formData),
+                dateAmend: formData.dateAmend,
+                volumeFractionAmend: formData.volumeFractionAmend
+            },
+            success: function (result) {
+                var data = result.data;
+                if (data) {
+                    console.log(data);
+                    $("#correctionDifference").text(data.correctionDifference);
+                    $("#periodAmend").text(data.periodAmend);
+                    $("#parcelPrice").text(data.parcelPrice);
+                    $("#parcelTotalPrice").text(data.parcelTotalPrice);
+                    $("#parcelBhouPrice").text(data.parcelBhouPrice);
+                    $("#floorPremium").text(data.floorPremium);
+                }
+            }
+        })
+    }
 </script>
