@@ -19,8 +19,11 @@
             AND E.user_account_manager = #{userAccount}
         </if>
         ) AND A.bis_delete=0
-        <if test="projectPhaseId!=null">
-            AND B.project_phase_id = #{projectPhaseId}
+        <if test="projectPhaseIds != null and projectPhaseIds.size()>0">
+            and B.project_phase_id in
+            <foreach collection="projectPhaseIds" item="projectPhaseId" index="index" open="(" close=")" separator=",">
+                #{projectPhaseId}
+            </foreach>
         </if>
         GROUP BY A.estate_name
         ORDER BY A.id DESC
