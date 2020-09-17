@@ -307,13 +307,10 @@ public class ProjectPlanDetailsService {
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         List<Integer> phaseFullIds = Lists.newArrayList();
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        ProjectPhase caseStudyChildPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.COMMON_CASE_STUDY_EXAMINE);
-        ProjectPhase caseStudyExtendPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
+        ProjectPhase caseStudyExtendPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectInfo.getProjectCategoryId());
         if (sceneExplorePhase != null)
             phaseFullIds.add(sceneExplorePhase.getId());
-        if (caseStudyChildPhase != null)
-            phaseFullIds.add(caseStudyChildPhase.getId());
         if (caseStudyExtendPhase != null)
             phaseFullIds.add(caseStudyExtendPhase.getId());
         String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
@@ -688,7 +685,7 @@ public class ProjectPlanDetailsService {
      * @return
      */
     public List<ProjectPlanDetails> getProjectPlanDetailsByPhaseKey(Integer projectId, Integer categoryId, String phaseKey) {
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(phaseKey, categoryId);
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(phaseKey, categoryId);
         if (projectPhase == null) return null;
         ProjectPlanDetails where = new ProjectPlanDetails();
         where.setProjectId(projectId);

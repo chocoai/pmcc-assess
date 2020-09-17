@@ -419,9 +419,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/batchSaveDeclareRecordId", name = "批量设置权证", method = {RequestMethod.POST})
-    public HttpResult batchSaveDeclareRecordId(String applyBatchDetailIds, String declareRecordIds,String declareRecordName) {
+    public HttpResult batchSaveDeclareRecordId(String applyBatchDetailIds, String declareRecordIds, String declareRecordName) {
         try {
-            basicApplyBatchDetailService.batchSaveDeclareRecordId(applyBatchDetailIds, declareRecordIds,declareRecordName);
+            basicApplyBatchDetailService.batchSaveDeclareRecordId(applyBatchDetailIds, declareRecordIds, declareRecordName);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
@@ -481,13 +481,11 @@ public class BasicApplyBatchController extends BaseController {
         BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(estateTaggingTypeEnum.getKey());
         ModelAndView modelAndView = entityAbstract.getEditModelAndView(basicFormClassifyParamDto);
         modelAndView.addObject("planDetailsId", basicFormClassifyParamDto.getPlanDetailsId());
-        //交易案例
-        ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
-        ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
         if (projectPlanDetails != null) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-            if (caseStudyExtend.getId().equals(projectPhase.getId()) || caseStudyLand.getId().equals(projectPhase.getId())) {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+            ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectInfo.getProjectCategoryId());
+            if (caseStudyExtend.getId().equals(projectPlanDetails.getProjectPhaseId())) {
                 modelAndView.addObject("projectPhase", "caseStudyExtend");
             }
         }
@@ -555,14 +553,11 @@ public class BasicApplyBatchController extends BaseController {
         detailsModelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(basicFormClassifyParamDto.getFormType()).getKey());
         detailsModelAndView.addObject("isHistory", basicFormClassifyParamDto.getHistory());
         detailsModelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
-
-        //交易案例
-        ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
-        ProjectPhase caseStudyLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicFormClassifyParamDto.getPlanDetailsId());
         if (projectPlanDetails != null) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
-            if (projectPhase != null && (caseStudyExtend.getId().equals(projectPhase.getId()) || caseStudyLand.getId().equals(projectPhase.getId()))) {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+            ProjectPhase caseStudyExtend = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectInfo.getProjectCategoryId());
+            if (caseStudyExtend.getId().equals(projectPlanDetails.getProjectPhaseId())) {
                 detailsModelAndView.addObject("projectPhase", "caseStudyExtend");
             }
         }
@@ -778,12 +773,12 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/autoCompleteCaseOther", method = {RequestMethod.GET}, name = "楼栋、单元、房屋信息自动补全")
-    public HttpResult autoCompleteCaseOther(Integer quoteId,String name) {
+    public HttpResult autoCompleteCaseOther(Integer quoteId, String name) {
         try {
             List<BasicApplyBatchDetail> detailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(quoteId, name);
             return HttpResult.newCorrectResult(detailList);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("异常");
         }
     }
@@ -795,7 +790,7 @@ public class BasicApplyBatchController extends BaseController {
             Boolean aBoolean = basicApplyBatchService.isNeedReferenceEstate(projectId, batchDetailId, province, city, estateName);
             return HttpResult.newCorrectResult(aBoolean);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("异常");
         }
     }

@@ -3716,7 +3716,7 @@ public class GenerateBaseDataService {
                 schemeJudgeObjectList.add(oo);
             }
         }
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         ProjectPlanDetails query = new ProjectPlanDetails();
         query.setProjectId(projectInfo.getId());
         query.setProjectPhaseId(projectPhase.getId());

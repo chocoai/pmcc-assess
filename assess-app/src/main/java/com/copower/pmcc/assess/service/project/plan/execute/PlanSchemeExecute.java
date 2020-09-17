@@ -46,7 +46,7 @@ public class PlanSchemeExecute implements ProjectPlanExecuteInterface {
 
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
             SysUserDto projectManager = erpRpcUserService.getSysUser(projectMemberService.getProjectManager(projectInfo.getId()));
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSESS_SCHEME_PROGRAMME_SETTING, projectInfo.getProjectCategoryId());
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.ASSESS_SCHEME_PROGRAMME_SETTING, projectInfo.getProjectCategoryId());
 
             ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
             projectPlanDetails.setProjectWorkStageId(projectPlan.getWorkStageId());

@@ -10,8 +10,9 @@
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <div class="page-inner">
-                <div class="row">
+            <%@include file="/views/share/common_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -76,12 +77,14 @@
                                                     <div class="input-group">
                                                         <label class="form-control"
                                                                name="name">${basicEstate.name}</label>
-
-                                                        <span class="input-group-btn">
-                        <div onclick="estateCommon.mapMarker();" class="btn btn-info"><i
-                                class="fa fa-map-marker"></i> 标注</div>
-
-                        </span>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-info btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="estateCommon.mapMarker(true);">
+                                                                标注
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">地块方位</label>

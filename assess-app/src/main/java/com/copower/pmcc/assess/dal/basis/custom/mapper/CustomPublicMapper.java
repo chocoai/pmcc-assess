@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface CustomPublicMapper {
     //查询楼盘被查勘的次数
-    List<CustomSurveyEstateTimes> getSurveyEstateTimesList(@Param("userAccount") String userAccount, @Param("projectPhaseId") Integer projectPhaseId);//查询
+    List<CustomSurveyEstateTimes> getSurveyEstateTimesList(@Param("userAccount") String userAccount, @Param("projectPhaseIds") List<Integer> projectPhaseIds);//查询
 }

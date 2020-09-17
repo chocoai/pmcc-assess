@@ -513,8 +513,8 @@ public class SchemeAreaGroupService {
         List<ProjectPhase> judgeProjectPhases = Lists.newArrayList();
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(entrustPurpose);
         if (baseDataDic != null && StringUtils.equals(baseDataDic.getFieldName(), AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE)) {//如果是抵押评估还需添加事项，变现分析税费、法定优先受偿款
-            ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
-            ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
+            ProjectPhase phaseLiquidationAnalysis = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.LIQUIDATION_ANALYSIS, projectInfo.getProjectCategoryId());
+            ProjectPhase phaseReimbursement = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.REIMBURSEMENT, projectInfo.getProjectCategoryId());
             judgeProjectPhases.add(phaseLiquidationAnalysis);
             judgeProjectPhases.add(phaseReimbursement);
         }

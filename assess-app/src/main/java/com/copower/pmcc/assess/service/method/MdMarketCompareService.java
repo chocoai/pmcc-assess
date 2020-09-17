@@ -90,7 +90,7 @@ public class MdMarketCompareService {
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
     @Autowired
-    private BasicEstateLandStateService basicEstateLandStateService;
+    private ProjectInfoService projectInfoService;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -584,12 +584,10 @@ public class MdMarketCompareService {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         List<Integer> projectPhaseIds = Lists.newArrayList();
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
-        ProjectPhase projectPhaseLand = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_LAND);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectInfo.getProjectCategoryId());
         if (projectPhase != null)
             projectPhaseIds.add(projectPhase.getId());
-        if (projectPhaseLand != null)
-            projectPhaseIds.add(projectPhaseLand.getId());
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getProjectPlanDetailsList(projectId, projectPhaseIds, projectPhaseName);
         List<MdCompareCaseVo> voList = Lists.newArrayList();

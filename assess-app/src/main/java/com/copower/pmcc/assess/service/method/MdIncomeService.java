@@ -45,6 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.Collator;
 import java.util.*;
 
@@ -1503,8 +1504,9 @@ public class MdIncomeService {
 
         //计算总收入 月租金*出租率*月份数+其它收入
         BigDecimal total = mdIncomeLease.getRentalIncome().multiply(mdIncomeLease.getRentals())
-                .multiply(new BigDecimal(mdIncomeLease.getMonthNumber())).multiply(new BigDecimal(mdIncomeLease.getAdditionalCapture()));
-        total = total.add(mdIncomeLease.getOtherIncome());
+                .multiply(new BigDecimal(mdIncomeLease.getMonthNumber()))
+                .multiply(new BigDecimal(mdIncomeLease.getAdditionalCapture())).setScale(2, RoundingMode.HALF_UP);
+        total = total.add(mdIncomeLease.getOtherIncome().setScale(2, RoundingMode.HALF_UP));
         MdIncomeDateSection incomeDateSection = mdIncomeDateSectionDao.getDateSectionById(mdIncomeLease.getSectionId());
         if (incomeDateSection != null) {
             incomeDateSection.setIncomeTotal(total);
@@ -1554,19 +1556,19 @@ public class MdIncomeService {
             }
             BigDecimal total = new BigDecimal("0");
             if (mdIncomeLeaseCost.getManagementCostRatio() != null)
-                total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getManagementCostRatio()));//管理费
+                total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getManagementCostRatio()).setScale(2, RoundingMode.HALF_UP));//管理费
             if (mdIncomeLeaseCost.getReplacementValue() != null && mdIncomeLeaseCost.getMaintenanceCostRatio() != null)
-                total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getMaintenanceCostRatio()));//维护保养费
+                total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getMaintenanceCostRatio()).setScale(2, RoundingMode.HALF_UP));//维护保养费
             if (mdIncomeLeaseCost.getAdditionalRatio() != null)
-                total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getAdditionalRatio()));//房产税、增值税及附加
+                total = total.add(incomeTotal.multiply(mdIncomeLeaseCost.getAdditionalRatio()).setScale(2, RoundingMode.HALF_UP));//房产税、增值税及附加
             if (mdIncomeLeaseCost.getReplacementValue() != null && mdIncomeLeaseCost.getInsurancePremiumRatio() != null)
-                total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getInsurancePremiumRatio()));//保险费
+                total = total.add(mdIncomeLeaseCost.getReplacementValue().multiply(mdIncomeLeaseCost.getInsurancePremiumRatio()).setScale(2, RoundingMode.HALF_UP));//保险费
             if (mdIncomeLeaseCost.getLandUseTax() != null)
-                total = total.add(mdIncomeLeaseCost.getLandUseTax());//土地使用费
+                total = total.add(mdIncomeLeaseCost.getLandUseTax().setScale(2, RoundingMode.HALF_UP));//土地使用费
             if (mdIncomeLeaseCost.getTransactionTaxeFeeRatio() != null) {
                 MdIncomeLease mdIncomeLease = mdIncomeLeaseDao.getIncomeLeaseBySectionId(mdIncomeLeaseCost.getSectionId());
                 total = total.add(mdIncomeLease.getRentalIncome().multiply(new BigDecimal(mdIncomeLease.getMonthNumber()))
-                        .multiply(mdIncomeLeaseCost.getTransactionTaxeFeeRatio()));//其它相关税费
+                        .multiply(mdIncomeLeaseCost.getTransactionTaxeFeeRatio()).setScale(2, RoundingMode.HALF_UP));//其它相关税费
             }
             incomeDateSection.setCostTotal(total);
             mdIncomeDateSectionDao.updateDateSection(incomeDateSection);

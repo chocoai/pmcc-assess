@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -30,13 +31,10 @@ public class CustomPublicService {
     public BootstrapTableVo getSurveyEstateTimesList(String userAccount) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         if (StringUtils.isBlank(userAccount)) return bootstrapTableVo;
-        Integer projectPhaseId = 0;
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
-        if (projectPhase != null)
-            projectPhaseId = projectPhase.getId();
+        List<ProjectPhase> phaseList = projectPhaseService.getProjectPhaseListByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomSurveyEstateTimes> surveyEstateTimesList = customPublicMapper.getSurveyEstateTimesList(userAccount, projectPhaseId);
+        List<CustomSurveyEstateTimes> surveyEstateTimesList = customPublicMapper.getSurveyEstateTimesList(userAccount, LangUtils.transform(phaseList, p -> p.getId()));
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(surveyEstateTimesList);
         return bootstrapTableVo;

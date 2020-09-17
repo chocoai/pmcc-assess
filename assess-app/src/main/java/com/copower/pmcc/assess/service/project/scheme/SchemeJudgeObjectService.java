@@ -840,7 +840,7 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
             Boolean isNeedReNumber = false;
             List<MdNewAndRemoveDto> methodChangeJudges = Lists.newArrayList();//只是改变了评估方法的估价对象
-            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
+            ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
 
             SchemeJudgeObjectAppendTaskDto appendTaskDto = new SchemeJudgeObjectAppendTaskDto();
@@ -950,7 +950,7 @@ public class SchemeJudgeObjectService {
                     if (CollectionUtils.isNotEmpty(item.getRemoveMethodList())) {
                         for (Integer methodType : item.getRemoveMethodList()) {
                             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(methodType);
-                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(baseDataDic.getFieldName());
+                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(baseDataDic.getFieldName(),projectInfo.getProjectCategoryId());
                             ProjectPlanDetails where = new ProjectPlanDetails();
                             where.setProjectId(projectInfo.getId());
                             where.setProjectPhaseId(projectPhase.getId());
@@ -964,7 +964,7 @@ public class SchemeJudgeObjectService {
                         String planRemark = generatePlanRemark(item.getSchemeJudgeObject());
                         for (Integer methodType : item.getNewMethodList()) {
                             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(methodType);
-                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(baseDataDic.getFieldName());
+                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(baseDataDic.getFieldName(),projectInfo.getProjectCategoryId());
                             if (!hasPlanDetails(projectInfo.getId(), null, projectPhase.getId(), item.getJudgeObjectId()))
                                 savePlanDetails(projectInfo, projectWorkStage, projectPlan, 0, item.getSchemeAreaGroup(), item.getJudgeObjectId(), planRemark, projectPhase, projectManager);
                         }
@@ -1100,7 +1100,7 @@ public class SchemeJudgeObjectService {
         Map<Integer, ProjectPhase> map = Maps.newHashMap();
         List<BaseDataDic> methodList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD);
         for (BaseDataDic method : methodList) {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(method.getFieldName(), categoryId);
+            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(method.getFieldName(), categoryId);
             if (projectPhase != null)
                 map.put(method.getId(), projectPhase);
         }

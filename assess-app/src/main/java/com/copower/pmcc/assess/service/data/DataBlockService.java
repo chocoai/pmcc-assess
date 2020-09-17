@@ -179,49 +179,6 @@ public class DataBlockService {
     }
 
     public void updateOldData(String processInsId) throws Exception {
-        //1.先找出7、8月的项目，再找出项目中的查勘和案例数据确定其中的重复数据
-        ProjectInfoExample example = new ProjectInfoExample();
-        example.createCriteria().andGmtCreatedBetween(DateUtils.convertDate("2020-07-01"), DateUtils.convertDate("2020-09-01"));
-        List<ProjectInfo> projectInfoList = projectInfoMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(projectInfoList)) return;
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
-        ProjectPhase caseStudyPhase = projectPhaseService.getCacheProjectPhaseByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
-        for (ProjectInfo projectInfo : projectInfoList) {
-            ProjectPlanDetails where = new ProjectPlanDetails();
-            where.setProjectId(projectInfo.getId());
-            where.setProjectPhaseId(sceneExplorePhase.getId());
-            List<ProjectPlanDetails> sceneExploreDetails = projectPlanDetailsService.getProjectDetails(where);
-            if (!CollectionUtils.isEmpty(sceneExploreDetails) && sceneExploreDetails.size() > 1) {
-                for (int i = 1; i < sceneExploreDetails.size(); i++) {
-                    BasicApplyBatchDetail detailWhere = new BasicApplyBatchDetail();
-                    detailWhere.setProjectId(projectInfo.getId());
-                    detailWhere.setPlanDetailsId(sceneExploreDetails.get(i).getId());
-                    List<BasicApplyBatchDetail> applyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailList(detailWhere);
-                    if(!CollectionUtils.isEmpty(applyBatchDetails)){
-                        for (BasicApplyBatchDetail applyBatchDetail : applyBatchDetails) {
-                            basicApplyBatchDetailService.validIsSameBatchDetal(applyBatchDetail);
-                        }
-                    }
-                }
-            }
 
-            where = new ProjectPlanDetails();
-            where.setProjectId(projectInfo.getId());
-            where.setProjectPhaseId(caseStudyPhase.getId());
-            List<ProjectPlanDetails> caseStudyDetails = projectPlanDetailsService.getProjectDetails(where);
-            if (!CollectionUtils.isEmpty(caseStudyDetails)) {
-                for (int i = 0; i < caseStudyDetails.size(); i++) {
-                    BasicApplyBatchDetail detailWhere = new BasicApplyBatchDetail();
-                    detailWhere.setProjectId(projectInfo.getId());
-                    detailWhere.setPlanDetailsId(caseStudyDetails.get(i).getId());
-                    List<BasicApplyBatchDetail> applyBatchDetails = basicApplyBatchDetailService.getBasicApplyBatchDetailList(detailWhere);
-                    if(!CollectionUtils.isEmpty(applyBatchDetails)){
-                        for (BasicApplyBatchDetail applyBatchDetail : applyBatchDetails) {
-                            basicApplyBatchDetailService.validIsSameBatchDetal(applyBatchDetail);
-                        }
-                    }
-                }
-            }
-        }
     }
 }

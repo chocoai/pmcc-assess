@@ -166,10 +166,11 @@ public class MarketCompareController extends BaseController {
     @RequestMapping(value = "/updateAnnualCoefficient", name = "更新年期修正系数", method = RequestMethod.POST)
     public HttpResult updateAnnualCoefficient(Integer judgeObjectId, Integer mcId, Integer rewardRateId, BigDecimal rewardRate) {
         try {
-            return HttpResult.newCorrectResult(mdMarketCompareService.updateAnnualCoefficient(judgeObjectId, mcId, rewardRateId, rewardRate));
+            mdMarketCompareService.updateAnnualCoefficient(judgeObjectId, mcId, rewardRateId, rewardRate);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
-            return HttpResult.newErrorResult("更新失败");
+            return HttpResult.newErrorResult("更新年期修正系数异常");
         }
     }
 

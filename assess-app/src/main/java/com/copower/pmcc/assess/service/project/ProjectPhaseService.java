@@ -63,19 +63,15 @@ public class ProjectPhaseService {
     public List<ProjectPhaseVo> queryProjectPhaseByCategory(Integer typeId, Integer categoryId, String search) {
         ProjectPhase projectPhase = new ProjectPhase();
         projectPhase.setBisEnable(true); //没有删除的
-
         if (typeId != null) {
             projectPhase.setProjectTypeId(typeId);
-
         }
-
         if (categoryId != null) {
             projectPhase.setProjectCategoryId(categoryId);
         }
         if (StringUtils.isNotBlank(search)) {
             projectPhase.setProjectPhaseName(search);
         }
-
         List<ProjectPhase> customProjectPhase = projectPhaseDao.getCustomProjectPhase(projectPhase);
         List<ProjectPhaseVo> projectPhaseVos = LangUtils.transform(customProjectPhase, o -> {
             return getProjectPhaseVo(o);
@@ -85,25 +81,16 @@ public class ProjectPhaseService {
 
     @Transactional(rollbackFor = Exception.class)
     public void createOrUpdateProjectPhase(ProjectPhase projectPhase) {
-        if (projectPhase == null)
-            return;
-
+        if (projectPhase == null) return;
         if (projectPhase.getId() == null) {
-            //新增一项
-            projectPhaseDao.createProjectPhase(projectPhase);
-        } else {
-            //修改数据
+            projectPhaseDao.createProjectPhase(projectPhase);//新增一项
+        } else {//修改数据
             if (projectPhase.getBoxName() == null)
                 projectPhase.setBoxName("");
             projectPhaseDao.updateProjectPhaseById(projectPhase);
         }
         processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE, "");
     }
-
-    public ProjectPhase getProjectPhaseById(Integer id) {
-        return projectPhaseDao.getProjectPhaseById(id);
-    }
-
 
     public ProjectPhase getCacheProjectPhaseById(Integer id) {
         String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE_ID, String.valueOf(id));
@@ -116,18 +103,6 @@ public class ProjectPhaseService {
         }
     }
 
-    public ProjectPhase getCacheProjectPhaseByKey(String key) {
-        if (StringUtils.isBlank(key)) return null;
-        String cacheKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_WORK_PHASE_KEY, key);
-        try {
-            ProjectPhase projectPhase = LangUtils.singleCache(cacheKey, key, ProjectPhase.class, input -> projectPhaseDao.getProjectPhaseByKey(input));
-            return projectPhase;
-        } catch (Exception e) {
-            logger.error("getCacheProjectPhaseByKey error", e);
-            return projectPhaseDao.getProjectPhaseByKey(key);
-        }
-    }
-
     /**
      * 根据key和类别的引用id
      *
@@ -135,8 +110,15 @@ public class ProjectPhaseService {
      * @param categoryId
      * @return
      */
-    public ProjectPhase getCacheProjectPhaseByReferenceId(String key, Integer categoryId) {
-        return getCacheProjectPhaseByKey(key, baseProjectClassifyService.getReferenceId(categoryId));
+    public ProjectPhase getCacheProjectPhaseByCategoryId(String key, Integer categoryId) {
+        //1.先根据参数key及类别id找出对应数据，如果没有找到，则需根据类别id所引用的类别
+        //2.再根据参与key和引用类别的id，找出对应数据
+        if (StringUtils.isBlank(key) || categoryId == null) return null;
+        ProjectPhase projectPhase = getCacheProjectPhaseByKey(key, categoryId);
+        if (projectPhase == null) {
+            projectPhase = getCacheProjectPhaseByKey(key, baseProjectClassifyService.getReferenceId(categoryId));
+        }
+        return projectPhase;
     }
 
     private ProjectPhase getCacheProjectPhaseByKey(String key, Integer categoryId) {
@@ -150,6 +132,13 @@ public class ProjectPhaseService {
             logger.error("getCacheProjectPhaseByKey error", e);
             return projectPhaseDao.getProjectPhaseByKey(key, categoryId);
         }
+    }
+
+    public List<ProjectPhase> getProjectPhaseListByKey(String key) {
+        if (StringUtils.isBlank(key)) return null;
+        ProjectPhase projectPhase = new ProjectPhase();
+        projectPhase.setPhaseKey(key);
+        return projectPhaseDao.getProjectPhaseList(projectPhase);
     }
 
     public List<ProjectPhase> getCacheProjectPhaseByCategoryId(Integer categoryId) {

@@ -69,9 +69,9 @@ public class ProjectPlanSurveyService {
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
 
-        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectPlan.getCategoryId());
-        ProjectPhase assetInventoryPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPlan.getCategoryId());
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
+        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.OTHER_RIGHT, projectPlan.getCategoryId());
+        ProjectPhase assetInventoryPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPlan.getCategoryId());
+        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
         List<ProjectPhase> projectPhases = Lists.newArrayList(sceneExplorePhase, assetInventoryPhase, otherRightPhase);
         if (CollectionUtils.isEmpty(projectPhases)) return;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);

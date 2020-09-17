@@ -55,7 +55,7 @@ public class SurveyAssetRightDeclareService {
 
     public ProjectPlanDetails getProjectPlanDetailsByQuery(Integer projectId) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
+        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         ProjectPlanDetails query = new ProjectPlanDetails();
         query.setProjectId(projectId);
         query.setProjectPhaseId(otherRightPhase.getId());

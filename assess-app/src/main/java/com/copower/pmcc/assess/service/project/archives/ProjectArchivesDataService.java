@@ -563,7 +563,7 @@ public class ProjectArchivesDataService {
 
     private ProjectPlanDetails getProjectPlanDetailsByQuery(Integer projectId, String key) {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(key, projectInfo.getProjectCategoryId());
+        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(key, projectInfo.getProjectCategoryId());
         ProjectPlanDetails query = new ProjectPlanDetails();
         query.setProjectId(projectId);
         query.setProjectPhaseId(otherRightPhase.getId());

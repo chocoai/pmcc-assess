@@ -9,8 +9,9 @@
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <div class="page-inner">
-                <div class="row">
+            <%@include file="/views/share/common_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
@@ -21,11 +22,6 @@
                                         <button type="button" class="btn btn-sm btn-primary"
                                                 onclick="showHistoryModal();">历史记录
                                         </button>
-
-                                        <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showCaseQuoteModal();">引用案例
-                                        </button>
-
                                     </div>
                                 </div>
                             </div>
@@ -106,22 +102,9 @@
                                                            class="form-control input-full"
                                                            value="${basicEstate.regionalPlanning}">
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
-                                    <%--<div class="row form-group">--%>
-                                        <%--<div class="col-md-12">--%>
-                                            <%--<div class="form-inline x-valid">--%>
-                                                <%--<label class="col-sm-1 control-label">基础版块描述<span--%>
-                                                        <%--class="symbol required"></span></label>--%>
-                                                <%--<div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">--%>
-                        <%--<textarea class="form-control input-full" name="blockDescription" id="blockDescription" required--%>
-                                  <%--placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>--%>
-                                                <%--</div>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -486,13 +469,12 @@
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
 
                         <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                            <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
-                            <button class="btn btn-warning" onclick="saveDataInfo();">
-                                保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                            <button type="button" class="btn btn-warning" style="margin-left: 10px;" onclick="saveDataInfo();">
+                                保存
                             </button>
-
                         </div>
                     </div>
                 </div>
