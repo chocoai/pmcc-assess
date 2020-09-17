@@ -116,7 +116,7 @@ public class MdCostApproachService {
     }
 
     public MdCostApproach applyCommit(String formData) {
-        return applyCommit(formData,null);
+        return applyCommit(formData, null);
     }
 
 
@@ -216,7 +216,313 @@ public class MdCostApproachService {
         return mdCostApproachTaxesVo;
     }
 
+    public void calculationNumeric(MdCostApproach target) {
+        if (target == null) {
+            return;
+        }
+        BigDecimal landAcquisitionBhou = getLandAcquisitionBhou(target.getId());
+//        landAcquisitionBhou = new BigDecimal("268.86") ;//测算用
+        target.setLandAcquisitionBhou(landAcquisitionBhou);
+        getFieldObjectValueHandle(MdCostApproach.Column.noPloughArearatio, target);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdCostApproach.Column.priceCorrectionBhou, target);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdCostApproach.Column.landCostPriceBhou, target);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdCostApproach.Column.landProductionProfitBhou, target);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdCostApproach.Column.landProductionInterestBhou, target);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdCostApproach.Column.plotRatioElementAmendBhou, target);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdCostApproach.Column.landProductionBhou, target);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdCostApproach.Column.landUseBhou, target);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdCostApproach.Column.parcelBhou, target);
+        getFieldObjectValueHandle(MdCostApproach.Column.parcelUnit, target);
+        if (target.getId() != null && target.getId() != 0) {
+            costApproachDao.editMdCostApproach(target);
+        }
+    }
+
+    private String getFieldObjectValueHandle(MdCostApproach.Column column, MdCostApproach target) {
+        final BigDecimal BHOU = new BigDecimal("666.67");
+        switch (column) {
+            case ploughArearatio: {//耕地比例 M5
+                //=L6/L5
+                BigDecimal ploughArea = target.getPloughArea();//L6
+                BigDecimal farmlandArea = target.getFarmlandArea();//L5
+                if (!ArithmeticUtils.checkNotNull(ploughArea)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(farmlandArea)) {
+                    return "";
+                }
+                BigDecimal ploughArearatio = ArithmeticUtils.divide(ploughArea, farmlandArea, 4);
+                String value = ArithmeticUtils.getBigDecimalString(ploughArearatio);
+                target.setPloughArearatio(value);
+                return value;
+            }
+            case noPloughArearatio: {
+                //=1-M5
+                String ploughArearatio = getFieldObjectValueHandle(MdCostApproach.Column.ploughArearatio, target);
+                BigDecimal bigDecimal = ArithmeticUtils.sub(String.valueOf(1), ploughArearatio);
+                if (!ArithmeticUtils.checkNotNull(ploughArearatio)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.getBigDecimalString(bigDecimal);
+                target.setNoPloughArearatio(value);
+                return value;
+            }
+            case landProductionUnit: {//e17
+                if (!ArithmeticUtils.checkNotNull(target.getCirculationExpense())) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(target.getFlatExpense())) {
+                    return "";
+                }
+                BigDecimal decimal = ArithmeticUtils.add(target.getCirculationExpense(), target.getFlatExpense());
+                String value = ArithmeticUtils.round(decimal, 2);
+                target.setLandProductionUnit(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case landProductionBhou: {
+                String landProductionUnit = getFieldObjectValueHandle(MdCostApproach.Column.landProductionUnit, target);
+                if (!ArithmeticUtils.checkNotNull(landProductionUnit)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.mul(ArithmeticUtils.createBigDecimal(landProductionUnit), BHOU, 2);
+                target.setLandProductionBhou(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case landAcquisitionUnit: {//土地取得费E4
+                BigDecimal landAcquisitionBhou = target.getLandAcquisitionBhou();
+                if (!ArithmeticUtils.checkNotNull(landAcquisitionBhou)) {
+                    return "";
+                }
+                BigDecimal decimal = ArithmeticUtils.divide(landAcquisitionBhou, BHOU, 2);
+                target.setLandAcquisitionUnit(decimal);
+                return ArithmeticUtils.getBigDecimalString(decimal);
+            }
+            case landProductionInterestUnit: {//土地开发利息(元/㎡)
+                BigDecimal machineCycle = target.getMachineCycle();//计算周期F22
+                String calculatedInterest = target.getCalculatedInterest();//计算利息G22
+                String landAcquisitionUnit = getFieldObjectValueHandle(MdCostApproach.Column.landAcquisitionUnit, target);//E4
+                String landProductionUnit = getFieldObjectValueHandle(MdCostApproach.Column.landProductionUnit, target);//e17
+                if (!ArithmeticUtils.checkNotNull(machineCycle) || !ArithmeticUtils.checkNotNull(calculatedInterest) || !ArithmeticUtils.checkNotNull(landAcquisitionUnit) || !ArithmeticUtils.checkNotNull(landProductionUnit)) {
+                    return "";
+                }
+                double temp = Math.pow((1 + Double.valueOf(calculatedInterest)), Double.valueOf(machineCycle.toString())) - 1;
+                double temp2 = Math.pow((1 + Double.valueOf(calculatedInterest)), machineCycle.doubleValue() / 2) - 1;
+                String add = ArithmeticUtils.add(ArithmeticUtils.multiply(new BigDecimal(landAcquisitionUnit), new BigDecimal(temp)).toString(), ArithmeticUtils.multiply(new BigDecimal(landProductionUnit), new BigDecimal(temp2)).toString(), 2);
+                target.setLandProductionInterestUnit(new BigDecimal(add));
+                return add;
+            }
+            case landProductionInterestBhou: {//土地开发利息(元/亩)
+                String landProductionInterestUnit = getFieldObjectValueHandle(MdCostApproach.Column.landProductionInterestUnit, target);
+                if (!ArithmeticUtils.checkNotNull(landProductionInterestUnit)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.mul(landProductionInterestUnit, BHOU.toString(), 2);
+                target.setLandProductionInterestBhou(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case landProductionProfitUnit: {
+                String landAcquisitionUnit = getFieldObjectValueHandle(MdCostApproach.Column.landAcquisitionUnit, target);//E4
+                String landProductionUnit = getFieldObjectValueHandle(MdCostApproach.Column.landProductionUnit, target);//
+                String profitMargin = target.getProfitMargin();
+                if (!ArithmeticUtils.checkNotNull(profitMargin)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(landAcquisitionUnit) || !ArithmeticUtils.checkNotNull(landProductionUnit)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.mul(ArithmeticUtils.add(ArithmeticUtils.createBigDecimal(landAcquisitionUnit), ArithmeticUtils.createBigDecimal(landProductionUnit)), ArithmeticUtils.createBigDecimal(profitMargin), 2);
+                target.setLandProductionProfitUnit(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case landProductionProfitBhou: {
+                String landProductionProfitUnit = getFieldObjectValueHandle(MdCostApproach.Column.landProductionProfitUnit, target);//
+                if (!ArithmeticUtils.checkNotNull(landProductionProfitUnit)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.mul(landProductionProfitUnit, BHOU.toString(), 2);
+                target.setLandProductionProfitBhou(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case landCostPriceBhou: {
+                String landCostPriceUnit = getFieldObjectValueHandle(MdCostApproach.Column.landCostPriceUnit, target);
+                if (!ArithmeticUtils.checkNotNull(landCostPriceUnit)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.mul(landCostPriceUnit, BHOU.toString(), 2);
+                target.setLandCostPriceBhou(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case landCostPriceUnit: {//e25
+                //ROUND(E4+E17+E21+E23,2)
+                String landAcquisitionUnit = getFieldObjectValueHandle(MdCostApproach.Column.landAcquisitionUnit, target);//E4
+                String landProductionUnit = getFieldObjectValueHandle(MdCostApproach.Column.landProductionUnit, target);//E17
+                String landProductionInterestUnit = getFieldObjectValueHandle(MdCostApproach.Column.landProductionInterestUnit, target);//E21
+                String landProductionProfitUnit = getFieldObjectValueHandle(MdCostApproach.Column.landProductionProfitUnit, target);//E21
+                String[] strings = {landAcquisitionUnit, landProductionUnit, landProductionInterestUnit, landProductionProfitUnit};
+                if (!ArithmeticUtils.checkNotNull(strings)) {
+                    return "";
+                }
+                String add = ArithmeticUtils.add(strings);
+                String value = ArithmeticUtils.round(add, 2);
+                target.setLandCostPriceUnit(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case landUsePrice: {//landUsePrice 对应  landUseUnit  e29
+                //ROUND(E25/(1-G27),2)
+                String landCostPriceUnit = getFieldObjectValueHandle(MdCostApproach.Column.landCostPriceUnit, target);//e25
+                String incrementalBenefit = target.getIncrementalBenefit();//g27
+                if (!ArithmeticUtils.checkNotNull(landCostPriceUnit)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(incrementalBenefit)) {
+                    return "";
+                }
+                BigDecimal bigDecimal = ArithmeticUtils.sub(String.valueOf(1), incrementalBenefit);
+                BigDecimal landUsePrice = ArithmeticUtils.divide(ArithmeticUtils.createBigDecimal(landCostPriceUnit), bigDecimal, 2);
+                target.setLandUsePrice(landUsePrice);
+                return ArithmeticUtils.getBigDecimalString(landUsePrice);
+            }
+            case landUseBhou: {
+                //ROUND(D25/(1-G27),2
+                String landUsePrice = getFieldObjectValueHandle(MdCostApproach.Column.landUsePrice, target);
+                if (!ArithmeticUtils.checkNotNull(landUsePrice)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.mul(landUsePrice, BHOU.toString(), 2);
+                target.setLandUseBhou(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            //-----------------
+            case yearFixed: { //年期修正H33
+                String rewardRate = target.getRewardRate();//g33
+                BigDecimal landRemainingYear = target.getLandRemainingYear();
+                if (!ArithmeticUtils.checkNotNull(rewardRate)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(landRemainingYear)) {
+                    return "";
+                }
+                double temp = Math.pow(1 + Double.valueOf(rewardRate), landRemainingYear.doubleValue());
+                //年期修正H33
+                String yearFixed = ArithmeticUtils.sub(String.valueOf(1), ArithmeticUtils.div("1", String.valueOf(temp)), 4);
+                target.setYearFixed(ArithmeticUtils.createBigDecimal(yearFixed));
+                return yearFixed;
+            }
+            case priceCorrectionUnit: { //e32
+                //E29*H33
+                String landUsePrice = getFieldObjectValueHandle(MdCostApproach.Column.landUsePrice, target); //e29
+                String yearFixed = getFieldObjectValueHandle(MdCostApproach.Column.yearFixed, target); //H33
+                if (!ArithmeticUtils.checkNotNull(landUsePrice)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(yearFixed)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.mul(landUsePrice, yearFixed, 2);
+                target.setPriceCorrectionUnit(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case priceCorrectionBhou: {
+                //E32*666.67/10000
+                String priceCorrectionUnit = getFieldObjectValueHandle(MdCostApproach.Column.priceCorrectionUnit, target);
+                if (!ArithmeticUtils.checkNotNull(priceCorrectionUnit)) {
+                    return "";
+                }
+                BigDecimal multiply = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(priceCorrectionUnit), BHOU);
+                BigDecimal priceCorrectionBhou = ArithmeticUtils.divide(multiply, new BigDecimal("10000"), 2);
+                target.setPriceCorrectionBhou(priceCorrectionBhou);
+                return ArithmeticUtils.getBigDecimalString(priceCorrectionBhou);
+            }
+            case plotRatioElementAmendUnit: {
+                //=E29*H33*(1+G34)
+                String landUsePrice = getFieldObjectValueHandle(MdCostApproach.Column.landUsePrice, target); //e29
+                String yearFixed = getFieldObjectValueHandle(MdCostApproach.Column.yearFixed, target); //H33
+                BigDecimal plotRatioElementAmend = target.getPlotRatioElementAmend();//g34
+                if (!ArithmeticUtils.checkNotNull(plotRatioElementAmend)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(landUsePrice)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(yearFixed)) {
+                    return "";
+                }
+                String value = ArithmeticUtils.mul(ArithmeticUtils.mul(landUsePrice, yearFixed), ArithmeticUtils.add("1", plotRatioElementAmend.toString()), 2);
+                target.setPlotRatioElementAmendUnit(ArithmeticUtils.createBigDecimal(value));
+                return value;
+            }
+            case plotRatioElementAmendBhou: {
+                //,E34*666.67/10000
+                String plotRatioElementAmendUnit = getFieldObjectValueHandle(MdCostApproach.Column.plotRatioElementAmendUnit, target);
+                if (!ArithmeticUtils.checkNotNull(plotRatioElementAmendUnit)) {
+                    return "";
+                }
+                BigDecimal multiply = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(plotRatioElementAmendUnit), BHOU);
+                BigDecimal plotRatioElementAmendBhou = ArithmeticUtils.divide(multiply, new BigDecimal("10000"), 2);
+                target.setPlotRatioElementAmendBhou(plotRatioElementAmendBhou);
+                return ArithmeticUtils.getBigDecimalString(plotRatioElementAmendBhou);
+            }
+            case plotRatioAdjustUnit: {//e35
+                //E29*H33*(1+G34)*(1+G35)
+                String plotRatioAdjust = target.getPlotRatioAdjust();//g35
+                BigDecimal plotRatioElementAmend = target.getPlotRatioElementAmend();//g34
+                String landUsePrice = getFieldObjectValueHandle(MdCostApproach.Column.landUsePrice, target); //e29
+                String yearFixed = getFieldObjectValueHandle(MdCostApproach.Column.yearFixed, target); //H33
+                if (!ArithmeticUtils.checkNotNull(yearFixed)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(landUsePrice)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(plotRatioElementAmend)) {
+                    return "";
+                }
+                if (!ArithmeticUtils.checkNotNull(plotRatioAdjust)) {
+                    return "";
+                }
+                BigDecimal temp1 = ArithmeticUtils.add(ArithmeticUtils.createBigDecimal("1"), plotRatioElementAmend);
+                BigDecimal temp2 = ArithmeticUtils.add(ArithmeticUtils.createBigDecimal("1"), ArithmeticUtils.createBigDecimal(plotRatioAdjust));
+                BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(landUsePrice).multiply(ArithmeticUtils.createBigDecimal(yearFixed)).multiply(temp1).multiply(temp2);
+                String round = ArithmeticUtils.round(bigDecimal, 2);
+                target.setPlotRatioAdjustUnit(ArithmeticUtils.createBigDecimal(round));
+                return round;
+            }
+            case plotRatioAdjustBhou: {
+                //E35*666.67/10000
+                String plotRatioAdjustUnit = getFieldObjectValueHandle(MdCostApproach.Column.plotRatioAdjustUnit, target);
+                if (!ArithmeticUtils.checkNotNull(plotRatioAdjustUnit)) {
+                    return "";
+                }
+                BigDecimal multiply = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(plotRatioAdjustUnit), BHOU);
+                BigDecimal plotRatioAdjustBhou = ArithmeticUtils.divide(multiply, new BigDecimal("10000"), 2);
+                target.setPlotRatioAdjustBhou(plotRatioAdjustBhou);
+                return ArithmeticUtils.getBigDecimalString(plotRatioAdjustBhou);
+            }
+            case parcelUnit: {
+                //E29*H33*(1+G34)*(1+G35)
+                String plotRatioAdjustUnit = getFieldObjectValueHandle(MdCostApproach.Column.plotRatioAdjustUnit, target);
+                if (!ArithmeticUtils.checkNotNull(plotRatioAdjustUnit)) {
+                    return "";
+                }
+                target.setParcelUnit(ArithmeticUtils.createBigDecimal(plotRatioAdjustUnit));
+                return plotRatioAdjustUnit;
+            }
+            case parcelBhou: {
+                String plotRatioAdjustBhou = getFieldObjectValueHandle(MdCostApproach.Column.plotRatioAdjustBhou, target);
+                if (!ArithmeticUtils.checkNotNull(plotRatioAdjustBhou)) {
+                    return "";
+                }
+                target.setParcelBhou(ArithmeticUtils.createBigDecimal(plotRatioAdjustBhou));
+                return plotRatioAdjustBhou;
+            }
+            default:
+                return "";
+        }
+    }
+
     /**
+     * 土地取得费及相关税费 根据配置类型的计算
+     *
      * @param farmlandArea     农用地总面积
      * @param ploughArea       耕地面积
      * @param populationNumber 人口数

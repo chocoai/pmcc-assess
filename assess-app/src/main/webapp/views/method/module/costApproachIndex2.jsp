@@ -53,7 +53,7 @@
                                             <input type="text" placeholder="农用地总面积"
                                                    class="form-control input-full"
                                                    name="farmlandArea" required
-                                                   onblur="calculationNumeric(this);"
+                                                   onblur="getPloughArearatio()"
                                                    value="${master.farmlandArea}"
                                                    data-rule-number="true"
                                                    id="farmlandArea">
@@ -64,7 +64,7 @@
                                         <div class="col-sm-3">
                                             <input type="text" value="${master.ploughArea}"
                                                    data-rule-number="true"
-                                                   required onblur="calculationNumeric(this);"
+                                                   required onblur="getPloughArearatio()"
                                                    placeholder="耕地面积"
                                                    class="form-control input-full" name="ploughArea"
                                                    id="ploughArea">
@@ -74,7 +74,6 @@
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" value="${master.populationNumber}"
-                                                   onblur="calculationNumeric(this);"
                                                    data-rule-number="true" required
                                                    placeholder="人口数" class="form-control input-full"
                                                    name="populationNumber"
@@ -211,9 +210,7 @@
                                                     <input type="text"
                                                            class="form-control x-percent"
                                                            name="plotRatioElementAmend"
-                                                           data-value="${master.plotRatioElementAmend}"
-                                                           id="plotRatioElementAmend"
-                                                           value="${master.plotRatioElementAmend}">
+                                                           id="plotRatioElementAmend">
 
                                                 </div>
                                             </div>
@@ -272,7 +269,7 @@
                                                        class="form-control input-full"
                                                        id="circulationExpense"
                                                        name="circulationExpense" required
-                                                       onblur="calculationNumeric(this);"
+                                                       onblur="getLandProductionUnit()"
                                                        value="${master.circulationExpense}"
                                                        data-rule-number="true">
                                             </div>
@@ -300,7 +297,7 @@
                                                        class="form-control input-full"
                                                        id="flatExpense"
                                                        name="flatExpense" required
-                                                       onblur="calculationNumeric(this);"
+                                                       onblur="getLandProductionUnit()"
                                                        value="${master.flatExpense}"
                                                        data-rule-number="true">
                                             </div>
@@ -328,7 +325,7 @@
                                                        class="form-control input-full"
                                                        id="machineCycle"
                                                        name="machineCycle" required
-                                                       onblur="calculationNumeric(this);"
+                                                       onblur="getLandProductionInterest()"
                                                        value="${master.machineCycle}"
                                                        data-rule-number="true">
                                             </div>
@@ -356,8 +353,7 @@
                                                        class="form-control input-full x-percent"
                                                        id="calculatedInterest"
                                                        name="calculatedInterest" required
-                                                       data-value="${master.calculatedInterest}"
-                                                       onblur="calculationNumeric(this);"
+                                                       onblur="getLandProductionInterest()"
                                                        value="${master.calculatedInterest}">
                                             </div>
                                             <label class="col-sm-1 control-label">
@@ -383,8 +379,8 @@
                                                 <input type="text" placeholder="开发利润率"
                                                        class="form-control input-full x-percent"
                                                        id="profitMargin"
-                                                       name="profitMargin" required data-value="${master.profitMargin}"
-                                                       onblur="calculationNumeric(this);"
+                                                       name="profitMargin" required
+                                                       onblur="getLandProductionProfit()"
                                                        value="${master.profitMargin}">
                                             </div>
                                             <label class="col-sm-1 control-label">
@@ -411,8 +407,7 @@
                                                        class="form-control input-full x-percent"
                                                        id="incrementalBenefit"
                                                        name="incrementalBenefit" required
-                                                       data-value="${master.incrementalBenefit}"
-                                                       onblur="calculationNumeric(this);"
+                                                       onblur="getLandAppreciation()"
                                                        value="${master.incrementalBenefit}">
                                             </div>
                                             <label class="col-sm-1 control-label">
@@ -439,8 +434,7 @@
                                                        class="form-control input-full x-percent"
                                                        id="plotRatioAdjust"
                                                        name="plotRatioAdjust" required
-                                                       data-value="${master.plotRatioAdjust}"
-                                                       onblur="calculationNumeric(this);"
+                                                       onblur="getYearFixed()"
                                                        value="${master.plotRatioAdjust}">
                                             </div>
                                             <label class="col-sm-1 control-label">
@@ -467,7 +461,7 @@
                                                        id="landRemainingYear"
                                                        data-rule-number="true"
                                                        name="landRemainingYear" required
-                                                       onblur="calculationNumeric(this);"
+                                                       onblur="getYearFixed()"
                                                        value="${master.landRemainingYear}">
                                             </div>
                                             <label class="col-sm-1 control-label">
@@ -494,8 +488,7 @@
                                                            class="form-control x-percent"
                                                            id="rewardRate"
                                                            name="rewardRate" placeholder="还原率"
-                                                           onblur="calculationNumeric(this)"
-                                                           readonly="readonly" data-value="${master.rewardRate}"
+                                                           readonly="readonly"
                                                            value="${master.rewardRate}">
                                                     <div class="input-group-prepend">
                                                         <input type="hidden" name="rewardRateId"
@@ -791,25 +784,23 @@
 
     $(function () {
         if ("${master}") {
+            getLandAcquisitionBhou("${master.id}")
+            getPloughArearatio("${master.farmlandArea}", "${master.ploughArea}");
             var data = {
                 parcelSettingInner: '${master.parcelSettingInner}',
                 parcelSettingOuter: '${master.parcelSettingOuter}'
             };
             initParcelSettingData(data);
             getLandLevelTabContent();
-            if (!'${master.landLevelContent}') {
+            if(!'${master.landLevelContent}'){
                 $("#landLevelContent").val('${landLevelContent}');
             }
-            if (!'${master.plotRatioElementAmend}') {
+            if(!'${master.plotRatioElementAmend}'){
                 $("#plotRatioElementAmend").val(AssessCommon.pointToPercent('${landFactorTotalScore}'));
-            } else {
+            }else {
                 $("#plotRatioElementAmend").val(AssessCommon.pointToPercent('${master.plotRatioElementAmend}'));
             }
         }
-
-        research.prototype.loadDataList(${master.id});
-
-        calculationNumeric();
     });
 
 
@@ -834,6 +825,137 @@
         }
     }
 
+    //耕地比例
+    function getPloughArearatio(farmlandAreaVal, ploughAreaVal) {
+        var farmlandArea = parseFloat($("#farmlandArea").val()) ? parseFloat($("#farmlandArea").val()) : 0;
+        var ploughArea = parseFloat($("#ploughArea").val()) ? parseFloat($("#ploughArea").val()) : 0;
+        if (farmlandAreaVal && ploughAreaVal) {
+            farmlandArea = parseFloat(farmlandAreaVal);
+            ploughArea = parseFloat(ploughAreaVal);
+        }
+        var ploughArearatio = getSomePlaces(ploughArea / farmlandArea, 4);
+        var noPloughArearatio = 1 - ploughArearatio;
+        $("#ploughArearatio").text(AssessCommon.pointToPercent(ploughArearatio));
+        $("#noPloughArearatio").text(AssessCommon.pointToPercent(noPloughArearatio));
+
+    }
+
+
+    //土地取得费及相关税费(元/亩)
+    function getLandAcquisitionBhou(masterId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/costApproach/getLandAcquisitionBhou",
+            type: "get",
+            dataType: "json",
+            data: {masterId: masterId},
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        $("#landAcquisitionBhou").text(result.data);
+                        $("#landAcquisitionUnit").text(parseFloat(getSomePlaces($("#landAcquisitionBhou").text() / AssessCommon.BHOU, 2)));
+                        //计算土地开发费
+                        getLandProductionUnit("${master.circulationExpense}", "${master.flatExpense}");
+                    }
+                }
+                else {
+                    AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        })
+    }
+
+
+    //计算土地开发费
+    function getLandProductionUnit(circulationExpenseVal, flatExpenseVal) {
+        var circulationExpense = parseFloat($("#circulationExpense").val()) ? parseFloat($("#circulationExpense").val()) : 0;
+        var flatExpense = parseFloat($("#flatExpense").val()) ? parseFloat($("#flatExpense").val()) : 0;
+        if (circulationExpenseVal && flatExpenseVal) {
+            circulationExpense = parseFloat(circulationExpenseVal);
+            flatExpense = parseFloat(flatExpenseVal);
+        }
+        $("#landProductionBhou").text(getSomePlaces((circulationExpense + flatExpense) * AssessCommon.BHOU, 2));
+        $("#landProductionUnit").text(getSomePlaces(parseFloat($("#landProductionBhou").text()) / AssessCommon.BHOU, 2));
+        //计算土地开发利息
+        getLandProductionInterest();
+    }
+
+    //计算土地开发利息
+    function getLandProductionInterest(machineCycleVal, calculatedInterestVal) {
+        //计算周期F22
+        var machineCycle = parseFloat($("#machineCycle").val());
+        //计算利息G22
+        var calculatedInterest = parseFloat(AssessCommon.percentToPoint($("#calculatedInterest").val()));
+        //土地取得费E4
+        var landAcquisitionUnit = getSomePlaces(parseFloat($("#landAcquisitionBhou").text()) / AssessCommon.BHOU, 2);
+        //土地开发费E17
+        var landProductionUnit = parseFloat($("#landProductionBhou").text()) / AssessCommon.BHOU;
+        if (machineCycleVal && calculatedInterestVal) {
+            machineCycle = parseFloat(machineCycleVal);
+            calculatedInterest = parseFloat(AssessCommon.percentToPoint(calculatedInterestVal));
+        }
+        //(E4*((1+G22)^F22-1)+E17*((1+G22)^(F22/2)-1),2)
+        if (machineCycle && calculatedInterest && landAcquisitionUnit && landProductionUnit) {
+            var temp = Math.pow((1 + calculatedInterest), machineCycle) - 1;
+            var temp2 = Math.pow((1 + calculatedInterest), machineCycle / 2) - 1;
+            var landProductionInterestUnit = getSomePlaces(landAcquisitionUnit * temp + landProductionUnit * temp2, 2);
+            $("#landProductionInterestBhou").text(getSomePlaces(landProductionInterestUnit * AssessCommon.BHOU, 2));
+            $("#landProductionInterestUnit").text(landProductionInterestUnit);
+        }
+        //土地开发利润
+        getLandProductionProfit();
+    }
+
+
+    //土地开发利润
+    function getLandProductionProfit(profitMarginVal) {
+        //土地取得费E4
+        var landAcquisitionUnit = getSomePlaces(parseFloat($("#landAcquisitionBhou").text()) / AssessCommon.BHOU, 2);
+        //土地开发费H17
+        var landProductionUnit = getSomePlaces(parseFloat($("#landProductionBhou").text()) / AssessCommon.BHOU, 2);
+        //开发利润率F24
+        var profitMargin = parseFloat(AssessCommon.percentToPoint($("#profitMargin").val()));
+        if (profitMarginVal) {
+            profitMargin = parseFloat(AssessCommon.percentToPoint(profitMarginVal));
+        }
+
+        if (landAcquisitionUnit && landProductionUnit && profitMargin) {
+            //(E4+E17)*F24
+            var landProductionProfitUnit = getSomePlaces((landAcquisitionUnit + landProductionUnit) * profitMargin, 2);
+            $("#landProductionProfitBhou").text(getSomePlaces(landProductionProfitUnit * AssessCommon.BHOU, 2));
+            $("#landProductionProfitUnit").text(getSomePlaces(landProductionProfitUnit, 2));
+
+            var landProductionProfitBhou = parseFloat($("#landProductionProfitBhou").text());
+            var landAcquisitionBhou = parseFloat($("#landAcquisitionBhou").text());
+            var landProductionBhou = parseFloat($("#landProductionBhou").text());
+            //土地开发利息E21
+            var landProductionInterestBhou = parseFloat($("#landProductionInterestBhou").text());
+            //土地成本价格
+            var landCostPriceBhou = getSomePlaces(landAcquisitionBhou + landProductionBhou + landProductionProfitBhou + landProductionInterestBhou, 2);
+            $("#landCostPriceBhou").text(landCostPriceBhou);
+            $("#landCostPriceUnit").text(getSomePlaces(landCostPriceBhou / AssessCommon.BHOU, 2));
+            //无限年期土地使用权价格
+            getLandAppreciation();
+        }
+    }
+
+    //无限年期土地使用权价格
+    function getLandAppreciation(incrementalBenefitVal) {
+        //土地成本价格D25
+        var landCostPriceBhou = parseFloat($("#landCostPriceBhou").text());
+        //土地增值率G27
+        var incrementalBenefit = getSomePlaces(AssessCommon.percentToPoint($("#incrementalBenefit").val()), 2);
+        if (incrementalBenefitVal) {
+            incrementalBenefit = getSomePlaces(AssessCommon.percentToPoint(incrementalBenefitVal), 2);
+        }
+        $("#landUseBhou").text(getSomePlaces(landCostPriceBhou / (1 - incrementalBenefit), 2));
+        $("#landUseUnit").text(getSomePlaces(parseFloat($("#landUseBhou").text()) / AssessCommon.BHOU, 2));
+
+        //年期修正、价格修正与确定、单价、估价对象楼面地价、委估宗地总价
+        getYearFixed();
+    }
 
     //获取报酬率
     function getRewardRate(_this) {
@@ -843,9 +965,52 @@
                 group.find('[name=rewardRateId]').val(data.id);
                 var element = group.find(':text');
                 element.val(data.resultValue);
-                AssessCommon.elementParsePoint(group.find('[name=rewardRate]').val(data.resultValue)).trigger('blur');
+                AssessCommon.elementParsePoint(group.find('[name=rewardRate]').val(data.resultValue));
+
+                getYearFixed();
             }
         })
+    }
+
+    //年期修正、价格修正与确定、单价、估价对象楼面地价、委估宗地总价
+    function getYearFixed(rewardRatePercent) {
+        //G33
+        var rewardRate = AssessCommon.percentToPoint($("#rewardRate").val());
+        if (rewardRatePercent) {
+            rewardRate = AssessCommon.percentToPoint(rewardRatePercent)
+        }
+        //E29
+        var landRemainingYear = parseFloat($("#landRemainingYear").val());
+        if (rewardRate && landRemainingYear) {
+            var temp = Math.pow(1 + parseFloat(rewardRate), landRemainingYear);
+            //年期修正H33
+            var yearFixed = getSomePlaces(1 - 1 / temp, 4);
+            $("#yearFixed").text(yearFixed);
+            //无限年期土地使用权价格H29
+            var landUseBhou = parseFloat($("#landUseBhou").text());
+            if (landUseBhou) {
+                //价格修正与确定
+                var priceCorrectionBhou = yearFixed * landUseBhou;
+                $("#priceCorrectionBhou").text(getSomePlaces(priceCorrectionBhou / 10000, 2));
+                $("#priceCorrectionUnit").text(getSomePlaces(priceCorrectionBhou / AssessCommon.BHOU, 2));
+
+                //宗地个别因素修正
+                var plotRatioElementAmend = parseFloat(AssessCommon.percentToPoint($("#plotRatioElementAmend").val()));
+                var plotRatioElementAmendBhou = getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend), 2);
+                $("#plotRatioElementAmendBhou").text(getSomePlaces(plotRatioElementAmendBhou / 10000, 2));
+                $("#plotRatioElementAmendUnit").text(getSomePlaces(plotRatioElementAmendBhou / AssessCommon.BHOU, 2));
+
+                //容积率修正
+                var plotRatioAdjust = parseFloat(AssessCommon.percentToPoint($("#plotRatioAdjust").val()));
+                var plotRatioAdjustBhou = getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend) * (1 + plotRatioAdjust), 2);
+                $("#plotRatioAdjustBhou").text(getSomePlaces(plotRatioAdjustBhou / 10000, 2));
+                $("#plotRatioAdjustUnit").text(getSomePlaces(plotRatioAdjustBhou / AssessCommon.BHOU, 2));
+
+                //委估宗地价格
+                $("#parcelBhou").text(getSomePlaces(plotRatioAdjustBhou / 10000, 2));
+                $("#parcelUnit").text(getSomePlaces(yearFixed * landUseBhou * (1 + plotRatioElementAmend) * (1 + plotRatioAdjust) / AssessCommon.BHOU, 2));
+            }
+        }
     }
 
     //宗地外，宗地内
@@ -975,8 +1140,8 @@
 
     //因素条件说明及修正系数
     function getLandLevelTabContent() {
-        if (!'${landLevelId}' && !'${levelDetailId}') {
-            notifyInfo("提示", "未关联土地级别");
+        if(!'${landLevelId}'&&!'${levelDetailId}'){
+            notifyInfo("提示","未关联土地级别");
             return false;
         }
         FileUtils.getFileShows({
@@ -1016,8 +1181,8 @@
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
                 var item = caseCommon.getLandLevelFilter(obj);
-                item.achievement = 0;
-                item.grade = '';
+                item.achievement=0;
+                item.grade='';
                 rows.push(item);
                 var landLevelBodyHtml = $("#landLevelTabContentBody").html();
                 if (landLevelBodyHtml) {
@@ -1048,19 +1213,19 @@
         var length = rows.length;// 获取当前表格中tr的个数
         var mark = 0; //要合并的单元格数
         var index = 0; //起始行数
-        if (length <= 1) {
-        } else {
-            for (var i = 0; i < length; i++) {
-                var ford = $("#landLevelTableList tr:gt(0):eq(" + i + ") td:eq(0)").text();
-                var behind = $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").text();
-                if (ford == behind) {
-                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").hide();
-                    mark = mark + 1;
-                } else if (ford != behind) {
-                    index = i - mark;
-                    $("#landLevelTableList tr:gt(0):eq(" + index + ") td:eq(0)").attr("rowspan", mark + 1);//+1 操作标识，将当前的行加入到隐藏
+        if(length <= 1){
+        }else{
+            for(var i=0;i < length ;i++){
+                var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
+                var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
+                if(ford == behind){
+                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
+                    mark = mark +1;
+                }else if(ford != behind){
+                    index = i-mark;
+                    $("#landLevelTableList tr:gt(0):eq("+index+") td:eq(0)").attr("rowspan",mark+1);//+1 操作标识，将当前的行加入到隐藏
                     mark = 0;
-                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i)) + ") td:eq(0)").hide();
+                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i))+") td:eq(0)").hide();
                 }
             }
         }
@@ -1075,7 +1240,7 @@
         var target = $("#landLevelTabContent");
         target.empty();
 
-        var rows = []
+        var rows=[]
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
@@ -1116,19 +1281,19 @@
         var length = rows.length;// 获取当前表格中tr的个数
         var mark = 0; //要合并的单元格数
         var index = 0; //起始行数
-        if (length <= 1) {
-        } else {
-            for (var i = 0; i < length; i++) {
-                var ford = $("#landLevelTableList tr:gt(0):eq(" + i + ") td:eq(0)").text();
-                var behind = $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").text();
-                if (ford == behind) {
-                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").hide();
-                    mark = mark + 1;
-                } else if (ford != behind) {
-                    index = i - mark;
-                    $("#landLevelTableList tr:gt(0):eq(" + index + ") td:eq(0)").attr("rowspan", mark + 1);//+1 操作标识，将当前的行加入到隐藏
+        if(length <= 1){
+        }else{
+            for(var i=0;i < length ;i++){
+                var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
+                var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
+                if(ford == behind){
+                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
+                    mark = mark +1;
+                }else if(ford != behind){
+                    index = i-mark;
+                    $("#landLevelTableList tr:gt(0):eq("+index+") td:eq(0)").attr("rowspan",mark+1);//+1 操作标识，将当前的行加入到隐藏
                     mark = 0;
-                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i)) + ") td:eq(0)").hide();
+                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i))+") td:eq(0)").hide();
                 }
             }
         }
@@ -1210,7 +1375,7 @@
             AssessCommon.getDataDicInfo($(that).val(), function (item) {
                 obj.forEach(function (data, index) {
                     if (data.gradeName == item.name) {
-                        group.find("input[name='landFactorTotalScore']").attr('data-value', data.achievement);
+                        group.find("input[name='landFactorTotalScore']").attr('data-value',data.achievement);
                         group.find("input[name='landFactorTotalScore']").val(AssessCommon.pointToPercent(data.achievement));
                         group.find("input[name='dataLandLevelAchievement']").val(data.id);
                     }
@@ -1224,7 +1389,9 @@
 
 <%--年平均产值--%>
 <script type="text/javascript">
-
+    $(function () {
+        research.prototype.loadDataList(${master.id});
+    });
     var research = function () {
 
     };
@@ -1273,7 +1440,8 @@
                         if (result.ret) {
                             notifySuccess('成功', '删除成功');
                             research.prototype.loadDataList(${master.id});
-                        } else {
+                        }
+                        else {
                             AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
@@ -1303,8 +1471,8 @@
                         notifySuccess('成功', '保存成功');
                         $('#' + research.prototype.config().box).modal('hide');
                         research.prototype.loadDataList(${master.id});
-                        calculationNumeric();
-                    } else {
+                    }
+                    else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -1336,13 +1504,17 @@
 </script>
 <%--税率配置--%>
 <script type="text/javascript">
+    $(function () {
 
+
+    });
     var taxes = function () {
 
     };
     taxes.prototype = {
         config: function () {
             var data = {};
+            data.table = "tb_taxes_list";
             data.box = "modal_taxes";
             data.frm = "frm_taxes";
             return data;
@@ -1352,6 +1524,57 @@
                 return true;
             }
             return false;
+        },
+        loadDataList: function (masterId) {
+            var cols = [];
+            cols.push({field: 'typeName', title: '类型'});
+            cols.push({field: 'standard', title: '耕地标准/非耕地标准'});
+            cols.push({field: 'price', title: '价格(元/亩)'});
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="taxes.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="taxes.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + taxes.prototype.config().table).bootstrapTable('destroy');
+            TableInit(taxes.prototype.config().table, "${pageContext.request.contextPath}/costApproach/getMdCostApproachTaxesList", cols, {
+                masterId: masterId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                    getLandAcquisitionBhou(masterId)
+                }
+            });
+        },
+        removeData: function (id, this_) {
+            AlertConfirm("确认删除么", "删除后数据不可恢复", function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/costApproach/deleteCostApproachTaxes",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            notifySuccess('成功', '删除成功');
+                            $(this_).parent().parent().remove();
+
+                        }
+                        else {
+                            AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                })
+            });
         },
         showModel: function () {
             $("#StandardContent").empty();
@@ -1387,7 +1610,107 @@
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
-        }
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                    url: "${pageContext.request.contextPath}/costApproach/getCostApproachTaxesById",
+                    type: "get",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            $("#" + taxes.prototype.config().frm).clearAll();
+                            $("#" + taxes.prototype.config().frm).initForm(result.data);
+
+                            var html = '';
+                            switch (result.data.typeKey) {
+                                case "data.land.approximation.method.land.compensate": {
+                                }
+                                case "data.land.approximation.method.placement.compensate": {
+                                }
+                                case "data.land.approximation.method.house.compensate": {
+                                }
+                                case "data.land.approximation.method.removal.award": {
+                                }
+                                case"data.land.approximation.method.vegetable.build": {
+                                }
+                                case"data.land.approximation.method.plough.reclaim": {
+                                }
+                                case"data.land.approximation.method.occupation.land": {
+                                    html += '<div class="form-inline x-valid">';
+                                    html += '<label class="col-sm-1 control-label">耕地标准</label>';
+                                    html += '<div class="col-sm-3">';
+                                    if (result.data.standardFirst != null) {
+                                        html += '<input type="text" name="standardFirst" value="' + result.data.standardFirst + '" class="form-control input-full" data-rule-number="true">';
+                                    } else {
+                                        html += '<input type="text" name="standardFirst" value="" class="form-control input-full" data-rule-number="true">';
+                                    }
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '<div class="form-inline x-valid">';
+                                    html += '<label class="col-sm-1 control-label">非耕地标准</label>';
+                                    html += '<div class="col-sm-3">';
+                                    if (result.data.standardSecond != null) {
+                                        html += '<input type="text" name="standardSecond" value="' + result.data.standardSecond + '" class="form-control input-full" data-rule-number="true">';
+                                    } else {
+                                        html += '<input type="text" name="standardSecond" value="" class="form-control input-full" data-rule-number="true">';
+                                    }
+                                    html += '</div>';
+                                    html += '</div>';
+                                    break;
+                                }
+                                case"data.land.approximation.method.crops.compensate": {
+                                    html += '<div class="form-inline x-valid">';
+                                    html += '<label class="col-sm-1 control-label">耕地标准</label>';
+                                    html += '<div class="col-sm-3">';
+                                    if (result.data.standardFirst != null) {
+                                        html += '<input type="text" name="standardFirst" class="form-control input-full x-percent" value="' + AssessCommon.pointToPercent(result.data.standardFirst) + '">';
+                                    } else {
+                                        html += '<input type="text" name="standardFirst" value="" class="form-control input-full" data-rule-number="true">';
+                                    }
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '<div class="form-inline x-valid">';
+                                    html += '<label class="col-sm-1 control-label">非耕地标准</label>';
+                                    html += '<div class="col-sm-3">';
+                                    if (result.data.standardSecond != null) {
+                                        html += '<input type="text" name="standardSecond" value="' + result.data.standardSecond + '" class="form-control input-full" data-rule-number="true">';
+                                    } else {
+                                        html += '<input type="text" name="standardSecond" value="" class="form-control input-full" data-rule-number="true">';
+                                    }
+                                    html += '</div>';
+                                    html += '</div>';
+                                    break;
+                                }
+                                case "data.land.approximation.method.land.manager": {
+                                }
+                                case "data.land.approximation.method.cannot.foresee": {
+                                }
+                                case "data.land.approximation.method.land.acquisition": {
+                                    html += '<div class="form-inline x-valid">';
+                                    html += '<label class="col-sm-1 control-label">标准</label>';
+                                    html += '<div class="col-sm-3">';
+                                    if (result.data.standardFirst != null) {
+                                        html += '<input type="text" name="standardFirst" class="form-control input-full x-percent" value="' + AssessCommon.pointToPercent(result.data.standardFirst) + '">';
+                                    } else {
+                                        html += '<input type="text" name="standardFirst" value="" class="form-control input-full" data-rule-number="true">';
+                                    }
+                                    html += '</div>';
+                                    html += '</div>';
+                                    break;
+                                }
+                            }
+                            $("#StandardContent").empty().append(html);
+                            $('#' + taxes.prototype.config().box).modal("show");
+                        }
+                    },
+                    error: function (result) {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                }
+            )
+        },
+
     }
 
     function uploadTaxeHtml(id, typeKey, typeName, standardFirst, standardSecond, price, remark) {
@@ -1546,6 +1869,7 @@
         if (!$("#" + taxes.prototype.config().frm).valid()) {
             return false;
         }
+
         $.ajax({
             url: "${pageContext.request.contextPath}/costApproach/getThisPrice",
             type: "post",
@@ -1559,7 +1883,7 @@
             success: function (result) {
                 if (result.ret) {
                     $(that).closest("tr").find("input[name='price']").val(result.data.price);
-                    calculationNumeric();
+                    getLandAcquisitionBhou(masterId);
                 }
             },
             error: function (result) {
@@ -1577,116 +1901,14 @@
         data.id = $(that).find("input[name='id']").val();
         data.masterId = $("#master").find("input[name='id']").val();
         data.typeKey = $(that).find("input[name='typeKey']").val();
-        var standardFirst = $(that).find("input[name='standardFirst']").val();
-        var standardSecond = $(that).find("input[name='standardSecond']").val();
-        var price = $(that).find("input[name='price']").val();
-        var remark = $(that).find("input[name='remark']").val();
-        data.standardFirst = standardFirst ? percentToPoint(standardFirst) : "";
-        data.standardSecond = standardSecond ? percentToPoint(standardSecond) : "";
-        data.price = price ? price : "";
-        data.remark = remark ? remark : "";
+        var standardFirst =$(that).find("input[name='standardFirst']").val();
+        var standardSecond =$(that).find("input[name='standardSecond']").val();
+        var price =$(that).find("input[name='price']").val();
+        var remark =$(that).find("input[name='remark']").val();
+        data.standardFirst = standardFirst?percentToPoint(standardFirst):"";
+        data.standardSecond = standardSecond?percentToPoint(standardSecond):"";
+        data.price = price?price:"";
+        data.remark = remark?remark:"";
         return data;
     }
-
-    function calculationNumeric(that) {
-        var formData = formParams("master");
-        var formDataOther = formParams("master_other");
-        formDataOther.id = $("#master").find("input[name=id]").val();
-        formDataOther.farmlandArea = formData.farmlandArea;
-        formDataOther.ploughArea = formData.ploughArea;
-        formDataOther.populationNumber = formData.populationNumber;
-        formDataOther.plotRatioElementAmend = $("#plotRatioElementAmend").attr("data-value");
-        formDataOther.calculatedInterest = AssessCommon.percentToPoint($("#calculatedInterest").val());
-        formDataOther.circulationExpense = $("#circulationExpense").val();
-        formDataOther.profitMargin = AssessCommon.percentToPoint($("#profitMargin").val());
-        formDataOther.incrementalBenefit = AssessCommon.percentToPoint($("#incrementalBenefit").val());
-        formDataOther.plotRatioAdjust = AssessCommon.percentToPoint($("#plotRatioAdjust").val());
-        formDataOther.rewardRate = AssessCommon.percentToPoint($("#rewardRate").val());
-        console.log(formDataOther);
-        $.ajax({
-            url: getContextPath() + "/costApproach/calculationNumeric",
-            type: "post",
-            data: {
-                fomData: JSON.stringify(formDataOther)
-            },
-            success: function (result) {
-                var data = result.data;
-                if (data) {
-                    console.log(data);
-                    if (data.ploughArearatio) {
-                        $("#ploughArearatio").text(AssessCommon.pointToPercent(data.ploughArearatio));
-                    }
-                    if (data.noPloughArearatio) {
-                        $("#noPloughArearatio").text(AssessCommon.pointToPercent(data.noPloughArearatio));
-                    }
-                    if (data.landAcquisitionBhou) {
-                        $("#landAcquisitionBhou").text(data.landAcquisitionBhou);
-                    }
-                    if (data.landAcquisitionUnit) {
-                        $("#landAcquisitionUnit").text(data.landAcquisitionUnit);
-                    }
-                    if (data.landProductionBhou) {
-                        $("#landProductionBhou").text(data.landProductionBhou);
-                    }
-                    if (data.landProductionUnit) {
-                        $("#landProductionUnit").text(data.landProductionUnit);
-                    }
-                    if (data.landProductionInterestBhou) {
-                        $("#landProductionInterestBhou").text(data.landProductionInterestBhou);
-                    }
-                    if (data.landProductionInterestUnit) {
-                        $("#landProductionInterestUnit").text(data.landProductionInterestUnit);
-                    }
-                    if (data.landProductionProfitBhou) {
-                        $("#landProductionProfitBhou").text(data.landProductionProfitBhou);
-                    }
-                    if (data.landProductionProfitUnit) {
-                        $("#landProductionProfitUnit").text(data.landProductionProfitUnit);
-                    }
-                    if (data.landCostPriceBhou) {
-                        $("#landCostPriceBhou").text(data.landCostPriceBhou);
-                    }
-                    if (data.landCostPriceUnit) {
-                        $("#landCostPriceUnit").text(data.landCostPriceUnit);
-                    }
-                    if (data.landUseBhou) {
-                        $("#landUseBhou").text(data.landUseBhou);
-                    }
-                    if (data.landUsePrice) {
-                        $("#landUseUnit").text(data.landUsePrice);
-                    }
-                    if (data.priceCorrectionBhou) {
-                        $("#priceCorrectionBhou").text(data.priceCorrectionBhou);
-                    }
-                    if (data.priceCorrectionUnit) {
-                        $("#priceCorrectionUnit").text(data.priceCorrectionUnit);
-                    }
-                    if (data.plotRatioElementAmendBhou) {
-                        $("#plotRatioElementAmendBhou").text(data.plotRatioElementAmendBhou);
-                    }
-                    if (data.plotRatioElementAmendUnit) {
-                        $("#plotRatioElementAmendUnit").text(data.plotRatioElementAmendUnit);
-                    }
-                    if (data.plotRatioAdjustBhou) {
-                        $("#plotRatioAdjustBhou").text(data.plotRatioAdjustBhou);
-                    }
-                    if (data.plotRatioAdjustUnit) {
-                        $("#plotRatioAdjustUnit").text(data.plotRatioAdjustUnit);
-                    }
-                    if (data.parcelUnit) {
-                        $("#parcelUnit").text(data.parcelUnit);
-                    }
-                    if (data.parcelBhou) {
-                        $("#parcelBhou").text(data.parcelBhou);
-                    }
-                    if (data.yearFixed) {
-                        $("#yearFixed").text(AssessCommon.pointToPercent(data.yearFixed));
-                    }
-
-                }
-            }
-        })
-    }
-
-
 </script>

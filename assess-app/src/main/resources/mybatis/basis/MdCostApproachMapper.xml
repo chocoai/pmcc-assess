@@ -28,21 +28,37 @@
     <result column="plot_ratio_adjust_remark" jdbcType="VARCHAR" property="plotRatioAdjustRemark" />
     <result column="plot_ratio_element_amend" jdbcType="DECIMAL" property="plotRatioElementAmend" />
     <result column="plot_ratio_element_amend_remark" jdbcType="VARCHAR" property="plotRatioElementAmendRemark" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
-    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
     <result column="land_remaining_year" jdbcType="DECIMAL" property="landRemainingYear" />
     <result column="land_remaining_year_remark" jdbcType="VARCHAR" property="landRemainingYearRemark" />
     <result column="parcel_setting_outer" jdbcType="VARCHAR" property="parcelSettingOuter" />
     <result column="parcel_setting_inner" jdbcType="VARCHAR" property="parcelSettingInner" />
+    <result column="land_use_bhou" jdbcType="DECIMAL" property="landUseBhou" />
     <result column="land_use_price" jdbcType="DECIMAL" property="landUsePrice" />
     <result column="year_fixed" jdbcType="DECIMAL" property="yearFixed" />
+    <result column="parcel_bhou" jdbcType="DECIMAL" property="parcelBhou" />
     <result column="parcel_unit" jdbcType="DECIMAL" property="parcelUnit" />
     <result column="land_cost_price_unit" jdbcType="DECIMAL" property="landCostPriceUnit" />
+    <result column="land_cost_price_bhou" jdbcType="DECIMAL" property="landCostPriceBhou" />
     <result column="land_acquisition_unit" jdbcType="DECIMAL" property="landAcquisitionUnit" />
+    <result column="land_production_profit_bhou" jdbcType="DECIMAL" property="landProductionProfitBhou" />
     <result column="land_production_profit_unit" jdbcType="DECIMAL" property="landProductionProfitUnit" />
     <result column="land_production_interest_unit" jdbcType="DECIMAL" property="landProductionInterestUnit" />
     <result column="have_not_land_acquisition" jdbcType="DECIMAL" property="haveNotLandAcquisition" />
+    <result column="land_production_interest_bhou" jdbcType="DECIMAL" property="landProductionInterestBhou" />
+    <result column="land_production_bhou" jdbcType="DECIMAL" property="landProductionBhou" />
+    <result column="land_production_unit" jdbcType="DECIMAL" property="landProductionUnit" />
+    <result column="land_acquisition_bhou" jdbcType="DECIMAL" property="landAcquisitionBhou" />
+    <result column="no_plough_arearatio" jdbcType="VARCHAR" property="noPloughArearatio" />
+    <result column="plough_arearatio" jdbcType="VARCHAR" property="ploughArearatio" />
+    <result column="price_correction_bhou" jdbcType="DECIMAL" property="priceCorrectionBhou" />
+    <result column="price_correction_unit" jdbcType="DECIMAL" property="priceCorrectionUnit" />
+    <result column="plot_ratio_element_amend_bhou" jdbcType="DECIMAL" property="plotRatioElementAmendBhou" />
+    <result column="plot_ratio_element_amend_unit" jdbcType="DECIMAL" property="plotRatioElementAmendUnit" />
+    <result column="plot_ratio_adjust_bhou" jdbcType="DECIMAL" property="plotRatioAdjustBhou" />
+    <result column="plot_ratio_adjust_unit" jdbcType="DECIMAL" property="plotRatioAdjustUnit" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.MdCostApproach">
     <result column="land_level_content" jdbcType="LONGVARCHAR" property="landLevelContent" />
@@ -111,10 +127,14 @@
     flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, 
     calculated_interest_remark, profit_margin, profit_margin_remark, incremental_benefit, 
     incremental_benefit_remark, plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, 
-    plot_ratio_element_amend_remark, creator, gmt_created, gmt_modified, land_remaining_year, 
-    land_remaining_year_remark, parcel_setting_outer, parcel_setting_inner, land_use_price, 
-    year_fixed, parcel_unit, land_cost_price_unit, land_acquisition_unit, land_production_profit_unit, 
-    land_production_interest_unit, have_not_land_acquisition
+    plot_ratio_element_amend_remark, land_remaining_year, land_remaining_year_remark, 
+    parcel_setting_outer, parcel_setting_inner, land_use_bhou, land_use_price, year_fixed, 
+    parcel_bhou, parcel_unit, land_cost_price_unit, land_cost_price_bhou, land_acquisition_unit, 
+    land_production_profit_bhou, land_production_profit_unit, land_production_interest_unit, 
+    have_not_land_acquisition, land_production_interest_bhou, land_production_bhou, land_production_unit, 
+    land_acquisition_bhou, no_plough_arearatio, plough_arearatio, price_correction_bhou, 
+    price_correction_unit, plot_ratio_element_amend_bhou, plot_ratio_element_amend_unit, 
+    plot_ratio_adjust_bhou, plot_ratio_adjust_unit, gmt_modified, gmt_created, creator
   </sql>
   <sql id="Blob_Column_List">
     land_level_content
@@ -181,14 +201,20 @@
       profit_margin_remark, incremental_benefit, 
       incremental_benefit_remark, plot_ratio_adjust, 
       plot_ratio_adjust_remark, plot_ratio_element_amend, 
-      plot_ratio_element_amend_remark, creator, gmt_created, 
-      gmt_modified, land_remaining_year, land_remaining_year_remark, 
-      parcel_setting_outer, parcel_setting_inner, 
-      land_use_price, year_fixed, parcel_unit, 
-      land_cost_price_unit, land_acquisition_unit, 
-      land_production_profit_unit, land_production_interest_unit, 
-      have_not_land_acquisition, land_level_content
-      )
+      plot_ratio_element_amend_remark, land_remaining_year, 
+      land_remaining_year_remark, parcel_setting_outer, 
+      parcel_setting_inner, land_use_bhou, land_use_price, 
+      year_fixed, parcel_bhou, parcel_unit, 
+      land_cost_price_unit, land_cost_price_bhou, land_acquisition_unit, 
+      land_production_profit_bhou, land_production_profit_unit, 
+      land_production_interest_unit, have_not_land_acquisition, 
+      land_production_interest_bhou, land_production_bhou, 
+      land_production_unit, land_acquisition_bhou, 
+      no_plough_arearatio, plough_arearatio, price_correction_bhou, 
+      price_correction_unit, plot_ratio_element_amend_bhou, 
+      plot_ratio_element_amend_unit, plot_ratio_adjust_bhou, 
+      plot_ratio_adjust_unit, gmt_modified, gmt_created, 
+      creator, land_level_content)
     values (#{name,jdbcType=VARCHAR}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{processInsId,jdbcType=VARCHAR}, #{farmlandArea,jdbcType=DECIMAL}, #{ploughArea,jdbcType=DECIMAL}, 
       #{populationNumber,jdbcType=INTEGER}, #{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, 
@@ -199,14 +225,20 @@
       #{profitMarginRemark,jdbcType=VARCHAR}, #{incrementalBenefit,jdbcType=VARCHAR}, 
       #{incrementalBenefitRemark,jdbcType=VARCHAR}, #{plotRatioAdjust,jdbcType=VARCHAR}, 
       #{plotRatioAdjustRemark,jdbcType=VARCHAR}, #{plotRatioElementAmend,jdbcType=DECIMAL}, 
-      #{plotRatioElementAmendRemark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{landRemainingYear,jdbcType=DECIMAL}, #{landRemainingYearRemark,jdbcType=VARCHAR}, 
-      #{parcelSettingOuter,jdbcType=VARCHAR}, #{parcelSettingInner,jdbcType=VARCHAR}, 
-      #{landUsePrice,jdbcType=DECIMAL}, #{yearFixed,jdbcType=DECIMAL}, #{parcelUnit,jdbcType=DECIMAL}, 
-      #{landCostPriceUnit,jdbcType=DECIMAL}, #{landAcquisitionUnit,jdbcType=DECIMAL}, 
-      #{landProductionProfitUnit,jdbcType=DECIMAL}, #{landProductionInterestUnit,jdbcType=DECIMAL}, 
-      #{haveNotLandAcquisition,jdbcType=DECIMAL}, #{landLevelContent,jdbcType=LONGVARCHAR}
-      )
+      #{plotRatioElementAmendRemark,jdbcType=VARCHAR}, #{landRemainingYear,jdbcType=DECIMAL}, 
+      #{landRemainingYearRemark,jdbcType=VARCHAR}, #{parcelSettingOuter,jdbcType=VARCHAR}, 
+      #{parcelSettingInner,jdbcType=VARCHAR}, #{landUseBhou,jdbcType=DECIMAL}, #{landUsePrice,jdbcType=DECIMAL}, 
+      #{yearFixed,jdbcType=DECIMAL}, #{parcelBhou,jdbcType=DECIMAL}, #{parcelUnit,jdbcType=DECIMAL}, 
+      #{landCostPriceUnit,jdbcType=DECIMAL}, #{landCostPriceBhou,jdbcType=DECIMAL}, #{landAcquisitionUnit,jdbcType=DECIMAL}, 
+      #{landProductionProfitBhou,jdbcType=DECIMAL}, #{landProductionProfitUnit,jdbcType=DECIMAL}, 
+      #{landProductionInterestUnit,jdbcType=DECIMAL}, #{haveNotLandAcquisition,jdbcType=DECIMAL}, 
+      #{landProductionInterestBhou,jdbcType=DECIMAL}, #{landProductionBhou,jdbcType=DECIMAL}, 
+      #{landProductionUnit,jdbcType=DECIMAL}, #{landAcquisitionBhou,jdbcType=DECIMAL}, 
+      #{noPloughArearatio,jdbcType=VARCHAR}, #{ploughArearatio,jdbcType=VARCHAR}, #{priceCorrectionBhou,jdbcType=DECIMAL}, 
+      #{priceCorrectionUnit,jdbcType=DECIMAL}, #{plotRatioElementAmendBhou,jdbcType=DECIMAL}, 
+      #{plotRatioElementAmendUnit,jdbcType=DECIMAL}, #{plotRatioAdjustBhou,jdbcType=DECIMAL}, 
+      #{plotRatioAdjustUnit,jdbcType=DECIMAL}, #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{landLevelContent,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="map">
     <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
@@ -296,15 +328,6 @@
           <if test="record.plotRatioElementAmendRemark != null">
             plot_ratio_element_amend_remark,
           </if>
-          <if test="record.creator != null">
-            creator,
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created,
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified,
-          </if>
           <if test="record.landRemainingYear != null">
             land_remaining_year,
           </if>
@@ -317,11 +340,17 @@
           <if test="record.parcelSettingInner != null">
             parcel_setting_inner,
           </if>
+          <if test="record.landUseBhou != null">
+            land_use_bhou,
+          </if>
           <if test="record.landUsePrice != null">
             land_use_price,
           </if>
           <if test="record.yearFixed != null">
             year_fixed,
+          </if>
+          <if test="record.parcelBhou != null">
+            parcel_bhou,
           </if>
           <if test="record.parcelUnit != null">
             parcel_unit,
@@ -329,8 +358,14 @@
           <if test="record.landCostPriceUnit != null">
             land_cost_price_unit,
           </if>
+          <if test="record.landCostPriceBhou != null">
+            land_cost_price_bhou,
+          </if>
           <if test="record.landAcquisitionUnit != null">
             land_acquisition_unit,
+          </if>
+          <if test="record.landProductionProfitBhou != null">
+            land_production_profit_bhou,
           </if>
           <if test="record.landProductionProfitUnit != null">
             land_production_profit_unit,
@@ -340,6 +375,51 @@
           </if>
           <if test="record.haveNotLandAcquisition != null">
             have_not_land_acquisition,
+          </if>
+          <if test="record.landProductionInterestBhou != null">
+            land_production_interest_bhou,
+          </if>
+          <if test="record.landProductionBhou != null">
+            land_production_bhou,
+          </if>
+          <if test="record.landProductionUnit != null">
+            land_production_unit,
+          </if>
+          <if test="record.landAcquisitionBhou != null">
+            land_acquisition_bhou,
+          </if>
+          <if test="record.noPloughArearatio != null">
+            no_plough_arearatio,
+          </if>
+          <if test="record.ploughArearatio != null">
+            plough_arearatio,
+          </if>
+          <if test="record.priceCorrectionBhou != null">
+            price_correction_bhou,
+          </if>
+          <if test="record.priceCorrectionUnit != null">
+            price_correction_unit,
+          </if>
+          <if test="record.plotRatioElementAmendBhou != null">
+            plot_ratio_element_amend_bhou,
+          </if>
+          <if test="record.plotRatioElementAmendUnit != null">
+            plot_ratio_element_amend_unit,
+          </if>
+          <if test="record.plotRatioAdjustBhou != null">
+            plot_ratio_adjust_bhou,
+          </if>
+          <if test="record.plotRatioAdjustUnit != null">
+            plot_ratio_adjust_unit,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.creator != null">
+            creator,
           </if>
           <if test="record.landLevelContent != null">
             land_level_content,
@@ -432,15 +512,6 @@
           <if test="record.plotRatioElementAmendRemark != null">
             #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
           </if>
-          <if test="record.creator != null">
-            #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
           <if test="record.landRemainingYear != null">
             #{record.landRemainingYear,jdbcType=DECIMAL},
           </if>
@@ -453,11 +524,17 @@
           <if test="record.parcelSettingInner != null">
             #{record.parcelSettingInner,jdbcType=VARCHAR},
           </if>
+          <if test="record.landUseBhou != null">
+            #{record.landUseBhou,jdbcType=DECIMAL},
+          </if>
           <if test="record.landUsePrice != null">
             #{record.landUsePrice,jdbcType=DECIMAL},
           </if>
           <if test="record.yearFixed != null">
             #{record.yearFixed,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelBhou != null">
+            #{record.parcelBhou,jdbcType=DECIMAL},
           </if>
           <if test="record.parcelUnit != null">
             #{record.parcelUnit,jdbcType=DECIMAL},
@@ -465,8 +542,14 @@
           <if test="record.landCostPriceUnit != null">
             #{record.landCostPriceUnit,jdbcType=DECIMAL},
           </if>
+          <if test="record.landCostPriceBhou != null">
+            #{record.landCostPriceBhou,jdbcType=DECIMAL},
+          </if>
           <if test="record.landAcquisitionUnit != null">
             #{record.landAcquisitionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionProfitBhou != null">
+            #{record.landProductionProfitBhou,jdbcType=DECIMAL},
           </if>
           <if test="record.landProductionProfitUnit != null">
             #{record.landProductionProfitUnit,jdbcType=DECIMAL},
@@ -476,6 +559,51 @@
           </if>
           <if test="record.haveNotLandAcquisition != null">
             #{record.haveNotLandAcquisition,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionInterestBhou != null">
+            #{record.landProductionInterestBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionBhou != null">
+            #{record.landProductionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionUnit != null">
+            #{record.landProductionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landAcquisitionBhou != null">
+            #{record.landAcquisitionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.noPloughArearatio != null">
+            #{record.noPloughArearatio,jdbcType=VARCHAR},
+          </if>
+          <if test="record.ploughArearatio != null">
+            #{record.ploughArearatio,jdbcType=VARCHAR},
+          </if>
+          <if test="record.priceCorrectionBhou != null">
+            #{record.priceCorrectionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.priceCorrectionUnit != null">
+            #{record.priceCorrectionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioElementAmendBhou != null">
+            #{record.plotRatioElementAmendBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioElementAmendUnit != null">
+            #{record.plotRatioElementAmendUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioAdjustBhou != null">
+            #{record.plotRatioAdjustBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioAdjustUnit != null">
+            #{record.plotRatioAdjustUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
           </if>
           <if test="record.landLevelContent != null">
             #{record.landLevelContent,jdbcType=LONGVARCHAR},
@@ -579,15 +707,6 @@
           <if test="record.plotRatioElementAmendRemark != null">
             plot_ratio_element_amend_remark = #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
           </if>
-          <if test="record.creator != null">
-            creator = #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
           <if test="record.landRemainingYear != null">
             land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
           </if>
@@ -600,11 +719,17 @@
           <if test="record.parcelSettingInner != null">
             parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
           </if>
+          <if test="record.landUseBhou != null">
+            land_use_bhou = #{record.landUseBhou,jdbcType=DECIMAL},
+          </if>
           <if test="record.landUsePrice != null">
             land_use_price = #{record.landUsePrice,jdbcType=DECIMAL},
           </if>
           <if test="record.yearFixed != null">
             year_fixed = #{record.yearFixed,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelBhou != null">
+            parcel_bhou = #{record.parcelBhou,jdbcType=DECIMAL},
           </if>
           <if test="record.parcelUnit != null">
             parcel_unit = #{record.parcelUnit,jdbcType=DECIMAL},
@@ -612,8 +737,14 @@
           <if test="record.landCostPriceUnit != null">
             land_cost_price_unit = #{record.landCostPriceUnit,jdbcType=DECIMAL},
           </if>
+          <if test="record.landCostPriceBhou != null">
+            land_cost_price_bhou = #{record.landCostPriceBhou,jdbcType=DECIMAL},
+          </if>
           <if test="record.landAcquisitionUnit != null">
             land_acquisition_unit = #{record.landAcquisitionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionProfitBhou != null">
+            land_production_profit_bhou = #{record.landProductionProfitBhou,jdbcType=DECIMAL},
           </if>
           <if test="record.landProductionProfitUnit != null">
             land_production_profit_unit = #{record.landProductionProfitUnit,jdbcType=DECIMAL},
@@ -623,6 +754,51 @@
           </if>
           <if test="record.haveNotLandAcquisition != null">
             have_not_land_acquisition = #{record.haveNotLandAcquisition,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionInterestBhou != null">
+            land_production_interest_bhou = #{record.landProductionInterestBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionBhou != null">
+            land_production_bhou = #{record.landProductionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionUnit != null">
+            land_production_unit = #{record.landProductionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landAcquisitionBhou != null">
+            land_acquisition_bhou = #{record.landAcquisitionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.noPloughArearatio != null">
+            no_plough_arearatio = #{record.noPloughArearatio,jdbcType=VARCHAR},
+          </if>
+          <if test="record.ploughArearatio != null">
+            plough_arearatio = #{record.ploughArearatio,jdbcType=VARCHAR},
+          </if>
+          <if test="record.priceCorrectionBhou != null">
+            price_correction_bhou = #{record.priceCorrectionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.priceCorrectionUnit != null">
+            price_correction_unit = #{record.priceCorrectionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioElementAmendBhou != null">
+            plot_ratio_element_amend_bhou = #{record.plotRatioElementAmendBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioElementAmendUnit != null">
+            plot_ratio_element_amend_unit = #{record.plotRatioElementAmendUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioAdjustBhou != null">
+            plot_ratio_adjust_bhou = #{record.plotRatioAdjustBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioAdjustUnit != null">
+            plot_ratio_adjust_unit = #{record.plotRatioAdjustUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
           </if>
           <if test="record.landLevelContent != null">
             land_level_content = #{record.landLevelContent,jdbcType=LONGVARCHAR},
@@ -662,21 +838,37 @@
       plot_ratio_adjust_remark = #{record.plotRatioAdjustRemark,jdbcType=VARCHAR},
       plot_ratio_element_amend = #{record.plotRatioElementAmend,jdbcType=DECIMAL},
       plot_ratio_element_amend_remark = #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
       land_remaining_year_remark = #{record.landRemainingYearRemark,jdbcType=VARCHAR},
       parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
       parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
+      land_use_bhou = #{record.landUseBhou,jdbcType=DECIMAL},
       land_use_price = #{record.landUsePrice,jdbcType=DECIMAL},
       year_fixed = #{record.yearFixed,jdbcType=DECIMAL},
+      parcel_bhou = #{record.parcelBhou,jdbcType=DECIMAL},
       parcel_unit = #{record.parcelUnit,jdbcType=DECIMAL},
       land_cost_price_unit = #{record.landCostPriceUnit,jdbcType=DECIMAL},
+      land_cost_price_bhou = #{record.landCostPriceBhou,jdbcType=DECIMAL},
       land_acquisition_unit = #{record.landAcquisitionUnit,jdbcType=DECIMAL},
+      land_production_profit_bhou = #{record.landProductionProfitBhou,jdbcType=DECIMAL},
       land_production_profit_unit = #{record.landProductionProfitUnit,jdbcType=DECIMAL},
       land_production_interest_unit = #{record.landProductionInterestUnit,jdbcType=DECIMAL},
       have_not_land_acquisition = #{record.haveNotLandAcquisition,jdbcType=DECIMAL},
+      land_production_interest_bhou = #{record.landProductionInterestBhou,jdbcType=DECIMAL},
+      land_production_bhou = #{record.landProductionBhou,jdbcType=DECIMAL},
+      land_production_unit = #{record.landProductionUnit,jdbcType=DECIMAL},
+      land_acquisition_bhou = #{record.landAcquisitionBhou,jdbcType=DECIMAL},
+      no_plough_arearatio = #{record.noPloughArearatio,jdbcType=VARCHAR},
+      plough_arearatio = #{record.ploughArearatio,jdbcType=VARCHAR},
+      price_correction_bhou = #{record.priceCorrectionBhou,jdbcType=DECIMAL},
+      price_correction_unit = #{record.priceCorrectionUnit,jdbcType=DECIMAL},
+      plot_ratio_element_amend_bhou = #{record.plotRatioElementAmendBhou,jdbcType=DECIMAL},
+      plot_ratio_element_amend_unit = #{record.plotRatioElementAmendUnit,jdbcType=DECIMAL},
+      plot_ratio_adjust_bhou = #{record.plotRatioAdjustBhou,jdbcType=DECIMAL},
+      plot_ratio_adjust_unit = #{record.plotRatioAdjustUnit,jdbcType=DECIMAL},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=VARCHAR},
       land_level_content = #{record.landLevelContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -710,21 +902,37 @@
       plot_ratio_adjust_remark = #{record.plotRatioAdjustRemark,jdbcType=VARCHAR},
       plot_ratio_element_amend = #{record.plotRatioElementAmend,jdbcType=DECIMAL},
       plot_ratio_element_amend_remark = #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
       land_remaining_year_remark = #{record.landRemainingYearRemark,jdbcType=VARCHAR},
       parcel_setting_outer = #{record.parcelSettingOuter,jdbcType=VARCHAR},
       parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
+      land_use_bhou = #{record.landUseBhou,jdbcType=DECIMAL},
       land_use_price = #{record.landUsePrice,jdbcType=DECIMAL},
       year_fixed = #{record.yearFixed,jdbcType=DECIMAL},
+      parcel_bhou = #{record.parcelBhou,jdbcType=DECIMAL},
       parcel_unit = #{record.parcelUnit,jdbcType=DECIMAL},
       land_cost_price_unit = #{record.landCostPriceUnit,jdbcType=DECIMAL},
+      land_cost_price_bhou = #{record.landCostPriceBhou,jdbcType=DECIMAL},
       land_acquisition_unit = #{record.landAcquisitionUnit,jdbcType=DECIMAL},
+      land_production_profit_bhou = #{record.landProductionProfitBhou,jdbcType=DECIMAL},
       land_production_profit_unit = #{record.landProductionProfitUnit,jdbcType=DECIMAL},
       land_production_interest_unit = #{record.landProductionInterestUnit,jdbcType=DECIMAL},
-      have_not_land_acquisition = #{record.haveNotLandAcquisition,jdbcType=DECIMAL}
+      have_not_land_acquisition = #{record.haveNotLandAcquisition,jdbcType=DECIMAL},
+      land_production_interest_bhou = #{record.landProductionInterestBhou,jdbcType=DECIMAL},
+      land_production_bhou = #{record.landProductionBhou,jdbcType=DECIMAL},
+      land_production_unit = #{record.landProductionUnit,jdbcType=DECIMAL},
+      land_acquisition_bhou = #{record.landAcquisitionBhou,jdbcType=DECIMAL},
+      no_plough_arearatio = #{record.noPloughArearatio,jdbcType=VARCHAR},
+      plough_arearatio = #{record.ploughArearatio,jdbcType=VARCHAR},
+      price_correction_bhou = #{record.priceCorrectionBhou,jdbcType=DECIMAL},
+      price_correction_unit = #{record.priceCorrectionUnit,jdbcType=DECIMAL},
+      plot_ratio_element_amend_bhou = #{record.plotRatioElementAmendBhou,jdbcType=DECIMAL},
+      plot_ratio_element_amend_unit = #{record.plotRatioElementAmendUnit,jdbcType=DECIMAL},
+      plot_ratio_adjust_bhou = #{record.plotRatioAdjustBhou,jdbcType=DECIMAL},
+      plot_ratio_adjust_unit = #{record.plotRatioAdjustUnit,jdbcType=DECIMAL},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -815,15 +1023,6 @@
           <if test="record.plotRatioElementAmendRemark != null">
             plot_ratio_element_amend_remark = #{record.plotRatioElementAmendRemark,jdbcType=VARCHAR},
           </if>
-          <if test="record.creator != null">
-            creator = #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
           <if test="record.landRemainingYear != null">
             land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
           </if>
@@ -836,11 +1035,17 @@
           <if test="record.parcelSettingInner != null">
             parcel_setting_inner = #{record.parcelSettingInner,jdbcType=VARCHAR},
           </if>
+          <if test="record.landUseBhou != null">
+            land_use_bhou = #{record.landUseBhou,jdbcType=DECIMAL},
+          </if>
           <if test="record.landUsePrice != null">
             land_use_price = #{record.landUsePrice,jdbcType=DECIMAL},
           </if>
           <if test="record.yearFixed != null">
             year_fixed = #{record.yearFixed,jdbcType=DECIMAL},
+          </if>
+          <if test="record.parcelBhou != null">
+            parcel_bhou = #{record.parcelBhou,jdbcType=DECIMAL},
           </if>
           <if test="record.parcelUnit != null">
             parcel_unit = #{record.parcelUnit,jdbcType=DECIMAL},
@@ -848,8 +1053,14 @@
           <if test="record.landCostPriceUnit != null">
             land_cost_price_unit = #{record.landCostPriceUnit,jdbcType=DECIMAL},
           </if>
+          <if test="record.landCostPriceBhou != null">
+            land_cost_price_bhou = #{record.landCostPriceBhou,jdbcType=DECIMAL},
+          </if>
           <if test="record.landAcquisitionUnit != null">
             land_acquisition_unit = #{record.landAcquisitionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionProfitBhou != null">
+            land_production_profit_bhou = #{record.landProductionProfitBhou,jdbcType=DECIMAL},
           </if>
           <if test="record.landProductionProfitUnit != null">
             land_production_profit_unit = #{record.landProductionProfitUnit,jdbcType=DECIMAL},
@@ -859,6 +1070,51 @@
           </if>
           <if test="record.haveNotLandAcquisition != null">
             have_not_land_acquisition = #{record.haveNotLandAcquisition,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionInterestBhou != null">
+            land_production_interest_bhou = #{record.landProductionInterestBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionBhou != null">
+            land_production_bhou = #{record.landProductionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landProductionUnit != null">
+            land_production_unit = #{record.landProductionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.landAcquisitionBhou != null">
+            land_acquisition_bhou = #{record.landAcquisitionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.noPloughArearatio != null">
+            no_plough_arearatio = #{record.noPloughArearatio,jdbcType=VARCHAR},
+          </if>
+          <if test="record.ploughArearatio != null">
+            plough_arearatio = #{record.ploughArearatio,jdbcType=VARCHAR},
+          </if>
+          <if test="record.priceCorrectionBhou != null">
+            price_correction_bhou = #{record.priceCorrectionBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.priceCorrectionUnit != null">
+            price_correction_unit = #{record.priceCorrectionUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioElementAmendBhou != null">
+            plot_ratio_element_amend_bhou = #{record.plotRatioElementAmendBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioElementAmendUnit != null">
+            plot_ratio_element_amend_unit = #{record.plotRatioElementAmendUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioAdjustBhou != null">
+            plot_ratio_adjust_bhou = #{record.plotRatioAdjustBhou,jdbcType=DECIMAL},
+          </if>
+          <if test="record.plotRatioAdjustUnit != null">
+            plot_ratio_adjust_unit = #{record.plotRatioAdjustUnit,jdbcType=DECIMAL},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
           </if>
           <if test="record.landLevelContent != null">
             land_level_content = #{record.landLevelContent,jdbcType=LONGVARCHAR},
@@ -895,21 +1151,37 @@
       plot_ratio_adjust_remark = #{plotRatioAdjustRemark,jdbcType=VARCHAR},
       plot_ratio_element_amend = #{plotRatioElementAmend,jdbcType=DECIMAL},
       plot_ratio_element_amend_remark = #{plotRatioElementAmendRemark,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       land_remaining_year = #{landRemainingYear,jdbcType=DECIMAL},
       land_remaining_year_remark = #{landRemainingYearRemark,jdbcType=VARCHAR},
       parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
       parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
+      land_use_bhou = #{landUseBhou,jdbcType=DECIMAL},
       land_use_price = #{landUsePrice,jdbcType=DECIMAL},
       year_fixed = #{yearFixed,jdbcType=DECIMAL},
+      parcel_bhou = #{parcelBhou,jdbcType=DECIMAL},
       parcel_unit = #{parcelUnit,jdbcType=DECIMAL},
       land_cost_price_unit = #{landCostPriceUnit,jdbcType=DECIMAL},
+      land_cost_price_bhou = #{landCostPriceBhou,jdbcType=DECIMAL},
       land_acquisition_unit = #{landAcquisitionUnit,jdbcType=DECIMAL},
+      land_production_profit_bhou = #{landProductionProfitBhou,jdbcType=DECIMAL},
       land_production_profit_unit = #{landProductionProfitUnit,jdbcType=DECIMAL},
       land_production_interest_unit = #{landProductionInterestUnit,jdbcType=DECIMAL},
       have_not_land_acquisition = #{haveNotLandAcquisition,jdbcType=DECIMAL},
+      land_production_interest_bhou = #{landProductionInterestBhou,jdbcType=DECIMAL},
+      land_production_bhou = #{landProductionBhou,jdbcType=DECIMAL},
+      land_production_unit = #{landProductionUnit,jdbcType=DECIMAL},
+      land_acquisition_bhou = #{landAcquisitionBhou,jdbcType=DECIMAL},
+      no_plough_arearatio = #{noPloughArearatio,jdbcType=VARCHAR},
+      plough_arearatio = #{ploughArearatio,jdbcType=VARCHAR},
+      price_correction_bhou = #{priceCorrectionBhou,jdbcType=DECIMAL},
+      price_correction_unit = #{priceCorrectionUnit,jdbcType=DECIMAL},
+      plot_ratio_element_amend_bhou = #{plotRatioElementAmendBhou,jdbcType=DECIMAL},
+      plot_ratio_element_amend_unit = #{plotRatioElementAmendUnit,jdbcType=DECIMAL},
+      plot_ratio_adjust_bhou = #{plotRatioAdjustBhou,jdbcType=DECIMAL},
+      plot_ratio_adjust_unit = #{plotRatioAdjustUnit,jdbcType=DECIMAL},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
       land_level_content = #{landLevelContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -940,21 +1212,37 @@
       plot_ratio_adjust_remark = #{plotRatioAdjustRemark,jdbcType=VARCHAR},
       plot_ratio_element_amend = #{plotRatioElementAmend,jdbcType=DECIMAL},
       plot_ratio_element_amend_remark = #{plotRatioElementAmendRemark,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
-      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       land_remaining_year = #{landRemainingYear,jdbcType=DECIMAL},
       land_remaining_year_remark = #{landRemainingYearRemark,jdbcType=VARCHAR},
       parcel_setting_outer = #{parcelSettingOuter,jdbcType=VARCHAR},
       parcel_setting_inner = #{parcelSettingInner,jdbcType=VARCHAR},
+      land_use_bhou = #{landUseBhou,jdbcType=DECIMAL},
       land_use_price = #{landUsePrice,jdbcType=DECIMAL},
       year_fixed = #{yearFixed,jdbcType=DECIMAL},
+      parcel_bhou = #{parcelBhou,jdbcType=DECIMAL},
       parcel_unit = #{parcelUnit,jdbcType=DECIMAL},
       land_cost_price_unit = #{landCostPriceUnit,jdbcType=DECIMAL},
+      land_cost_price_bhou = #{landCostPriceBhou,jdbcType=DECIMAL},
       land_acquisition_unit = #{landAcquisitionUnit,jdbcType=DECIMAL},
+      land_production_profit_bhou = #{landProductionProfitBhou,jdbcType=DECIMAL},
       land_production_profit_unit = #{landProductionProfitUnit,jdbcType=DECIMAL},
       land_production_interest_unit = #{landProductionInterestUnit,jdbcType=DECIMAL},
-      have_not_land_acquisition = #{haveNotLandAcquisition,jdbcType=DECIMAL}
+      have_not_land_acquisition = #{haveNotLandAcquisition,jdbcType=DECIMAL},
+      land_production_interest_bhou = #{landProductionInterestBhou,jdbcType=DECIMAL},
+      land_production_bhou = #{landProductionBhou,jdbcType=DECIMAL},
+      land_production_unit = #{landProductionUnit,jdbcType=DECIMAL},
+      land_acquisition_bhou = #{landAcquisitionBhou,jdbcType=DECIMAL},
+      no_plough_arearatio = #{noPloughArearatio,jdbcType=VARCHAR},
+      plough_arearatio = #{ploughArearatio,jdbcType=VARCHAR},
+      price_correction_bhou = #{priceCorrectionBhou,jdbcType=DECIMAL},
+      price_correction_unit = #{priceCorrectionUnit,jdbcType=DECIMAL},
+      plot_ratio_element_amend_bhou = #{plotRatioElementAmendBhou,jdbcType=DECIMAL},
+      plot_ratio_element_amend_unit = #{plotRatioElementAmendUnit,jdbcType=DECIMAL},
+      plot_ratio_adjust_bhou = #{plotRatioAdjustBhou,jdbcType=DECIMAL},
+      plot_ratio_adjust_unit = #{plotRatioAdjustUnit,jdbcType=DECIMAL},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
@@ -964,10 +1252,15 @@
       flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, 
       calculated_interest_remark, profit_margin, profit_margin_remark, incremental_benefit, 
       incremental_benefit_remark, plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, 
-      plot_ratio_element_amend_remark, creator, gmt_created, gmt_modified, land_remaining_year, 
-      land_remaining_year_remark, parcel_setting_outer, parcel_setting_inner, land_use_price, 
-      year_fixed, parcel_unit, land_cost_price_unit, land_acquisition_unit, land_production_profit_unit, 
-      land_production_interest_unit, have_not_land_acquisition, land_level_content)
+      plot_ratio_element_amend_remark, land_remaining_year, land_remaining_year_remark, 
+      parcel_setting_outer, parcel_setting_inner, land_use_bhou, land_use_price, year_fixed, 
+      parcel_bhou, parcel_unit, land_cost_price_unit, land_cost_price_bhou, land_acquisition_unit, 
+      land_production_profit_bhou, land_production_profit_unit, land_production_interest_unit, 
+      have_not_land_acquisition, land_production_interest_bhou, land_production_bhou, 
+      land_production_unit, land_acquisition_bhou, no_plough_arearatio, plough_arearatio, 
+      price_correction_bhou, price_correction_unit, plot_ratio_element_amend_bhou, plot_ratio_element_amend_unit, 
+      plot_ratio_adjust_bhou, plot_ratio_adjust_unit, gmt_modified, gmt_created, creator, 
+      land_level_content)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.name,jdbcType=VARCHAR}, #{item.judgeObjectId,jdbcType=INTEGER}, #{item.planDetailsId,jdbcType=INTEGER}, 
@@ -981,14 +1274,22 @@
         #{item.profitMarginRemark,jdbcType=VARCHAR}, #{item.incrementalBenefit,jdbcType=VARCHAR}, 
         #{item.incrementalBenefitRemark,jdbcType=VARCHAR}, #{item.plotRatioAdjust,jdbcType=VARCHAR}, 
         #{item.plotRatioAdjustRemark,jdbcType=VARCHAR}, #{item.plotRatioElementAmend,jdbcType=DECIMAL}, 
-        #{item.plotRatioElementAmendRemark,jdbcType=VARCHAR}, #{item.creator,jdbcType=VARCHAR}, 
-        #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}, 
-        #{item.landRemainingYear,jdbcType=DECIMAL}, #{item.landRemainingYearRemark,jdbcType=VARCHAR}, 
-        #{item.parcelSettingOuter,jdbcType=VARCHAR}, #{item.parcelSettingInner,jdbcType=VARCHAR}, 
-        #{item.landUsePrice,jdbcType=DECIMAL}, #{item.yearFixed,jdbcType=DECIMAL}, #{item.parcelUnit,jdbcType=DECIMAL}, 
-        #{item.landCostPriceUnit,jdbcType=DECIMAL}, #{item.landAcquisitionUnit,jdbcType=DECIMAL}, 
-        #{item.landProductionProfitUnit,jdbcType=DECIMAL}, #{item.landProductionInterestUnit,jdbcType=DECIMAL}, 
-        #{item.haveNotLandAcquisition,jdbcType=DECIMAL}, #{item.landLevelContent,jdbcType=LONGVARCHAR}
+        #{item.plotRatioElementAmendRemark,jdbcType=VARCHAR}, #{item.landRemainingYear,jdbcType=DECIMAL}, 
+        #{item.landRemainingYearRemark,jdbcType=VARCHAR}, #{item.parcelSettingOuter,jdbcType=VARCHAR}, 
+        #{item.parcelSettingInner,jdbcType=VARCHAR}, #{item.landUseBhou,jdbcType=DECIMAL}, 
+        #{item.landUsePrice,jdbcType=DECIMAL}, #{item.yearFixed,jdbcType=DECIMAL}, #{item.parcelBhou,jdbcType=DECIMAL}, 
+        #{item.parcelUnit,jdbcType=DECIMAL}, #{item.landCostPriceUnit,jdbcType=DECIMAL}, 
+        #{item.landCostPriceBhou,jdbcType=DECIMAL}, #{item.landAcquisitionUnit,jdbcType=DECIMAL}, 
+        #{item.landProductionProfitBhou,jdbcType=DECIMAL}, #{item.landProductionProfitUnit,jdbcType=DECIMAL}, 
+        #{item.landProductionInterestUnit,jdbcType=DECIMAL}, #{item.haveNotLandAcquisition,jdbcType=DECIMAL}, 
+        #{item.landProductionInterestBhou,jdbcType=DECIMAL}, #{item.landProductionBhou,jdbcType=DECIMAL}, 
+        #{item.landProductionUnit,jdbcType=DECIMAL}, #{item.landAcquisitionBhou,jdbcType=DECIMAL}, 
+        #{item.noPloughArearatio,jdbcType=VARCHAR}, #{item.ploughArearatio,jdbcType=VARCHAR}, 
+        #{item.priceCorrectionBhou,jdbcType=DECIMAL}, #{item.priceCorrectionUnit,jdbcType=DECIMAL}, 
+        #{item.plotRatioElementAmendBhou,jdbcType=DECIMAL}, #{item.plotRatioElementAmendUnit,jdbcType=DECIMAL}, 
+        #{item.plotRatioAdjustBhou,jdbcType=DECIMAL}, #{item.plotRatioAdjustUnit,jdbcType=DECIMAL}, 
+        #{item.gmtModified,jdbcType=TIMESTAMP}, #{item.gmtCreated,jdbcType=TIMESTAMP}, 
+        #{item.creator,jdbcType=VARCHAR}, #{item.landLevelContent,jdbcType=LONGVARCHAR}
         )
     </foreach>
   </insert>
@@ -1077,15 +1378,6 @@
         <if test="'plot_ratio_element_amend_remark'.toString() == column.value">
           #{item.plotRatioElementAmendRemark,jdbcType=VARCHAR}
         </if>
-        <if test="'creator'.toString() == column.value">
-          #{item.creator,jdbcType=VARCHAR}
-        </if>
-        <if test="'gmt_created'.toString() == column.value">
-          #{item.gmtCreated,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'gmt_modified'.toString() == column.value">
-          #{item.gmtModified,jdbcType=TIMESTAMP}
-        </if>
         <if test="'land_remaining_year'.toString() == column.value">
           #{item.landRemainingYear,jdbcType=DECIMAL}
         </if>
@@ -1098,11 +1390,17 @@
         <if test="'parcel_setting_inner'.toString() == column.value">
           #{item.parcelSettingInner,jdbcType=VARCHAR}
         </if>
+        <if test="'land_use_bhou'.toString() == column.value">
+          #{item.landUseBhou,jdbcType=DECIMAL}
+        </if>
         <if test="'land_use_price'.toString() == column.value">
           #{item.landUsePrice,jdbcType=DECIMAL}
         </if>
         <if test="'year_fixed'.toString() == column.value">
           #{item.yearFixed,jdbcType=DECIMAL}
+        </if>
+        <if test="'parcel_bhou'.toString() == column.value">
+          #{item.parcelBhou,jdbcType=DECIMAL}
         </if>
         <if test="'parcel_unit'.toString() == column.value">
           #{item.parcelUnit,jdbcType=DECIMAL}
@@ -1110,8 +1408,14 @@
         <if test="'land_cost_price_unit'.toString() == column.value">
           #{item.landCostPriceUnit,jdbcType=DECIMAL}
         </if>
+        <if test="'land_cost_price_bhou'.toString() == column.value">
+          #{item.landCostPriceBhou,jdbcType=DECIMAL}
+        </if>
         <if test="'land_acquisition_unit'.toString() == column.value">
           #{item.landAcquisitionUnit,jdbcType=DECIMAL}
+        </if>
+        <if test="'land_production_profit_bhou'.toString() == column.value">
+          #{item.landProductionProfitBhou,jdbcType=DECIMAL}
         </if>
         <if test="'land_production_profit_unit'.toString() == column.value">
           #{item.landProductionProfitUnit,jdbcType=DECIMAL}
@@ -1121,6 +1425,51 @@
         </if>
         <if test="'have_not_land_acquisition'.toString() == column.value">
           #{item.haveNotLandAcquisition,jdbcType=DECIMAL}
+        </if>
+        <if test="'land_production_interest_bhou'.toString() == column.value">
+          #{item.landProductionInterestBhou,jdbcType=DECIMAL}
+        </if>
+        <if test="'land_production_bhou'.toString() == column.value">
+          #{item.landProductionBhou,jdbcType=DECIMAL}
+        </if>
+        <if test="'land_production_unit'.toString() == column.value">
+          #{item.landProductionUnit,jdbcType=DECIMAL}
+        </if>
+        <if test="'land_acquisition_bhou'.toString() == column.value">
+          #{item.landAcquisitionBhou,jdbcType=DECIMAL}
+        </if>
+        <if test="'no_plough_arearatio'.toString() == column.value">
+          #{item.noPloughArearatio,jdbcType=VARCHAR}
+        </if>
+        <if test="'plough_arearatio'.toString() == column.value">
+          #{item.ploughArearatio,jdbcType=VARCHAR}
+        </if>
+        <if test="'price_correction_bhou'.toString() == column.value">
+          #{item.priceCorrectionBhou,jdbcType=DECIMAL}
+        </if>
+        <if test="'price_correction_unit'.toString() == column.value">
+          #{item.priceCorrectionUnit,jdbcType=DECIMAL}
+        </if>
+        <if test="'plot_ratio_element_amend_bhou'.toString() == column.value">
+          #{item.plotRatioElementAmendBhou,jdbcType=DECIMAL}
+        </if>
+        <if test="'plot_ratio_element_amend_unit'.toString() == column.value">
+          #{item.plotRatioElementAmendUnit,jdbcType=DECIMAL}
+        </if>
+        <if test="'plot_ratio_adjust_bhou'.toString() == column.value">
+          #{item.plotRatioAdjustBhou,jdbcType=DECIMAL}
+        </if>
+        <if test="'plot_ratio_adjust_unit'.toString() == column.value">
+          #{item.plotRatioAdjustUnit,jdbcType=DECIMAL}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
         </if>
         <if test="'land_level_content'.toString() == column.value">
           #{item.landLevelContent,jdbcType=LONGVARCHAR}

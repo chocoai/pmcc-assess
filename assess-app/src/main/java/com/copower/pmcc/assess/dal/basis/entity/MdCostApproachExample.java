@@ -1828,196 +1828,6 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreatorIsNull() {
-            addCriterion("creator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNotNull() {
-            addCriterion("creator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorEqualTo(String value) {
-            addCriterion("creator =", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotEqualTo(String value) {
-            addCriterion("creator <>", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThan(String value) {
-            addCriterion("creator >", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
-            addCriterion("creator >=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThan(String value) {
-            addCriterion("creator <", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThanOrEqualTo(String value) {
-            addCriterion("creator <=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLike(String value) {
-            addCriterion("creator like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotLike(String value) {
-            addCriterion("creator not like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIn(List<String> values) {
-            addCriterion("creator in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotIn(List<String> values) {
-            addCriterion("creator not in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorBetween(String value1, String value2) {
-            addCriterion("creator between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotBetween(String value1, String value2) {
-            addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedIsNull() {
-            addCriterion("gmt_created is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedIsNotNull() {
-            addCriterion("gmt_created is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedEqualTo(Date value) {
-            addCriterion("gmt_created =", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotEqualTo(Date value) {
-            addCriterion("gmt_created <>", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedGreaterThan(Date value) {
-            addCriterion("gmt_created >", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
-            addCriterion("gmt_created >=", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedLessThan(Date value) {
-            addCriterion("gmt_created <", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
-            addCriterion("gmt_created <=", value, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedIn(List<Date> values) {
-            addCriterion("gmt_created in", values, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotIn(List<Date> values) {
-            addCriterion("gmt_created not in", values, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
-            addCriterion("gmt_created between", value1, value2, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
-            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedIsNull() {
-            addCriterion("gmt_modified is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedIsNotNull() {
-            addCriterion("gmt_modified is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedEqualTo(Date value) {
-            addCriterion("gmt_modified =", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedNotEqualTo(Date value) {
-            addCriterion("gmt_modified <>", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedGreaterThan(Date value) {
-            addCriterion("gmt_modified >", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedGreaterThanOrEqualTo(Date value) {
-            addCriterion("gmt_modified >=", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedLessThan(Date value) {
-            addCriterion("gmt_modified <", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedLessThanOrEqualTo(Date value) {
-            addCriterion("gmt_modified <=", value, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedIn(List<Date> values) {
-            addCriterion("gmt_modified in", values, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedNotIn(List<Date> values) {
-            addCriterion("gmt_modified not in", values, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedBetween(Date value1, Date value2) {
-            addCriterion("gmt_modified between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
-            addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
         public Criteria andLandRemainingYearIsNull() {
             addCriterion("land_remaining_year is null");
             return (Criteria) this;
@@ -2288,6 +2098,66 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandUseBhouIsNull() {
+            addCriterion("land_use_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouIsNotNull() {
+            addCriterion("land_use_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouEqualTo(BigDecimal value) {
+            addCriterion("land_use_bhou =", value, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouNotEqualTo(BigDecimal value) {
+            addCriterion("land_use_bhou <>", value, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouGreaterThan(BigDecimal value) {
+            addCriterion("land_use_bhou >", value, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_use_bhou >=", value, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouLessThan(BigDecimal value) {
+            addCriterion("land_use_bhou <", value, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_use_bhou <=", value, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouIn(List<BigDecimal> values) {
+            addCriterion("land_use_bhou in", values, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouNotIn(List<BigDecimal> values) {
+            addCriterion("land_use_bhou not in", values, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_use_bhou between", value1, value2, "landUseBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandUseBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_use_bhou not between", value1, value2, "landUseBhou");
+            return (Criteria) this;
+        }
+
         public Criteria andLandUsePriceIsNull() {
             addCriterion("land_use_price is null");
             return (Criteria) this;
@@ -2405,6 +2275,66 @@ public class MdCostApproachExample {
 
         public Criteria andYearFixedNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("year_fixed not between", value1, value2, "yearFixed");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouIsNull() {
+            addCriterion("parcel_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouIsNotNull() {
+            addCriterion("parcel_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouEqualTo(BigDecimal value) {
+            addCriterion("parcel_bhou =", value, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouNotEqualTo(BigDecimal value) {
+            addCriterion("parcel_bhou <>", value, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouGreaterThan(BigDecimal value) {
+            addCriterion("parcel_bhou >", value, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("parcel_bhou >=", value, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouLessThan(BigDecimal value) {
+            addCriterion("parcel_bhou <", value, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("parcel_bhou <=", value, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouIn(List<BigDecimal> values) {
+            addCriterion("parcel_bhou in", values, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouNotIn(List<BigDecimal> values) {
+            addCriterion("parcel_bhou not in", values, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("parcel_bhou between", value1, value2, "parcelBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andParcelBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("parcel_bhou not between", value1, value2, "parcelBhou");
             return (Criteria) this;
         }
 
@@ -2528,6 +2458,66 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandCostPriceBhouIsNull() {
+            addCriterion("land_cost_price_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouIsNotNull() {
+            addCriterion("land_cost_price_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouEqualTo(BigDecimal value) {
+            addCriterion("land_cost_price_bhou =", value, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouNotEqualTo(BigDecimal value) {
+            addCriterion("land_cost_price_bhou <>", value, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouGreaterThan(BigDecimal value) {
+            addCriterion("land_cost_price_bhou >", value, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_cost_price_bhou >=", value, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouLessThan(BigDecimal value) {
+            addCriterion("land_cost_price_bhou <", value, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_cost_price_bhou <=", value, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouIn(List<BigDecimal> values) {
+            addCriterion("land_cost_price_bhou in", values, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouNotIn(List<BigDecimal> values) {
+            addCriterion("land_cost_price_bhou not in", values, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_cost_price_bhou between", value1, value2, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandCostPriceBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_cost_price_bhou not between", value1, value2, "landCostPriceBhou");
+            return (Criteria) this;
+        }
+
         public Criteria andLandAcquisitionUnitIsNull() {
             addCriterion("land_acquisition_unit is null");
             return (Criteria) this;
@@ -2585,6 +2575,66 @@ public class MdCostApproachExample {
 
         public Criteria andLandAcquisitionUnitNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("land_acquisition_unit not between", value1, value2, "landAcquisitionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouIsNull() {
+            addCriterion("land_production_profit_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouIsNotNull() {
+            addCriterion("land_production_profit_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouEqualTo(BigDecimal value) {
+            addCriterion("land_production_profit_bhou =", value, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouNotEqualTo(BigDecimal value) {
+            addCriterion("land_production_profit_bhou <>", value, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouGreaterThan(BigDecimal value) {
+            addCriterion("land_production_profit_bhou >", value, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_profit_bhou >=", value, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouLessThan(BigDecimal value) {
+            addCriterion("land_production_profit_bhou <", value, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_profit_bhou <=", value, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouIn(List<BigDecimal> values) {
+            addCriterion("land_production_profit_bhou in", values, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouNotIn(List<BigDecimal> values) {
+            addCriterion("land_production_profit_bhou not in", values, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_profit_bhou between", value1, value2, "landProductionProfitBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionProfitBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_profit_bhou not between", value1, value2, "landProductionProfitBhou");
             return (Criteria) this;
         }
 
@@ -2765,6 +2815,936 @@ public class MdCostApproachExample {
 
         public Criteria andHaveNotLandAcquisitionNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("have_not_land_acquisition not between", value1, value2, "haveNotLandAcquisition");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouIsNull() {
+            addCriterion("land_production_interest_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouIsNotNull() {
+            addCriterion("land_production_interest_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouEqualTo(BigDecimal value) {
+            addCriterion("land_production_interest_bhou =", value, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouNotEqualTo(BigDecimal value) {
+            addCriterion("land_production_interest_bhou <>", value, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouGreaterThan(BigDecimal value) {
+            addCriterion("land_production_interest_bhou >", value, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_interest_bhou >=", value, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouLessThan(BigDecimal value) {
+            addCriterion("land_production_interest_bhou <", value, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_interest_bhou <=", value, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouIn(List<BigDecimal> values) {
+            addCriterion("land_production_interest_bhou in", values, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouNotIn(List<BigDecimal> values) {
+            addCriterion("land_production_interest_bhou not in", values, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_interest_bhou between", value1, value2, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionInterestBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_interest_bhou not between", value1, value2, "landProductionInterestBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouIsNull() {
+            addCriterion("land_production_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouIsNotNull() {
+            addCriterion("land_production_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouEqualTo(BigDecimal value) {
+            addCriterion("land_production_bhou =", value, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouNotEqualTo(BigDecimal value) {
+            addCriterion("land_production_bhou <>", value, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouGreaterThan(BigDecimal value) {
+            addCriterion("land_production_bhou >", value, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_bhou >=", value, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouLessThan(BigDecimal value) {
+            addCriterion("land_production_bhou <", value, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_bhou <=", value, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouIn(List<BigDecimal> values) {
+            addCriterion("land_production_bhou in", values, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouNotIn(List<BigDecimal> values) {
+            addCriterion("land_production_bhou not in", values, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_bhou between", value1, value2, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_bhou not between", value1, value2, "landProductionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitIsNull() {
+            addCriterion("land_production_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitIsNotNull() {
+            addCriterion("land_production_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitEqualTo(BigDecimal value) {
+            addCriterion("land_production_unit =", value, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitNotEqualTo(BigDecimal value) {
+            addCriterion("land_production_unit <>", value, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitGreaterThan(BigDecimal value) {
+            addCriterion("land_production_unit >", value, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_unit >=", value, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitLessThan(BigDecimal value) {
+            addCriterion("land_production_unit <", value, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_production_unit <=", value, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitIn(List<BigDecimal> values) {
+            addCriterion("land_production_unit in", values, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitNotIn(List<BigDecimal> values) {
+            addCriterion("land_production_unit not in", values, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_unit between", value1, value2, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandProductionUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_production_unit not between", value1, value2, "landProductionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouIsNull() {
+            addCriterion("land_acquisition_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouIsNotNull() {
+            addCriterion("land_acquisition_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouEqualTo(BigDecimal value) {
+            addCriterion("land_acquisition_bhou =", value, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouNotEqualTo(BigDecimal value) {
+            addCriterion("land_acquisition_bhou <>", value, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouGreaterThan(BigDecimal value) {
+            addCriterion("land_acquisition_bhou >", value, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_acquisition_bhou >=", value, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouLessThan(BigDecimal value) {
+            addCriterion("land_acquisition_bhou <", value, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("land_acquisition_bhou <=", value, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouIn(List<BigDecimal> values) {
+            addCriterion("land_acquisition_bhou in", values, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouNotIn(List<BigDecimal> values) {
+            addCriterion("land_acquisition_bhou not in", values, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_acquisition_bhou between", value1, value2, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("land_acquisition_bhou not between", value1, value2, "landAcquisitionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioIsNull() {
+            addCriterion("no_plough_arearatio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioIsNotNull() {
+            addCriterion("no_plough_arearatio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioEqualTo(String value) {
+            addCriterion("no_plough_arearatio =", value, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioNotEqualTo(String value) {
+            addCriterion("no_plough_arearatio <>", value, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioGreaterThan(String value) {
+            addCriterion("no_plough_arearatio >", value, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioGreaterThanOrEqualTo(String value) {
+            addCriterion("no_plough_arearatio >=", value, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioLessThan(String value) {
+            addCriterion("no_plough_arearatio <", value, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioLessThanOrEqualTo(String value) {
+            addCriterion("no_plough_arearatio <=", value, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioLike(String value) {
+            addCriterion("no_plough_arearatio like", value, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioNotLike(String value) {
+            addCriterion("no_plough_arearatio not like", value, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioIn(List<String> values) {
+            addCriterion("no_plough_arearatio in", values, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioNotIn(List<String> values) {
+            addCriterion("no_plough_arearatio not in", values, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioBetween(String value1, String value2) {
+            addCriterion("no_plough_arearatio between", value1, value2, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoPloughArearatioNotBetween(String value1, String value2) {
+            addCriterion("no_plough_arearatio not between", value1, value2, "noPloughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioIsNull() {
+            addCriterion("plough_arearatio is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioIsNotNull() {
+            addCriterion("plough_arearatio is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioEqualTo(String value) {
+            addCriterion("plough_arearatio =", value, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioNotEqualTo(String value) {
+            addCriterion("plough_arearatio <>", value, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioGreaterThan(String value) {
+            addCriterion("plough_arearatio >", value, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioGreaterThanOrEqualTo(String value) {
+            addCriterion("plough_arearatio >=", value, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioLessThan(String value) {
+            addCriterion("plough_arearatio <", value, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioLessThanOrEqualTo(String value) {
+            addCriterion("plough_arearatio <=", value, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioLike(String value) {
+            addCriterion("plough_arearatio like", value, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioNotLike(String value) {
+            addCriterion("plough_arearatio not like", value, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioIn(List<String> values) {
+            addCriterion("plough_arearatio in", values, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioNotIn(List<String> values) {
+            addCriterion("plough_arearatio not in", values, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioBetween(String value1, String value2) {
+            addCriterion("plough_arearatio between", value1, value2, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPloughArearatioNotBetween(String value1, String value2) {
+            addCriterion("plough_arearatio not between", value1, value2, "ploughArearatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouIsNull() {
+            addCriterion("price_correction_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouIsNotNull() {
+            addCriterion("price_correction_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouEqualTo(BigDecimal value) {
+            addCriterion("price_correction_bhou =", value, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouNotEqualTo(BigDecimal value) {
+            addCriterion("price_correction_bhou <>", value, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouGreaterThan(BigDecimal value) {
+            addCriterion("price_correction_bhou >", value, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("price_correction_bhou >=", value, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouLessThan(BigDecimal value) {
+            addCriterion("price_correction_bhou <", value, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("price_correction_bhou <=", value, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouIn(List<BigDecimal> values) {
+            addCriterion("price_correction_bhou in", values, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouNotIn(List<BigDecimal> values) {
+            addCriterion("price_correction_bhou not in", values, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price_correction_bhou between", value1, value2, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price_correction_bhou not between", value1, value2, "priceCorrectionBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitIsNull() {
+            addCriterion("price_correction_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitIsNotNull() {
+            addCriterion("price_correction_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitEqualTo(BigDecimal value) {
+            addCriterion("price_correction_unit =", value, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitNotEqualTo(BigDecimal value) {
+            addCriterion("price_correction_unit <>", value, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitGreaterThan(BigDecimal value) {
+            addCriterion("price_correction_unit >", value, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("price_correction_unit >=", value, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitLessThan(BigDecimal value) {
+            addCriterion("price_correction_unit <", value, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("price_correction_unit <=", value, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitIn(List<BigDecimal> values) {
+            addCriterion("price_correction_unit in", values, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitNotIn(List<BigDecimal> values) {
+            addCriterion("price_correction_unit not in", values, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price_correction_unit between", value1, value2, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPriceCorrectionUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("price_correction_unit not between", value1, value2, "priceCorrectionUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouIsNull() {
+            addCriterion("plot_ratio_element_amend_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouIsNotNull() {
+            addCriterion("plot_ratio_element_amend_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_bhou =", value, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouNotEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_bhou <>", value, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouGreaterThan(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_bhou >", value, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_bhou >=", value, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouLessThan(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_bhou <", value, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_bhou <=", value, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio_element_amend_bhou in", values, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouNotIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio_element_amend_bhou not in", values, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio_element_amend_bhou between", value1, value2, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio_element_amend_bhou not between", value1, value2, "plotRatioElementAmendBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitIsNull() {
+            addCriterion("plot_ratio_element_amend_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitIsNotNull() {
+            addCriterion("plot_ratio_element_amend_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_unit =", value, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitNotEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_unit <>", value, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitGreaterThan(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_unit >", value, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_unit >=", value, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitLessThan(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_unit <", value, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_element_amend_unit <=", value, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio_element_amend_unit in", values, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitNotIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio_element_amend_unit not in", values, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio_element_amend_unit between", value1, value2, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioElementAmendUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio_element_amend_unit not between", value1, value2, "plotRatioElementAmendUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouIsNull() {
+            addCriterion("plot_ratio_adjust_bhou is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouIsNotNull() {
+            addCriterion("plot_ratio_adjust_bhou is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_bhou =", value, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouNotEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_bhou <>", value, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouGreaterThan(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_bhou >", value, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_bhou >=", value, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouLessThan(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_bhou <", value, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_bhou <=", value, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio_adjust_bhou in", values, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouNotIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio_adjust_bhou not in", values, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio_adjust_bhou between", value1, value2, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustBhouNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio_adjust_bhou not between", value1, value2, "plotRatioAdjustBhou");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitIsNull() {
+            addCriterion("plot_ratio_adjust_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitIsNotNull() {
+            addCriterion("plot_ratio_adjust_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_unit =", value, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitNotEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_unit <>", value, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitGreaterThan(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_unit >", value, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_unit >=", value, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitLessThan(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_unit <", value, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("plot_ratio_adjust_unit <=", value, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio_adjust_unit in", values, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitNotIn(List<BigDecimal> values) {
+            addCriterion("plot_ratio_adjust_unit not in", values, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio_adjust_unit between", value1, value2, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioAdjustUnitNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("plot_ratio_adjust_unit not between", value1, value2, "plotRatioAdjustUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIsNull() {
+            addCriterion("gmt_modified is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIsNotNull() {
+            addCriterion("gmt_modified is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedEqualTo(Date value) {
+            addCriterion("gmt_modified =", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotEqualTo(Date value) {
+            addCriterion("gmt_modified <>", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedGreaterThan(Date value) {
+            addCriterion("gmt_modified >", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_modified >=", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedLessThan(Date value) {
+            addCriterion("gmt_modified <", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_modified <=", value, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedIn(List<Date> values) {
+            addCriterion("gmt_modified in", values, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotIn(List<Date> values) {
+            addCriterion("gmt_modified not in", values, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedBetween(Date value1, Date value2) {
+            addCriterion("gmt_modified between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNull() {
+            addCriterion("gmt_created is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIsNotNull() {
+            addCriterion("gmt_created is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedEqualTo(Date value) {
+            addCriterion("gmt_created =", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotEqualTo(Date value) {
+            addCriterion("gmt_created <>", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThan(Date value) {
+            addCriterion("gmt_created >", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedGreaterThanOrEqualTo(Date value) {
+            addCriterion("gmt_created >=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThan(Date value) {
+            addCriterion("gmt_created <", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedLessThanOrEqualTo(Date value) {
+            addCriterion("gmt_created <=", value, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedIn(List<Date> values) {
+            addCriterion("gmt_created in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotIn(List<Date> values) {
+            addCriterion("gmt_created not in", values, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedBetween(Date value1, Date value2) {
+            addCriterion("gmt_created between", value1, value2, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andGmtCreatedNotBetween(Date value1, Date value2) {
+            addCriterion("gmt_created not between", value1, value2, "gmtCreated");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNull() {
+            addCriterion("creator is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("creator is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("creator =", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("creator <>", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("creator >", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("creator >=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("creator <", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("creator <=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLike(String value) {
+            addCriterion("creator like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("creator not like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("creator in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("creator not in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("creator between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("creator not between", value1, value2, "creator");
             return (Criteria) this;
         }
     }

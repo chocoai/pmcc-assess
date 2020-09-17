@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.controller.method;
 
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachItemDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostApproachTaxesDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -200,6 +200,18 @@ public class MdCostApproachController {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");
+        }
+    }
+
+    @PostMapping(value = "/calculationNumeric", name = "后台自动计算")
+    public HttpResult calculationNumeric(String fomData) {
+        try {
+            MdCostApproach target = JSONObject.parseObject(fomData, MdCostApproach.class);
+            costApproachService.calculationNumeric(target);
+            return HttpResult.newCorrectResult(200, target);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("请检查输入的数据");
         }
     }
 
