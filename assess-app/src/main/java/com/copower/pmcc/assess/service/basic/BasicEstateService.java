@@ -537,6 +537,14 @@ public class BasicEstateService extends BasicEntityAbstract {
             }
             basicEstateLandStateService.saveAndUpdateBasicEstateLandState(targeEstateLandState, true);
             basicEstateLandCategoryInfoService.copy(sourceEstateLandState.getId(), targeEstateLandState.getId());
+        } else {
+            BasicEstateLandState targeEstateLandState = new BasicEstateLandState();
+            targeEstateLandState.setEstateId(targetBasicEstate.getId());
+            targeEstateLandState.setId(null);
+            targeEstateLandState.setCreator(commonService.thisUserAccount());
+            targeEstateLandState.setGmtCreated(null);
+            targeEstateLandState.setGmtModified(null);
+            basicEstateLandStateService.saveAndUpdateBasicEstateLandState(targeEstateLandState, true);
         }
         if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetId);

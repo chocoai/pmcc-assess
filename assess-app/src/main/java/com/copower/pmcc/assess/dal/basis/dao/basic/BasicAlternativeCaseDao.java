@@ -46,13 +46,13 @@ public class BasicAlternativeCaseDao {
         return bBasicAlternativeCaseMapper.deleteByPrimaryKey(id) > 0;
     }
 
-    public List<BasicAlternativeCase> getBasicAlternativeCaseList(BasicAlternativeCase bBasicAlternativeCase) {
+    public Boolean deleteDataByBatchDetailId(Integer batchDetailId) {
         BasicAlternativeCaseExample example = new BasicAlternativeCaseExample();
-        MybatisUtils.convertObj2Example(bBasicAlternativeCase, example);
-        return bBasicAlternativeCaseMapper.selectByExample(example);
+        example.createCriteria().andBatchDetailIdEqualTo(batchDetailId);
+        return bBasicAlternativeCaseMapper.deleteByExample(example) > 0;
     }
 
-    public List<BasicAlternativeCase> getBasicAlternativeCaseList(String name,String tbType,String creator,Integer projectCategoryId) {
+    public List<BasicAlternativeCase> getBasicAlternativeCaseList(String name, String tbType, String creator, Integer projectCategoryId) {
         BasicAlternativeCaseExample example = new BasicAlternativeCaseExample();
         BasicAlternativeCaseExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(name)) {
@@ -64,7 +64,7 @@ public class BasicAlternativeCaseDao {
         if (StringUtils.isNotBlank(creator)) {
             criteria.andCreatorEqualTo(creator);
         }
-        if (projectCategoryId!=null) {
+        if (projectCategoryId != null) {
             criteria.andProjectCategoryIdEqualTo(projectCategoryId);
         }
         example.setOrderByClause("id desc");

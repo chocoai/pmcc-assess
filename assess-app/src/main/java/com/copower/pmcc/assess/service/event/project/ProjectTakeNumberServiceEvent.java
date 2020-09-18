@@ -11,10 +11,13 @@ import com.copower.pmcc.assess.service.project.ProjectQrcodeRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
+import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +41,8 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
     private GenerateReportGroupService generateReportGroupService;
     @Autowired
     private BaseDataDicService baseDataDicService;
+    @Autowired
+    private ErpRpcProjectService erpRpcProjectService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -61,6 +66,17 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
             String qrcode = projectQrcodeRecordService.getReportQrcode(generateReportGroup, baseDataDic.getFieldName(), projectTakeNumber.getNumberValue(), unit);
             projectTakeNumber.setQrcode(qrcode);
             projectTakeNumberService.editData(projectTakeNumber);
+        }
+
+        //将生成的文号更新到erp项目中
+        SysProjectDto projectDto = erpRpcProjectService.getProjectInfoById(projectInfo.getPublicProjectId());
+        if (projectDto != null) {
+            if (StringUtils.isBlank(projectDto.getProjectDocumentNumber())) {
+                projectDto.setProjectDocumentNumber(projectTakeNumber.getNumberValue());
+            } else {
+                projectDto.setProjectDocumentNumber(projectDto.getProjectDocumentNumber() + "," + projectTakeNumber.getNumberValue());
+            }
+            erpRpcProjectService.saveProject(projectDto);
         }
     }
 }

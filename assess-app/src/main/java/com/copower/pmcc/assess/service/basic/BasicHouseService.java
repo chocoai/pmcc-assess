@@ -653,6 +653,12 @@ public class BasicHouseService extends BasicEntityAbstract {
                 //附件拷贝
                 baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), source.getId(), targetBasicHouseTrading.getId());
             }
+        }else{
+            BasicHouseTrading targetBasicHouseTrading = new BasicHouseTrading();
+            targetBasicHouseTrading.setId(null);
+            targetBasicHouseTrading.setBisMark(true);
+            targetBasicHouseTrading.setHouseId(targetBasicHouse.getId());
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(targetBasicHouseTrading, true);
         }
         baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouse.class), sourceId, targetBasicHouse.getId());
         if (containChild) {

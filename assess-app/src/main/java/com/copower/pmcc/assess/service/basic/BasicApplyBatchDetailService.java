@@ -84,15 +84,15 @@ public class BasicApplyBatchDetailService {
     @Autowired
     private BasicEstateLandCategoryInfoDao basicEstateLandCategoryInfoDao;
     @Autowired
-    private SchemeJudgeObjectService schemeJudgeObjectService;
+    private BasicAlternativeCaseService basicAlternativeCaseService;
     @Autowired
     private BasicEstateSurveyRecordService basicEstateSurveyRecordService;
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailByProjectId(Integer projectId){
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailByProjectId(Integer projectId) {
         BasicApplyBatchDetail query = new BasicApplyBatchDetailVo();
         query.setProjectId(projectId);
         query.setBisDelete(false);
-        return basicApplyBatchDetailDao.getInfoList(query) ;
+        return basicApplyBatchDetailDao.getInfoList(query);
     }
 
 
@@ -420,6 +420,7 @@ public class BasicApplyBatchDetailService {
             if (entityAbstract != null)
                 entityAbstract.clearInvalidData(applyBatchDetail.getTableId());
             basicApplyBatchDetailDao.deleteInfo(applyBatchDetail.getId());
+            basicAlternativeCaseService.deleteDataByBatchDetailId(applyBatchDetail.getId());
             processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_BASIC_APPLY_BATCH_DETAIL_ID, String.valueOf(applyBatchDetail.getId()));//清除缓存
         }
     }
@@ -601,8 +602,8 @@ public class BasicApplyBatchDetailService {
                     item.setDeclareRecordId(recordIds.get(0));
                     recordIds.remove(0);
                     if (CollectionUtils.isNotEmpty(recordIds)) {
-                        item.setOtherDeclareRecoreId(String.format(",%s,",FormatUtils.transformListString(recordIds)));
-                    }else{
+                        item.setOtherDeclareRecoreId(String.format(",%s,", FormatUtils.transformListString(recordIds)));
+                    } else {
                         item.setOtherDeclareRecoreId("");
                     }
                     item.setDeclareRecordName(declareRecordName);

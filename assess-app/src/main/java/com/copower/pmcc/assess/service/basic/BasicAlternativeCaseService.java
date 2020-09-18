@@ -131,4 +131,9 @@ public class BasicAlternativeCaseService extends BaseService {
         if (basicAlternativeCase == null) return null;
         return basicApplyBatchService.referenceDataByDetailId(basicAlternativeCase.getBatchDetailId(), projectId, planDetailsId);
     }
+
+    public void deleteDataByBatchDetailId(Integer batchDetailId) {
+        if (batchDetailId == null) return;
+        basicAlternativeCaseDao.deleteDataByBatchDetailId(batchDetailId);
+    }
 }
