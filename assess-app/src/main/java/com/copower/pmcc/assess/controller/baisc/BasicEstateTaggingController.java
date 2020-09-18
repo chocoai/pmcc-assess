@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Auther: wangpc
@@ -53,7 +56,7 @@ public class BasicEstateTaggingController {
             return HttpResult.newCorrectResult(basicEstateTagging);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult( e.getMessage());
         }
     }
 
@@ -65,7 +68,7 @@ public class BasicEstateTaggingController {
             return HttpResult.newCorrectResult(basicEstateTagging);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult( e.getMessage());
         }
     }
 
@@ -73,10 +76,10 @@ public class BasicEstateTaggingController {
     @RequestMapping(value = "/getEstateTaggingList", name = "获取数据列表", method = {RequestMethod.POST})
     public HttpResult getEstateTaggingList(Integer applyId,String type) {
         try {
-            return HttpResult.newCorrectResult(200,basicEstateTaggingService.getEstateTaggingList(applyId,type));
+            return HttpResult.newCorrectResult(basicEstateTaggingService.getEstateTaggingList(applyId,type));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -85,10 +88,11 @@ public class BasicEstateTaggingController {
     @RequestMapping(value = "/getApplyBatchEstateTaggingsByTableId", name = "批量申请时获取数据列表", method = {RequestMethod.POST})
     public HttpResult getApplyBatchEstateTaggingsByTableId(Integer tableId,String type) {
         try {
-            return HttpResult.newCorrectResult(200,basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(tableId,type));
+            List<BasicEstateTaggingVo> taggingVos = basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(tableId, type);
+            return HttpResult.newCorrectResult(taggingVos);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500,e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -96,10 +100,10 @@ public class BasicEstateTaggingController {
     @RequestMapping(value = "/deleteBasicEstateTagging", name = "删除数据", method = {RequestMethod.POST})
     public HttpResult deleteBasicEstateTagging(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200, basicEstateTaggingService.deleteBasicEstateTagging(id));
+            return HttpResult.newCorrectResult( basicEstateTaggingService.deleteBasicEstateTagging(id));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult( e.getMessage());
         }
     }
 

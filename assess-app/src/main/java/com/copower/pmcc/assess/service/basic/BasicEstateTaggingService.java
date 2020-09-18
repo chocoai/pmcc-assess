@@ -102,16 +102,16 @@ public class BasicEstateTaggingService {
     }
 
     public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging, boolean updateNull) {
-        if(updateNull){
+        if (updateNull) {
             BasicEstateTagging estateTagging = basicEstateTaggingDao.getBasicEstateTaggingById(basicEstateTagging.getId());
-            if(estateTagging!=null){
+            if (estateTagging != null) {
                 basicEstateTagging.setBisDelete(estateTagging.getBisDelete());
                 basicEstateTagging.setCreator(estateTagging.getCreator());
                 basicEstateTagging.setGmtCreated(estateTagging.getGmtCreated());
                 basicEstateTagging.setGmtModified(DateUtils.now());
             }
         }
-        return basicEstateTaggingDao.updateBasicEstateTagging(basicEstateTagging,updateNull);
+        return basicEstateTaggingDao.updateBasicEstateTagging(basicEstateTagging, updateNull);
     }
 
     /**
@@ -136,6 +136,16 @@ public class BasicEstateTaggingService {
 
 
     public List<BasicEstateTaggingVo> getApplyBatchEstateTaggingsByTableId(Integer tableId, String type) {
+        if (tableId == null || StringUtils.isBlank(type)) return null;
+        if (BasicFormClassifyEnum.BUILDING.getKey().equals(type)) {
+            BasicApplyBatchDetail detail = basicApplyBatchDetailService.getBasicApplyBatchDetail(BasicFormClassifyEnum.BUILDING.getTableName(), tableId);
+            if (detail != null && detail.getPid() > 0) {
+                BasicApplyBatchDetail parentDetail = basicApplyBatchDetailService.getDataById(detail.getPid());
+                if (parentDetail != null && BasicFormClassifyEnum.BUILDING.getTableName().equals(parentDetail.getTableName()) && parentDetail.getTableId() != null) {
+                    tableId = parentDetail.getTableId();
+                }
+            }
+        }
         BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
         basicEstateTagging.setTableId(tableId);
         basicEstateTagging.setType(type);
@@ -188,7 +198,7 @@ public class BasicEstateTaggingService {
         BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", houseTableId);
         BasicUnit basicUnit = basicApplyBatchDetailService.getBasicUnitByBatchDetailId(basicApplyBatchDetail.getPid());
         List<BasicEstateTaggingVo> taggings = getApplyBatchEstateTaggingsByTableId(basicUnit.getId(), "unit");
-        if(CollectionUtils.isEmpty(taggings)) return null;
+        if (CollectionUtils.isEmpty(taggings)) return null;
         return taggings.get(0);
     }
 
@@ -227,6 +237,7 @@ public class BasicEstateTaggingService {
 
     /**
      * 拷贝
+     *
      * @param taggingTypeEnum
      * @param sourceId
      * @param targetId
