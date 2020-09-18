@@ -54,6 +54,8 @@ AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";
 AssessDBKey.SurveyAssetInventoryRightRecord = "tb_survey_asset_inventory_right_record";
+AssessDBKey.SurveyAssetInfoItem = "tb_survey_asset_info_item";
+AssessDBKey.SurveyAssetInfo = "tb_survey_asset_info";
 
 AssessDBKey.SurveyAssetRightItem = "tb_survey_asset_right_item";
 AssessDBKey.SurveyAssetRightGroup = "tb_survey_asset_right_group";

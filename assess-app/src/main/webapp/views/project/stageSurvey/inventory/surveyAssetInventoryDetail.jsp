@@ -553,10 +553,23 @@
             html += "</label>";
             html += "</div>";
 
+            var fileName = n.fileName;
+
+            if (fileName) {
+                html += "<label class='col-sm-1 control-label'>" + "附件" + "</label>";
+                html += "<div class='col-sm-2'>";
+                html += "<div  id='" + "_" + fileName + "'>" + "</div>";
+                html += "</div>";
+            }
+
             html += "</div>";
             html += "</div>";
             html += "</div>";
             $("." + item).append(html);
+            console.log(fileName) ;
+            if (fileName) {
+                survey.showFile(fileName, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}' ,false);
+            }
         })
     }
 
