@@ -109,38 +109,6 @@ public class DeclarePublicService {
         String streetName = String.join("", org.apache.commons.lang3.StringUtils.substringBetween(text, "", NUMBER), NUMBER);
         stringMap.put(STREET, streetName);
 
-//        final String value = StringUtils.removeStart(text, streetName);
-//        List<String> stringList = generateCommonMethod.convertNumberHelp(value);
-//        if (CollectionUtils.isNotEmpty(stringList)) {
-//            stringList = stringList.stream().filter(s -> NumberUtils.isNumber(s)).collect(Collectors.toList());
-//        }
-//        if (CollectionUtils.isNotEmpty(stringList)) {
-//            stringList.stream().forEachOrdered(s -> {
-//                //附
-//                if (StringUtils.contains(value, String.format("%s%d%s", ATTACHED, Integer.parseInt(s), NUMBER))) {
-//                    stringMap.put(ATTACHED, s);
-//                }
-//                //栋
-//                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), BUILDING))) {
-//                    stringMap.put(BUILDING, s);
-//                }
-//                //单元
-//                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), UNIT))) {
-//                    stringMap.put(UNIT, s);
-//                }
-//                //层
-//                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), FLOOR))) {
-//                    stringMap.put(FLOOR, s);
-//                }
-//                //房
-//                if (StringUtils.contains(value, String.format("%d%s", Integer.parseInt(s), NUMBER))) {
-//                    stringMap.put(RoomNumber, s);
-//                }
-//
-//            });
-//        }
-
-
         String value = "";
         value = StringUtils.removeStart(text, streetName);
         if (StringUtils.isNotEmpty(value)) {
@@ -260,21 +228,21 @@ public class DeclarePublicService {
             return false;
         }
         //权证号 拆分
-        if (StringUtils.isNotBlank(target.getCertName())) {
-            String location = StringUtils.substringBetween(target.getCertName(), ")", "不动产");
-            if (StringUtils.isEmpty(location)) {
-                location = StringUtils.substringBetween(target.getCertName(), "）", "不动产");
-            }
-            target.setLocation(location);
-            String yearStr = StringUtils.substringBeforeLast(target.getCertName(), "不动产");
-            if (StringUtils.isBlank(target.getYear())) {
-                target.setYear(generateCommonMethod.getNumber(yearStr));
-            }
-            String numberStr = StringUtils.substringAfterLast(target.getCertName(), "不动产");
-            if (StringUtils.isBlank(target.getNumber())) {
-                target.setNumber(generateCommonMethod.getNumber(numberStr));
-            }
-        }
+//        if (StringUtils.isNotBlank(target.getCertName())) {
+//            String location = StringUtils.substringBetween(target.getCertName(), ")", "不动产");
+//            if (StringUtils.isEmpty(location)) {
+//                location = StringUtils.substringBetween(target.getCertName(), "）", "不动产");
+//            }
+//            target.setLocation(location);
+//            String yearStr = StringUtils.substringBeforeLast(target.getCertName(), "不动产");
+//            if (StringUtils.isBlank(target.getYear())) {
+//                target.setYear(generateCommonMethod.getNumber(yearStr));
+//            }
+//            String numberStr = StringUtils.substringAfterLast(target.getCertName(), "不动产");
+//            if (StringUtils.isBlank(target.getNumber())) {
+//                target.setNumber(generateCommonMethod.getNumber(numberStr));
+//            }
+//        }
         //坐落 子项
         if (org.apache.commons.lang3.StringUtils.isNotBlank(target.getBeLocated())) {
             Map<String, String> locatedMap = beLocatedSplicing(target.getBeLocated());
@@ -349,42 +317,42 @@ public class DeclarePublicService {
             return false;
         }
         //土地权证号 拆分
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(declareRealtyLandCert.getLandCertName())) {
-            final String frequency = "第";
-            String typeName = "";
-            List<String> stringList = generateCommonMethod.convertNumberHelp(declareRealtyLandCert.getLandCertName());
-            //设置类型
-            List<BaseDataDic> types = baseMap.get("landRightType").stream().findFirst().get();
-            for (BaseDataDic type : types) {
-                if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), type.getName())) {
-                    declareRealtyLandCert.setLandRightType(type.getId());
-                    typeName = type.getName();
-                }
-            }
-            if (CollectionUtils.isNotEmpty(stringList)) {
-                stringList.stream().forEachOrdered(s -> {
-                    if (NumberUtils.isNumber(s)) {
-                        if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), String.format("%d%s", Integer.parseInt(s), frequency))) {
-                            if (StringUtils.isBlank(declareRealtyLandCert.getYear())) {
-                                declareRealtyLandCert.setYear(s);
-                            }
-                        }
-                        if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), String.format("%d%s", Integer.parseInt(s), NUMBER))) {
-                            if (StringUtils.isBlank(declareRealtyLandCert.getNumber())) {
-                                declareRealtyLandCert.setNumber(s);
-                            }
-                        }
-                    }
-                });
-                String str = StringUtils.join(stringList, "");
-                str = StringUtils.remove(str, typeName);
-                str = StringUtils.remove(str, declareRealtyLandCert.getNumber());
-                str = StringUtils.remove(str, declareRealtyLandCert.getYear());
-                str = StringUtils.remove(str, NUMBER);
-                str = StringUtils.remove(str, frequency);
-                declareRealtyLandCert.setLocation(str);
-            }
-        }
+//        if (org.apache.commons.lang3.StringUtils.isNotBlank(declareRealtyLandCert.getLandCertName())) {
+//            final String frequency = "第";
+//            String typeName = "";
+//            List<String> stringList = generateCommonMethod.convertNumberHelp(declareRealtyLandCert.getLandCertName());
+//            //设置类型
+//            List<BaseDataDic> types = baseMap.get("landRightType").stream().findFirst().get();
+//            for (BaseDataDic type : types) {
+//                if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), type.getName())) {
+//                    declareRealtyLandCert.setLandRightType(type.getId());
+//                    typeName = type.getName();
+//                }
+//            }
+//            if (CollectionUtils.isNotEmpty(stringList)) {
+//                stringList.stream().forEachOrdered(s -> {
+//                    if (NumberUtils.isNumber(s)) {
+//                        if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), String.format("%d%s", Integer.parseInt(s), frequency))) {
+//                            if (StringUtils.isBlank(declareRealtyLandCert.getYear())) {
+//                                declareRealtyLandCert.setYear(s);
+//                            }
+//                        }
+//                        if (StringUtils.contains(declareRealtyLandCert.getLandCertName(), String.format("%d%s", Integer.parseInt(s), NUMBER))) {
+//                            if (StringUtils.isBlank(declareRealtyLandCert.getNumber())) {
+//                                declareRealtyLandCert.setNumber(s);
+//                            }
+//                        }
+//                    }
+//                });
+//                String str = StringUtils.join(stringList, "");
+//                str = StringUtils.remove(str, typeName);
+//                str = StringUtils.remove(str, declareRealtyLandCert.getNumber());
+//                str = StringUtils.remove(str, declareRealtyLandCert.getYear());
+//                str = StringUtils.remove(str, NUMBER);
+//                str = StringUtils.remove(str, frequency);
+//                declareRealtyLandCert.setLocation(str);
+//            }
+//        }
         //坐落 子项
         if (org.apache.commons.lang3.StringUtils.isNotBlank(declareRealtyLandCert.getBeLocated())) {
             Map<String, String> locatedMap = beLocatedSplicing(declareRealtyLandCert.getBeLocated());
@@ -442,31 +410,31 @@ public class DeclarePublicService {
         if (declareRealtyHouseCert.getAutoInitNumber() == null || declareRealtyHouseCert.getAutoInitNumber() == 0) {
             return false;
         }
-        if (StringUtils.isNotBlank(declareRealtyHouseCert.getCertName())) {
-            BiConsumer<String, String> biConsumer = ((certName, name) -> {
-                Collection<List<BaseDataDic>> listCollection = baseMap.get("type");
-                if (CollectionUtils.isEmpty(listCollection)) {
-                    return;
-                }
-                Iterator<List<BaseDataDic>> listIterator = listCollection.iterator();
-                while (listIterator.hasNext()) {
-                    List<BaseDataDic> baseDataDicList = listIterator.next();
-                    if (CollectionUtils.isEmpty(baseDataDicList)) {
-                        continue;
-                    }
-                    if (certName.contains(name)) {
-                        declareRealtyHouseCert.setType(String.valueOf(baseDataDicService.getDataDicIdByName(baseDataDicList, name)));
-                        declareRealtyHouseCert.setLocation(StringUtils.substringBefore(certName, name));
-                    }
-                }
-            });
-            biConsumer.accept(declareRealtyHouseCert.getCertName(), String.join("", BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT, BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK));
-            biConsumer.accept(declareRealtyHouseCert.getCertName(), BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT);
-            biConsumer.accept(declareRealtyHouseCert.getCertName(), BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK);
-            if (StringUtils.isBlank(declareRealtyHouseCert.getNumber())) {
-                declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(declareRealtyHouseCert.getCertName()));//编号
-            }
-        }
+//        if (StringUtils.isNotBlank(declareRealtyHouseCert.getCertName())) {
+//            BiConsumer<String, String> biConsumer = ((certName, name) -> {
+//                Collection<List<BaseDataDic>> listCollection = baseMap.get("type");
+//                if (CollectionUtils.isEmpty(listCollection)) {
+//                    return;
+//                }
+//                Iterator<List<BaseDataDic>> listIterator = listCollection.iterator();
+//                while (listIterator.hasNext()) {
+//                    List<BaseDataDic> baseDataDicList = listIterator.next();
+//                    if (CollectionUtils.isEmpty(baseDataDicList)) {
+//                        continue;
+//                    }
+//                    if (certName.contains(name)) {
+//                        declareRealtyHouseCert.setType(String.valueOf(baseDataDicService.getDataDicIdByName(baseDataDicList, name)));
+//                        declareRealtyHouseCert.setLocation(StringUtils.substringBefore(certName, name));
+//                    }
+//                }
+//            });
+//            biConsumer.accept(declareRealtyHouseCert.getCertName(), String.join("", BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT, BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK));
+//            biConsumer.accept(declareRealtyHouseCert.getCertName(), BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT);
+//            biConsumer.accept(declareRealtyHouseCert.getCertName(), BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK);
+//            if (StringUtils.isBlank(declareRealtyHouseCert.getNumber())) {
+//                declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(declareRealtyHouseCert.getCertName()));//编号
+//            }
+//        }
         //验证(区域)
         if (erpAreaService.checkArea(declareRealtyHouseCert.getProvince(), declareRealtyHouseCert.getCity(), declareRealtyHouseCert.getDistrict(), builder, map)) {
             if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.PROVINCE))) {
