@@ -770,16 +770,16 @@
 
         if (data.id) {
             if (data.transferLimit) {
-                $("#transferLimit").val(data.transferLimit);
+                $("#transferLimit").val(data.transferLimit).trigger('change');
             }
             if (data.entityIsDamage) {
-                $("#entityIsDamage").val(data.entityIsDamage);
+                $("#entityIsDamage").val(data.entityIsDamage).trigger('change');
             }
             if (data.rimIsNormal) {
-                $("#rimIsNormal").val(data.rimIsNormal);
+                $("#rimIsNormal").val(data.rimIsNormal).trigger('change');
             }
             if (data.paymentStatus) {
-                $("#paymentStatus").val(data.paymentStatus);
+                $("#paymentStatus").val(data.paymentStatus).trigger('change');
             }
             if (data.zoneDamage) {
                 writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', data.zoneDamage);
@@ -1025,8 +1025,12 @@
             var zoneProjectName = $(this).find('[name^=zoneProjectName]').val();
             var zoneProjectItem = $(this).find('[name^=zoneProjectItem]').val();
             if (zoneProjectName && zoneProjectItem) {
+                var fileData = $(this).find('[name^=zoneProjectItemfile]');
                 zoneBit.zoneProjectName = zoneProjectName;
                 zoneBit.zoneProjectItem = zoneProjectItem;
+                if (fileData.size() != 0) {
+                    zoneBit.fileName = fileData.attr("name");
+                }
                 data.surveyAssetInventory.zoneDamage.push(zoneBit);
             }
 
@@ -1034,8 +1038,12 @@
             var entityProjectName = $(this).find('[name^=entityProjectName]').val();
             var entityProjectItem = $(this).find('[name^=entityProjectItem]').val();
             if (entityProjectName && entityProjectItem) {
+                var fileEntityData = $(this).find('[name^=entityProjectItemfile]');
                 entity.entityProjectName = entityProjectName;
                 entity.entityProjectItem = entityProjectItem;
+                if (fileEntityData.size() != 0) {
+                    entity.fileName = fileEntityData.attr("name");
+                }
                 data.surveyAssetInventory.entityDamage.push(entity);
             }
 
@@ -1043,8 +1051,12 @@
             var otherProjectName = $(this).find('[name^=otherProjectName]').val();
             var otherProjectItem = $(this).find('[name^=otherProjectItem]').val();
             if (otherProjectName && otherProjectItem) {
+                var fileOtherData = $(this).find('[name^=otherProjectItemfile]');
                 otherProject.otherProjectName = otherProjectName;
                 otherProject.otherProjectItem = otherProjectItem;
+                if (fileOtherData.size() != 0) {
+                    otherProject.fileName = fileOtherData.attr("name");
+                }
                 data.surveyAssetInventory.otherProject.push(otherProject);
             }
         });
@@ -1098,6 +1110,10 @@
     var num = 0;
 
     function appendHTML(projectName, projectItem, item, this_) {
+        var date = new Date();
+        var time = date.getTime();
+        var fileId = "";
+
         var html = "<div class='row form-group' >";
         html += " <div class='col-md-12'>";
         html += "<div class='form-inline x-valid'>";
@@ -1112,6 +1128,14 @@
         html += "<input type='text' required class='form-control input-full' name='" + projectItem + num + "'>";
         html += "</div>";
 
+        html += "<label class='col-sm-1 control-label'>" + "附件" + "</label>";
+        html += "<div class='col-sm-2'>";
+        html += "<input type='hidden' data-name='file'  class='form-control input-full' name='" + projectItem + 'file' + time + "'>";
+        html += "<input type='file' required class='form-control input-full' id='" + projectItem + 'file' + time + "'>";
+        html += "<div  id='" + "_" + projectItem + 'file' + time + "'>" + "</div>";
+        html += "</div>";
+        fileId = projectItem + "file" + time;
+
 
         html += " <div class='col-sm-1'>";
         html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
@@ -1123,6 +1147,8 @@
 
         num++;
         $("." + item).append(html);
+        survey.showFile(fileId, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}');
+        survey.fileUpload(fileId, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}');
     }
 
     function cleanHTMLData(_this) {
@@ -1146,6 +1172,20 @@
             html += "<div class='col-sm-3'>";
             html += "<input type='text' required class='form-control input-full' name='" + projectItem + i + "' value='" + n[projectItem] + "'>";
             html += "</div>";
+            var fileName = n.fileName;
+            if (!fileName) {
+                var date = new Date();
+                var time = date.getTime();
+                fileName = projectItem + 'file' + time;
+            }
+            if (fileName) {
+                html += "<label class='col-sm-1 control-label'>" + "附件" + "</label>";
+                html += "<div class='col-sm-2'>";
+                html += "<input type='hidden' data-name='file'  class='form-control input-full' name='" + fileName + "'>";
+                html += "<input type='file' required class='form-control input-full' id='" + fileName + "'>";
+                html += "<div  id='" + "_" + fileName + "'>" + "</div>";
+                html += "</div>";
+            }
 
 
             html += "<div class='col-sm-1'>";
@@ -1156,6 +1196,8 @@
             html += "</div>";
             html += "</div>";
             $("." + item).append(html);
+            survey.showFile(fileName, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}');
+            survey.fileUpload(fileName, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}');
         })
     }
 
@@ -1238,19 +1280,19 @@
     }
 
     function showButton() {
-        if ($("#rimIsNormal").val() == "不正常") {
+        if ($("#rimIsNormal").find("option:selected").val() == "不正常") {
             $(".showZoneAdd").show();
         } else {
             $(".zoneBit").empty();
             $(".showZoneAdd").hide();
         }
-        if ($("#entityIsDamage").val() == "损坏") {
+        if ($("#entityIsDamage").find("option:selected").val() == "损坏") {
             $(".showEntityAdd").show();
         } else {
             $(".entity").empty();
             $(".showEntityAdd").hide();
         }
-        if ($("#paymentStatus").val() == "不正常") {
+        if ($("#paymentStatus").find("option:selected").val() == "不正常") {
             $(".showPaymentAdd").show();
             $("#showUploadFile").show();
         } else {
