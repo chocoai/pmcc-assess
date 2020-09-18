@@ -32,9 +32,9 @@
             return false;
         }
         var formData = formParams("master");
-        formData.dateAmend = $.trim($("#dateAmend").text()) ? $("#dateAmend").text() : '';
+        formData.dateAmend = $.trim($("#dateAmend").val()) ? $("#dateAmend").val() : '';
         formData.periodAmend = $.trim($("#periodAmend").text()) ? $("#periodAmend").text() : '';
-        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").text()) ? $("#volumeFractionAmend").text() : '';
+        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").val()) ? $("#volumeFractionAmend").val() : '';
         formData.parcelPrice = $.trim($("#parcelPrice").text()) ? $("#parcelPrice").text() : '';
         formData.parcelBhouPrice = $.trim($("#parcelBhouPrice").text()) ? $("#parcelBhouPrice").text() : '';
         formData.parcelTotalPrice = $.trim($("#parcelTotalPrice").text()) ? $("#parcelTotalPrice").text() : '';

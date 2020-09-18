@@ -353,7 +353,14 @@
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full">
-                                                    <fmt:formatNumber value="${master.rewardRate}" type="percent" maxFractionDigits="4"/>
+                                                    <c:choose>
+                                                        <c:when test="${(master.rewardRate).matches('[0-9]+') }">    <!--如果 -->
+                                                            <fmt:formatNumber value="${master.rewardRate}" type="percent" maxFractionDigits="4"/>
+                                                        </c:when>
+                                                        <c:otherwise>  <!--否则 -->
+                                                            ${master.rewardRate}
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </label>
                                             </div>
                                         </div>
@@ -550,8 +557,10 @@
                 tableId: '${landLevelId}'
             },
             deleteFlag: false
-        })
-
+        }) ;
+        if (! '${master.landLevelContent}') {
+            return false ;
+        }
         var jsonContent = JSON.parse('${master.landLevelContent}');
         var data = caseCommon.landLevelFilter(jsonContent);
         if (jQuery.isEmptyObject(data)) {

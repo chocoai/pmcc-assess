@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body" style="display: none">
+        <div class="card-body" >
             <div class="row col-md-12">
                 <div class="col-md-6">
                     <div class="x_title">
@@ -40,7 +40,6 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
                 <div class="col-md-6">
                     <div class="x_title">
@@ -56,6 +55,27 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <label class="col-sm-1 control-label">
+                    期日修正系数
+                </label>
+                <div class="col-md-5">
+                    <input type="text"
+                           class="form-control " onblur="calculationNumeric(this);"
+                           name="dateAmend" value="${master.dateAmend ==null?dateAmend:master.dateAmend}"
+                           id="dateAmend">
+                </div>
+
+                <label class="col-sm-1 control-label">
+                    容积率修正
+                </label>
+                <div class="col-md-5">
+                    <input type="text"
+                           class="form-control " onblur="calculationNumeric(this);"
+                           name="volumeFractionAmend" value="${master.volumeFractionAmend == null?volumeFractionAmend:master.volumeFractionAmend}"
+                           id="volumeFractionAmend">
                 </div>
             </div>
         </div>
@@ -353,15 +373,8 @@
                         <table class="table table-bordered">
                             <tbody>
                             <tr>
-                                <td>期日修正系数</td>
-                                <td id="dateAmend">${dateAmend}</td>
                                 <td>年期修正系数</td>
                                 <td id="periodAmend">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>容积率修正</td>
-                                <td id="volumeFractionAmend">${volumeFractionAmend}</td>
                                 <td>委估宗地单价（元/㎡）</td>
                                 <td id="parcelPrice">
                                 </td>
@@ -790,8 +803,8 @@
 
     function calculationNumeric(that) {
         var formData = formParams("master");
-        formData.dateAmend = $.trim($("#dateAmend").text()) ? $("#dateAmend").text() : '';
-        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").text()) ? $("#volumeFractionAmend").text() : '';
+        formData.dateAmend = $.trim($("#dateAmend").val()) ? $("#dateAmend").val() : '';
+        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").val()) ? $("#volumeFractionAmend").val() : '';
         formData.areaAndSeveralAmend = AssessCommon.percentToPoint($("#areaAndSeveralAmend").val());
         $.ajax({
             url: getContextPath() + "/baseLandPrice/calculationNumeric",

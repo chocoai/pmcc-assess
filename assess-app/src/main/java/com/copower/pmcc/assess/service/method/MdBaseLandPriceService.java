@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -77,7 +78,7 @@ public class MdBaseLandPriceService {
         MdBaseLandPrice where = new MdBaseLandPrice();
         where.setPlanDetailsId(planDetailsId);
         MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceDao.getMdBaseLandPrice(where);
-        if (mdBaseLandPrice != null){
+        if (mdBaseLandPrice != null) {
             MdBaseLandPrice price = mdBaseLandPriceDao.getMdBaseLandPrice(mdBaseLandPrice.getId());
             mdBaseLandPrice.setLandLevelContent(price.getLandLevelContent());
         }
@@ -137,13 +138,11 @@ public class MdBaseLandPriceService {
      * 获取 基准地价期日修正
      */
     public BigDecimal getBaseLandPriceDateAmend(Integer schemeJudgeObjectId) {
-        StringBuilder s = new StringBuilder();
+        BigDecimal bigDecimal = null;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObjectId);
         ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(schemeJudgeObject.getProjectId());
         BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-
         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-
         //评估基准日
         Date valuationDate = projectInfoById.getValuationDate();
         //找到评估基准日对应的土地因素
@@ -154,36 +153,34 @@ public class MdBaseLandPriceService {
             dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), null, dataDic.getId());
         }
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
-            DataHousePriceIndex housePriceIndex = dataHouseIndexList.get(0);
-            DataHousePriceIndexDetail dataHousePriceIndexDetail = new DataHousePriceIndexDetail();
-            dataHousePriceIndexDetail.setHousePriceId(housePriceIndex.getId());
-            List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(dataHousePriceIndexDetail);
-
-            if (CollectionUtils.isNotEmpty(detailList)) {
-                //基期
-                Date basePeriod = housePriceIndex.getBasePeriod();
-                BigDecimal basePeriodIndex = null;
-                if (basePeriod != null) {
-                    for (DataHousePriceIndexDetail item : detailList) {
-                        //基期对应的指数
-                        if (item.getStartDate().compareTo(basePeriod) != 1 && item.getStartDate().compareTo(basePeriod) != -1) {
-                            basePeriodIndex = item.getIndexNumber();
+            for (DataHousePriceIndex priceIndex : dataHouseIndexList) {
+                if (priceIndex.getBasePeriod() == null) {
+                    continue;
+                }
+                List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(priceIndex.getId());
+                if (CollectionUtils.isEmpty(detailList)) {
+                    continue;
+                }
+                for (DataHousePriceIndexDetail priceIndexDetail : detailList) {
+                    if (priceIndexDetail.getStartDate() == null || priceIndexDetail.getEndDate() == null) {
+                        continue;
+                    }
+                    //必须介于两者之间
+                    boolean check = DateUtils.compareDate(valuationDate, priceIndexDetail.getStartDate()) > 1 && DateUtils.compareDate(valuationDate, priceIndexDetail.getEndDate()) < -1;
+                    if (!check) {
+                        continue;
+                    }
+                    //找出基期
+                    Date basePeriod = priceIndex.getBasePeriod();
+                    for (DataHousePriceIndexDetail housePriceIndexDetail : detailList) {
+                        if (housePriceIndexDetail.getStartDate().compareTo(basePeriod) != 1 && housePriceIndexDetail.getStartDate().compareTo(basePeriod) != -1) {
+                            bigDecimal = housePriceIndexDetail.getIndexNumber().divide(priceIndexDetail.getIndexNumber(), 4, BigDecimal.ROUND_HALF_UP);
                         }
                     }
                 }
-
-                if (basePeriodIndex != null) {
-                    //找到自身对应指数：基期指数
-                    for (DataHousePriceIndexDetail item : detailList) {
-                        if (item.getStartDate().compareTo(valuationDate) != 1 && item.getEndDate().compareTo(valuationDate) != -1) {
-                            return item.getIndexNumber().divide(basePeriodIndex, 4, BigDecimal.ROUND_HALF_UP);
-                        }
-                    }
-                }
-
             }
         }
-        return null;
+        return bigDecimal;
     }
 
     public MdBaseLandPrice initObject(Integer judgeObjectId) {
@@ -196,19 +193,19 @@ public class MdBaseLandPriceService {
         return obj;
     }
 
-    public void calculationNumeric (MdBaseLandPrice target, BigDecimal dateAmend, BigDecimal volumeFractionAmend){
+    public void calculationNumeric(MdBaseLandPrice target, BigDecimal dateAmend, BigDecimal volumeFractionAmend) {
         if (target == null) {
             return;
         }
-        getFieldObjectValueHandle( MdBaseLandPrice.Column.correctionDifference,target ,dateAmend,volumeFractionAmend)  ;//不会被递归调用所以单独运行得到数据
-        getFieldObjectValueHandle( MdBaseLandPrice.Column.floorPremium,target ,dateAmend,volumeFractionAmend)  ;
-        getFieldObjectValueHandle( MdBaseLandPrice.Column.parcelTotalPrice,target ,dateAmend,volumeFractionAmend)  ;//不会被递归调用所以单独运行得到数据
-        getFieldObjectValueHandle( MdBaseLandPrice.Column.parcelBhouPrice,target ,dateAmend,volumeFractionAmend)  ;//不会被递归调用所以单独运行得到数据
-        mdBaseLandPriceDao.editMdBaseLandPrice(target) ;
+        getFieldObjectValueHandle(MdBaseLandPrice.Column.correctionDifference, target, dateAmend, volumeFractionAmend);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdBaseLandPrice.Column.floorPremium, target, dateAmend, volumeFractionAmend);
+        getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelTotalPrice, target, dateAmend, volumeFractionAmend);//不会被递归调用所以单独运行得到数据
+        getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelBhouPrice, target, dateAmend, volumeFractionAmend);//不会被递归调用所以单独运行得到数据
+        mdBaseLandPriceDao.editMdBaseLandPrice(target);
     }
 
     private String getFieldObjectValueHandle(MdBaseLandPrice.Column column, MdBaseLandPrice target, BigDecimal dateAmend, BigDecimal volumeFractionAmend) {
-        final BigDecimal BHOU = new BigDecimal("666.67") ;
+        final BigDecimal BHOU = new BigDecimal("666.67");
         switch (column) {
             case periodAmend: {
                 //e6 ROUND((1-1/(1+E7)^E9)/(1-1/(1+E7)^E8),4))
@@ -226,7 +223,7 @@ public class MdBaseLandPriceService {
                 }
                 double temp = 1 / Math.pow(1 + Double.valueOf(rewardRate), landSurplusYear.doubleValue());
                 double temp2 = 1 / Math.pow(1 + Double.valueOf(rewardRate), legalAge.doubleValue());
-                double result =  ArithmeticUtils.div(ArithmeticUtils.sub(1,temp) ,ArithmeticUtils.sub(1,temp2));
+                double result = ArithmeticUtils.div(ArithmeticUtils.sub(1, temp), ArithmeticUtils.sub(1, temp2));
                 String round = ArithmeticUtils.round(ArithmeticUtils.createBigDecimal(result), 4);
                 target.setPeriodAmend(ArithmeticUtils.createBigDecimal(round));
                 return round;
@@ -236,36 +233,36 @@ public class MdBaseLandPriceService {
                 BigDecimal standardPremium = target.getStandardPremium();//e4
                 BigDecimal e5 = dateAmend; //e5
                 BigDecimal e10 = volumeFractionAmend;
-                String periodAmend = getFieldObjectValueHandle(MdBaseLandPrice.Column.periodAmend ,target,dateAmend,volumeFractionAmend) ;//e6
+                String periodAmend = getFieldObjectValueHandle(MdBaseLandPrice.Column.periodAmend, target, dateAmend, volumeFractionAmend);//e6
                 BigDecimal areaAndSeveralAmend = target.getAreaAndSeveralAmend();//e11
                 BigDecimal developCorrect = target.getDevelopCorrect();//e12
-                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{standardPremium,e5,e10,areaAndSeveralAmend})) {
+                if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{standardPremium, e5, e10, areaAndSeveralAmend})) {
                     return "";
                 }
                 if (!ArithmeticUtils.checkNotNull(developCorrect)) {
                     developCorrect = ArithmeticUtils.createBigDecimal(0);
                 }
                 BigDecimal multiply = standardPremium.multiply(e5).multiply(ArithmeticUtils.createBigDecimal(periodAmend)).multiply(e10).multiply(ArithmeticUtils.createBigDecimal(1 + areaAndSeveralAmend.doubleValue()));
-                BigDecimal result = ArithmeticUtils.addModel(multiply,developCorrect,2) ;
-                String value = ArithmeticUtils.getBigDecimalString(result) ;
+                BigDecimal result = ArithmeticUtils.addModel(multiply, developCorrect, 2);
+                String value = ArithmeticUtils.getBigDecimalString(result);
                 target.setParcelPrice(result);
-                return value ;
+                return value;
             }
-            case parcelBhouPrice:{//e14
+            case parcelBhouPrice: {//e14
                 //E13*667/10000
-                String parcelPrice = getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelPrice ,target,dateAmend,volumeFractionAmend) ; //e13
+                String parcelPrice = getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelPrice, target, dateAmend, volumeFractionAmend); //e13
                 if (!ArithmeticUtils.checkNotNull(parcelPrice)) {
                     return "";
                 }
-                BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(parcelPrice).multiply(BHOU) ;
+                BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(parcelPrice).multiply(BHOU);
                 BigDecimal decimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
-                String value = ArithmeticUtils.round(decimal,2) ;
+                String value = ArithmeticUtils.round(decimal, 2);
                 target.setParcelBhouPrice(ArithmeticUtils.createBigDecimal(value));
-                return  value;
+                return value;
             }
-            case parcelTotalPrice:{//e16
+            case parcelTotalPrice: {//e16
                 //E13*E15/10000
-                String parcelPrice = getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelPrice ,target,dateAmend,volumeFractionAmend) ; //e13
+                String parcelPrice = getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelPrice, target, dateAmend, volumeFractionAmend); //e13
                 BigDecimal evaluationArea = target.getEvaluationArea();//e15
                 if (!ArithmeticUtils.checkNotNull(parcelPrice)) {
                     return "";
@@ -273,15 +270,15 @@ public class MdBaseLandPriceService {
                 if (!ArithmeticUtils.checkNotNull(evaluationArea)) {
                     return "";
                 }
-                BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(parcelPrice).multiply(evaluationArea) ;
+                BigDecimal bigDecimal = ArithmeticUtils.createBigDecimal(parcelPrice).multiply(evaluationArea);
                 BigDecimal decimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
-                String value = ArithmeticUtils.round(decimal,2) ;
+                String value = ArithmeticUtils.round(decimal, 2);
                 target.setParcelTotalPrice(ArithmeticUtils.createBigDecimal(value));
-                return  value;
+                return value;
             }
-            case floorPremium:{//e17
+            case floorPremium: {//e17
                 //ROUND(E13/G17,2)
-                String parcelPrice = getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelPrice ,target,dateAmend,volumeFractionAmend) ; //e13
+                String parcelPrice = getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelPrice, target, dateAmend, volumeFractionAmend); //e13
                 BigDecimal volumetricRate = target.getVolumetricRate();
                 if (!ArithmeticUtils.checkNotNull(parcelPrice)) {
                     return "";
@@ -291,13 +288,13 @@ public class MdBaseLandPriceService {
                 }
                 BigDecimal decimal = ArithmeticUtils.divide(ArithmeticUtils.createBigDecimal(parcelPrice), volumetricRate, 2);
                 target.setFloorPremium(decimal);
-                String value = ArithmeticUtils.getBigDecimalString(decimal) ;
-                return  value;
+                String value = ArithmeticUtils.getBigDecimalString(decimal);
+                return value;
             }
-            case correctionDifference:{//f19
+            case correctionDifference: {//f19
                 //E13/E4-1
                 BigDecimal standardPremium = target.getStandardPremium();//e4
-                String parcelPrice = getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelPrice ,target,dateAmend,volumeFractionAmend) ; //e13
+                String parcelPrice = getFieldObjectValueHandle(MdBaseLandPrice.Column.parcelPrice, target, dateAmend, volumeFractionAmend); //e13
                 if (!ArithmeticUtils.checkNotNull(parcelPrice)) {
                     return "";
                 }
@@ -307,9 +304,9 @@ public class MdBaseLandPriceService {
                 BigDecimal decimal = ArithmeticUtils.divide(ArithmeticUtils.createBigDecimal(parcelPrice), standardPremium, 10);
                 String sub = ArithmeticUtils.sub(decimal.toString(), "1", 10);
                 String mul = ArithmeticUtils.mul(sub, "100", 2);
-                String value = String.format("%s%s",mul,"%") ;
+                String value = String.format("%s%s", mul, "%");
                 target.setCorrectionDifference(value);
-                return value ;
+                return value;
             }
             default:
                 return "";
