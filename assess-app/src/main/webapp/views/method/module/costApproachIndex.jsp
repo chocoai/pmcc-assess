@@ -1588,6 +1588,64 @@
         return data;
     }
 
+    /**
+     * 收集提交参数 zch
+     */
+    function getCostApproachFormData() {
+        var formData = formParams("master");
+        var formDataOther = formParams("master_other");
+        formData.id = $("#master").find("input[name='id']").val();
+        formData.rewardRate = AssessCommon.pointToPercent(formDataOther.rewardRate);
+        formData.rewardRateId = formDataOther.rewardRateId;
+        formData.circulationExpense = formDataOther.circulationExpense;
+        formData.circulationExpenseRemark = formDataOther.circulationExpenseRemark;
+        formData.flatExpense = formDataOther.flatExpense;
+        formData.flatExpenseRemark = formDataOther.flatExpenseRemark;
+        formData.machineCycle = formDataOther.machineCycle;
+        formData.machineCycleRemark = formDataOther.machineCycleRemark;
+        formData.calculatedInterestRemark = formDataOther.calculatedInterestRemark;
+        formData.profitMarginRemark = formDataOther.profitMarginRemark;
+        formData.incrementalBenefitRemark = formDataOther.incrementalBenefitRemark;
+        formData.plotRatioAdjustRemark = formDataOther.plotRatioAdjustRemark;
+        formData.landRemainingYear = formDataOther.landRemainingYear;
+        formData.landRemainingYearRemark = formDataOther.landRemainingYearRemark;
+
+
+        formData.parcelUnit = parseFloat($("#parcelUnit").text());
+        formData.landUsePrice = parseFloat($("#landUseUnit").text());
+        formData.yearFixed = parseFloat($("#yearFixed").text());
+        formData.landCostPriceUnit = parseFloat($("#landCostPriceUnit").text());
+        formData.landUseBhou = parseFloat($("#landUseBhou").text());
+        formData.landAcquisitionUnit = parseFloat($("#landAcquisitionUnit").text());
+        formData.landProductionProfitUnit = parseFloat($("#landProductionProfitUnit").text());
+        formData.landProductionInterestUnit = parseFloat($("#landProductionInterestUnit").text());
+        formData.landProductionProfitBhou = parseFloat($("#landProductionProfitBhou").text());
+        formData.ploughArearatio = subPointToPercent($("#ploughArearatio").text());
+        formData.noPloughArearatio = subPointToPercent($("#noPloughArearatio").text()) ;
+        formData.yearFixed = subPointToPercent($("#yearFixed").text()) ;
+        formData.landAcquisitionBhou = parseFloat($("#landAcquisitionBhou").text());
+        formData.parcelBhou = parseFloat($("#parcelBhou").text());
+
+        formData.landLevelContent = getLandLevelContent();
+        var costApproachTaxes = [];
+        $.each($("#master").find("#tbodyContent").find("tr"), function (i, n) {
+            var item = getApproachTaxesData($(n));
+            costApproachTaxes.push(item);
+        });
+        var item = {};
+        item.master = formData;
+        item.costApproachTaxes = costApproachTaxes;
+        return item;
+    }
+
+    function subPointToPercent(value) {
+        if (value) {
+            return parseFloat(value) / 100;
+        }else {
+            return "" ;
+        }
+    }
+
     function calculationNumeric(that) {
         var formData = formParams("master");
         var formDataOther = formParams("master_other");

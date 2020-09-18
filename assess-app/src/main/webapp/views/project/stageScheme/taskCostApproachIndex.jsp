@@ -41,46 +41,7 @@
         if (!$("#master").valid()) {
             return false;
         }
-        var formData = formParams("master");
-        var formDataOther = formParams("master_other");
-        formData.id = $("#master").find("input[name='id']").val();
-        formData.rewardRate = AssessCommon.pointToPercent(formDataOther.rewardRate);
-        formData.rewardRateId = formDataOther.rewardRateId;
-        formData.circulationExpense = formDataOther.circulationExpense;
-        formData.circulationExpenseRemark = formDataOther.circulationExpenseRemark;
-        formData.flatExpense = formDataOther.flatExpense;
-        formData.flatExpenseRemark = formDataOther.flatExpenseRemark;
-        formData.machineCycle = formDataOther.machineCycle;
-        formData.machineCycleRemark = formDataOther.machineCycleRemark;
-        formData.calculatedInterest = AssessCommon.pointToPercent(formDataOther.calculatedInterest);
-        formData.calculatedInterestRemark = formDataOther.calculatedInterestRemark;
-        formData.profitMargin = AssessCommon.pointToPercent(formDataOther.profitMargin);
-        formData.profitMarginRemark = formDataOther.profitMarginRemark;
-        formData.incrementalBenefit = AssessCommon.pointToPercent(formDataOther.incrementalBenefit);
-        formData.incrementalBenefitRemark = formDataOther.incrementalBenefitRemark;
-        formData.plotRatioElementAmend = AssessCommon.percentToPoint($("#plotRatioElementAmend").val());
-        formData.plotRatioAdjust = AssessCommon.pointToPercent(formDataOther.plotRatioAdjust);
-        formData.plotRatioAdjustRemark = formDataOther.plotRatioAdjustRemark;
-        formData.landRemainingYear = formDataOther.landRemainingYear;
-        formData.landRemainingYearRemark = formDataOther.landRemainingYearRemark;
-
-
-        formData.parcelUnit = parseFloat($("#parcelUnit").text());
-        formData.landUsePrice = parseFloat($("#landUseUnit").text());
-        formData.yearFixed = parseFloat($("#yearFixed").text());
-        formData.landCostPriceUnit = parseFloat($("#landCostPriceUnit").text());
-        formData.landAcquisitionUnit = parseFloat($("#landAcquisitionUnit").text());
-        formData.landProductionProfitUnit = parseFloat($("#landProductionProfitUnit").text());
-        formData.landProductionInterestUnit = parseFloat($("#landProductionInterestUnit").text());
-        formData.landLevelContent = getLandLevelContent();
-        var costApproachTaxes = [];
-        $.each($("#master").find("#tbodyContent").find("tr"), function (i, n) {
-            var item = getApproachTaxesData($(n));
-            costApproachTaxes.push(item);
-        });
-        var item = {};
-        item.master = formData;
-        item.costApproachTaxes = costApproachTaxes;
+        var item = getCostApproachFormData() ;
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(item));
         }
