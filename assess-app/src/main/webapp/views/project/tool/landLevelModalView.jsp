@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-
-
 <div id="tool_select_land_level_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -16,77 +14,61 @@
 
             <div class="modal-body">
                 <form class="form-horizontal">
-                    <div class="row">
+                    <div class="row form-group">
                         <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class=" col-sm-1">省</label>
-                                            <div class=" col-sm-3">
-                                                <select name="province"
-                                                        class="form-control input-full  ">
-                                                </select>
-                                            </div>
-                                            <label class=" col-sm-1">市</label>
-                                            <div class=" col-sm-3">
-                                                <select name="city" class="form-control input-full  ">
-                                                </select>
-                                            </div>
-                                            <label class=" col-sm-1">县</label>
-                                            <div class=" col-sm-3">
-                                                <select name="district"
-                                                        class="form-control input-full  ">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="form-inline x-valid">
+                                <label class=" col-sm-1">省</label>
+                                <div class=" col-sm-3">
+                                    <select name="province"
+                                            class="form-control input-full  ">
+                                    </select>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class=" col-sm-1">乡镇/街道</label>
-                                            <div class=" col-sm-3">
-                                                <input placeholder="乡镇/街道" class="form-control input-full" name="townShipName"
-                                                       type="text">
-                                            </div>
-                                            <button type="button" class="btn btn-success btn-sm"
-                                                    onclick="assessLandLevelTool.loadLandLevelList(null);">
-                                                查询 <i class="fa fa-search" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                <label class=" col-sm-1">市</label>
+                                <div class=" col-sm-3">
+                                    <select name="city" class="form-control input-full  ">
+                                    </select>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="col-sm-8 pull-left">
-                                            <table class="table table-bordered" id="tool_select_land_level_list">
-                                                <!-- cerare document add ajax data-->
-                                            </table>
-                                        </div>
-
-                                        <div class="col-sm-4 pull-right">
-                                            <ul id="tool_select_land_level_list_tree" class="ztree"></ul>
-                                        </div>
-                                    </div>
+                                <label class=" col-sm-1">县</label>
+                                <div class=" col-sm-3">
+                                    <select name="district"
+                                            class="form-control input-full  ">
+                                    </select>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class=" col-sm-1">乡镇/街道</label>
+                                <div class=" col-sm-3">
+                                    <input placeholder="乡镇/街道" class="form-control input-full" name="townShipName"
+                                           type="text">
+                                </div>
+                                <button type="button" class="btn btn-success btn-sm"
+                                        onclick="assessLandLevelTool.loadLandLevelList(null);">
+                                    查询 <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="col-sm-8 pull-left">
+                                <table class="table table-bordered" id="tool_select_land_level_list"></table>
+                            </div>
+                            <div class="col-sm-4 pull-right">
+                                <ul id="tool_select_land_level_list_tree" class="ztree"
+                                    style="height: 400px; overflow: auto;"></ul>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-            </div>
-
         </div>
     </div>
 </div>
-
-
-<script>
+<script type="text/javascript">
     /**
      * Created by kings on 2018-4-18.
      * 选择土地级别 工具方法
@@ -104,7 +86,6 @@
             if (!select) {
                 var frm = AssessLandLevelTool.prototype.box.find("form").first();
                 var data = formSerializeArray(frm);
-//                data.status = "finish";
                 data.status = "";
                 select = data;
             }
@@ -225,33 +206,35 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
 
         };
 
+        //展开全部
         AssessLandLevelTool.prototype.treeExpandAll = function (flag) {
-            try {
-                var zTree = $.fn.zTree.getZTreeObj(AssessLandLevelTool.prototype.tree.prop("id"));
-                zTree.expandAll(flag);
-            } catch (e) {
-            }
+            var zTree = $.fn.zTree.getZTreeObj(AssessLandLevelTool.prototype.tree.prop("id"));
+            zTree.expandAll(flag);
         };
 
+        //刷新
         AssessLandLevelTool.prototype.treeRefresh = function () {
-            try {
-                var zTree = $.fn.zTree.getZTreeObj(AssessLandLevelTool.prototype.tree.prop("id"));
-                zTree.refresh();
-            } catch (e) {
-            }
+            var zTree = $.fn.zTree.getZTreeObj(AssessLandLevelTool.prototype.tree.prop("id"));
+            zTree.refresh();
         };
-
 
         //选择土地级别
         AssessLandLevelTool.prototype.onSelected = function (event, treeId, treeNode) {
             if (AssessLandLevelTool.prototype.success) {
-                AssessLandLevelTool.prototype.success(treeNode);
+                var name = '';
+                var parentNodes = treeNode.getPath();
+                if (parentNodes && parentNodes.length > 0) {
+                    $.each(parentNodes, function (i, item) {
+                        name += "/" + item.name;
+                    })
+                }
+                AssessLandLevelTool.prototype.success(treeNode, name);
             }
             AssessLandLevelTool.prototype.box.modal('hide');
         };

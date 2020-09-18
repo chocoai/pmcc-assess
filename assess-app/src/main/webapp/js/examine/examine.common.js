@@ -138,24 +138,24 @@ examineCommon.getTheAreaCenter = function (lnglatarr) {
 };
 
 examineCommon.saveDrawPolygon = function (json, option, callback) {
-    if (! json){
+    if (!json) {
         return false;
     }
     if (!$.isArray(json)) {
         return false;
     }
-    if (json.length == 0){
+    if (json.length == 0) {
         return false;
-    } 
+    }
     var data = json[0];
     var path = data.path;
     var lnglat = examineCommon.getTheAreaCenter(path);
-    if (option.lng){
+    if (option.lng) {
         jQuery.extend(option, lnglat);
     }
     option.pathArray = JSON.stringify(json);
     if (option.pathArray) {
-        examineCommon.addBasicEstateTagging(option,callback) ;
+        examineCommon.addBasicEstateTagging(option, callback);
     }
 };
 
@@ -206,11 +206,11 @@ examineCommon.landLevelSelect = function (this_) {
     assessLandLevelTool.select({
         province: $form.find('[name=province]').val(),
         city: $form.find('[name=city]').val(),
-        success: function (data) {
-            formGroup.find("input[data-name='landLevelName']").val(data.name);
+        success: function (data, name) {
+            formGroup.find("input[data-name='landLevelName']").val(name);
             formGroup.find("input[data-name='landLevel']").val(data.id).trigger('onblur');
             formGroup.find("input[name='landLevel']").val(data.id);
-            formGroup.find("input[name='landLevelName']").val(data.name);
+            formGroup.find("input[name='landLevelName']").val(name);
         }
     })
 };
@@ -218,19 +218,19 @@ examineCommon.landLevelSelect = function (this_) {
 examineCommon.getMarkerAreaInHeight = '80%';
 examineCommon.getMarkerAreaInWidth = '80%';
 
-examineCommon.settingTab = function(roleFilter){
+examineCommon.settingTab = function (roleFilter) {
     //找到任何元素包含  属性tab-role的集合
-    $(document).find("[tab-role]").each(function (i,ele) {
-        var target = $(ele) ;
+    $(document).find("[tab-role]").each(function (i, ele) {
+        var target = $(ele);
         var role = target.attr("tab-role");
         // console.log(role+" "+roleFilter) ;
         //相同的角色显示  而不相同的则隐藏
         if (role.indexOf(roleFilter) != -1) {
-            target.show() ;
-        }else {
-            target.hide() ;
+            target.show();
+        } else {
+            target.hide();
         }
-    }) ;
-} ;
+    });
+};
 
 window.examineCommon = examineCommon;

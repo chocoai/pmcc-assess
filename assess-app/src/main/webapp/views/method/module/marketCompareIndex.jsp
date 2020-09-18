@@ -44,16 +44,14 @@
                 <label for="cbxScore">修正指数</label>
             </span>
                 <span class="col-sm-1  checkbox-inline">
-                <input id="cbxRatio" type="checkbox" checked="checked" value="ratio"
+                <input id="cbxRatio" type="checkbox"  value="ratio"
                        onclick="marketCompare.toggle(this);">
                 <label for="cbxRatio">测算值</label>
             </span>
             </div>
             <div>
                 <input type="hidden" id="marketCompareId">
-                <table id="tb_md_mc_item_list" class="table  tree">
-
-                </table>
+                <table id="tb_md_mc_item_list" class="table  tree"></table>
             </div>
         </div>
     </div>
@@ -226,11 +224,11 @@
                     if (evaluationScore && currScore) {
                         evaluationScore = parseFloat(evaluationScore);
                         currScore = parseFloat(currScore);
-                        that.removeClass('bg-green').removeClass('bg-red');
+                        that.closest('td').removeClass('bg-green').removeClass('bg-red');
                         if (evaluationScore > currScore)
-                            that.addClass('bg-green');
+                            that.closest('td').addClass('bg-green');
                         if (evaluationScore < currScore)
-                            that.addClass('bg-red');
+                            that.closest('td').addClass('bg-red');
                         ratioEle.text(iTofixed(evaluationScore / currScore, 4));
                     }
                     marketCompare.calculation();
@@ -321,11 +319,11 @@
                 if (evaluationScore && currScore) {
                     evaluationScore = parseFloat(evaluationScore);
                     currScore = parseFloat(currScore);
-                    $(this).removeClass('bg-green').removeClass('bg-red');
+                    $(this).closest('td').removeClass('bg-green').removeClass('bg-red');
                     if (evaluationScore > currScore)
-                        $(this).addClass('bg-green');
+                        $(this).closest('td').addClass('bg-green');
                     if (evaluationScore < currScore)
-                        $(this).addClass('bg-red');
+                        $(this).closest('td').addClass('bg-red');
                 }
             })
 

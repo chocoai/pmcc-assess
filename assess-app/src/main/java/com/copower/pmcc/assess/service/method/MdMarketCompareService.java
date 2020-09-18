@@ -350,10 +350,14 @@ public class MdMarketCompareService {
             BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
             BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
             if (basicHouse != null && categoryInfo != null) {
-                //计算剩余年限=使用年限-已使用年限  //已使用年限=评估基准日-交易时间
+                //计算剩余年限=法定年限-已使用年限  //已使用年限=评估基准日-交易时间
                 BigDecimal legalAge = categoryInfo.getLandUseYear();
+                if (legalAge == null && categoryInfo.getAcquisitionTime() != null && categoryInfo.getTerminationData() != null) {
+                    int days = DateUtils.diffDate(categoryInfo.getTerminationData(), categoryInfo.getAcquisitionTime());
+                    legalAge = new BigDecimal(days).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
+                }
                 BigDecimal surplusYear = null;
-                if (ExamineTypeEnum.CASE.getId().equals(marketCompareItem.getType())) { //计算剩余年限=使用年限-已使用年限 已使用年限=评估基准日-交易时间
+                if (legalAge != null && ExamineTypeEnum.CASE.getId().equals(marketCompareItem.getType())) { //计算剩余年限=法定年限-已使用年限 已使用年限=评估基准日-交易时间
                     int diffDays = DateUtils.diffDate(areaGroup.getValueTimePoint(), houseTrading.getTradingTime());
                     BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
                     surplusYear = legalAge.subtract(yearCount);
