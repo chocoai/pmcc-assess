@@ -42,6 +42,12 @@ public class DataHousePriceIndexDetailDao {
         return mapper.selectByExample(example);
     }
 
+    public List<DataHousePriceIndexDetail> getDataHousePriceIndexDetailList(Integer housePriceId){
+        DataHousePriceIndexDetailExample example = new DataHousePriceIndexDetailExample();
+        example.createCriteria().andHousePriceIdEqualTo(housePriceId);
+        return mapper.selectByExample(example);
+    }
+
     public void deleteDataHousePriceIndexDetailList(DataHousePriceIndexDetail oo){
         DataHousePriceIndexDetailExample example = getExample(oo);
         mapper.deleteByExample(example);

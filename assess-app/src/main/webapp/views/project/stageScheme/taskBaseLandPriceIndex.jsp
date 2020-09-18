@@ -45,9 +45,9 @@
             return false;
         }
         var formData = formParams("master");
-        formData.dateAmend = $.trim($("#dateAmend").text()) ? $("#dateAmend").text() : '';
+        formData.dateAmend = $.trim($("#dateAmend").val()) ? $("#dateAmend").val() : '';
         formData.periodAmend = $.trim($("#periodAmend").text()) ? $("#periodAmend").text() : '';
-        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").text()) ? $("#volumeFractionAmend").text() : '';
+        formData.volumeFractionAmend = $.trim($("#volumeFractionAmend").val()) ? $("#volumeFractionAmend").val() : '';
         if (!$.isNumeric(formData.volumeFractionAmend)) {
             formData.volumeFractionAmend = null;
         }

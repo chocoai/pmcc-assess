@@ -81,11 +81,7 @@
                         <div class="form-inline x-valid">
                             <label class="col-sm-1 control-label">区域及个别修正系数</label>
                             <div class="col-sm-3">
-                                <div class="input-group">
-                                    <input type="text" readonly="readonly"
-                                           class="form-control"
-                                           id="areaAndSeveralAmend">
-                                </div>
+                                <label class="form-control input-full"> <fmt:formatNumber value="${master.areaAndSeveralAmend}" type="percent" maxFractionDigits="4"/></label>
                             </div>
                         </div>
                     </div>
@@ -154,7 +150,16 @@
                                 土地还原利率
                             </label>
                             <div class="col-sm-3">
-                                <label class="form-control input-full">${master.rewardRate}</label>
+                                <label class="form-control input-full">
+                                    <c:choose>
+                                        <c:when test="${(master.rewardRate).matches('[0-9]+') }">    <!--如果 -->
+                                            <fmt:formatNumber value="${master.rewardRate}" type="percent" maxFractionDigits="4"/>
+                                        </c:when>
+                                        <c:otherwise>  <!--否则 -->
+                                            ${master.rewardRate}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -430,14 +435,15 @@
                 tableId: '${landLevelId}'
             },
             deleteFlag: false
-        })
-
+        }) ;
+        if (! '${master.landLevelContent}')  {
+            return false ;
+        }
         var jsonContent = JSON.parse('${master.landLevelContent}');
         var data = caseCommon.landLevelFilter(jsonContent);
         if (jQuery.isEmptyObject(data)) {
             return false;
         }
-        //$("#detailAchievementModal").modal();
         var target = $("#landLevelTabContent");
         target.empty();
 
