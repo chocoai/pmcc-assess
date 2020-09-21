@@ -1,15 +1,10 @@
 package com.copower.pmcc.assess.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordHouseDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
@@ -32,8 +27,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -231,5 +230,43 @@ public class NetInfoAssignTaskController extends BaseController {
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importAssignHouseData", name = "导入房产数据", method = RequestMethod.POST)
+    public HttpResult importAssignHouseData(HttpServletRequest request, NetInfoRecordHouse house) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            String str = netInfoRecordService.importAssignHouseData(house, multipartFile);
+            return HttpResult.newCorrectResult(str);
+        } catch (Exception e) {
+           logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importAssignLandData", name = "导入土地数据", method = RequestMethod.POST)
+    public HttpResult importAssignLandData(HttpServletRequest request, NetInfoRecordLand land) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            String str = netInfoRecordService.importAssignLandData(land, multipartFile);
+            return HttpResult.newCorrectResult(str);
+        } catch (Exception e) {
+           logger.error(e.getMessage(),e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+
     }
 }

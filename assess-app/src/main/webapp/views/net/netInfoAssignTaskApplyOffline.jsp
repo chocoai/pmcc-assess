@@ -11,6 +11,7 @@
 <head>
     <title>案例整理申请</title>
     <%@include file="/views/share/main_css.jsp" %>
+
 </head>
 <body>
 <div class="wrapper">
@@ -36,17 +37,47 @@
                             <div class="card-body">
                                 <form id="frmAdd" class="form-horizontal">
                                     <input type="hidden" name="masterId">
-                                    <p>
-                                        <button type="button" class="btn btn-success btn-sm" id="addBtn"
-                                                href="#divBoxFather"
-                                                onclick="detailInfo.prototype.addInit()"
-                                                data-toggle="modal">
+                                    <div class="row form-group">
+                                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <button type="button" class="btn btn-success btn-sm" id="addBtn"
+                                                    href="#divBoxFather"
+                                                    onclick="detailInfo.prototype.addInit()"
+                                                    data-toggle="modal">
                                     <span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                            新增
-                                        </button>
-                                    </p>
+                                                新增
+                                            </button>
+
+                                            <div class="dropdown" style="display: inline;margin-left: 5px;">
+                                                <button type="button" class="btn btn-info dropdown-toggle btn-sm"
+                                                        data-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    导入拍卖信息-房产
+                                                </button>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <a href="javascript://" class="dropdown-item"
+                                                       onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpNetInfoAssignOfflineHouse);">下载模板</a>
+                                                    <a href="javascript://;" class="dropdown-item"
+                                                       onclick="$('#ajaxFileUploadAuctionHouse').val('').attr('data-type',1).trigger('click');">导入数据</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="dropdown" style="display: inline;margin-left: 5px;">
+                                                <button type="button" class="btn btn-info dropdown-toggle btn-sm"
+                                                        data-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    导入拍卖信息-土地
+                                                </button>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <a href="javascript://" class="dropdown-item"
+                                                       onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpNetInfoAssignOfflineLand);">下载模板</a>
+                                                    <a href="javascript://;" class="dropdown-item"
+                                                       onclick="$('#ajaxFileUploadAuctionLand').val('').attr('data-type',1).trigger('click');">导入数据</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="x_title">房产</div>
                                     <div class="x_content">
                                         <div class="row form-group">
@@ -67,6 +98,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                </form>
+                                <form enctype="multipart/form-data">
+                                    <input type="file" name="file" id="ajaxFileUploadAuctionHouse" style="display: none"
+                                           onchange="detailInfo.prototype.houseImportHandle(this);" multiple="multiple">
+
+                                    <input type="file" id="ajaxFileUploadAuctionLand" name="file" style="display: none"
+                                           onchange="detailInfo.prototype.landImportHandle(this)" multiple="multiple">
                                 </form>
                             </div>
                         </div>
@@ -93,6 +131,11 @@
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
+
+        <script type="text/javascript"
+                src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+        <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
+
     </div>
 </div>
 </body>
@@ -125,6 +168,16 @@
                                                     <option value="">-请选择-</option>
                                                     <option value="房产">房产</option>
                                                     <option value="土地">土地</option>
+                                                </select>
+                                            </div>
+
+                                            <label class="col-sm-1 col-form-label">
+                                                类别<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-2">
+                                                <select class="form-control input-full search-select select2"
+                                                        name="category">
+                                                    <option value="">-请先选择类型-</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -217,7 +270,10 @@
 
                                                         </datalist>
                                                         <div class="input-group-prepend">
-                                                            <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            <button class="btn btn-warning btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
                                                                 清空
                                                             </button>
                                                         </div>
@@ -283,7 +339,8 @@
                                                 </label>
                                                 <div class="col-sm-2">
                                                     <input type="text" name="areaUnit" id="areaUnit" placeholder="平方米、亩"
-                                                           class="form-control input-full" onblur="detailInfo.prototype.getUnitPrice()">
+                                                           class="form-control input-full"
+                                                           onblur="detailInfo.prototype.getUnitPrice()">
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     净用地面积
@@ -886,112 +943,122 @@
         addInit: function () {
             $("#" + detailInfo.prototype.config().frm).find("select[name='type']").prop("disabled", false);
             $("#" + detailInfo.prototype.config().frm).clearAll();
-            detailInfo.prototype.showContent('房产', {data:{type:'房产'}}, 0)
+            detailInfo.prototype.showContent('房产', {data: {type: '房产'}}, 0)
             $("#" + detailInfo.prototype.config().frm).find("select[name='type']").off('change').on('change', function () {
-                detailInfo.prototype.showContent($(this).val(), {data:{type:'房产'}}, 0);
+                detailInfo.prototype.showContent($(this).val(), {data: {type: '房产'}}, 0);
             });
             $('#' + detailInfo.prototype.config().box).modal("show");
         },
         showContent: function (type, result, id) {
+            var categoryHtml = "<option value=''>请选择</option>";
+            var frm = $("#" + detailInfo.prototype.config().frm);
+            var box = $("#" + detailInfo.prototype.config().box);
+            var data = result.data;
             //加载数据
-            if (type == result.data.type) {
-                $("#" + detailInfo.prototype.config().frm).initForm(result.data);
+            if (type == data.type) {
+                frm.initForm(data);
                 AssessCommon.initAreaInfo({
                     provinceTarget: $("#houseProvince"),
                     cityTarget: $("#houseCity"),
                     districtTarget: $("#houseDistrict"),
-                    provinceValue: result.data.province,
-                    cityValue: result.data.city,
-                    districtValue: result.data.district
-                })
+                    provinceValue: data.province,
+                    cityValue: data.city,
+                    districtValue: data.district
+                });
                 AssessCommon.initAreaInfo({
                     provinceTarget: $("#landProvince"),
                     cityTarget: $("#landCity"),
                     districtTarget: $("#landDistrict"),
-                    provinceValue: result.data.province,
-                    cityValue: result.data.city,
-                    districtValue: result.data.district
+                    provinceValue: data.province,
+                    cityValue: data.city,
+                    districtValue: data.district
                 })
             }
-            $("#" + detailInfo.prototype.config().frm).find("input[name='masterId']").val(id);
-            $("#" + detailInfo.prototype.config().frm).find("select[name='type']").val(type);
+            frm.find("input[name='masterId']").val(id);
+            frm.find("select[name='type']").val(type);
             //附件tableId
-            var tableId = result.data.id ? result.data.id : 0;
+            var tableId = data.id ? data.id : 0;
             if (type == '房产') {
-                $("#" + detailInfo.prototype.config().box).find(".houseContent").show();
-                $("#" + detailInfo.prototype.config().frm).find(".houseContent").find("input").attr("disabled", false);
-                $("#" + detailInfo.prototype.config().frm).find(".houseContent").find("select").attr("disabled", false);
-                $("#" + detailInfo.prototype.config().box).find(".landContent").hide();
-                $("#" + detailInfo.prototype.config().frm).find(".landContent").find("input").attr("disabled", true);
-                $("#" + detailInfo.prototype.config().frm).find(".landContent").find("select").attr("disabled", true);
-                AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, result.data.belongType, function (html, data) {
-                    $("#" + detailInfo.prototype.config().frm).find("#houseUseList").empty().html(html).trigger('change');
+                categoryHtml += "<option value='新房'>新房</option>";
+                categoryHtml += "<option value='二手房'>二手房</option>";
+                box.find(".houseContent").show();
+                frm.find(".houseContent").find("input").attr("disabled", false);
+                frm.find(".houseContent").find("select").attr("disabled", false);
+                box.find(".landContent").hide();
+                frm.find(".landContent").find("input").attr("disabled", true);
+                frm.find(".landContent").find("select").attr("disabled", true);
+                AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, data.belongType, function (html, data) {
+                    frm.find("#houseUseList").empty().html(html).trigger('change');
                 }, true);
-                $("#" + detailInfo.prototype.config().frm).find("input[name='belongType']").off('change').on('change', function () {
-                    AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility, $(this).val(), result.data.belongCategory, function (html, data) {
-                        $("#" + detailInfo.prototype.config().frm).find("#houseUseCategoryList").empty().html(html).trigger('change');
+                frm.find("input[name='belongType']").off('change').on('change', function () {
+                    AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility, $(this).val(), data.belongCategory, function (html, data) {
+                        frm.find("#houseUseCategoryList").empty().html(html).trigger('change');
                     });
                 });
-                if (result.data.masterId && type == result.data.type) {
+                if (data.masterId && type == data.type) {
                     //百分字段
-                    $("#" + detailInfo.prototype.config().frm).find('[name=houseRealizationRatios]').attr('data-value', result.data.houseRealizationRatios);
-                    AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=houseRealizationRatios]'));
+                    frm.find('[name=houseRealizationRatios]').attr('data-value', data.houseRealizationRatios);
+                    AssessCommon.elementParsePercent(frm.find('[name=houseRealizationRatios]'));
                     //初始化选项
-                    AssessCommon.loadDataDicByKey(AssessDicKey.dataDealType, result.data.dealType, function (html, data) {
-                        $("#" + detailInfo.prototype.config().frm).find("select[name='dealType']").empty().html(html).trigger('change');
+                    AssessCommon.loadDataDicByKey(AssessDicKey.dataDealType, data.dealType, function (html, data) {
+                        frm.find("select[name='dealType']").empty().html(html).trigger('change');
                     });
-                    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, result.data.tradingType, function (html, data) {
-                        $("#" + detailInfo.prototype.config().frm).find("select[name='tradingType']").empty().html(html).trigger('change');
+                    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, data.tradingType, function (html, data) {
+                        frm.find("select[name='tradingType']").empty().html(html).trigger('change');
                     });
                 } else {
                     AssessCommon.loadDataDicByKey(AssessDicKey.dataDealType, '', function (html, data) {
-                        $("#" + detailInfo.prototype.config().frm).find("select[name='dealType']").empty().html(html).trigger('change');
+                        frm.find("select[name='dealType']").empty().html(html).trigger('change');
                     });
                     AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, '', function (html, data) {
-                        $("#" + detailInfo.prototype.config().frm).find("select[name='tradingType']").empty().html(html).trigger('change');
+                        frm.find("select[name='tradingType']").empty().html(html).trigger('change');
                     });
                 }
                 //加载附件
                 detailInfo.prototype.showFile("uploadHouseFile", "tb_net_info_record_house", tableId);
                 detailInfo.prototype.fileUpload("uploadHouseFile", "tb_net_info_record_house", tableId);
             } else if (type == '土地') {
-                $("#" + detailInfo.prototype.config().box).find(".landContent").show();
-                $("#" + detailInfo.prototype.config().frm).find(".landContent").find("input").attr("disabled", false);
-                $("#" + detailInfo.prototype.config().frm).find(".landContent").find("select").attr("disabled", false);
-                $("#" + detailInfo.prototype.config().box).find(".houseContent").hide();
-                $("#" + detailInfo.prototype.config().frm).find(".houseContent").find("input").attr("disabled", true);
-                $("#" + detailInfo.prototype.config().frm).find(".houseContent").find("select").attr("disabled", true);
-                AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, result.data.belongType, function (html, data) {
-                    $("#" + detailInfo.prototype.config().frm).find("#landUseList").empty().html(html).trigger('change');
+                categoryHtml += "<option value='一级市场'>一级市场</option>";
+                categoryHtml += "<option value='二级市场'>二级市场</option>";
+                box.find(".landContent").show();
+                frm.find(".landContent").find("input").attr("disabled", false);
+                frm.find(".landContent").find("select").attr("disabled", false);
+                box.find(".houseContent").hide();
+                frm.find(".houseContent").find("input").attr("disabled", true);
+                frm.find(".houseContent").find("select").attr("disabled", true);
+                AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, data.belongType, function (html, data) {
+                    frm.find("#landUseList").empty().html(html).trigger('change');
                 }, true);
-                $("#" + detailInfo.prototype.config().frm).find("input[name='belongType']").off('change').on('change', function () {
-                    AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), result.data.belongCategory, function (html, data) {
-                        $("#" + detailInfo.prototype.config().frm).find("#landUseCategoryList").empty().html(html).trigger('change');
+                frm.find("input[name='belongType']").off('change').on('change', function () {
+                    AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), data.belongCategory, function (html, data) {
+                        frm.find("#landUseCategoryList").empty().html(html).trigger('change');
                     });
                 });
-
-                if (result.data.masterId && type == result.data.type) {
+                if (data.masterId && type == data.type) {
                     //百分字段
-                    $("#" + detailInfo.prototype.config().frm).find('[name=greeningRate]').attr('data-value', result.data.greeningRate);
-                    AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=greeningRate]'));
-                    $("#" + detailInfo.prototype.config().frm).find('[name=buildDensity]').attr('data-value', result.data.buildDensity);
-                    AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=buildDensity]'));
+                    frm.find('[name=greeningRate]').attr('data-value', data.greeningRate);
+                    AssessCommon.elementParsePercent(frm.find('[name=greeningRate]'));
+                    frm.find('[name=buildDensity]').attr('data-value', data.buildDensity);
+                    AssessCommon.elementParsePercent(frm.find('[name=buildDensity]'));
 
-                    $("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]').attr('data-value', result.data.landRealizationRatios);
-                    AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]'));
+                    frm.find('[name=landRealizationRatios]').attr('data-value', data.landRealizationRatios);
+                    AssessCommon.elementParsePercent(frm.find('[name=landRealizationRatios]'));
                     //初始化选项
-                    AssessCommon.loadDataDicByKey(AssessDicKey.dataDealType, result.data.dealType, function (html, data) {
-                        $("#" + detailInfo.prototype.config().frm).find("select[name='dealType']").empty().html(html).trigger('change');
+                    AssessCommon.loadDataDicByKey(AssessDicKey.dataDealType, data.dealType, function (html, data) {
+                        frm.find("select[name='dealType']").empty().html(html).trigger('change');
                     });
                 } else {
                     AssessCommon.loadDataDicByKey(AssessDicKey.dataDealType, '', function (html, data) {
-                        $("#" + detailInfo.prototype.config().frm).find("select[name='dealType']").empty().html(html).trigger('change');
+                        frm.find("select[name='dealType']").empty().html(html).trigger('change');
                     });
                 }
             } else {
-                $("#" + detailInfo.prototype.config().box).find(".houseContent").hide();
-                $("#" + detailInfo.prototype.config().box).find(".landContent").hide();
+                box.find(".houseContent").hide();
+                box.find(".landContent").hide();
             }
+            frm.find("select[name='category']").empty().html(categoryHtml).trigger('change');
+            //select2赋值 选中
+            AssessCommon.initArraySelect2(frm, data, ["category", "purchaseLimitStatus", "tradingType", "dealType"]);
             //加载附件
             detailInfo.prototype.showFile("uploadLandFile", "tb_net_info_record_land", tableId);
             detailInfo.prototype.fileUpload("uploadLandFile", "tb_net_info_record_land", tableId);
@@ -1096,6 +1163,7 @@
                 }
             });
             cols.push({field: 'name', title: '地块名称'});
+            cols.push({field: 'category', title: '类别'});
             cols.push({field: 'dealTypeName', title: '交易方式'});
             cols.push({field: 'currentPrice', title: '成交价'});
             cols.push({field: 'unitPrice', title: '单价'});
@@ -1176,7 +1244,7 @@
                     return str;
                 }
             });
-
+            cols.push({field: 'category', title: '类别'});
             cols.push({
                 field: 'name', title: '楼盘', formatter: function (value, row, index) {
                     var result = '';
@@ -1197,7 +1265,6 @@
             });
             cols.push({field: 'currentPrice', title: '成交总价'});
             cols.push({field: 'consultPrice', title: '评估总价'});
-            cols.push({field: 'dealTypeName', title: '交易方式'});
             cols.push({field: 'dealTypeName', title: '交易方式'});
             cols.push({field: 'tradingTypeName', title: '交易类型'});
             cols.push({field: 'purchaseLimitStatus', title: '限购状态'});
@@ -1335,5 +1402,64 @@
                 $("#houseRealizationCycle").val('');
             }
         }
-    }
+    };
+
+    detailInfo.prototype.houseImportHandle = function (that) {
+        var data = {masterId: $("#frmAdd").find("input[name='masterId']").val()};
+        data.type = "房产";
+        data.assignTaskId = '${netInfoAssignTask.id}';
+        detailInfo.prototype.ajaxFileUploadCommon(data, $(that).attr("id"), "/netInfoAssignTask/importAssignHouseData", function () {
+            detailInfo.prototype.loadHouseHistoryList();
+        },false);
+    };
+
+    detailInfo.prototype.landImportHandle = function (that) {
+        var data = {masterId: $("#frmAdd").find("input[name='masterId']").val()};
+        data.type = "土地";
+        data.assignTaskId = '${netInfoAssignTask.id}';
+        detailInfo.prototype.ajaxFileUploadCommon(data, $(that).attr("id"), "/netInfoAssignTask/importAssignLandData", function () {
+            detailInfo.prototype.loadLandHistoryList();
+        },false);
+    };
+
+    detailInfo.prototype.ajaxFileUploadCommon = function (data, fileElementId, url, callback, flag) {
+        Loading.progressShow();
+        $.ajaxFileUpload({
+            type: "POST",
+            url: "${pageContext.request.contextPath}" + url,
+            data: data,//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: fileElementId,//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                    if (flag) {
+
+                    } else {
+                        AlertSuccess("导入情况", result.data);
+                    }
+                } else {
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
+    };
+
 </script>

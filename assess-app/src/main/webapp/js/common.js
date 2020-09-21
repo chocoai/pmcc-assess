@@ -361,6 +361,17 @@ $(function () {
                 }
             }
         } ,
+        //多个select2赋值
+        initArraySelect2: function(frm,data,arrName){
+            if (data){
+                if (arrName){
+                    var that = this;
+                    $.each(arrName,function (k,name) {
+                        that.initSelect2(frm,data,name) ;
+                    }) ;
+                }
+            }
+        } ,
         //数据字典  select2赋值
         loadDataDicAssignment:function(key, obj , name ,frm){
             var value = null ;
