@@ -14,17 +14,21 @@ public interface NetInfoRecordLandMapper {
 
     int insert(NetInfoRecordLand record);
 
-    int insertSelective(NetInfoRecordLand record);
+    int insertSelective(@Param("record") NetInfoRecordLand record, @Param("selective") NetInfoRecordLand.Column ... selective);
 
     List<NetInfoRecordLand> selectByExample(NetInfoRecordLandExample example);
 
     NetInfoRecordLand selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") NetInfoRecordLand record, @Param("example") NetInfoRecordLandExample example);
+    int updateByExampleSelective(@Param("record") NetInfoRecordLand record, @Param("example") NetInfoRecordLandExample example, @Param("selective") NetInfoRecordLand.Column ... selective);
 
     int updateByExample(@Param("record") NetInfoRecordLand record, @Param("example") NetInfoRecordLandExample example);
 
-    int updateByPrimaryKeySelective(NetInfoRecordLand record);
+    int updateByPrimaryKeySelective(@Param("record") NetInfoRecordLand record, @Param("selective") NetInfoRecordLand.Column ... selective);
 
     int updateByPrimaryKey(NetInfoRecordLand record);
+
+    int batchInsert(@Param("list") List<NetInfoRecordLand> list);
+
+    int batchInsertSelective(@Param("list") List<NetInfoRecordLand> list, @Param("selective") NetInfoRecordLand.Column ... selective);
 }

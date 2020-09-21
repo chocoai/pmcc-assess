@@ -2,11 +2,12 @@ package com.copower.pmcc.assess.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.ExcelImportUtils;
 import com.copower.pmcc.assess.common.MyX509TrustManager;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.dao.CaseNetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.cases.dao.CaseNetInfoRecordDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseNetInfoRecord;
@@ -16,8 +17,11 @@ import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
 import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordVo;
+import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -27,10 +31,16 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,6 +50,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -84,7 +95,18 @@ public class NetInfoRecordService {
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
     private NetUrlConfigService netUrlConfigService;
-
+    @Autowired
+    private BaseService baseService;
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private CommonService commonService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private NetInfoRecordHouseService netInfoRecordHouseService;
+    @Autowired
+    private NetInfoRecordLandService netInfoRecordLandService;
 
     //抓取数据
     public void climbingData() {
@@ -1478,5 +1500,177 @@ public class NetInfoRecordService {
         CaseNetInfoRecordContent caseNetInfoRecordContent = new CaseNetInfoRecordContent();
         BeanUtils.copyProperties(netInfoContent, caseNetInfoRecordContent);
         caseNetInfoRecordContentDao.addInfo(caseNetInfoRecordContent);
+    }
+
+    /**
+     * 导入土地数据
+     * @param land
+     * @param multipartFile
+     * @return
+     */
+    public String importAssignLandData(NetInfoRecordLand land, MultipartFile multipartFile)throws Exception {
+        Workbook workbook = null;
+        Row row = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        //1.保存文件
+        String filePath = baseAttachmentService.saveUploadFile(multipartFile);
+        //2.读取文件
+        try {
+            FileInputStream inputStream = new FileInputStream(filePath);
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+        }
+
+        //只取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
+        //工作表的第一行
+        row = sheet.getRow(0);
+        //读取数据的起始行
+        int startRowNumber = 2;
+        //导入成功数据条数
+        int successCount = 0;
+        //总行数
+        int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
+        rowLength = rowLength - startRowNumber;
+        if (rowLength == 0) {
+            stringBuilder.append("没有数据!");
+            return stringBuilder.toString();
+        }
+        Map<String, String> map = new HashMap<>();
+        //必填项
+        List<String> requiredList = new ArrayList<>();
+        requiredList.addAll(Arrays.asList("province", "city"));
+        //数据字典 map
+        Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
+        baseMap.put("dealType", baseDataDicService.getCacheDataDicList("data.deal.type"));
+        baseMap.put("tradingType", baseDataDicService.getCacheDataDicList("examine.house.transaction.type"));
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = ExcelImportUtils.getMultimapByClass(NetInfoRecordLand.class, row);
+        for (int i = startRowNumber; i < rowLength + startRowNumber; i++){
+            NetInfoRecordLand target = null;
+            try {
+                row = sheet.getRow(i);
+                if (row == null) {
+                    ExcelImportUtils.excelImportWriteErrorInfo(i, "没有数据", stringBuilder);
+                    continue;
+                }
+                target = new NetInfoRecordLand();
+                BeanUtils.copyProperties(land, target);
+                target.setId(null);
+                //excel 处理
+                boolean check = ExcelImportUtils.excelImportHelp(classArrayListMultimap, target, stringBuilder, row, baseMap, requiredList,true);
+                if (!check) {
+                    continue;
+                }
+                //验证(区域)
+                if (erpAreaService.checkArea(target.getProvince(), target.getCity(), target.getDistrict(), stringBuilder, map)) {
+                    if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.PROVINCE))) {
+                        target.setProvince(map.get(erpAreaService.PROVINCE));
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.CITY))) {
+                        target.setCity(map.get(erpAreaService.CITY));
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.DISTRICT))) {
+                        target.setDistrict(map.get(erpAreaService.DISTRICT));
+                    }
+                } else {
+                    ExcelImportUtils.excelImportWriteErrorInfo(row.getRowNum(), 0, "区域类型与系统配置的名称不一致 省市区(县)", false, stringBuilder);
+                    continue;
+                }
+                map.clear();
+                target.setCreator(commonService.thisUserAccount());
+                netInfoRecordLandService.saveAndUpdateNetInfoRecordLand(target);
+                successCount++;
+            } catch (Exception e) {
+                ExcelImportUtils.excelImportWriteErrorInfo(i, e.getMessage(), stringBuilder);
+            }
+        }
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, stringBuilder.toString());
+    }
+
+    /**
+     * 导入房产数据
+     * @param house
+     * @param multipartFile
+     * @return
+     */
+    public String importAssignHouseData(NetInfoRecordHouse house, MultipartFile multipartFile)throws Exception {
+        Workbook workbook = null;
+        Row row = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        //1.保存文件
+        String filePath = baseAttachmentService.saveUploadFile(multipartFile);
+        //2.读取文件
+        try {
+            FileInputStream inputStream = new FileInputStream(filePath);
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+        }
+
+        //只取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
+        //工作表的第一行
+        row = sheet.getRow(0);
+        //读取数据的起始行
+        int startRowNumber = 2;
+        //导入成功数据条数
+        int successCount = 0;
+        //总行数
+        int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
+        rowLength = rowLength - startRowNumber;
+        if (rowLength == 0) {
+            stringBuilder.append("没有数据!");
+            return stringBuilder.toString();
+        }
+        Map<String, String> map = new HashMap<>();
+        //必填项
+        List<String> requiredList = new ArrayList<>();
+        requiredList.addAll(Arrays.asList("province", "city"));
+        //数据字典 map
+        Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
+        baseMap.put("dealType", baseDataDicService.getCacheDataDicList("data.deal.type"));
+        baseMap.put("tradingType", baseDataDicService.getCacheDataDicList("examine.house.transaction.type"));
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = ExcelImportUtils.getMultimapByClass(NetInfoRecordLand.class, row);
+        for (int i = startRowNumber; i < rowLength + startRowNumber; i++){
+            NetInfoRecordHouse target = null;
+            try {
+                row = sheet.getRow(i);
+                if (row == null) {
+                    ExcelImportUtils.excelImportWriteErrorInfo(i, "没有数据", stringBuilder);
+                    continue;
+                }
+                target = new NetInfoRecordHouse();
+                BeanUtils.copyProperties(house, target);
+                target.setId(null);
+                //excel 处理
+                boolean check = ExcelImportUtils.excelImportHelp(classArrayListMultimap, target, stringBuilder, row, baseMap, requiredList,true);
+                if (!check) {
+                    continue;
+                }
+                //验证(区域)
+                if (erpAreaService.checkArea(target.getProvince(), target.getCity(), target.getDistrict(), stringBuilder, map)) {
+                    if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.PROVINCE))) {
+                        target.setProvince(map.get(erpAreaService.PROVINCE));
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.CITY))) {
+                        target.setCity(map.get(erpAreaService.CITY));
+                    }
+                    if (!org.springframework.util.StringUtils.isEmpty(map.get(erpAreaService.DISTRICT))) {
+                        target.setDistrict(map.get(erpAreaService.DISTRICT));
+                    }
+                } else {
+                    ExcelImportUtils.excelImportWriteErrorInfo(row.getRowNum(), 0, "区域类型与系统配置的名称不一致 省市区(县)", false, stringBuilder);
+                    continue;
+                }
+                map.clear();
+                target.setCreator(commonService.thisUserAccount());
+                netInfoRecordHouseService.saveAndUpdateNetInfoRecordHouse(target);
+                successCount++;
+            } catch (Exception e) {
+                ExcelImportUtils.excelImportWriteErrorInfo(i, e.getMessage(), stringBuilder);
+            }
+        }
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, stringBuilder.toString());
     }
 }
