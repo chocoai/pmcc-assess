@@ -212,9 +212,11 @@ public class AssessDataDicKeyConstant {
     public static final String DATA_LAND_LEVEL_CLASSIFY = "data.land.level.classify"; //土地级别 大类
 
 
-    public static final String AD_PLACE_FILE_MARK = "ad.place.file.mark"; //评估系统 档案标识
-    public static final String AD_PLACE_FILE_MARK_COMPREHENSIVE = "ad.place.file.mark.comprehensive"; //评估系统 档案标识 -  综合类
-    public static final String AD_PLACE_FILE_MARK_PROFESSION = "ad.place.file.mark.profession"; //评估系统 档案标识 - 专业类
+    public static final String AD_PLACE_FILE_MARK = "ad.place.file.mark"; //档案分类【房产】
+    public static final String AD_PLACE_FILE_MARK_COMPREHENSIVE = "ad.place.file.mark.comprehensive"; //档案分类【房产】-综合类
+    public static final String AD_PLACE_FILE_MARK_PROFESSION = "ad.place.file.mark.profession"; //档案分类【房产】-专业类
 
-
+    public static final String AD_PLACE_FILE_MARK_LAND = "ad.place.file.mark.land"; //档案分类【土地】
+    public static final String AD_PLACE_FILE_MARK_COMPREHENSIVE_LAND = "ad.place.file.mark.comprehensive.land"; //档案分类【房产】-综合类
+    public static final String AD_PLACE_FILE_MARK_PROFESSION_LAND = "ad.place.file.mark.profession.land"; //档案分类【房产】-专业类
 }
