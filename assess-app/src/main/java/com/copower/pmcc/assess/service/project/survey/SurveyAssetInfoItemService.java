@@ -220,6 +220,10 @@ public class SurveyAssetInfoItemService {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(oo, declareIds);
     }
 
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList( List<Integer> declareIds) {
+        return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(null, declareIds);
+    }
+
 
     public List<Integer> getSurveyAssetInfoItemIdsByGroupId(Integer groupId) {
         SurveyAssetInfoItem query = new SurveyAssetInfoItem();

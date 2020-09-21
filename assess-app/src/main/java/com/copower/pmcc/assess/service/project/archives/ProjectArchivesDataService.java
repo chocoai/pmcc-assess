@@ -23,6 +23,9 @@ import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportGroupService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoGroupService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoItemService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightItemService;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.*;
@@ -100,6 +103,12 @@ public class ProjectArchivesDataService {
     private ProjectPhaseService projectPhaseService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private SurveyAssetInfoItemService surveyAssetInfoItemService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
+    @Autowired
+    private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -224,7 +233,7 @@ public class ProjectArchivesDataService {
         if (StringUtils.isNotBlank(basePlaceFileDto.getDefaultSource()) && NumberUtils.isNumber(basePlaceFileDto.getDefaultSource())) {
             adPlaceFileItemDto.setFileSource(Integer.parseInt(basePlaceFileDto.getDefaultSource()));
         }
-        if (basePlaceFileDto.getDefaultBisBinding() != null){
+        if (basePlaceFileDto.getDefaultBisBinding() != null) {
             adPlaceFileItemDto.setBisBinding(basePlaceFileDto.getDefaultBisBinding());
         }
         if (basePlaceFileDto.getSorting() != null) {
@@ -311,6 +320,15 @@ public class ProjectArchivesDataService {
                 //综合类
                 case AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_COMPREHENSIVE: {
                     for (AdPlaceFileItemDto adPlaceFileItemDto : itemDtoList) {
+                        //其它 注意 其他  这里必须根据配置的是哪个中午名称就写哪个中午名称
+                        if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileComprehensiveEnum.OTHER.getName())){
+                            List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(projectId, "assess_report_enclosure", FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
+                            if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
+                                continue;
+                            }
+                            createAdPlaceFileItemDetailDto(sysAttachmentDtoList, adPlaceFileItemDto.getId());
+                            continue;
+                        }
                         //合同
                         if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileComprehensiveEnum.contract.getName())) {
                             //合同  附件
@@ -331,7 +349,7 @@ public class ProjectArchivesDataService {
                             if (CollectionUtils.isEmpty(documentSendList)) {
                                 continue;
                             }
-                            List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId(),null);
+                            List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId(), null);
                             if (CollectionUtils.isEmpty(documentTemplateList)) {
                                 continue;
                             }
@@ -361,7 +379,7 @@ public class ProjectArchivesDataService {
                             BaseDataDic signBillDataDic = null;
                             signBillDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_REPORT_SIGNFOR);
                             if (signBillDataDic != null) {
-                                signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId(),null);
+                                signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId(), null);
                             }
                             if (CollectionUtils.isEmpty(signBill)) {
                                 continue;
@@ -433,6 +451,59 @@ public class ProjectArchivesDataService {
                                 continue;
                             }
                             createAdPlaceFileItemDetailDto(serviceAttachmentList, adPlaceFileItemDto.getId());
+                            continue;
+                        }
+
+                        //税费损坏
+                        if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileProfessionEnum.INVENTORY_DAMAGE.getName())) {
+                            List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
+                            if (CollectionUtils.isEmpty(declareRecordList)) {
+                                continue;
+                            }
+                            List<Integer> integerList = LangUtils.transform(declareRecordList, obj -> obj.getId());
+                            List<SurveyAssetInfoItem> assetInfoItemList = surveyAssetInfoItemService.getSurveyAssetInfoItemLikeList(integerList);
+                            if (CollectionUtils.isEmpty(assetInfoItemList)) {
+                                continue;
+                            }
+                            List<Integer> ids = new ArrayList<>();
+                            List<Integer> groupIds = new ArrayList<>();
+                            for (SurveyAssetInfoItem assetInfoItem : assetInfoItemList) {
+                                if (assetInfoItem.getInventoryId() != null && assetInfoItem.getInventoryId() != 0) {
+                                    ids.add(assetInfoItem.getInventoryId());
+                                }
+                                if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0) {
+                                    groupIds.add(assetInfoItem.getGroupId()) ;
+                                }
+                            }
+                            if (CollectionUtils.isNotEmpty(groupIds)) {
+                                List<SurveyAssetInfoGroup> infoGroupList = surveyAssetInfoGroupService.getSurveyAssetInfoGroupByIds(groupIds);
+                                if (CollectionUtils.isNotEmpty(infoGroupList)) {
+                                    for (SurveyAssetInfoGroup assetInfoGroup:infoGroupList){
+                                        if (assetInfoGroup.getInventoryId() == null || assetInfoGroup.getInventoryId() == 0){
+                                            continue;
+                                        }
+                                        ids.add(assetInfoGroup.getInventoryId()) ;
+                                    }
+                                }
+                            }
+                            if (CollectionUtils.isEmpty(ids)){
+                                continue;
+                            }
+                            List<SurveyAssetInventory> surveyAssetInventoryList = surveyAssetInventoryService.getSurveyAssetInventoryByIds(ids);
+                            if (CollectionUtils.isEmpty(surveyAssetInventoryList)) {
+                                continue;
+                            }
+                            for (SurveyAssetInventory assetInventory:surveyAssetInventoryList){
+                                List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(assetInventory.getId(), null, FormatUtils.entityNameConvertToTableName(SurveyAssetInfoItem.class));
+                                List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(assetInventory.getId(), "paymentStatusFile", FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class));
+                                if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                                    sysAttachmentDtoList.addAll(attachmentDtoList) ;
+                                }
+                                if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
+                                    continue;
+                                }
+                                createAdPlaceFileItemDetailDto(sysAttachmentDtoList, adPlaceFileItemDto.getId());
+                            }
                             continue;
                         }
 
