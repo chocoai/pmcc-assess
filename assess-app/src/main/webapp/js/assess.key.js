@@ -396,3 +396,6 @@ AssessFTKey.ftpDataLoanBenchmarkInterestRateTemplate = "ftp.DataLoanBenchmarkInt
 AssessFTKey.ftpDataDepositBenchmarkInterestRateTemplate = "ftp.DataDepositBenchmarkInterestRate.template";//	存款基准利率
 AssessFTKey.ftpDataAverageWageUrbanEmployeesTemplate = "ftp.DataAverageWageUrbanEmployees.template";//	城镇就业人员平均工资
 AssessFTKey.ftpDataAverageWageUrbanEmployeesItemTemplate = "ftp.DataAverageWageUrbanEmployeesItem.template";//	城镇就业人员平均工资 子类
+
+AssessFTKey.ftpNetInfoAssignOfflineHouse = "ftp.net.info.assign.offline.house";//拍卖信息-房产
+AssessFTKey.ftpNetInfoAssignOfflineLand = "ftp.net.info.assign.offline.land";//拍卖信息-土地

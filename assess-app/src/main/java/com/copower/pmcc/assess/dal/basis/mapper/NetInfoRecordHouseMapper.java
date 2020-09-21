@@ -14,17 +14,21 @@ public interface NetInfoRecordHouseMapper {
 
     int insert(NetInfoRecordHouse record);
 
-    int insertSelective(NetInfoRecordHouse record);
+    int insertSelective(@Param("record") NetInfoRecordHouse record, @Param("selective") NetInfoRecordHouse.Column ... selective);
 
     List<NetInfoRecordHouse> selectByExample(NetInfoRecordHouseExample example);
 
     NetInfoRecordHouse selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") NetInfoRecordHouse record, @Param("example") NetInfoRecordHouseExample example);
+    int updateByExampleSelective(@Param("record") NetInfoRecordHouse record, @Param("example") NetInfoRecordHouseExample example, @Param("selective") NetInfoRecordHouse.Column ... selective);
 
     int updateByExample(@Param("record") NetInfoRecordHouse record, @Param("example") NetInfoRecordHouseExample example);
 
-    int updateByPrimaryKeySelective(NetInfoRecordHouse record);
+    int updateByPrimaryKeySelective(@Param("record") NetInfoRecordHouse record, @Param("selective") NetInfoRecordHouse.Column ... selective);
 
     int updateByPrimaryKey(NetInfoRecordHouse record);
+
+    int batchInsert(@Param("list") List<NetInfoRecordHouse> list);
+
+    int batchInsertSelective(@Param("list") List<NetInfoRecordHouse> list, @Param("selective") NetInfoRecordHouse.Column ... selective);
 }
