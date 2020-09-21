@@ -75,7 +75,7 @@ public class MdBaseLandPriceController {
         }
         modelAndView.addObject("master", mdBaseLandPrice);
         modelAndView.addObject("apply", "apply");
-        mdBaseLandPriceService.setViewParam(judgeObjectId, modelAndView);
+        mdBaseLandPriceService.setViewParam(judgeObjectId,mdBaseLandPrice, modelAndView);
         return modelAndView;
     }
 
@@ -84,22 +84,22 @@ public class MdBaseLandPriceController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/marketBaseLandPriceDetail");
         MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getMdBaseLandPriceDao().getMdBaseLandPrice(dataId);
         modelAndView.addObject("master", mdBaseLandPrice);
-        mdBaseLandPriceService.setViewParam(mdBaseLandPrice.getJudgeObjectId(), modelAndView);
+        mdBaseLandPriceService.setViewParam(mdBaseLandPrice.getJudgeObjectId(),mdBaseLandPrice, modelAndView);
         return modelAndView;
     }
 
 
-    @RequestMapping(value = "/getLandPriceIndexDetailList", name = "获取土地指数信息", method = RequestMethod.GET)
-    public BootstrapTableVo getLandPriceIndexDetailList(Integer judgeObjectId) {
-        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexService.getLandPriceIndexDetailList(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
-        bootstrapTableVo.setTotal((long) detailList.size());
-        bootstrapTableVo.setRows(detailList);
-        return bootstrapTableVo;
+    @RequestMapping(value = "/getLandPriceIndexByJudgeId", name = "获取土地指数信息", method = RequestMethod.GET)
+    public HttpResult getLandPriceIndexByJudgeId(Integer judgeObjectId) {
+        try {
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+            SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
+            DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
+            return HttpResult.newCorrectResult(priceIndex);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("获取失败");
+        }
     }
 
 

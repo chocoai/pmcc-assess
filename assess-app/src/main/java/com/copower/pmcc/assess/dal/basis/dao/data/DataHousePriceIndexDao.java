@@ -70,6 +70,7 @@ public class DataHousePriceIndexDao {
         if (date != null) {
             criteria.andEvaluationDateGreaterThanOrEqualTo(date);
         }
+        example.setOrderByClause("evaluation_date desc");
         return mapper.selectByExample(example);
     }
 }

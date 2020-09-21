@@ -12,10 +12,12 @@ import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.data.DataHousePriceIndexService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailVolumeService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.DateUtils;
@@ -64,6 +66,10 @@ public class MdBaseLandPriceService {
     private DataLandLevelDetailVolumeService dataLandLevelDetailVolumeService;
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
+    @Autowired
+    private DataHousePriceIndexService dataHousePriceIndexService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
 
     public MdBaseLandPriceDao getMdBaseLandPriceDao() {
         return mdBaseLandPriceDao;
@@ -133,49 +139,11 @@ public class MdBaseLandPriceService {
      * 获取 基准地价期日修正
      */
     public BigDecimal getBaseLandPriceDateAmend(Integer schemeJudgeObjectId) {
-        BigDecimal bigDecimal = null;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObjectId);
-        ProjectInfo projectInfoById = projectInfoService.getProjectInfoById(schemeJudgeObject.getProjectId());
-        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        //评估基准日
-        Date valuationDate = projectInfoById.getValuationDate();
-        //找到评估基准日对应的土地因素
-        BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
-        List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict(), dataDic.getId(),null);
-        if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(basicEstate.getProvince(), basicEstate.getCity(), null, dataDic.getId(),null);
-        }
-        if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
-            for (DataHousePriceIndex priceIndex : dataHouseIndexList) {
-                if (priceIndex.getBasePeriod() == null) {
-                    continue;
-                }
-                List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexDetailDao.getDataHousePriceIndexDetailList(priceIndex.getId());
-                if (CollectionUtils.isEmpty(detailList)) {
-                    continue;
-                }
-                for (DataHousePriceIndexDetail priceIndexDetail : detailList) {
-                    if (priceIndexDetail.getStartDate() == null || priceIndexDetail.getEndDate() == null) {
-                        continue;
-                    }
-                    //必须介于两者之间
-                    boolean check = DateUtils.compareDate(valuationDate, priceIndexDetail.getStartDate()) > 1 && DateUtils.compareDate(valuationDate, priceIndexDetail.getEndDate()) < -1;
-                    if (!check) {
-                        continue;
-                    }
-                    //找出基期
-                    Date basePeriod = priceIndex.getBasePeriod();
-                    for (DataHousePriceIndexDetail housePriceIndexDetail : detailList) {
-                        if (housePriceIndexDetail.getStartDate().compareTo(basePeriod) != 1 && housePriceIndexDetail.getStartDate().compareTo(basePeriod) != -1) {
-                            bigDecimal = housePriceIndexDetail.getIndexNumber().divide(priceIndexDetail.getIndexNumber(), 4, BigDecimal.ROUND_HALF_UP);
-                        }
-                    }
-                }
-            }
-        }
-        return bigDecimal;
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
+        DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
+        if (priceIndex == null) return null;
+        return dataHousePriceIndexService.getCorrectionFactor(priceIndex, areaGroup.getValueTimePoint());
     }
 
     public MdBaseLandPrice initObject(Integer judgeObjectId) {
@@ -313,7 +281,7 @@ public class MdBaseLandPriceService {
      *
      * @param modelAndView
      */
-    public void setViewParam(Integer judgeObjectId, ModelAndView modelAndView) {
+    public void setViewParam(Integer judgeObjectId, MdBaseLandPrice mdBaseLandPrice, ModelAndView modelAndView) {
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         modelAndView.addObject("judgeObject", schemeJudgeObject);
         BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
@@ -363,10 +331,9 @@ public class MdBaseLandPriceService {
                 modelAndView.addObject("hasVolumeFractionAmendId", parentLandLevel.getId());
                 modelAndView.addObject("volumetricRate", categoryInfo.getPlotRatio());
             }
-
         }
         //期日修正系数
-        BigDecimal dateAmend = getBaseLandPriceDateAmend(schemeJudgeObject.getId());
+        BigDecimal dateAmend = mdBaseLandPrice.getDateAmend() == null ? getBaseLandPriceDateAmend(schemeJudgeObject.getId()) : mdBaseLandPrice.getDateAmend();
         modelAndView.addObject("dateAmend", dateAmend);
 
     }

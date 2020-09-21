@@ -313,6 +313,7 @@
         }
         data.startDate = data.startDate + "-01 00:00:00";
         data.endDate = data.endDate + "-01 00:00:00";
+        data.bisBase=frm.find('[name=bisBase]').prop('checked');
         $.ajax({
             url: '${pageContext.request.contextPath}/dataHousePriceIndexDetail/save',
             data: {formData: JSON.stringify(data)},

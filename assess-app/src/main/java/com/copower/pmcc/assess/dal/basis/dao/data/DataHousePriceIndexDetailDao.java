@@ -8,6 +8,7 @@ import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,40 +21,40 @@ public class DataHousePriceIndexDetailDao {
     @Autowired
     private DataHousePriceIndexDetailMapper mapper;
 
-    public boolean saveDataHousePriceIndexDetail(DataHousePriceIndexDetail oo){
+    public boolean saveDataHousePriceIndexDetail(DataHousePriceIndexDetail oo) {
         return mapper.insertSelective(oo) == 1;
     }
 
-    public boolean editDataHousePriceIndexDetail(DataHousePriceIndexDetail oo){
-        return mapper.updateByPrimaryKeySelective(oo)==1;
+    public boolean editDataHousePriceIndexDetail(DataHousePriceIndexDetail oo) {
+        return mapper.updateByPrimaryKeySelective(oo) == 1;
     }
 
-    public boolean deleteDataHousePriceIndexDetail(Integer id){
-        return mapper.deleteByPrimaryKey(id)==1;
+    public boolean deleteDataHousePriceIndexDetail(Integer id) {
+        return mapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public DataHousePriceIndexDetail getDataHousePriceIndexDetailById(Integer id){
+    public DataHousePriceIndexDetail getDataHousePriceIndexDetailById(Integer id) {
         return mapper.selectByPrimaryKey(id);
     }
 
-    public List<DataHousePriceIndexDetail> getDataHousePriceIndexDetailList(DataHousePriceIndexDetail oo){
+    public List<DataHousePriceIndexDetail> getDataHousePriceIndexDetailList(DataHousePriceIndexDetail oo) {
         DataHousePriceIndexDetailExample example = getExample(oo);
         example.setOrderByClause("start_date");
         return mapper.selectByExample(example);
     }
 
-    public List<DataHousePriceIndexDetail> getDataHousePriceIndexDetailList(Integer housePriceId){
+    public List<DataHousePriceIndexDetail> getDataHousePriceIndexDetailList(Integer housePriceId) {
         DataHousePriceIndexDetailExample example = new DataHousePriceIndexDetailExample();
         example.createCriteria().andHousePriceIdEqualTo(housePriceId);
         return mapper.selectByExample(example);
     }
 
-    public void deleteDataHousePriceIndexDetailList(DataHousePriceIndexDetail oo){
+    public void deleteDataHousePriceIndexDetailList(DataHousePriceIndexDetail oo) {
         DataHousePriceIndexDetailExample example = getExample(oo);
         mapper.deleteByExample(example);
     }
 
-    private DataHousePriceIndexDetailExample getExample(DataHousePriceIndexDetail oo){
+    private DataHousePriceIndexDetailExample getExample(DataHousePriceIndexDetail oo) {
         DataHousePriceIndexDetailExample example = new DataHousePriceIndexDetailExample();
         MybatisUtils.convertObj2Example(oo, example);
         DataHousePriceIndexDetailExample.Criteria criteria = example.createCriteria();

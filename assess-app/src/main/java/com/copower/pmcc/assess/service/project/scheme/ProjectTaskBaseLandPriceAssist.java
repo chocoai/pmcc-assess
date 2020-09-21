@@ -62,37 +62,37 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         }
         modelAndView.addObject("master", mdBaseLandPrice);
         modelAndView.addObject("apply", "apply");
-        mdBaseLandPriceService.setViewParam(projectPlanDetails.getJudgeObjectId(), modelAndView);
+        mdBaseLandPriceService.setViewParam(projectPlanDetails.getJudgeObjectId(),mdBaseLandPrice, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskBaseLandPriceApproval", processInsId, boxId, taskId, agentUserAccount);
-        MdBaseLandPrice data = mdBaseLandPriceService.getDataByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("master", data);
+        MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        modelAndView.addObject("master", mdBaseLandPrice);
         Integer judgeObjectId = projectPlanDetails.getJudgeObjectId();
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         modelAndView.addObject("number", schemeJudgeObject.getNumber());
-        mdBaseLandPriceService.setViewParam(projectPlanDetails.getJudgeObjectId(), modelAndView);
+        mdBaseLandPriceService.setViewParam(projectPlanDetails.getJudgeObjectId(),mdBaseLandPrice, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskBaseLandPriceIndex", processInsId, boxId, taskId, agentUserAccount);
-        MdBaseLandPrice data = mdBaseLandPriceService.getDataByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("master", data);
-        mdBaseLandPriceService.setViewParam(projectPlanDetails.getJudgeObjectId(), modelAndView);
+        MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        modelAndView.addObject("master", mdBaseLandPrice);
+        mdBaseLandPriceService.setViewParam(projectPlanDetails.getJudgeObjectId(),mdBaseLandPrice, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskBaseLandPriceApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        MdBaseLandPrice data = mdBaseLandPriceService.getDataByPlanDetailsId(projectPlanDetails.getId());
-        modelAndView.addObject("master", data);
-        mdBaseLandPriceService.setViewParam(projectPlanDetails.getJudgeObjectId(), modelAndView);
+        MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getDataByPlanDetailsId(projectPlanDetails.getId());
+        modelAndView.addObject("master", mdBaseLandPrice);
+        mdBaseLandPriceService.setViewParam(projectPlanDetails.getJudgeObjectId(),mdBaseLandPrice, modelAndView);
         return modelAndView;
     }
 

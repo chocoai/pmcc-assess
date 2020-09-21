@@ -49,7 +49,7 @@
                                         <input type="text"
                                                class="form-control input-full" onblur="calculationNumeric(this);"
                                                name="dateAmend"
-                                               value="${master.dateAmend ==null?dateAmend:master.dateAmend}"
+                                               value="${dateAmend}"
                                                id="dateAmend">
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                                         <th width="30%">类别</th>
                                         <th width="20%">等级</th>
                                         <th width="10%">分值</th>
-<%--                                        <th width="5%"></th>--%>
+                                        <%--                                        <th width="5%"></th>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="landLevelTabContent"></tbody>
@@ -245,7 +245,8 @@
                                 </div>
                             </div>
                         </div>
-                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499"
+                            size="10">
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="form-inline x-valid">
@@ -327,7 +328,8 @@
                                 </div>
                             </div>
                         </div>
-                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499"
+                            size="10">
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="form-inline x-valid">
@@ -431,10 +433,10 @@
                    value="{landFactorTotalScore}" onblur="getAreaAndSeveralAmend();">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
-<%--        <td>--%>
-<%--            <input class="btn btn-sm btn-warning" type="button" value="X"--%>
-<%--                   onclick="landLevelEmpty(this)">--%>
-<%--        </td>--%>
+        <%--        <td>--%>
+        <%--            <input class="btn btn-sm btn-warning" type="button" value="X"--%>
+        <%--                   onclick="landLevelEmpty(this)">--%>
+        <%--        </td>--%>
     </tr>
 </script>
 
@@ -454,38 +456,43 @@
 
     //土地指数表
     function getLandIndexId() {
-        var cols = [];
-        cols.push({
-            field: 'startDate', title: '开始月份', formatter: function (value, row, index) {
-                return formatDate(value);
-            }
-        });
-        cols.push({
-            field: 'endDate', title: '结束月份', formatter: function (value, row, index) {
-                return formatDate(value);
-            }
-        });
-        cols.push({
-            field: 'indexNumber', title: '指数', formatter: function (value, row, index) {
-                var str = value;
-                if (row.bisBase) {
-                    str += '<span class="label label-success">基期</span>';
-                }
-                return str;
-            }
-        });
-        $("#indexDetailTable").bootstrapTable('destroy');
-        TableInit("indexDetailTable", "${pageContext.request.contextPath}/baseLandPrice/getLandPriceIndexDetailList", cols, {
+        $.getJSON('${pageContext.request.contextPath}/baseLandPrice/getLandPriceIndexByJudgeId', {
             judgeObjectId: '${master.judgeObjectId}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
+        }, function (result) {
+            if (result.ret) {
+                var cols = [];
+                cols.push({
+                    field: 'startDate', title: '开始月份', formatter: function (value, row, index) {
+                        return formatDate(value);
+                    }
+                });
+                cols.push({
+                    field: 'endDate', title: '结束月份', formatter: function (value, row, index) {
+                        return formatDate(value);
+                    }
+                });
+                cols.push({
+                    field: 'indexNumber', title: '指数', formatter: function (value, row, index) {
+                        var str = value;
+                        if (row.bisBase) {
+                            str += '<span class="label label-success">基期</span>';
+                        }
+                        return str;
+                    }
+                });
+                $("#indexDetailTable").bootstrapTable('destroy');
+                TableInit("indexDetailTable", "${pageContext.request.contextPath}/dataHousePriceIndexDetail/getBootstrapTableVo", cols, {
+                    housePriceId: result.data.id
+                }, {
+                    showColumns: false,
+                    showRefresh: false,
+                    search: false,
+                    onLoadSuccess: function () {
+                        $('.tooltips').tooltip();
+                    }
+                });
             }
-        });
-
+        })
     }
 
     //容积率修正系数表
