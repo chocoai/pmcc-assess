@@ -10,6 +10,7 @@ public enum ArchivesFileProfessionEnum implements Serializable {
     SITE_SURVEY("现场查勘") ,
     CASE_INVESTIGATION("案例调查") ,
     EVALUATION_REPORT("评估报告") ,
+    INVENTORY_DAMAGE("税费损坏") ,
     ;
 
     private String name;

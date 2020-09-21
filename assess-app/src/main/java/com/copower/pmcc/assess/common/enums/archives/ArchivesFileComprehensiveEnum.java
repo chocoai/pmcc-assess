@@ -8,6 +8,7 @@ public enum ArchivesFileComprehensiveEnum  implements Serializable {
     POWER_ATTORNEY("委托书") ,
     LETTER("信函") ,
     SIGN_DOCUMENTS("签收文件") ,
+    OTHER("其他") ,
     ;
 
     private String name;

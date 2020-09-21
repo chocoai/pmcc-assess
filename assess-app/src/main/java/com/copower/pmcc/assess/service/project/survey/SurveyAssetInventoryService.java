@@ -358,4 +358,8 @@ public class SurveyAssetInventoryService extends BaseService {
         return CollectionUtils.isNotEmpty(list);
     }
 
+    public List<SurveyAssetInventory> getSurveyAssetInventoryByIds(List<Integer> ids){
+        return surveyAssetInventoryDao.getSurveyAssetInventoryByIds(ids) ;
+    }
+
 }

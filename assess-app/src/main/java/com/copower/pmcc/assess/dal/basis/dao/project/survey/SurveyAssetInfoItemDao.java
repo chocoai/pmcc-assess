@@ -71,26 +71,28 @@ public class SurveyAssetInfoItemDao {
         SurveyAssetInfoItemExample example = new SurveyAssetInfoItemExample();
         SurveyAssetInfoItemExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
-        if (StringUtils.isNotBlank(oo.getName())) {
-            criteria.andNameLike(String.format("%%%s%%", oo.getName()));
-        }
-        if (StringUtils.isNotBlank(oo.getGroupName())) {
-            criteria.andGroupNameLike(String.format("%%%s%%", oo.getGroupName()));
-        }
-        if (oo.getGroupId() != null) {
-            criteria.andGroupIdEqualTo(oo.getGroupId());
-        }
-        if (oo.getDeclareId() != null) {
-            criteria.andDeclareIdEqualTo(oo.getDeclareId());
-        }
-        if (oo.getAssetInfoId() != null) {
-            criteria.andAssetInfoIdEqualTo(oo.getAssetInfoId());
-        }
-        if (StringUtils.isNotBlank(oo.getCreator())) {
-            criteria.andCreatorEqualTo(oo.getCreator());
-        }
-        if (StringUtils.isNotBlank(oo.getStatus())) {
-            criteria.andStatusEqualTo(oo.getStatus());
+        if (oo != null){
+            if (StringUtils.isNotBlank(oo.getName())) {
+                criteria.andNameLike(String.format("%%%s%%", oo.getName()));
+            }
+            if (StringUtils.isNotBlank(oo.getGroupName())) {
+                criteria.andGroupNameLike(String.format("%%%s%%", oo.getGroupName()));
+            }
+            if (oo.getGroupId() != null) {
+                criteria.andGroupIdEqualTo(oo.getGroupId());
+            }
+            if (oo.getDeclareId() != null) {
+                criteria.andDeclareIdEqualTo(oo.getDeclareId());
+            }
+            if (oo.getAssetInfoId() != null) {
+                criteria.andAssetInfoIdEqualTo(oo.getAssetInfoId());
+            }
+            if (StringUtils.isNotBlank(oo.getCreator())) {
+                criteria.andCreatorEqualTo(oo.getCreator());
+            }
+            if (StringUtils.isNotBlank(oo.getStatus())) {
+                criteria.andStatusEqualTo(oo.getStatus());
+            }
         }
         if(CollectionUtils.isNotEmpty(declareIds)){
             criteria.andDeclareIdIn(declareIds);
