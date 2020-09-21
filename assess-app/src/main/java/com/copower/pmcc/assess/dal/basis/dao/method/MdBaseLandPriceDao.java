@@ -51,7 +51,7 @@ public class MdBaseLandPriceDao {
     public MdBaseLandPrice getMdBaseLandPrice(MdBaseLandPrice mdBaseLandPrice) {
         MdBaseLandPriceExample example = new MdBaseLandPriceExample();
         MybatisUtils.convertObj2Example(mdBaseLandPrice, example);
-        List<MdBaseLandPrice> mdBaseLandPrices = mdBaseLandPriceMapper.selectByExample(example);
+        List<MdBaseLandPrice> mdBaseLandPrices = mdBaseLandPriceMapper.selectByExampleWithBLOBs(example);
         if (CollectionUtils.isNotEmpty(mdBaseLandPrices)) return mdBaseLandPrices.get(0);
         return null;
     }

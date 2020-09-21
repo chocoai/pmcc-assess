@@ -46,7 +46,7 @@ public class DataLandLevelDetailAchievementController {
             return HttpResult.newCorrectResult(true);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult( e);
         }
     }
 
@@ -57,7 +57,7 @@ public class DataLandLevelDetailAchievementController {
             return HttpResult.newCorrectResult(achievement);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult( e);
         }
     }
 
@@ -68,7 +68,7 @@ public class DataLandLevelDetailAchievementController {
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.saveDataLandLevelDetailAchievement(oo));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult( e);
         }
     }
 
@@ -78,7 +78,7 @@ public class DataLandLevelDetailAchievementController {
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.getDataLandLevelDetailAchievementList(oo).stream().map(po -> LandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult( e);
         }
     }
 
@@ -89,7 +89,7 @@ public class DataLandLevelDetailAchievementController {
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.landLevelFilter(levelDetailId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult( e);
         }
     }
 
@@ -106,7 +106,7 @@ public class DataLandLevelDetailAchievementController {
             return HttpResult.newCorrectResult(200, resultString);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult( e.getMessage());
         }
     }
 
@@ -116,7 +116,7 @@ public class DataLandLevelDetailAchievementController {
             return HttpResult.newCorrectResult(LandLevelDetailAchievementService.getLandLevelDetailTree(id));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult( e);
         }
     }
 

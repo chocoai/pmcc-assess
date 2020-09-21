@@ -73,15 +73,10 @@ public class MdBaseLandPriceService {
         return mdBaseLandPriceDao.getObjectList(mdBaseLandPrice);
     }
 
-
     public MdBaseLandPrice getDataByPlanDetailsId(Integer planDetailsId) {
         MdBaseLandPrice where = new MdBaseLandPrice();
         where.setPlanDetailsId(planDetailsId);
         MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceDao.getMdBaseLandPrice(where);
-        if (mdBaseLandPrice != null) {
-            MdBaseLandPrice price = mdBaseLandPriceDao.getMdBaseLandPrice(mdBaseLandPrice.getId());
-            mdBaseLandPrice.setLandLevelContent(price.getLandLevelContent());
-        }
         return mdBaseLandPrice;
     }
 
@@ -148,9 +143,9 @@ public class MdBaseLandPriceService {
         //找到评估基准日对应的土地因素
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
         List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict(), dataDic.getId());
+        dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict(), dataDic.getId(),null);
         if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), null, dataDic.getId());
+            dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(basicEstate.getProvince(), basicEstate.getCity(), null, dataDic.getId(),null);
         }
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
             for (DataHousePriceIndex priceIndex : dataHouseIndexList) {
@@ -339,7 +334,6 @@ public class MdBaseLandPriceService {
             BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
             modelAndView.addObject("volumetricRate", landStateByEstateId.getPlotRatio());
         }
-
 
         if (categoryInfo != null) {
             modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());

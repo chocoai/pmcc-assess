@@ -60,5 +60,4 @@ public class DataHousePriceIndexDetailDao {
         criteria.andIdIsNotNull();
         return example;
     }
-
 }

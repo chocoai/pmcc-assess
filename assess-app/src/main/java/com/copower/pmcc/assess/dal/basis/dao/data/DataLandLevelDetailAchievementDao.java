@@ -66,6 +66,7 @@ public class DataLandLevelDetailAchievementDao {
         if (levelDetailId != null) {
             criteria.andLevelDetailIdEqualTo(levelDetailId);
         }
+        example.setOrderByClause("type,category");
         return mapper.selectByExample(example);
     }
 }

@@ -357,26 +357,6 @@
 
     //土地指数表
     function getLandIndexId() {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseLandPrice/getLandIndexId",
-            type: "get",
-            dataType: "json",
-            data: {judgeObjectId: '${master.judgeObjectId}'},
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        showLandIndexDetailList(result.data);
-                    }
-                }
-            },
-            error: function (result) {
-                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        })
-
-    }
-
-    function showLandIndexDetailList(landIndexId) {
         var cols = [];
         cols.push({
             field: 'startDate', title: '开始月份', formatter: function (value, row, index) {
@@ -390,8 +370,8 @@
         });
         cols.push({field: 'indexNumber', title: '指数'});
         $("#indexDetailTable").bootstrapTable('destroy');
-        TableInit("indexDetailTable", "${pageContext.request.contextPath}/dataHousePriceIndexDetail/getBootstrapTableVo", cols, {
-            housePriceId: landIndexId
+        TableInit("indexDetailTable", "${pageContext.request.contextPath}/baseLandPrice/getLandPriceIndexDetailList", cols, {
+            judgeObjectId: '${master.judgeObjectId}'
         }, {
             showColumns: false,
             showRefresh: false,
@@ -400,8 +380,8 @@
                 $('.tooltips').tooltip();
             }
         });
-    };
 
+    }
 
     //容积率修正系数表
     function showVolumetricRateDetailList(hasVolumeFractionAmendId) {

@@ -602,9 +602,9 @@ public class GenerateMdBaseLandPriceService {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
         List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
+        dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId(),null);
         if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
+            dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId(),null);
         }
         StringBuilder content = new StringBuilder();
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
@@ -823,9 +823,9 @@ public class GenerateMdBaseLandPriceService {
         //找到评估基准日对应的土地因素
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
         List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId());
+        dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId(),null);
         if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId());
+            dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId(),null);
         }
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
             Integer masterId = dataHouseIndexList.get(0).getId();

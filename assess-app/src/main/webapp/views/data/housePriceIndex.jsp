@@ -16,7 +16,6 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">
@@ -62,15 +61,16 @@
                                                             class="form-control search-select select2 input-full">
                                                     </select>
                                                 </div>
-
-                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                                        type="button"
                                                         onclick="dataObjFun.listMaster()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
                                                     查询
                                                 </button>
-                                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                        type="button"
                                                         data-toggle="modal" onclick="dataObjFun.initFormMaster({})"
                                                         href="#divBoxFather">
 											<span class="btn-label">
@@ -94,13 +94,9 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
-<input type="file" id="ajaxFileUpload" name="file" style="display: none;"
-       onchange="dataObjFun.importData();">
-
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;" onchange="dataObjFun.importData();">
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
@@ -247,7 +243,9 @@
         if (!frm.valid()) {
             return false;
         }
-        data.basePeriod = data.basePeriod + "-01 00:00:00";
+        if (data.basePeriod) {
+            data.basePeriod = data.basePeriod + "-01 00:00:00";
+        }
         $.ajax({
             url: "${pageContext.request.contextPath}/housePriceIndex/save",
             data: {formData: JSON.stringify(data)},
@@ -334,18 +332,26 @@
     dataObjFun.showDataHousePriceIndexDetailList = function (housePriceId) {
         var cols = [];
         cols.push({
-            field: 'startDate', title: '开始月份', formatter: function (value, row, index) {
+            field: 'startDate', title: '开始月份', width: '15%', formatter: function (value, row, index) {
                 return dataObjFun.formatDateMonth(value);
             }
         });
         cols.push({
-            field: 'endDate', title: '结束月份', formatter: function (value, row, index) {
+            field: 'endDate', title: '结束月份', width: '15%', formatter: function (value, row, index) {
                 return dataObjFun.formatDateMonth(value);
             }
         });
-        cols.push({field: 'unitPremium', title: '单位地价'});
-        cols.push({field: 'floorPremium', title: '楼面地价'});
-        cols.push({field: 'indexNumber', title: '指数'});
+        cols.push({
+            field: 'indexNumber', title: '指数', width: '20%', formatter: function (value, row, index) {
+                var str = value;
+                if (row.bisBase) {
+                    str += '<span class="label label-success">基期</span>';
+                }
+                return str;
+            }
+        });
+        cols.push({field: 'unitPremium', title: '单位地价', width: '15%'});
+        cols.push({field: 'floorPremium', title: '楼面地价', width: '15%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<button onclick="dataObjFun.editDataHousePriceIndexDetail(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
@@ -488,7 +494,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -511,7 +516,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -548,13 +552,11 @@
                                                        name="evaluationDate" placeholder="报告期">
                                             </div>
                                             <label class="col-sm-2 col-form-label">
-                                                基期
+                                                指数来源说明
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" readonly="readonly"
-                                                       class="form-control input-full date-picker dbdate-month"
-                                                       data-date-format="yyyy-mm-dd"
-                                                       name="basePeriod" placeholder="基期">
+                                                <input type="text" class="form-control input-full"
+                                                       name="indexSourceRemark" placeholder="指数来源说明">
                                             </div>
                                         </div>
                                     </div>
@@ -563,18 +565,20 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
+                                                基期
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" readonly="readonly"
+                                                       class="form-control input-full date-picker dbdate-month"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       name="basePeriod" placeholder="基期">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label">
                                                 基期说明
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control input-full"
                                                        name="basePeriodRemark" placeholder="基期说明">
-                                            </div>
-                                            <label class="col-sm-2 col-form-label">
-                                                指数来源说明
-                                            </label>
-                                            <div class="col-sm-4">
-                                                <input type="text" class="form-control input-full"
-                                                       name="indexSourceRemark" placeholder="指数来源说明">
                                             </div>
                                         </div>
                                     </div>
@@ -711,6 +715,33 @@
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
+                                                指数<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required
+                                                       class="form-control input-full"
+                                                       name="indexNumber" placeholder="指数">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" name="bisBase"
+                                                               value="true">
+                                                        <span class="form-check-sign">是否基期</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
                                                 单位地价
                                             </label>
                                             <div class="col-sm-10">
@@ -729,20 +760,6 @@
                                                 <input type="text" data-rule-number="true" data-rule-maxlength="50"
                                                        class="form-control input-full" name="floorPremium"
                                                        placeholder="楼面地价">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                指数<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <input type="text" required
-                                                       class="form-control input-full"
-                                                       name="indexNumber" placeholder="指数">
                                             </div>
                                         </div>
                                     </div>

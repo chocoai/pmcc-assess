@@ -146,7 +146,7 @@ $(function () {
         elementParsePoint: function (element) {
             var val = $(element).val();
             var pointVal = AssessCommon.percentToPoint(val);
-            if (pointVal) {
+            if (pointVal != undefined || pointVal != null) {
                 $(element).attr('data-value', pointVal);
             }
         },
@@ -154,11 +154,10 @@ $(function () {
         elementParsePercent: function (element) {
             var val = $(element).attr('data-value');
             var percentVal = AssessCommon.pointToPercent(val);
-            if (percentVal) {
+            if (percentVal != undefined || percentVal != null) {
                 $(element).val(percentVal);
             }
         },
-
 
         //提取字段
         extractField: function (text) {
@@ -350,34 +349,34 @@ $(function () {
             }
         },
         //单个select2赋值
-        initSelect2: function(frm,data,name){
-            if (data){
-                if (name){
-                    var value = data[name] ;
-                    if (value){
-                        var select = frm.find("select[name=" + name+"]") ;
-                        select.val(value).trigger('change') ;
+        initSelect2: function (frm, data, name) {
+            if (data) {
+                if (name) {
+                    var value = data[name];
+                    if (value) {
+                        var select = frm.find("select[name=" + name + "]");
+                        select.val(value).trigger('change');
                     }
                 }
             }
-        } ,
+        },
         //数据字典  select2赋值
-        loadDataDicAssignment:function(key, obj , name ,frm){
-            var value = null ;
+        loadDataDicAssignment: function (key, obj, name, frm) {
+            var value = null;
             if (obj) {
-                value = obj[name] ;
+                value = obj[name];
             }
-            var target = frm.find("[name=" + name+"]") ;
-            if (target.size() == 0){
-                target = frm.find("select."+name) ;
+            var target = frm.find("[name=" + name + "]");
+            if (target.size() == 0) {
+                target = frm.find("select." + name);
             }
-            this.loadDataDicByKey(key,value,function (html, data) {
+            this.loadDataDicByKey(key, value, function (html, data) {
                 target.empty().html(html).trigger('change');
                 if (value) {
-                    target.val(value).trigger('change') ;
+                    target.val(value).trigger('change');
                 }
-            }) ;
-        } ,
+            });
+        },
         //根据key获取字典信息
         loadDataDicByKey: function (key, value, callback, initHtml) {
             this.loadNewAsyncDataDicByKey(key, value, callback, true, initHtml);
@@ -398,7 +397,7 @@ $(function () {
                         fieldName: key
                     },
                     success: function (result) {
-                        if (result.ret&&result.data) {
+                        if (result.ret && result.data) {
                             var retHtml = '';
                             if (initHtml == undefined || initHtml) {
                                 retHtml += '<option value="" selected>-请选择-</option>';
@@ -674,7 +673,7 @@ $(function () {
             $.ajax({
                 url: getContextPath() + "/public/deleteAttachmentById",
                 type: "post",
-                data: {id:id},
+                data: {id: id},
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
@@ -931,7 +930,7 @@ $(function () {
                         fieldName: key
                     },
                     success: function (result) {
-                        if (result.ret&&result.data) {
+                        if (result.ret && result.data) {
                             var retHtml = '<option value="" selected>-请选择-</option>';
                             $.each(result.data, function (i, item) {
                                 retHtml += '<option value="' + item.name + '"'
@@ -1031,10 +1030,10 @@ $(function () {
                         fieldName: key
                     },
                     success: function (result) {
-                        if (result.ret&&result.data) {
+                        if (result.ret && result.data) {
                             var retHtml = '';
                             $.each(result.data, function (i, item) {
-                                retHtml += '<a class="dropdown-item" onclick="AssessCommon.setValueBySelect(this)">'+item.name+'</a>';
+                                retHtml += '<a class="dropdown-item" onclick="AssessCommon.setValueBySelect(this)">' + item.name + '</a>';
                             });
                             if (callback) {
                                 callback(retHtml, result.data);
@@ -1047,7 +1046,7 @@ $(function () {
                 });
             }
         },
-        setValueBySelect:function (_this) {
+        setValueBySelect: function (_this) {
             $(_this).closest(".input-group").find("input").val($(_this).text()).trigger('change');
         },
         getSonTextAppendDicList: function (fieldName, name, value, callback) {
@@ -1085,9 +1084,9 @@ $(function () {
                         if (result.ret) {
                             var retHtml = '';
                             $.each(result.data, function (i, item) {
-                                retHtml += '<a class="dropdown-item" onclick="AssessCommon.setValueBySelect(this)">'+item.name+'</a>';
+                                retHtml += '<a class="dropdown-item" onclick="AssessCommon.setValueBySelect(this)">' + item.name + '</a>';
                             });
-                            retHtml +='</div>';
+                            retHtml += '</div>';
                             if (callback) {
                                 callback(retHtml, result.data);
                             }

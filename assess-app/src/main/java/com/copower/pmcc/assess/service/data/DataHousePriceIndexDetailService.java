@@ -68,6 +68,13 @@ public class DataHousePriceIndexDetailService {
         return dataLandDetailAchievementDao.getDataHousePriceIndexDetailById(id);
     }
 
+    public List<DataHousePriceIndexDetail> getPriceIndexDetailListByMasterId(Integer masterId) {
+        if (masterId == null) return null;
+        DataHousePriceIndexDetail where = new DataHousePriceIndexDetail();
+        where.setHousePriceId(masterId);
+        return dataLandDetailAchievementDao.getDataHousePriceIndexDetailList(where);
+    }
+
     public List<DataHousePriceIndexDetail> getDataHousePriceIndexDetailList(DataHousePriceIndexDetail oo) {
         return dataLandDetailAchievementDao.getDataHousePriceIndexDetailList(oo);
     }
@@ -259,7 +266,7 @@ public class DataHousePriceIndexDetailService {
             if (this.isNumeric(PoiUtils.getCellValue(row.getCell(1)))) {
                 if ("月份".equals(value)) {
                     String month = PoiUtils.getCellValue(row.getCell(1));
-                    cal1.set(Calendar.MONTH,Integer.valueOf(month)-1);
+                    cal1.set(Calendar.MONTH, Integer.valueOf(month) - 1);
                     //将时分秒清零
                     cal1.set(Calendar.DAY_OF_MONTH, 1);
                     cal1.set(Calendar.HOUR_OF_DAY, 0);
@@ -268,10 +275,10 @@ public class DataHousePriceIndexDetailService {
                     Date result = cal1.getTime();
                     housePriceIndexDetail.setStartDate(result);
                     housePriceIndexDetail.setEndDate(result);
-                }else {
+                } else {
                     Integer quarter = Integer.valueOf(PoiUtils.getCellValue(row.getCell(1)));
                     //开始时间
-                    cal1.set(Calendar.MONTH,(quarter-1)*3);
+                    cal1.set(Calendar.MONTH, (quarter - 1) * 3);
                     cal1.set(Calendar.DAY_OF_MONTH, 1);
                     cal1.set(Calendar.HOUR_OF_DAY, 0);
                     cal1.set(Calendar.MINUTE, 0);
@@ -279,7 +286,7 @@ public class DataHousePriceIndexDetailService {
                     Date startDate = cal1.getTime();
                     housePriceIndexDetail.setStartDate(startDate);
                     //结束时间
-                    cal1.set(Calendar.MONTH,quarter*3);
+                    cal1.set(Calendar.MONTH, quarter * 3);
                     cal1.set(Calendar.DAY_OF_MONTH, 0);
                     cal1.set(Calendar.HOUR_OF_DAY, 0);
                     cal1.set(Calendar.MINUTE, 0);
@@ -292,7 +299,7 @@ public class DataHousePriceIndexDetailService {
                 return false;
             }
 
-        }else {
+        } else {
             builder.append(String.format("\n第%s行异常：月份或季度需要填写", i));
             return false;
         }

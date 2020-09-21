@@ -43,7 +43,7 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_scheme_judge_object" domainObjectName="SchemeJudgeObject" >
+        <table tableName="tb_data_house_price_index_detail" domainObjectName="DataHousePriceIndexDetail" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

@@ -9,10 +9,18 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.data.DataHousePriceIndexService;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
+import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +59,10 @@ public class MdBaseLandPriceController {
     private MdBaseLandPriceService mdBaseLandPriceService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private DataHousePriceIndexService dataHousePriceIndexService;
 
     @RequestMapping(value = "/index", name = "基准地价法测算")
     public ModelAndView index(Integer dataId, Integer judgeObjectId) {
@@ -77,29 +89,17 @@ public class MdBaseLandPriceController {
     }
 
 
-    @RequestMapping(value = "/getLandIndexId", name = "获取土地指数表id", method = RequestMethod.GET)
-    public HttpResult getLandIndexId(Integer judgeObjectId) {
-        try {
-            Integer landIndexId = null;
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-            BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-
-            //找到委估对象对应的土地指数
-            BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
-            List<DataHousePriceIndex> dataHouseIndexList = null;
-            dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), basicEstate.getDistrict(), dataDic.getId());
-            if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-                dataHouseIndexList = dataHousePriceIndexDao.getDataHouseIndexList(basicEstate.getProvince(), basicEstate.getCity(), null, dataDic.getId());
-            }
-            if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
-                landIndexId = dataHouseIndexList.get(0).getId();
-            }
-            return HttpResult.newCorrectResult(landIndexId);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult("获取失败");
-        }
+    @RequestMapping(value = "/getLandPriceIndexDetailList", name = "获取土地指数信息", method = RequestMethod.GET)
+    public BootstrapTableVo getLandPriceIndexDetailList(Integer judgeObjectId) {
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<DataHousePriceIndexDetail> detailList = dataHousePriceIndexService.getLandPriceIndexDetailList(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
+        bootstrapTableVo.setTotal((long) detailList.size());
+        bootstrapTableVo.setRows(detailList);
+        return bootstrapTableVo;
     }
 
 
@@ -108,7 +108,7 @@ public class MdBaseLandPriceController {
         try {
             MdBaseLandPrice mdBaseLandPrice = JSON.parseObject(formData, MdBaseLandPrice.class);
             mdBaseLandPriceService.saveMdBaseLandPrice(mdBaseLandPrice);
-            return HttpResult.newCorrectResult(200,mdBaseLandPrice);
+            return HttpResult.newCorrectResult(mdBaseLandPrice);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");
@@ -134,11 +134,8 @@ public class MdBaseLandPriceController {
     public HttpResult calculationNumeric(String fomData, BigDecimal dateAmend, BigDecimal volumeFractionAmend) {
         try {
             MdBaseLandPrice target = JSONObject.parseObject(fomData, MdBaseLandPrice.class);
-            if (dateAmend == null){
-//                dateAmend = new BigDecimal("1.250") ;
-            }
-            mdBaseLandPriceService.calculationNumeric(target,dateAmend,volumeFractionAmend);
-            return HttpResult.newCorrectResult(200, target);
+            mdBaseLandPriceService.calculationNumeric(target, dateAmend, volumeFractionAmend);
+            return HttpResult.newCorrectResult(target);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("请检查输入的数据");

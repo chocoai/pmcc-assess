@@ -24,382 +24,383 @@
                 </div>
             </div>
         </div>
-        <div class="card-body" >
-            <div class="row col-md-12">
-                <div class="col-md-6">
-                    <div class="x_title">
-                        土地指数
+        <div class="card-body">
+            <%--地价指数--%>
+            <div class="card full-height">
+                <div class="card-header collapse-link">
+                    <div class="card-head-row">
+                        <div class="card-title">
+                            地价指数
+                        </div>
+                        <div class="card-tools">
+                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                    class="fa fa-angle-up"></span>
+                            </button>
+                        </div>
                     </div>
+                </div>
+                <div class="card-body" style="display:none;">
                     <form class="form-horizontal">
                         <div class="row form-group">
                             <div class="col-md-12">
-                                <table class="table table-bordered"
-                                       id="indexDetailTable">
-                                    <!-- cerare document add ajax data-->
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-6">
-                    <div class="x_title">
-                        容积率修正系数表
-                    </div>
-                    <form class="form-horizontal">
-                        <div class="row form-group">
-                            <div class="col-md-12">
-                                <table class="table table-bordered"
-                                       id="volumetricRateDetailTable">
-                                    <!-- cerare document add ajax data-->
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row col-md-12">
-                <label class="col-sm-1 control-label">
-                    期日修正系数
-                </label>
-                <div class="col-md-5">
-                    <input type="text"
-                           class="form-control " onblur="calculationNumeric(this);"
-                           name="dateAmend" value="${master.dateAmend ==null?dateAmend:master.dateAmend}"
-                           id="dateAmend">
-                </div>
-
-                <label class="col-sm-1 control-label">
-                    容积率修正
-                </label>
-                <div class="col-md-5">
-                    <input type="text"
-                           class="form-control " onblur="calculationNumeric(this);"
-                           name="volumeFractionAmend" value="${master.volumeFractionAmend == null?volumeFractionAmend:master.volumeFractionAmend}"
-                           id="volumeFractionAmend">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="col-md-12">
-    <div class="card full-height">
-        <div class="card-header collapse-link">
-            <div class="card-head-row">
-                <div class="card-title">
-                    因素条件说明及修正系数
-                </div>
-                <div class="card-tools">
-                    <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <form class="form-horizontal" id="areaAndSeveralAmendForm">
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <input type="hidden" name="landLevelContent"
-                                   id="landLevelContent"
-                                   value='${master.landLevelContent}'>
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区域及个别修正系数</label>
-                            <div class="col-sm-3">
-                                <div class="input-group">
-                                    <input type="text"
-                                           class="form-control x-percent" onblur="calculationNumeric(this);"
-                                           name="areaAndSeveralAmend" value="${master.areaAndSeveralAmend}"
-                                           data-value="${master.areaAndSeveralAmend}"
-                                           id="areaAndSeveralAmend">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <table class="table table-bordered" id="landLevelTableList">
-                            <thead>
-                            <tr>
-                                <th width="10%">土地级别类型</th>
-                                <th width="10%">土地级别类别</th>
-                                <th width="10%">土地级别等级</th>
-                                <th width="20%">说明</th>
-                                <th width="10%">分值</th>
-                                <th width="5%"></th>
-                            </tr>
-                            </thead>
-                            <tbody id="landLevelTabContent">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-12">
-    <div class="card full-height">
-        <div class="card-header collapse-link">
-            <div class="card-head-row">
-                <div class="card-title">
-                    基准地价因素
-                </div>
-                <div class="card-tools">
-                    <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <form class="form-horizontal" id="master">
-                <input type="hidden" name="id" value="${master.id}">
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                基准地价(元/㎡)
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" placeholder="农用地总面积"
-                                       class="form-control input-full"
-                                       id="standardPremium" name="standardPremium"
-                                       required
-                                       onblur="calculationNumeric(this);"
-                                       value="${master.standardPremium}"
-                                       data-rule-number="true">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                说明
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text"
-                                       value="${master.standardPremiumRemark}"
-                                       class="form-control input-full"
-                                       name="standardPremiumRemark">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                土地还原利率
-                            </label>
-                            <div class="col-sm-3">
-                                <div class="input-group">
-                                    <input type="text" required
-                                           class="form-control x-percent"
-                                           id="rewardRate" onblur="calculationNumeric(this);"
-                                           name="rewardRate" placeholder="还原率"
-                                           value="${master.rewardRate}" data-value="${master.rewardRate}" >
-
-                                    <div class="input-group-prepend">
-                                        <input type="hidden" name="rewardRateId"
-                                               value="${master.rewardRateId}">
-                                        <button class="btn btn-info btn-sm "
-                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button"
-                                                onclick="getRewardRate(this);">还原率测算
-                                        </button>
+                                <div class="form-inline x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">期日修正系数</label>
+                                    <div class="col-sm-3">
+                                        <input type="text"
+                                               class="form-control input-full" onblur="calculationNumeric(this);"
+                                               name="dateAmend"
+                                               value="${master.dateAmend ==null?dateAmend:master.dateAmend}"
+                                               id="dateAmend">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                法定年限
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" placeholder="法定年限"
-                                       class="form-control input-full"
-                                       id="legalAge"
-                                       name="legalAge" required
-                                       onblur="calculationNumeric(this);"
-                                       value="${master.legalAge}"
-                                       data-rule-number="true">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                说明
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" value="${master.legalAgeRemark}"
-                                       class="form-control input-full"
-                                       name="legalAgeRemark">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                剩余使用年限
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" placeholder="剩余使用年限"
-                                       class="form-control input-full"
-                                       id="landSurplusYear"
-                                       name="landSurplusYear" required
-                                       onblur="calculationNumeric(this);"
-                                       value="${master.landSurplusYear}"
-                                       data-rule-number="true">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                说明
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text"
-                                       value="${master.landSurplusYearRemark}"
-                                       class="form-control input-full"
-                                       name="landSurplusYearRemark">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                开发程度修正
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" placeholder="开发程度修正"
-                                       class="form-control input-full"
-                                       id="developCorrect"
-                                       name="developCorrect" required
-                                       onblur="calculationNumeric(this);"
-                                       value="${master.developCorrect}"
-                                       data-rule-number="true">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                说明
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text"
-                                       value="${master.developCorrectRemark}"
-                                       class="form-control input-full"
-                                       name="developCorrectRemark">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                委估宗地面积(㎡)
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" placeholder="委估宗地面积"
-                                       class="form-control input-full"
-                                       id="evaluationArea"
-                                       name="evaluationArea" required
-                                       onblur="calculationNumeric(this);"
-                                       value="${master.evaluationArea}"
-                                       data-rule-number="true">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                说明
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text"
-                                       value="${master.evaluationAreaRemark}"
-                                       class="form-control input-full"
-                                       name="evaluationAreaRemark">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                委估对象容积率
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" placeholder="委估对象容积率"
-                                       class="form-control input-full"
-                                       id="volumetricRate"
-                                       name="volumetricRate" required
-                                       onblur="calculationNumeric(this);"
-                                       value="${master.volumetricRate}"
-                                       data-rule-number="true">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                说明
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text"
-                                       value="${master.volumetricRateRemark}"
-                                       class="form-control input-full"
-                                       name="volumetricRateRemark">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-12">
-    <div class="card full-height">
-        <div class="card-header collapse-link">
-            <div class="card-head-row">
-                <div class="card-title">
-                    测算结果
-                </div>
-                <div class="card-tools">
-                    <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
-                    </button>
+                    </form>
+                    <table class="table table-bordered" id="indexDetailTable"></table>
                 </div>
             </div>
-        </div>
-        <div class="card-body">
-            <form class="form-horizontal">
-                <div class="row form-group">
-                    <div class="col-md-12">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <td>年期修正系数</td>
-                                <td id="periodAmend">
-                                <td>委估宗地单价（元/㎡）</td>
-                                <td id="parcelPrice">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>委估宗地单价（万元/亩）</td>
-                                <td id="parcelBhouPrice">
-                                </td>
-                                <td>委估宗地总价（万元）</td>
-                                <td id="parcelTotalPrice">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>楼面地价</td>
-                                <td id="floorPremium">
-                                </td>
-                                <td>修正差额(%)</td>
-                                <td id="correctionDifference">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+            <%--容积率系数--%>
+            <div class="card full-height">
+                <div class="card-header collapse-link">
+                    <div class="card-head-row">
+                        <div class="card-title">
+                            容积率系数
+                        </div>
+                        <div class="card-tools">
+                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                    class="fa fa-angle-up"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </form>
+                <div class="card-body" style="display: none;">
+                    <form class="form-horizontal">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">容积率修正系数</label>
+                                    <div class="col-sm-3">
+                                        <input type="text"
+                                               class="form-control input-full" onblur="calculationNumeric(this);"
+                                               name="volumeFractionAmend"
+                                               value="${master.volumeFractionAmend == null?volumeFractionAmend:master.volumeFractionAmend}"
+                                               id="volumeFractionAmend">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table table-bordered" id="volumetricRateDetailTable"></table>
+                </div>
+            </div>
+            <%--区域个别因素修正--%>
+            <div class="card full-height">
+                <div class="card-header collapse-link">
+                    <div class="card-head-row">
+                        <div class="card-title">
+                            区域个别因素修正
+                        </div>
+                        <div class="card-tools">
+                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                    class="fa fa-angle-down"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" id="areaAndSeveralAmendForm">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <input type="hidden" name="landLevelContent"
+                                           id="landLevelContent"
+                                           value='${master.landLevelContent}'>
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区域个别修正系数</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control x-percent" onblur="calculationNumeric(this);"
+                                                   name="areaAndSeveralAmend" value="${master.areaAndSeveralAmend}"
+                                                   data-value="${master.areaAndSeveralAmend}"
+                                                   id="areaAndSeveralAmend">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <table class="table table-bordered" id="landLevelTableList">
+                                    <thead>
+                                    <tr>
+                                        <th width="10%">类型</th>
+                                        <th width="30%">类别</th>
+                                        <th width="20%">等级</th>
+                                        <th width="10%">分值</th>
+<%--                                        <th width="5%"></th>--%>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="landLevelTabContent"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <%--测算参数--%>
+            <div class="card full-height">
+                <div class="card-header collapse-link">
+                    <div class="card-head-row">
+                        <div class="card-title">
+                            测算参数
+                        </div>
+                        <div class="card-tools">
+                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                    class="fa fa-angle-down"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" id="master">
+                        <input type="hidden" name="id" value="${master.id}">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        基准地价(元/㎡)
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" placeholder="农用地总面积"
+                                               class="form-control input-full"
+                                               id="standardPremium" name="standardPremium"
+                                               required
+                                               onblur="calculationNumeric(this);"
+                                               value="${master.standardPremium}"
+                                               data-rule-number="true">
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        说明
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text"
+                                               value="${master.standardPremiumRemark}"
+                                               class="form-control input-full"
+                                               name="standardPremiumRemark">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委估宗地面积(㎡)
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" placeholder="委估宗地面积"
+                                               class="form-control input-full"
+                                               id="evaluationArea"
+                                               name="evaluationArea" required
+                                               onblur="calculationNumeric(this);"
+                                               value="${master.evaluationArea}"
+                                               data-rule-number="true">
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        说明
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text"
+                                               value="${master.evaluationAreaRemark}"
+                                               class="form-control input-full"
+                                               name="evaluationAreaRemark">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        委估对象容积率
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" placeholder="委估对象容积率"
+                                               class="form-control input-full"
+                                               id="volumetricRate"
+                                               name="volumetricRate" required
+                                               onblur="calculationNumeric(this);"
+                                               value="${master.volumetricRate}"
+                                               data-rule-number="true">
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        说明
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text"
+                                               value="${master.volumetricRateRemark}"
+                                               class="form-control input-full"
+                                               name="volumetricRateRemark">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        土地还原利率
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <input type="text" required
+                                                   class="form-control x-percent"
+                                                   id="rewardRate" onblur="calculationNumeric(this);"
+                                                   name="rewardRate" placeholder="还原率"
+                                                   value="${master.rewardRate}" data-value="${master.rewardRate}">
+
+                                            <div class="input-group-prepend">
+                                                <input type="hidden" name="rewardRateId"
+                                                       value="${master.rewardRateId}">
+                                                <button class="btn btn-info btn-sm "
+                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                        type="button"
+                                                        onclick="getRewardRate(this);">还原率测算
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        法定年限
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" placeholder="法定年限"
+                                               class="form-control input-full"
+                                               id="legalAge"
+                                               name="legalAge" required
+                                               onblur="calculationNumeric(this);"
+                                               value="${master.legalAge}"
+                                               data-rule-number="true">
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        说明
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" value="${master.legalAgeRemark}"
+                                               class="form-control input-full"
+                                               name="legalAgeRemark">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        剩余使用年限
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" placeholder="剩余使用年限"
+                                               class="form-control input-full"
+                                               id="landSurplusYear"
+                                               name="landSurplusYear" required
+                                               onblur="calculationNumeric(this);"
+                                               value="${master.landSurplusYear}"
+                                               data-rule-number="true">
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        说明
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text"
+                                               value="${master.landSurplusYearRemark}"
+                                               class="form-control input-full"
+                                               name="landSurplusYearRemark">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        开发程度修正
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" placeholder="开发程度修正"
+                                               class="form-control input-full"
+                                               id="developCorrect"
+                                               name="developCorrect" required
+                                               onblur="calculationNumeric(this);"
+                                               value="${master.developCorrect}"
+                                               data-rule-number="true">
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        说明
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <input type="text"
+                                               value="${master.developCorrectRemark}"
+                                               class="form-control input-full"
+                                               name="developCorrectRemark">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <%--测算结果--%>
+            <div class="card full-height">
+                <div class="card-header collapse-link">
+                    <div class="card-head-row">
+                        <div class="card-title">
+                            测算结果
+                        </div>
+                        <div class="card-tools">
+                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                    class="fa fa-angle-down"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                    <tr>
+                                        <td>年期修正系数</td>
+                                        <td id="periodAmend"></td>
+                                        <td>修正差额(%)</td>
+                                        <td id="correctionDifference"></td>
+                                        <td>委估宗地单价（元/㎡）</td>
+                                        <td id="parcelPrice"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>委估宗地单价（万元/亩）</td>
+                                        <td id="parcelBhouPrice"></td>
+                                        <td>委估宗地总价（万元）</td>
+                                        <td id="parcelTotalPrice"></td>
+                                        <td>楼面地价</td>
+                                        <td id="floorPremium"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -408,7 +409,12 @@
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
         <td>{typeName}</td>
-        <td class="table-cell">{landLevelTypeName}</td>
+        <td class="table-cell">
+            {landLevelTypeName}
+            <span style="margin-left: 2px;cursor: pointer;" title="{reamark}"><span class="btn-label"><i
+                    class="fa fa-question-circle"></i></span>
+            </span>
+        </td>
         <td>
             <input type="hidden" name="levelDetailId" value="{levelDetailId}">
             <input type="hidden" name="type" value="{type}">
@@ -418,7 +424,6 @@
                 {landLevelGradeHTML}
             </select>
         </td>
-        <td>{reamark}</td>
         <td>
             <input type="hidden" class="form-control input-full" name="dataLandLevelAchievement"
                    value="{dataLandLevelAchievement}">
@@ -426,15 +431,14 @@
                    value="{landFactorTotalScore}" onblur="getAreaAndSeveralAmend();">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
-        <td>
-            <input class="btn btn-sm btn-warning" type="button" value="X"
-                   onclick="landLevelEmpty(this)">
-        </td>
+<%--        <td>--%>
+<%--            <input class="btn btn-sm btn-warning" type="button" value="X"--%>
+<%--                   onclick="landLevelEmpty(this)">--%>
+<%--        </td>--%>
     </tr>
 </script>
 
-<script>
-
+<script type="text/javascript">
     //获取报酬率
     function getRewardRate(_this) {
         var group = $(_this).closest('.input-group');
@@ -450,26 +454,6 @@
 
     //土地指数表
     function getLandIndexId() {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseLandPrice/getLandIndexId",
-            type: "get",
-            dataType: "json",
-            data: {judgeObjectId: '${master.judgeObjectId}'},
-            success: function (result) {
-                if (result.ret) {
-                    if (result.data) {
-                        showLandIndexDetailList(result.data);
-                    }
-                }
-            },
-            error: function (result) {
-                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        })
-
-    }
-
-    function showLandIndexDetailList(landIndexId) {
         var cols = [];
         cols.push({
             field: 'startDate', title: '开始月份', formatter: function (value, row, index) {
@@ -481,10 +465,18 @@
                 return formatDate(value);
             }
         });
-        cols.push({field: 'indexNumber', title: '指数'});
+        cols.push({
+            field: 'indexNumber', title: '指数', formatter: function (value, row, index) {
+                var str = value;
+                if (row.bisBase) {
+                    str += '<span class="label label-success">基期</span>';
+                }
+                return str;
+            }
+        });
         $("#indexDetailTable").bootstrapTable('destroy');
-        TableInit("indexDetailTable", "${pageContext.request.contextPath}/dataHousePriceIndexDetail/getBootstrapTableVo", cols, {
-            housePriceId: landIndexId
+        TableInit("indexDetailTable", "${pageContext.request.contextPath}/baseLandPrice/getLandPriceIndexDetailList", cols, {
+            judgeObjectId: '${master.judgeObjectId}'
         }, {
             showColumns: false,
             showRefresh: false,
@@ -493,7 +485,8 @@
                 $('.tooltips').tooltip();
             }
         });
-    };
+
+    }
 
     //容积率修正系数表
     function showVolumetricRateDetailList(hasVolumeFractionAmendId) {
@@ -712,7 +705,7 @@
         }
     }
 
-    //删除呀
+    //删除
     function landLevelEmpty(that) {
         $(that).parent().parent().remove();
         getAreaAndSeveralAmend();
