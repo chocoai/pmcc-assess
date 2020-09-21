@@ -115,7 +115,7 @@
                                     <input type="hidden" name="landLevelContent"
                                            id="landLevelContent"
                                            value='${master.landLevelContent}'>
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区域个别修正系数</label>
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">修正系数</label>
                                     <div class="col-sm-3">
                                         <div class="input-group">
                                             <input type="text"
