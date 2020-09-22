@@ -413,10 +413,6 @@
             toolbar: "#baseInfoGroupToolbar",
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
-                var item = target.bootstrapTable('getData');
-                if (item.length >= 1) {
-                    target.closest(".card").parent().show();
-                }
             }
         });
     };

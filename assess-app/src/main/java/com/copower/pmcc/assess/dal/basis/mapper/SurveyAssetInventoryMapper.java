@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface SurveyAssetInventoryMapper {
-    int countByExample(SurveyAssetInventoryExample example);
+    long countByExample(SurveyAssetInventoryExample example);
 
     int deleteByExample(SurveyAssetInventoryExample example);
 

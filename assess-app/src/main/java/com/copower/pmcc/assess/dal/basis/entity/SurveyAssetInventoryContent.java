@@ -5,6 +5,16 @@ import java.util.Date;
 public class SurveyAssetInventoryContent {
     private Integer id;
 
+    private Integer masterId;
+
+    private Integer groupId;
+
+    private Integer projectId;
+
+    private Integer planDetailsId;
+
+    private Integer declareId;
+
     private Integer inventoryContent;
 
     private String areConsistent;
@@ -25,14 +35,6 @@ public class SurveyAssetInventoryContent {
 
     private String sureConsistent;
 
-    private Integer planDetailsId;
-
-    private Integer declareId;
-
-    private Integer projectId;
-
-    private Integer masterId;
-
     private String creator;
 
     private Date gmtCreated;
@@ -45,6 +47,46 @@ public class SurveyAssetInventoryContent {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(Integer masterId) {
+        this.masterId = masterId;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    public Integer getPlanDetailsId() {
+        return planDetailsId;
+    }
+
+    public void setPlanDetailsId(Integer planDetailsId) {
+        this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
     }
 
     public Integer getInventoryContent() {
@@ -125,38 +167,6 @@ public class SurveyAssetInventoryContent {
 
     public void setSureConsistent(String sureConsistent) {
         this.sureConsistent = sureConsistent == null ? null : sureConsistent.trim();
-    }
-
-    public Integer getPlanDetailsId() {
-        return planDetailsId;
-    }
-
-    public void setPlanDetailsId(Integer planDetailsId) {
-        this.planDetailsId = planDetailsId;
-    }
-
-    public Integer getDeclareId() {
-        return declareId;
-    }
-
-    public void setDeclareId(Integer declareId) {
-        this.declareId = declareId;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
-    }
-
-    public Integer getMasterId() {
-        return masterId;
-    }
-
-    public void setMasterId(Integer masterId) {
-        this.masterId = masterId;
     }
 
     public String getCreator() {

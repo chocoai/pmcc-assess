@@ -37,7 +37,7 @@ public class SurveyAssetInfoGroupDao {
         return mapper.selectByPrimaryKey(id);
     }
 
-    public boolean saveSurveyAssetInfoGroup(SurveyAssetInfoGroup oo) {
+    public boolean addSurveyAssetInfoGroup(SurveyAssetInfoGroup oo) {
         return mapper.insertSelective(oo) == 1;
     }
 

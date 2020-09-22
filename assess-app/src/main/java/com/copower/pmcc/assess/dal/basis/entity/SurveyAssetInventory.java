@@ -11,6 +11,8 @@ public class SurveyAssetInventory {
 
     private String processInsId;
 
+    private Integer groupId;
+
     private Integer declareRecordId;
 
     private String evaluator;
@@ -103,6 +105,14 @@ public class SurveyAssetInventory {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public Integer getDeclareRecordId() {

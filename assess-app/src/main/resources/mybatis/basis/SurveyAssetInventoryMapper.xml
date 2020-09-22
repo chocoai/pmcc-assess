@@ -1,64 +1,65 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInventoryMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="plan_detail_id" property="planDetailId" jdbcType="INTEGER" />
-    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
-    <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
-    <result column="evaluator" property="evaluator" jdbcType="VARCHAR" />
-    <result column="check_date" property="checkDate" jdbcType="TIMESTAMP" />
-    <result column="find_method" property="findMethod" jdbcType="INTEGER" />
-    <result column="find_original" property="findOriginal" jdbcType="INTEGER" />
-    <result column="network_remark" property="networkRemark" jdbcType="VARCHAR" />
-    <result column="network_address" property="networkAddress" jdbcType="VARCHAR" />
-    <result column="affected" property="affected" jdbcType="VARCHAR" />
-    <result column="influence_factor" property="influenceFactor" jdbcType="VARCHAR" />
-    <result column="influence_factor_remark_text" property="influenceFactorRemarkText" jdbcType="VARCHAR" />
-    <result column="bis_check_original" property="bisCheckOriginal" jdbcType="BIT" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="special_case" property="specialCase" jdbcType="VARCHAR" />
-    <result column="segmentation_limit" property="segmentationLimit" jdbcType="VARCHAR" />
-    <result column="can_use" property="canUse" jdbcType="VARCHAR" />
-    <result column="application" property="application" jdbcType="INTEGER" />
-    <result column="certificate" property="certificate" jdbcType="VARCHAR" />
-    <result column="rim_is_normal" property="rimIsNormal" jdbcType="VARCHAR" />
-    <result column="zone_damage" property="zoneDamage" jdbcType="VARCHAR" />
-    <result column="abnormality" property="abnormality" jdbcType="VARCHAR" />
-    <result column="entity_is_damage" property="entityIsDamage" jdbcType="VARCHAR" />
-    <result column="entity_damage" property="entityDamage" jdbcType="VARCHAR" />
-    <result column="damage_remark" property="damageRemark" jdbcType="VARCHAR" />
-    <result column="payment_status" property="paymentStatus" jdbcType="VARCHAR" />
-    <result column="payment_content" property="paymentContent" jdbcType="VARCHAR" />
-    <result column="transfer_limit" property="transferLimit" jdbcType="VARCHAR" />
-    <result column="other_project" property="otherProject" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInventoryMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="plan_detail_id" jdbcType="INTEGER" property="planDetailId" />
+    <result column="process_ins_id" jdbcType="VARCHAR" property="processInsId" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="declare_record_id" jdbcType="INTEGER" property="declareRecordId" />
+    <result column="evaluator" jdbcType="VARCHAR" property="evaluator" />
+    <result column="check_date" jdbcType="TIMESTAMP" property="checkDate" />
+    <result column="find_method" jdbcType="INTEGER" property="findMethod" />
+    <result column="find_original" jdbcType="INTEGER" property="findOriginal" />
+    <result column="network_remark" jdbcType="VARCHAR" property="networkRemark" />
+    <result column="network_address" jdbcType="VARCHAR" property="networkAddress" />
+    <result column="affected" jdbcType="VARCHAR" property="affected" />
+    <result column="influence_factor" jdbcType="VARCHAR" property="influenceFactor" />
+    <result column="influence_factor_remark_text" jdbcType="VARCHAR" property="influenceFactorRemarkText" />
+    <result column="bis_check_original" jdbcType="BIT" property="bisCheckOriginal" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="special_case" jdbcType="VARCHAR" property="specialCase" />
+    <result column="segmentation_limit" jdbcType="VARCHAR" property="segmentationLimit" />
+    <result column="can_use" jdbcType="VARCHAR" property="canUse" />
+    <result column="application" jdbcType="INTEGER" property="application" />
+    <result column="certificate" jdbcType="VARCHAR" property="certificate" />
+    <result column="rim_is_normal" jdbcType="VARCHAR" property="rimIsNormal" />
+    <result column="zone_damage" jdbcType="VARCHAR" property="zoneDamage" />
+    <result column="abnormality" jdbcType="VARCHAR" property="abnormality" />
+    <result column="entity_is_damage" jdbcType="VARCHAR" property="entityIsDamage" />
+    <result column="entity_damage" jdbcType="VARCHAR" property="entityDamage" />
+    <result column="damage_remark" jdbcType="VARCHAR" property="damageRemark" />
+    <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus" />
+    <result column="payment_content" jdbcType="VARCHAR" property="paymentContent" />
+    <result column="transfer_limit" jdbcType="VARCHAR" property="transferLimit" />
+    <result column="other_project" jdbcType="VARCHAR" property="otherProject" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" extends="BaseResultMap" >
-    <result column="location" property="location" jdbcType="LONGVARCHAR" />
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory">
+    <result column="location" jdbcType="LONGVARCHAR" property="location" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -69,25 +70,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -98,48 +99,48 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
-    id, project_id, plan_detail_id, process_ins_id, declare_record_id, evaluator, check_date, 
-    find_method, find_original, network_remark, network_address, affected, influence_factor, 
-    influence_factor_remark_text, bis_check_original, remark, special_case, segmentation_limit, 
-    can_use, application, certificate, rim_is_normal, zone_damage, abnormality, entity_is_damage, 
-    entity_damage, damage_remark, payment_status, payment_content, transfer_limit, other_project, 
-    creator, gmt_created, gmt_modified
+  <sql id="Base_Column_List">
+    id, project_id, plan_detail_id, process_ins_id, group_id, declare_record_id, evaluator, 
+    check_date, find_method, find_original, network_remark, network_address, affected, 
+    influence_factor, influence_factor_remark_text, bis_check_original, remark, special_case, 
+    segmentation_limit, can_use, application, certificate, rim_is_normal, zone_damage, 
+    abnormality, entity_is_damage, entity_damage, damage_remark, payment_status, payment_content, 
+    transfer_limit, other_project, creator, gmt_created, gmt_modified
   </sql>
-  <sql id="Blob_Column_List" >
+  <sql id="Blob_Column_List">
     location
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" >
+  <select id="selectByExampleWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" resultMap="ResultMapWithBLOBs">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from tb_survey_asset_inventory
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_survey_asset_inventory
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
@@ -147,384 +148,396 @@
     from tb_survey_asset_inventory
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_survey_asset_inventory
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample">
     delete from tb_survey_asset_inventory
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_asset_inventory (project_id, plan_detail_id, process_ins_id, 
-      declare_record_id, evaluator, check_date, 
-      find_method, find_original, network_remark, 
-      network_address, affected, influence_factor, 
-      influence_factor_remark_text, bis_check_original, 
-      remark, special_case, segmentation_limit, 
-      can_use, application, certificate, 
-      rim_is_normal, zone_damage, abnormality, 
-      entity_is_damage, entity_damage, damage_remark, 
-      payment_status, payment_content, transfer_limit, 
-      other_project, creator, gmt_created, 
-      gmt_modified, location)
+      group_id, declare_record_id, evaluator, 
+      check_date, find_method, find_original, 
+      network_remark, network_address, affected, 
+      influence_factor, influence_factor_remark_text, 
+      bis_check_original, remark, special_case, 
+      segmentation_limit, can_use, application, 
+      certificate, rim_is_normal, zone_damage, 
+      abnormality, entity_is_damage, entity_damage, 
+      damage_remark, payment_status, payment_content, 
+      transfer_limit, other_project, creator, 
+      gmt_created, gmt_modified, location
+      )
     values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
-      #{declareRecordId,jdbcType=INTEGER}, #{evaluator,jdbcType=VARCHAR}, #{checkDate,jdbcType=TIMESTAMP}, 
-      #{findMethod,jdbcType=INTEGER}, #{findOriginal,jdbcType=INTEGER}, #{networkRemark,jdbcType=VARCHAR}, 
-      #{networkAddress,jdbcType=VARCHAR}, #{affected,jdbcType=VARCHAR}, #{influenceFactor,jdbcType=VARCHAR}, 
-      #{influenceFactorRemarkText,jdbcType=VARCHAR}, #{bisCheckOriginal,jdbcType=BIT}, 
-      #{remark,jdbcType=VARCHAR}, #{specialCase,jdbcType=VARCHAR}, #{segmentationLimit,jdbcType=VARCHAR}, 
-      #{canUse,jdbcType=VARCHAR}, #{application,jdbcType=INTEGER}, #{certificate,jdbcType=VARCHAR}, 
-      #{rimIsNormal,jdbcType=VARCHAR}, #{zoneDamage,jdbcType=VARCHAR}, #{abnormality,jdbcType=VARCHAR}, 
-      #{entityIsDamage,jdbcType=VARCHAR}, #{entityDamage,jdbcType=VARCHAR}, #{damageRemark,jdbcType=VARCHAR}, 
-      #{paymentStatus,jdbcType=VARCHAR}, #{paymentContent,jdbcType=VARCHAR}, #{transferLimit,jdbcType=VARCHAR}, 
-      #{otherProject,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{location,jdbcType=LONGVARCHAR})
+      #{groupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{evaluator,jdbcType=VARCHAR}, 
+      #{checkDate,jdbcType=TIMESTAMP}, #{findMethod,jdbcType=INTEGER}, #{findOriginal,jdbcType=INTEGER}, 
+      #{networkRemark,jdbcType=VARCHAR}, #{networkAddress,jdbcType=VARCHAR}, #{affected,jdbcType=VARCHAR}, 
+      #{influenceFactor,jdbcType=VARCHAR}, #{influenceFactorRemarkText,jdbcType=VARCHAR}, 
+      #{bisCheckOriginal,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{specialCase,jdbcType=VARCHAR}, 
+      #{segmentationLimit,jdbcType=VARCHAR}, #{canUse,jdbcType=VARCHAR}, #{application,jdbcType=INTEGER}, 
+      #{certificate,jdbcType=VARCHAR}, #{rimIsNormal,jdbcType=VARCHAR}, #{zoneDamage,jdbcType=VARCHAR}, 
+      #{abnormality,jdbcType=VARCHAR}, #{entityIsDamage,jdbcType=VARCHAR}, #{entityDamage,jdbcType=VARCHAR}, 
+      #{damageRemark,jdbcType=VARCHAR}, #{paymentStatus,jdbcType=VARCHAR}, #{paymentContent,jdbcType=VARCHAR}, 
+      #{transferLimit,jdbcType=VARCHAR}, #{otherProject,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{location,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_asset_inventory
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
         project_id,
       </if>
-      <if test="planDetailId != null" >
+      <if test="planDetailId != null">
         plan_detail_id,
       </if>
-      <if test="processInsId != null" >
+      <if test="processInsId != null">
         process_ins_id,
       </if>
-      <if test="declareRecordId != null" >
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="declareRecordId != null">
         declare_record_id,
       </if>
-      <if test="evaluator != null" >
+      <if test="evaluator != null">
         evaluator,
       </if>
-      <if test="checkDate != null" >
+      <if test="checkDate != null">
         check_date,
       </if>
-      <if test="findMethod != null" >
+      <if test="findMethod != null">
         find_method,
       </if>
-      <if test="findOriginal != null" >
+      <if test="findOriginal != null">
         find_original,
       </if>
-      <if test="networkRemark != null" >
+      <if test="networkRemark != null">
         network_remark,
       </if>
-      <if test="networkAddress != null" >
+      <if test="networkAddress != null">
         network_address,
       </if>
-      <if test="affected != null" >
+      <if test="affected != null">
         affected,
       </if>
-      <if test="influenceFactor != null" >
+      <if test="influenceFactor != null">
         influence_factor,
       </if>
-      <if test="influenceFactorRemarkText != null" >
+      <if test="influenceFactorRemarkText != null">
         influence_factor_remark_text,
       </if>
-      <if test="bisCheckOriginal != null" >
+      <if test="bisCheckOriginal != null">
         bis_check_original,
       </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         remark,
       </if>
-      <if test="specialCase != null" >
+      <if test="specialCase != null">
         special_case,
       </if>
-      <if test="segmentationLimit != null" >
+      <if test="segmentationLimit != null">
         segmentation_limit,
       </if>
-      <if test="canUse != null" >
+      <if test="canUse != null">
         can_use,
       </if>
-      <if test="application != null" >
+      <if test="application != null">
         application,
       </if>
-      <if test="certificate != null" >
+      <if test="certificate != null">
         certificate,
       </if>
-      <if test="rimIsNormal != null" >
+      <if test="rimIsNormal != null">
         rim_is_normal,
       </if>
-      <if test="zoneDamage != null" >
+      <if test="zoneDamage != null">
         zone_damage,
       </if>
-      <if test="abnormality != null" >
+      <if test="abnormality != null">
         abnormality,
       </if>
-      <if test="entityIsDamage != null" >
+      <if test="entityIsDamage != null">
         entity_is_damage,
       </if>
-      <if test="entityDamage != null" >
+      <if test="entityDamage != null">
         entity_damage,
       </if>
-      <if test="damageRemark != null" >
+      <if test="damageRemark != null">
         damage_remark,
       </if>
-      <if test="paymentStatus != null" >
+      <if test="paymentStatus != null">
         payment_status,
       </if>
-      <if test="paymentContent != null" >
+      <if test="paymentContent != null">
         payment_content,
       </if>
-      <if test="transferLimit != null" >
+      <if test="transferLimit != null">
         transfer_limit,
       </if>
-      <if test="otherProject != null" >
+      <if test="otherProject != null">
         other_project,
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
-      <if test="location != null" >
+      <if test="location != null">
         location,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
         #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="planDetailId != null" >
+      <if test="planDetailId != null">
         #{planDetailId,jdbcType=INTEGER},
       </if>
-      <if test="processInsId != null" >
+      <if test="processInsId != null">
         #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="declareRecordId != null" >
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="declareRecordId != null">
         #{declareRecordId,jdbcType=INTEGER},
       </if>
-      <if test="evaluator != null" >
+      <if test="evaluator != null">
         #{evaluator,jdbcType=VARCHAR},
       </if>
-      <if test="checkDate != null" >
+      <if test="checkDate != null">
         #{checkDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="findMethod != null" >
+      <if test="findMethod != null">
         #{findMethod,jdbcType=INTEGER},
       </if>
-      <if test="findOriginal != null" >
+      <if test="findOriginal != null">
         #{findOriginal,jdbcType=INTEGER},
       </if>
-      <if test="networkRemark != null" >
+      <if test="networkRemark != null">
         #{networkRemark,jdbcType=VARCHAR},
       </if>
-      <if test="networkAddress != null" >
+      <if test="networkAddress != null">
         #{networkAddress,jdbcType=VARCHAR},
       </if>
-      <if test="affected != null" >
+      <if test="affected != null">
         #{affected,jdbcType=VARCHAR},
       </if>
-      <if test="influenceFactor != null" >
+      <if test="influenceFactor != null">
         #{influenceFactor,jdbcType=VARCHAR},
       </if>
-      <if test="influenceFactorRemarkText != null" >
+      <if test="influenceFactorRemarkText != null">
         #{influenceFactorRemarkText,jdbcType=VARCHAR},
       </if>
-      <if test="bisCheckOriginal != null" >
+      <if test="bisCheckOriginal != null">
         #{bisCheckOriginal,jdbcType=BIT},
       </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="specialCase != null" >
+      <if test="specialCase != null">
         #{specialCase,jdbcType=VARCHAR},
       </if>
-      <if test="segmentationLimit != null" >
+      <if test="segmentationLimit != null">
         #{segmentationLimit,jdbcType=VARCHAR},
       </if>
-      <if test="canUse != null" >
+      <if test="canUse != null">
         #{canUse,jdbcType=VARCHAR},
       </if>
-      <if test="application != null" >
+      <if test="application != null">
         #{application,jdbcType=INTEGER},
       </if>
-      <if test="certificate != null" >
+      <if test="certificate != null">
         #{certificate,jdbcType=VARCHAR},
       </if>
-      <if test="rimIsNormal != null" >
+      <if test="rimIsNormal != null">
         #{rimIsNormal,jdbcType=VARCHAR},
       </if>
-      <if test="zoneDamage != null" >
+      <if test="zoneDamage != null">
         #{zoneDamage,jdbcType=VARCHAR},
       </if>
-      <if test="abnormality != null" >
+      <if test="abnormality != null">
         #{abnormality,jdbcType=VARCHAR},
       </if>
-      <if test="entityIsDamage != null" >
+      <if test="entityIsDamage != null">
         #{entityIsDamage,jdbcType=VARCHAR},
       </if>
-      <if test="entityDamage != null" >
+      <if test="entityDamage != null">
         #{entityDamage,jdbcType=VARCHAR},
       </if>
-      <if test="damageRemark != null" >
+      <if test="damageRemark != null">
         #{damageRemark,jdbcType=VARCHAR},
       </if>
-      <if test="paymentStatus != null" >
+      <if test="paymentStatus != null">
         #{paymentStatus,jdbcType=VARCHAR},
       </if>
-      <if test="paymentContent != null" >
+      <if test="paymentContent != null">
         #{paymentContent,jdbcType=VARCHAR},
       </if>
-      <if test="transferLimit != null" >
+      <if test="transferLimit != null">
         #{transferLimit,jdbcType=VARCHAR},
       </if>
-      <if test="otherProject != null" >
+      <if test="otherProject != null">
         #{otherProject,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="location != null" >
+      <if test="location != null">
         #{location,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryExample" resultType="java.lang.Long">
     select count(*) from tb_survey_asset_inventory
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_survey_asset_inventory
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.projectId != null" >
+      <if test="record.projectId != null">
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
-      <if test="record.planDetailId != null" >
+      <if test="record.planDetailId != null">
         plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
       </if>
-      <if test="record.processInsId != null" >
+      <if test="record.processInsId != null">
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="record.declareRecordId != null" >
+      <if test="record.groupId != null">
+        group_id = #{record.groupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.declareRecordId != null">
         declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       </if>
-      <if test="record.evaluator != null" >
+      <if test="record.evaluator != null">
         evaluator = #{record.evaluator,jdbcType=VARCHAR},
       </if>
-      <if test="record.checkDate != null" >
+      <if test="record.checkDate != null">
         check_date = #{record.checkDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.findMethod != null" >
+      <if test="record.findMethod != null">
         find_method = #{record.findMethod,jdbcType=INTEGER},
       </if>
-      <if test="record.findOriginal != null" >
+      <if test="record.findOriginal != null">
         find_original = #{record.findOriginal,jdbcType=INTEGER},
       </if>
-      <if test="record.networkRemark != null" >
+      <if test="record.networkRemark != null">
         network_remark = #{record.networkRemark,jdbcType=VARCHAR},
       </if>
-      <if test="record.networkAddress != null" >
+      <if test="record.networkAddress != null">
         network_address = #{record.networkAddress,jdbcType=VARCHAR},
       </if>
-      <if test="record.affected != null" >
+      <if test="record.affected != null">
         affected = #{record.affected,jdbcType=VARCHAR},
       </if>
-      <if test="record.influenceFactor != null" >
+      <if test="record.influenceFactor != null">
         influence_factor = #{record.influenceFactor,jdbcType=VARCHAR},
       </if>
-      <if test="record.influenceFactorRemarkText != null" >
+      <if test="record.influenceFactorRemarkText != null">
         influence_factor_remark_text = #{record.influenceFactorRemarkText,jdbcType=VARCHAR},
       </if>
-      <if test="record.bisCheckOriginal != null" >
+      <if test="record.bisCheckOriginal != null">
         bis_check_original = #{record.bisCheckOriginal,jdbcType=BIT},
       </if>
-      <if test="record.remark != null" >
+      <if test="record.remark != null">
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
-      <if test="record.specialCase != null" >
+      <if test="record.specialCase != null">
         special_case = #{record.specialCase,jdbcType=VARCHAR},
       </if>
-      <if test="record.segmentationLimit != null" >
+      <if test="record.segmentationLimit != null">
         segmentation_limit = #{record.segmentationLimit,jdbcType=VARCHAR},
       </if>
-      <if test="record.canUse != null" >
+      <if test="record.canUse != null">
         can_use = #{record.canUse,jdbcType=VARCHAR},
       </if>
-      <if test="record.application != null" >
+      <if test="record.application != null">
         application = #{record.application,jdbcType=INTEGER},
       </if>
-      <if test="record.certificate != null" >
+      <if test="record.certificate != null">
         certificate = #{record.certificate,jdbcType=VARCHAR},
       </if>
-      <if test="record.rimIsNormal != null" >
+      <if test="record.rimIsNormal != null">
         rim_is_normal = #{record.rimIsNormal,jdbcType=VARCHAR},
       </if>
-      <if test="record.zoneDamage != null" >
+      <if test="record.zoneDamage != null">
         zone_damage = #{record.zoneDamage,jdbcType=VARCHAR},
       </if>
-      <if test="record.abnormality != null" >
+      <if test="record.abnormality != null">
         abnormality = #{record.abnormality,jdbcType=VARCHAR},
       </if>
-      <if test="record.entityIsDamage != null" >
+      <if test="record.entityIsDamage != null">
         entity_is_damage = #{record.entityIsDamage,jdbcType=VARCHAR},
       </if>
-      <if test="record.entityDamage != null" >
+      <if test="record.entityDamage != null">
         entity_damage = #{record.entityDamage,jdbcType=VARCHAR},
       </if>
-      <if test="record.damageRemark != null" >
+      <if test="record.damageRemark != null">
         damage_remark = #{record.damageRemark,jdbcType=VARCHAR},
       </if>
-      <if test="record.paymentStatus != null" >
+      <if test="record.paymentStatus != null">
         payment_status = #{record.paymentStatus,jdbcType=VARCHAR},
       </if>
-      <if test="record.paymentContent != null" >
+      <if test="record.paymentContent != null">
         payment_content = #{record.paymentContent,jdbcType=VARCHAR},
       </if>
-      <if test="record.transferLimit != null" >
+      <if test="record.transferLimit != null">
         transfer_limit = #{record.transferLimit,jdbcType=VARCHAR},
       </if>
-      <if test="record.otherProject != null" >
+      <if test="record.otherProject != null">
         other_project = #{record.otherProject,jdbcType=VARCHAR},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.location != null" >
+      <if test="record.location != null">
         location = #{record.location,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
+  <update id="updateByExampleWithBLOBs" parameterType="map">
     update tb_survey_asset_inventory
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      group_id = #{record.groupId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       evaluator = #{record.evaluator,jdbcType=VARCHAR},
       check_date = #{record.checkDate,jdbcType=TIMESTAMP},
@@ -556,16 +569,17 @@
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       location = #{record.location,jdbcType=LONGVARCHAR}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_survey_asset_inventory
     set id = #{record.id,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      group_id = #{record.groupId,jdbcType=INTEGER},
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       evaluator = #{record.evaluator,jdbcType=VARCHAR},
       check_date = #{record.checkDate,jdbcType=TIMESTAMP},
@@ -596,123 +610,127 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory">
     update tb_survey_asset_inventory
-    <set >
-      <if test="projectId != null" >
+    <set>
+      <if test="projectId != null">
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="planDetailId != null" >
+      <if test="planDetailId != null">
         plan_detail_id = #{planDetailId,jdbcType=INTEGER},
       </if>
-      <if test="processInsId != null" >
+      <if test="processInsId != null">
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="declareRecordId != null" >
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="declareRecordId != null">
         declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       </if>
-      <if test="evaluator != null" >
+      <if test="evaluator != null">
         evaluator = #{evaluator,jdbcType=VARCHAR},
       </if>
-      <if test="checkDate != null" >
+      <if test="checkDate != null">
         check_date = #{checkDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="findMethod != null" >
+      <if test="findMethod != null">
         find_method = #{findMethod,jdbcType=INTEGER},
       </if>
-      <if test="findOriginal != null" >
+      <if test="findOriginal != null">
         find_original = #{findOriginal,jdbcType=INTEGER},
       </if>
-      <if test="networkRemark != null" >
+      <if test="networkRemark != null">
         network_remark = #{networkRemark,jdbcType=VARCHAR},
       </if>
-      <if test="networkAddress != null" >
+      <if test="networkAddress != null">
         network_address = #{networkAddress,jdbcType=VARCHAR},
       </if>
-      <if test="affected != null" >
+      <if test="affected != null">
         affected = #{affected,jdbcType=VARCHAR},
       </if>
-      <if test="influenceFactor != null" >
+      <if test="influenceFactor != null">
         influence_factor = #{influenceFactor,jdbcType=VARCHAR},
       </if>
-      <if test="influenceFactorRemarkText != null" >
+      <if test="influenceFactorRemarkText != null">
         influence_factor_remark_text = #{influenceFactorRemarkText,jdbcType=VARCHAR},
       </if>
-      <if test="bisCheckOriginal != null" >
+      <if test="bisCheckOriginal != null">
         bis_check_original = #{bisCheckOriginal,jdbcType=BIT},
       </if>
-      <if test="remark != null" >
+      <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="specialCase != null" >
+      <if test="specialCase != null">
         special_case = #{specialCase,jdbcType=VARCHAR},
       </if>
-      <if test="segmentationLimit != null" >
+      <if test="segmentationLimit != null">
         segmentation_limit = #{segmentationLimit,jdbcType=VARCHAR},
       </if>
-      <if test="canUse != null" >
+      <if test="canUse != null">
         can_use = #{canUse,jdbcType=VARCHAR},
       </if>
-      <if test="application != null" >
+      <if test="application != null">
         application = #{application,jdbcType=INTEGER},
       </if>
-      <if test="certificate != null" >
+      <if test="certificate != null">
         certificate = #{certificate,jdbcType=VARCHAR},
       </if>
-      <if test="rimIsNormal != null" >
+      <if test="rimIsNormal != null">
         rim_is_normal = #{rimIsNormal,jdbcType=VARCHAR},
       </if>
-      <if test="zoneDamage != null" >
+      <if test="zoneDamage != null">
         zone_damage = #{zoneDamage,jdbcType=VARCHAR},
       </if>
-      <if test="abnormality != null" >
+      <if test="abnormality != null">
         abnormality = #{abnormality,jdbcType=VARCHAR},
       </if>
-      <if test="entityIsDamage != null" >
+      <if test="entityIsDamage != null">
         entity_is_damage = #{entityIsDamage,jdbcType=VARCHAR},
       </if>
-      <if test="entityDamage != null" >
+      <if test="entityDamage != null">
         entity_damage = #{entityDamage,jdbcType=VARCHAR},
       </if>
-      <if test="damageRemark != null" >
+      <if test="damageRemark != null">
         damage_remark = #{damageRemark,jdbcType=VARCHAR},
       </if>
-      <if test="paymentStatus != null" >
+      <if test="paymentStatus != null">
         payment_status = #{paymentStatus,jdbcType=VARCHAR},
       </if>
-      <if test="paymentContent != null" >
+      <if test="paymentContent != null">
         payment_content = #{paymentContent,jdbcType=VARCHAR},
       </if>
-      <if test="transferLimit != null" >
+      <if test="transferLimit != null">
         transfer_limit = #{transferLimit,jdbcType=VARCHAR},
       </if>
-      <if test="otherProject != null" >
+      <if test="otherProject != null">
         other_project = #{otherProject,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="location != null" >
+      <if test="location != null">
         location = #{location,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory">
     update tb_survey_asset_inventory
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_detail_id = #{planDetailId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       evaluator = #{evaluator,jdbcType=VARCHAR},
       check_date = #{checkDate,jdbcType=TIMESTAMP},
@@ -746,11 +764,12 @@
       location = #{location,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory">
     update tb_survey_asset_inventory
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_detail_id = #{planDetailId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=INTEGER},
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       evaluator = #{evaluator,jdbcType=VARCHAR},
       check_date = #{checkDate,jdbcType=TIMESTAMP},

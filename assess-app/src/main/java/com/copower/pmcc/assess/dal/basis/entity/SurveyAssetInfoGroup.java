@@ -5,13 +5,23 @@ import java.util.Date;
 public class SurveyAssetInfoGroup {
     private Integer id;
 
-    private Integer inventoryId;
-
     private Integer assetInfoId;
 
-    private String status;
-
     private String groupName;
+
+    private Integer inventoryId;
+
+    private String formType;
+
+    private Integer viewSpiltId;
+
+    private Integer taxArrearsId;
+
+    private Integer damageId;
+
+    private Integer transferId;
+
+    private String status;
 
     private String creator;
 
@@ -27,14 +37,6 @@ public class SurveyAssetInfoGroup {
         this.id = id;
     }
 
-    public Integer getInventoryId() {
-        return inventoryId;
-    }
-
-    public void setInventoryId(Integer inventoryId) {
-        this.inventoryId = inventoryId;
-    }
-
     public Integer getAssetInfoId() {
         return assetInfoId;
     }
@@ -43,20 +45,68 @@ public class SurveyAssetInfoGroup {
         this.assetInfoId = assetInfoId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
-    }
-
     public String getGroupName() {
         return groupName;
     }
 
     public void setGroupName(String groupName) {
         this.groupName = groupName == null ? null : groupName.trim();
+    }
+
+    public Integer getInventoryId() {
+        return inventoryId;
+    }
+
+    public void setInventoryId(Integer inventoryId) {
+        this.inventoryId = inventoryId;
+    }
+
+    public String getFormType() {
+        return formType;
+    }
+
+    public void setFormType(String formType) {
+        this.formType = formType == null ? null : formType.trim();
+    }
+
+    public Integer getViewSpiltId() {
+        return viewSpiltId;
+    }
+
+    public void setViewSpiltId(Integer viewSpiltId) {
+        this.viewSpiltId = viewSpiltId;
+    }
+
+    public Integer getTaxArrearsId() {
+        return taxArrearsId;
+    }
+
+    public void setTaxArrearsId(Integer taxArrearsId) {
+        this.taxArrearsId = taxArrearsId;
+    }
+
+    public Integer getDamageId() {
+        return damageId;
+    }
+
+    public void setDamageId(Integer damageId) {
+        this.damageId = damageId;
+    }
+
+    public Integer getTransferId() {
+        return transferId;
+    }
+
+    public void setTransferId(Integer transferId) {
+        this.transferId = transferId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getCreator() {

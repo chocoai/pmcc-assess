@@ -1,7 +1,10 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoGroupDao;
+import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -35,42 +38,70 @@ public class SurveyAssetInfoGroupService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private SurveyAssetInfoItemService surveyAssetInfoItemService;
+    @Autowired
+    private SurveyAssetInventoryDao surveyAssetInventoryDao;
 
     public boolean updateSurveyAssetInfoGroup(SurveyAssetInfoGroup oo, boolean updateNull) {
         return surveyAssetInfoGroupDao.updateSurveyAssetInfoGroup(oo, updateNull);
     }
 
-    public boolean saveSurveyAssetInfoGroup(SurveyAssetInfoGroup oo) {
-        if (oo == null) {
-            return false;
-        }
-        if (StringUtils.isEmpty(oo.getCreator())) {
-            oo.setCreator(commonService.thisUserAccount());
-        }
-        boolean b = surveyAssetInfoGroupDao.saveSurveyAssetInfoGroup(oo);
-        baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInfoGroup.class), oo.getId());
-        return b;
+    /**
+     * 添加清查组
+     * @param assetInfoId
+     * @param formType
+     * @param groupName
+     */
+    public void addSurveyAssetInfoGroup(Integer assetInfoId, String formType, String groupName) {
+        if (StringUtils.isBlank(formType)) return;
+        SurveyAssetInfoGroup group = new SurveyAssetInfoGroup();
+        group.setAssetInfoId(assetInfoId);
+        group.setFormType(formType);
+        group.setGroupName(groupName);
+        group.setCreator(commonService.thisUserAccount());
+        surveyAssetInfoGroupDao.addSurveyAssetInfoGroup(group);
+        List<String> list = FormatUtils.transformString2List(formType);
+        SurveyAssetInventory inventory = null;
+        for (String s : list) {
+            switch (s) {
+                case "viewSpilt":
+                    inventory = new SurveyAssetInventory();
+                    inventory.setGroupId(group.getId());
+                    surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
+                    group.setViewSpiltId(inventory.getId());
+                    break;
+                case "uniformity":
 
+                    break;
+                case "taxArrears":
+                    inventory = new SurveyAssetInventory();
+                    inventory.setGroupId(group.getId());
+                    surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
+                    group.setTaxArrearsId(inventory.getId());
+                    break;
+                case "damage":
+                    inventory = new SurveyAssetInventory();
+                    inventory.setGroupId(group.getId());
+                    surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
+                    group.setDamageId(inventory.getId());
+                    break;
+                case "transfer":
+                    inventory = new SurveyAssetInventory();
+                    inventory.setGroupId(group.getId());
+                    surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
+                    group.setTransferId(inventory.getId());
+                    break;
+            }
+        }
+        surveyAssetInfoGroupDao.updateSurveyAssetInfoGroup(group, false);
     }
 
-    public void saveAndUpdateSurveyAssetInfoGroup(SurveyAssetInfoGroup oo, boolean updateNull) {
-        if (oo == null) {
-            return;
-        }
-        if (oo.getId() != null && oo.getId() != 0) {
-            updateSurveyAssetInfoGroup(oo, updateNull);
-        } else {
-            saveSurveyAssetInfoGroup(oo);
-        }
-    }
-
-    private void removeFileByTableId(Integer tableId)throws Exception {
+    private void removeFileByTableId(Integer tableId) throws Exception {
         if (tableId == null) {
             return;
         }
         List<Integer> integers = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(tableId);
-        if (CollectionUtils.isNotEmpty(integers)){
-            throw new Exception("存在子类,请删除子类以后在删除本数据") ;
+        if (CollectionUtils.isNotEmpty(integers)) {
+            throw new Exception("存在子类,请删除子类以后在删除本数据");
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
@@ -83,7 +114,7 @@ public class SurveyAssetInfoGroupService {
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public void deleteSurveyAssetInfoGroupById(String id) throws Exception{
+    public void deleteSurveyAssetInfoGroupById(String id) throws Exception {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -93,8 +124,8 @@ public class SurveyAssetInfoGroupService {
                 removeFileByTableId(ids.get(0));
                 surveyAssetInfoGroupDao.deleteSurveyAssetInfoGroupById(ids.get(0));
             } else {
-                for (Integer integer:ids){
-                    removeFileByTableId(integer) ;
+                for (Integer integer : ids) {
+                    removeFileByTableId(integer);
                     surveyAssetInfoGroupDao.deleteSurveyAssetInfoGroupById(integer);
                 }
             }
@@ -124,9 +155,32 @@ public class SurveyAssetInfoGroupService {
         return surveyAssetInfoGroupDao.getSurveyAssetInfoGroupListByExample(oo);
     }
 
-    public List<SurveyAssetInfoGroup> getSurveyAssetInfoItemListLikeQuery(SurveyAssetInfoGroup oo){
+    public List<SurveyAssetInfoGroup> getSurveyAssetInfoItemListLikeQuery(SurveyAssetInfoGroup oo) {
         return surveyAssetInfoGroupDao.getSurveyAssetInfoItemListLikeQuery(oo);
     }
 
+    public void selectClaimInfoItem(Integer groupId,String infoItems){
+        if(groupId==null||StringUtils.isBlank(infoItems)) return;
+        List<Integer> list = FormatUtils.transformString2Integer(infoItems);
+        List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemByIds(list);
+        if(CollectionUtils.isNotEmpty(assetInfoItems)){
+            for (SurveyAssetInfoItem assetInfoItem : assetInfoItems) {
+                assetInfoItem.setGroupId(groupId);
+                surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem,false);
+            }
+        }
+    }
 
+    //移除
+    public void removeGroupInfoItem(String infoItems){
+        if(StringUtils.isBlank(infoItems)) return;
+        List<Integer> list = FormatUtils.transformString2Integer(infoItems);
+        List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemByIds(list);
+        if(CollectionUtils.isNotEmpty(assetInfoItems)){
+            for (SurveyAssetInfoItem assetInfoItem : assetInfoItems) {
+                assetInfoItem.setGroupId(0);
+                surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem,false);
+            }
+        }
+    }
 }

@@ -165,6 +165,306 @@ public class SurveyAssetInventoryContentExample {
             return (Criteria) this;
         }
 
+        public Criteria andMasterIdIsNull() {
+            addCriterion("master_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdIsNotNull() {
+            addCriterion("master_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdEqualTo(Integer value) {
+            addCriterion("master_id =", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotEqualTo(Integer value) {
+            addCriterion("master_id <>", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdGreaterThan(Integer value) {
+            addCriterion("master_id >", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("master_id >=", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdLessThan(Integer value) {
+            addCriterion("master_id <", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdLessThanOrEqualTo(Integer value) {
+            addCriterion("master_id <=", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdIn(List<Integer> values) {
+            addCriterion("master_id in", values, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotIn(List<Integer> values) {
+            addCriterion("master_id not in", values, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdBetween(Integer value1, Integer value2) {
+            addCriterion("master_id between", value1, value2, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("master_id not between", value1, value2, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIsNull() {
+            addCriterion("group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIsNotNull() {
+            addCriterion("group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdEqualTo(Integer value) {
+            addCriterion("group_id =", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotEqualTo(Integer value) {
+            addCriterion("group_id <>", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdGreaterThan(Integer value) {
+            addCriterion("group_id >", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("group_id >=", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLessThan(Integer value) {
+            addCriterion("group_id <", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("group_id <=", value, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdIn(List<Integer> values) {
+            addCriterion("group_id in", values, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotIn(List<Integer> values) {
+            addCriterion("group_id not in", values, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("group_id between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("group_id not between", value1, value2, "groupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIsNull() {
+            addCriterion("project_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIsNotNull() {
+            addCriterion("project_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdEqualTo(Integer value) {
+            addCriterion("project_id =", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotEqualTo(Integer value) {
+            addCriterion("project_id <>", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdGreaterThan(Integer value) {
+            addCriterion("project_id >", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("project_id >=", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLessThan(Integer value) {
+            addCriterion("project_id <", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLessThanOrEqualTo(Integer value) {
+            addCriterion("project_id <=", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIn(List<Integer> values) {
+            addCriterion("project_id in", values, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotIn(List<Integer> values) {
+            addCriterion("project_id not in", values, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdBetween(Integer value1, Integer value2) {
+            addCriterion("project_id between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("project_id not between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNull() {
+            addCriterion("plan_details_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIsNotNull() {
+            addCriterion("plan_details_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdEqualTo(Integer value) {
+            addCriterion("plan_details_id =", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
+            addCriterion("plan_details_id <>", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
+            addCriterion("plan_details_id >", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id >=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThan(Integer value) {
+            addCriterion("plan_details_id <", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("plan_details_id <=", value, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdIn(List<Integer> values) {
+            addCriterion("plan_details_id in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
+            addCriterion("plan_details_id not in", values, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
         public Criteria andInventoryContentIsNull() {
             addCriterion("inventory_content is null");
             return (Criteria) this;
@@ -842,246 +1142,6 @@ public class SurveyAssetInventoryContentExample {
 
         public Criteria andSureConsistentNotBetween(String value1, String value2) {
             addCriterion("sure_consistent not between", value1, value2, "sureConsistent");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdIsNull() {
-            addCriterion("plan_details_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdIsNotNull() {
-            addCriterion("plan_details_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdEqualTo(Integer value) {
-            addCriterion("plan_details_id =", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdNotEqualTo(Integer value) {
-            addCriterion("plan_details_id <>", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdGreaterThan(Integer value) {
-            addCriterion("plan_details_id >", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("plan_details_id >=", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdLessThan(Integer value) {
-            addCriterion("plan_details_id <", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdLessThanOrEqualTo(Integer value) {
-            addCriterion("plan_details_id <=", value, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdIn(List<Integer> values) {
-            addCriterion("plan_details_id in", values, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdNotIn(List<Integer> values) {
-            addCriterion("plan_details_id not in", values, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdBetween(Integer value1, Integer value2) {
-            addCriterion("plan_details_id between", value1, value2, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdIsNull() {
-            addCriterion("declare_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdIsNotNull() {
-            addCriterion("declare_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdEqualTo(Integer value) {
-            addCriterion("declare_id =", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdNotEqualTo(Integer value) {
-            addCriterion("declare_id <>", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdGreaterThan(Integer value) {
-            addCriterion("declare_id >", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("declare_id >=", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdLessThan(Integer value) {
-            addCriterion("declare_id <", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
-            addCriterion("declare_id <=", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdIn(List<Integer> values) {
-            addCriterion("declare_id in", values, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdNotIn(List<Integer> values) {
-            addCriterion("declare_id not in", values, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
-            addCriterion("declare_id between", value1, value2, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("declare_id not between", value1, value2, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdIsNull() {
-            addCriterion("project_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdIsNotNull() {
-            addCriterion("project_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdEqualTo(Integer value) {
-            addCriterion("project_id =", value, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdNotEqualTo(Integer value) {
-            addCriterion("project_id <>", value, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdGreaterThan(Integer value) {
-            addCriterion("project_id >", value, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("project_id >=", value, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdLessThan(Integer value) {
-            addCriterion("project_id <", value, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdLessThanOrEqualTo(Integer value) {
-            addCriterion("project_id <=", value, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdIn(List<Integer> values) {
-            addCriterion("project_id in", values, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdNotIn(List<Integer> values) {
-            addCriterion("project_id not in", values, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdBetween(Integer value1, Integer value2) {
-            addCriterion("project_id between", value1, value2, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("project_id not between", value1, value2, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdIsNull() {
-            addCriterion("master_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdIsNotNull() {
-            addCriterion("master_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdEqualTo(Integer value) {
-            addCriterion("master_id =", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdNotEqualTo(Integer value) {
-            addCriterion("master_id <>", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdGreaterThan(Integer value) {
-            addCriterion("master_id >", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("master_id >=", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdLessThan(Integer value) {
-            addCriterion("master_id <", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdLessThanOrEqualTo(Integer value) {
-            addCriterion("master_id <=", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdIn(List<Integer> values) {
-            addCriterion("master_id in", values, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdNotIn(List<Integer> values) {
-            addCriterion("master_id not in", values, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdBetween(Integer value1, Integer value2) {
-            addCriterion("master_id between", value1, value2, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("master_id not between", value1, value2, "masterId");
             return (Criteria) this;
         }
 

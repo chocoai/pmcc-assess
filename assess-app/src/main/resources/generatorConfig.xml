@@ -43,7 +43,13 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_data_house_price_index_detail" domainObjectName="DataHousePriceIndexDetail" >
+        <table tableName="tb_survey_asset_info_group" domainObjectName="SurveyAssetInfoGroup" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_survey_asset_inventory" domainObjectName="SurveyAssetInventory" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_survey_asset_inventory_content" domainObjectName="SurveyAssetInventoryContent" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
