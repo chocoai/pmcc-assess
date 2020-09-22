@@ -22,7 +22,9 @@ import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicHouseHuxingPriceService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
+import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
 import com.copower.pmcc.assess.service.method.MdCommonService;
+import com.copower.pmcc.assess.service.method.MdCostApproachService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -107,6 +109,10 @@ public class SchemeSurePriceService {
     private BasicHouseService basicHouseService;
     @Autowired
     private DeclarePublicService declarePublicService;
+    @Autowired
+    private MdBaseLandPriceService mdBaseLandPriceService;
+    @Autowired
+    private MdCostApproachService mdCostApproachService;
 
     /**
      * 保存确定单价信息
@@ -275,25 +281,36 @@ public class SchemeSurePriceService {
         String methTypeKey = baseDataDicService.getDataDicById(methodType).getFieldName();
         BigDecimal price = null;
         switch (methTypeKey) {
-            case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
+            case AssessDataDicKeyConstant.MD_MARKET_COMPARE://比较法
+            case AssessDataDicKeyConstant.MD_LAND_COMPARE://土地比较法
                 MdMarketCompare marketCompare = mdMarketCompareDao.getMarketCompareById(methodDataId);
                 if (marketCompare != null)
                     price = marketCompare.getPrice();
                 break;
-            case AssessDataDicKeyConstant.MD_INCOME:
+            case AssessDataDicKeyConstant.MD_INCOME://收益法
                 MdIncome mdIncome = mdIncomeDao.getIncomeById(methodDataId);
                 if (mdIncome != null)
                     price = mdIncome.getPrice();
                 break;
-            case AssessDataDicKeyConstant.MD_COST:
+            case AssessDataDicKeyConstant.MD_COST://成本法
                 MdCost mdCost = mdCostDao.getMdCostById(methodDataId);
                 if (mdCost != null)
                     price = mdCost.getPrice();
                 break;
-            case AssessDataDicKeyConstant.MD_DEVELOPMENT:
+            case AssessDataDicKeyConstant.MD_DEVELOPMENT://假设开发法
                 MdDevelopment mdDevelopment = mdDevelopmentDao.getMdDevelopmentById(methodDataId);
                 if (mdDevelopment != null)
                     price = mdDevelopment.getPrice();
+                break;
+            case AssessDataDicKeyConstant.MD_BASE_LAND_PRICE://基准地价修正法
+                MdBaseLandPrice baseLandPrice = mdBaseLandPriceService.getSingleObject(methodDataId);
+                if (baseLandPrice != null)
+                    price = baseLandPrice.getParcelPrice();
+                break;
+            case AssessDataDicKeyConstant.MD_COST_APPROACH://成本逼近法
+                MdCostApproach costApproach = mdCostApproachService.getDataById(methodDataId);
+                if(costApproach!=null)
+                    price=costApproach.getParcelUnit();
                 break;
         }
         return price == null ? new BigDecimal("0") : price;

@@ -321,7 +321,7 @@ public class ProjectArchivesDataService {
                 case AssessDataDicKeyConstant.AD_PLACE_FILE_MARK_COMPREHENSIVE: {
                     for (AdPlaceFileItemDto adPlaceFileItemDto : itemDtoList) {
                         //其它 注意 其他  这里必须根据配置的是哪个中午名称就写哪个中午名称
-                        if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileComprehensiveEnum.OTHER.getName())){
+                        if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileComprehensiveEnum.OTHER.getName())) {
                             List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(projectId, "assess_report_enclosure", FormatUtils.entityNameConvertToTableName(ProjectInfo.class));
                             if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
                                 continue;
@@ -472,32 +472,33 @@ public class ProjectArchivesDataService {
                                     ids.add(assetInfoItem.getInventoryId());
                                 }
                                 if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0) {
-                                    groupIds.add(assetInfoItem.getGroupId()) ;
+                                    groupIds.add(assetInfoItem.getGroupId());
                                 }
                             }
                             if (CollectionUtils.isNotEmpty(groupIds)) {
                                 List<SurveyAssetInfoGroup> infoGroupList = surveyAssetInfoGroupService.getSurveyAssetInfoGroupByIds(groupIds);
                                 if (CollectionUtils.isNotEmpty(infoGroupList)) {
-                                    for (SurveyAssetInfoGroup assetInfoGroup:infoGroupList){
-                                        if (assetInfoGroup.getInventoryId() == null || assetInfoGroup.getInventoryId() == 0){
+                                    for (SurveyAssetInfoGroup assetInfoGroup : infoGroupList) {
+                                        if (assetInfoGroup.getInventoryId() == null || assetInfoGroup.getInventoryId() == 0) {
                                             continue;
                                         }
-                                        ids.add(assetInfoGroup.getInventoryId()) ;
+                                        ids.add(assetInfoGroup.getInventoryId());
                                     }
                                 }
                             }
-                            if (CollectionUtils.isEmpty(ids)){
+                            if (CollectionUtils.isEmpty(ids)) {
                                 continue;
                             }
                             List<SurveyAssetInventory> surveyAssetInventoryList = surveyAssetInventoryService.getSurveyAssetInventoryByIds(ids);
                             if (CollectionUtils.isEmpty(surveyAssetInventoryList)) {
                                 continue;
                             }
-                            for (SurveyAssetInventory assetInventory:surveyAssetInventoryList){
+                            for (SurveyAssetInventory assetInventory : surveyAssetInventoryList) {
                                 List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getByField_tableId(assetInventory.getId(), null, FormatUtils.entityNameConvertToTableName(SurveyAssetInfoItem.class));
+                                sysAttachmentDtoList = CollectionUtils.isEmpty(sysAttachmentDtoList) ? Lists.newArrayList() : sysAttachmentDtoList;
                                 List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(assetInventory.getId(), "paymentStatusFile", FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class));
                                 if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
-                                    sysAttachmentDtoList.addAll(attachmentDtoList) ;
+                                    sysAttachmentDtoList.addAll(attachmentDtoList);
                                 }
                                 if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
                                     continue;
