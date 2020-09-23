@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoGroupDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
@@ -8,13 +10,16 @@ import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +46,19 @@ public class SurveyAssetInfoGroupService {
     @Autowired
     private SurveyAssetInventoryDao surveyAssetInventoryDao;
 
+    private final String viewSpilt = "viewSpilt";
+    private final String uniformity = "uniformity";
+    private final String taxArrears = "taxArrears";
+    private final String damage = "damage";
+    private final String transfer = "transfer";
+
     public boolean updateSurveyAssetInfoGroup(SurveyAssetInfoGroup oo, boolean updateNull) {
         return surveyAssetInfoGroupDao.updateSurveyAssetInfoGroup(oo, updateNull);
     }
 
     /**
      * 添加清查组
+     *
      * @param assetInfoId
      * @param formType
      * @param groupName
@@ -63,28 +75,28 @@ public class SurveyAssetInfoGroupService {
         SurveyAssetInventory inventory = null;
         for (String s : list) {
             switch (s) {
-                case "viewSpilt":
+                case viewSpilt:
                     inventory = new SurveyAssetInventory();
                     inventory.setGroupId(group.getId());
                     surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
                     group.setViewSpiltId(inventory.getId());
                     break;
-                case "uniformity":
+                case uniformity:
 
                     break;
-                case "taxArrears":
+                case taxArrears:
                     inventory = new SurveyAssetInventory();
                     inventory.setGroupId(group.getId());
                     surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
                     group.setTaxArrearsId(inventory.getId());
                     break;
-                case "damage":
+                case damage:
                     inventory = new SurveyAssetInventory();
                     inventory.setGroupId(group.getId());
                     surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
                     group.setDamageId(inventory.getId());
                     break;
-                case "transfer":
+                case transfer:
                     inventory = new SurveyAssetInventory();
                     inventory.setGroupId(group.getId());
                     surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
@@ -159,27 +171,51 @@ public class SurveyAssetInfoGroupService {
         return surveyAssetInfoGroupDao.getSurveyAssetInfoItemListLikeQuery(oo);
     }
 
-    public void selectClaimInfoItem(Integer groupId,String infoItems){
-        if(groupId==null||StringUtils.isBlank(infoItems)) return;
+    public void selectClaimInfoItem(Integer groupId, String infoItems) {
+        if (groupId == null || StringUtils.isBlank(infoItems)) return;
         List<Integer> list = FormatUtils.transformString2Integer(infoItems);
         List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemByIds(list);
-        if(CollectionUtils.isNotEmpty(assetInfoItems)){
+        if (CollectionUtils.isNotEmpty(assetInfoItems)) {
             for (SurveyAssetInfoItem assetInfoItem : assetInfoItems) {
                 assetInfoItem.setGroupId(groupId);
-                surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem,false);
+                surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem, false);
             }
         }
     }
 
     //移除
-    public void removeGroupInfoItem(String infoItems){
-        if(StringUtils.isBlank(infoItems)) return;
+    public void removeGroupInfoItem(String infoItems) {
+        if (StringUtils.isBlank(infoItems)) return;
         List<Integer> list = FormatUtils.transformString2Integer(infoItems);
         List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemByIds(list);
-        if(CollectionUtils.isNotEmpty(assetInfoItems)){
+        if (CollectionUtils.isNotEmpty(assetInfoItems)) {
             for (SurveyAssetInfoItem assetInfoItem : assetInfoItems) {
                 assetInfoItem.setGroupId(0);
-                surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem,false);
+                surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem, false);
+            }
+        }
+    }
+
+    /**保存分组的清查信息
+     * @param formData
+     */
+    public void saveGroupInventoryData(String formData) throws BusinessException {
+        if (StringUtils.isBlank(formData))
+            throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
+        JSONObject jsonObject = JSON.parseObject(formData);
+        List<String> list = Lists.newArrayList();
+        list.add(jsonObject.getString(viewSpilt));
+        list.add(jsonObject.getString(taxArrears));
+        list.add(jsonObject.getString(damage));
+        list.add(jsonObject.getString(transfer));
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (String s : list) {
+                if (StringUtils.isNotBlank(s)) {
+                    SurveyAssetInventory inventory = JSON.parseObject(s, SurveyAssetInventory.class);
+                    if (inventory != null) {
+                        surveyAssetInventoryDao.updateSurveyAssetInventory(inventory);
+                    }
+                }
             }
         }
     }

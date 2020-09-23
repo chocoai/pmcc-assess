@@ -353,14 +353,16 @@ public class MdMarketCompareService {
                 //计算剩余年限=法定年限-已使用年限  //已使用年限=评估基准日-交易时间
                 BigDecimal legalAge = categoryInfo.getLandUseYear();
                 if (legalAge == null && categoryInfo.getAcquisitionTime() != null && categoryInfo.getTerminationData() != null) {
-                    int days = DateUtils.diffDate(categoryInfo.getTerminationData(), categoryInfo.getAcquisitionTime());
-                    legalAge = new BigDecimal(days).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
+                    legalAge = publicService.diffDateYear(categoryInfo.getTerminationData(), categoryInfo.getAcquisitionTime());
+//                    int days = DateUtils.diffDate(categoryInfo.getTerminationData(), categoryInfo.getAcquisitionTime());
+//                    legalAge = new BigDecimal(days).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
                 }
                 BigDecimal surplusYear = null;
                 if (legalAge != null && ExamineTypeEnum.CASE.getId().equals(marketCompareItem.getType())) { //计算剩余年限=法定年限-已使用年限 已使用年限=评估基准日-交易时间
                     int diffDays = DateUtils.diffDate(areaGroup.getValueTimePoint(), houseTrading.getTradingTime());
                     BigDecimal yearCount = new BigDecimal(diffDays).divide(new BigDecimal(DateUtils.DAYS_PER_YEAR), 2, BigDecimal.ROUND_HALF_UP);
-                    surplusYear = legalAge.subtract(yearCount);
+                    //一级市场与二级市场，二级市场需使用评估基准日与交易日期做差值
+                    surplusYear = legalAge.subtract(BigDecimal.ZERO);
                 } else if (ExamineTypeEnum.EXPLORE.getId().equals(marketCompareItem.getType())) {//估价对象则直接取剩余年限
                     surplusYear = schemeJudgeObject.getLandRemainingYear();
                 }

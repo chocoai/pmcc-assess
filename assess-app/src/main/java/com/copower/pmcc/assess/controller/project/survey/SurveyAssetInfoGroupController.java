@@ -119,11 +119,11 @@ public class SurveyAssetInfoGroupController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/saveGroupInventoryInfo", name = "保存分组的清查信息")
-    public HttpResult saveGroupInventoryInfo(String formData) {
+    @PostMapping(value = "/saveGroupInventoryData", name = "保存分组的清查信息")
+    public HttpResult saveGroupInventoryData(String formData) {
         try {
-
-            return HttpResult.newCorrectResult("success");
+            surveyAssetInfoGroupService.saveGroupInventoryData(formData);
+            return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, String.join("", STRING, e.getMessage()));
             return HttpResult.newErrorResult(e.getMessage());

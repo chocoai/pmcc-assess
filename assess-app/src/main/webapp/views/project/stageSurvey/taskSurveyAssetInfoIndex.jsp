@@ -296,7 +296,7 @@
                     <div class="form-check">
                         <label class="form-check-label">
                             <input class="form-check-input" type="checkbox" checked="checked" value="viewSpilt">
-                            <span class="form-check-sign">查看与分割</span>
+                            <span class="form-check-sign">权证与分割</span>
                         </label>
                     </div>
                     <div class="form-check">
@@ -1277,13 +1277,16 @@
             yes: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 iframe.newGetFormData(function (data) {
-                    console.log(data);
-                    return false;
-                    assetInfo.saveSurveyAssetInventory(data, function (result) {
-                        assetInfo.loadSurveyAssetInfoItemBaseList();
-                        layer.closeAll('iframe');
-                        notifyInfo("成功", "清查业务数据填写成功");
-                    });
+                    $.post('${pageContext.request.contextPath}/surveyAssetInfoGroup/saveGroupInventoryData', {
+                        formData: JSON.stringify(data)
+                    }, function (result) {
+                        if (result.ret) {
+                            notifySuccess("成功", "操作成功!");
+                            assetInfo.loadSurveyAssetInfoGroupList();
+                        } else {
+                            AlertError("操作失败，失败原因:" + result.errmsg);
+                        }
+                    })
                 });
             },
             btn2: function (index, layero) {

@@ -913,11 +913,11 @@
     function getFormData() {
         var formData = {};
         formData.groupId = '${surveyAssetInfoGroup.id}';
-        formData.viewSpiltData = {};//查看与分割
+        formData.viewSpilt = {};//权证与分割
         formData.assetInventoryContentList = {};//一致性清查
-        formData.taxArrearsData = {};//税费欠款调查
-        formData.damageData = {};//损坏调查
-        formData.transferData = {};//转让限制
+        formData.taxArrears = {};//税费欠款调查
+        formData.damage = {};//损坏调查
+        formData.transfer = {};//转让限制
 
         //------------------------------------------------------------------------------------------
         var viewSpiltData = formParams("frm_asset");//评估人员 核对时间
@@ -933,7 +933,7 @@
                 }
             });
             viewSpiltData.influenceFactorRemarkText = resultData.join(",");
-            formData.viewSpiltData = viewSpiltData;
+            formData.viewSpilt = viewSpiltData;
         }
         //------------------------------------------------------------------------------------------
         var trs = $("#tb_surveyList").find('tbody tr');
@@ -974,7 +974,7 @@
                     taxArrearsData.paymentContent.push(paymentItem);
                 }
             });
-            formData.taxArrearsData = taxArrearsData;
+            formData.taxArrears = taxArrearsData;
         }
         //------------------------------------------------------------------------------------------
         var damageData = formParams("frm_damage");
@@ -1025,12 +1025,11 @@
                     damageData.otherProject.push(otherProject);
                 }
             });
-
-            formData.damageData = damageData;
+            formData.damage = damageData;
         }
 
         //------------------------------------------------------------------------------------------
-        formData.transferData = formParams("frm_transfer");
+        formData.transfer = formParams("frm_transfer");
         //------------------------------------------------------------------------------------------
         return formData;
     }
@@ -1042,13 +1041,13 @@
         // if ($("#frm_asset_inventory_content") && !$("#frm_asset_inventory_content").valid()) {
         //     return false;
         // }
-        if ($("#frm_damage") && !$("#frm_damage").valid()) {
+        if ($("#frm_damage").length > 0 && !$("#frm_damage").valid()) {
             return false;
         }
-        if ($("#frm_taxesPayment") && !$("#frm_taxesPayment").valid()) {
+        if ($("#frm_taxesPayment").length > 0 && !$("#frm_taxesPayment").valid()) {
             return false;
         }
-        if ($("#frm_transfer") && !$("#frm_transfer").valid()) {
+        if ($("#frm_transfer").length > 0 && !$("#frm_transfer").valid()) {
             return false;
         }
         if (callback) {
