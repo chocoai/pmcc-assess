@@ -294,7 +294,7 @@ public class DeclareRealtyLandCertService {
             return declareRealtyLandCert.getId();
         } else {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert, updateNull);
-            syncUpdateDeclareAndJudge(declareRealtyLandCert);
+            syncUpdateDeclareAndJudge(getDeclareRealtyLandCertById(declareRealtyLandCert.getId()));
             return declareRealtyLandCert.getId();
         }
     }
@@ -310,7 +310,7 @@ public class DeclareRealtyLandCertService {
             declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
         } else {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert, updateNull);
-            syncUpdateDeclareAndJudge(declareRealtyLandCert);
+            syncUpdateDeclareAndJudge(getDeclareRealtyLandCertById(declareRealtyLandCert.getId()));
         }
     }
 

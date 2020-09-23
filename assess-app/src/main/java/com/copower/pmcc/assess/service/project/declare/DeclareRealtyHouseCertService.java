@@ -292,7 +292,7 @@ public class DeclareRealtyHouseCertService {
             return declareRealtyHouseCert.getId();
         } else {
             declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert, updateNull);
-            syncUpdateDeclareJudge(declareRealtyHouseCert);
+            syncUpdateDeclareJudge(getDeclareRealtyHouseCertById(declareRealtyHouseCert.getId()));
             return declareRealtyHouseCert.getId();
         }
     }
@@ -308,7 +308,7 @@ public class DeclareRealtyHouseCertService {
             declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
         } else {
             declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert, updateNull);
-            syncUpdateDeclareJudge(declareRealtyHouseCert);
+            syncUpdateDeclareJudge(getDeclareRealtyHouseCertById(declareRealtyHouseCert.getId()));
         }
     }
 

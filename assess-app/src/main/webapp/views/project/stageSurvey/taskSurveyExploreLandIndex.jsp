@@ -12,7 +12,6 @@
         }
     </style>
 </head>
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -76,7 +75,6 @@
                                                 onclick="batchTreeTool.checkInfo();">
                                             查看信息
                                         </button>
-
                                         <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
                                     </div>
                                     <div class="col-md-3">
@@ -537,6 +535,7 @@
 
     batchTreeTool.showFunctionBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
+        console.log(node);
         $("#basicBatchApplyFrm").find('[data-name=declareRecordName]').text(AssessCommon.toString(node.declareRecordName));
     }
 
