@@ -64,18 +64,16 @@
     <tr class="group">
         <td class="table-cell">
             {landLevelTypeName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <span style="margin-left: 2px;cursor: pointer;" title="{reamark}"><span class="btn-label"><i
+            class="fa fa-question-circle"></i></span>
+            </span>
         </td>
         <td>
             <select class="form-control input-full" name="landLevelGrade"
                     onchange="landAchievementGroup.landLevelHandle(this);">
                 {landLevelSelectHTML}
             </select>
-        </td>
-        <td>
-            <%--<span style="margin-left: 2px;cursor: pointer;" title="{reamark}"><span class="btn-label"><i--%>
-                    <%--class="fa fa-question-circle"></i></span>--%>
-            <%--</span>--%>
-            {reamark}
         </td>
         <td>
             <input type="hidden" class="form-control input-full" name="dataLandLevelAchievement"

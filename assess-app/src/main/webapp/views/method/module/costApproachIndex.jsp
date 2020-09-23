@@ -225,9 +225,8 @@
                                         <table class="table table-bordered" id="landLevelTableList">
                                             <thead>
                                             <tr>
-                                                <th width="20%">土地级别类型类别</th>
+                                                <th width="50%">土地级别类型类别</th>
                                                 <th width="30%">土地级别等级</th>
-                                                <th width="30%">说明</th>
                                                 <th width="20%">分值</th>
                                             </tr>
                                             </thead>
