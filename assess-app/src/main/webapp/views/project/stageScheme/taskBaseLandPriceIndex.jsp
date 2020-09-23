@@ -57,8 +57,6 @@
         formData.floorPremium = $.trim($("#floorPremium").text()) ? $("#floorPremium").text() : '';
         formData.correctionDifference = $.trim($("#correctionDifference").text()) ? $("#correctionDifference").text() : '';
         formData.areaAndSeveralAmend = AssessCommon.percentToPoint($("#areaAndSeveralAmend").val());
-        formData.landLevelContent = getLandLevelContent();
-
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));

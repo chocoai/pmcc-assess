@@ -41,7 +41,6 @@
         formData.floorPremium = $.trim($("#floorPremium").text()) ? $("#floorPremium").text() : '';
         formData.correctionDifference = $.trim($("#correctionDifference").text()) ? $("#correctionDifference").text() : '';
         formData.areaAndSeveralAmend = AssessCommon.percentToPoint($("#areaAndSeveralAmend").val());
-        formData.landLevelContent = getLandLevelContent();
         if (!$.isNumeric(formData.volumeFractionAmend)) {
             formData.volumeFractionAmend = null;
         }

@@ -353,11 +353,11 @@
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full">
                                                     <c:choose>
-                                                        <c:when test="${(master.rewardRate).matches('[0-9]+') }">    <!--如果 -->
-                                                            <fmt:formatNumber value="${master.rewardRate}" type="percent" maxFractionDigits="4"/>
+                                                        <c:when test="${(master.rewardRate).contains('%') }">    <!--如果 -->
+                                                            ${master.rewardRate}
                                                         </c:when>
                                                         <c:otherwise>  <!--否则 -->
-                                                            ${master.rewardRate}
+                                                            <fmt:formatNumber value="${master.rewardRate}" type="percent" maxFractionDigits="4"/>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </label>

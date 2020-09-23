@@ -492,8 +492,7 @@
                                                            id="rewardRate"
                                                            name="rewardRate" placeholder="还原率"
                                                            onblur="calculationNumeric(this)"
-                                                           readonly="readonly" data-value="${master.rewardRate}"
-                                                           value="${master.rewardRate}">
+                                                           value="${master.rewardRate}" data-value="${master.rewardRate}">
                                                     <div class="input-group-prepend">
                                                         <input type="hidden" name="rewardRateId"
                                                                value="${master.rewardRateId}">
@@ -768,12 +767,6 @@
         calculationNumeric();
     });
 
-
-    //v取几位小数
-    function getSomePlaces(num, v) {
-        var vv = Math.pow(10, v);
-        return Math.round(num * vv) / vv;
-    }
 
 
     //百分数转小数
@@ -1341,7 +1334,6 @@
         var formData = formParams("master");
         var formDataOther = formParams("master_other");
         formData.id = $("#master").find("input[name='id']").val();
-        formData.rewardRate = AssessCommon.pointToPercent(formDataOther.rewardRate);
         formData.rewardRateId = formDataOther.rewardRateId;
         formData.circulationExpense = formDataOther.circulationExpense;
         formData.circulationExpenseRemark = formDataOther.circulationExpenseRemark;
@@ -1371,8 +1363,6 @@
         formData.yearFixed = subPointToPercent($("#yearFixed").text());
         formData.landAcquisitionBhou = parseFloat($("#landAcquisitionBhou").text());
         formData.parcelBhou = parseFloat($("#parcelBhou").text());
-
-        formData.landLevelContent = getLandLevelContent();
         var costApproachTaxes = [];
         $.each($("#master").find("#tbodyContent").find("tr"), function (i, n) {
             var item = getApproachTaxesData($(n));
