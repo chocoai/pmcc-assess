@@ -1631,7 +1631,7 @@ public class NetInfoRecordService {
         Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
         baseMap.put("dealType", baseDataDicService.getCacheDataDicList("data.deal.type"));
         baseMap.put("tradingType", baseDataDicService.getCacheDataDicList("examine.house.transaction.type"));
-        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = ExcelImportUtils.getMultimapByClass(NetInfoRecordLand.class, row);
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = ExcelImportUtils.getMultimapByClass(NetInfoRecordHouse.class, row);
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++){
             NetInfoRecordHouse target = null;
             try {
